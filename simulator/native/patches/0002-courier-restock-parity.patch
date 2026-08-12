@@ -1,0 +1,19 @@
+diff --git a/src/game/Shop.cpp b/src/game/Shop.cpp
+index 7a79473..10779a6 100644
+--- a/src/game/Shop.cpp
++++ b/src/game/Shop.cpp
+@@ -95,8 +95,13 @@ void Shop::buyCard(GameContext &gc, int idx) {
+             cards[idx] = gc.previewObtainCard(getColorlessCardFromPool(gc.cardRng, rarity));
+             cardPrice(idx) = getNewCardPrice(gc, rarity, true);
+         } else {
++            const CardType type = cards[idx].getType();
+             CardRarity rarity = gc.rollCardRarity(Room::SHOP);
+-            cards[idx] = gc.previewObtainCard(getRandomClassCardOfRarity(gc.mathUtilRng, gc.cc, rarity));
++            // The original game asks the colored card pool for the same type
++            // as the purchased card. Ironclad has no common powers, so its
++            // card-pool fallback promotes that request to uncommon.
++            if (type == CardType::POWER && rarity == CardRarity::COMMON) rarity = CardRarity::UNCOMMON;
++            cards[idx] = gc.previewObtainCard(getRandomClassCardOfTypeAndRarity(gc.mathUtilRng, gc.cc, type, rarity));
+             cardPrice(idx) = getNewCardPrice(gc, rarity, false);
+         }
+ 

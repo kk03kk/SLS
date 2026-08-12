@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "target": "Slay the Spire 1 base-game logic",
+  "platform": "Windows Steam",
+  "steam": {
+    "app_id": "646570",
+    "build_id": "10180494",
+    "depot_id": "646571",
+    "depot_manifest": "9072802409324604124"
+  },
+  "game": {
+    "reported_version": "12-18-2022",
+    "relative_path": "desktop-1.0.jar",
+    "bytes": 365086855,
+    "sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673"
+  },
+  "oracle_mods": [
+    {
+      "id": "ModTheSpire",
+      "version": "3.30.3",
+      "workshop_id": "1605060445",
+      "jar": "ModTheSpire.jar",
+      "bytes": 10252951,
+      "sha256": "541b5e8a875d2a404a5a6d54f4a6f814284b0cf71acb9245239d9c5ef50ea604"
+    },
+    {
+      "id": "basemod",
+      "version": "5.56.0",
+      "workshop_id": "1605833019",
+      "jar": "BaseMod.jar",
+      "bytes": 7659408,
+      "sha256": "c3353c10e64c621b723e9fd7d0502dfa796f828b101b68513594a5f5ef83fbaf"
+    },
+    {
+      "id": "CommunicationMod",
+      "version": "1.2.1",
+      "workshop_id": "2131373661",
+      "jar": "CommunicationMod.jar",
+      "bytes": 343522,
+      "sha256": "12b99249eccfd5245ddb0b6b7575e1a1dfba0ce0ed6fad5bd5bbd4a303897ef5"
+    }
+  ],
+  "simulator_base": {
+    "project": "sts_lightspeed",
+    "commit": "7476a81954020087da31d41d16fddf475746ec2d"
+  }
+}

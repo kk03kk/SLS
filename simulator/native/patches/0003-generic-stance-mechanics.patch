@@ -1,0 +1,65 @@
+diff --git a/include/combat/BattleContext.h b/include/combat/BattleContext.h
+index 767bbcd..3598711 100644
+--- a/include/combat/BattleContext.h
++++ b/include/combat/BattleContext.h
+@@ -223,6 +223,16 @@ namespace sts {
+                 bc.cards.onBuffCorruption();
+             }
+             bc.player.buff<s>(amount);
++            if (s == PlayerStatus::MANTRA && bc.player.getStatus<PS::MANTRA>() >= 10) {
++                const int remainder = bc.player.getStatus<PS::MANTRA>() - 10;
++                if (remainder > 0) {
++                    bc.player.setStatusValueNoChecks<PS::MANTRA>(remainder);
++                } else {
++                    bc.player.setHasStatus<PS::MANTRA>(false);
++                    bc.player.statusMap.erase(PS::MANTRA);
++                }
++                bc.addToTop(Actions::ChangeStance(Stance::DIVINITY));
++            }
+         }};
+     }
+ 
+diff --git a/include/constants/PlayerStatusEffects.h b/include/constants/PlayerStatusEffects.h
+index 455fee8..f9d5d66 100644
+--- a/include/constants/PlayerStatusEffects.h
++++ b/include/constants/PlayerStatusEffects.h
+@@ -131,8 +131,8 @@ enum class Stance : uint8_t {
+ 
+ static constexpr const char* const stanceStrings[] {
+         "NEUTRAL",
+-        "WRATH",
+         "CALM",
++        "WRATH",
+         "DIVINITY",
+ };
+ 
+diff --git a/src/combat/Actions.cpp b/src/combat/Actions.cpp
+index 93db96f..5771a97 100644
+--- a/src/combat/Actions.cpp
++++ b/src/combat/Actions.cpp
+@@ -149,7 +149,24 @@ Action Actions::NoOpRollMove() {
+ }
+ 
+ Action Actions::ChangeStance(Stance stance) {
+-    return sts::Action();
++    return {[=] (BattleContext &bc) {
++        auto &player = bc.player;
++        if (player.stance == stance) {
++            return;
++        }
++
++        const auto oldStance = player.stance;
++        player.stance = stance;
++
++        // Original CalmStance.onExitStance queues two energy after the
++        // stance change. DivinityStance.onEnterStance queues three energy.
++        if (oldStance == Stance::CALM) {
++            bc.addToBot(Actions::GainEnergy(2));
++        }
++        if (stance == Stance::DIVINITY) {
++            bc.addToBot(Actions::GainEnergy(3));
++        }
++    }};
+ }
+ 
+ Action Actions::GainEnergy(int amount) {

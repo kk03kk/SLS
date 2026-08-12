@@ -1,0 +1,6241 @@
+{
+  "schema_version": 1,
+  "target": {
+    "game_version": "12-18-2022",
+    "game_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+    "source_project": "sts_lightspeed",
+    "source_commit": "7476a81954020087da31d41d16fddf475746ec2d",
+    "source_sha256": {
+      "CharacterClasses.h": "81dc2b5ca3395b826c2e33677b4943b6cc35b67b1c81f5d076b8abda02db289d",
+      "Cards.h": "3492ca9ec6ff3e1098092127892529589be91cb338d3ef44b5fd8e979f52a7e0",
+      "Relics.h": "092473d34e953ec4e9328d602250b67cb2d12c6df0be9b7bbaf435de47aa88d0",
+      "Potions.h": "d16d41c0b95028d7338b05f455511c266907e5ec31be711a705ceeb077ea1938",
+      "MonsterIds.h": "1aae228e181da68af14bfb4183a0556d4b6f6802d4a29abbcd305d3401088f27",
+      "MonsterEncounters.h": "5363596ba4d216bf635c1f8d6066e180712c590529210d6264746b877e27bcce",
+      "Events.h": "d558be77e7f187784a7eb66c21a537b458304d7dcbc934c6498d635a74cb97f1"
+    }
+  },
+  "status_vocabulary": {
+    "implementation": [
+      "declared",
+      "partial",
+      "implemented"
+    ],
+    "evidence": [
+      "upstream",
+      "unit",
+      "oracle_trace"
+    ]
+  },
+  "categories": {
+    "characters": [
+      {
+        "id": "IRONCLAD",
+        "ordinal": 0,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py"
+        ]
+      },
+      {
+        "id": "SILENT",
+        "ordinal": 1,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "DEFECT",
+        "ordinal": 2,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "WATCHER",
+        "ordinal": 3,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      }
+    ],
+    "cards": [
+      {
+        "id": "ACCURACY",
+        "ordinal": 1,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "ACROBATICS",
+        "ordinal": 2,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "ADRENALINE",
+        "ordinal": 3,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "AFTER_IMAGE",
+        "ordinal": 4,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "AGGREGATE",
+        "ordinal": 5,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "ALCHEMIZE",
+        "ordinal": 6,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "ALL_FOR_ONE",
+        "ordinal": 7,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "ALL_OUT_ATTACK",
+        "ordinal": 8,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "ALPHA",
+        "ordinal": 9,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "AMPLIFY",
+        "ordinal": 10,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "ANGER",
+        "ordinal": 11,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "APOTHEOSIS",
+        "ordinal": 12,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "APPARITION",
+        "ordinal": 13,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "ARMAMENTS",
+        "ordinal": 14,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "ASCENDERS_BANE",
+        "ordinal": 15,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "AUTO_SHIELDS",
+        "ordinal": 16,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "A_THOUSAND_CUTS",
+        "ordinal": 17,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "BACKFLIP",
+        "ordinal": 18,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "BACKSTAB",
+        "ordinal": 19,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "BALL_LIGHTNING",
+        "ordinal": 20,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "BANDAGE_UP",
+        "ordinal": 21,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "BANE",
+        "ordinal": 22,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "BARRAGE",
+        "ordinal": 23,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "BARRICADE",
+        "ordinal": 24,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "BASH",
+        "ordinal": 25,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "BATTLE_HYMN",
+        "ordinal": 26,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "BATTLE_TRANCE",
+        "ordinal": 27,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "BEAM_CELL",
+        "ordinal": 28,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "BECOME_ALMIGHTY",
+        "ordinal": 29,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "BERSERK",
+        "ordinal": 30,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "BETA",
+        "ordinal": 31,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "BIASED_COGNITION",
+        "ordinal": 32,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "BITE",
+        "ordinal": 33,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "BLADE_DANCE",
+        "ordinal": 34,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "BLASPHEMY",
+        "ordinal": 35,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "BLIND",
+        "ordinal": 36,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "BLIZZARD",
+        "ordinal": 37,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "BLOODLETTING",
+        "ordinal": 38,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "BLOOD_FOR_BLOOD",
+        "ordinal": 39,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "BLUDGEON",
+        "ordinal": 40,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "BLUR",
+        "ordinal": 41,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "BODY_SLAM",
+        "ordinal": 42,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "BOOT_SEQUENCE",
+        "ordinal": 43,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "BOUNCING_FLASK",
+        "ordinal": 44,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "BOWLING_BASH",
+        "ordinal": 45,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "BRILLIANCE",
+        "ordinal": 46,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "BRUTALITY",
+        "ordinal": 47,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "BUFFER",
+        "ordinal": 48,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "BULLET_TIME",
+        "ordinal": 49,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "BULLSEYE",
+        "ordinal": 50,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "BURN",
+        "ordinal": 51,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "BURNING_PACT",
+        "ordinal": 52,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "BURST",
+        "ordinal": 53,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CALCULATED_GAMBLE",
+        "ordinal": 54,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CALTROPS",
+        "ordinal": 55,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CAPACITOR",
+        "ordinal": 56,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CARNAGE",
+        "ordinal": 57,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "CARVE_REALITY",
+        "ordinal": 58,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CATALYST",
+        "ordinal": 59,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CHAOS",
+        "ordinal": 60,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CHARGE_BATTERY",
+        "ordinal": 61,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CHILL",
+        "ordinal": 62,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CHOKE",
+        "ordinal": 63,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CHRYSALIS",
+        "ordinal": 64,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CLASH",
+        "ordinal": 65,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "CLAW",
+        "ordinal": 66,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CLEAVE",
+        "ordinal": 67,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "CLOAK_AND_DAGGER",
+        "ordinal": 68,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CLOTHESLINE",
+        "ordinal": 69,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "CLUMSY",
+        "ordinal": 70,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "COLD_SNAP",
+        "ordinal": 71,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "COLLECT",
+        "ordinal": 72,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "COMBUST",
+        "ordinal": 73,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "COMPILE_DRIVER",
+        "ordinal": 74,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CONCENTRATE",
+        "ordinal": 75,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CONCLUDE",
+        "ordinal": 76,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CONJURE_BLADE",
+        "ordinal": 77,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CONSECRATE",
+        "ordinal": 78,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CONSUME",
+        "ordinal": 79,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "COOLHEADED",
+        "ordinal": 80,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CORE_SURGE",
+        "ordinal": 81,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CORPSE_EXPLOSION",
+        "ordinal": 82,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CORRUPTION",
+        "ordinal": 83,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "CREATIVE_AI",
+        "ordinal": 84,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CRESCENDO",
+        "ordinal": 85,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CRIPPLING_CLOUD",
+        "ordinal": 86,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CRUSH_JOINTS",
+        "ordinal": 87,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CURSE_OF_THE_BELL",
+        "ordinal": 88,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CUT_THROUGH_FATE",
+        "ordinal": 89,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "DAGGER_SPRAY",
+        "ordinal": 90,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "DAGGER_THROW",
+        "ordinal": 91,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "DARKNESS",
+        "ordinal": 92,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "DARK_EMBRACE",
+        "ordinal": 93,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "DARK_SHACKLES",
+        "ordinal": 94,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "DASH",
+        "ordinal": 95,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "DAZED",
+        "ordinal": 96,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "DEADLY_POISON",
+        "ordinal": 97,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "DECAY",
+        "ordinal": 98,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "DECEIVE_REALITY",
+        "ordinal": 99,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "DEEP_BREATH",
+        "ordinal": 100,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "DEFEND_BLUE",
+        "ordinal": 101,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "DEFEND_GREEN",
+        "ordinal": 102,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "DEFEND_PURPLE",
+        "ordinal": 103,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "DEFEND_RED",
+        "ordinal": 104,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "DEFLECT",
+        "ordinal": 105,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "DEFRAGMENT",
+        "ordinal": 106,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "DEMON_FORM",
+        "ordinal": 107,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "DEUS_EX_MACHINA",
+        "ordinal": 108,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "DEVA_FORM",
+        "ordinal": 109,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "DEVOTION",
+        "ordinal": 110,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "DIE_DIE_DIE",
+        "ordinal": 111,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "DISARM",
+        "ordinal": 112,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "DISCOVERY",
+        "ordinal": 113,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "DISTRACTION",
+        "ordinal": 114,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "DODGE_AND_ROLL",
+        "ordinal": 115,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "DOOM_AND_GLOOM",
+        "ordinal": 116,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "DOPPELGANGER",
+        "ordinal": 117,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "DOUBLE_ENERGY",
+        "ordinal": 118,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "DOUBLE_TAP",
+        "ordinal": 119,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "DOUBT",
+        "ordinal": 120,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "DRAMATIC_ENTRANCE",
+        "ordinal": 121,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "DROPKICK",
+        "ordinal": 122,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "DUALCAST",
+        "ordinal": 123,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "DUAL_WIELD",
+        "ordinal": 124,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "ECHO_FORM",
+        "ordinal": 125,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "ELECTRODYNAMICS",
+        "ordinal": 126,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "EMPTY_BODY",
+        "ordinal": 127,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "EMPTY_FIST",
+        "ordinal": 128,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "EMPTY_MIND",
+        "ordinal": 129,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "ENDLESS_AGONY",
+        "ordinal": 130,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "ENLIGHTENMENT",
+        "ordinal": 131,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "ENTRENCH",
+        "ordinal": 132,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "ENVENOM",
+        "ordinal": 133,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "EQUILIBRIUM",
+        "ordinal": 134,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "ERUPTION",
+        "ordinal": 135,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "ESCAPE_PLAN",
+        "ordinal": 136,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "ESTABLISHMENT",
+        "ordinal": 137,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "EVALUATE",
+        "ordinal": 138,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "EVISCERATE",
+        "ordinal": 139,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "EVOLVE",
+        "ordinal": 140,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "EXHUME",
+        "ordinal": 141,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "EXPERTISE",
+        "ordinal": 142,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "EXPUNGER",
+        "ordinal": 143,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "FAME_AND_FORTUNE",
+        "ordinal": 144,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "FASTING",
+        "ordinal": 145,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "FEAR_NO_EVIL",
+        "ordinal": 146,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "FEED",
+        "ordinal": 147,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "FEEL_NO_PAIN",
+        "ordinal": 148,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "FIEND_FIRE",
+        "ordinal": 149,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "FINESSE",
+        "ordinal": 150,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "FINISHER",
+        "ordinal": 151,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "FIRE_BREATHING",
+        "ordinal": 152,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "FISSION",
+        "ordinal": 153,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "FLAME_BARRIER",
+        "ordinal": 154,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "FLASH_OF_STEEL",
+        "ordinal": 155,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "FLECHETTES",
+        "ordinal": 156,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "FLEX",
+        "ordinal": 157,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "FLURRY_OF_BLOWS",
+        "ordinal": 158,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "FLYING_KNEE",
+        "ordinal": 159,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "FLYING_SLEEVES",
+        "ordinal": 160,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "FOLLOW_UP",
+        "ordinal": 161,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "FOOTWORK",
+        "ordinal": 162,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "FORCE_FIELD",
+        "ordinal": 163,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "FOREIGN_INFLUENCE",
+        "ordinal": 164,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "FORESIGHT",
+        "ordinal": 165,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "FORETHOUGHT",
+        "ordinal": 166,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "FTL",
+        "ordinal": 167,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "FUSION",
+        "ordinal": 168,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "GENETIC_ALGORITHM",
+        "ordinal": 169,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "GHOSTLY_ARMOR",
+        "ordinal": 170,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "GLACIER",
+        "ordinal": 171,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "GLASS_KNIFE",
+        "ordinal": 172,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "GOOD_INSTINCTS",
+        "ordinal": 173,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "GO_FOR_THE_EYES",
+        "ordinal": 174,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "GRAND_FINALE",
+        "ordinal": 175,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "HALT",
+        "ordinal": 176,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "HAND_OF_GREED",
+        "ordinal": 177,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "HAVOC",
+        "ordinal": 178,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "HEADBUTT",
+        "ordinal": 179,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "HEATSINKS",
+        "ordinal": 180,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "HEAVY_BLADE",
+        "ordinal": 181,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "HEEL_HOOK",
+        "ordinal": 182,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "HELLO_WORLD",
+        "ordinal": 183,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "HEMOKINESIS",
+        "ordinal": 184,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "HOLOGRAM",
+        "ordinal": 185,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "HYPERBEAM",
+        "ordinal": 186,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "IMMOLATE",
+        "ordinal": 187,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "IMPATIENCE",
+        "ordinal": 188,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "IMPERVIOUS",
+        "ordinal": 189,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "INDIGNATION",
+        "ordinal": 190,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "INFERNAL_BLADE",
+        "ordinal": 191,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "INFINITE_BLADES",
+        "ordinal": 192,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "INFLAME",
+        "ordinal": 193,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "INJURY",
+        "ordinal": 194,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "INNER_PEACE",
+        "ordinal": 195,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "INSIGHT",
+        "ordinal": 196,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "INTIMIDATE",
+        "ordinal": 197,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "IRON_WAVE",
+        "ordinal": 198,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "JAX",
+        "ordinal": 199,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "JACK_OF_ALL_TRADES",
+        "ordinal": 200,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "JUDGMENT",
+        "ordinal": 201,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "JUGGERNAUT",
+        "ordinal": 202,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "JUST_LUCKY",
+        "ordinal": 203,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "LEAP",
+        "ordinal": 204,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "LEG_SWEEP",
+        "ordinal": 205,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "LESSON_LEARNED",
+        "ordinal": 206,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "LIKE_WATER",
+        "ordinal": 207,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "LIMIT_BREAK",
+        "ordinal": 208,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "LIVE_FOREVER",
+        "ordinal": 209,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "LOOP",
+        "ordinal": 210,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "MACHINE_LEARNING",
+        "ordinal": 211,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "MADNESS",
+        "ordinal": 212,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "MAGNETISM",
+        "ordinal": 213,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "MALAISE",
+        "ordinal": 214,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "MASTERFUL_STAB",
+        "ordinal": 215,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "MASTER_OF_STRATEGY",
+        "ordinal": 216,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "MASTER_REALITY",
+        "ordinal": 217,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "MAYHEM",
+        "ordinal": 218,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "MEDITATE",
+        "ordinal": 219,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "MELTER",
+        "ordinal": 220,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "MENTAL_FORTRESS",
+        "ordinal": 221,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "METALLICIZE",
+        "ordinal": 222,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "METAMORPHOSIS",
+        "ordinal": 223,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "METEOR_STRIKE",
+        "ordinal": 224,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "MIND_BLAST",
+        "ordinal": 225,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "MIRACLE",
+        "ordinal": 226,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "MULTI_CAST",
+        "ordinal": 227,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "NECRONOMICURSE",
+        "ordinal": 228,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "NEUTRALIZE",
+        "ordinal": 229,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "NIGHTMARE",
+        "ordinal": 230,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "NIRVANA",
+        "ordinal": 231,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "NORMALITY",
+        "ordinal": 232,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "NOXIOUS_FUMES",
+        "ordinal": 233,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "OFFERING",
+        "ordinal": 234,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "OMEGA",
+        "ordinal": 235,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "OMNISCIENCE",
+        "ordinal": 236,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "OUTMANEUVER",
+        "ordinal": 237,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "OVERCLOCK",
+        "ordinal": 238,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "PAIN",
+        "ordinal": 239,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "PANACEA",
+        "ordinal": 240,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "PANACHE",
+        "ordinal": 241,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "PANIC_BUTTON",
+        "ordinal": 242,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "PARASITE",
+        "ordinal": 243,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "PERFECTED_STRIKE",
+        "ordinal": 244,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "PERSEVERANCE",
+        "ordinal": 245,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "PHANTASMAL_KILLER",
+        "ordinal": 246,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "PIERCING_WAIL",
+        "ordinal": 247,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "POISONED_STAB",
+        "ordinal": 248,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "POMMEL_STRIKE",
+        "ordinal": 249,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "POWER_THROUGH",
+        "ordinal": 250,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "PRAY",
+        "ordinal": 251,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "PREDATOR",
+        "ordinal": 252,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "PREPARED",
+        "ordinal": 253,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "PRESSURE_POINTS",
+        "ordinal": 254,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "PRIDE",
+        "ordinal": 255,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "PROSTRATE",
+        "ordinal": 256,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "PROTECT",
+        "ordinal": 257,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "PUMMEL",
+        "ordinal": 258,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "PURITY",
+        "ordinal": 259,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "QUICK_SLASH",
+        "ordinal": 260,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "RAGE",
+        "ordinal": 261,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "RAGNAROK",
+        "ordinal": 262,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "RAINBOW",
+        "ordinal": 263,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "RAMPAGE",
+        "ordinal": 264,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "REACH_HEAVEN",
+        "ordinal": 265,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "REAPER",
+        "ordinal": 266,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "REBOOT",
+        "ordinal": 267,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "REBOUND",
+        "ordinal": 268,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "RECKLESS_CHARGE",
+        "ordinal": 269,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "RECURSION",
+        "ordinal": 270,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "RECYCLE",
+        "ordinal": 271,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "REFLEX",
+        "ordinal": 272,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "REGRET",
+        "ordinal": 273,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "REINFORCED_BODY",
+        "ordinal": 274,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "REPROGRAM",
+        "ordinal": 275,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "RIDDLE_WITH_HOLES",
+        "ordinal": 276,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "RIP_AND_TEAR",
+        "ordinal": 277,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "RITUAL_DAGGER",
+        "ordinal": 278,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "RUPTURE",
+        "ordinal": 279,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "RUSHDOWN",
+        "ordinal": 280,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SADISTIC_NATURE",
+        "ordinal": 281,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SAFETY",
+        "ordinal": 282,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SANCTITY",
+        "ordinal": 283,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SANDS_OF_TIME",
+        "ordinal": 284,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SASH_WHIP",
+        "ordinal": 285,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SCRAPE",
+        "ordinal": 286,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SCRAWL",
+        "ordinal": 287,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SEARING_BLOW",
+        "ordinal": 288,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "SECOND_WIND",
+        "ordinal": 289,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "SECRET_TECHNIQUE",
+        "ordinal": 290,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SECRET_WEAPON",
+        "ordinal": 291,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SEEING_RED",
+        "ordinal": 292,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "SEEK",
+        "ordinal": 293,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SELF_REPAIR",
+        "ordinal": 294,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SENTINEL",
+        "ordinal": 295,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "SETUP",
+        "ordinal": 296,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SEVER_SOUL",
+        "ordinal": 297,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "SHAME",
+        "ordinal": 298,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SHIV",
+        "ordinal": 299,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SHOCKWAVE",
+        "ordinal": 300,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "SHRUG_IT_OFF",
+        "ordinal": 301,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "SIGNATURE_MOVE",
+        "ordinal": 302,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SIMMERING_FURY",
+        "ordinal": 303,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SKEWER",
+        "ordinal": 304,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SKIM",
+        "ordinal": 305,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SLICE",
+        "ordinal": 306,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SLIMED",
+        "ordinal": 307,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SMITE",
+        "ordinal": 308,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SNEAKY_STRIKE",
+        "ordinal": 309,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SPIRIT_SHIELD",
+        "ordinal": 310,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SPOT_WEAKNESS",
+        "ordinal": 311,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "STACK",
+        "ordinal": 312,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "STATIC_DISCHARGE",
+        "ordinal": 313,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "STEAM_BARRIER",
+        "ordinal": 314,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "STORM",
+        "ordinal": 315,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "STORM_OF_STEEL",
+        "ordinal": 316,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "STREAMLINE",
+        "ordinal": 317,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "STRIKE_BLUE",
+        "ordinal": 318,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "STRIKE_GREEN",
+        "ordinal": 319,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "STRIKE_PURPLE",
+        "ordinal": 320,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "STRIKE_RED",
+        "ordinal": 321,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "STUDY",
+        "ordinal": 322,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SUCKER_PUNCH",
+        "ordinal": 323,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SUNDER",
+        "ordinal": 324,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SURVIVOR",
+        "ordinal": 325,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SWEEPING_BEAM",
+        "ordinal": 326,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SWIFT_STRIKE",
+        "ordinal": 327,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SWIVEL",
+        "ordinal": 328,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SWORD_BOOMERANG",
+        "ordinal": 329,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "TACTICIAN",
+        "ordinal": 330,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "TALK_TO_THE_HAND",
+        "ordinal": 331,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "TANTRUM",
+        "ordinal": 332,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "TEMPEST",
+        "ordinal": 333,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "TERROR",
+        "ordinal": 334,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "THE_BOMB",
+        "ordinal": 335,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "THINKING_AHEAD",
+        "ordinal": 336,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "THIRD_EYE",
+        "ordinal": 337,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "THROUGH_VIOLENCE",
+        "ordinal": 338,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "THUNDERCLAP",
+        "ordinal": 339,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "THUNDER_STRIKE",
+        "ordinal": 340,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "TOOLS_OF_THE_TRADE",
+        "ordinal": 341,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "TRANQUILITY",
+        "ordinal": 342,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "TRANSMUTATION",
+        "ordinal": 343,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "TRIP",
+        "ordinal": 344,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "TRUE_GRIT",
+        "ordinal": 345,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "TURBO",
+        "ordinal": 346,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "TWIN_STRIKE",
+        "ordinal": 347,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "UNLOAD",
+        "ordinal": 348,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "UPPERCUT",
+        "ordinal": 349,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "VAULT",
+        "ordinal": 350,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "VIGILANCE",
+        "ordinal": 351,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "VIOLENCE",
+        "ordinal": 352,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "VOID",
+        "ordinal": 353,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "WALLOP",
+        "ordinal": 354,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "WARCRY",
+        "ordinal": 355,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "WAVE_OF_THE_HAND",
+        "ordinal": 356,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "WEAVE",
+        "ordinal": 357,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "WELL_LAID_PLANS",
+        "ordinal": 358,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "WHEEL_KICK",
+        "ordinal": 359,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "WHIRLWIND",
+        "ordinal": 360,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "WHITE_NOISE",
+        "ordinal": 361,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "WILD_STRIKE",
+        "ordinal": 362,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_ironclad_attacks.py",
+          "tests/test_ironclad_skills.py",
+          "tests/test_ironclad_powers.py",
+          "tests/test_ironclad_choices.py"
+        ]
+      },
+      {
+        "id": "WINDMILL_STRIKE",
+        "ordinal": 363,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "WISH",
+        "ordinal": 364,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "WORSHIP",
+        "ordinal": 365,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "WOUND",
+        "ordinal": 366,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "WRAITH_FORM",
+        "ordinal": 367,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "WREATH_OF_FLAME",
+        "ordinal": 368,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "WRITHE",
+        "ordinal": 369,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "ZAP",
+        "ordinal": 370,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      }
+    ],
+    "relics": [
+      {
+        "id": "AKABEKO",
+        "ordinal": 0,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "ART_OF_WAR",
+        "ordinal": 1,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "BIRD_FACED_URN",
+        "ordinal": 2,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "BLOODY_IDOL",
+        "ordinal": 3,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "BLUE_CANDLE",
+        "ordinal": 4,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "BRIMSTONE",
+        "ordinal": 5,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CALIPERS",
+        "ordinal": 6,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CAPTAINS_WHEEL",
+        "ordinal": 7,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CENTENNIAL_PUZZLE",
+        "ordinal": 8,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CERAMIC_FISH",
+        "ordinal": 9,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CHAMPION_BELT",
+        "ordinal": 10,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CHARONS_ASHES",
+        "ordinal": 11,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CHEMICAL_X",
+        "ordinal": 12,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CLOAK_CLASP",
+        "ordinal": 13,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "DARKSTONE_PERIAPT",
+        "ordinal": 14,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "DEAD_BRANCH",
+        "ordinal": 15,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "DUALITY",
+        "ordinal": 16,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "ECTOPLASM",
+        "ordinal": 17,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "EMOTION_CHIP",
+        "ordinal": 18,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "FROZEN_CORE",
+        "ordinal": 19,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "FROZEN_EYE",
+        "ordinal": 20,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "GAMBLING_CHIP",
+        "ordinal": 21,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "GINGER",
+        "ordinal": 22,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "GOLDEN_EYE",
+        "ordinal": 23,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "GREMLIN_HORN",
+        "ordinal": 24,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "HAND_DRILL",
+        "ordinal": 25,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "HAPPY_FLOWER",
+        "ordinal": 26,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_relics.py"
+        ]
+      },
+      {
+        "id": "HORN_CLEAT",
+        "ordinal": 27,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "HOVERING_KITE",
+        "ordinal": 28,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "ICE_CREAM",
+        "ordinal": 29,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "INCENSE_BURNER",
+        "ordinal": 30,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "INK_BOTTLE",
+        "ordinal": 31,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "INSERTER",
+        "ordinal": 32,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "KUNAI",
+        "ordinal": 33,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "LETTER_OPENER",
+        "ordinal": 34,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "LIZARD_TAIL",
+        "ordinal": 35,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "MAGIC_FLOWER",
+        "ordinal": 36,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "MARK_OF_THE_BLOOM",
+        "ordinal": 37,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "MEDICAL_KIT",
+        "ordinal": 38,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "MELANGE",
+        "ordinal": 39,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "MERCURY_HOURGLASS",
+        "ordinal": 40,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "MUMMIFIED_HAND",
+        "ordinal": 41,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "NECRONOMICON",
+        "ordinal": 42,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "NILRYS_CODEX",
+        "ordinal": 43,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "NUNCHAKU",
+        "ordinal": 44,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "ODD_MUSHROOM",
+        "ordinal": 45,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "OMAMORI",
+        "ordinal": 46,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "ORANGE_PELLETS",
+        "ordinal": 47,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "ORICHALCUM",
+        "ordinal": 48,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "ORNAMENTAL_FAN",
+        "ordinal": 49,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "PAPER_KRANE",
+        "ordinal": 50,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "PAPER_PHROG",
+        "ordinal": 51,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "PEN_NIB",
+        "ordinal": 52,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "PHILOSOPHERS_STONE",
+        "ordinal": 53,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "POCKETWATCH",
+        "ordinal": 54,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "RED_SKULL",
+        "ordinal": 55,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "RUNIC_CUBE",
+        "ordinal": 56,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "RUNIC_DOME",
+        "ordinal": 57,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "RUNIC_PYRAMID",
+        "ordinal": 58,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SACRED_BARK",
+        "ordinal": 59,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_relics.py"
+        ]
+      },
+      {
+        "id": "SELF_FORMING_CLAY",
+        "ordinal": 60,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SHURIKEN",
+        "ordinal": 61,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SNECKO_EYE",
+        "ordinal": 62,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SNECKO_SKULL",
+        "ordinal": 63,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SOZU",
+        "ordinal": 64,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "STONE_CALENDAR",
+        "ordinal": 65,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "STRANGE_SPOON",
+        "ordinal": 66,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "STRIKE_DUMMY",
+        "ordinal": 67,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SUNDIAL",
+        "ordinal": 68,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "THE_ABACUS",
+        "ordinal": 69,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "THE_BOOT",
+        "ordinal": 70,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "THE_SPECIMEN",
+        "ordinal": 71,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "TINGSHA",
+        "ordinal": 72,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "TOOLBOX",
+        "ordinal": 73,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "TORII",
+        "ordinal": 74,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "TOUGH_BANDAGES",
+        "ordinal": 75,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "TOY_ORNITHOPTER",
+        "ordinal": 76,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "TUNGSTEN_ROD",
+        "ordinal": 77,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "TURNIP",
+        "ordinal": 78,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "TWISTED_FUNNEL",
+        "ordinal": 79,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "UNCEASING_TOP",
+        "ordinal": 80,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "VELVET_CHOKER",
+        "ordinal": 81,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "VIOLET_LOTUS",
+        "ordinal": 82,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "WARPED_TONGS",
+        "ordinal": 83,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "WRIST_BLADE",
+        "ordinal": 84,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "BLACK_BLOOD",
+        "ordinal": 85,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "BURNING_BLOOD",
+        "ordinal": 86,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "MEAT_ON_THE_BONE",
+        "ordinal": 87,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "FACE_OF_CLERIC",
+        "ordinal": 88,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "ANCHOR",
+        "ordinal": 89,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_relics.py"
+        ]
+      },
+      {
+        "id": "ANCIENT_TEA_SET",
+        "ordinal": 90,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "BAG_OF_MARBLES",
+        "ordinal": 91,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "BAG_OF_PREPARATION",
+        "ordinal": 92,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_relics.py"
+        ]
+      },
+      {
+        "id": "BLOOD_VIAL",
+        "ordinal": 93,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "BOTTLED_FLAME",
+        "ordinal": 94,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "BOTTLED_LIGHTNING",
+        "ordinal": 95,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "BOTTLED_TORNADO",
+        "ordinal": 96,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "BRONZE_SCALES",
+        "ordinal": 97,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "BUSTED_CROWN",
+        "ordinal": 98,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CLOCKWORK_SOUVENIR",
+        "ordinal": 99,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "COFFEE_DRIPPER",
+        "ordinal": 100,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CRACKED_CORE",
+        "ordinal": 101,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CURSED_KEY",
+        "ordinal": 102,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "DAMARU",
+        "ordinal": 103,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "DATA_DISK",
+        "ordinal": 104,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "DU_VU_DOLL",
+        "ordinal": 105,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "ENCHIRIDION",
+        "ordinal": 106,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "FOSSILIZED_HELIX",
+        "ordinal": 107,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "FUSION_HAMMER",
+        "ordinal": 108,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "GIRYA",
+        "ordinal": 109,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "GOLD_PLATED_CABLES",
+        "ordinal": 110,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "GREMLIN_VISAGE",
+        "ordinal": 111,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "HOLY_WATER",
+        "ordinal": 112,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "LANTERN",
+        "ordinal": 113,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "MARK_OF_PAIN",
+        "ordinal": 114,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "MUTAGENIC_STRENGTH",
+        "ordinal": 115,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "NEOWS_LAMENT",
+        "ordinal": 116,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "NINJA_SCROLL",
+        "ordinal": 117,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "NUCLEAR_BATTERY",
+        "ordinal": 118,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "ODDLY_SMOOTH_STONE",
+        "ordinal": 119,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "PANTOGRAPH",
+        "ordinal": 120,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "PRESERVED_INSECT",
+        "ordinal": 121,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "PURE_WATER",
+        "ordinal": 122,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "RED_MASK",
+        "ordinal": 123,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "RING_OF_THE_SERPENT",
+        "ordinal": 124,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "RING_OF_THE_SNAKE",
+        "ordinal": 125,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "RUNIC_CAPACITOR",
+        "ordinal": 126,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SLAVERS_COLLAR",
+        "ordinal": 127,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SLING_OF_COURAGE",
+        "ordinal": 128,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SYMBIOTIC_VIRUS",
+        "ordinal": 129,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "TEARDROP_LOCKET",
+        "ordinal": 130,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "THREAD_AND_NEEDLE",
+        "ordinal": 131,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "VAJRA",
+        "ordinal": 132,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_relics.py"
+        ]
+      },
+      {
+        "id": "ASTROLABE",
+        "ordinal": 133,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "BLACK_STAR",
+        "ordinal": 134,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CALLING_BELL",
+        "ordinal": 135,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CAULDRON",
+        "ordinal": 136,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CULTIST_HEADPIECE",
+        "ordinal": 137,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "DOLLYS_MIRROR",
+        "ordinal": 138,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "DREAM_CATCHER",
+        "ordinal": 139,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "EMPTY_CAGE",
+        "ordinal": 140,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "ETERNAL_FEATHER",
+        "ordinal": 141,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "FROZEN_EGG",
+        "ordinal": 142,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "GOLDEN_IDOL",
+        "ordinal": 143,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "JUZU_BRACELET",
+        "ordinal": 144,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "LEES_WAFFLE",
+        "ordinal": 145,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "MANGO",
+        "ordinal": 146,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "MATRYOSHKA",
+        "ordinal": 147,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "MAW_BANK",
+        "ordinal": 148,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "MEAL_TICKET",
+        "ordinal": 149,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "MEMBERSHIP_CARD",
+        "ordinal": 150,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "MOLTEN_EGG",
+        "ordinal": 151,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "NLOTHS_GIFT",
+        "ordinal": 152,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "NLOTHS_HUNGRY_FACE",
+        "ordinal": 153,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "OLD_COIN",
+        "ordinal": 154,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "ORRERY",
+        "ordinal": 155,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "PANDORAS_BOX",
+        "ordinal": 156,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "PEACE_PIPE",
+        "ordinal": 157,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "PEAR",
+        "ordinal": 158,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "POTION_BELT",
+        "ordinal": 159,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "PRAYER_WHEEL",
+        "ordinal": 160,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "PRISMATIC_SHARD",
+        "ordinal": 161,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "QUESTION_CARD",
+        "ordinal": 162,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "REGAL_PILLOW",
+        "ordinal": 163,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SSSERPENT_HEAD",
+        "ordinal": 164,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SHOVEL",
+        "ordinal": 165,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SINGING_BOWL",
+        "ordinal": 166,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SMILING_MASK",
+        "ordinal": 167,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SPIRIT_POOP",
+        "ordinal": 168,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "STRAWBERRY",
+        "ordinal": 169,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "THE_COURIER",
+        "ordinal": 170,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "TINY_CHEST",
+        "ordinal": 171,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "TINY_HOUSE",
+        "ordinal": 172,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "TOXIC_EGG",
+        "ordinal": 173,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "WAR_PAINT",
+        "ordinal": 174,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "WHETSTONE",
+        "ordinal": 175,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "WHITE_BEAST_STATUE",
+        "ordinal": 176,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "WING_BOOTS",
+        "ordinal": 177,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CIRCLET",
+        "ordinal": 178,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "RED_CIRCLET",
+        "ordinal": 179,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      }
+    ],
+    "potions": [
+      {
+        "id": "EMPTY_POTION_SLOT",
+        "ordinal": 1,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "AMBROSIA",
+        "ordinal": 2,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "ANCIENT_POTION",
+        "ordinal": 3,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_potions.py"
+        ]
+      },
+      {
+        "id": "ATTACK_POTION",
+        "ordinal": 4,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_potions.py"
+        ]
+      },
+      {
+        "id": "BLESSING_OF_THE_FORGE",
+        "ordinal": 5,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_potions.py"
+        ]
+      },
+      {
+        "id": "BLOCK_POTION",
+        "ordinal": 6,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_potions.py"
+        ]
+      },
+      {
+        "id": "BLOOD_POTION",
+        "ordinal": 7,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_potions.py"
+        ]
+      },
+      {
+        "id": "BOTTLED_MIRACLE",
+        "ordinal": 8,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "COLORLESS_POTION",
+        "ordinal": 9,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_potions.py"
+        ]
+      },
+      {
+        "id": "CULTIST_POTION",
+        "ordinal": 10,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_potions.py"
+        ]
+      },
+      {
+        "id": "CUNNING_POTION",
+        "ordinal": 11,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "DEXTERITY_POTION",
+        "ordinal": 12,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_potions.py"
+        ]
+      },
+      {
+        "id": "DISTILLED_CHAOS",
+        "ordinal": 13,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_potions.py"
+        ]
+      },
+      {
+        "id": "DUPLICATION_POTION",
+        "ordinal": 14,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_potions.py"
+        ]
+      },
+      {
+        "id": "ELIXIR_POTION",
+        "ordinal": 15,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_potions.py"
+        ]
+      },
+      {
+        "id": "ENERGY_POTION",
+        "ordinal": 16,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_potions.py"
+        ]
+      },
+      {
+        "id": "ENTROPIC_BREW",
+        "ordinal": 17,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_potions.py"
+        ]
+      },
+      {
+        "id": "ESSENCE_OF_DARKNESS",
+        "ordinal": 18,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "ESSENCE_OF_STEEL",
+        "ordinal": 19,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_potions.py"
+        ]
+      },
+      {
+        "id": "EXPLOSIVE_POTION",
+        "ordinal": 20,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_potions.py"
+        ]
+      },
+      {
+        "id": "FAIRY_POTION",
+        "ordinal": 21,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_potions.py"
+        ]
+      },
+      {
+        "id": "FEAR_POTION",
+        "ordinal": 22,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_potions.py"
+        ]
+      },
+      {
+        "id": "FIRE_POTION",
+        "ordinal": 23,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_potions.py"
+        ]
+      },
+      {
+        "id": "FLEX_POTION",
+        "ordinal": 24,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_potions.py"
+        ]
+      },
+      {
+        "id": "FOCUS_POTION",
+        "ordinal": 25,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "FRUIT_JUICE",
+        "ordinal": 26,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_potions.py"
+        ]
+      },
+      {
+        "id": "GAMBLERS_BREW",
+        "ordinal": 27,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_potions.py"
+        ]
+      },
+      {
+        "id": "GHOST_IN_A_JAR",
+        "ordinal": 28,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "HEART_OF_IRON",
+        "ordinal": 29,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_potions.py"
+        ]
+      },
+      {
+        "id": "LIQUID_BRONZE",
+        "ordinal": 30,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_potions.py"
+        ]
+      },
+      {
+        "id": "LIQUID_MEMORIES",
+        "ordinal": 31,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_potions.py"
+        ]
+      },
+      {
+        "id": "POISON_POTION",
+        "ordinal": 32,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "POTION_OF_CAPACITY",
+        "ordinal": 33,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "POWER_POTION",
+        "ordinal": 34,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_potions.py"
+        ]
+      },
+      {
+        "id": "REGEN_POTION",
+        "ordinal": 35,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_potions.py"
+        ]
+      },
+      {
+        "id": "SKILL_POTION",
+        "ordinal": 36,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_potions.py"
+        ]
+      },
+      {
+        "id": "SMOKE_BOMB",
+        "ordinal": 37,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_potions.py"
+        ]
+      },
+      {
+        "id": "SNECKO_OIL",
+        "ordinal": 38,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_potions.py"
+        ]
+      },
+      {
+        "id": "SPEED_POTION",
+        "ordinal": 39,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_potions.py"
+        ]
+      },
+      {
+        "id": "STANCE_POTION",
+        "ordinal": 40,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "STRENGTH_POTION",
+        "ordinal": 41,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_potions.py"
+        ]
+      },
+      {
+        "id": "SWIFT_POTION",
+        "ordinal": 42,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_potions.py"
+        ]
+      },
+      {
+        "id": "WEAK_POTION",
+        "ordinal": 43,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_potions.py"
+        ]
+      }
+    ],
+    "monsters": [
+      {
+        "id": "ACID_SLIME_L",
+        "ordinal": 1,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_normal_state_machines.py",
+          "tests/test_act1_elite_state_machines.py",
+          "tests/test_act1_boss_state_machines.py"
+        ]
+      },
+      {
+        "id": "ACID_SLIME_M",
+        "ordinal": 2,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_normal_state_machines.py",
+          "tests/test_act1_elite_state_machines.py",
+          "tests/test_act1_boss_state_machines.py"
+        ]
+      },
+      {
+        "id": "ACID_SLIME_S",
+        "ordinal": 3,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_normal_state_machines.py",
+          "tests/test_act1_elite_state_machines.py",
+          "tests/test_act1_boss_state_machines.py"
+        ]
+      },
+      {
+        "id": "AWAKENED_ONE",
+        "ordinal": 4,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "BEAR",
+        "ordinal": 5,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "BLUE_SLAVER",
+        "ordinal": 6,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_normal_state_machines.py",
+          "tests/test_act1_elite_state_machines.py",
+          "tests/test_act1_boss_state_machines.py"
+        ]
+      },
+      {
+        "id": "BOOK_OF_STABBING",
+        "ordinal": 7,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "BRONZE_AUTOMATON",
+        "ordinal": 8,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "BRONZE_ORB",
+        "ordinal": 9,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "BYRD",
+        "ordinal": 10,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CENTURION",
+        "ordinal": 11,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CHOSEN",
+        "ordinal": 12,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CORRUPT_HEART",
+        "ordinal": 13,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CULTIST",
+        "ordinal": 14,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_normal_state_machines.py",
+          "tests/test_act1_elite_state_machines.py",
+          "tests/test_act1_boss_state_machines.py"
+        ]
+      },
+      {
+        "id": "DAGGER",
+        "ordinal": 15,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "DARKLING",
+        "ordinal": 16,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "DECA",
+        "ordinal": 17,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "DONU",
+        "ordinal": 18,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "EXPLODER",
+        "ordinal": 19,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "FAT_GREMLIN",
+        "ordinal": 20,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_normal_state_machines.py",
+          "tests/test_act1_elite_state_machines.py",
+          "tests/test_act1_boss_state_machines.py"
+        ]
+      },
+      {
+        "id": "FUNGI_BEAST",
+        "ordinal": 21,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_normal_state_machines.py",
+          "tests/test_act1_elite_state_machines.py",
+          "tests/test_act1_boss_state_machines.py"
+        ]
+      },
+      {
+        "id": "GIANT_HEAD",
+        "ordinal": 22,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "GREEN_LOUSE",
+        "ordinal": 23,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_normal_state_machines.py",
+          "tests/test_act1_elite_state_machines.py",
+          "tests/test_act1_boss_state_machines.py"
+        ]
+      },
+      {
+        "id": "GREMLIN_LEADER",
+        "ordinal": 24,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "GREMLIN_NOB",
+        "ordinal": 25,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_normal_state_machines.py",
+          "tests/test_act1_elite_state_machines.py",
+          "tests/test_act1_boss_state_machines.py"
+        ]
+      },
+      {
+        "id": "GREMLIN_WIZARD",
+        "ordinal": 26,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_normal_state_machines.py",
+          "tests/test_act1_elite_state_machines.py",
+          "tests/test_act1_boss_state_machines.py"
+        ]
+      },
+      {
+        "id": "HEXAGHOST",
+        "ordinal": 27,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_normal_state_machines.py",
+          "tests/test_act1_elite_state_machines.py",
+          "tests/test_act1_boss_state_machines.py"
+        ]
+      },
+      {
+        "id": "JAW_WORM",
+        "ordinal": 28,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_normal_state_machines.py",
+          "tests/test_act1_elite_state_machines.py",
+          "tests/test_act1_boss_state_machines.py"
+        ]
+      },
+      {
+        "id": "LAGAVULIN",
+        "ordinal": 29,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_normal_state_machines.py",
+          "tests/test_act1_elite_state_machines.py",
+          "tests/test_act1_boss_state_machines.py"
+        ]
+      },
+      {
+        "id": "LOOTER",
+        "ordinal": 30,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_normal_state_machines.py",
+          "tests/test_act1_elite_state_machines.py",
+          "tests/test_act1_boss_state_machines.py"
+        ]
+      },
+      {
+        "id": "MAD_GREMLIN",
+        "ordinal": 31,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_normal_state_machines.py",
+          "tests/test_act1_elite_state_machines.py",
+          "tests/test_act1_boss_state_machines.py"
+        ]
+      },
+      {
+        "id": "MUGGER",
+        "ordinal": 32,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "MYSTIC",
+        "ordinal": 33,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "NEMESIS",
+        "ordinal": 34,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "ORB_WALKER",
+        "ordinal": 35,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "POINTY",
+        "ordinal": 36,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "RED_LOUSE",
+        "ordinal": 37,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_normal_state_machines.py",
+          "tests/test_act1_elite_state_machines.py",
+          "tests/test_act1_boss_state_machines.py"
+        ]
+      },
+      {
+        "id": "RED_SLAVER",
+        "ordinal": 38,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_normal_state_machines.py",
+          "tests/test_act1_elite_state_machines.py",
+          "tests/test_act1_boss_state_machines.py"
+        ]
+      },
+      {
+        "id": "REPTOMANCER",
+        "ordinal": 39,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "REPULSOR",
+        "ordinal": 40,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "ROMEO",
+        "ordinal": 41,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SENTRY",
+        "ordinal": 42,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_normal_state_machines.py",
+          "tests/test_act1_elite_state_machines.py",
+          "tests/test_act1_boss_state_machines.py"
+        ]
+      },
+      {
+        "id": "SHELLED_PARASITE",
+        "ordinal": 43,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SHIELD_GREMLIN",
+        "ordinal": 44,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_normal_state_machines.py",
+          "tests/test_act1_elite_state_machines.py",
+          "tests/test_act1_boss_state_machines.py"
+        ]
+      },
+      {
+        "id": "SLIME_BOSS",
+        "ordinal": 45,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_normal_state_machines.py",
+          "tests/test_act1_elite_state_machines.py",
+          "tests/test_act1_boss_state_machines.py"
+        ]
+      },
+      {
+        "id": "SNAKE_PLANT",
+        "ordinal": 46,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SNEAKY_GREMLIN",
+        "ordinal": 47,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_normal_state_machines.py",
+          "tests/test_act1_elite_state_machines.py",
+          "tests/test_act1_boss_state_machines.py"
+        ]
+      },
+      {
+        "id": "SNECKO",
+        "ordinal": 48,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SPHERIC_GUARDIAN",
+        "ordinal": 49,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SPIKER",
+        "ordinal": 50,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SPIKE_SLIME_L",
+        "ordinal": 51,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_normal_state_machines.py",
+          "tests/test_act1_elite_state_machines.py",
+          "tests/test_act1_boss_state_machines.py"
+        ]
+      },
+      {
+        "id": "SPIKE_SLIME_M",
+        "ordinal": 52,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_normal_state_machines.py",
+          "tests/test_act1_elite_state_machines.py",
+          "tests/test_act1_boss_state_machines.py"
+        ]
+      },
+      {
+        "id": "SPIKE_SLIME_S",
+        "ordinal": 53,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_normal_state_machines.py",
+          "tests/test_act1_elite_state_machines.py",
+          "tests/test_act1_boss_state_machines.py"
+        ]
+      },
+      {
+        "id": "SPIRE_GROWTH",
+        "ordinal": 54,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SPIRE_SHIELD",
+        "ordinal": 55,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SPIRE_SPEAR",
+        "ordinal": 56,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "TASKMASTER",
+        "ordinal": 57,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "THE_CHAMP",
+        "ordinal": 58,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "THE_COLLECTOR",
+        "ordinal": 59,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "THE_GUARDIAN",
+        "ordinal": 60,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_normal_state_machines.py",
+          "tests/test_act1_elite_state_machines.py",
+          "tests/test_act1_boss_state_machines.py"
+        ]
+      },
+      {
+        "id": "THE_MAW",
+        "ordinal": 61,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "TIME_EATER",
+        "ordinal": 62,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "TORCH_HEAD",
+        "ordinal": 63,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "TRANSIENT",
+        "ordinal": 64,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "WRITHING_MASS",
+        "ordinal": 65,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      }
+    ],
+    "encounters": [
+      {
+        "id": "CULTIST",
+        "ordinal": 1,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_act1_normal_state_machines.py",
+          "tests/test_act1_elite_state_machines.py",
+          "tests/test_act1_boss_state_machines.py"
+        ]
+      },
+      {
+        "id": "JAW_WORM",
+        "ordinal": 2,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_act1_normal_state_machines.py",
+          "tests/test_act1_elite_state_machines.py",
+          "tests/test_act1_boss_state_machines.py"
+        ]
+      },
+      {
+        "id": "TWO_LOUSE",
+        "ordinal": 3,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_act1_normal_state_machines.py",
+          "tests/test_act1_elite_state_machines.py",
+          "tests/test_act1_boss_state_machines.py"
+        ]
+      },
+      {
+        "id": "SMALL_SLIMES",
+        "ordinal": 4,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_act1_normal_state_machines.py",
+          "tests/test_act1_elite_state_machines.py",
+          "tests/test_act1_boss_state_machines.py"
+        ]
+      },
+      {
+        "id": "BLUE_SLAVER",
+        "ordinal": 5,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_act1_normal_state_machines.py",
+          "tests/test_act1_elite_state_machines.py",
+          "tests/test_act1_boss_state_machines.py"
+        ]
+      },
+      {
+        "id": "GREMLIN_GANG",
+        "ordinal": 6,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_act1_normal_state_machines.py",
+          "tests/test_act1_elite_state_machines.py",
+          "tests/test_act1_boss_state_machines.py"
+        ]
+      },
+      {
+        "id": "LOOTER",
+        "ordinal": 7,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_act1_normal_state_machines.py",
+          "tests/test_act1_elite_state_machines.py",
+          "tests/test_act1_boss_state_machines.py"
+        ]
+      },
+      {
+        "id": "LARGE_SLIME",
+        "ordinal": 8,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_act1_normal_state_machines.py",
+          "tests/test_act1_elite_state_machines.py",
+          "tests/test_act1_boss_state_machines.py"
+        ]
+      },
+      {
+        "id": "LOTS_OF_SLIMES",
+        "ordinal": 9,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_act1_normal_state_machines.py",
+          "tests/test_act1_elite_state_machines.py",
+          "tests/test_act1_boss_state_machines.py"
+        ]
+      },
+      {
+        "id": "EXORDIUM_THUGS",
+        "ordinal": 10,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_act1_normal_state_machines.py",
+          "tests/test_act1_elite_state_machines.py",
+          "tests/test_act1_boss_state_machines.py"
+        ]
+      },
+      {
+        "id": "EXORDIUM_WILDLIFE",
+        "ordinal": 11,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_act1_normal_state_machines.py",
+          "tests/test_act1_elite_state_machines.py",
+          "tests/test_act1_boss_state_machines.py"
+        ]
+      },
+      {
+        "id": "RED_SLAVER",
+        "ordinal": 12,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_act1_normal_state_machines.py",
+          "tests/test_act1_elite_state_machines.py",
+          "tests/test_act1_boss_state_machines.py"
+        ]
+      },
+      {
+        "id": "THREE_LOUSE",
+        "ordinal": 13,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_act1_normal_state_machines.py",
+          "tests/test_act1_elite_state_machines.py",
+          "tests/test_act1_boss_state_machines.py"
+        ]
+      },
+      {
+        "id": "TWO_FUNGI_BEASTS",
+        "ordinal": 14,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_act1_normal_state_machines.py",
+          "tests/test_act1_elite_state_machines.py",
+          "tests/test_act1_boss_state_machines.py"
+        ]
+      },
+      {
+        "id": "GREMLIN_NOB",
+        "ordinal": 15,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_act1_normal_state_machines.py",
+          "tests/test_act1_elite_state_machines.py",
+          "tests/test_act1_boss_state_machines.py"
+        ]
+      },
+      {
+        "id": "LAGAVULIN",
+        "ordinal": 16,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_act1_normal_state_machines.py",
+          "tests/test_act1_elite_state_machines.py",
+          "tests/test_act1_boss_state_machines.py"
+        ]
+      },
+      {
+        "id": "THREE_SENTRIES",
+        "ordinal": 17,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_act1_normal_state_machines.py",
+          "tests/test_act1_elite_state_machines.py",
+          "tests/test_act1_boss_state_machines.py"
+        ]
+      },
+      {
+        "id": "SLIME_BOSS",
+        "ordinal": 18,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_act1_normal_state_machines.py",
+          "tests/test_act1_elite_state_machines.py",
+          "tests/test_act1_boss_state_machines.py"
+        ]
+      },
+      {
+        "id": "THE_GUARDIAN",
+        "ordinal": 19,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_act1_normal_state_machines.py",
+          "tests/test_act1_elite_state_machines.py",
+          "tests/test_act1_boss_state_machines.py"
+        ]
+      },
+      {
+        "id": "HEXAGHOST",
+        "ordinal": 20,
+        "implementation": "partial",
+        "evidence": "unit",
+        "evidence_files": [
+          "tests/test_act1_coverage.py",
+          "tests/test_act1_normal_state_machines.py",
+          "tests/test_act1_elite_state_machines.py",
+          "tests/test_act1_boss_state_machines.py"
+        ]
+      },
+      {
+        "id": "SPHERIC_GUARDIAN",
+        "ordinal": 21,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CHOSEN",
+        "ordinal": 22,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SHELL_PARASITE",
+        "ordinal": 23,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "THREE_BYRDS",
+        "ordinal": 24,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "TWO_THIEVES",
+        "ordinal": 25,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CHOSEN_AND_BYRDS",
+        "ordinal": 26,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SENTRY_AND_SPHERE",
+        "ordinal": 27,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SNAKE_PLANT",
+        "ordinal": 28,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SNECKO",
+        "ordinal": 29,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CENTURION_AND_HEALER",
+        "ordinal": 30,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CULTIST_AND_CHOSEN",
+        "ordinal": 31,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "THREE_CULTIST",
+        "ordinal": 32,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SHELLED_PARASITE_AND_FUNGI",
+        "ordinal": 33,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "GREMLIN_LEADER",
+        "ordinal": 34,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SLAVERS",
+        "ordinal": 35,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "BOOK_OF_STABBING",
+        "ordinal": 36,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "AUTOMATON",
+        "ordinal": 37,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "COLLECTOR",
+        "ordinal": 38,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CHAMP",
+        "ordinal": 39,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "THREE_DARKLINGS",
+        "ordinal": 40,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "ORB_WALKER",
+        "ordinal": 41,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "THREE_SHAPES",
+        "ordinal": 42,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SPIRE_GROWTH",
+        "ordinal": 43,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "TRANSIENT",
+        "ordinal": 44,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "FOUR_SHAPES",
+        "ordinal": 45,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "MAW",
+        "ordinal": 46,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SPHERE_AND_TWO_SHAPES",
+        "ordinal": 47,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "JAW_WORM_HORDE",
+        "ordinal": 48,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "WRITHING_MASS",
+        "ordinal": 49,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "GIANT_HEAD",
+        "ordinal": 50,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "NEMESIS",
+        "ordinal": 51,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "REPTOMANCER",
+        "ordinal": 52,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "AWAKENED_ONE",
+        "ordinal": 53,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "TIME_EATER",
+        "ordinal": 54,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "DONU_AND_DECA",
+        "ordinal": 55,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SHIELD_AND_SPEAR",
+        "ordinal": 56,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "THE_HEART",
+        "ordinal": 57,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "LAGAVULIN_EVENT",
+        "ordinal": 58,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "COLOSSEUM_EVENT_SLAVERS",
+        "ordinal": 59,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "COLOSSEUM_EVENT_NOBS",
+        "ordinal": 60,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "MASKED_BANDITS_EVENT",
+        "ordinal": 61,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "MUSHROOMS_EVENT",
+        "ordinal": 62,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "MYSTERIOUS_SPHERE_EVENT",
+        "ordinal": 63,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      }
+    ],
+    "events": [
+      {
+        "id": "MONSTER",
+        "ordinal": 1,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "REST",
+        "ordinal": 2,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SHOP",
+        "ordinal": 3,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "TREASURE",
+        "ordinal": 4,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "NEOW",
+        "ordinal": 5,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "OMINOUS_FORGE",
+        "ordinal": 6,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "PLEADING_VAGRANT",
+        "ordinal": 7,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "ANCIENT_WRITING",
+        "ordinal": 8,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "OLD_BEGGAR",
+        "ordinal": 9,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "BIG_FISH",
+        "ordinal": 10,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "BONFIRE_SPIRITS",
+        "ordinal": 11,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "COLOSSEUM",
+        "ordinal": 12,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "CURSED_TOME",
+        "ordinal": 13,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "DEAD_ADVENTURER",
+        "ordinal": 14,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "DESIGNER_IN_SPIRE",
+        "ordinal": 15,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "AUGMENTER",
+        "ordinal": 16,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "DUPLICATOR",
+        "ordinal": 17,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "FACE_TRADER",
+        "ordinal": 18,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "FALLING",
+        "ordinal": 19,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "FORGOTTEN_ALTAR",
+        "ordinal": 20,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "THE_DIVINE_FOUNTAIN",
+        "ordinal": 21,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "GHOSTS",
+        "ordinal": 22,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "GOLDEN_IDOL",
+        "ordinal": 23,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "GOLDEN_SHRINE",
+        "ordinal": 24,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "WING_STATUE",
+        "ordinal": 25,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "KNOWING_SKULL",
+        "ordinal": 26,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "LAB",
+        "ordinal": 27,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "THE_SSSSSERPENT",
+        "ordinal": 28,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "LIVING_WALL",
+        "ordinal": 29,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "MASKED_BANDITS",
+        "ordinal": 30,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "MATCH_AND_KEEP",
+        "ordinal": 31,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "MINDBLOOM",
+        "ordinal": 32,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "HYPNOTIZING_COLORED_MUSHROOMS",
+        "ordinal": 33,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "MYSTERIOUS_SPHERE",
+        "ordinal": 34,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "THE_NEST",
+        "ordinal": 35,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "NLOTH",
+        "ordinal": 36,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "NOTE_FOR_YOURSELF",
+        "ordinal": 37,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "PURIFIER",
+        "ordinal": 38,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SCRAP_OOZE",
+        "ordinal": 39,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SECRET_PORTAL",
+        "ordinal": 40,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SENSORY_STONE",
+        "ordinal": 41,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "SHINING_LIGHT",
+        "ordinal": 42,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "THE_CLERIC",
+        "ordinal": 43,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "THE_JOUST",
+        "ordinal": 44,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "THE_LIBRARY",
+        "ordinal": 45,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "THE_MAUSOLEUM",
+        "ordinal": 46,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "THE_MOAI_HEAD",
+        "ordinal": 47,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "THE_WOMAN_IN_BLUE",
+        "ordinal": 48,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "TOMB_OF_LORD_RED_MASK",
+        "ordinal": 49,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "TRANSMORGRIFIER",
+        "ordinal": 50,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "UPGRADE_SHRINE",
+        "ordinal": 51,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "VAMPIRES",
+        "ordinal": 52,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "WE_MEET_AGAIN",
+        "ordinal": 53,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "WHEEL_OF_CHANGE",
+        "ordinal": 54,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "WINDING_HALLS",
+        "ordinal": 55,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      },
+      {
+        "id": "WORLD_OF_GOOP",
+        "ordinal": 56,
+        "implementation": "declared",
+        "evidence": "upstream",
+        "evidence_files": []
+      }
+    ]
+  }
+}

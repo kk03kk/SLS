@@ -1,0 +1,10 @@
+{
+  "modid": "spirecomm-parity",
+  "name": "Spirecomm Parity Instrumentation",
+  "author_list": ["spirecomm contributors"],
+  "description": "Content-free RNG control and observation for exact simulator differential traces.",
+  "version": "0.1.0",
+  "sts_version": "12-18-2022",
+  "mts_version": "3.30.3",
+  "dependencies": ["basemod", "CommunicationMod"]
+}

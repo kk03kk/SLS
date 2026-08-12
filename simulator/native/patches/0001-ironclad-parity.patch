@@ -1,0 +1,36 @@
+diff --git a/src/combat/BattleContext.cpp b/src/combat/BattleContext.cpp
+index 965faef..9c0ba50 100644
+--- a/src/combat/BattleContext.cpp
++++ b/src/combat/BattleContext.cpp
+@@ -1279,7 +1279,7 @@ void BattleContext::useSkillCard() {
+             break;
+ 
+         case CardId::DISARM:
+-            addToBot( Actions::DebuffEnemy<MS::STRENGTH>(t, -2, false) );
++            addToBot( Actions::DebuffEnemy<MS::STRENGTH>(t, up ? -3 : -2, false) );
+             break;
+ 
+         case CardId::DISCOVERY:
+diff --git a/src/combat/MonsterSpecific.cpp b/src/combat/MonsterSpecific.cpp
+index f6f6c4a..659a7b0 100644
+--- a/src/combat/MonsterSpecific.cpp
++++ b/src/combat/MonsterSpecific.cpp
+@@ -887,6 +887,10 @@ void Monster::takeTurn(BattleContext &bc) {     // todo, maybe for monsters that
+ 
+         case MMID::LAGAVULIN_SLEEP:
+             if (bc.turn == 2 || !hasStatus<MS::ASLEEP>()) {
++                if (hasStatus<MS::ASLEEP>()) {
++                    setHasStatus<MS::ASLEEP>(false);
++                    decrementStatus<MS::METALLICIZE>(8);
++                }
+                 setMove(MMID::LAGAVULIN_ATTACK);
+             } else {
+                 setMove(MMID::LAGAVULIN_SLEEP);
+@@ -1015,6 +1019,7 @@ void Monster::takeTurn(BattleContext &bc) {     // todo, maybe for monsters that
+         // ************ RED SLAVER ************
+ 
+         case MMID::RED_SLAVER_ENTANGLE:
++            miscInfo = 1;
+             bc.addToBot(Actions::DebuffPlayer<PS::ENTANGLED>(1));
+             bc.addToBot(Actions::RollMove(idx));
+             break;

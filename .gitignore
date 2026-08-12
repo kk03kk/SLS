@@ -5,10 +5,15 @@ __pycache__/
 
 # C extensions
 *.so
+*.pyd
+*.pdb
+.native-build/
+.oracle-mod-build/
 
 # Distribution / packaging
 .Python
 build/
+logs/
 develop-eggs/
 dist/
 downloads/
