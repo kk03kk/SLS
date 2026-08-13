@@ -13,8 +13,7 @@ class CombatMechanicsMatrixTests(unittest.TestCase):
         matrix = load_combat_mechanics_matrix()
         self.assertEqual(matrix.counts(), {
             "total": 50,
-            "partial": 46,
-            "unimplemented": 3,
+            "partial": 49,
             "implemented": 1,
         })
         self.assertEqual(
@@ -32,13 +31,14 @@ class CombatMechanicsMatrixTests(unittest.TestCase):
             for relative_path in item["evidence_files"]:
                 self.assertTrue((ROOT / relative_path).is_file(), (item["id"], relative_path))
 
-    def test_known_upstream_holes_are_not_claimed_implemented(self):
+    def test_orb_primitives_remain_partial_until_original_trace_evidence(self):
         matrix = load_combat_mechanics_matrix()
         for mechanic_id in (
             "orb.slots", "orb.channel_evoke", "orb.passive_focus"
         ):
-            self.assertEqual(matrix.get(mechanic_id)["implementation"], "unimplemented")
-            self.assertEqual(matrix.get(mechanic_id)["evidence"], "none")
+            mechanic = matrix.get(mechanic_id)
+            self.assertEqual(mechanic["implementation"], "partial")
+            self.assertEqual(mechanic["evidence"], "unit")
 
     def test_matrix_is_bound_to_reference_simulator_commit(self):
         matrix = load_combat_mechanics_matrix()

@@ -35,5 +35,71 @@ Audited original classes include `AbstractPlayer`, all four orb classes,
 `ChannelAction`, `EvokeOrbAction`, `IncreaseMaxOrbAction`, and
 `DarkOrbEvokeAction`. This established the slot cap and FIFO channel/evoke
 behavior, Focus exclusions for Plasma, the four base passive/evoke values, Dark
-growth, and the weakest-current-HP target rule. Native implementation is the
-next bounded Step 4 task; the three orb rows remain explicitly unimplemented.
+growth, and the weakest-current-HP target rule. The reproducible native
+implementation is `simulator/native/patches/0004-generic-orb-mechanics.patch`.
+Native boundary and checkpoint tests cover the core rules; Loop, slot decrease
+ordering and live original traces remain open.
+
+## Player damage pipeline
+
+Audited original classes and methods:
+
+- `AbstractPlayer.damage` and `AbstractCreature.decrementBlock`
+- `IntangiblePlayerPower.atDamageFinalReceive`
+- `BufferPower.onAttackedToChangeDamage`
+- `Torii.onAttacked` and `TungstenRod.onLoseHpLast`
+- `LoseHPAction.update`
+
+For player damage the observed order is Intangible, block, Buffer, player and
+relic `onAttacked` hooks (including Torii), then `onLoseHpLast` (including
+Tungsten Rod), followed by HP-loss callbacks and HP subtraction. Intangible
+caps values above one. Torii changes normal unblocked damage from two through
+five to one and excludes `HP_LOSS` and `THORNS`; Tungsten removes one after
+Torii. `HP_LOSS` bypasses block but still enters Buffer's damage-change hook.
+
+The reproducible correction is
+`simulator/native/patches/0005-damage-pipeline-parity.patch`. The native probe
+locks the important combinations, including a retained Buffer after Intangible
+is fully blocked, Buffer across multi-hit attacks, and Torii plus Tungsten at
+both sides of Torii's threshold. Live original traces and the remaining
+damage-changing relics are still required before these matrix rows can be
+marked implemented.
+
+## Just-applied turn durations
+
+Audited original classes include `WeakPower`, `VulnerablePower`, `FrailPower`,
+`DrawReductionPower`, `IntangiblePlayerPower`, `DoubleDamagePower`, and
+`PhantasmalPower`. Weak, Vulnerable and Frail skip their first end-of-round
+decrement only when the new power was sourced by a monster; stacking an
+existing power does not reset its private `justApplied` flag. Draw Reduction
+always starts with that flag and changes hand size only on initial application.
+Intangible has no such flag and always decrements at end of round. Phantasmal
+Killer creates Double Damage at the next turn start with `justApplied=false`,
+so that buff also decrements at the coming end of round.
+
+The reproducible correction is
+`simulator/native/patches/0006-just-applied-duration-parity.patch`. It also
+moves Draw Reduction expiration from the following start-turn draw boundary
+to the original end-of-round stage, preventing an extra reduced draw.
+
+## Retain, Ethereal and end-turn hand cleanup
+
+Audited original classes include `DiscardAtEndOfTurnAction`,
+`RestoreRetainedCardsAction`, `RetainCardsAction`, `AbstractCard`,
+`EquilibriumPower`, `RetainCardPower`, `EstablishmentPower`, and
+`EstablishmentPowerAction`.
+
+The original first removes cards whose `retain` or `selfRetain` flag is set
+from hand into limbo. It queues restoration, optionally queues ordinary hand
+discard when neither Runic Pyramid nor Equilibrium is active, and only then
+calls `triggerOnEndOfPlayerTurn` for cards still in hand. Consequently explicit
+or self Retain wins over Ethereal, while Pyramid and Equilibrium do not protect
+Ethereal cards. Equilibrium marks only non-Ethereal cards as retained. Manual
+Retain selection permits selecting an Ethereal card but deliberately does not
+set its retain flag. Restoration clears the one-turn dynamic flag.
+
+Establishment runs before Retain Cards and Equilibrium at the end-turn power
+boundary, so it discounts cards already carrying Retain/selfRetain, not cards
+newly selected or marked later in that same boundary. The reproducible native
+implementation is
+`simulator/native/patches/0007-retain-ethereal-cleanup-parity.patch`.

@@ -1,0 +1,70 @@
+diff --git a/include/combat/Player.h b/include/combat/Player.h
+--- a/include/combat/Player.h
++++ b/include/combat/Player.h
+@@ -352,10 +352,6 @@ namespace sts {
+             return;
+         }
+ 
+-        if (s == PS::DOUBLE_DAMAGE || s == PS::INTANGIBLE) { // todo this is definitely wrong
+-            setJustApplied<s>(true);
+-        }
+-
+         if (s == PS::COMBUST) {
+             ++combustHpLoss;
+         }
+@@ -390,9 +386,11 @@ namespace sts {
+         }
+ 
+         if (s == PlayerStatus::DRAW_REDUCTION) {
+-            --cardDrawPerTurn;
+-            setJustApplied<PS::DRAW_REDUCTION>(true);
+-            setHasStatus<PS::DRAW_REDUCTION>(true);
++            if (!hasStatus<PS::DRAW_REDUCTION>()) {
++                --cardDrawPerTurn;
++                setJustApplied<PS::DRAW_REDUCTION>(true);
++                setHasStatus<PS::DRAW_REDUCTION>(true);
++            }
+             return;
+         }
+ 
+diff --git a/src/combat/BattleContext.cpp b/src/combat/BattleContext.cpp
+--- a/src/combat/BattleContext.cpp
++++ b/src/combat/BattleContext.cpp
+@@ -2195,15 +2195,6 @@ void BattleContext::afterMonsterTurns() {
+ 
+     addToBot(Actions::DrawCards(player.cardDrawPerTurn)); // in this action, an effect queue item is added to rechard energy lol
+ 
+-    if (player.hasStatus<PS::DRAW_REDUCTION>()) {
+-        if (player.wasJustApplied<PS::DRAW_REDUCTION>()) {
+-            player.setJustApplied<PS::DRAW_REDUCTION>(false);
+-        } else {
+-            player.removeStatus<PS::DRAW_REDUCTION>();
+-            ++player.cardDrawPerTurn;
+-        }
+-    }
+-
+     player.applyStartOfTurnPostDrawRelics(*this);
+     player.applyStartOfTurnPostDrawPowers(*this);
+ 
+diff --git a/src/combat/Player.cpp b/src/combat/Player.cpp
+--- a/src/combat/Player.cpp
++++ b/src/combat/Player.cpp
+@@ -545,10 +545,14 @@ void Player::applyAtEndOfRoundPowers() {
+         decrementIfNotJustApplied<PS::DOUBLE_DAMAGE>();
+     }
+ 
+-    // handle elsewhere
+-//    if (hasStatusInternal<PS::DRAW_REDUCTION>()) {
+-//        decrementStatus<PS::DRAW_REDUCTION>();
+-//    }
++    if (hasStatus<PS::DRAW_REDUCTION>()) {
++        if (wasJustApplied<PS::DRAW_REDUCTION>()) {
++            setJustApplied<PS::DRAW_REDUCTION>(false);
++        } else {
++            removeStatus<PS::DRAW_REDUCTION>();
++            ++cardDrawPerTurn;
++        }
++    }
+ 
+     if (hasStatus<PS::DUPLICATION>()) {
+         decrementStatus<PS::DUPLICATION>();

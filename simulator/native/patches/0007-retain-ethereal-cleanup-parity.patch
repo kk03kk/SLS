@@ -1,0 +1,203 @@
+diff --git a/include/combat/Actions.h b/include/combat/Actions.h
+index fe960c1..52fce7b 100644
+--- a/include/combat/Actions.h
++++ b/include/combat/Actions.h
+@@ -99,6 +99,7 @@ namespace sts {
+         static Action DiscardAtEndOfTurn();
+         static Action DiscardAtEndOfTurnHelper();
+         static Action RestoreRetainedCards(int count);
++        static Action RetainCardsAction(int count);
+ 
+         static Action UnnamedEndOfTurnAction();
+         static Action MonsterStartTurnAction();
+diff --git a/include/combat/BattleContext.h b/include/combat/BattleContext.h
+index 3598711..84fb8e7 100644
+--- a/include/combat/BattleContext.h
++++ b/include/combat/BattleContext.h
+@@ -211,6 +211,7 @@ namespace sts {
+         void chooseDrawToHandCards(const int *idxs, int cardCount);
+         void chooseExhaustCards(const fixed_list<int,10> &idxs);
+         void chooseGambleCards(const fixed_list<int,10> &idxs);
++        void chooseRetainCards(const fixed_list<int,10> &idxs);
+ 
+     };
+ 
+diff --git a/include/combat/CardSelectInfo.h b/include/combat/CardSelectInfo.h
+index 5408328..e9c49f0 100644
+--- a/include/combat/CardSelectInfo.h
++++ b/include/combat/CardSelectInfo.h
+@@ -33,6 +33,7 @@ namespace sts {
+         SEEK,
+         SETUP,
+         WARCRY,
++        RETAIN_CARDS,
+     };
+ 
+     static constexpr const char* cardSelectTaskStrings[] = {
+@@ -57,6 +58,7 @@ namespace sts {
+             "SEEK",
+             "SETUP",
+             "WARCRY",
++            "RETAIN_CARDS",
+     };
+ 
+     struct CardSelectInfo {
+diff --git a/include/constants/PlayerStatusEffects.h b/include/constants/PlayerStatusEffects.h
+index f9d5d66..c0a2870 100644
+--- a/include/constants/PlayerStatusEffects.h
++++ b/include/constants/PlayerStatusEffects.h
+@@ -109,15 +109,16 @@ enum class PlayerStatus : std::uint8_t {
+     STRENGTH,
+ 
+     // special
+-    THE_BOMB
++    THE_BOMB,
++    RETAIN_CARDS
+ };
+ 
+ typedef PlayerStatus PS;
+ 
+ static constexpr const char* const playerStatusStrings[] {
+-        "INVALID","Double Damage","Draw Reduction","Frail","Intangible","Vulnerable","Weak","Bias","Confused","Constricted","Entangled","Fasting","Hex","Lose Dexterity","Lose Strength","No Block","No Draw","Wraith Form","Barricade","Blasphemer","Corruption","Electro","Surrounded","Master Reality","Pen Nib","Wrath Next Turn","Amplify","Blur","Buffer","Collect","Double Tap","Duplication","Echo Form","Free Attack Power","Rebound","Mantra","Accuracy","After Image","Battle Hymn","Brutality","Burst","Combust","Creative Ai","Dark Embrace","Demon Form","Deva","Devotion","Draw Card Next Turn","Energized","Envenom","Establishment","Evolve","Feel No Pain","Fire Breathing","Flame Barrier","Focus","Foresight","Hello World","Infinite Blades","Juggernaut","Like Water","Loop","Magnetism","Mayhem","Metallicize","Next Turn Block","Noxious Fumes","Omega","Panache","Phantasmal","Plated Armor","Rage","Regen","Ritual","Rupture","Sadistic","Static Discharge","Thorns","Thousand Cuts","Tools Of The Trade","Vigor","Wave Of The Hand","Equilibrium","Artifact","Dexterity","Strength","The Bomb",
++        "INVALID","Double Damage","Draw Reduction","Frail","Intangible","Vulnerable","Weak","Bias","Confused","Constricted","Entangled","Fasting","Hex","Lose Dexterity","Lose Strength","No Block","No Draw","Wraith Form","Barricade","Blasphemer","Corruption","Electro","Surrounded","Master Reality","Pen Nib","Wrath Next Turn","Amplify","Blur","Buffer","Collect","Double Tap","Duplication","Echo Form","Free Attack Power","Rebound","Mantra","Accuracy","After Image","Battle Hymn","Brutality","Burst","Combust","Creative Ai","Dark Embrace","Demon Form","Deva","Devotion","Draw Card Next Turn","Energized","Envenom","Establishment","Evolve","Feel No Pain","Fire Breathing","Flame Barrier","Focus","Foresight","Hello World","Infinite Blades","Juggernaut","Like Water","Loop","Magnetism","Mayhem","Metallicize","Next Turn Block","Noxious Fumes","Omega","Panache","Phantasmal","Plated Armor","Rage","Regen","Ritual","Rupture","Sadistic","Static Discharge","Thorns","Thousand Cuts","Tools Of The Trade","Vigor","Wave Of The Hand","Equilibrium","Artifact","Dexterity","Strength","The Bomb","Retain Cards",
+ };
+ 
+ static constexpr const char* const playerStatusEnumStrings[] {
+-        "INVALID","DOUBLE_DAMAGE","DRAW_REDUCTION","FRAIL","INTANGIBLE","VULNERABLE","WEAK","BIAS","CONFUSED","CONSTRICTED","ENTANGLED","FASTING","HEX","LOSE_DEXTERITY","LOSE_STRENGTH","NO_BLOCK","NO_DRAW","WRAITH_FORM","BARRICADE","BLASPHEMER","CORRUPTION","ELECTRO","SURROUNDED","MASTER_REALITY","PEN_NIB","WRATH_NEXT_TURN","AMPLIFY","BLUR","BUFFER","COLLECT","DOUBLE_TAP","DUPLICATION","ECHO_FORM","FREE_ATTACK_POWER","REBOUND","MANTRA","ACCURACY","AFTER_IMAGE","BATTLE_HYMN","BRUTALITY","BURST","COMBUST","CREATIVE_AI","DARK_EMBRACE","DEMON_FORM","DEVA","DEVOTION","DRAW_CARD_NEXT_TURN","ENERGIZED","ENVENOM","ESTABLISHMENT","EVOLVE","FEEL_NO_PAIN","FIRE_BREATHING","FLAME_BARRIER","FOCUS","FORESIGHT","HELLO_WORLD","INFINITE_BLADES","JUGGERNAUT","LIKE_WATER","LOOP","MAGNETISM","MAYHEM","METALLICIZE","NEXT_TURN_BLOCK","NOXIOUS_FUMES","OMEGA","PANACHE","PHANTASMAL","PLATED_ARMOR","RAGE","REGEN","RITUAL","RUPTURE","SADISTIC","STATIC_DISCHARGE","THORNS","THOUSAND_CUTS","TOOLS_OF_THE_TRADE","VIGOR","WAVE_OF_THE_HAND","EQUILIBRIUM","ARTIFACT","DEXTERITY","STRENGTH","THE_BOMB",
++        "INVALID","DOUBLE_DAMAGE","DRAW_REDUCTION","FRAIL","INTANGIBLE","VULNERABLE","WEAK","BIAS","CONFUSED","CONSTRICTED","ENTANGLED","FASTING","HEX","LOSE_DEXTERITY","LOSE_STRENGTH","NO_BLOCK","NO_DRAW","WRAITH_FORM","BARRICADE","BLASPHEMER","CORRUPTION","ELECTRO","SURROUNDED","MASTER_REALITY","PEN_NIB","WRATH_NEXT_TURN","AMPLIFY","BLUR","BUFFER","COLLECT","DOUBLE_TAP","DUPLICATION","ECHO_FORM","FREE_ATTACK_POWER","REBOUND","MANTRA","ACCURACY","AFTER_IMAGE","BATTLE_HYMN","BRUTALITY","BURST","COMBUST","CREATIVE_AI","DARK_EMBRACE","DEMON_FORM","DEVA","DEVOTION","DRAW_CARD_NEXT_TURN","ENERGIZED","ENVENOM","ESTABLISHMENT","EVOLVE","FEEL_NO_PAIN","FIRE_BREATHING","FLAME_BARRIER","FOCUS","FORESIGHT","HELLO_WORLD","INFINITE_BLADES","JUGGERNAUT","LIKE_WATER","LOOP","MAGNETISM","MAYHEM","METALLICIZE","NEXT_TURN_BLOCK","NOXIOUS_FUMES","OMEGA","PANACHE","PHANTASMAL","PLATED_ARMOR","RAGE","REGEN","RITUAL","RUPTURE","SADISTIC","STATIC_DISCHARGE","THORNS","THOUSAND_CUTS","TOOLS_OF_THE_TRADE","VIGOR","WAVE_OF_THE_HAND","EQUILIBRIUM","ARTIFACT","DEXTERITY","STRENGTH","THE_BOMB","RETAIN_CARDS",
+ };
+diff --git a/src/combat/Actions.cpp b/src/combat/Actions.cpp
+index 7b4b4b2..65874e8 100644
+--- a/src/combat/Actions.cpp
++++ b/src/combat/Actions.cpp
+@@ -317,6 +317,21 @@ Action Actions::RestoreRetainedCards(int count) {
+     }};
+ }
+ 
++Action Actions::RetainCardsAction(int count) {
++    return {[=] (BattleContext &bc) {
++        if (count <= 0 || bc.cards.cardsInHand <= 0 ||
++                bc.player.hasRelic<R::RUNIC_PYRAMID>() ||
++                bc.player.hasStatus<PS::EQUILIBRIUM>()) {
++            return;
++        }
++        bc.inputState = InputState::CARD_SELECT;
++        bc.cardSelectInfo.cardSelectTask = CardSelectTask::RETAIN_CARDS;
++        bc.cardSelectInfo.pickCount = std::min(count, bc.cards.cardsInHand);
++        bc.cardSelectInfo.canPickAnyNumber = true;
++        bc.cardSelectInfo.canPickZero = true;
++    }};
++}
++
+ Action Actions::UnnamedEndOfTurnAction() {
+     // EndTurnAction does this:
+     //        AbstractDungeon.player.resetControllerValues();
+diff --git a/src/combat/BattleContext.cpp b/src/combat/BattleContext.cpp
+index 4274c96..10774a1 100644
+--- a/src/combat/BattleContext.cpp
++++ b/src/combat/BattleContext.cpp
+@@ -2538,7 +2538,7 @@ void BattleContext::exhaustSpecificCardInHand(int idx, std::int16_t uniqueId) {
+         foundIdx = idx;
+     } else {
+         for (int i = 0; i < cards.cardsInHand; ++i) {
+-            if (cards.hand[idx].uniqueId == uniqueId) {
++            if (cards.hand[i].uniqueId == uniqueId) {
+                foundIdx = i;
+                break;
+             }
+@@ -3087,5 +3087,14 @@ void BattleContext::chooseGambleCards(const fixed_list<int, 10> &idxs) {
+     }
+ }
+ 
++void BattleContext::chooseRetainCards(const fixed_list<int, 10> &idxs) {
++    for (const auto handIdx : idxs) {
++        if (handIdx >= 0 && handIdx < cards.cardsInHand &&
++                !cards.hand[handIdx].isEthereal()) {
++            cards.hand[handIdx].retain = true;
++        }
++    }
++}
++
+ 
+ namespace sts {
+diff --git a/src/combat/Player.cpp b/src/combat/Player.cpp
+index 270366d..bc7971b 100644
+--- a/src/combat/Player.cpp
++++ b/src/combat/Player.cpp
+@@ -469,11 +469,20 @@ void Player::applyEndOfTurnPowers(BattleContext &bc) {
+                 break;
+ 
+             case PS::EQUILIBRIUM:
+-                // todo if card is ethereal set to retain
++                for (int i = 0; i < bc.cards.cardsInHand; ++i) {
++                    if (!bc.cards.hand[i].isEthereal()) {
++                        bc.cards.hand[i].retain = true;
++                    }
++                }
+                 break;
+ 
+             case PS::ESTABLISHMENT:
+-                // todo addToBot establishmentPowerAction
++                for (int i = 0; i < bc.cards.cardsInHand; ++i) {
++                    auto &card = bc.cards.hand[i];
++                    if (card.hasSelfRetain() || card.retain) {
++                        card.updateCost(-pair.second);
++                    }
++                }
+                 break;
+ 
+             case PS::LOSE_DEXTERITY:
+@@ -512,6 +521,10 @@ void Player::applyEndOfTurnPowers(BattleContext &bc) {
+             case PS::RITUAL:
+                 bc.addToBot(Actions::BuffPlayer<PS::STRENGTH>(pair.second));
+                 break;
++
++            case PS::RETAIN_CARDS:
++                bc.addToBot(Actions::RetainCardsAction(pair.second));
++                break;
+                 // case TheBomb
+ 
+             case PS::WRAITH_FORM: // todo does this debuff or just decrement?
+diff --git a/src/sim/search/Action.cpp b/src/sim/search/Action.cpp
+index 551623d..f10c582 100644
+--- a/src/sim/search/Action.cpp
++++ b/src/sim/search/Action.cpp
+@@ -208,6 +208,19 @@ bool isValidMultiCardSelectAction(const BattleContext &bc, const search::Action
+             return true;
+         }
+ 
++        case sts::CardSelectTask::RETAIN_CARDS: {
++            const auto selected = a.getSelectedIdxs();
++            if (selected.size() > bc.cardSelectInfo.pickCount) {
++                return false;
++            }
++            for (auto x : selected) {
++                if (x < 0 || x >= bc.cards.cardsInHand) {
++                    return false;
++                }
++            }
++            return true;
++        }
++
+         case sts::CardSelectTask::GAMBLE: {
+             const auto selected = a.getSelectedIdxs();
+             for (auto x : selected) {
+@@ -413,6 +426,10 @@ void executeMultiCardSelectActionHelper(BattleContext &bc, search::Action a) {
+             bc.chooseGambleCards(a.getSelectedIdxs());
+             break;
+ 
++        case sts::CardSelectTask::RETAIN_CARDS:
++            bc.chooseRetainCards(a.getSelectedIdxs());
++            break;
++
+         default:
+             break;
+     }
+@@ -537,6 +554,7 @@ std::vector<search::Action> search::Action::enumerateCardSelectActions(const Bat
+ 
+         case CardSelectTask::EXHAUST_MANY:
+         case CardSelectTask::GAMBLE:
++        case CardSelectTask::RETAIN_CARDS:
+             // just dont deal with this right now
+             actions.push_back({search::Action(search::ActionType::MULTI_CARD_SELECT, 0)});
+             break;

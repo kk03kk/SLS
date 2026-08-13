@@ -771,7 +771,9 @@ public:
         const std::vector<std::string> &relics = {},
         bool replace_relics = false) {
         gc_ = std::make_unique<GameContext>(CharacterClass::IRONCLAD, seed, ascension);
-        gc_->regainControlAction = [](GameContext &) {};
+        gc_->regainControlAction = [](GameContext &gc) {
+            gc.openCombatRewardScreen(gc.createCombatReward());
+        };
         if (replace_relics) {
             gc_->relics = RelicContainer();
             for (const auto &spec : relics) {
@@ -791,6 +793,11 @@ public:
         }
         gc_->floorNum = 1;
         gc_->curRoom = Room::MONSTER;
+        // AbstractDungeon resets miscRng from seed + floor immediately before
+        // constructing a room.  A directly-created GameContext still contains
+        // the run-start (seed-only) stream, which changes variable encounter
+        // composition such as Small Slimes and Two Louse.
+        gc_->miscRng = Random(seed + static_cast<std::uint64_t>(gc_->floorNum));
         bc_ = std::make_unique<BattleContext>();
         bc_->init(*gc_, parse_encounter(encounter));
         finalized_ = false;
@@ -861,6 +868,21 @@ public:
         }
     }
 
+    void set_rng_state(const py::dict &rng) {
+        require_reset();
+        // Preserve every run-level stream at a combat checkpoint.  The six
+        // streams copied into BattleContext must be restored there as well,
+        // because combat advances those copies until exitBattle writes them
+        // back into GameContext.
+        restore_full_run_rng(*gc_, rng);
+        restore_rng(bc_->aiRng, rng["ai"].cast<py::dict>());
+        restore_rng(bc_->monsterHpRng, rng["monster_hp"].cast<py::dict>());
+        restore_rng(bc_->shuffleRng, rng["shuffle"].cast<py::dict>());
+        restore_rng(bc_->cardRandomRng, rng["card_random"].cast<py::dict>());
+        restore_rng(bc_->miscRng, rng["misc"].cast<py::dict>());
+        restore_rng(bc_->potionRng, rng["potion"].cast<py::dict>());
+    }
+
     void load_checkpoint(const py::dict &checkpoint) {
         const auto game = checkpoint["game_state"].cast<py::dict>();
         const auto combat = game["combat_state"].cast<py::dict>();
@@ -906,12 +928,18 @@ public:
         bc_->cardQueue.clear();
 
         const auto rng = checkpoint["rng"].cast<py::dict>();
-        restore_rng(bc_->aiRng, rng["ai"].cast<py::dict>());
-        restore_rng(bc_->monsterHpRng, rng["monster_hp"].cast<py::dict>());
-        restore_rng(bc_->shuffleRng, rng["shuffle"].cast<py::dict>());
-        restore_rng(bc_->cardRandomRng, rng["card_random"].cast<py::dict>());
-        restore_rng(bc_->miscRng, rng["misc"].cast<py::dict>());
-        restore_rng(bc_->potionRng, rng["potion"].cast<py::dict>());
+        if (rng.contains("card") && rng.contains("monster") && rng.contains("relic")) {
+            set_rng_state(rng);
+        } else {
+            // Backward compatibility for schema-v1 checkpoints written before
+            // combat snapshots exposed all fourteen run streams.
+            restore_rng(bc_->aiRng, rng["ai"].cast<py::dict>());
+            restore_rng(bc_->monsterHpRng, rng["monster_hp"].cast<py::dict>());
+            restore_rng(bc_->shuffleRng, rng["shuffle"].cast<py::dict>());
+            restore_rng(bc_->cardRandomRng, rng["card_random"].cast<py::dict>());
+            restore_rng(bc_->miscRng, rng["misc"].cast<py::dict>());
+            restore_rng(bc_->potionRng, rng["potion"].cast<py::dict>());
+        }
 
         gc_->curHp = bc_->player.curHp;
         gc_->maxHp = bc_->player.maxHp;
@@ -925,10 +953,22 @@ public:
         int target_index,
         int choice_index) {
         require_reset();
+        // The base game removes powers from a dead/escaped monster on the
+        // following action-manager update.  lightspeed skips dead monsters in
+        // turn processing, so perform that deferred cleanup at the next agent
+        // boundary (not immediately on death, where CommunicationMod still
+        // exposes the powers for one state).
+        if (kind == "end_turn") {
+            for (int index = 0; index < bc_->monsters.monsterCount; ++index) {
+                auto &monster = bc_->monsters.arr[index];
+                if (monster.isDeadOrEscaped()) monster.resetAllStatusEffects();
+            }
+        }
         search::Action action;
         const auto task = bc_->cardSelectInfo.cardSelectTask;
         const bool multi_select = bc_->inputState == InputState::CARD_SELECT &&
-            (task == CardSelectTask::EXHAUST_MANY || task == CardSelectTask::GAMBLE);
+            (task == CardSelectTask::EXHAUST_MANY || task == CardSelectTask::GAMBLE ||
+             task == CardSelectTask::RETAIN_CARDS);
         if (kind == "choose" && multi_select) {
             if (choice_index < 0 || choice_index >= bc_->cards.cardsInHand) {
                 throw std::invalid_argument("Refusing invalid multi-select card index");
@@ -937,7 +977,8 @@ public:
             if ((multi_select_bits_ & bit) != 0) {
                 throw std::invalid_argument("CommunicationMod cannot unselect a chosen card");
             }
-            if (task == CardSelectTask::EXHAUST_MANY &&
+            if ((task == CardSelectTask::EXHAUST_MANY ||
+                 task == CardSelectTask::RETAIN_CARDS) &&
                 selected_count() >= bc_->cardSelectInfo.pickCount) {
                 throw std::invalid_argument("Multi-select card limit reached");
             }
@@ -988,7 +1029,8 @@ public:
         action.execute(*bc_);
         if (bc_->inputState == InputState::CARD_SELECT &&
             (bc_->cardSelectInfo.cardSelectTask == CardSelectTask::EXHAUST_MANY ||
-             bc_->cardSelectInfo.cardSelectTask == CardSelectTask::GAMBLE)) {
+             bc_->cardSelectInfo.cardSelectTask == CardSelectTask::GAMBLE ||
+             bc_->cardSelectInfo.cardSelectTask == CardSelectTask::RETAIN_CARDS)) {
             multi_select_bits_ = 0;
         }
         if (bc_->outcome != Outcome::UNDECIDED && !finalized_) {
@@ -1049,13 +1091,15 @@ public:
         if (!terminal) game["combat_state"] = combat_state();
         payload["game_state"] = game;
 
-        py::dict rng;
-        rng["ai"] = rng_state(bc_->aiRng);
-        rng["monster_hp"] = rng_state(bc_->monsterHpRng);
-        rng["shuffle"] = rng_state(bc_->shuffleRng);
-        rng["card_random"] = rng_state(bc_->cardRandomRng);
-        rng["misc"] = rng_state(bc_->miscRng);
-        rng["potion"] = rng_state(bc_->potionRng);
+        py::dict rng = full_run_rng_state(*gc_);
+        if (!finalized_) {
+            rng["ai"] = rng_state(bc_->aiRng);
+            rng["monster_hp"] = rng_state(bc_->monsterHpRng);
+            rng["shuffle"] = rng_state(bc_->shuffleRng);
+            rng["card_random"] = rng_state(bc_->cardRandomRng);
+            rng["misc"] = rng_state(bc_->miscRng);
+            rng["potion"] = rng_state(bc_->potionRng);
+        }
         payload["_rng"] = rng;
 
         py::list commands;
@@ -1070,7 +1114,8 @@ public:
                 commands.append("choose");
                 const auto task = bc_->cardSelectInfo.cardSelectTask;
                 if (task == CardSelectTask::EXHAUST_MANY ||
-                    task == CardSelectTask::GAMBLE) {
+                    task == CardSelectTask::GAMBLE ||
+                    task == CardSelectTask::RETAIN_CARDS) {
                     commands.append("proceed");
                 }
                 enumerate_choice_actions(actions);
@@ -1175,6 +1220,18 @@ private:
         p.gold = internal["gold"].cast<int>();
         p.stance = static_cast<Stance>(internal["stance"].cast<int>());
         p.orbSlots = internal["orb_slots"].cast<int>();
+        if (internal.contains("orbs")) {
+            const auto orbs = internal["orbs"].cast<py::list>();
+            const auto evoke = internal["orb_evoke_amounts"].cast<py::list>();
+            if (orbs.size() != Player::MAX_ORB_SLOTS ||
+                    evoke.size() != Player::MAX_ORB_SLOTS) {
+                throw std::invalid_argument("Orb checkpoint arrays have invalid length");
+            }
+            for (int i = 0; i < Player::MAX_ORB_SLOTS; ++i) {
+                p.orbs[i] = static_cast<Orb>(orbs[i].cast<int>());
+                p.orbEvokeAmounts[i] = evoke[i].cast<int>();
+            }
+        }
         p.lastTargetedMonster = internal["last_targeted_monster"].cast<int>();
         p.relicBits0 = internal.contains("relic_bits0")
             ? internal["relic_bits0"].cast<std::uint64_t>() : relic_bits0;
@@ -1280,11 +1337,41 @@ private:
         player["attacks_played_this_turn"] = bc_->player.attacksPlayedThisTurn;
         player["skills_played_this_turn"] = bc_->player.skillsPlayedThisTurn;
         player["powers"] = player_powers(bc_->player);
+        py::list orbs;
+        for (int i = 0; i < bc_->player.orbSlots; ++i) {
+            const auto orb = bc_->player.orbs[i];
+            py::dict value;
+            const char *name = orb == Orb::DARK ? "Dark"
+                : orb == Orb::FROST ? "Frost"
+                : orb == Orb::FUSION ? "Plasma"
+                : orb == Orb::LIGHTNING ? "Lightning" : "Empty";
+            value["id"] = name;
+            value["name"] = name;
+            value["passive_amount"] = orb == Orb::DARK ? std::max(0, 6 + bc_->player.focus)
+                : orb == Orb::FROST ? std::max(0, 2 + bc_->player.focus)
+                : orb == Orb::FUSION ? 1
+                : orb == Orb::LIGHTNING ? std::max(0, 3 + bc_->player.focus) : 0;
+            value["evoke_amount"] = orb == Orb::DARK ? bc_->player.orbEvokeAmounts[i]
+                : orb == Orb::FROST ? std::max(0, 5 + bc_->player.focus)
+                : orb == Orb::FUSION ? 2
+                : orb == Orb::LIGHTNING ? std::max(0, 8 + bc_->player.focus) : 0;
+            orbs.append(value);
+        }
+        player["orbs"] = orbs;
+        player["max_orbs"] = bc_->player.orbSlots;
         py::dict player_internal;
         player_internal["just_applied_bits"] = bc_->player.justAppliedBits;
         player_internal["gold"] = bc_->player.gold;
         player_internal["stance"] = static_cast<int>(bc_->player.stance);
         player_internal["orb_slots"] = bc_->player.orbSlots;
+        py::list orb_types;
+        py::list orb_evoke_amounts;
+        for (int i = 0; i < Player::MAX_ORB_SLOTS; ++i) {
+            orb_types.append(static_cast<int>(bc_->player.orbs[i]));
+            orb_evoke_amounts.append(bc_->player.orbEvokeAmounts[i]);
+        }
+        player_internal["orbs"] = orb_types;
+        player_internal["orb_evoke_amounts"] = orb_evoke_amounts;
         player_internal["last_targeted_monster"] = bc_->player.lastTargetedMonster;
         player_internal["relic_bits0"] = bc_->player.relicBits0;
         player_internal["relic_bits1"] = bc_->player.relicBits1;
@@ -1421,6 +1508,7 @@ private:
             case CardSelectTask::EXHAUST_MANY:
             case CardSelectTask::FORETHOUGHT:
             case CardSelectTask::GAMBLE:
+            case CardSelectTask::RETAIN_CARDS:
             case CardSelectTask::WARCRY:
                 result["source"] = "HAND";
                 append_cards(
@@ -1524,7 +1612,8 @@ private:
 
     void enumerate_choice_actions(py::list &result) const {
         const auto task = bc_->cardSelectInfo.cardSelectTask;
-        if (task == CardSelectTask::EXHAUST_MANY || task == CardSelectTask::GAMBLE) {
+        if (task == CardSelectTask::EXHAUST_MANY || task == CardSelectTask::GAMBLE ||
+                task == CardSelectTask::RETAIN_CARDS) {
             const bool can_select_more = task == CardSelectTask::GAMBLE ||
                 selected_count() < bc_->cardSelectInfo.pickCount;
             if (can_select_more) {
@@ -1815,6 +1904,349 @@ py::dict stance_mechanics_probe() {
     return result;
 }
 
+py::dict orb_mechanics_probe() {
+    GameContext gc(CharacterClass::IRONCLAD, 41, 0);
+    gc.floorNum = 1;
+    gc.curRoom = Room::MONSTER;
+    gc.miscRng = Random(gc.seed + gc.floorNum);
+    BattleContext bc;
+    bc.init(gc, MonsterEncounter::TWO_LOUSE);
+    auto drain = [&bc]() {
+        while (!bc.actionQueue.isEmpty()) {
+            auto action = bc.actionQueue.popFront();
+            action(bc);
+        }
+    };
+
+    bc.player.increaseOrbSlots(2);
+    bc.player.setStatusValueNoChecks<PS::FOCUS>(2);
+    const int hp_before = bc.monsters.arr[0].curHp + bc.monsters.arr[1].curHp;
+    bc.player.channelOrb(bc, Orb::LIGHTNING);
+    bc.player.channelOrb(bc, Orb::FROST);
+    bc.player.channelOrb(bc, Orb::DARK);  // Full slots auto-evoke Lightning.
+    drain();
+
+    py::dict auto_evoke;
+    auto_evoke["damage"] = hp_before - bc.monsters.arr[0].curHp - bc.monsters.arr[1].curHp;
+    auto_evoke["first"] = static_cast<int>(bc.player.orbs[0]);
+    auto_evoke["second"] = static_cast<int>(bc.player.orbs[1]);
+    auto_evoke["dark_evoke"] = bc.player.orbEvokeAmounts[1];
+
+    bc.player.triggerEndOfTurnOrbs(bc);
+    drain();
+    py::dict passive;
+    passive["block"] = bc.player.block;
+    passive["dark_evoke"] = bc.player.orbEvokeAmounts[1];
+
+    bc.player.evokeOrb(bc);  // Frost.
+    drain();
+    py::dict frost_evoke;
+    frost_evoke["block"] = bc.player.block;
+    frost_evoke["first"] = static_cast<int>(bc.player.orbs[0]);
+
+    bc.monsters.arr[0].curHp = 50;
+    bc.monsters.arr[1].curHp = 20;
+    bc.player.evokeOrb(bc);  // Dark targets the lowest current HP.
+    drain();
+    py::dict dark_evoke;
+    dark_evoke["first_hp"] = bc.monsters.arr[0].curHp;
+    dark_evoke["second_hp"] = bc.monsters.arr[1].curHp;
+
+    bc.player.channelOrb(bc, Orb::FUSION);
+    const int energy_before = bc.player.energy;
+    bc.player.triggerEndOfTurnOrbs(bc);
+    drain();
+    bc.player.evokeOrb(bc);
+    drain();
+    py::dict plasma;
+    plasma["energy_gained"] = bc.player.energy - energy_before;
+
+    bc.player.increaseOrbSlots(99);
+    py::dict result;
+    result["slot_cap"] = bc.player.orbSlots;
+    result["auto_evoke"] = auto_evoke;
+    result["passive"] = passive;
+    result["frost_evoke"] = frost_evoke;
+    result["dark_evoke"] = dark_evoke;
+    result["plasma"] = plasma;
+    return result;
+}
+
+py::dict damage_pipeline_probe() {
+    auto fresh_battle = [](GameContext &gc, BattleContext &bc) {
+        gc.floorNum = 1;
+        gc.curRoom = Room::MONSTER;
+        gc.miscRng = Random(gc.seed + gc.floorNum);
+        bc.init(gc, MonsterEncounter::JAW_WORM);
+        bc.player.curHp = 80;
+        bc.player.maxHp = 80;
+        bc.player.block = 0;
+    };
+
+    py::dict result;
+
+    {
+        GameContext gc(CharacterClass::IRONCLAD, 51, 0);
+        BattleContext bc;
+        fresh_battle(gc, bc);
+        bc.player.buff<PS::INTANGIBLE>(1);
+        bc.player.damage(bc, 10, false);
+        result["intangible_damage"] = 80 - bc.player.curHp;
+    }
+
+    {
+        GameContext gc(CharacterClass::IRONCLAD, 52, 0);
+        BattleContext bc;
+        fresh_battle(gc, bc);
+        bc.player.block = 1;
+        bc.player.buff<PS::INTANGIBLE>(1);
+        bc.player.buff<PS::BUFFER>(1);
+        bc.player.damage(bc, 10, false);
+        py::dict value;
+        value["damage"] = 80 - bc.player.curHp;
+        value["block"] = bc.player.block;
+        value["buffer"] = bc.player.getStatus<PS::BUFFER>();
+        result["intangible_block_buffer"] = value;
+    }
+
+    {
+        GameContext gc(CharacterClass::IRONCLAD, 53, 0);
+        BattleContext bc;
+        fresh_battle(gc, bc);
+        bc.player.block = 99;
+        bc.player.buff<PS::BUFFER>(1);
+        bc.player.loseHp(bc, 5, true);
+        py::dict value;
+        value["damage"] = 80 - bc.player.curHp;
+        value["block"] = bc.player.block;
+        value["buffer"] = bc.player.getStatus<PS::BUFFER>();
+        result["hp_loss_buffer"] = value;
+    }
+
+    {
+        GameContext gc(CharacterClass::IRONCLAD, 54, 0);
+        BattleContext bc;
+        fresh_battle(gc, bc);
+        bc.player.setHasRelic<RelicId::TORII>(true);
+        bc.player.setHasRelic<RelicId::TUNGSTEN_ROD>(true);
+        bc.player.attacked(bc, 0, 5);
+        result["torii_tungsten_five"] = 80 - bc.player.curHp;
+        bc.player.attacked(bc, 0, 6);
+        result["torii_threshold_six"] = 80 - bc.player.curHp;
+    }
+
+    {
+        GameContext gc(CharacterClass::IRONCLAD, 55, 0);
+        BattleContext bc;
+        fresh_battle(gc, bc);
+        bc.player.block = 4;
+        bc.player.setHasRelic<RelicId::TORII>(true);
+        bc.player.setHasRelic<RelicId::TUNGSTEN_ROD>(true);
+        bc.player.attacked(bc, 0, 8);
+        py::dict value;
+        value["damage"] = 80 - bc.player.curHp;
+        value["block"] = bc.player.block;
+        result["block_before_relics"] = value;
+    }
+
+    {
+        GameContext gc(CharacterClass::IRONCLAD, 56, 0);
+        BattleContext bc;
+        fresh_battle(gc, bc);
+        bc.player.buff<PS::BUFFER>(1);
+        bc.player.attacked(bc, 0, 7);
+        bc.player.attacked(bc, 0, 7);
+        py::dict value;
+        value["damage"] = 80 - bc.player.curHp;
+        value["buffer"] = bc.player.getStatus<PS::BUFFER>();
+        result["buffer_multi_hit"] = value;
+    }
+
+    return result;
+}
+
+py::dict just_applied_probe() {
+    BattleContext bc;
+    auto &player = bc.player;
+
+    player.debuff<PS::WEAK>(2, true);
+    player.debuff<PS::VULNERABLE>(2, true);
+    player.debuff<PS::FRAIL>(2, true);
+    player.applyAtEndOfRoundPowers();
+    py::dict first_round;
+    first_round["weak"] = player.getStatus<PS::WEAK>();
+    first_round["vulnerable"] = player.getStatus<PS::VULNERABLE>();
+    first_round["frail"] = player.getStatus<PS::FRAIL>();
+    first_round["weak_just_applied"] = player.wasJustApplied<PS::WEAK>();
+    player.applyAtEndOfRoundPowers();
+    py::dict second_round;
+    second_round["weak"] = player.getStatus<PS::WEAK>();
+    second_round["vulnerable"] = player.getStatus<PS::VULNERABLE>();
+    second_round["frail"] = player.getStatus<PS::FRAIL>();
+
+    BattleContext non_monster;
+    non_monster.player.debuff<PS::WEAK>(2, false);
+    non_monster.player.applyAtEndOfRoundPowers();
+
+    BattleContext stacked;
+    stacked.player.debuff<PS::WEAK>(2, true);
+    stacked.player.debuff<PS::WEAK>(1, true);
+    stacked.player.applyAtEndOfRoundPowers();
+
+    BattleContext timed_buffs;
+    timed_buffs.player.buff<PS::INTANGIBLE>(1);
+    timed_buffs.player.buff<PS::DOUBLE_DAMAGE>(1);
+    timed_buffs.player.applyAtEndOfRoundPowers();
+    py::dict buffs;
+    buffs["intangible"] = timed_buffs.player.getStatus<PS::INTANGIBLE>();
+    buffs["double_damage"] = timed_buffs.player.getStatus<PS::DOUBLE_DAMAGE>();
+
+    BattleContext draw_reduction;
+    const int base_draw = draw_reduction.player.cardDrawPerTurn;
+    draw_reduction.player.debuff<PS::DRAW_REDUCTION>(1, true);
+    draw_reduction.player.debuff<PS::DRAW_REDUCTION>(1, true);
+    py::dict draw;
+    draw["after_stack"] = draw_reduction.player.cardDrawPerTurn;
+    draw_reduction.player.applyAtEndOfRoundPowers();
+    draw["after_first_round"] = draw_reduction.player.cardDrawPerTurn;
+    draw["present_after_first_round"] =
+        draw_reduction.player.hasStatus<PS::DRAW_REDUCTION>();
+    draw_reduction.player.applyAtEndOfRoundPowers();
+    draw["after_second_round"] = draw_reduction.player.cardDrawPerTurn;
+    draw["present_after_second_round"] =
+        draw_reduction.player.hasStatus<PS::DRAW_REDUCTION>();
+    draw["base"] = base_draw;
+
+    py::dict result;
+    result["monster_applied_first_round"] = first_round;
+    result["monster_applied_second_round"] = second_round;
+    result["non_monster_applied_after_round"] =
+        non_monster.player.getStatus<PS::WEAK>();
+    result["stacked_new_power_after_round"] =
+        stacked.player.getStatus<PS::WEAK>();
+    result["timed_buffs_after_round"] = buffs;
+    result["draw_reduction"] = draw;
+    return result;
+}
+
+py::dict retain_ethereal_probe() {
+    auto setup = [](GameContext &gc, BattleContext &bc,
+                    std::initializer_list<CardInstance> hand) {
+        gc.floorNum = 1;
+        gc.curRoom = Room::MONSTER;
+        gc.miscRng = Random(gc.seed + gc.floorNum);
+        bc.init(gc, MonsterEncounter::JAW_WORM);
+        bc.cards.cardsInHand = 0;
+        bc.cards.drawPile.clear();
+        bc.cards.discardPile.clear();
+        bc.cards.exhaustPile.clear();
+        int unique_id = 100;
+        for (auto card : hand) {
+            card.uniqueId = unique_id++;
+            bc.cards.hand[bc.cards.cardsInHand++] = card;
+        }
+    };
+    auto drain = [](BattleContext &bc) {
+        while (!bc.actionQueue.isEmpty() &&
+                bc.inputState != InputState::CARD_SELECT) {
+            auto action = bc.actionQueue.popFront();
+            action(bc);
+        }
+    };
+    auto names = [](const auto &begin, const auto &end) {
+        py::list result;
+        for (auto it = begin; it != end; ++it) result.append(it->getName());
+        return result;
+    };
+    auto zones = [&names](const BattleContext &bc) {
+        py::dict value;
+        value["hand"] = names(
+            bc.cards.hand.begin(), bc.cards.hand.begin() + bc.cards.cardsInHand);
+        value["discard"] = names(bc.cards.discardPile.begin(), bc.cards.discardPile.end());
+        value["exhaust"] = names(bc.cards.exhaustPile.begin(), bc.cards.exhaustPile.end());
+        return value;
+    };
+
+    py::dict result;
+    {
+        GameContext gc(CharacterClass::IRONCLAD, 61, 0);
+        BattleContext bc;
+        CardInstance retained(CardId::GHOSTLY_ARMOR);
+        retained.retain = true;
+        setup(gc, bc, {retained, CardInstance(CardId::GHOSTLY_ARMOR),
+                       CardInstance(CardId::DEFEND_RED)});
+        bc.discardAtEndOfTurn();
+        drain(bc);
+        auto value = zones(bc);
+        value["retained_flag_reset"] = !bc.cards.hand[0].retain;
+        result["explicit_retain_beats_ethereal"] = value;
+    }
+    {
+        GameContext gc(CharacterClass::IRONCLAD, 62, 0);
+        BattleContext bc;
+        setup(gc, bc, {CardInstance(CardId::GHOSTLY_ARMOR),
+                       CardInstance(CardId::DEFEND_RED)});
+        bc.player.setHasRelic<R::RUNIC_PYRAMID>(true);
+        bc.discardAtEndOfTurn();
+        drain(bc);
+        result["runic_pyramid"] = zones(bc);
+    }
+    {
+        GameContext gc(CharacterClass::IRONCLAD, 63, 0);
+        BattleContext bc;
+        setup(gc, bc, {CardInstance(CardId::GHOSTLY_ARMOR),
+                       CardInstance(CardId::DEFEND_RED)});
+        bc.player.buff<PS::EQUILIBRIUM>(1);
+        bc.discardAtEndOfTurn();
+        drain(bc);
+        result["equilibrium"] = zones(bc);
+    }
+    {
+        GameContext gc(CharacterClass::IRONCLAD, 64, 0);
+        BattleContext bc;
+        setup(gc, bc, {CardInstance(CardId::PROTECT),
+                       CardInstance(CardId::DEFEND_RED)});
+        bc.discardAtEndOfTurn();
+        drain(bc);
+        result["self_retain"] = zones(bc);
+    }
+    {
+        GameContext gc(CharacterClass::IRONCLAD, 65, 0);
+        BattleContext bc;
+        setup(gc, bc, {CardInstance(CardId::GHOSTLY_ARMOR),
+                       CardInstance(CardId::DEFEND_RED)});
+        fixed_list<int, 10> selected;
+        selected.push_back(0);
+        selected.push_back(1);
+        bc.chooseRetainCards(selected);
+        py::dict value;
+        value["ethereal_selected"] = bc.cards.hand[0].retain;
+        value["normal_selected"] = bc.cards.hand[1].retain;
+        result["manual_retain_selection"] = value;
+    }
+    {
+        GameContext gc(CharacterClass::IRONCLAD, 66, 0);
+        BattleContext bc;
+        setup(gc, bc, {CardInstance(CardId::PROTECT),
+                       CardInstance(CardId::DEFEND_RED)});
+        const int original_cost = bc.cards.hand[0].cost;
+        bc.player.buff<PS::ESTABLISHMENT>(1);
+        bc.player.buff<PS::RETAIN_CARDS>(1);
+        bc.player.applyEndOfTurnPowers(bc);
+        drain(bc);
+        py::dict value;
+        value["task"] = cardSelectTaskStrings[
+            static_cast<int>(bc.cardSelectInfo.cardSelectTask)];
+        value["pick_count"] = bc.cardSelectInfo.pickCount;
+        value["can_pick_zero"] = bc.cardSelectInfo.canPickZero;
+        value["self_retain_cost_reduction"] =
+            original_cost - bc.cards.hand[0].cost;
+        result["power_hooks"] = value;
+    }
+
+    return result;
+}
+
 }  // namespace
 
 PYBIND11_MODULE(_lightspeed, module) {
@@ -1823,6 +2255,10 @@ PYBIND11_MODULE(_lightspeed, module) {
     module.def("shuffle_probe", &shuffle_probe, py::arg("seed"));
     module.def("action_queue_probe", &action_queue_probe);
     module.def("stance_mechanics_probe", &stance_mechanics_probe);
+    module.def("orb_mechanics_probe", &orb_mechanics_probe);
+    module.def("damage_pipeline_probe", &damage_pipeline_probe);
+    module.def("just_applied_probe", &just_applied_probe);
+    module.def("retain_ethereal_probe", &retain_ethereal_probe);
     py::class_<LightspeedBattle>(module, "LightspeedBattle")
         .def(py::init<>())
         .def("reset", &LightspeedBattle::reset,
@@ -1836,6 +2272,7 @@ PYBIND11_MODULE(_lightspeed, module) {
         .def("set_player_health", &LightspeedBattle::set_player_health,
              py::arg("current_hp"), py::arg("max_hp"))
         .def("set_potions", &LightspeedBattle::set_potions, py::arg("potions"))
+        .def("set_rng_state", &LightspeedBattle::set_rng_state, py::arg("rng"))
         .def("load_checkpoint", &LightspeedBattle::load_checkpoint,
              py::arg("checkpoint"))
         .def("step", &LightspeedBattle::step,

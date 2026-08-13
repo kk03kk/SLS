@@ -175,6 +175,7 @@ def parse_battle_observation(payload: dict[str, Any]) -> dict[str, np.ndarray | 
     enemies = combat.get("monsters") or []
     choice = combat.get("choice") or {}
     potions = game_state.get("potions") or []
+    orbs = player.get("orbs") or []
 
     def power_amounts(powers: Iterable[dict[str, Any]] | None, vocab: tuple[str, ...]):
         amounts = np.zeros(len(vocab), dtype=np.int16)
@@ -224,6 +225,19 @@ def parse_battle_observation(payload: dict[str, Any]) -> dict[str, np.ndarray | 
         ]
         potion_usable[index] = int(bool(potion.get("can_use", False)))
 
+    orb_ids = np.zeros(10, dtype=np.int8)
+    orb_passive = np.zeros(10, dtype=np.int16)
+    orb_evoke = np.zeros(10, dtype=np.int16)
+    orb_index = {"EMPTY": 0, "DARK": 1, "FROST": 2, "PLASMA": 3, "LIGHTNING": 4}
+    for index, orb in enumerate(orbs[:10]):
+        orb_id = "".join(
+            char for char in str(orb.get("id") or orb.get("name") or "EMPTY").upper()
+            if char.isalnum()
+        )
+        orb_ids[index] = orb_index.get(orb_id, 0)
+        orb_passive[index] = int(orb.get("passive_amount") or 0)
+        orb_evoke[index] = int(orb.get("evoke_amount") or 0)
+
     return {
         "player_hp": np.array(
             [
@@ -238,6 +252,10 @@ def parse_battle_observation(payload: dict[str, Any]) -> dict[str, np.ndarray | 
         "turn": int(combat.get("turn", 0)),
         "player_block": int(player.get("block", 0)),
         "player_powers": power_amounts(player.get("powers"), PLAYER_POWER_IDS),
+        "max_orbs": min(int(player.get("max_orbs", len(orbs)) or 0), 10),
+        "orb_ids": orb_ids,
+        "orb_passive": orb_passive,
+        "orb_evoke": orb_evoke,
         "hand_count": min(len(hand), MAX_HAND),
         "hand_costs": hand_costs,
         "hand_playable": hand_playable,
@@ -330,6 +348,16 @@ def rich_battle_state(payload: dict[str, Any]) -> dict[str, Any]:
             "energy_per_turn": player.get("energy_per_turn", 3),
             "card_draw_per_turn": player.get("card_draw_per_turn", 5),
             "powers": _power_state(player.get("powers")),
+            "max_orbs": player.get("max_orbs", len(player.get("orbs") or [])),
+            "orbs": [
+                {
+                    "id": orb.get("id"),
+                    "name": orb.get("name"),
+                    "passive_amount": orb.get("passive_amount", 0),
+                    "evoke_amount": orb.get("evoke_amount", 0),
+                }
+                for orb in player.get("orbs") or []
+            ],
         },
         "hand": [
             _card_state(card, index + 1)

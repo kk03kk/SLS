@@ -4,6 +4,7 @@ import com.autoplay.gson.Gson;
 import com.evacipated.cardcrawl.modthespire.lib.SpirePatch;
 import com.evacipated.cardcrawl.modthespire.lib.SpireRawPatch;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
+import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.neow.NeowEvent;
 import communicationmod.GameStateConverter;
 import java.util.LinkedHashMap;
@@ -14,6 +15,11 @@ import javassist.CtBehavior;
 public final class CommunicationStatePatch {
     public static String inject(String json) {
         if (json == null || json.length() < 2 || json.charAt(json.length() - 1) != '}') {
+            return json;
+        }
+        // CommunicationMod also serializes the main menu. Before a run starts
+        // there is no game seed or dungeon RNG state to expose.
+        if (Settings.seed == null) {
             return json;
         }
         Map<String, Object> rng = new LinkedHashMap<String, Object>();

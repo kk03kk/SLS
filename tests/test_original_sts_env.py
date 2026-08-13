@@ -100,6 +100,62 @@ class FakeTransport:
 
 
 class OriginalSTSEnvTests(unittest.TestCase):
+    def test_reset_starts_ironclad_a0_with_requested_seed(self):
+        menu = {
+            "available_commands": ["start", "state"],
+            "ready_for_command": True,
+            "in_game": False,
+        }
+        transport = FakeTransport([menu, combat_payload()])
+        env = OriginalSTSEnv(transport=transport)
+
+        env.reset(seed=123456789)
+
+        self.assertEqual(transport.sent, ["ready", "start IRONCLAD 0 123456789"])
+
+    def test_return_to_menu_reuses_received_menu_for_next_seed(self):
+        initial = combat_payload()
+        initial["available_commands"].append("reset_run")
+        transition = deepcopy(initial)
+        transition["available_commands"].append("wait")
+        transition["game_state"]["room_phase"] = "COMPLETE"
+        transition["game_state"].pop("combat_state")
+        menu = {
+            "available_commands": ["start", "state"],
+            "ready_for_command": True,
+            "in_game": False,
+        }
+        second = combat_payload()
+        second["game_state"]["seed"] = 22
+        transport = FakeTransport([initial, transition, menu, second])
+        env = OriginalSTSEnv(transport=transport)
+
+        env.reset(seed=11)
+        env.return_to_menu()
+        env.reset(seed=22)
+
+        self.assertEqual(
+            transport.sent,
+            ["ready", "reset_run", "wait 100", "start IRONCLAD 0 22"],
+        )
+
+    def test_return_to_menu_is_noop_when_game_over_already_reached_menu(self):
+        menu = {
+            "available_commands": ["start", "state"],
+            "ready_for_command": True,
+            "in_game": False,
+        }
+        second = combat_payload()
+        transport = FakeTransport([second])
+        env = OriginalSTSEnv(transport=transport)
+        env._ready_sent = True
+        env._parse(menu)
+
+        env.return_to_menu()
+        env.reset(seed=22)
+
+        self.assertEqual(transport.sent, ["start IRONCLAD 0 22"])
+
     def test_parses_requested_battle_fields(self):
         state = rich_battle_state(combat_payload())
         self.assertEqual(state["player"]["hp"], 80)

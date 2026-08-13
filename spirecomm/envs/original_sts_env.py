@@ -79,6 +79,7 @@ class OriginalSTSEnv(BaseSTSEnv):
         self.player_class = player_class.upper()
         self.game: Game | None = None
         self._ready_sent = False
+        self._pending_payload: dict[str, Any] | None = None
 
     @staticmethod
     def _is_combat(payload: dict[str, Any]) -> bool:
@@ -115,11 +116,15 @@ class OriginalSTSEnv(BaseSTSEnv):
         else:
             self.game = None
 
-    def _autopilot_to_combat(self, payload: dict[str, Any]) -> dict[str, Any]:
+    def _autopilot_to_combat(
+        self, payload: dict[str, Any], *, seed: int | None = None
+    ) -> dict[str, Any]:
         while not self._is_combat(payload):
             available = {str(item).lower() for item in payload.get("available_commands", [])}
             if not payload.get("in_game") and "start" in available:
                 command = f"start {self.player_class} 0"
+                if seed is not None:
+                    command += f" {int(seed)}"
             else:
                 candidates = generate_legal_actions(payload)
                 preferred = [
@@ -141,12 +146,38 @@ class OriginalSTSEnv(BaseSTSEnv):
         if not self._ready_sent:
             self.transport.send("ready")
             self._ready_sent = True
-        payload = self._autopilot_to_combat(self._receive_ready_state())
+        payload = self._pending_payload or self._receive_ready_state()
+        self._pending_payload = None
+        payload = self._autopilot_to_combat(payload, seed=seed)
         self._parse(payload)
         if not self.legal_actions:
             raise RuntimeError("Combat state contains no safe legal actions")
         self._begin_reward_tracking()
         return self._observation(), self._info()
+
+    def return_to_menu(self) -> None:
+        """Return to the main menu without restarting the game JVM."""
+
+        if self.payload is None:
+            raise RuntimeError("Call reset() before return_to_menu()")
+        if not self.payload.get("in_game"):
+            self._pending_payload = self.payload
+            return
+        self._send_validated("reset_run", self.payload)
+        payload = self._receive_ready_state()
+        for _ in range(100):
+            if not payload.get("in_game"):
+                break
+            available = {
+                str(item).lower() for item in payload.get("available_commands", [])
+            }
+            command = "wait 100" if "wait" in available else "state"
+            self._send_validated(command, payload)
+            payload = self._receive_ready_state()
+        else:
+            raise RuntimeError("reset_run did not reach the main menu after 100 waits")
+        self._pending_payload = payload
+        self._parse(payload)
 
     def step(self, action: int):
         selected = self._validate_action_index(action)

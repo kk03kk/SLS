@@ -44,6 +44,92 @@ class GenericCombatMechanicsTests(unittest.TestCase):
             "stance": "DIVINITY", "energy": 5, "mantra": 2,
         })
 
+    def test_orb_fifo_focus_passive_evoke_and_slot_cap(self):
+        from spirecomm.simulator._lightspeed import orb_mechanics_probe
+
+        result = orb_mechanics_probe()
+        self.assertEqual(result["slot_cap"], 10)
+        self.assertEqual(result["auto_evoke"], {
+            "damage": 10, "first": 2, "second": 1, "dark_evoke": 8,
+        })
+        self.assertEqual(result["passive"], {"block": 4, "dark_evoke": 16})
+        self.assertEqual(result["frost_evoke"], {"block": 11, "first": 1})
+        self.assertEqual(result["dark_evoke"], {"first_hp": 50, "second_hp": 4})
+        self.assertEqual(result["plasma"], {"energy_gained": 3})
+
+    def test_damage_pipeline_order_and_hp_loss_type_boundaries(self):
+        from spirecomm.simulator._lightspeed import damage_pipeline_probe
+
+        result = damage_pipeline_probe()
+        self.assertEqual(result["intangible_damage"], 1)
+        self.assertEqual(result["intangible_block_buffer"], {
+            "damage": 0, "block": 0, "buffer": 1,
+        })
+        self.assertEqual(result["hp_loss_buffer"], {
+            "damage": 0, "block": 99, "buffer": 0,
+        })
+        self.assertEqual(result["torii_tungsten_five"], 0)
+        self.assertEqual(result["torii_threshold_six"], 5)
+        self.assertEqual(result["block_before_relics"], {
+            "damage": 0, "block": 0,
+        })
+        self.assertEqual(result["buffer_multi_hit"], {
+            "damage": 7, "buffer": 0,
+        })
+
+    def test_just_applied_duration_and_draw_reduction_lifecycle(self):
+        from spirecomm.simulator._lightspeed import just_applied_probe
+
+        result = just_applied_probe()
+        self.assertEqual(result["monster_applied_first_round"], {
+            "weak": 2, "vulnerable": 2, "frail": 2,
+            "weak_just_applied": False,
+        })
+        self.assertEqual(result["monster_applied_second_round"], {
+            "weak": 1, "vulnerable": 1, "frail": 1,
+        })
+        self.assertEqual(result["non_monster_applied_after_round"], 1)
+        self.assertEqual(result["stacked_new_power_after_round"], 3)
+        self.assertEqual(result["timed_buffs_after_round"], {
+            "intangible": 0, "double_damage": 0,
+        })
+        self.assertEqual(result["draw_reduction"], {
+            "after_stack": 4,
+            "after_first_round": 4,
+            "present_after_first_round": True,
+            "after_second_round": 5,
+            "present_after_second_round": False,
+            "base": 5,
+        })
+
+    def test_retain_ethereal_cleanup_and_retain_power_boundaries(self):
+        from spirecomm.simulator._lightspeed import retain_ethereal_probe
+
+        result = retain_ethereal_probe()
+        self.assertEqual(result["explicit_retain_beats_ethereal"], {
+            "hand": ["Ghostly Armor"],
+            "discard": ["Defend"],
+            "exhaust": ["Ghostly Armor"],
+            "retained_flag_reset": True,
+        })
+        expected_global_retain = {
+            "hand": ["Defend"], "discard": [], "exhaust": ["Ghostly Armor"],
+        }
+        self.assertEqual(result["runic_pyramid"], expected_global_retain)
+        self.assertEqual(result["equilibrium"], expected_global_retain)
+        self.assertEqual(result["self_retain"], {
+            "hand": ["Protect"], "discard": ["Defend"], "exhaust": [],
+        })
+        self.assertEqual(result["manual_retain_selection"], {
+            "ethereal_selected": False, "normal_selected": True,
+        })
+        self.assertEqual(result["power_hooks"], {
+            "task": "RETAIN_CARDS",
+            "pick_count": 1,
+            "can_pick_zero": True,
+            "self_retain_cost_reduction": 1,
+        })
+
     def restore_with_monster_block(self, card_id, block):
         source = SimulatorSTSEnv(encounter="SLIME_BOSS")
         restored = SimulatorSTSEnv()

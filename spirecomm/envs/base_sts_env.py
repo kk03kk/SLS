@@ -48,6 +48,10 @@ class BaseSTSEnv(gym.Env):
                 "player_powers": spaces.Box(
                     -999, 999, shape=(len(PLAYER_POWER_IDS),), dtype=np.int16
                 ),
+                "max_orbs": spaces.Discrete(11),
+                "orb_ids": spaces.MultiDiscrete(np.full(10, 5, dtype=np.int64)),
+                "orb_passive": spaces.Box(-999, 9999, shape=(10,), dtype=np.int16),
+                "orb_evoke": spaces.Box(-999, 32767, shape=(10,), dtype=np.int16),
                 "hand_count": spaces.Discrete(MAX_HAND + 1),
                 "hand_costs": spaces.Box(-3, 99, shape=(MAX_HAND,), dtype=np.int16),
                 "hand_playable": spaces.MultiBinary(MAX_HAND),

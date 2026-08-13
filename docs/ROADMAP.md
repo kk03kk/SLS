@@ -47,11 +47,15 @@ reported separately to avoid false precision.
   choices, lifecycle, stances/orbs and randomness. The initial audit classifies
   46 as partial, three orb primitives as absent, and only the Java shuffle
   primitive as implemented. Generic boundary tests now cover
-  attack/block, per-hit block consumption, direct HP-loss callbacks, hand
+  attack/block, per-hit block consumption, direct HP-loss callbacks, the
+  Intangible/block/Buffer/Torii/Tungsten damage order, hand
   capacity, Ethereal cleanup, action-queue filtering, block/energy turn
-  transitions, Calm exit and Mantra-to-Divinity entry.
-- Next bounded task: implement orb slots, FIFO channel/evoke, passive effects
-  and Focus using the audited frozen-JAR classes, then add checkpoint coverage.
+  transitions, just-applied power durations, Draw Reduction expiry, complete
+  shared Retain/Ethereal/Pyramid/Equilibrium cleanup ordering, Calm
+  exit, Mantra-to-Divinity entry, orb slot/FIFO behavior,
+  all four base orb effects, Focus, and ordered orb checkpoint round-trips.
+- Next bounded task: audit the complete player-turn and end-turn callback
+  sequence, especially card, power and relic priority around hand cleanup.
 - Inherited implementation: `OriginalSTSEnv`, shared Agent-facing API,
   `SimulatorSTSEnv`, all Ironclad card definitions, Act 1 encounter definitions,
   partial potion/relic semantics, checkpoints and differential trace tooling.

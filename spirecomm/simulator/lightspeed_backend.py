@@ -75,6 +75,8 @@ class LightspeedBackend:
             )
         if "potions" in options:
             self._engine.set_potions([str(potion) for potion in options["potions"]])
+        if "rng" in options:
+            self._engine.set_rng_state(options["rng"])
         return self._engine.snapshot()
 
     def step(self, action: LegalAction) -> dict[str, Any]:

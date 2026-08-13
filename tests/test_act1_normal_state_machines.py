@@ -189,7 +189,9 @@ class Act1NormalMoveTests(unittest.TestCase):
                 self.assertNotIn([move] * 3, [moves[i:i + 3] for i in range(len(moves) - 2)])
 
     def test_gremlin_fixed_moves_and_wizard_charge_cycle(self):
-        env, info = durable_env("GREMLIN_GANG", seed=0)
+        # seed + floor drives encounter composition in the base game.  Seed 2
+        # contains one of each gremlin needed by this state-machine assertion.
+        env, info = durable_env("GREMLIN_GANG", seed=2)
         try:
             by_id = {monster["monster_id"]: i for i, monster in enumerate(active_monsters(env))}
             expected_fixed = {

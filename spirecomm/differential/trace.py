@@ -58,7 +58,12 @@ def replay_options_from_payload(payload: dict[str, Any]) -> dict[str, Any]:
 
 def _name(value: Any) -> str:
     result = "".join(char for char in str(value or "").upper() if char.isalnum())
-    return {"STRIKER": "STRIKERED", "DEFENDR": "DEFENDRED"}.get(result, result)
+    return {
+        "STRIKER": "STRIKERED",
+        "DEFENDR": "DEFENDRED",
+        # Base-game power IDs differ from the enum names used by lightspeed.
+        "WEAKENED": "WEAK",
+    }.get(result, result)
 
 
 def _powers(values: list[dict[str, Any]]) -> dict[str, int]:
@@ -93,10 +98,31 @@ def _pile_card(value: dict[str, Any]) -> dict[str, Any]:
 
 
 ORIGINAL_MOVE_IDS = {
-    "JAW_WORM_CHOMP": 1,
-    "JAW_WORM_BELLOW": 2,
-    "JAW_WORM_THRASH": 3,
+    "JAWWORMCHOMP": 1,
+    "JAWWORMBELLOW": 2,
+    "JAWWORMTHRASH": 3,
+    "CULTISTINCANTATION": 3,
+    "CULTISTDARKSTRIKE": 1,
+    "ACIDSLIMESLICK": 2,
+    "SPIKESLIMESTACKLE": 1,
+    "SPIKESLIMEMFLAMETACKLE": 1,
+    "SPIKESLIMEMLICK": 4,
+    "ACIDSLIMEMLICK": 4,
+    "ACIDSLIMEMTACKLE": 2,
+    "ACIDSLIMEMCORROSIVESPIT": 1,
+    "GREENLOUSEBITE": 3,
+    "GREENLOUSESPITWEB": 4,
+    "REDLOUSEBITE": 3,
+    "REDLOUSEGROW": 4,
 }
+
+
+def _enemy_name(value: dict[str, Any]) -> str:
+    name = _name(value.get("id") or value.get("name"))
+    return {
+        "FUZZYLOUSENORMAL": "REDLOUSE",
+        "FUZZYLOUSEDEFENSIVE": "GREENLOUSE",
+    }.get(name, name)
 
 
 def infer_act1_encounter(monsters: list[dict[str, Any]]) -> str:
@@ -156,11 +182,11 @@ def _move_id(value: dict[str, Any]) -> str | None:
     raw = value.get("move_id")
     if raw is None:
         return None
-    monster = _name(value.get("id") or value.get("name"))
+    monster = _enemy_name(value)
     if isinstance(raw, int):
         return f"{monster}:{raw}"
     move_name = str(raw).upper()
-    numeric = ORIGINAL_MOVE_IDS.get(move_name)
+    numeric = ORIGINAL_MOVE_IDS.get(_name(move_name))
     return f"{monster}:{numeric}" if numeric is not None else _name(move_name)
 
 
@@ -173,7 +199,7 @@ def _enemy(value: dict[str, Any]) -> dict[str, Any]:
     if damage == -1:
         damage = value.get("move_base_damage")
     return {
-        "name": _name(value.get("id") or value.get("name")),
+        "name": _enemy_name(value),
         "hp": value.get("hp"),
         "max_hp": value.get("max_hp"),
         "block": value.get("block", 0),
@@ -217,6 +243,15 @@ def normalize_battle(battle: dict[str, Any]) -> dict[str, Any]:
             "energy_per_turn": player.get("energy_per_turn", 3),
             "card_draw_per_turn": player.get("card_draw_per_turn", 5),
             "powers": _powers(player.get("powers") or []),
+            "max_orbs": int(player.get("max_orbs", len(player.get("orbs") or [])) or 0),
+            "orbs": [
+                {
+                    "name": _name(orb.get("id") or orb.get("name")),
+                    "passive_amount": int(orb.get("passive_amount") or 0),
+                    "evoke_amount": int(orb.get("evoke_amount") or 0),
+                }
+                for orb in player.get("orbs") or []
+            ],
         },
         "hand": [_card(card) for card in battle.get("hand") or []],
         "draw_pile": [_pile_card(card) for card in battle.get("draw_pile") or []],
@@ -361,7 +396,14 @@ def load_trace(path: str | Path) -> dict[str, Any]:
 
 
 def replay_trace(env: BaseSTSEnv, trace: dict[str, Any]) -> list[Difference]:
-    _, info = env.reset(seed=trace.get("seed"), options=trace.get("options"))
+    options = dict(trace.get("options") or {})
+    # A combat-only reset is a checkpoint boundary: run-level RNG streams may
+    # already have advanced through Neow and other pre-combat setup.  Restore
+    # the oracle boundary just as we already restore deck, relics, HP and
+    # potions; combat transitions must then advance every stream identically.
+    if "initial_rng" in trace:
+        options["rng"] = trace["initial_rng"]
+    _, info = env.reset(seed=trace.get("seed"), options=options)
     differences = compare_battles(trace["initial"], info["battle"])
     if differences:
         return differences
@@ -425,7 +467,11 @@ def replay_trace(env: BaseSTSEnv, trace: dict[str, Any]) -> list[Difference]:
                 return differences
         if terminated:
             break
-    if checks.get("outcome") and trace.get("outcome") != info.get("outcome"):
+    if (
+        checks.get("outcome")
+        and trace.get("outcome") is not None
+        and trace.get("outcome") != info.get("outcome")
+    ):
         return [Difference("outcome", trace.get("outcome"), info.get("outcome"))]
     return []
 

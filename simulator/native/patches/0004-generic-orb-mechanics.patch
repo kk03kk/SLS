@@ -1,0 +1,238 @@
+diff --git a/include/combat/Player.h b/include/combat/Player.h
+index fda6fb6..4da1786 100644
+--- a/include/combat/Player.h
++++ b/include/combat/Player.h
+@@ -13,6 +13,7 @@
+ #define STS_AI_PLAYER_H
+ 
+ #include <iostream>
++#include <array>
+ #include <vector>
+ #include <cstdint>
+ #include <bitset>
+@@ -42,6 +43,9 @@ namespace sts {
+ 
+         Stance stance = Stance::NEUTRAL;
+         int8_t orbSlots = 0;
++        static constexpr int MAX_ORB_SLOTS = 10;
++        std::array<Orb, MAX_ORB_SLOTS> orbs{};
++        std::array<std::int16_t, MAX_ORB_SLOTS> orbEvokeAmounts{};
+ 
+         // for spire spear/shield
+         std::int8_t lastTargetedMonster = 1;
+@@ -131,7 +135,10 @@ namespace sts {
+         void useEnergy(int amount);
+         void gainEnergy(int amount);
+         void increaseOrbSlots(int amount);
+-        void channelOrb(Orb orb);
++        void channelOrb(BattleContext &bc, Orb orb);
++        void evokeOrb(BattleContext &bc);
++        void triggerEndOfTurnOrbs(BattleContext &bc);
++        void adjustOrbFocus(int amount);
+         [[nodiscard]] bool hasEmptyOrb() const;
+ 
+         void applyEndOfTurnPowers(BattleContext &bc);
+@@ -187,6 +194,7 @@ namespace sts {
+ 
+             case PS::FOCUS:
+                 focus -= amount;
++                adjustOrbFocus(-amount);
+                 break;
+ 
+             case PS::STRENGTH:
+@@ -218,6 +226,8 @@ namespace sts {
+                 return artifact;
+             case PS::DEXTERITY:
+                 return dexterity;
++            case PS::FOCUS:
++                return focus;
+             case PS::STRENGTH:
+                 return strength;
+             default:
+@@ -317,6 +327,7 @@ namespace sts {
+ 
+             case PS::FOCUS:
+                 focus += amount;
++                adjustOrbFocus(amount);
+                 return;
+ 
+             case PS::STRENGTH:
+@@ -400,6 +411,7 @@ namespace sts {
+         }
+         if (s == PlayerStatus::FOCUS) {
+             focus += amount;
++            adjustOrbFocus(amount);
+             return;
+         }
+ 
+@@ -429,6 +441,7 @@ namespace sts {
+                 break;
+ 
+             case PS::FOCUS:
++                adjustOrbFocus(value - focus);
+                 focus = value;
+                 break;
+ 
+diff --git a/src/combat/Player.cpp b/src/combat/Player.cpp
+index d5f935d..94cd990 100644
+--- a/src/combat/Player.cpp
++++ b/src/combat/Player.cpp
+@@ -3,6 +3,8 @@
+ //
+ 
+ #include <cassert>
++#include <algorithm>
++#include <climits>
+ 
+ #include <constants/PlayerStatusEffects.h>
+ #include <combat/BattleContext.h>
+@@ -107,14 +109,92 @@ void Player::gainEnergy(int amount) {
+ }
+ 
+ void Player::increaseOrbSlots(int amount) {
+-    // todo
++    orbSlots = static_cast<int8_t>(std::max(
++        0, std::min(MAX_ORB_SLOTS, static_cast<int>(orbSlots) + amount)));
+ }
+ 
+-void Player::channelOrb(Orb orb) {
+-    // todo
++void Player::channelOrb(BattleContext &bc, Orb orb) {
++    if (orb == Orb::EMPTY || orbSlots <= 0) return;
++    if (!hasEmptyOrb()) evokeOrb(bc);
++    for (int i = 0; i < orbSlots; ++i) {
++        if (orbs[i] == Orb::EMPTY) {
++            orbs[i] = orb;
++            orbEvokeAmounts[i] = orb == Orb::DARK ? std::max(0, 6 + focus) : 0;
++            return;
++        }
++    }
++}
++
++void Player::evokeOrb(BattleContext &bc) {
++    if (orbSlots <= 0 || orbs[0] == Orb::EMPTY) return;
++    switch (orbs[0]) {
++        case Orb::LIGHTNING:
++            bc.addToBot(Actions::DamageRandomEnemy(std::max(0, 8 + focus)));
++            break;
++        case Orb::FROST:
++            bc.addToBot(Actions::GainBlock(std::max(0, 5 + focus)));
++            break;
++        case Orb::DARK: {
++            int target = -1;
++            int lowestHp = INT_MAX;
++            for (int i = 0; i < bc.monsters.monsterCount; ++i) {
++                const auto &monster = bc.monsters.arr[i];
++                if (!monster.isDeadOrEscaped() && monster.curHp < lowestHp) {
++                    lowestHp = monster.curHp;
++                    target = i;
++                }
++            }
++            if (target >= 0) bc.addToBot(Actions::DamageEnemy(target, orbEvokeAmounts[0]));
++            break;
++        }
++        case Orb::FUSION:
++            bc.addToBot(Actions::GainEnergy(2));
++            break;
++        default:
++            break;
++    }
++    for (int i = 1; i < orbSlots; ++i) {
++        orbs[i - 1] = orbs[i];
++        orbEvokeAmounts[i - 1] = orbEvokeAmounts[i];
++    }
++    orbs[orbSlots - 1] = Orb::EMPTY;
++    orbEvokeAmounts[orbSlots - 1] = 0;
++}
++
++void Player::triggerEndOfTurnOrbs(BattleContext &bc) {
++    for (int i = 0; i < orbSlots; ++i) {
++        switch (orbs[i]) {
++            case Orb::LIGHTNING:
++                bc.addToBot(Actions::DamageRandomEnemy(std::max(0, 3 + focus)));
++                break;
++            case Orb::FROST:
++                bc.addToBot(Actions::GainBlock(std::max(0, 2 + focus)));
++                break;
++            case Orb::DARK:
++                orbEvokeAmounts[i] += std::max(0, 6 + focus);
++                break;
++            case Orb::FUSION:
++                bc.addToBot(Actions::GainEnergy(1));
++                break;
++            default:
++                break;
++        }
++    }
++}
++
++void Player::adjustOrbFocus(int amount) {
++    if (amount == 0) return;
++    for (int i = 0; i < orbSlots; ++i) {
++        if (orbs[i] == Orb::DARK) {
++            orbEvokeAmounts[i] = std::max(0, static_cast<int>(orbEvokeAmounts[i]) + amount);
++        }
++    }
+ }
+ 
+ bool Player::hasEmptyOrb() const {
++    for (int i = 0; i < orbSlots; ++i) {
++        if (orbs[i] == Orb::EMPTY) return true;
++    }
+     return false;
+ }
+ 
+diff --git a/src/combat/Actions.cpp b/src/combat/Actions.cpp
+--- a/src/combat/Actions.cpp
++++ b/src/combat/Actions.cpp
+@@ -341,7 +341,7 @@ Action Actions::MonsterStartTurnAction() {
+ 
+ Action Actions::TriggerEndOfTurnOrbsAction() {
+     return {[] (BattleContext &bc) {
+-        // todo
++        bc.player.triggerEndOfTurnOrbs(bc);
+     }};
+ }
+ 
+@@ -924,11 +924,14 @@ Action Actions::UpgradeAllCardsInHand() {
+ }
+ 
+ Action Actions::EssenceOfDarkness(int darkOrbsPerSlot) {
+-    return sts::Action();
++    return {[=] (BattleContext &bc) {
++        const int count = bc.player.orbSlots * darkOrbsPerSlot;
++        for (int i = 0; i < count; ++i) bc.player.channelOrb(bc, Orb::DARK);
++    }};
+ }
+ 
+ Action Actions::IncreaseOrbSlots(int count) {
+-    return sts::Action();
++    return {[=] (BattleContext &bc) { bc.player.increaseOrbSlots(count); }};
+ }
+ 
+ Action Actions::SuicideAction(int monsterIdx, bool triggerRelics) {
+diff --git a/src/combat/BattleContext.cpp b/src/combat/BattleContext.cpp
+--- a/src/combat/BattleContext.cpp
++++ b/src/combat/BattleContext.cpp
+@@ -251,3 +251,3 @@ void BattleContext::initRelics(const GameContext &gc) {
+             case R::CRACKED_CORE:
+-                p.channelOrb(Orb::LIGHTNING);
++                p.channelOrb(*this, Orb::LIGHTNING);
+                 break;
+@@ -302,3 +302,3 @@ void BattleContext::initRelics(const GameContext &gc) {
+             case R::NUCLEAR_BATTERY:
+-                p.channelOrb(Orb::FUSION);
++                p.channelOrb(*this, Orb::FUSION);
+                 break;
+@@ -347,3 +347,3 @@ void BattleContext::initRelics(const GameContext &gc) {
+             case R::SYMBIOTIC_VIRUS:
+-                p.channelOrb(Orb::DARK);
++                p.channelOrb(*this, Orb::DARK);
+                 break;
+@@ -2040,5 +2040,5 @@ void BattleContext::callEndOfTurnActions() {
+     if (player.hasRelic<R::FROZEN_CORE>()) {
+         if (player.hasEmptyOrb()) {
+-            player.channelOrb(Orb::FROST);
++            player.channelOrb(*this, Orb::FROST);
+         }
+     }

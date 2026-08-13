@@ -4,6 +4,7 @@ import unittest
 from pathlib import Path
 
 from spirecomm.checkpoints import (
+    FULL_RUN_RNG_STREAMS,
     export_combat_checkpoint,
     load_combat_checkpoint,
     save_combat_checkpoint,
@@ -39,7 +40,7 @@ class CombatCheckpointTests(unittest.TestCase):
             self.assertEqual(checkpoint["game_state"]["encounter"], "THREE_SENTRIES")
             self.assertEqual(
                 set(checkpoint["rng"]),
-                {"ai", "monster_hp", "shuffle", "card_random", "misc", "potion"},
+                set(FULL_RUN_RNG_STREAMS),
             )
             json.dumps(checkpoint)
 
@@ -82,6 +83,38 @@ class CombatCheckpointTests(unittest.TestCase):
             self.assertEqual(source_next["legal_actions"], restored_next["legal_actions"])
             self.assertEqual(source_reward, restored_reward)
             self.assertEqual(source_done, restored_done)
+        finally:
+            source.close()
+            restored.close()
+
+    def test_checkpoint_preserves_ordered_orbs_and_dark_evoke_amount(self):
+        source = SimulatorSTSEnv()
+        restored = SimulatorSTSEnv()
+        try:
+            source.reset(seed=124)
+            checkpoint = export_combat_checkpoint(source.payload)
+            player = checkpoint["game_state"]["combat_state"]["player"]
+            player["max_orbs"] = 3
+            player["orbs"] = [
+                {"id": "Lightning", "name": "Lightning", "passive_amount": 3, "evoke_amount": 8},
+                {"id": "Dark", "name": "Dark", "passive_amount": 6, "evoke_amount": 19},
+                {"id": "Empty", "name": "Empty", "passive_amount": 0, "evoke_amount": 0},
+            ]
+            internal = player["_internal"]
+            internal["orb_slots"] = 3
+            internal["orbs"] = [4, 1, 0] + [0] * 7
+            internal["orb_evoke_amounts"] = [0, 19, 0] + [0] * 7
+
+            _, info = restored.reset(options={"checkpoint": checkpoint})
+            self.assertEqual(info["battle"]["player"]["max_orbs"], 3)
+            self.assertEqual(
+                [(orb["id"], orb["evoke_amount"]) for orb in info["battle"]["player"]["orbs"]],
+                [("Lightning", 8), ("Dark", 19), ("Empty", 0)],
+            )
+            roundtrip = export_combat_checkpoint(restored.payload)
+            restored_internal = roundtrip["game_state"]["combat_state"]["player"]["_internal"]
+            self.assertEqual(restored_internal["orbs"][:3], [4, 1, 0])
+            self.assertEqual(restored_internal["orb_evoke_amounts"][:3], [0, 19, 0])
         finally:
             source.close()
             restored.close()

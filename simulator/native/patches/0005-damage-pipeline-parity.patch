@@ -1,0 +1,58 @@
+diff --git a/src/combat/Player.cpp b/src/combat/Player.cpp
+--- a/src/combat/Player.cpp
++++ b/src/combat/Player.cpp
+@@ -258,7 +258,7 @@ void Player::damage(BattleContext &bc, const int calculatedDamage, const bool se
+ 
+     int damage = calculatedDamage;
+ 
+-    if (damage > 0 && hasStatus<PS::INTANGIBLE>()) {
++    if (damage > 1 && hasStatus<PS::INTANGIBLE>()) {
+         damage = 1;
+     }
+ 
+@@ -270,7 +270,6 @@ void Player::damage(BattleContext &bc, const int calculatedDamage, const bool se
+ 
+ 
+ 
+-    damage -= block;
+     if (damage > 0) {
+         block = 0;
+     }
+@@ -296,8 +295,7 @@ void Player::attacked(BattleContext &bc, int enemyIdx, int calculatedDamage) {
+     block = std::max(0, block-damage);
+     damage -= savedBlock;
+ 
+-    // buffer triggers before tungsten rod in the game's implementation
+-    // cases where tungsten rod would prevent damage // todo check if this is true
++    // Buffer's onAttackedToChangeDamage hook runs before onAttacked relics.
+     if (damage > 0 && hasStatus<PS::BUFFER>()) {
+         decrementStatus<PS::BUFFER>();
+         damage = 0;
+@@ -311,7 +309,7 @@ void Player::attacked(BattleContext &bc, int enemyIdx, int calculatedDamage) {
+         bc.addToTop( Actions::DamageEnemy(enemyIdx, getStatus<PS::FLAME_BARRIER>()) );
+     }
+ 
+-    if (damage > 0 && damage <=5 && hasRelic<RelicId::TORII>()) {
++    if (damage > 1 && damage <= 5 && hasRelic<RelicId::TORII>()) {
+         damage = 1;
+     }
+ 
+@@ -338,10 +336,17 @@ void Player::attacked(BattleContext &bc, int enemyIdx, int calculatedDamage) {
+ }
+ 
+ void Player::loseHp(BattleContext &bc, int amount, bool selfDamage) {
+-    if (hasStatus<PS::INTANGIBLE>()) {
++    if (amount > 1 && hasStatus<PS::INTANGIBLE>()) {
+         amount = 1;
+     }
+ 
++    // LoseHPAction calls AbstractCreature.damage with HP_LOSS in the original.
++    // HP_LOSS bypasses block, but Buffer still receives the damage-change hook.
++    if (amount > 0 && hasStatus<PS::BUFFER>()) {
++        decrementStatus<PS::BUFFER>();
++        return;
++    }
++
+     if (amount > 0 && hasRelic<RelicId::TUNGSTEN_ROD>()) {
+         amount -= 1;
+         if (amount == 0) {

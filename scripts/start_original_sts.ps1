@@ -16,11 +16,12 @@ $communicationMod = "D:\Steam\steamapps\workshop\content\646570\2131373661\Commu
 $parityModSource = Join-Path (Split-Path -Parent $PSScriptRoot) "oracle_mod\build\SpirecommParity.jar"
 $localModsDir = Join-Path $gameDir "mods"
 $parityMod = Join-Path $localModsDir "SpirecommParity.jar"
+$superFastMode = Join-Path $localModsDir "SuperFastMode.jar"
 $communicationConfig = Join-Path $env:LOCALAPPDATA "ModTheSpire\CommunicationMod\config.properties"
 $projectDir = Split-Path -Parent $PSScriptRoot
 $logDir = Join-Path $projectDir "logs\launcher"
 
-$required = @($java, $gameJar, $mts, $baseMod, $communicationMod, $parityModSource, $communicationConfig)
+$required = @($java, $gameJar, $mts, $baseMod, $communicationMod, $parityModSource, $superFastMode, $communicationConfig)
 foreach ($path in $required) {
     if (-not (Test-Path -LiteralPath $path -PathType Leaf)) {
         throw "Required launch file is missing: $path"
@@ -78,7 +79,7 @@ $arguments += @(
     '-jar', $mts,
     '--skip-launcher',
     '--skip-intro',
-    '--mods', 'basemod,CommunicationMod,spirecomm-parity'
+    '--mods', 'basemod,superfastmode,CommunicationMod,spirecomm-parity'
 )
 $process = Start-Process -FilePath $java `
     -ArgumentList $arguments `
@@ -144,6 +145,6 @@ if (-not $combatStateReceived) {
     StdoutLog = $stdoutLog
     StderrLog = $stderrLog
     WorkingDirectory = $gameDir
-    Mods = "basemod,CommunicationMod,spirecomm-parity"
+    Mods = "basemod,superfastmode,CommunicationMod,spirecomm-parity"
     MathSeed = if ($null -eq $MathSeed) { "derived from game seed" } else { [string]$MathSeed }
 }
