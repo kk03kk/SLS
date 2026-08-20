@@ -47,10 +47,24 @@ def run_paired(
                 include_rng=include_rng,
             )
             terminal = original_decision.terminal or simulator_decision.terminal
+            terminal_kind = None
+            if terminal:
+                if original_decision.terminal != simulator_decision.terminal:
+                    terminal_kind = "TERMINAL_MISMATCH"
+                else:
+                    original_alive = original_decision.observation.player.current_hp > 0
+                    simulator_alive = simulator_decision.observation.player.current_hp > 0
+                    if original_alive != simulator_alive:
+                        terminal_kind = "OUTCOME_MISMATCH"
+                    else:
+                        terminal_kind = "VICTORY" if original_alive else "DEATH"
             action = None if terminal else selector(original_decision, simulator_decision)
             step = TraceStep(
                 sequence,
                 simulator_decision.observation.screen.value,
+                simulator_decision.observation.run.act,
+                simulator_decision.observation.run.floor,
+                terminal_kind,
                 tuple(sorted({action.kind.value for action in simulator_decision.actions})),
                 None if action is None else action.to_dict(),
                 observation_diff,

@@ -207,14 +207,6 @@ std::ostream &CardInstance::printSimpleDesc(std::ostream &os) const {
     return os;
 }
 
-void CardInstance::triggerOnExhaust(BattleContext &bc) {
-    if (id == CardId::SENTINEL) {
-        bc.addToTop( Actions::GainEnergy(upgraded ? 3 : 2) );
-    } else if (id == CardId::CURSE_OF_THE_BELL) {
-        bc.addToBot(Actions::MakeTempCardInHand(CardId::CURSE_OF_THE_BELL) );
-    }
-}
-
 void CardInstance::triggerOnManualDiscard(BattleContext &bc) {
     if (id == CardId::REFLEX) {
         bc.addToBot( Actions::DrawCards(upgraded ? 3 : 2) );
@@ -347,7 +339,11 @@ bool CardInstance::canUse(const BattleContext &bc, int target, const bool inAuto
             break;
 
         case CardType::CURSE:
-            if (!bc.player.hasRelic<RelicId::BLUE_CANDLE>()) {
+            // Pride is the only naturally playable curse (cost 1, Exhaust).
+            // The remaining curses require Blue Candle, including those with
+            // negative unplayable costs.
+            if (id != CardId::PRIDE &&
+                    !bc.player.hasRelic<RelicId::BLUE_CANDLE>()) {
                 return false;
             }
             break;

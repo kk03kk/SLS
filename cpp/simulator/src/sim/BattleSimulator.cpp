@@ -417,6 +417,9 @@ fixed_list<int,10> getIdxListFromString(const std::string &action) {
 
 void BattleSimulator::takeCardSelectAction(const std::string &action) {
     switch (bc->cardSelectInfo.cardSelectTask) {
+        case CardSelectTask::INVALID:
+            throw std::logic_error("No card-selection task is active");
+
         case CardSelectTask::ARMAMENTS:
             bc->chooseArmamentsCard(std::stoi(action));
             break;
@@ -460,6 +463,10 @@ void BattleSimulator::takeCardSelectAction(const std::string &action) {
 
         case CardSelectTask::GAMBLE:
             bc->chooseGambleCards(getIdxListFromString(action));
+            break;
+
+        case CardSelectTask::RETAIN_CARDS:
+            bc->chooseRetainCards(getIdxListFromString(action));
             break;
 
         case CardSelectTask::HEADBUTT:

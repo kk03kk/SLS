@@ -12,8 +12,10 @@ from sls.validation.trace import ParityTrace
 class CoverageSummary:
     seeds: int
     complete_runs: int
+    victory_runs: int
     matching_runs: int
     semantic_steps: int
+    max_act: int
     screens: tuple[str, ...]
     candidate_action_kinds: tuple[str, ...]
     selected_action_kinds: tuple[str, ...]
@@ -37,8 +39,13 @@ def summarize(traces: Iterable[ParityTrace]) -> CoverageSummary:
     return CoverageSummary(
         len(values),
         sum(trace.complete for trace in values),
+        sum(
+            bool(trace.steps) and trace.steps[-1].terminal_kind == "VICTORY"
+            for trace in values
+        ),
         sum(trace.matches for trace in values),
         sum(len(trace.steps) for trace in values),
+        max((step.act for trace in values for step in trace.steps), default=0),
         tuple(sorted(screens)),
         tuple(sorted(candidate_action_kinds)),
         tuple(sorted(selected_action_kinds)),

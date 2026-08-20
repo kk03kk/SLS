@@ -56,6 +56,84 @@ def test_turn_lifecycle_and_stable_power_order() -> None:
     assert powers["first_callback_is_demon_form"] is True
 
 
+def test_status_and_curse_playability_rules() -> None:
+    pride = native.LightspeedBattle()
+    pride.reset(0, "CULTIST")
+    pride.set_card_piles(["Pride"], [], [], [])
+    assert any(
+        action["kind"] == "play" for action in pride.snapshot()["_legal_actions"]
+    )
+    pride.step("play", card_index=1)
+    assert pride.snapshot()["game_state"]["combat_state"]["exhaust_pile"][0][
+        "id"
+    ] == "PRIDE"
+
+    injury = native.LightspeedBattle()
+    injury.reset(0, "CULTIST")
+    injury.set_card_piles(["Injury"], [], [], [])
+    assert not any(
+        action["kind"] == "play" for action in injury.snapshot()["_legal_actions"]
+    )
+
+    candle = native.LightspeedBattle()
+    candle.reset(0, "CULTIST", relics=["Blue Candle"], replace_relics=True)
+    candle.set_card_piles(["Injury"], [], [], [])
+    assert any(
+        action["kind"] == "play" for action in candle.snapshot()["_legal_actions"]
+    )
+
+    wound = native.LightspeedBattle()
+    wound.reset(0, "CULTIST")
+    wound.set_card_piles(["Wound"], [], [], [])
+    assert not any(
+        action["kind"] == "play" for action in wound.snapshot()["_legal_actions"]
+    )
+
+    medkit = native.LightspeedBattle()
+    medkit.reset(0, "CULTIST", relics=["Medical Kit"], replace_relics=True)
+    medkit.set_card_piles(["Wound"], [], [], [])
+    assert any(
+        action["kind"] == "play" for action in medkit.snapshot()["_legal_actions"]
+    )
+
+
+def test_map_graph_invariants_and_full_run_structure_without_combat() -> None:
+    for seed in range(20):
+        run = native.LightspeedRunState()
+        run.reset(seed)
+        initial = run.snapshot()
+        nodes = initial["public_map"]
+        node_ids = {node["node_id"] for node in nodes}
+        assert nodes
+        assert all(0 <= node["x"] < 7 and 0 <= node["y"] < 15 for node in nodes)
+        assert all(
+            target in node_ids or target.endswith(":15")
+            for node in nodes
+            for target in node["outgoing_node_ids"]
+        )
+        assert any(node["reachable"] for node in nodes)
+
+        # This is a state-machine probe, not a combat or parity claim.  It lets
+        # maps, rooms, events, rewards, shops, bosses and Act transitions run
+        # without random combat deaths hiding later floors.
+        run._set_skip_battles_for_testing(True)
+        seen_acts = {initial["public_run"]["act"]}
+        for decision_index in range(600):
+            state = run.snapshot()
+            seen_acts.add(state["public_run"]["act"])
+            actions = state["legal_actions"]
+            if not actions:
+                break
+            action = actions[(seed + decision_index * 7) % len(actions)]
+            run.step(action["bits"])
+        else:
+            pytest.fail(f"seed {seed} did not terminate structurally")
+        assert max(seen_acts) >= 3
+        final = run.snapshot()
+        assert final["public_run"]["outcome"] != 0
+        assert "combat_state" not in final
+
+
 def test_smoke_bomb_restrictions_and_curl_up_lethal_order() -> None:
     smoke = native.smoke_bomb_core_probe()
     assert smoke["normal_legal"] is True
@@ -79,6 +157,27 @@ def test_card_metadata_is_complete_enough_for_all_character_colors() -> None:
     assert by_id["SURVIVOR"]["color"] == "GREEN"
     assert by_id["ZAP"]["color"] == "BLUE"
     assert by_id["VIGILANCE"]["color"] == "PURPLE"
+    assert {
+        card["enum_id"] for card in metadata if card["type"] == "STATUS"
+    } == {"BURN", "DAZED", "SLIMED", "VOID", "WOUND"}
+    assert {
+        card["enum_id"] for card in metadata if card["type"] == "CURSE"
+    } == {
+        "ASCENDERS_BANE",
+        "CLUMSY",
+        "CURSE_OF_THE_BELL",
+        "DECAY",
+        "DOUBT",
+        "INJURY",
+        "NECRONOMICURSE",
+        "NORMALITY",
+        "PAIN",
+        "PARASITE",
+        "PRIDE",
+        "REGRET",
+        "SHAME",
+        "WRITHE",
+    }
 
 
 def test_full_run_checkpoint_replays_the_same_transition() -> None:

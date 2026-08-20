@@ -69,7 +69,6 @@ namespace sts {
 
         std::ostream& printSimpleDesc(std::ostream &o) const;
 
-        void triggerOnExhaust(BattleContext &bc);
         void triggerOnManualDiscard(BattleContext &bc);
         void triggerOnEndOfTurnForPlayingCard(BattleContext &bc) const;
         void triggerWhenDrawn(BattleContext &bc, int myHandIdx);

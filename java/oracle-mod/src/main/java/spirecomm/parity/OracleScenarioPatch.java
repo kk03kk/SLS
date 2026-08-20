@@ -96,10 +96,13 @@ public final class OracleScenarioPatch {
      * reflection path, and only exercises base/+1 variants.
      */
     private static void applyCardProbe(String cardId, int upgrades) {
-        AbstractCard probe = CardLibrary.getCard(cardId);
-        if (probe == null || probe.color != CardColor.RED) {
+        AbstractCard prototype = CardLibrary.getCard(cardId);
+        if (prototype == null || prototype.color != CardColor.RED) {
             throw new IllegalArgumentException("parity_card requires an Ironclad card id");
         }
+        // Never upgrade CardLibrary's shared prototype: doing so contaminates
+        // every later reward/deck copy in the same original-game process.
+        AbstractCard probe = prototype.makeCopy();
         if (upgrades < 0 || upgrades > 1) {
             throw new IllegalArgumentException("parity_card upgrades must be 0 or 1");
         }

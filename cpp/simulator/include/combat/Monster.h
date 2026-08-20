@@ -524,12 +524,10 @@ namespace sts {
 
     template <MonsterStatus s>
     void Monster::buff(int amount) {
-        if (isBooleanPower(s)) {
+        if constexpr (isBooleanPower(s)) {
             setHasStatus<s>(true);
             return;
-        }
-
-        switch (s) {
+        } else switch (s) {
             case MonsterStatus::ARTIFACT:
                 artifact += amount;
                 setHasStatus<s>(true);

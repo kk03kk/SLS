@@ -16,6 +16,17 @@ JAVA = ROOT / "reference" / "original-game" / "decompiled"
 CONSTANTS = ROOT / "cpp" / "simulator" / "include" / "constants"
 BATTLE = ROOT / "cpp" / "simulator" / "src" / "combat" / "BattleContext.cpp"
 CARD_POOLS = CONSTANTS / "CardPools.h"
+RELIC_POOLS = CONSTANTS / "RelicPools.h"
+POTIONS = CONSTANTS / "Potions.h"
+EVENTS = CONSTANTS / "Events.h"
+GAME_CONTEXT = ROOT / "cpp" / "simulator" / "src" / "game" / "GameContext.cpp"
+
+IRONCLAD_REACHABLE_STATUSES = {"BURN", "DAZED", "SLIMED", "VOID", "WOUND"}
+IRONCLAD_REACHABLE_CURSES = {
+    "ASCENDERS_BANE", "CLUMSY", "CURSE_OF_THE_BELL", "DECAY", "DOUBT",
+    "INJURY", "NECRONOMICURSE", "NORMALITY", "PAIN", "PARASITE", "PRIDE",
+    "REGRET", "SHAME", "WRITHE",
+}
 
 
 def _java_ids(relative: str, field: str = "ID") -> set[str]:
@@ -89,6 +100,48 @@ def audit() -> dict[str, Any]:
     if missing_colorless:
         failures.append("obtainable colorless cards lack an implementation case")
 
+    relic_source = RELIC_POOLS.read_text(encoding="utf-8")
+    ironclad_relic_source = relic_source.split("namespace Ironclad", 1)[1].split(
+        "namespace Silent", 1
+    )[0]
+    ironclad_relic_pool = set(re.findall(
+        r"RelicId::([A-Z0-9_]+)", ironclad_relic_source
+    ))
+
+    potion_source = POTIONS.read_text(encoding="utf-8")
+    ironclad_potion_source = potion_source.split(
+        "static constexpr Potion potionPool", 1
+    )[1].split("},", 1)[0]
+    ironclad_potions = set(re.findall(
+        r"Potion::([A-Z0-9_]+)", ironclad_potion_source
+    ))
+    potion_cases = set(re.findall(
+        r"case\s+Potion::([A-Z0-9_]+)", battle_source
+    ))
+    # Fairy in a Bottle triggers from the lethal-damage pipeline, not usePotion.
+    missing_potion_use_paths = sorted(
+        ironclad_potions - potion_cases - {"FAIRY_POTION"}
+    )
+    if missing_potion_use_paths:
+        failures.append("Ironclad potion pool lacks an execution path")
+
+    event_source = EVENTS.read_text(encoding="utf-8")
+    pooled_events = set(re.findall(r"Event::([A-Z0-9_]+)", event_source.split(
+        "namespace EventPools", 1
+    )[1]))
+    game_source = GAME_CONTEXT.read_text(encoding="utf-8")
+    event_choice_cases = set(re.findall(
+        r"case\s+Event::([A-Z0-9_]+)",
+        game_source.split("void GameContext::chooseEventOption", 1)[1],
+    ))
+    # Bonfire immediately enters its card-selection continuation and therefore
+    # intentionally has no chooseEventOption switch arm.
+    missing_event_choice_paths = sorted(
+        pooled_events - event_choice_cases - {"BONFIRE_SPIRITS"}
+    )
+    if missing_event_choice_paths:
+        failures.append("pooled events lack a choice execution path")
+
     first_party_roots = [ROOT / value for value in ("src", "tools", "tests", "java", "docs")]
     historical_markers: list[str] = []
     marker = re.compile(r"five.?fight|mini.?run", re.IGNORECASE)
@@ -123,6 +176,13 @@ def audit() -> dict[str, Any]:
             "ironclad_missing_use_cases": missing_ironclad,
             "colorless_reward_cards": len(colorless),
             "colorless_missing_use_cases": missing_colorless,
+            "ironclad_relic_pool": len(ironclad_relic_pool),
+            "ironclad_potion_pool": len(ironclad_potions),
+            "ironclad_potions_missing_use_paths": missing_potion_use_paths,
+            "ironclad_reachable_statuses": sorted(IRONCLAD_REACHABLE_STATUSES),
+            "ironclad_reachable_curses": sorted(IRONCLAD_REACHABLE_CURSES),
+            "pooled_events": len(pooled_events),
+            "pooled_events_missing_choice_paths": missing_event_choice_paths,
             "historical_markers": historical_markers,
             "assert_false_sites": len(re.findall(r"assert\s*\(\s*false\s*\)", (
                 "\n".join(
@@ -141,6 +201,10 @@ def audit() -> dict[str, Any]:
         },
         "dynamic_gate": (
             "FullRun equivalence still requires Original Game + CommunicationMod."
+        ),
+        "claim_scope": (
+            "A pass means only that local static and regression gates succeeded; "
+            "it is not evidence of Original Game parity or complete behavioral fidelity."
         ),
     }
 

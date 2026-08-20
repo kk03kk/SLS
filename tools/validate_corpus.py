@@ -94,12 +94,15 @@ def main() -> int:
     if not isinstance(acceptance, dict):
         parser.error("[acceptance] must be a TOML table")
     required_complete = int(acceptance.get("require_complete_runs", len(seeds)))
+    required_victories = int(acceptance.get("require_victories", 0))
+    required_max_act = int(acceptance.get("require_max_act", 1))
     allowed_differences = int(acceptance.get("allow_unexplained_differences", 0))
     required_screens = {str(value) for value in acceptance.get("require_screens", ())}
     required_actions = {
         str(value) for value in acceptance.get("require_candidate_actions", ())
     }
-    if required_complete < 0 or allowed_differences < 0:
+    if (required_complete < 0 or required_victories < 0 or
+            required_max_act < 1 or allowed_differences < 0):
         parser.error("acceptance thresholds must be non-negative")
     transport = StdioTransport(
         log_path=Path(os.environ["SLS_PROTOCOL_LOG"]).resolve()
@@ -124,6 +127,8 @@ def main() -> int:
     unexplained = summary.seeds - summary.matching_runs
     accepted = (
         summary.complete_runs >= required_complete
+        and summary.victory_runs >= required_victories
+        and summary.max_act >= required_max_act
         and unexplained <= allowed_differences
         and summary.seeds == len(seeds)
         and required_screens.issubset(summary.screens)
@@ -134,6 +139,8 @@ def main() -> int:
         "accepted": accepted,
         "acceptance": {
             "require_complete_runs": required_complete,
+            "require_victories": required_victories,
+            "require_max_act": required_max_act,
             "allow_unexplained_differences": allowed_differences,
             "require_screens": sorted(required_screens),
             "require_candidate_actions": sorted(required_actions),
@@ -147,6 +154,7 @@ def main() -> int:
     )
     print(
         f"CORPUS seeds={summary.seeds} complete={summary.complete_runs} "
+        f"victories={summary.victory_runs} max_act={summary.max_act} "
         f"matching={summary.matching_runs} steps={summary.semantic_steps} "
         f"accepted={accepted}",
         file=sys.stderr,

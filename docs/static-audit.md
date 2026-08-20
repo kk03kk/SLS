@@ -16,6 +16,17 @@ Mod running against the same seeds and semantic actions.
   have an explicit native attack/skill/power execution case where one is
   required. Status and curse lifecycle cards are not all played through those
   switches.
+- The reachable card metadata contains exactly five statuses and fourteen
+  curses. Their effects are split across draw, end-turn, exhaust, removal and
+  playability hooks. Regression covers Pride's natural play/exhaust behavior
+  and the Blue Candle/Medical Kit legality boundary.
+- The Ironclad pools contain 130 ordinary obtainable relics and 33 potions.
+  Every active-use potion has an execution branch; Fairy in a Bottle is handled
+  by lethal-damage recovery. Relic behavior is not inferred from pool count.
+- All 51 pooled events have a native choice/continuation path (Bonfire Spirits
+  enters card selection directly). A structural regression checks map graph
+  integrity and traverses through Act 3 without combat deaths masking later
+  rooms. This proves reachability and continuation safety, not Java parity.
 - Unsupported playable-card dispatch now throws in Release builds instead of
   silently doing nothing.
 - Java-compatible seed text conversion and native RNG edge behavior have local
@@ -56,6 +67,11 @@ python -m pytest
   cards, and large-slime split display state.
 - Stale fields from reused combat/event structures are normalized out of the
   checkpoint contract.
+- Pride is playable without Blue Candle, matching its original cost-1 Exhaust
+  behavior. Terminal Act 3/4 states are no longer mistaken for a request to
+  initialize the boss combat a second time.
+- Oracle single-card probes copy CardLibrary prototypes before upgrading, so a
+  probe cannot contaminate later original-game rewards or decks.
 
 ## Static gaps that remain
 
@@ -64,7 +80,7 @@ These are facts, not proof of divergence:
 - `GameContext::disablePrismaticShard` is `true`; Prismatic Shard's cross-color
   reward-pool behavior is therefore intentionally absent and is a known
   Simulator/original difference if that relic is obtained.
-- The native source still contains 120 `assert(false)` sites and many inherited
+- The native source still contains 119 `assert(false)` sites and many inherited
   `TODO` comments. Most assertions are invalid-input/internal-invariant branches,
   but their mere presence cannot prove the branch unreachable in every FullRun.
 - 244 registered cards have no explicit play switch. This includes non-Ironclad
@@ -77,6 +93,8 @@ These are facts, not proof of divergence:
 - Decompiled Java is static evidence only. It cannot reveal differences caused
   by runtime patch order, CommunicationMod visibility timing, BaseMod behavior,
   or the actual installed game build.
+- The dynamic corpus now requires a victory, Act 4 coverage, and the major
+  FullRun screens. Matching early deaths alone can no longer satisfy acceptance.
 
 ## Inferences
 

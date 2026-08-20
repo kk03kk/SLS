@@ -6,6 +6,7 @@
 
 #include <algorithm>
 #include <cassert>
+#include <stdexcept>
 
 #include "constants/RelicPools.h"
 #include "constants/CardPools.h"
@@ -3984,8 +3985,7 @@ void GameContext::openCardSelectScreen(CardSelectScreenType type, int selectCoun
 
 void GameContext::regainControl() {
     if (regainControlAction == nullptr) {
-        std::cerr << "regain control lambda was null" << "\n";
-//        assert(false);
+        throw std::logic_error("run continuation is missing");
     }
     regainControlAction(*this);
 }

@@ -2932,6 +2932,15 @@ public:
         return battle_ ? combat_legal_actions(*battle_) : run_legal_actions(*gc_);
     }
 
+    void set_skip_battles_for_testing(bool enabled) {
+        require_reset();
+        if (battle_) {
+            throw std::logic_error(
+                "Battle skipping can only be changed outside combat");
+        }
+        gc_->skipBattles = enabled;
+    }
+
     py::dict step(std::uint32_t bits) {
         require_reset();
         if (battle_) {
@@ -2965,7 +2974,14 @@ public:
         }
         action.execute(*gc_);
         action_history_.push_back(bits);
-        if (gc_->screenState == ScreenState::BATTLE) start_battle();
+        // afterBattle intentionally leaves the room's screen value untouched
+        // at a terminal Act 3/4 victory.  A structural test may resolve combat
+        // synchronously, so do not mistake that terminal screen value for a
+        // request to initialize the boss battle again.
+        if (gc_->screenState == ScreenState::BATTLE &&
+                gc_->outcome == GameOutcome::UNDECIDED) {
+            start_battle();
+        }
         return snapshot();
     }
 
@@ -4008,6 +4024,9 @@ PYBIND11_MODULE(_lightspeed, module) {
         .def("snapshot", &LightspeedRunState::snapshot)
         .def("load_state", &LightspeedRunState::load_state, py::arg("state"))
         .def("legal_actions", &LightspeedRunState::legal_actions)
+        .def("_set_skip_battles_for_testing",
+             &LightspeedRunState::set_skip_battles_for_testing,
+             py::arg("enabled"))
         .def("step", &LightspeedRunState::step, py::arg("bits"))
         .def("advance_all_rng", &LightspeedRunState::advance_all_rng)
         .def("courier_restock_probe", &LightspeedRunState::courier_restock_probe,
