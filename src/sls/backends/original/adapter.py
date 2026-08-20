@@ -224,11 +224,18 @@ def _actions(
             add(Action(ActionKind.CHOOSE_MAP_NODE, node_id="map:boss"), "choose 0")
     elif screen is ScreenType.CARD_REWARD:
         cards = _mappings(state.get("cards"))
+        select_type = str(state.get("type") or state.get("select_type") or "").upper()
+        if state.get("for_purge"):
+            select_type = "REMOVE"
+        elif state.get("for_upgrade"):
+            select_type = "UPGRADE"
+        elif state.get("for_transform"):
+            select_type = "TRANSFORM"
         kind = {
             "UPGRADE": ActionKind.UPGRADE_CARD,
             "PURGE": ActionKind.REMOVE_CARD,
             "REMOVE": ActionKind.REMOVE_CARD,
-        }.get(str(state.get("type") or state.get("select_type") or "").upper(), ActionKind.SELECT_CARD)
+        }.get(select_type, ActionKind.SELECT_CARD)
         for index, _ in enumerate(cards):
             add(Action(kind, subject_id=f"select-card:{index}"), f"choose {index}")
         if "skip" in available:

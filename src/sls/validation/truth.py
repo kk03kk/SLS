@@ -196,6 +196,9 @@ def continuation_differences(
         "action_queue_types", "card_queue_types",
     ):
         left, right = original.get(key), simulator.get(key)
+        if key == "card_selection_task":
+            left = {"PURGE": "REMOVE"}.get(str(left).upper(), left)
+            right = {"PURGE": "REMOVE"}.get(str(right).upper(), right)
         if key == "post_combat" and str(original.get("continuation_kind")).upper() == "MAP":
             # Stock retains the battle-over room object while its map is open;
             # native has already discarded that inert UI owner.
