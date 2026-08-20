@@ -83,6 +83,7 @@ namespace sts {
         // CardSelectScreen
         RngReference transformRng = CARD_RNG;
         CardSelectScreenType selectScreenType = CardSelectScreenType::INVALID;
+        bool cardSelectFromRewards = false;
         int toSelectCount = 0;
         fixed_list<SelectScreenCard, Deck::MAX_SIZE> toSelectCards;
         fixed_list<SelectScreenCard,3> haveSelectedCards;

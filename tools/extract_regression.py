@@ -77,7 +77,8 @@ def extract(
     expected_screen = (
         (boundary.get("canonical_simulator_decision") or {}).get("observation") or {}
     ).get("screen")
-    folded_ui_boundary = (
+    continuation_evidence = continuation_original(boundary["raw_original_payload"])
+    folded_ui_boundary = bool(continuation_evidence.get("ui_boundary_folded")) or (
         len(game.get("choice_list") or ()) == 1
         and str(game.get("screen_type") or "").upper() == "EVENT"
         and expected_screen == "MAP"
@@ -223,25 +224,33 @@ def extract(
             "counter_delta": deltas,
         })
     elif category == "transition":
-        if step + 1 >= len(boundaries):
-            raise ValueError("transition fixture requires an anchor and next boundary")
+        # Comparisons describe the state at this boundary, so a recorded
+        # difference was caused by the selected action on the preceding one.
+        # Retain the older pre-action form for explicitly targeted matching
+        # boundaries used by existing rule probes.
+        difference_boundary = bool(boundary.get("differences"))
+        action_step = step - 1 if difference_boundary else step
+        after_step = step if difference_boundary else step + 1
+        if action_step < 0 or after_step >= len(boundaries):
+            raise ValueError("transition fixture requires a preceding action and result boundary")
         from sls.contracts import Action
         _, _, anchor, checkpoint, action_suffix = _simulator_at_step(
-            bundle, manifest, boundaries, step,
+            bundle, manifest, boundaries, action_step,
         )
-        action = boundary.get("selected_action")
+        action_boundary = boundaries[action_step]
+        action = action_boundary.get("selected_action")
         if not action:
             raise ValueError("transition fixture requires a selected action")
         fixture["simulator_checkpoint"] = checkpoint
         fixture["action_suffix"] = action_suffix
         fixture["action_evidence_suffix"] = [
             boundaries[index].get("action_evidence") or {}
-            for index in range(int(anchor["sequence"]), step)
+            for index in range(int(anchor["sequence"]), action_step)
         ]
         fixture["restore_anchor"] = anchor["anchor_id"]
         fixture["action"] = action
-        fixture["action_evidence"] = boundary.get("action_evidence") or {}
-        after = boundaries[step + 1]
+        fixture["action_evidence"] = action_boundary.get("action_evidence") or {}
+        after = boundaries[after_step]
         after_decision = adapt_original(after["raw_original_payload"]).decision
         after_canonical = canonical_original(after["raw_original_payload"])
         if manifest.get("evidence_class") == "RESUMED_AUTOSAVE":

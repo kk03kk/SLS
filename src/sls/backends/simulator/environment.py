@@ -141,6 +141,10 @@ class SimulatorBackend:
         actions, candidate_bits = _semantic_actions(raw, card_zones["HAND"])
         self._candidate_bits = candidate_bits
         options = _screen_entities(raw)
+        if screen is ScreenType.GAME_OVER:
+            card_zones = {zone: () for zone in card_zones}
+            enemies = ()
+            powers = ()
         observation = Observation(
             player=Player(
                 "IRONCLAD", int(visible_player["current_hp"]), int(visible_player["max_hp"]),
@@ -176,7 +180,11 @@ class SimulatorBackend:
             map_nodes=tuple(
                 MapNode(
                     str(node["node_id"]), int(node["x"]), int(node["y"]),
-                    "BURNING_ELITE" if node["burning"] else str(node["room_type"]),
+                    (
+                        "BURNING_ELITE"
+                        if node["burning"] and not bool(player_state["green_key"])
+                        else str(node["room_type"])
+                    ),
                     bool(node["reachable"]), tuple(str(item) for item in node["outgoing_node_ids"]),
                 )
                 for node in raw["public_map"]
@@ -187,7 +195,10 @@ class SimulatorBackend:
             event_options=options["event"],
             rest_options=options["rest"],
             boss_relic_options=options["boss"],
-            public_context=(("turn", int(combat["turn"])),) if combat else (),
+            public_context=(
+                (("turn", int(combat["turn"])),)
+                if combat and screen is not ScreenType.GAME_OVER else ()
+            ),
         )
         return Decision(
             observation=observation,

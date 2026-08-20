@@ -1057,6 +1057,7 @@ py::dict public_screen_state(const GameContext &gc) {
         }
         result["select_type"] = select_type;
         result["select_count"] = gc.info.toSelectCount;
+        result["from_rewards"] = gc.info.cardSelectFromRewards;
         py::list options;
         for (int index = 0; index < gc.info.toSelectCards.size(); ++index) {
             const auto &option = gc.info.toSelectCards[index];
@@ -1195,11 +1196,19 @@ py::dict screen_info_state(const GameContext &gc) {
         }
         case ScreenState::CARD_SELECT: {
             // The callback after selection depends on the event/reward/shop
-            // that opened this screen and cannot be inferred from these fields.
-            result["complete"] = false;
+            // that opened this screen. The combat-reward bottle path is
+            // explicitly represented and can therefore be restored exactly.
+            const bool restorableRewardBottle =
+                gc.info.cardSelectFromRewards &&
+                gc.info.selectScreenType == CardSelectScreenType::BOTTLE;
+            result["complete"] = restorableRewardBottle;
             result["transform_rng"] = static_cast<int>(gc.info.transformRng);
             result["select_type"] = static_cast<int>(gc.info.selectScreenType);
             result["select_count"] = gc.info.toSelectCount;
+            result["from_rewards"] = gc.info.cardSelectFromRewards;
+            if (restorableRewardBottle) {
+                result["rewards"] = rewards_state(gc.info.rewardsContainer);
+            }
             py::list available;
             for (const auto &selected : gc.info.toSelectCards) {
                 py::dict value;
@@ -1279,6 +1288,21 @@ void restore_screen_info(GameContext &gc, const py::dict &state) {
             gc.info.transformRng = static_cast<RngReference>(state["transform_rng"].cast<int>());
             gc.info.selectScreenType = static_cast<CardSelectScreenType>(state["select_type"].cast<int>());
             gc.info.toSelectCount = state["select_count"].cast<int>();
+            gc.info.cardSelectFromRewards = state.contains("from_rewards")
+                && state["from_rewards"].cast<bool>();
+            if (gc.info.cardSelectFromRewards) {
+                if (!state.contains("rewards")) {
+                    throw std::invalid_argument(
+                        "Reward-origin card select checkpoint is missing rewards");
+                }
+                gc.info.rewardsContainer = restore_rewards(state["rewards"].cast<py::dict>());
+                gc.regainControlAction = [](GameContext &context) {
+                    context.screenState = ScreenState::REWARDS;
+                    context.regainControlAction = [](GameContext &next) {
+                        next.screenState = ScreenState::MAP_SCREEN;
+                    };
+                };
+            }
             for (const auto item : state["available"].cast<py::list>()) {
                 const auto value = item.cast<py::dict>();
                 gc.info.toSelectCards.push_back(SelectScreenCard(

@@ -115,6 +115,18 @@ class OriginalBackend:
             payload = self._wait_for_deck_growth(
                 payload, starting_size=starting_deck_size, executed=executed,
             )
+        if not isinstance(action, str):
+            expected_key = (
+                "emerald_key" if action.kind is ActionKind.TAKE_REWARD
+                and action.reward_id == "reward-key:emerald"
+                else "sapphire_key" if action.kind is ActionKind.TAKE_BLUE_KEY
+                else "ruby_key" if action.kind is ActionKind.RECALL
+                else None
+            )
+            if expected_key is not None:
+                payload = self._wait_for_key_acquisition(
+                    payload, key=expected_key, executed=executed,
+                )
         fold_single_event = (
             not isinstance(action, str)
             and action.kind in {ActionKind.CHOOSE_EVENT_OPTION, ActionKind.CHOOSE_NEOW_OPTION}
@@ -125,6 +137,7 @@ class OriginalBackend:
                 not isinstance(action, str) and action.kind is ActionKind.LEAVE_SHOP
             ),
         )
+        payload = self._settle_combat_terminal(payload, executed)
         payload = self._settle_debug_intents(payload, executed)
         self._last_executed_commands = tuple(executed)
         timing_after = payload.get("_timing_evidence") or {}
@@ -199,6 +212,25 @@ class OriginalBackend:
             executed.append("wait 1")
         raise RuntimeError(f"selected card did not enter the deck within {limit} frames")
 
+    def _wait_for_key_acquisition(
+        self, payload: dict[str, Any], *, key: str,
+        executed: list[str], limit: int = 60,
+    ) -> dict[str, Any]:
+        """Wait for stock ObtainKeyEffect to materialize the selected key."""
+
+        for _ in range(limit):
+            run = payload.get("_parity_run") or (
+                (payload.get("game_state") or {}).get("_parity_run") or {}
+            )
+            if run.get(key) is True:
+                return payload
+            available = {str(item).lower() for item in payload.get("available_commands") or ()}
+            if "wait" not in available:
+                raise RuntimeError(f"selected {key} before its stock effect materialized")
+            payload = self.session.execute("wait 1")
+            executed.append("wait 1")
+        raise RuntimeError(f"selected {key} did not materialize within {limit} frames")
+
     def command_sequence(self, action: Action | str) -> tuple[str, ...]:
         """Return validation-only wire commands without exposing them to policy code."""
 
@@ -257,6 +289,18 @@ class OriginalBackend:
                     executed.append(command)
                 folded = True
                 continue
+            rest_state = game.get("screen_state") or {}
+            if (
+                screen == "REST"
+                and bool(rest_state.get("has_rested"))
+                and not (rest_state.get("rest_options") or ())
+                and "proceed" in available
+            ):
+                payload = self.session.execute("proceed")
+                if executed is not None:
+                    executed.append("proceed")
+                folded = True
+                continue
             if (
                 fold_single_event
                 and screen == "EVENT" and len(choices or ()) == 1
@@ -309,3 +353,36 @@ class OriginalBackend:
             if executed is not None:
                 executed.append("wait 1")
         return payload
+
+    def _settle_combat_terminal(
+        self, payload: dict[str, Any], executed: list[str] | None = None,
+        *, limit: int = 8,
+    ) -> dict[str, Any]:
+        """Advance stock victory/death presentation to an actionable boundary."""
+
+        for _ in range(limit):
+            game = payload.get("game_state") or {}
+            continuation = payload.get("_continuation") or game.get("_continuation") or {}
+            if str(continuation.get("screen") or "").upper() in {
+                "DEATH", "VICTORY", "GAME_OVER", "COMPLETE",
+            }:
+                return payload
+            combat = game.get("combat_state") or {}
+            if not combat:
+                return payload
+            monsters = combat.get("monsters") or ()
+            player_dead = int(game.get("current_hp", 0) or 0) <= 0
+            monsters_dead = bool(monsters) and all(
+                int(monster.get("current_hp", 0) or 0) <= 0
+                or bool(monster.get("is_gone", False))
+                for monster in monsters
+            )
+            if not player_dead and not monsters_dead:
+                return payload
+            available = {str(item).lower() for item in payload.get("available_commands") or ()}
+            if "wait" not in available:
+                raise RuntimeError("terminal combat presentation has no advertised wait command")
+            payload = self.session.execute("wait 30")
+            if executed is not None:
+                executed.append("wait 30")
+        raise RuntimeError("Original combat terminal presentation did not settle")

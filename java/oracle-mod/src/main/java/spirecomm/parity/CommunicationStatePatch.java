@@ -13,6 +13,7 @@ import com.megacrit.cardcrawl.map.MapRoomNode;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.monsters.EnemyMoveInfo;
 import com.megacrit.cardcrawl.rewards.RewardItem;
+import com.megacrit.cardcrawl.relics.AbstractRelic;
 import com.megacrit.cardcrawl.rooms.AbstractRoom;
 import basemod.ReflectionHacks;
 import communicationmod.GameStateConverter;
@@ -22,9 +23,10 @@ import java.util.ArrayList;
 import javassist.CannotCompileException;
 import javassist.CtBehavior;
 import java.lang.reflect.Method;
+import java.lang.reflect.Field;
 
 public final class CommunicationStatePatch {
-    public static final String INSTRUMENTATION_SCHEMA = "spirecomm-parity-v5";
+    public static final String INSTRUMENTATION_SCHEMA = "spirecomm-parity-v7";
     private static final Method CALCULATE_DAMAGE = privateCalculateDamage();
 
     private static Method privateCalculateDamage() {
@@ -54,6 +56,33 @@ public final class CommunicationStatePatch {
             ReflectionHacks.setPrivate(monster, AbstractMonster.class, "intentDmg", previous);
         }
     }
+
+    private static boolean pendingBottleSelection() {
+        if (AbstractDungeon.screen != AbstractDungeon.CurrentScreen.GRID
+                || AbstractDungeon.player == null) {
+            return false;
+        }
+        for (AbstractRelic relic : AbstractDungeon.player.relics) {
+            if (!("Bottled Flame".equals(relic.relicId)
+                    || "Bottled Lightning".equals(relic.relicId)
+                    || "Bottled Tornado".equals(relic.relicId))) {
+                continue;
+            }
+            try {
+                Field selected = relic.getClass().getDeclaredField("cardSelected");
+                selected.setAccessible(true);
+                if (!selected.getBoolean(relic)) {
+                    return true;
+                }
+            } catch (Exception error) {
+                throw new RuntimeException(
+                    "cannot inspect registered bottle relic selection state", error
+                );
+            }
+        }
+        return false;
+    }
+
     public static String inject(String json) {
         if (json == null || json.length() < 2 || json.charAt(json.length() - 1) != '}') {
             return json;
@@ -119,6 +148,10 @@ public final class CommunicationStatePatch {
             continuation.put("card_selection_task", "DISCOVERY");
             continuation.put("card_selection_count", 1);
         }
+        if (pendingBottleSelection()) {
+            continuation.put("card_selection_source", "MASTER_DECK");
+            continuation.put("card_selection_task", "BOTTLE");
+        }
         continuation.put("post_combat", AbstractDungeon.getCurrRoom() != null
             && AbstractDungeon.getCurrRoom().isBattleOver);
         continuation.put("loading_post_combat", AbstractDungeon.loading_post_combat);
@@ -137,6 +170,27 @@ public final class CommunicationStatePatch {
         }
         continuation.put("action_queue_types", actionTypes);
         continuation.put("card_queue_types", cardQueueTypes);
+        ArrayList<Map<String, Object>> bottledCards = new ArrayList<Map<String, Object>>();
+        if (AbstractDungeon.player != null && AbstractDungeon.player.masterDeck != null) {
+            for (int index = 0; index < AbstractDungeon.player.masterDeck.group.size(); ++index) {
+                AbstractCard card = AbstractDungeon.player.masterDeck.group.get(index);
+                String bottleType = card.inBottleFlame ? "ATTACK"
+                    : card.inBottleLightning ? "SKILL"
+                    : card.inBottleTornado ? "POWER" : null;
+                if (bottleType == null) {
+                    continue;
+                }
+                Map<String, Object> value = new LinkedHashMap<String, Object>();
+                value.put("type", bottleType);
+                value.put("deck_index", index);
+                value.put("uuid", card.uuid == null ? null : card.uuid.toString());
+                value.put("id", card.cardID);
+                value.put("upgrades", card.timesUpgraded);
+                value.put("misc", card.misc);
+                bottledCards.add(value);
+            }
+        }
+        continuation.put("bottled_cards", bottledCards);
         Map<String, Object> timingEvidence = new LinkedHashMap<String, Object>();
         timingEvidence.put("fps_limit", Settings.MAX_FPS);
         timingEvidence.put("discovery_completion_serial", DiscoveryTimingPatch.completionSerial);

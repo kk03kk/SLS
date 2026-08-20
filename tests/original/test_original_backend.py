@@ -3,6 +3,7 @@ from __future__ import annotations
 from sls.backends.original import OriginalBackend, OriginalSession
 from sls.backends.original.adapter import adapt_original
 from sls.contracts import ActionKind, ScreenType
+from sls.contracts.continuation import continuation_original
 from sls.curriculum import IRONCLAD_A0_ACT1
 
 
@@ -85,6 +86,87 @@ def test_step_folds_grid_confirmation_and_single_neow_leave_boundary() -> None:
     assert backend.last_executed_commands == ("choose 0", "confirm", "choose 0", "wait 30")
     backend.return_to_menu()
     assert transport.sent[-1] == "reset_run"
+
+
+def test_grid_cards_use_master_deck_uuid_indices_and_oracle_bottle_task() -> None:
+    payload = game_payload([])
+    payload["game_state"].update({
+        "screen_type": "GRID",
+        "deck": [
+            {"id": "Strike_R", "uuid": "first", "upgrades": 0},
+            {"id": "Bash", "uuid": "second", "upgrades": 0},
+        ],
+        "screen_state": {
+            "num_cards": 1,
+            "cards": [
+                {"id": "Bash", "uuid": "second", "upgrades": 0},
+                {"id": "Strike_R", "uuid": "first", "upgrades": 0},
+            ],
+        },
+    })
+    payload["_continuation"] = {
+        "card_selection_source": "MASTER_DECK",
+        "card_selection_task": "BOTTLE",
+        "card_selection_count": 0,
+    }
+    decision = adapt_original(payload).decision
+    assert [
+        dict(entity.properties)["deck_index"]
+        for entity in decision.observation.reward_options
+    ] == [1, 0]
+    continuation = continuation_original(payload)
+    assert continuation["card_selection_task"] == "BOTTLE"
+    assert continuation["card_selection_count"] == 1
+
+
+def test_completed_rest_screen_is_folded_to_map() -> None:
+    rest = game_payload([])
+    rest["game_state"].update({
+        "screen_type": "REST",
+        "screen_state": {"has_rested": True, "rest_options": []},
+    })
+    rest["available_commands"] = ["proceed", "wait"]
+    mapped = game_payload([])
+    mapped["game_state"].update({
+        "screen_type": "MAP",
+        "screen_state": {"next_nodes": [{"x": 0, "y": 7}]},
+    })
+    mapped["available_commands"] = ["choose", "wait"]
+    mapped["_continuation"] = {"ui_boundary_folded": False}
+    transport = ScriptedTransport([mapped])
+    session = OriginalSession(transport)
+    session.payload = rest
+    backend = OriginalBackend(session, IRONCLAD_A0_ACT1)
+    executed: list[str] = []
+    result = backend._fold_protocol_only_boundaries(rest, executed)
+    assert result["game_state"]["screen_type"] == "MAP"
+    assert result["_continuation"]["ui_boundary_folded"] is True
+    assert executed == ["proceed"]
+
+
+def test_lethal_combat_animation_is_settled_to_terminal_screen() -> None:
+    dying = game_payload([])
+    dying["game_state"].update({
+        "screen_type": "NONE", "current_hp": 0,
+        "combat_state": {
+            "turn": 2,
+            "monsters": [{"id": "Sentry", "current_hp": 38, "is_gone": False}],
+        },
+    })
+    dying["available_commands"] = ["wait", "state"]
+    dead = {**dying, "game_state": {**dying["game_state"]}}
+    dead["_continuation"] = {"screen": "DEATH"}
+    dead["available_commands"] = ["wait", "state", "reset_run"]
+    transport = ScriptedTransport([dead])
+    session = OriginalSession(transport)
+    session.payload = dying
+    backend = OriginalBackend(session, IRONCLAD_A0_ACT1)
+    executed: list[str] = []
+    result = backend._settle_combat_terminal(dying, executed)
+    terminal = adapt_original(result).decision
+    assert terminal.terminal
+    assert terminal.observation.enemies == ()
+    assert executed == ["wait 30"]
 
 
 def test_combat_boundary_waits_until_stock_intent_is_materialized() -> None:
@@ -209,6 +291,32 @@ def test_composite_card_reward_waits_for_each_ui_transition() -> None:
     transition = backend.step(action)
     assert [card.card_id for card in transition.decision.observation.deck] == ["ANGER"]
     assert backend.last_executed_commands == ("choose 1", "wait 1", "choose 0", "wait 1")
+
+
+def test_emerald_key_reward_waits_for_stock_obtain_effect() -> None:
+    reward = game_payload([])
+    reward["game_state"].update({
+        "floor": 6, "screen_type": "COMBAT_REWARD",
+        "screen_state": {"rewards": [{"reward_type": "EMERALD_KEY"}]},
+    })
+    reward["available_commands"] = ["choose", "wait"]
+    reward["_parity_run"] = {"emerald_key": False}
+    pending = {**reward, "game_state": {**reward["game_state"]}}
+    pending["game_state"]["screen_state"] = {"rewards": []}
+    pending["available_commands"] = ["proceed", "wait"]
+    settled = {**pending, "_parity_run": {"emerald_key": True}}
+    transport = ScriptedTransport([pending, settled])
+    session = OriginalSession(transport)
+    session.payload = reward
+    backend = OriginalBackend(session, IRONCLAD_A0_ACT1)
+    backend._adapted = adapt_original(reward)
+    action = next(
+        item for item in backend._adapted.decision.actions
+        if item.kind is ActionKind.TAKE_REWARD
+    )
+    transition = backend.step(action)
+    assert transition.decision.observation.run.has_emerald_key
+    assert backend.last_executed_commands == ("choose 0", "wait 1")
 
 
 def test_event_action_folds_single_forced_leave_outside_neow() -> None:

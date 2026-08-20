@@ -76,6 +76,9 @@ def adapt_original(payload: Mapping[str, Any]) -> AdaptedOriginalDecision:
     if terminal:
         actions = ()
         commands = {}
+        hand = draw = discard = exhaust = ()
+        enemies = ()
+        powers = ()
 
     observation = Observation(
         player=Player(
@@ -126,7 +129,10 @@ def adapt_original(payload: Mapping[str, Any]) -> AdaptedOriginalDecision:
         event_options=options["event"],
         rest_options=options["rest"],
         boss_relic_options=options["boss"],
-        public_context=(("turn", _integer(combat.get("turn"))),) if combat else (),
+        public_context=(
+            (("turn", _integer(combat.get("turn"))),)
+            if combat and not terminal else ()
+        ),
     )
     return AdaptedOriginalDecision(Decision(observation, actions, terminal), commands)
 
@@ -345,6 +351,10 @@ def _actions(
 def _screen_type(
     payload: Mapping[str, Any], game: Mapping[str, Any], combat: Mapping[str, Any],
 ) -> ScreenType:
+    continuation = _mapping(payload.get("_continuation") or game.get("_continuation"))
+    continuation_screen = str(continuation.get("screen") or "NONE").upper()
+    if continuation_screen in {"DEATH", "VICTORY", "GAME_OVER", "COMPLETE"}:
+        return ScreenType.GAME_OVER
     if combat:
         return ScreenType.COMBAT
     if not payload.get("in_game", True):
@@ -439,7 +449,7 @@ def _map_nodes(game: Mapping[str, Any], parity_run: Mapping[str, Any]) -> tuple[
             (_integer(node.get("x")), 0)
             for node in _mappings(game.get("map")) if _integer(node.get("y")) == 0
         }
-    burning = (
+    burning = (-1, -1) if parity_run.get("emerald_key") is True else (
         _integer(parity_run.get("burning_elite_x"), -1),
         _integer(parity_run.get("burning_elite_y"), -1),
     )
@@ -562,11 +572,19 @@ def _screen_entities(
         result["reward"] = tuple(sorted(entities, key=lambda item: item.instance_id))
     elif screen is ScreenType.CARD_REWARD:
         is_grid = str(game.get("screen_type") or "").upper() == "GRID"
+        deck_index_by_uuid = {
+            str(card.get("uuid")): index
+            for index, card in enumerate(_mappings(game.get("deck")))
+            if card.get("uuid") is not None
+        }
         result["reward"] = tuple(
             PublicEntity(
                 f"select-card:{index}", normalize_card_id(card.get("id")),
                 (
-                    (("deck_index", index), ("upgrades", _integer(card.get("upgrades"))))
+                    (
+                        ("deck_index", deck_index_by_uuid.get(str(card.get("uuid")), index)),
+                        ("upgrades", _integer(card.get("upgrades"))),
+                    )
                     if is_grid else (("upgrades", _integer(card.get("upgrades"))),)
                 ),
             )

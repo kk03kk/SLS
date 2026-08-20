@@ -30,7 +30,7 @@ def original_evidence_gaps(
         gaps.append({"code": "UNKNOWN_CANONICAL_SCREEN", "path": "$.game_state.screen_type"})
     if payload.get("_parity_schema") and payload.get("_parity_schema") not in {
         "spirecomm-parity-v2", "spirecomm-parity-v3", "spirecomm-parity-v4",
-        "spirecomm-parity-v5",
+        "spirecomm-parity-v5", "spirecomm-parity-v6", "spirecomm-parity-v7",
     }:
         gaps.append({"code": "UNSUPPORTED_INSTRUMENTATION_SCHEMA", "path": "$._parity_schema"})
     rng = payload.get("_rng") or game.get("_rng")
@@ -45,6 +45,8 @@ def original_evidence_gaps(
     continuation = payload.get("_continuation") or game.get("_continuation")
     if not isinstance(continuation, Mapping):
         gaps.append({"code": "MISSING_CONTINUATION_EVIDENCE", "path": "$._continuation"})
+    elif payload.get("_parity_schema") == "spirecomm-parity-v7":
+        require(continuation, "bottled_cards", "$._continuation.bottled_cards")
     raw_screen = str(game.get("screen_type") or "").upper()
     if raw_screen == "GRID" or (game.get("combat_state") and raw_screen == "CARD_REWARD"):
         selection = continuation_original(payload)
@@ -55,8 +57,11 @@ def original_evidence_gaps(
     if not isinstance(parity_run, Mapping):
         gaps.append({"code": "MISSING_RUN_EVIDENCE", "path": "$._parity_run"})
     else:
-        for key in ("ruby_key", "emerald_key", "sapphire_key", "burning_elite_x", "burning_elite_y"):
+        for key in ("ruby_key", "emerald_key", "sapphire_key"):
             require(parity_run, key, f"$._parity_run.{key}")
+        if parity_run.get("emerald_key") is not True:
+            for key in ("burning_elite_x", "burning_elite_y"):
+                require(parity_run, key, f"$._parity_run.{key}")
         if int(game.get("floor", 0) or 0) > 0:
             require(parity_run, "current_map_x", "$._parity_run.current_map_x")
             require(parity_run, "current_map_y", "$._parity_run.current_map_y")

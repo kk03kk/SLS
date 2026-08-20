@@ -127,10 +127,66 @@ def test_resume_normalization_drops_floor_local_rng_after_combat() -> None:
     ]
 
 
+def test_resume_normalization_uses_stock_first_matching_bottle_identity() -> None:
+    payload = json.loads(json.dumps(TERMINAL_PAYLOAD))
+    payload["game_state"]["deck"] = [
+        {"id": "Wild Strike", "upgrades": 0, "misc": 0},
+        {"id": "Wild Strike", "upgrades": 0, "misc": 0},
+    ]
+    payload["_continuation"] = {
+        "bottled_cards": [{
+            "type": "ATTACK", "deck_index": 1, "id": "Wild Strike",
+            "upgrades": 0, "misc": 0,
+        }],
+    }
+    normalized = resumable_original_boundary(payload)
+    assert normalized["continuation"]["bottled_cards"][0]["deck_index"] == 0
+    assert "normalize_continuation.bottled_identity_for_stock_autosave" in (
+        normalized["normalizations"]
+    )
+
+
+def test_resumed_simulator_applies_observed_stock_bottle_identity() -> None:
+    from tools.replay_original_segment import _align_simulator_to_stock_autosave
+
+    simulator = SimulatorBackend(IRONCLAD_A0_HEART)
+    decision = simulator.reset(0)
+    checkpoint = json.loads(json.dumps(simulator.checkpoint()))
+    checkpoint["player_state"]["bottle_indices"] = [1, -1, -1]
+    decision = simulator.load_checkpoint(checkpoint)
+    payload = {"_continuation": {"bottled_cards": [{
+        "type": "ATTACK", "deck_index": 2, "id": "Strike_R",
+        "upgrades": 0, "misc": 0,
+    }]}}
+    decision, normalizations = _align_simulator_to_stock_autosave(
+        simulator, decision, payload,
+    )
+    assert simulator.checkpoint()["player_state"]["bottle_indices"] == (2, -1, -1)
+    assert normalizations == [{
+        "kind": "STOCK_AUTOSAVE_BOTTLE_IDENTITY",
+        "before": [1, -1, -1], "after": [2, -1, -1],
+    }]
+
+
 def test_ui_fold_is_recorded_evidence_not_cross_backend_continuation_state() -> None:
     assert not continuation_differences(
         {"continuation_kind": "MAP", "ui_boundary_folded": True},
         {"continuation_kind": 5, "ui_boundary_folded": False},
+    )
+
+
+def test_terminal_continuation_ignores_inert_original_action_queue() -> None:
+    assert not continuation_differences(
+        {
+            "screen": "DEATH", "continuation_kind": "DEATH",
+            "action_phase": "EXECUTING_ACTIONS", "combat_turn": 2,
+            "action_queue_types": ["RollMoveAction", "WaitAction"],
+            "card_queue_types": [],
+        },
+        {
+            "continuation_kind": "DEATH", "action_phase": None,
+            "combat_turn": None, "action_queue_types": [], "card_queue_types": [],
+        },
     )
 
 

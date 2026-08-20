@@ -159,6 +159,10 @@ def canonical_original(payload: Mapping[str, Any]) -> dict[str, Any]:
     # Lightspeed stores the ordinary no-counter value as 0 in its public
     # inventory; CommunicationMod uses -1.  It is not a gameplay divergence.
     relics = [(content_id, max(0, counter)) for content_id, counter in relics]
+    continuation = payload.get("_continuation") or game.get("_continuation") or {}
+    terminal = str(
+        continuation.get("screen") or game.get("screen_type") or ""
+    ).upper() in {"DEATH", "VICTORY", "GAME_OVER", "COMPLETE"}
     return {
         "run": {
             "act": int(game.get("act", 0)), "floor": int(game.get("floor", 0)),
@@ -175,7 +179,9 @@ def canonical_original(payload: Mapping[str, Any]) -> dict[str, Any]:
         "relics": relics,
         "potions": [normalize_potion_id(item.get("id")) for item in game.get("potions") or []],
         "map": _original_map(game),
-        "combat": _original_combat(game, payload.get("_monster_intents") or ()),
+        "combat": None if terminal else _original_combat(
+            game, payload.get("_monster_intents") or (),
+        ),
         "rng": _rng(payload.get("_rng") or game.get("_rng") or {}),
     }
 
@@ -200,7 +206,7 @@ def canonical_simulator(state: Mapping[str, Any]) -> dict[str, Any]:
         ],
         "potions": [normalize_potion_id(item.get("content_id")) for item in inventory.get("potions") or []],
         "map": _simulator_map(state),
-        "combat": _simulator_combat(state),
+        "combat": None if int(run.get("outcome", 1)) != 1 else _simulator_combat(state),
         "rng": _rng(rng or {}),
     }
 

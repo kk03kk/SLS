@@ -9,6 +9,18 @@ def continuation_original(payload: Mapping[str, Any]) -> dict[str, Any]:
     injected = payload.get("_continuation") or (payload.get("game_state") or {}).get("_continuation")
     if isinstance(injected, Mapping):
         result = dict(injected)
+        if isinstance(result.get("bottled_cards"), list):
+            from sls.content.normalize import normalize_content_id
+            result["bottled_cards"] = sorted([
+                {
+                    "type": str(item.get("type") or "").upper(),
+                    "deck_index": int(item.get("deck_index", -1)),
+                    "id": normalize_content_id(item.get("id")),
+                    "upgrades": int(item.get("upgrades", 0) or 0),
+                    "misc": int(item.get("misc", 0) or 0),
+                }
+                for item in result["bottled_cards"] if isinstance(item, Mapping)
+            ], key=lambda item: {"ATTACK": 0, "SKILL": 1, "POWER": 2}.get(item["type"], 3))
         game = payload.get("game_state") or {}
         screen_state = game.get("screen_state") or {}
         result["screen"] = result.get("screen") or game.get("screen_type")
@@ -32,7 +44,10 @@ def continuation_original(payload: Mapping[str, Any]) -> dict[str, Any]:
             result["card_selection_source"] = result.get("card_selection_source") or "GENERATED"
             result["card_selection_task"] = result.get("card_selection_task") or "DISCOVERY"
             result["card_selection_count"] = int(result.get("card_selection_count") or 1)
-        if game.get("combat_state"):
+        terminal_screen = str(result.get("screen") or "").upper() in {
+            "DEATH", "VICTORY", "GAME_OVER", "COMPLETE",
+        }
+        if game.get("combat_state") and not terminal_screen:
             result["continuation_kind"] = "COMBAT"
         else:
             result["combat_turn"] = None
@@ -71,6 +86,28 @@ def continuation_simulator(state: Mapping[str, Any]) -> dict[str, Any]:
     info = state.get("screen_info") or {}
     checkpoint = state.get("combat_checkpoint") or {}
     choice = combat.get("choice") or {}
+    inventory = state.get("public_inventory") or {}
+    deck = inventory.get("deck") or ()
+    player = state.get("player_state") or {}
+    internal_deck = player.get("deck") or ()
+    bottle_types = ("ATTACK", "SKILL", "POWER")
+    bottled_cards = []
+    for bottle_type, raw_index in zip(bottle_types, player.get("bottle_indices") or ()):
+        index = int(raw_index)
+        if index < 0 or index >= len(deck):
+            continue
+        card = deck[index]
+        bottled_cards.append({
+            "type": bottle_type,
+            "deck_index": index,
+            "id": str(card.get("content_id") or "INVALID"),
+            "upgrades": int(card.get("upgrades", 0) or 0),
+            "misc": int(internal_deck[index].get("misc", 0) or 0)
+            if index < len(internal_deck) else 0,
+        })
+    terminal_kind = None
+    if int(public.get("outcome", 1)) != 1:
+        terminal_kind = "DEATH" if int(player.get("current_hp", 0)) <= 0 else "VICTORY"
     return {
         "room_class": public.get("room_type"), "screen": public.get("screen_state"),
         "event_id": public.get("current_event_id"), "event_phase": screen.get("phase"),
@@ -85,10 +122,15 @@ def continuation_simulator(state: Mapping[str, Any]) -> dict[str, Any]:
             (1 if choice else 0)
             or info.get("select_count", info.get("count", screen.get("select_count", 0))) or 0
         ),
-        "post_combat": bool(state.get("post_combat", False) or public.get("screen_state") == 2),
+        "post_combat": bool(
+            state.get("post_combat", False)
+            or public.get("screen_state") == 2
+            or info.get("from_rewards", False)
+        ),
         "loading_post_combat": bool(state.get("loading_post_combat", False)),
         "ui_boundary_folded": bool(state.get("ui_boundary_folded", False)),
-        "continuation_kind": info.get("kind") or public.get("screen_state"),
+        "continuation_kind": terminal_kind or info.get("kind") or public.get("screen_state"),
         "action_queue_types": list(checkpoint.get("action_queue_types") or ()),
         "card_queue_types": list(checkpoint.get("card_queue_types") or ()),
+        "bottled_cards": bottled_cards,
     }

@@ -189,12 +189,19 @@ def continuation_differences(
     aliases = {1: "EVENT", 2: "COMBAT_REWARD", 3: "BOSS_REWARD", 4: "CARD_REWARD",
                5: "MAP", 6: "TREASURE", 7: "REST", 8: "SHOP", 9: "COMBAT"}
     result: dict[str, tuple[Any, Any]] = {}
+    terminal = str(original.get("screen") or original.get("continuation_kind") or "").upper() in {
+        "DEATH", "VICTORY", "GAME_OVER", "COMPLETE",
+    }
     for key in (
         "event_phase", "action_phase", "combat_turn",
         "card_selection_source", "card_selection_task", "card_selection_count",
         "post_combat", "loading_post_combat",
-        "action_queue_types", "card_queue_types",
+        "action_queue_types", "card_queue_types", "bottled_cards",
     ):
+        if terminal and key in {
+            "action_phase", "combat_turn", "action_queue_types", "card_queue_types",
+        }:
+            continue
         left, right = original.get(key), simulator.get(key)
         if key == "card_selection_task":
             left = {"PURGE": "REMOVE"}.get(str(left).upper(), left)
@@ -233,6 +240,25 @@ def resumable_original_boundary(payload: Mapping[str, Any]) -> dict[str, Any]:
             rng.pop("neow")
         normalizations.append("drop_rng.neow_after_floor0")
     continuation = continuation_original(payload)
+    bottled = continuation.get("bottled_cards")
+    if isinstance(bottled, list):
+        from sls.content.normalize import normalize_content_id
+        deck = game.get("deck") or ()
+        normalized_bottles = []
+        for item in bottled:
+            value = dict(item)
+            for index, card in enumerate(deck):
+                if (
+                    normalize_content_id(card.get("id")) == value.get("id")
+                    and int(card.get("upgrades", 0) or 0) == int(value.get("upgrades", 0))
+                    and int(card.get("misc", card.get("special_data", 0)) or 0)
+                    == int(value.get("misc", 0))
+                ):
+                    value["deck_index"] = index
+                    break
+            normalized_bottles.append(value)
+        continuation["bottled_cards"] = normalized_bottles
+        normalizations.append("normalize_continuation.bottled_identity_for_stock_autosave")
     if continuation.get("post_combat"):
         rng = state.get("rng") or {}
         for stream in ("monster_hp", "ai", "shuffle", "card_random", "misc"):

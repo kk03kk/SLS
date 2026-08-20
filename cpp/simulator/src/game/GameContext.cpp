@@ -1293,10 +1293,24 @@ bool obtainBottleHelper(GameContext &gc, CardType bottleType) {
             gc.info.toSelectCards,
             [=](auto c) {return c.getType() == bottleType;}
     );
+    // CardGroup.getCardsOfType() inserts each matching card at index zero,
+    // so the stock bottle grid is the reverse of master-deck acquisition order.
+    std::reverse(gc.info.toSelectCards.begin(), gc.info.toSelectCards.end());
     if (gc.info.toSelectCards.empty()) {
         return false;
     } else {
+        const bool fromRewards = gc.screenState == ScreenState::REWARDS;
         gc.openCardSelectScreen(CardSelectScreenType::BOTTLE, 1, false);
+        if (fromRewards) {
+            // Stock returns from the bottle grid to the still-open combat
+            // rewards, rather than consuming the remainder of the rewards.
+            gc.regainControlAction = [](GameContext &context) {
+                context.screenState = ScreenState::REWARDS;
+                context.regainControlAction = [](GameContext &next) {
+                    next.screenState = ScreenState::MAP_SCREEN;
+                };
+            };
+        }
         return true;
     }
 }
@@ -3942,6 +3956,7 @@ void GameContext::openCombatRewardScreen(Rewards reward) {
 }
 
 void GameContext::openCardSelectScreen(CardSelectScreenType type, int selectCount, bool initSelectCards) {
+    info.cardSelectFromRewards = screenState == ScreenState::REWARDS;
     screenState = ScreenState::CARD_SELECT;
     info.selectScreenType = type;
     info.toSelectCount = selectCount;

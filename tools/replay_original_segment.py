@@ -77,6 +77,34 @@ def _restore_simulator_at_step(
     raise ValueError("no compatible native anchor: " + "; ".join(failures))
 
 
+def _align_simulator_to_stock_autosave(
+    simulator: SimulatorBackend, decision: object, payload: dict,
+) -> tuple[object, list[dict[str, object]]]:
+    """Apply only lossy state transformations performed by stock save loading."""
+
+    bottled = continuation_original(payload).get("bottled_cards")
+    if not isinstance(bottled, list):
+        return decision, []
+    checkpoint = json.loads(json.dumps(simulator.checkpoint()))
+    player = checkpoint.get("player_state") or {}
+    before = [int(value) for value in player.get("bottle_indices") or (-1, -1, -1)]
+    desired = [-1, -1, -1]
+    positions = {"ATTACK": 0, "SKILL": 1, "POWER": 2}
+    for item in bottled:
+        position = positions.get(str(item.get("type") or "").upper())
+        if position is not None:
+            desired[position] = int(item.get("deck_index", -1))
+    if desired == before:
+        return decision, []
+    player["bottle_indices"] = desired
+    decision = simulator.load_checkpoint(checkpoint)
+    return decision, [{
+        "kind": "STOCK_AUTOSAVE_BOTTLE_IDENTITY",
+        "before": before,
+        "after": desired,
+    }]
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("bundle", type=Path)
@@ -123,13 +151,21 @@ def main() -> int:
                     canonical_screen=boundaries[start]["cursor"]["screen"],
                 )
                 ignored_codes = [item["code"] for item in expected_gaps]
-                restored_hash = value_hash(resume_verification_boundary(
+                actual_resume = resume_verification_boundary(
                     backend.raw_payload, ignored_evidence_codes=ignored_codes,
-                ))
-                expected_resume_hash = value_hash(resume_verification_boundary(
+                )
+                expected_resume = resume_verification_boundary(
                     boundaries[start]["raw_original_payload"],
                     ignored_evidence_codes=ignored_codes,
-                ))
+                )
+                if "bottled_cards" not in expected_resume.get("continuation", {}):
+                    actual_resume.get("continuation", {}).pop("bottled_cards", None)
+                    actual_resume["normalizations"] = [
+                        item for item in actual_resume.get("normalizations", [])
+                        if item != "normalize_continuation.bottled_identity_for_stock_autosave"
+                    ]
+                restored_hash = value_hash(actual_resume)
+                expected_resume_hash = value_hash(expected_resume)
                 if restored_hash != expected_resume_hash:
                     expected_boundary = boundaries[start]
                     state_diff = differences(
@@ -147,12 +183,15 @@ def main() -> int:
                 simulator, simulator_decision, simulator_anchor, restore_failures = (
                     _restore_simulator_at_step(args.bundle, manifest, boundaries, start)
                 )
+                simulator_decision, autosave_normalizations = _align_simulator_to_stock_autosave(
+                    simulator, simulator_decision, backend.raw_payload,
+                )
                 workshop = args.game_root.parents[1] / "workshop" / "content" / "646570"
                 recorder = TruthBundleRecorder(
                     args.truth_root, seed=int(manifest["seed"]),
                     profile_id=manifest["profile_id"], policy_id=manifest["policy_id"],
                     evidence_class="RESUMED_AUTOSAVE", capture_mode="PAIRED",
-                    acceptance_eligible=False, instrumentation_schema="spirecomm-parity-v5",
+                    acceptance_eligible=False, instrumentation_schema="spirecomm-parity-v7",
                     repository_root=ROOT, autosave=destination,
                     jar_paths={
                         "game": args.game_root / "desktop-1.0.jar",
@@ -174,7 +213,8 @@ def main() -> int:
                         "source_run_id": args.bundle.name, "source_anchor": args.anchor,
                         "source_start_step": start, "source_target_step": args.to_step,
                         "ignored_legacy_evidence_codes": ignored_codes,
-                        "source_anchor_capability": "RESUME_VERIFIED",
+                        "source_anchor_capability": anchor.get("capability"),
+                        "autosave_state_normalizations": autosave_normalizations,
                         "simulator_restore_mode": (
                             "EXACT_CHECKPOINT" if int(simulator_anchor["sequence"]) == start
                             else "ACTION_HISTORY"

@@ -48,7 +48,7 @@ def main() -> int:
         if not (manifest.get("policy") or {}).get("sha256"): reasons.append("MISSING_POLICY_HASH")
         if set((manifest.get("code") or {})) != {"adapter", "canonicalizer"}:
             reasons.append("MISSING_CODE_HASHES")
-        if (manifest.get("instrumentation") or {}).get("observed_schemas") != ["spirecomm-parity-v5"]:
+        if (manifest.get("instrumentation") or {}).get("observed_schemas") != ["spirecomm-parity-v7"]:
             reasons.append("INSTRUMENTATION_SCHEMA_MISMATCH")
         statuses = [
             (boundary.get("comparison") or {}).get(

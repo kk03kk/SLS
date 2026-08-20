@@ -58,13 +58,20 @@ hashes. `MATCH`, `DIFFERENCE`, and `INCONCLUSIVE` are distinct states. A missing
 map coordinate, intent, RNG stream, continuation field, or unknown screen is an
 `EVIDENCE_GAP`; it is never replaced by a guessed default.
 
-The current Oracle instrumentation contract is `spirecomm-parity-v5`. Besides
+The current Oracle instrumentation contract is `spirecomm-parity-v7`. Besides
 RNG, map, queue, adjusted monster-intent, and generated reward evidence, v5
 records validation-only Discovery timing evidence. Stock `DiscoveryAction`
 consumes card RNG once per retrieval render update, so paired and offline replay
 use the captured update count without exposing it to policy observations or
 semantic action metadata. Older schemas remain readable; missing required
 evidence is explicitly inconclusive.
+
+Version 7 also records bottled-card master-deck identity as continuation
+evidence. Stock autosaves preserve only card ID, upgrades, and misc, so loading
+a run with equivalent duplicate cards rebinds the bottle to the first matching
+master-deck card. A `RESUMED_AUTOSAVE` segment records this lossy stock
+normalization and aligns its native checkpoint to the observed resumed state;
+live-run checkpoints retain the originally selected card identity.
 
 ## Offline daily loop
 
