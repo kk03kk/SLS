@@ -104,6 +104,22 @@ def test_combat_boundary_waits_until_stock_intent_is_materialized() -> None:
     assert transport.sent == ["wait 1"]
 
 
+def test_combat_boundary_waits_for_adjusted_attack_damage() -> None:
+    combat = game_payload([])
+    combat["available_commands"] = ["wait"]
+    combat["game_state"]["combat_state"] = {"monsters": [{"id": "JawWorm"}]}
+    combat["_monster_intents"] = [{"intent": "ATTACK", "damage": -1, "hits": 1}]
+    settled = {**combat, "_monster_intents": [{"intent": "ATTACK", "damage": 11, "hits": 1}]}
+    transport = ScriptedTransport([settled])
+    session = OriginalSession(transport)
+    session.payload = combat
+    backend = OriginalBackend(session, IRONCLAD_A0_ACT1)
+    executed: list[str] = []
+    result = backend._settle_debug_intents(combat, executed)
+    assert result["_monster_intents"][0]["damage"] == 11
+    assert executed == ["wait 1"]
+
+
 def test_composite_card_reward_waits_for_each_ui_transition() -> None:
     parent = game_payload([])
     parent["game_state"].update({

@@ -69,14 +69,20 @@ def original_evidence_gaps(
             gaps.append({"code": "UNSETTLED_MONSTER_INTENT", "path": "$._monster_intents"})
         elif any(
             str(item.get("intent") or "").upper().startswith("ATTACK")
-            and (
-                "damage" not in item or "hits" not in item
-                or int(item.get("damage", -1)) < 0 or int(item.get("hits", 0)) < 1
-            )
+            and ("damage" not in item or "hits" not in item)
             for item in intents
         ):
             gaps.append({
                 "code": "MISSING_ADJUSTED_MONSTER_INTENT_DAMAGE",
+                "path": "$._monster_intents",
+            })
+        elif any(
+            str(item.get("intent") or "").upper().startswith("ATTACK")
+            and (int(item.get("damage", -1)) < 0 or int(item.get("hits", 0)) < 1)
+            for item in intents
+        ):
+            gaps.append({
+                "code": "UNSETTLED_ADJUSTED_MONSTER_INTENT_DAMAGE",
                 "path": "$._monster_intents",
             })
     if canonical_screen == "COMBAT_REWARD":

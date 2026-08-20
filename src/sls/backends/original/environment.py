@@ -255,7 +255,14 @@ class OriginalBackend:
             if not game.get("combat_state"):
                 break
             intents = payload.get("_monster_intents") or []
-            if intents and all(str(item.get("intent") or "").upper() != "DEBUG" for item in intents):
+            if intents and all(
+                str(item.get("intent") or "").upper() != "DEBUG"
+                and (
+                    not str(item.get("intent") or "").upper().startswith("ATTACK")
+                    or (int(item.get("damage", -1)) >= 0 and int(item.get("hits", 0)) >= 1)
+                )
+                for item in intents
+            ):
                 break
             available = {str(item).lower() for item in payload.get("available_commands") or ()}
             if "wait" not in available:

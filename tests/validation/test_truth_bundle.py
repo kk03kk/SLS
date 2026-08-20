@@ -331,7 +331,12 @@ def test_attack_intent_requires_adjusted_damage_and_hit_evidence() -> None:
         item["code"] for item in original_evidence_gaps(payload, canonical_screen="COMBAT")
     }
     assert "MISSING_ADJUSTED_MONSTER_INTENT_DAMAGE" in codes
-    payload["_monster_intents"][0].update({"damage": 11, "hits": 1})
+    payload["_monster_intents"][0].update({"damage": -1, "hits": 1})
+    codes = {
+        item["code"] for item in original_evidence_gaps(payload, canonical_screen="COMBAT")
+    }
+    assert "UNSETTLED_ADJUSTED_MONSTER_INTENT_DAMAGE" in codes
+    payload["_monster_intents"][0]["damage"] = 11
     codes = {
         item["code"] for item in original_evidence_gaps(payload, canonical_screen="COMBAT")
     }
