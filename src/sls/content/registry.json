@@ -1,0 +1,3155 @@
+{
+  "categories": {
+    "cards": [
+      {
+        "id": "ACCURACY",
+        "ordinal": 1
+      },
+      {
+        "id": "ACROBATICS",
+        "ordinal": 2
+      },
+      {
+        "id": "ADRENALINE",
+        "ordinal": 3
+      },
+      {
+        "id": "AFTER_IMAGE",
+        "ordinal": 4
+      },
+      {
+        "id": "AGGREGATE",
+        "ordinal": 5
+      },
+      {
+        "id": "ALCHEMIZE",
+        "ordinal": 6
+      },
+      {
+        "id": "ALL_FOR_ONE",
+        "ordinal": 7
+      },
+      {
+        "id": "ALL_OUT_ATTACK",
+        "ordinal": 8
+      },
+      {
+        "id": "ALPHA",
+        "ordinal": 9
+      },
+      {
+        "id": "AMPLIFY",
+        "ordinal": 10
+      },
+      {
+        "id": "ANGER",
+        "ordinal": 11
+      },
+      {
+        "id": "APOTHEOSIS",
+        "ordinal": 12
+      },
+      {
+        "id": "APPARITION",
+        "ordinal": 13
+      },
+      {
+        "id": "ARMAMENTS",
+        "ordinal": 14
+      },
+      {
+        "id": "ASCENDERS_BANE",
+        "ordinal": 15
+      },
+      {
+        "id": "AUTO_SHIELDS",
+        "ordinal": 16
+      },
+      {
+        "id": "A_THOUSAND_CUTS",
+        "ordinal": 17
+      },
+      {
+        "id": "BACKFLIP",
+        "ordinal": 18
+      },
+      {
+        "id": "BACKSTAB",
+        "ordinal": 19
+      },
+      {
+        "id": "BALL_LIGHTNING",
+        "ordinal": 20
+      },
+      {
+        "id": "BANDAGE_UP",
+        "ordinal": 21
+      },
+      {
+        "id": "BANE",
+        "ordinal": 22
+      },
+      {
+        "id": "BARRAGE",
+        "ordinal": 23
+      },
+      {
+        "id": "BARRICADE",
+        "ordinal": 24
+      },
+      {
+        "id": "BASH",
+        "ordinal": 25
+      },
+      {
+        "id": "BATTLE_HYMN",
+        "ordinal": 26
+      },
+      {
+        "id": "BATTLE_TRANCE",
+        "ordinal": 27
+      },
+      {
+        "id": "BEAM_CELL",
+        "ordinal": 28
+      },
+      {
+        "id": "BECOME_ALMIGHTY",
+        "ordinal": 29
+      },
+      {
+        "id": "BERSERK",
+        "ordinal": 30
+      },
+      {
+        "id": "BETA",
+        "ordinal": 31
+      },
+      {
+        "id": "BIASED_COGNITION",
+        "ordinal": 32
+      },
+      {
+        "id": "BITE",
+        "ordinal": 33
+      },
+      {
+        "id": "BLADE_DANCE",
+        "ordinal": 34
+      },
+      {
+        "id": "BLASPHEMY",
+        "ordinal": 35
+      },
+      {
+        "id": "BLIND",
+        "ordinal": 36
+      },
+      {
+        "id": "BLIZZARD",
+        "ordinal": 37
+      },
+      {
+        "id": "BLOODLETTING",
+        "ordinal": 38
+      },
+      {
+        "id": "BLOOD_FOR_BLOOD",
+        "ordinal": 39
+      },
+      {
+        "id": "BLUDGEON",
+        "ordinal": 40
+      },
+      {
+        "id": "BLUR",
+        "ordinal": 41
+      },
+      {
+        "id": "BODY_SLAM",
+        "ordinal": 42
+      },
+      {
+        "id": "BOOT_SEQUENCE",
+        "ordinal": 43
+      },
+      {
+        "id": "BOUNCING_FLASK",
+        "ordinal": 44
+      },
+      {
+        "id": "BOWLING_BASH",
+        "ordinal": 45
+      },
+      {
+        "id": "BRILLIANCE",
+        "ordinal": 46
+      },
+      {
+        "id": "BRUTALITY",
+        "ordinal": 47
+      },
+      {
+        "id": "BUFFER",
+        "ordinal": 48
+      },
+      {
+        "id": "BULLET_TIME",
+        "ordinal": 49
+      },
+      {
+        "id": "BULLSEYE",
+        "ordinal": 50
+      },
+      {
+        "id": "BURN",
+        "ordinal": 51
+      },
+      {
+        "id": "BURNING_PACT",
+        "ordinal": 52
+      },
+      {
+        "id": "BURST",
+        "ordinal": 53
+      },
+      {
+        "id": "CALCULATED_GAMBLE",
+        "ordinal": 54
+      },
+      {
+        "id": "CALTROPS",
+        "ordinal": 55
+      },
+      {
+        "id": "CAPACITOR",
+        "ordinal": 56
+      },
+      {
+        "id": "CARNAGE",
+        "ordinal": 57
+      },
+      {
+        "id": "CARVE_REALITY",
+        "ordinal": 58
+      },
+      {
+        "id": "CATALYST",
+        "ordinal": 59
+      },
+      {
+        "id": "CHAOS",
+        "ordinal": 60
+      },
+      {
+        "id": "CHARGE_BATTERY",
+        "ordinal": 61
+      },
+      {
+        "id": "CHILL",
+        "ordinal": 62
+      },
+      {
+        "id": "CHOKE",
+        "ordinal": 63
+      },
+      {
+        "id": "CHRYSALIS",
+        "ordinal": 64
+      },
+      {
+        "id": "CLASH",
+        "ordinal": 65
+      },
+      {
+        "id": "CLAW",
+        "ordinal": 66
+      },
+      {
+        "id": "CLEAVE",
+        "ordinal": 67
+      },
+      {
+        "id": "CLOAK_AND_DAGGER",
+        "ordinal": 68
+      },
+      {
+        "id": "CLOTHESLINE",
+        "ordinal": 69
+      },
+      {
+        "id": "CLUMSY",
+        "ordinal": 70
+      },
+      {
+        "id": "COLD_SNAP",
+        "ordinal": 71
+      },
+      {
+        "id": "COLLECT",
+        "ordinal": 72
+      },
+      {
+        "id": "COMBUST",
+        "ordinal": 73
+      },
+      {
+        "id": "COMPILE_DRIVER",
+        "ordinal": 74
+      },
+      {
+        "id": "CONCENTRATE",
+        "ordinal": 75
+      },
+      {
+        "id": "CONCLUDE",
+        "ordinal": 76
+      },
+      {
+        "id": "CONJURE_BLADE",
+        "ordinal": 77
+      },
+      {
+        "id": "CONSECRATE",
+        "ordinal": 78
+      },
+      {
+        "id": "CONSUME",
+        "ordinal": 79
+      },
+      {
+        "id": "COOLHEADED",
+        "ordinal": 80
+      },
+      {
+        "id": "CORE_SURGE",
+        "ordinal": 81
+      },
+      {
+        "id": "CORPSE_EXPLOSION",
+        "ordinal": 82
+      },
+      {
+        "id": "CORRUPTION",
+        "ordinal": 83
+      },
+      {
+        "id": "CREATIVE_AI",
+        "ordinal": 84
+      },
+      {
+        "id": "CRESCENDO",
+        "ordinal": 85
+      },
+      {
+        "id": "CRIPPLING_CLOUD",
+        "ordinal": 86
+      },
+      {
+        "id": "CRUSH_JOINTS",
+        "ordinal": 87
+      },
+      {
+        "id": "CURSE_OF_THE_BELL",
+        "ordinal": 88
+      },
+      {
+        "id": "CUT_THROUGH_FATE",
+        "ordinal": 89
+      },
+      {
+        "id": "DAGGER_SPRAY",
+        "ordinal": 90
+      },
+      {
+        "id": "DAGGER_THROW",
+        "ordinal": 91
+      },
+      {
+        "id": "DARKNESS",
+        "ordinal": 92
+      },
+      {
+        "id": "DARK_EMBRACE",
+        "ordinal": 93
+      },
+      {
+        "id": "DARK_SHACKLES",
+        "ordinal": 94
+      },
+      {
+        "id": "DASH",
+        "ordinal": 95
+      },
+      {
+        "id": "DAZED",
+        "ordinal": 96
+      },
+      {
+        "id": "DEADLY_POISON",
+        "ordinal": 97
+      },
+      {
+        "id": "DECAY",
+        "ordinal": 98
+      },
+      {
+        "id": "DECEIVE_REALITY",
+        "ordinal": 99
+      },
+      {
+        "id": "DEEP_BREATH",
+        "ordinal": 100
+      },
+      {
+        "id": "DEFEND_BLUE",
+        "ordinal": 101
+      },
+      {
+        "id": "DEFEND_GREEN",
+        "ordinal": 102
+      },
+      {
+        "id": "DEFEND_PURPLE",
+        "ordinal": 103
+      },
+      {
+        "id": "DEFEND_RED",
+        "ordinal": 104
+      },
+      {
+        "id": "DEFLECT",
+        "ordinal": 105
+      },
+      {
+        "id": "DEFRAGMENT",
+        "ordinal": 106
+      },
+      {
+        "id": "DEMON_FORM",
+        "ordinal": 107
+      },
+      {
+        "id": "DEUS_EX_MACHINA",
+        "ordinal": 108
+      },
+      {
+        "id": "DEVA_FORM",
+        "ordinal": 109
+      },
+      {
+        "id": "DEVOTION",
+        "ordinal": 110
+      },
+      {
+        "id": "DIE_DIE_DIE",
+        "ordinal": 111
+      },
+      {
+        "id": "DISARM",
+        "ordinal": 112
+      },
+      {
+        "id": "DISCOVERY",
+        "ordinal": 113
+      },
+      {
+        "id": "DISTRACTION",
+        "ordinal": 114
+      },
+      {
+        "id": "DODGE_AND_ROLL",
+        "ordinal": 115
+      },
+      {
+        "id": "DOOM_AND_GLOOM",
+        "ordinal": 116
+      },
+      {
+        "id": "DOPPELGANGER",
+        "ordinal": 117
+      },
+      {
+        "id": "DOUBLE_ENERGY",
+        "ordinal": 118
+      },
+      {
+        "id": "DOUBLE_TAP",
+        "ordinal": 119
+      },
+      {
+        "id": "DOUBT",
+        "ordinal": 120
+      },
+      {
+        "id": "DRAMATIC_ENTRANCE",
+        "ordinal": 121
+      },
+      {
+        "id": "DROPKICK",
+        "ordinal": 122
+      },
+      {
+        "id": "DUALCAST",
+        "ordinal": 123
+      },
+      {
+        "id": "DUAL_WIELD",
+        "ordinal": 124
+      },
+      {
+        "id": "ECHO_FORM",
+        "ordinal": 125
+      },
+      {
+        "id": "ELECTRODYNAMICS",
+        "ordinal": 126
+      },
+      {
+        "id": "EMPTY_BODY",
+        "ordinal": 127
+      },
+      {
+        "id": "EMPTY_FIST",
+        "ordinal": 128
+      },
+      {
+        "id": "EMPTY_MIND",
+        "ordinal": 129
+      },
+      {
+        "id": "ENDLESS_AGONY",
+        "ordinal": 130
+      },
+      {
+        "id": "ENLIGHTENMENT",
+        "ordinal": 131
+      },
+      {
+        "id": "ENTRENCH",
+        "ordinal": 132
+      },
+      {
+        "id": "ENVENOM",
+        "ordinal": 133
+      },
+      {
+        "id": "EQUILIBRIUM",
+        "ordinal": 134
+      },
+      {
+        "id": "ERUPTION",
+        "ordinal": 135
+      },
+      {
+        "id": "ESCAPE_PLAN",
+        "ordinal": 136
+      },
+      {
+        "id": "ESTABLISHMENT",
+        "ordinal": 137
+      },
+      {
+        "id": "EVALUATE",
+        "ordinal": 138
+      },
+      {
+        "id": "EVISCERATE",
+        "ordinal": 139
+      },
+      {
+        "id": "EVOLVE",
+        "ordinal": 140
+      },
+      {
+        "id": "EXHUME",
+        "ordinal": 141
+      },
+      {
+        "id": "EXPERTISE",
+        "ordinal": 142
+      },
+      {
+        "id": "EXPUNGER",
+        "ordinal": 143
+      },
+      {
+        "id": "FAME_AND_FORTUNE",
+        "ordinal": 144
+      },
+      {
+        "id": "FASTING",
+        "ordinal": 145
+      },
+      {
+        "id": "FEAR_NO_EVIL",
+        "ordinal": 146
+      },
+      {
+        "id": "FEED",
+        "ordinal": 147
+      },
+      {
+        "id": "FEEL_NO_PAIN",
+        "ordinal": 148
+      },
+      {
+        "id": "FIEND_FIRE",
+        "ordinal": 149
+      },
+      {
+        "id": "FINESSE",
+        "ordinal": 150
+      },
+      {
+        "id": "FINISHER",
+        "ordinal": 151
+      },
+      {
+        "id": "FIRE_BREATHING",
+        "ordinal": 152
+      },
+      {
+        "id": "FISSION",
+        "ordinal": 153
+      },
+      {
+        "id": "FLAME_BARRIER",
+        "ordinal": 154
+      },
+      {
+        "id": "FLASH_OF_STEEL",
+        "ordinal": 155
+      },
+      {
+        "id": "FLECHETTES",
+        "ordinal": 156
+      },
+      {
+        "id": "FLEX",
+        "ordinal": 157
+      },
+      {
+        "id": "FLURRY_OF_BLOWS",
+        "ordinal": 158
+      },
+      {
+        "id": "FLYING_KNEE",
+        "ordinal": 159
+      },
+      {
+        "id": "FLYING_SLEEVES",
+        "ordinal": 160
+      },
+      {
+        "id": "FOLLOW_UP",
+        "ordinal": 161
+      },
+      {
+        "id": "FOOTWORK",
+        "ordinal": 162
+      },
+      {
+        "id": "FORCE_FIELD",
+        "ordinal": 163
+      },
+      {
+        "id": "FOREIGN_INFLUENCE",
+        "ordinal": 164
+      },
+      {
+        "id": "FORESIGHT",
+        "ordinal": 165
+      },
+      {
+        "id": "FORETHOUGHT",
+        "ordinal": 166
+      },
+      {
+        "id": "FTL",
+        "ordinal": 167
+      },
+      {
+        "id": "FUSION",
+        "ordinal": 168
+      },
+      {
+        "id": "GENETIC_ALGORITHM",
+        "ordinal": 169
+      },
+      {
+        "id": "GHOSTLY_ARMOR",
+        "ordinal": 170
+      },
+      {
+        "id": "GLACIER",
+        "ordinal": 171
+      },
+      {
+        "id": "GLASS_KNIFE",
+        "ordinal": 172
+      },
+      {
+        "id": "GOOD_INSTINCTS",
+        "ordinal": 173
+      },
+      {
+        "id": "GO_FOR_THE_EYES",
+        "ordinal": 174
+      },
+      {
+        "id": "GRAND_FINALE",
+        "ordinal": 175
+      },
+      {
+        "id": "HALT",
+        "ordinal": 176
+      },
+      {
+        "id": "HAND_OF_GREED",
+        "ordinal": 177
+      },
+      {
+        "id": "HAVOC",
+        "ordinal": 178
+      },
+      {
+        "id": "HEADBUTT",
+        "ordinal": 179
+      },
+      {
+        "id": "HEATSINKS",
+        "ordinal": 180
+      },
+      {
+        "id": "HEAVY_BLADE",
+        "ordinal": 181
+      },
+      {
+        "id": "HEEL_HOOK",
+        "ordinal": 182
+      },
+      {
+        "id": "HELLO_WORLD",
+        "ordinal": 183
+      },
+      {
+        "id": "HEMOKINESIS",
+        "ordinal": 184
+      },
+      {
+        "id": "HOLOGRAM",
+        "ordinal": 185
+      },
+      {
+        "id": "HYPERBEAM",
+        "ordinal": 186
+      },
+      {
+        "id": "IMMOLATE",
+        "ordinal": 187
+      },
+      {
+        "id": "IMPATIENCE",
+        "ordinal": 188
+      },
+      {
+        "id": "IMPERVIOUS",
+        "ordinal": 189
+      },
+      {
+        "id": "INDIGNATION",
+        "ordinal": 190
+      },
+      {
+        "id": "INFERNAL_BLADE",
+        "ordinal": 191
+      },
+      {
+        "id": "INFINITE_BLADES",
+        "ordinal": 192
+      },
+      {
+        "id": "INFLAME",
+        "ordinal": 193
+      },
+      {
+        "id": "INJURY",
+        "ordinal": 194
+      },
+      {
+        "id": "INNER_PEACE",
+        "ordinal": 195
+      },
+      {
+        "id": "INSIGHT",
+        "ordinal": 196
+      },
+      {
+        "id": "INTIMIDATE",
+        "ordinal": 197
+      },
+      {
+        "id": "IRON_WAVE",
+        "ordinal": 198
+      },
+      {
+        "id": "JAX",
+        "ordinal": 199
+      },
+      {
+        "id": "JACK_OF_ALL_TRADES",
+        "ordinal": 200
+      },
+      {
+        "id": "JUDGMENT",
+        "ordinal": 201
+      },
+      {
+        "id": "JUGGERNAUT",
+        "ordinal": 202
+      },
+      {
+        "id": "JUST_LUCKY",
+        "ordinal": 203
+      },
+      {
+        "id": "LEAP",
+        "ordinal": 204
+      },
+      {
+        "id": "LEG_SWEEP",
+        "ordinal": 205
+      },
+      {
+        "id": "LESSON_LEARNED",
+        "ordinal": 206
+      },
+      {
+        "id": "LIKE_WATER",
+        "ordinal": 207
+      },
+      {
+        "id": "LIMIT_BREAK",
+        "ordinal": 208
+      },
+      {
+        "id": "LIVE_FOREVER",
+        "ordinal": 209
+      },
+      {
+        "id": "LOOP",
+        "ordinal": 210
+      },
+      {
+        "id": "MACHINE_LEARNING",
+        "ordinal": 211
+      },
+      {
+        "id": "MADNESS",
+        "ordinal": 212
+      },
+      {
+        "id": "MAGNETISM",
+        "ordinal": 213
+      },
+      {
+        "id": "MALAISE",
+        "ordinal": 214
+      },
+      {
+        "id": "MASTERFUL_STAB",
+        "ordinal": 215
+      },
+      {
+        "id": "MASTER_OF_STRATEGY",
+        "ordinal": 216
+      },
+      {
+        "id": "MASTER_REALITY",
+        "ordinal": 217
+      },
+      {
+        "id": "MAYHEM",
+        "ordinal": 218
+      },
+      {
+        "id": "MEDITATE",
+        "ordinal": 219
+      },
+      {
+        "id": "MELTER",
+        "ordinal": 220
+      },
+      {
+        "id": "MENTAL_FORTRESS",
+        "ordinal": 221
+      },
+      {
+        "id": "METALLICIZE",
+        "ordinal": 222
+      },
+      {
+        "id": "METAMORPHOSIS",
+        "ordinal": 223
+      },
+      {
+        "id": "METEOR_STRIKE",
+        "ordinal": 224
+      },
+      {
+        "id": "MIND_BLAST",
+        "ordinal": 225
+      },
+      {
+        "id": "MIRACLE",
+        "ordinal": 226
+      },
+      {
+        "id": "MULTI_CAST",
+        "ordinal": 227
+      },
+      {
+        "id": "NECRONOMICURSE",
+        "ordinal": 228
+      },
+      {
+        "id": "NEUTRALIZE",
+        "ordinal": 229
+      },
+      {
+        "id": "NIGHTMARE",
+        "ordinal": 230
+      },
+      {
+        "id": "NIRVANA",
+        "ordinal": 231
+      },
+      {
+        "id": "NORMALITY",
+        "ordinal": 232
+      },
+      {
+        "id": "NOXIOUS_FUMES",
+        "ordinal": 233
+      },
+      {
+        "id": "OFFERING",
+        "ordinal": 234
+      },
+      {
+        "id": "OMEGA",
+        "ordinal": 235
+      },
+      {
+        "id": "OMNISCIENCE",
+        "ordinal": 236
+      },
+      {
+        "id": "OUTMANEUVER",
+        "ordinal": 237
+      },
+      {
+        "id": "OVERCLOCK",
+        "ordinal": 238
+      },
+      {
+        "id": "PAIN",
+        "ordinal": 239
+      },
+      {
+        "id": "PANACEA",
+        "ordinal": 240
+      },
+      {
+        "id": "PANACHE",
+        "ordinal": 241
+      },
+      {
+        "id": "PANIC_BUTTON",
+        "ordinal": 242
+      },
+      {
+        "id": "PARASITE",
+        "ordinal": 243
+      },
+      {
+        "id": "PERFECTED_STRIKE",
+        "ordinal": 244
+      },
+      {
+        "id": "PERSEVERANCE",
+        "ordinal": 245
+      },
+      {
+        "id": "PHANTASMAL_KILLER",
+        "ordinal": 246
+      },
+      {
+        "id": "PIERCING_WAIL",
+        "ordinal": 247
+      },
+      {
+        "id": "POISONED_STAB",
+        "ordinal": 248
+      },
+      {
+        "id": "POMMEL_STRIKE",
+        "ordinal": 249
+      },
+      {
+        "id": "POWER_THROUGH",
+        "ordinal": 250
+      },
+      {
+        "id": "PRAY",
+        "ordinal": 251
+      },
+      {
+        "id": "PREDATOR",
+        "ordinal": 252
+      },
+      {
+        "id": "PREPARED",
+        "ordinal": 253
+      },
+      {
+        "id": "PRESSURE_POINTS",
+        "ordinal": 254
+      },
+      {
+        "id": "PRIDE",
+        "ordinal": 255
+      },
+      {
+        "id": "PROSTRATE",
+        "ordinal": 256
+      },
+      {
+        "id": "PROTECT",
+        "ordinal": 257
+      },
+      {
+        "id": "PUMMEL",
+        "ordinal": 258
+      },
+      {
+        "id": "PURITY",
+        "ordinal": 259
+      },
+      {
+        "id": "QUICK_SLASH",
+        "ordinal": 260
+      },
+      {
+        "id": "RAGE",
+        "ordinal": 261
+      },
+      {
+        "id": "RAGNAROK",
+        "ordinal": 262
+      },
+      {
+        "id": "RAINBOW",
+        "ordinal": 263
+      },
+      {
+        "id": "RAMPAGE",
+        "ordinal": 264
+      },
+      {
+        "id": "REACH_HEAVEN",
+        "ordinal": 265
+      },
+      {
+        "id": "REAPER",
+        "ordinal": 266
+      },
+      {
+        "id": "REBOOT",
+        "ordinal": 267
+      },
+      {
+        "id": "REBOUND",
+        "ordinal": 268
+      },
+      {
+        "id": "RECKLESS_CHARGE",
+        "ordinal": 269
+      },
+      {
+        "id": "RECURSION",
+        "ordinal": 270
+      },
+      {
+        "id": "RECYCLE",
+        "ordinal": 271
+      },
+      {
+        "id": "REFLEX",
+        "ordinal": 272
+      },
+      {
+        "id": "REGRET",
+        "ordinal": 273
+      },
+      {
+        "id": "REINFORCED_BODY",
+        "ordinal": 274
+      },
+      {
+        "id": "REPROGRAM",
+        "ordinal": 275
+      },
+      {
+        "id": "RIDDLE_WITH_HOLES",
+        "ordinal": 276
+      },
+      {
+        "id": "RIP_AND_TEAR",
+        "ordinal": 277
+      },
+      {
+        "id": "RITUAL_DAGGER",
+        "ordinal": 278
+      },
+      {
+        "id": "RUPTURE",
+        "ordinal": 279
+      },
+      {
+        "id": "RUSHDOWN",
+        "ordinal": 280
+      },
+      {
+        "id": "SADISTIC_NATURE",
+        "ordinal": 281
+      },
+      {
+        "id": "SAFETY",
+        "ordinal": 282
+      },
+      {
+        "id": "SANCTITY",
+        "ordinal": 283
+      },
+      {
+        "id": "SANDS_OF_TIME",
+        "ordinal": 284
+      },
+      {
+        "id": "SASH_WHIP",
+        "ordinal": 285
+      },
+      {
+        "id": "SCRAPE",
+        "ordinal": 286
+      },
+      {
+        "id": "SCRAWL",
+        "ordinal": 287
+      },
+      {
+        "id": "SEARING_BLOW",
+        "ordinal": 288
+      },
+      {
+        "id": "SECOND_WIND",
+        "ordinal": 289
+      },
+      {
+        "id": "SECRET_TECHNIQUE",
+        "ordinal": 290
+      },
+      {
+        "id": "SECRET_WEAPON",
+        "ordinal": 291
+      },
+      {
+        "id": "SEEING_RED",
+        "ordinal": 292
+      },
+      {
+        "id": "SEEK",
+        "ordinal": 293
+      },
+      {
+        "id": "SELF_REPAIR",
+        "ordinal": 294
+      },
+      {
+        "id": "SENTINEL",
+        "ordinal": 295
+      },
+      {
+        "id": "SETUP",
+        "ordinal": 296
+      },
+      {
+        "id": "SEVER_SOUL",
+        "ordinal": 297
+      },
+      {
+        "id": "SHAME",
+        "ordinal": 298
+      },
+      {
+        "id": "SHIV",
+        "ordinal": 299
+      },
+      {
+        "id": "SHOCKWAVE",
+        "ordinal": 300
+      },
+      {
+        "id": "SHRUG_IT_OFF",
+        "ordinal": 301
+      },
+      {
+        "id": "SIGNATURE_MOVE",
+        "ordinal": 302
+      },
+      {
+        "id": "SIMMERING_FURY",
+        "ordinal": 303
+      },
+      {
+        "id": "SKEWER",
+        "ordinal": 304
+      },
+      {
+        "id": "SKIM",
+        "ordinal": 305
+      },
+      {
+        "id": "SLICE",
+        "ordinal": 306
+      },
+      {
+        "id": "SLIMED",
+        "ordinal": 307
+      },
+      {
+        "id": "SMITE",
+        "ordinal": 308
+      },
+      {
+        "id": "SNEAKY_STRIKE",
+        "ordinal": 309
+      },
+      {
+        "id": "SPIRIT_SHIELD",
+        "ordinal": 310
+      },
+      {
+        "id": "SPOT_WEAKNESS",
+        "ordinal": 311
+      },
+      {
+        "id": "STACK",
+        "ordinal": 312
+      },
+      {
+        "id": "STATIC_DISCHARGE",
+        "ordinal": 313
+      },
+      {
+        "id": "STEAM_BARRIER",
+        "ordinal": 314
+      },
+      {
+        "id": "STORM",
+        "ordinal": 315
+      },
+      {
+        "id": "STORM_OF_STEEL",
+        "ordinal": 316
+      },
+      {
+        "id": "STREAMLINE",
+        "ordinal": 317
+      },
+      {
+        "id": "STRIKE_BLUE",
+        "ordinal": 318
+      },
+      {
+        "id": "STRIKE_GREEN",
+        "ordinal": 319
+      },
+      {
+        "id": "STRIKE_PURPLE",
+        "ordinal": 320
+      },
+      {
+        "id": "STRIKE_RED",
+        "ordinal": 321
+      },
+      {
+        "id": "STUDY",
+        "ordinal": 322
+      },
+      {
+        "id": "SUCKER_PUNCH",
+        "ordinal": 323
+      },
+      {
+        "id": "SUNDER",
+        "ordinal": 324
+      },
+      {
+        "id": "SURVIVOR",
+        "ordinal": 325
+      },
+      {
+        "id": "SWEEPING_BEAM",
+        "ordinal": 326
+      },
+      {
+        "id": "SWIFT_STRIKE",
+        "ordinal": 327
+      },
+      {
+        "id": "SWIVEL",
+        "ordinal": 328
+      },
+      {
+        "id": "SWORD_BOOMERANG",
+        "ordinal": 329
+      },
+      {
+        "id": "TACTICIAN",
+        "ordinal": 330
+      },
+      {
+        "id": "TALK_TO_THE_HAND",
+        "ordinal": 331
+      },
+      {
+        "id": "TANTRUM",
+        "ordinal": 332
+      },
+      {
+        "id": "TEMPEST",
+        "ordinal": 333
+      },
+      {
+        "id": "TERROR",
+        "ordinal": 334
+      },
+      {
+        "id": "THE_BOMB",
+        "ordinal": 335
+      },
+      {
+        "id": "THINKING_AHEAD",
+        "ordinal": 336
+      },
+      {
+        "id": "THIRD_EYE",
+        "ordinal": 337
+      },
+      {
+        "id": "THROUGH_VIOLENCE",
+        "ordinal": 338
+      },
+      {
+        "id": "THUNDERCLAP",
+        "ordinal": 339
+      },
+      {
+        "id": "THUNDER_STRIKE",
+        "ordinal": 340
+      },
+      {
+        "id": "TOOLS_OF_THE_TRADE",
+        "ordinal": 341
+      },
+      {
+        "id": "TRANQUILITY",
+        "ordinal": 342
+      },
+      {
+        "id": "TRANSMUTATION",
+        "ordinal": 343
+      },
+      {
+        "id": "TRIP",
+        "ordinal": 344
+      },
+      {
+        "id": "TRUE_GRIT",
+        "ordinal": 345
+      },
+      {
+        "id": "TURBO",
+        "ordinal": 346
+      },
+      {
+        "id": "TWIN_STRIKE",
+        "ordinal": 347
+      },
+      {
+        "id": "UNLOAD",
+        "ordinal": 348
+      },
+      {
+        "id": "UPPERCUT",
+        "ordinal": 349
+      },
+      {
+        "id": "VAULT",
+        "ordinal": 350
+      },
+      {
+        "id": "VIGILANCE",
+        "ordinal": 351
+      },
+      {
+        "id": "VIOLENCE",
+        "ordinal": 352
+      },
+      {
+        "id": "VOID",
+        "ordinal": 353
+      },
+      {
+        "id": "WALLOP",
+        "ordinal": 354
+      },
+      {
+        "id": "WARCRY",
+        "ordinal": 355
+      },
+      {
+        "id": "WAVE_OF_THE_HAND",
+        "ordinal": 356
+      },
+      {
+        "id": "WEAVE",
+        "ordinal": 357
+      },
+      {
+        "id": "WELL_LAID_PLANS",
+        "ordinal": 358
+      },
+      {
+        "id": "WHEEL_KICK",
+        "ordinal": 359
+      },
+      {
+        "id": "WHIRLWIND",
+        "ordinal": 360
+      },
+      {
+        "id": "WHITE_NOISE",
+        "ordinal": 361
+      },
+      {
+        "id": "WILD_STRIKE",
+        "ordinal": 362
+      },
+      {
+        "id": "WINDMILL_STRIKE",
+        "ordinal": 363
+      },
+      {
+        "id": "WISH",
+        "ordinal": 364
+      },
+      {
+        "id": "WORSHIP",
+        "ordinal": 365
+      },
+      {
+        "id": "WOUND",
+        "ordinal": 366
+      },
+      {
+        "id": "WRAITH_FORM",
+        "ordinal": 367
+      },
+      {
+        "id": "WREATH_OF_FLAME",
+        "ordinal": 368
+      },
+      {
+        "id": "WRITHE",
+        "ordinal": 369
+      },
+      {
+        "id": "ZAP",
+        "ordinal": 370
+      }
+    ],
+    "characters": [
+      {
+        "id": "IRONCLAD",
+        "ordinal": 0
+      },
+      {
+        "id": "SILENT",
+        "ordinal": 1
+      },
+      {
+        "id": "DEFECT",
+        "ordinal": 2
+      },
+      {
+        "id": "WATCHER",
+        "ordinal": 3
+      }
+    ],
+    "encounters": [
+      {
+        "id": "CULTIST",
+        "ordinal": 1
+      },
+      {
+        "id": "JAW_WORM",
+        "ordinal": 2
+      },
+      {
+        "id": "TWO_LOUSE",
+        "ordinal": 3
+      },
+      {
+        "id": "SMALL_SLIMES",
+        "ordinal": 4
+      },
+      {
+        "id": "BLUE_SLAVER",
+        "ordinal": 5
+      },
+      {
+        "id": "GREMLIN_GANG",
+        "ordinal": 6
+      },
+      {
+        "id": "LOOTER",
+        "ordinal": 7
+      },
+      {
+        "id": "LARGE_SLIME",
+        "ordinal": 8
+      },
+      {
+        "id": "LOTS_OF_SLIMES",
+        "ordinal": 9
+      },
+      {
+        "id": "EXORDIUM_THUGS",
+        "ordinal": 10
+      },
+      {
+        "id": "EXORDIUM_WILDLIFE",
+        "ordinal": 11
+      },
+      {
+        "id": "RED_SLAVER",
+        "ordinal": 12
+      },
+      {
+        "id": "THREE_LOUSE",
+        "ordinal": 13
+      },
+      {
+        "id": "TWO_FUNGI_BEASTS",
+        "ordinal": 14
+      },
+      {
+        "id": "GREMLIN_NOB",
+        "ordinal": 15
+      },
+      {
+        "id": "LAGAVULIN",
+        "ordinal": 16
+      },
+      {
+        "id": "THREE_SENTRIES",
+        "ordinal": 17
+      },
+      {
+        "id": "SLIME_BOSS",
+        "ordinal": 18
+      },
+      {
+        "id": "THE_GUARDIAN",
+        "ordinal": 19
+      },
+      {
+        "id": "HEXAGHOST",
+        "ordinal": 20
+      },
+      {
+        "id": "SPHERIC_GUARDIAN",
+        "ordinal": 21
+      },
+      {
+        "id": "CHOSEN",
+        "ordinal": 22
+      },
+      {
+        "id": "SHELL_PARASITE",
+        "ordinal": 23
+      },
+      {
+        "id": "THREE_BYRDS",
+        "ordinal": 24
+      },
+      {
+        "id": "TWO_THIEVES",
+        "ordinal": 25
+      },
+      {
+        "id": "CHOSEN_AND_BYRDS",
+        "ordinal": 26
+      },
+      {
+        "id": "SENTRY_AND_SPHERE",
+        "ordinal": 27
+      },
+      {
+        "id": "SNAKE_PLANT",
+        "ordinal": 28
+      },
+      {
+        "id": "SNECKO",
+        "ordinal": 29
+      },
+      {
+        "id": "CENTURION_AND_HEALER",
+        "ordinal": 30
+      },
+      {
+        "id": "CULTIST_AND_CHOSEN",
+        "ordinal": 31
+      },
+      {
+        "id": "THREE_CULTIST",
+        "ordinal": 32
+      },
+      {
+        "id": "SHELLED_PARASITE_AND_FUNGI",
+        "ordinal": 33
+      },
+      {
+        "id": "GREMLIN_LEADER",
+        "ordinal": 34
+      },
+      {
+        "id": "SLAVERS",
+        "ordinal": 35
+      },
+      {
+        "id": "BOOK_OF_STABBING",
+        "ordinal": 36
+      },
+      {
+        "id": "AUTOMATON",
+        "ordinal": 37
+      },
+      {
+        "id": "COLLECTOR",
+        "ordinal": 38
+      },
+      {
+        "id": "CHAMP",
+        "ordinal": 39
+      },
+      {
+        "id": "THREE_DARKLINGS",
+        "ordinal": 40
+      },
+      {
+        "id": "ORB_WALKER",
+        "ordinal": 41
+      },
+      {
+        "id": "THREE_SHAPES",
+        "ordinal": 42
+      },
+      {
+        "id": "SPIRE_GROWTH",
+        "ordinal": 43
+      },
+      {
+        "id": "TRANSIENT",
+        "ordinal": 44
+      },
+      {
+        "id": "FOUR_SHAPES",
+        "ordinal": 45
+      },
+      {
+        "id": "MAW",
+        "ordinal": 46
+      },
+      {
+        "id": "SPHERE_AND_TWO_SHAPES",
+        "ordinal": 47
+      },
+      {
+        "id": "JAW_WORM_HORDE",
+        "ordinal": 48
+      },
+      {
+        "id": "WRITHING_MASS",
+        "ordinal": 49
+      },
+      {
+        "id": "GIANT_HEAD",
+        "ordinal": 50
+      },
+      {
+        "id": "NEMESIS",
+        "ordinal": 51
+      },
+      {
+        "id": "REPTOMANCER",
+        "ordinal": 52
+      },
+      {
+        "id": "AWAKENED_ONE",
+        "ordinal": 53
+      },
+      {
+        "id": "TIME_EATER",
+        "ordinal": 54
+      },
+      {
+        "id": "DONU_AND_DECA",
+        "ordinal": 55
+      },
+      {
+        "id": "SHIELD_AND_SPEAR",
+        "ordinal": 56
+      },
+      {
+        "id": "THE_HEART",
+        "ordinal": 57
+      },
+      {
+        "id": "LAGAVULIN_EVENT",
+        "ordinal": 58
+      },
+      {
+        "id": "COLOSSEUM_EVENT_SLAVERS",
+        "ordinal": 59
+      },
+      {
+        "id": "COLOSSEUM_EVENT_NOBS",
+        "ordinal": 60
+      },
+      {
+        "id": "MASKED_BANDITS_EVENT",
+        "ordinal": 61
+      },
+      {
+        "id": "MUSHROOMS_EVENT",
+        "ordinal": 62
+      },
+      {
+        "id": "MYSTERIOUS_SPHERE_EVENT",
+        "ordinal": 63
+      }
+    ],
+    "events": [
+      {
+        "id": "MONSTER",
+        "ordinal": 1
+      },
+      {
+        "id": "REST",
+        "ordinal": 2
+      },
+      {
+        "id": "SHOP",
+        "ordinal": 3
+      },
+      {
+        "id": "TREASURE",
+        "ordinal": 4
+      },
+      {
+        "id": "NEOW",
+        "ordinal": 5
+      },
+      {
+        "id": "OMINOUS_FORGE",
+        "ordinal": 6
+      },
+      {
+        "id": "PLEADING_VAGRANT",
+        "ordinal": 7
+      },
+      {
+        "id": "ANCIENT_WRITING",
+        "ordinal": 8
+      },
+      {
+        "id": "OLD_BEGGAR",
+        "ordinal": 9
+      },
+      {
+        "id": "BIG_FISH",
+        "ordinal": 10
+      },
+      {
+        "id": "BONFIRE_SPIRITS",
+        "ordinal": 11
+      },
+      {
+        "id": "COLOSSEUM",
+        "ordinal": 12
+      },
+      {
+        "id": "CURSED_TOME",
+        "ordinal": 13
+      },
+      {
+        "id": "DEAD_ADVENTURER",
+        "ordinal": 14
+      },
+      {
+        "id": "DESIGNER_IN_SPIRE",
+        "ordinal": 15
+      },
+      {
+        "id": "AUGMENTER",
+        "ordinal": 16
+      },
+      {
+        "id": "DUPLICATOR",
+        "ordinal": 17
+      },
+      {
+        "id": "FACE_TRADER",
+        "ordinal": 18
+      },
+      {
+        "id": "FALLING",
+        "ordinal": 19
+      },
+      {
+        "id": "FORGOTTEN_ALTAR",
+        "ordinal": 20
+      },
+      {
+        "id": "THE_DIVINE_FOUNTAIN",
+        "ordinal": 21
+      },
+      {
+        "id": "GHOSTS",
+        "ordinal": 22
+      },
+      {
+        "id": "GOLDEN_IDOL",
+        "ordinal": 23
+      },
+      {
+        "id": "GOLDEN_SHRINE",
+        "ordinal": 24
+      },
+      {
+        "id": "WING_STATUE",
+        "ordinal": 25
+      },
+      {
+        "id": "KNOWING_SKULL",
+        "ordinal": 26
+      },
+      {
+        "id": "LAB",
+        "ordinal": 27
+      },
+      {
+        "id": "THE_SSSSSERPENT",
+        "ordinal": 28
+      },
+      {
+        "id": "LIVING_WALL",
+        "ordinal": 29
+      },
+      {
+        "id": "MASKED_BANDITS",
+        "ordinal": 30
+      },
+      {
+        "id": "MATCH_AND_KEEP",
+        "ordinal": 31
+      },
+      {
+        "id": "MINDBLOOM",
+        "ordinal": 32
+      },
+      {
+        "id": "HYPNOTIZING_COLORED_MUSHROOMS",
+        "ordinal": 33
+      },
+      {
+        "id": "MYSTERIOUS_SPHERE",
+        "ordinal": 34
+      },
+      {
+        "id": "THE_NEST",
+        "ordinal": 35
+      },
+      {
+        "id": "NLOTH",
+        "ordinal": 36
+      },
+      {
+        "id": "NOTE_FOR_YOURSELF",
+        "ordinal": 37
+      },
+      {
+        "id": "PURIFIER",
+        "ordinal": 38
+      },
+      {
+        "id": "SCRAP_OOZE",
+        "ordinal": 39
+      },
+      {
+        "id": "SECRET_PORTAL",
+        "ordinal": 40
+      },
+      {
+        "id": "SENSORY_STONE",
+        "ordinal": 41
+      },
+      {
+        "id": "SHINING_LIGHT",
+        "ordinal": 42
+      },
+      {
+        "id": "THE_CLERIC",
+        "ordinal": 43
+      },
+      {
+        "id": "THE_JOUST",
+        "ordinal": 44
+      },
+      {
+        "id": "THE_LIBRARY",
+        "ordinal": 45
+      },
+      {
+        "id": "THE_MAUSOLEUM",
+        "ordinal": 46
+      },
+      {
+        "id": "THE_MOAI_HEAD",
+        "ordinal": 47
+      },
+      {
+        "id": "THE_WOMAN_IN_BLUE",
+        "ordinal": 48
+      },
+      {
+        "id": "TOMB_OF_LORD_RED_MASK",
+        "ordinal": 49
+      },
+      {
+        "id": "TRANSMORGRIFIER",
+        "ordinal": 50
+      },
+      {
+        "id": "UPGRADE_SHRINE",
+        "ordinal": 51
+      },
+      {
+        "id": "VAMPIRES",
+        "ordinal": 52
+      },
+      {
+        "id": "WE_MEET_AGAIN",
+        "ordinal": 53
+      },
+      {
+        "id": "WHEEL_OF_CHANGE",
+        "ordinal": 54
+      },
+      {
+        "id": "WINDING_HALLS",
+        "ordinal": 55
+      },
+      {
+        "id": "WORLD_OF_GOOP",
+        "ordinal": 56
+      }
+    ],
+    "monsters": [
+      {
+        "id": "ACID_SLIME_L",
+        "ordinal": 1
+      },
+      {
+        "id": "ACID_SLIME_M",
+        "ordinal": 2
+      },
+      {
+        "id": "ACID_SLIME_S",
+        "ordinal": 3
+      },
+      {
+        "id": "AWAKENED_ONE",
+        "ordinal": 4
+      },
+      {
+        "id": "BEAR",
+        "ordinal": 5
+      },
+      {
+        "id": "BLUE_SLAVER",
+        "ordinal": 6
+      },
+      {
+        "id": "BOOK_OF_STABBING",
+        "ordinal": 7
+      },
+      {
+        "id": "BRONZE_AUTOMATON",
+        "ordinal": 8
+      },
+      {
+        "id": "BRONZE_ORB",
+        "ordinal": 9
+      },
+      {
+        "id": "BYRD",
+        "ordinal": 10
+      },
+      {
+        "id": "CENTURION",
+        "ordinal": 11
+      },
+      {
+        "id": "CHOSEN",
+        "ordinal": 12
+      },
+      {
+        "id": "CORRUPT_HEART",
+        "ordinal": 13
+      },
+      {
+        "id": "CULTIST",
+        "ordinal": 14
+      },
+      {
+        "id": "DAGGER",
+        "ordinal": 15
+      },
+      {
+        "id": "DARKLING",
+        "ordinal": 16
+      },
+      {
+        "id": "DECA",
+        "ordinal": 17
+      },
+      {
+        "id": "DONU",
+        "ordinal": 18
+      },
+      {
+        "id": "EXPLODER",
+        "ordinal": 19
+      },
+      {
+        "id": "FAT_GREMLIN",
+        "ordinal": 20
+      },
+      {
+        "id": "FUNGI_BEAST",
+        "ordinal": 21
+      },
+      {
+        "id": "GIANT_HEAD",
+        "ordinal": 22
+      },
+      {
+        "id": "GREEN_LOUSE",
+        "ordinal": 23
+      },
+      {
+        "id": "GREMLIN_LEADER",
+        "ordinal": 24
+      },
+      {
+        "id": "GREMLIN_NOB",
+        "ordinal": 25
+      },
+      {
+        "id": "GREMLIN_WIZARD",
+        "ordinal": 26
+      },
+      {
+        "id": "HEXAGHOST",
+        "ordinal": 27
+      },
+      {
+        "id": "JAW_WORM",
+        "ordinal": 28
+      },
+      {
+        "id": "LAGAVULIN",
+        "ordinal": 29
+      },
+      {
+        "id": "LOOTER",
+        "ordinal": 30
+      },
+      {
+        "id": "MAD_GREMLIN",
+        "ordinal": 31
+      },
+      {
+        "id": "MUGGER",
+        "ordinal": 32
+      },
+      {
+        "id": "MYSTIC",
+        "ordinal": 33
+      },
+      {
+        "id": "NEMESIS",
+        "ordinal": 34
+      },
+      {
+        "id": "ORB_WALKER",
+        "ordinal": 35
+      },
+      {
+        "id": "POINTY",
+        "ordinal": 36
+      },
+      {
+        "id": "RED_LOUSE",
+        "ordinal": 37
+      },
+      {
+        "id": "RED_SLAVER",
+        "ordinal": 38
+      },
+      {
+        "id": "REPTOMANCER",
+        "ordinal": 39
+      },
+      {
+        "id": "REPULSOR",
+        "ordinal": 40
+      },
+      {
+        "id": "ROMEO",
+        "ordinal": 41
+      },
+      {
+        "id": "SENTRY",
+        "ordinal": 42
+      },
+      {
+        "id": "SHELLED_PARASITE",
+        "ordinal": 43
+      },
+      {
+        "id": "SHIELD_GREMLIN",
+        "ordinal": 44
+      },
+      {
+        "id": "SLIME_BOSS",
+        "ordinal": 45
+      },
+      {
+        "id": "SNAKE_PLANT",
+        "ordinal": 46
+      },
+      {
+        "id": "SNEAKY_GREMLIN",
+        "ordinal": 47
+      },
+      {
+        "id": "SNECKO",
+        "ordinal": 48
+      },
+      {
+        "id": "SPHERIC_GUARDIAN",
+        "ordinal": 49
+      },
+      {
+        "id": "SPIKER",
+        "ordinal": 50
+      },
+      {
+        "id": "SPIKE_SLIME_L",
+        "ordinal": 51
+      },
+      {
+        "id": "SPIKE_SLIME_M",
+        "ordinal": 52
+      },
+      {
+        "id": "SPIKE_SLIME_S",
+        "ordinal": 53
+      },
+      {
+        "id": "SPIRE_GROWTH",
+        "ordinal": 54
+      },
+      {
+        "id": "SPIRE_SHIELD",
+        "ordinal": 55
+      },
+      {
+        "id": "SPIRE_SPEAR",
+        "ordinal": 56
+      },
+      {
+        "id": "TASKMASTER",
+        "ordinal": 57
+      },
+      {
+        "id": "THE_CHAMP",
+        "ordinal": 58
+      },
+      {
+        "id": "THE_COLLECTOR",
+        "ordinal": 59
+      },
+      {
+        "id": "THE_GUARDIAN",
+        "ordinal": 60
+      },
+      {
+        "id": "THE_MAW",
+        "ordinal": 61
+      },
+      {
+        "id": "TIME_EATER",
+        "ordinal": 62
+      },
+      {
+        "id": "TORCH_HEAD",
+        "ordinal": 63
+      },
+      {
+        "id": "TRANSIENT",
+        "ordinal": 64
+      },
+      {
+        "id": "WRITHING_MASS",
+        "ordinal": 65
+      }
+    ],
+    "potions": [
+      {
+        "id": "EMPTY_POTION_SLOT",
+        "ordinal": 1
+      },
+      {
+        "id": "AMBROSIA",
+        "ordinal": 2
+      },
+      {
+        "id": "ANCIENT_POTION",
+        "ordinal": 3
+      },
+      {
+        "id": "ATTACK_POTION",
+        "ordinal": 4
+      },
+      {
+        "id": "BLESSING_OF_THE_FORGE",
+        "ordinal": 5
+      },
+      {
+        "id": "BLOCK_POTION",
+        "ordinal": 6
+      },
+      {
+        "id": "BLOOD_POTION",
+        "ordinal": 7
+      },
+      {
+        "id": "BOTTLED_MIRACLE",
+        "ordinal": 8
+      },
+      {
+        "id": "COLORLESS_POTION",
+        "ordinal": 9
+      },
+      {
+        "id": "CULTIST_POTION",
+        "ordinal": 10
+      },
+      {
+        "id": "CUNNING_POTION",
+        "ordinal": 11
+      },
+      {
+        "id": "DEXTERITY_POTION",
+        "ordinal": 12
+      },
+      {
+        "id": "DISTILLED_CHAOS",
+        "ordinal": 13
+      },
+      {
+        "id": "DUPLICATION_POTION",
+        "ordinal": 14
+      },
+      {
+        "id": "ELIXIR_POTION",
+        "ordinal": 15
+      },
+      {
+        "id": "ENERGY_POTION",
+        "ordinal": 16
+      },
+      {
+        "id": "ENTROPIC_BREW",
+        "ordinal": 17
+      },
+      {
+        "id": "ESSENCE_OF_DARKNESS",
+        "ordinal": 18
+      },
+      {
+        "id": "ESSENCE_OF_STEEL",
+        "ordinal": 19
+      },
+      {
+        "id": "EXPLOSIVE_POTION",
+        "ordinal": 20
+      },
+      {
+        "id": "FAIRY_POTION",
+        "ordinal": 21
+      },
+      {
+        "id": "FEAR_POTION",
+        "ordinal": 22
+      },
+      {
+        "id": "FIRE_POTION",
+        "ordinal": 23
+      },
+      {
+        "id": "FLEX_POTION",
+        "ordinal": 24
+      },
+      {
+        "id": "FOCUS_POTION",
+        "ordinal": 25
+      },
+      {
+        "id": "FRUIT_JUICE",
+        "ordinal": 26
+      },
+      {
+        "id": "GAMBLERS_BREW",
+        "ordinal": 27
+      },
+      {
+        "id": "GHOST_IN_A_JAR",
+        "ordinal": 28
+      },
+      {
+        "id": "HEART_OF_IRON",
+        "ordinal": 29
+      },
+      {
+        "id": "LIQUID_BRONZE",
+        "ordinal": 30
+      },
+      {
+        "id": "LIQUID_MEMORIES",
+        "ordinal": 31
+      },
+      {
+        "id": "POISON_POTION",
+        "ordinal": 32
+      },
+      {
+        "id": "POTION_OF_CAPACITY",
+        "ordinal": 33
+      },
+      {
+        "id": "POWER_POTION",
+        "ordinal": 34
+      },
+      {
+        "id": "REGEN_POTION",
+        "ordinal": 35
+      },
+      {
+        "id": "SKILL_POTION",
+        "ordinal": 36
+      },
+      {
+        "id": "SMOKE_BOMB",
+        "ordinal": 37
+      },
+      {
+        "id": "SNECKO_OIL",
+        "ordinal": 38
+      },
+      {
+        "id": "SPEED_POTION",
+        "ordinal": 39
+      },
+      {
+        "id": "STANCE_POTION",
+        "ordinal": 40
+      },
+      {
+        "id": "STRENGTH_POTION",
+        "ordinal": 41
+      },
+      {
+        "id": "SWIFT_POTION",
+        "ordinal": 42
+      },
+      {
+        "id": "WEAK_POTION",
+        "ordinal": 43
+      }
+    ],
+    "relics": [
+      {
+        "id": "AKABEKO",
+        "ordinal": 0
+      },
+      {
+        "id": "ART_OF_WAR",
+        "ordinal": 1
+      },
+      {
+        "id": "BIRD_FACED_URN",
+        "ordinal": 2
+      },
+      {
+        "id": "BLOODY_IDOL",
+        "ordinal": 3
+      },
+      {
+        "id": "BLUE_CANDLE",
+        "ordinal": 4
+      },
+      {
+        "id": "BRIMSTONE",
+        "ordinal": 5
+      },
+      {
+        "id": "CALIPERS",
+        "ordinal": 6
+      },
+      {
+        "id": "CAPTAINS_WHEEL",
+        "ordinal": 7
+      },
+      {
+        "id": "CENTENNIAL_PUZZLE",
+        "ordinal": 8
+      },
+      {
+        "id": "CERAMIC_FISH",
+        "ordinal": 9
+      },
+      {
+        "id": "CHAMPION_BELT",
+        "ordinal": 10
+      },
+      {
+        "id": "CHARONS_ASHES",
+        "ordinal": 11
+      },
+      {
+        "id": "CHEMICAL_X",
+        "ordinal": 12
+      },
+      {
+        "id": "CLOAK_CLASP",
+        "ordinal": 13
+      },
+      {
+        "id": "DARKSTONE_PERIAPT",
+        "ordinal": 14
+      },
+      {
+        "id": "DEAD_BRANCH",
+        "ordinal": 15
+      },
+      {
+        "id": "DUALITY",
+        "ordinal": 16
+      },
+      {
+        "id": "ECTOPLASM",
+        "ordinal": 17
+      },
+      {
+        "id": "EMOTION_CHIP",
+        "ordinal": 18
+      },
+      {
+        "id": "FROZEN_CORE",
+        "ordinal": 19
+      },
+      {
+        "id": "FROZEN_EYE",
+        "ordinal": 20
+      },
+      {
+        "id": "GAMBLING_CHIP",
+        "ordinal": 21
+      },
+      {
+        "id": "GINGER",
+        "ordinal": 22
+      },
+      {
+        "id": "GOLDEN_EYE",
+        "ordinal": 23
+      },
+      {
+        "id": "GREMLIN_HORN",
+        "ordinal": 24
+      },
+      {
+        "id": "HAND_DRILL",
+        "ordinal": 25
+      },
+      {
+        "id": "HAPPY_FLOWER",
+        "ordinal": 26
+      },
+      {
+        "id": "HORN_CLEAT",
+        "ordinal": 27
+      },
+      {
+        "id": "HOVERING_KITE",
+        "ordinal": 28
+      },
+      {
+        "id": "ICE_CREAM",
+        "ordinal": 29
+      },
+      {
+        "id": "INCENSE_BURNER",
+        "ordinal": 30
+      },
+      {
+        "id": "INK_BOTTLE",
+        "ordinal": 31
+      },
+      {
+        "id": "INSERTER",
+        "ordinal": 32
+      },
+      {
+        "id": "KUNAI",
+        "ordinal": 33
+      },
+      {
+        "id": "LETTER_OPENER",
+        "ordinal": 34
+      },
+      {
+        "id": "LIZARD_TAIL",
+        "ordinal": 35
+      },
+      {
+        "id": "MAGIC_FLOWER",
+        "ordinal": 36
+      },
+      {
+        "id": "MARK_OF_THE_BLOOM",
+        "ordinal": 37
+      },
+      {
+        "id": "MEDICAL_KIT",
+        "ordinal": 38
+      },
+      {
+        "id": "MELANGE",
+        "ordinal": 39
+      },
+      {
+        "id": "MERCURY_HOURGLASS",
+        "ordinal": 40
+      },
+      {
+        "id": "MUMMIFIED_HAND",
+        "ordinal": 41
+      },
+      {
+        "id": "NECRONOMICON",
+        "ordinal": 42
+      },
+      {
+        "id": "NILRYS_CODEX",
+        "ordinal": 43
+      },
+      {
+        "id": "NUNCHAKU",
+        "ordinal": 44
+      },
+      {
+        "id": "ODD_MUSHROOM",
+        "ordinal": 45
+      },
+      {
+        "id": "OMAMORI",
+        "ordinal": 46
+      },
+      {
+        "id": "ORANGE_PELLETS",
+        "ordinal": 47
+      },
+      {
+        "id": "ORICHALCUM",
+        "ordinal": 48
+      },
+      {
+        "id": "ORNAMENTAL_FAN",
+        "ordinal": 49
+      },
+      {
+        "id": "PAPER_KRANE",
+        "ordinal": 50
+      },
+      {
+        "id": "PAPER_PHROG",
+        "ordinal": 51
+      },
+      {
+        "id": "PEN_NIB",
+        "ordinal": 52
+      },
+      {
+        "id": "PHILOSOPHERS_STONE",
+        "ordinal": 53
+      },
+      {
+        "id": "POCKETWATCH",
+        "ordinal": 54
+      },
+      {
+        "id": "RED_SKULL",
+        "ordinal": 55
+      },
+      {
+        "id": "RUNIC_CUBE",
+        "ordinal": 56
+      },
+      {
+        "id": "RUNIC_DOME",
+        "ordinal": 57
+      },
+      {
+        "id": "RUNIC_PYRAMID",
+        "ordinal": 58
+      },
+      {
+        "id": "SACRED_BARK",
+        "ordinal": 59
+      },
+      {
+        "id": "SELF_FORMING_CLAY",
+        "ordinal": 60
+      },
+      {
+        "id": "SHURIKEN",
+        "ordinal": 61
+      },
+      {
+        "id": "SNECKO_EYE",
+        "ordinal": 62
+      },
+      {
+        "id": "SNECKO_SKULL",
+        "ordinal": 63
+      },
+      {
+        "id": "SOZU",
+        "ordinal": 64
+      },
+      {
+        "id": "STONE_CALENDAR",
+        "ordinal": 65
+      },
+      {
+        "id": "STRANGE_SPOON",
+        "ordinal": 66
+      },
+      {
+        "id": "STRIKE_DUMMY",
+        "ordinal": 67
+      },
+      {
+        "id": "SUNDIAL",
+        "ordinal": 68
+      },
+      {
+        "id": "THE_ABACUS",
+        "ordinal": 69
+      },
+      {
+        "id": "THE_BOOT",
+        "ordinal": 70
+      },
+      {
+        "id": "THE_SPECIMEN",
+        "ordinal": 71
+      },
+      {
+        "id": "TINGSHA",
+        "ordinal": 72
+      },
+      {
+        "id": "TOOLBOX",
+        "ordinal": 73
+      },
+      {
+        "id": "TORII",
+        "ordinal": 74
+      },
+      {
+        "id": "TOUGH_BANDAGES",
+        "ordinal": 75
+      },
+      {
+        "id": "TOY_ORNITHOPTER",
+        "ordinal": 76
+      },
+      {
+        "id": "TUNGSTEN_ROD",
+        "ordinal": 77
+      },
+      {
+        "id": "TURNIP",
+        "ordinal": 78
+      },
+      {
+        "id": "TWISTED_FUNNEL",
+        "ordinal": 79
+      },
+      {
+        "id": "UNCEASING_TOP",
+        "ordinal": 80
+      },
+      {
+        "id": "VELVET_CHOKER",
+        "ordinal": 81
+      },
+      {
+        "id": "VIOLET_LOTUS",
+        "ordinal": 82
+      },
+      {
+        "id": "WARPED_TONGS",
+        "ordinal": 83
+      },
+      {
+        "id": "WRIST_BLADE",
+        "ordinal": 84
+      },
+      {
+        "id": "BLACK_BLOOD",
+        "ordinal": 85
+      },
+      {
+        "id": "BURNING_BLOOD",
+        "ordinal": 86
+      },
+      {
+        "id": "MEAT_ON_THE_BONE",
+        "ordinal": 87
+      },
+      {
+        "id": "FACE_OF_CLERIC",
+        "ordinal": 88
+      },
+      {
+        "id": "ANCHOR",
+        "ordinal": 89
+      },
+      {
+        "id": "ANCIENT_TEA_SET",
+        "ordinal": 90
+      },
+      {
+        "id": "BAG_OF_MARBLES",
+        "ordinal": 91
+      },
+      {
+        "id": "BAG_OF_PREPARATION",
+        "ordinal": 92
+      },
+      {
+        "id": "BLOOD_VIAL",
+        "ordinal": 93
+      },
+      {
+        "id": "BOTTLED_FLAME",
+        "ordinal": 94
+      },
+      {
+        "id": "BOTTLED_LIGHTNING",
+        "ordinal": 95
+      },
+      {
+        "id": "BOTTLED_TORNADO",
+        "ordinal": 96
+      },
+      {
+        "id": "BRONZE_SCALES",
+        "ordinal": 97
+      },
+      {
+        "id": "BUSTED_CROWN",
+        "ordinal": 98
+      },
+      {
+        "id": "CLOCKWORK_SOUVENIR",
+        "ordinal": 99
+      },
+      {
+        "id": "COFFEE_DRIPPER",
+        "ordinal": 100
+      },
+      {
+        "id": "CRACKED_CORE",
+        "ordinal": 101
+      },
+      {
+        "id": "CURSED_KEY",
+        "ordinal": 102
+      },
+      {
+        "id": "DAMARU",
+        "ordinal": 103
+      },
+      {
+        "id": "DATA_DISK",
+        "ordinal": 104
+      },
+      {
+        "id": "DU_VU_DOLL",
+        "ordinal": 105
+      },
+      {
+        "id": "ENCHIRIDION",
+        "ordinal": 106
+      },
+      {
+        "id": "FOSSILIZED_HELIX",
+        "ordinal": 107
+      },
+      {
+        "id": "FUSION_HAMMER",
+        "ordinal": 108
+      },
+      {
+        "id": "GIRYA",
+        "ordinal": 109
+      },
+      {
+        "id": "GOLD_PLATED_CABLES",
+        "ordinal": 110
+      },
+      {
+        "id": "GREMLIN_VISAGE",
+        "ordinal": 111
+      },
+      {
+        "id": "HOLY_WATER",
+        "ordinal": 112
+      },
+      {
+        "id": "LANTERN",
+        "ordinal": 113
+      },
+      {
+        "id": "MARK_OF_PAIN",
+        "ordinal": 114
+      },
+      {
+        "id": "MUTAGENIC_STRENGTH",
+        "ordinal": 115
+      },
+      {
+        "id": "NEOWS_LAMENT",
+        "ordinal": 116
+      },
+      {
+        "id": "NINJA_SCROLL",
+        "ordinal": 117
+      },
+      {
+        "id": "NUCLEAR_BATTERY",
+        "ordinal": 118
+      },
+      {
+        "id": "ODDLY_SMOOTH_STONE",
+        "ordinal": 119
+      },
+      {
+        "id": "PANTOGRAPH",
+        "ordinal": 120
+      },
+      {
+        "id": "PRESERVED_INSECT",
+        "ordinal": 121
+      },
+      {
+        "id": "PURE_WATER",
+        "ordinal": 122
+      },
+      {
+        "id": "RED_MASK",
+        "ordinal": 123
+      },
+      {
+        "id": "RING_OF_THE_SERPENT",
+        "ordinal": 124
+      },
+      {
+        "id": "RING_OF_THE_SNAKE",
+        "ordinal": 125
+      },
+      {
+        "id": "RUNIC_CAPACITOR",
+        "ordinal": 126
+      },
+      {
+        "id": "SLAVERS_COLLAR",
+        "ordinal": 127
+      },
+      {
+        "id": "SLING_OF_COURAGE",
+        "ordinal": 128
+      },
+      {
+        "id": "SYMBIOTIC_VIRUS",
+        "ordinal": 129
+      },
+      {
+        "id": "TEARDROP_LOCKET",
+        "ordinal": 130
+      },
+      {
+        "id": "THREAD_AND_NEEDLE",
+        "ordinal": 131
+      },
+      {
+        "id": "VAJRA",
+        "ordinal": 132
+      },
+      {
+        "id": "ASTROLABE",
+        "ordinal": 133
+      },
+      {
+        "id": "BLACK_STAR",
+        "ordinal": 134
+      },
+      {
+        "id": "CALLING_BELL",
+        "ordinal": 135
+      },
+      {
+        "id": "CAULDRON",
+        "ordinal": 136
+      },
+      {
+        "id": "CULTIST_HEADPIECE",
+        "ordinal": 137
+      },
+      {
+        "id": "DOLLYS_MIRROR",
+        "ordinal": 138
+      },
+      {
+        "id": "DREAM_CATCHER",
+        "ordinal": 139
+      },
+      {
+        "id": "EMPTY_CAGE",
+        "ordinal": 140
+      },
+      {
+        "id": "ETERNAL_FEATHER",
+        "ordinal": 141
+      },
+      {
+        "id": "FROZEN_EGG",
+        "ordinal": 142
+      },
+      {
+        "id": "GOLDEN_IDOL",
+        "ordinal": 143
+      },
+      {
+        "id": "JUZU_BRACELET",
+        "ordinal": 144
+      },
+      {
+        "id": "LEES_WAFFLE",
+        "ordinal": 145
+      },
+      {
+        "id": "MANGO",
+        "ordinal": 146
+      },
+      {
+        "id": "MATRYOSHKA",
+        "ordinal": 147
+      },
+      {
+        "id": "MAW_BANK",
+        "ordinal": 148
+      },
+      {
+        "id": "MEAL_TICKET",
+        "ordinal": 149
+      },
+      {
+        "id": "MEMBERSHIP_CARD",
+        "ordinal": 150
+      },
+      {
+        "id": "MOLTEN_EGG",
+        "ordinal": 151
+      },
+      {
+        "id": "NLOTHS_GIFT",
+        "ordinal": 152
+      },
+      {
+        "id": "NLOTHS_HUNGRY_FACE",
+        "ordinal": 153
+      },
+      {
+        "id": "OLD_COIN",
+        "ordinal": 154
+      },
+      {
+        "id": "ORRERY",
+        "ordinal": 155
+      },
+      {
+        "id": "PANDORAS_BOX",
+        "ordinal": 156
+      },
+      {
+        "id": "PEACE_PIPE",
+        "ordinal": 157
+      },
+      {
+        "id": "PEAR",
+        "ordinal": 158
+      },
+      {
+        "id": "POTION_BELT",
+        "ordinal": 159
+      },
+      {
+        "id": "PRAYER_WHEEL",
+        "ordinal": 160
+      },
+      {
+        "id": "PRISMATIC_SHARD",
+        "ordinal": 161
+      },
+      {
+        "id": "QUESTION_CARD",
+        "ordinal": 162
+      },
+      {
+        "id": "REGAL_PILLOW",
+        "ordinal": 163
+      },
+      {
+        "id": "SSSERPENT_HEAD",
+        "ordinal": 164
+      },
+      {
+        "id": "SHOVEL",
+        "ordinal": 165
+      },
+      {
+        "id": "SINGING_BOWL",
+        "ordinal": 166
+      },
+      {
+        "id": "SMILING_MASK",
+        "ordinal": 167
+      },
+      {
+        "id": "SPIRIT_POOP",
+        "ordinal": 168
+      },
+      {
+        "id": "STRAWBERRY",
+        "ordinal": 169
+      },
+      {
+        "id": "THE_COURIER",
+        "ordinal": 170
+      },
+      {
+        "id": "TINY_CHEST",
+        "ordinal": 171
+      },
+      {
+        "id": "TINY_HOUSE",
+        "ordinal": 172
+      },
+      {
+        "id": "TOXIC_EGG",
+        "ordinal": 173
+      },
+      {
+        "id": "WAR_PAINT",
+        "ordinal": 174
+      },
+      {
+        "id": "WHETSTONE",
+        "ordinal": 175
+      },
+      {
+        "id": "WHITE_BEAST_STATUE",
+        "ordinal": 176
+      },
+      {
+        "id": "WING_BOOTS",
+        "ordinal": 177
+      },
+      {
+        "id": "CIRCLET",
+        "ordinal": 178
+      },
+      {
+        "id": "RED_CIRCLET",
+        "ordinal": 179
+      }
+    ]
+  },
+  "schema_version": 1,
+  "source": {
+    "header_sha256": {
+      "Cards.h": "68f5ba20a4b4337cee31d18a10c238bbf9c597241088c9837afafa54dfd67cda",
+      "CharacterClasses.h": "81dc2b5ca3395b826c2e33677b4943b6cc35b67b1c81f5d076b8abda02db289d",
+      "Events.h": "d558be77e7f187784a7eb66c21a537b458304d7dcbc934c6498d635a74cb97f1",
+      "MonsterEncounters.h": "5363596ba4d216bf635c1f8d6066e180712c590529210d6264746b877e27bcce",
+      "MonsterIds.h": "9323e51faf3c1583158469792e4b4e9c0569ad9fef7355460c98e2c815aa36f1",
+      "Potions.h": "d16d41c0b95028d7338b05f455511c266907e5ec31be711a705ceeb077ea1938",
+      "Relics.h": "092473d34e953ec4e9328d602250b67cb2d12c6df0be9b7bbaf435de47aa88d0"
+    },
+    "simulator_manifest": "cpp/simulator/SLS_VENDOR.json"
+  }
+}

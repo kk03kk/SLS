@@ -1,0 +1,102 @@
+Summary for D:\steam\steamapps\common\SlayTheSpire\desktop-1.0.jar
+Decompiled with CFR 0.152
+
+
+com.esotericsoftware.spine.IkConstraint
+----------------------------
+
+apply(com.esotericsoftware.spine.Bone com.esotericsoftware.spine.Bone float float int float )
+  Unable to fully structure code
+
+
+com.esotericsoftware.spine.PathConstraint
+----------------------------
+
+computeWorldPositions(com.esotericsoftware.spine.attachments.PathAttachment int boolean boolean boolean )
+  Unable to fully structure code
+
+
+com.badlogic.gdx.graphics.g3d.loader.ObjLoader
+----------------------------
+
+loadModelData(com.badlogic.gdx.files.FileHandle boolean )
+  Unable to fully structure code
+
+
+com.badlogic.gdx.maps.tiled.AtlasTmxMapLoader
+----------------------------
+
+loadTileset(com.badlogic.gdx.maps.tiled.TiledMap com.badlogic.gdx.utils.XmlReader$Element com.badlogic.gdx.files.FileHandle com.badlogic.gdx.maps.tiled.AtlasTmxMapLoader$AtlasResolver )
+  Unable to fully structure code
+
+
+com.badlogic.gdx.maps.tiled.TmxMapLoader
+----------------------------
+
+loadTileSet(com.badlogic.gdx.maps.tiled.TiledMap com.badlogic.gdx.utils.XmlReader$Element com.badlogic.gdx.files.FileHandle com.badlogic.gdx.maps.ImageResolver )
+  Unable to fully structure code
+
+
+com.badlogic.gdx.utils.JsonReader
+----------------------------
+
+parse(char[] int int )
+  Unable to fully structure code
+
+
+com.badlogic.gdx.utils.XmlReader
+----------------------------
+
+parse(char[] int int )
+  Unable to fully structure code
+
+
+com.badlogic.gdx.utils.compression.lzma.Encoder
+----------------------------
+
+GetOptimum(int )
+  Unable to fully structure code
+
+
+org.lwjgl.opengl.LinuxCanvasImplementation
+----------------------------
+
+findVisualIDFromFormat(int org.lwjgl.opengl.PixelFormat )
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Started 2 blocks at once
+
+
+org.lwjgl.opengl.LinuxDisplay
+----------------------------
+
+getGammaRampLength()
+  Loose catch block
+
+
+org.apache.commons.net.ftp.FTPClient
+----------------------------
+
+_openDataConnection_(java.lang.String java.lang.String )
+  Unable to fully structure code
+
+
+org.apache.logging.log4j.core.config.HttpWatcher
+----------------------------
+
+refreshConfiguration()
+  Exception : org.benf.cfr.reader.util.ConfusedCFRException: Tried to end blocks [1[TRYBLOCK]], but top level block is 16[SWITCH]
+
+
+org.apache.logging.log4j.core.config.composite.DefaultMergeStrategy
+----------------------------
+
+mergConfigurations(org.apache.logging.log4j.core.config.Node org.apache.logging.log4j.core.config.Node org.apache.logging.log4j.core.config.plugins.util.PluginManager )
+  Unable to fully structure code
+
+
+com.jcraft.jorbis.Drft
+----------------------------
+
+dradfg(int int int int float[] float[] float[] float[] float[] float[] int )
+  Unable to fully structure code
+dradbg(int int int int float[] float[] float[] float[] float[] float[] int )
+  Unable to fully structure code

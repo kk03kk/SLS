@@ -1,0 +1,42 @@
+/*
+ * Decompiled with CFR 0.152.
+ */
+package com.megacrit.cardcrawl.cards.purple;
+
+import com.megacrit.cardcrawl.actions.watcher.ChangeStanceAction;
+import com.megacrit.cardcrawl.cards.AbstractCard;
+import com.megacrit.cardcrawl.characters.AbstractPlayer;
+import com.megacrit.cardcrawl.core.CardCrawlGame;
+import com.megacrit.cardcrawl.localization.CardStrings;
+import com.megacrit.cardcrawl.monsters.AbstractMonster;
+
+public class Crescendo
+extends AbstractCard {
+    public static final String ID = "Crescendo";
+    private static final CardStrings cardStrings = CardCrawlGame.languagePack.getCardStrings("Crescendo");
+
+    public Crescendo() {
+        super(ID, Crescendo.cardStrings.NAME, "purple/skill/crescendo", 1, Crescendo.cardStrings.DESCRIPTION, AbstractCard.CardType.SKILL, AbstractCard.CardColor.PURPLE, AbstractCard.CardRarity.COMMON, AbstractCard.CardTarget.SELF);
+        this.exhaust = true;
+        this.selfRetain = true;
+    }
+
+    @Override
+    public void use(AbstractPlayer p, AbstractMonster m) {
+        this.addToBot(new ChangeStanceAction("Wrath"));
+    }
+
+    @Override
+    public void upgrade() {
+        if (!this.upgraded) {
+            this.upgradeName();
+            this.upgradeBaseCost(0);
+        }
+    }
+
+    @Override
+    public AbstractCard makeCopy() {
+        return new Crescendo();
+    }
+}
+

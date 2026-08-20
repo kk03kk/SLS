@@ -1,0 +1,33 @@
+[run]
+profile = "IRONCLAD_A0_ACT1"
+seed = 0
+device = "auto"
+workers = 8
+updates = 1000
+save_interval = 10
+evaluate_interval = 10
+evaluation_seeds = [10000, 10001, 10002, 10003]
+output = "runs/full-run"
+
+[model]
+entity_feature_dim = 32
+action_feature_dim = 24
+entity_type_count = 16
+action_type_count = 32
+embedding_dim = 128
+transformer_layers = 4
+attention_heads = 4
+feedforward_dim = 256
+dropout = 0.0
+
+[ppo]
+rollout_steps = 128
+learning_rate = 0.0003
+gamma = 0.99
+gae_lambda = 0.95
+clip_ratio = 0.2
+value_coefficient = 0.5
+entropy_coefficient = 0.01
+max_gradient_norm = 0.5
+epochs = 4
+minibatch_size = 256

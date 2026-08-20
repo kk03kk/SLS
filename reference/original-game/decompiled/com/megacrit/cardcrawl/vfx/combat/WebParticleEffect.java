@@ -1,0 +1,50 @@
+/*
+ * Decompiled with CFR 0.152.
+ */
+package com.megacrit.cardcrawl.vfx.combat;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Interpolation;
+import com.megacrit.cardcrawl.core.Settings;
+import com.megacrit.cardcrawl.helpers.ImageMaster;
+import com.megacrit.cardcrawl.vfx.AbstractGameEffect;
+
+public class WebParticleEffect
+extends AbstractGameEffect {
+    private float x;
+    private float y;
+
+    public WebParticleEffect(float x, float y) {
+        this.x = x - 32.0f;
+        this.y = y - 32.0f;
+        this.duration = this.startingDuration = 1.0f;
+        this.scale = 0.01f;
+        this.color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+        this.renderBehind = false;
+    }
+
+    @Override
+    public void update() {
+        this.duration -= Gdx.graphics.getDeltaTime();
+        this.color.a = this.duration > this.startingDuration / 2.0f ? Interpolation.fade.apply(1.0f, 0.01f, this.duration - this.startingDuration / 2.0f) * Settings.scale : Interpolation.fade.apply(0.01f, 1.0f, this.duration / (this.startingDuration / 2.0f)) * Settings.scale;
+        this.scale = Interpolation.elasticIn.apply(2.5f, 0.01f, this.duration / this.startingDuration) * Settings.scale;
+        if (this.duration < 0.0f) {
+            this.isDone = true;
+        }
+    }
+
+    @Override
+    public void render(SpriteBatch sb) {
+        sb.setColor(new Color(1.0f, 1.0f, 1.0f, this.color.a));
+        sb.setBlendFunction(770, 1);
+        sb.draw(ImageMaster.WEB_VFX, this.x, this.y, 32.0f, 32.0f, 64.0f, 64.0f, this.scale, this.scale, 0.0f, 0, 0, 64, 64, false, false);
+        sb.setBlendFunction(770, 771);
+    }
+
+    @Override
+    public void dispose() {
+    }
+}
+

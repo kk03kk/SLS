@@ -1,0 +1,10 @@
+profile = "IRONCLAD_A0_HEART"
+seeds = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+max_steps = 10000
+include_rng = true
+stop_on_difference = true
+output_dir = "validation-results/corpus"
+
+[acceptance]
+require_complete_runs = 10
+allow_unexplained_differences = 0

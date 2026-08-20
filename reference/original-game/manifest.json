@@ -1,0 +1,12 @@
+{
+  "schema": "sls-original-reference-v1",
+  "decompiler": "CFR",
+  "status": "migrated from the audited legacy workspace",
+  "runtime_dependencies": [
+    "desktop-1.0.jar",
+    "ModTheSpire.jar",
+    "BaseMod.jar",
+    "CommunicationMod.jar"
+  ],
+  "runtime_dependency_directory": "external/original-game"
+}

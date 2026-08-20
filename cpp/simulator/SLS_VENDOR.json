@@ -1,0 +1,7 @@
+{
+  "schema": "sls-simulator-source-v1",
+  "upstream_repository": "https://github.com/gamerpuppy/sts_lightspeed.git",
+  "upstream_commit": "7476a81954020087da31d41d16fddf475746ec2d",
+  "status": "audited fork",
+  "policy": "Simulator source is versioned here and is never downloaded or patched during a build."
+}
