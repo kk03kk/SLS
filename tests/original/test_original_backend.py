@@ -208,3 +208,28 @@ def test_resume_folds_shop_room_without_selecting_single_event() -> None:
     decision = backend.resume()
     assert decision.observation.screen is ScreenType.SHOP
     assert transport.sent == ["ready", "parity_continue", "choose 0"]
+
+
+def test_leave_shop_uses_room_proceed_instead_of_reentering_shop() -> None:
+    shop = game_payload([])
+    shop["game_state"].update({
+        "floor": 3, "screen_type": "SHOP_SCREEN",
+        "screen_state": {"cards": [], "relics": [], "potions": []},
+    })
+    shop["available_commands"] = ["leave"]
+    shop_room = game_payload(["shop"])
+    shop_room["game_state"].update({"floor": 3, "screen_type": "SHOP_ROOM"})
+    shop_room["available_commands"] = ["choose", "proceed"]
+    map_payload = game_payload(["x=0"])
+    map_payload["game_state"].update({
+        "floor": 3, "screen_type": "MAP",
+        "screen_state": {"next_nodes": [{"x": 0, "y": 3}]},
+    })
+    transport = ScriptedTransport([shop_room, map_payload])
+    session = OriginalSession(transport)
+    session.payload = shop
+    backend = OriginalBackend(session, IRONCLAD_A0_ACT1)
+    backend._adapted = adapt_original(shop)
+    transition = backend.step(backend._adapted.decision.actions[0])
+    assert transition.decision.observation.screen is ScreenType.MAP
+    assert backend.last_executed_commands == ("leave", "proceed")

@@ -111,6 +111,9 @@ class OriginalBackend:
         )
         payload = self._fold_protocol_only_boundaries(
             payload, executed, fold_single_event=fold_single_event,
+            leaving_shop=(
+                not isinstance(action, str) and action.kind is ActionKind.LEAVE_SHOP
+            ),
         )
         payload = self._settle_debug_intents(payload, executed)
         self._last_executed_commands = tuple(executed)
@@ -192,7 +195,7 @@ class OriginalBackend:
 
     def _fold_protocol_only_boundaries(
         self, payload: dict[str, Any], executed: list[str] | None = None,
-        *, fold_single_event: bool = True,
+        *, fold_single_event: bool = True, leaving_shop: bool = False,
     ) -> dict[str, Any]:
         """Fold confirmations that carry no player choice or gameplay semantics."""
 
@@ -208,10 +211,13 @@ class OriginalBackend:
                     executed.append("confirm")
                 folded = True
                 continue
-            if screen == "SHOP_ROOM" and len(choices or ()) == 1 and "choose" in available:
-                payload = self.session.execute("choose 0")
+            if screen == "SHOP_ROOM" and len(choices or ()) == 1:
+                command = "proceed" if leaving_shop and "proceed" in available else "choose 0"
+                if command == "choose 0" and "choose" not in available:
+                    break
+                payload = self.session.execute(command)
                 if executed is not None:
-                    executed.append("choose 0")
+                    executed.append(command)
                 folded = True
                 continue
             if (
