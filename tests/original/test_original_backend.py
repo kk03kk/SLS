@@ -137,13 +137,16 @@ def test_composite_card_reward_waits_for_each_ui_transition() -> None:
         "screen_state": {"cards": [{"id": "Anger", "upgrades": 0}]},
     })
     card_screen["available_commands"] = ["choose", "skip", "wait"]
-    choosing = {**card_screen, "game_state": {**card_screen["game_state"]}}
-    completed = {**parent, "game_state": {**parent["game_state"]}}
+    choosing = {**parent, "game_state": {**parent["game_state"]}}
+    choosing["game_state"]["screen_state"] = {
+        "rewards": [{"reward_type": "GOLD", "gold": 11}],
+    }
+    choosing["_combat_reward_cards"] = []
+    completed = {**choosing, "game_state": {**choosing["game_state"]}}
     completed["game_state"]["deck"] = [{"id": "Anger", "upgrades": 0}]
     completed["game_state"]["screen_state"] = {
         "rewards": [{"reward_type": "GOLD", "gold": 11}],
     }
-    completed["_combat_reward_cards"] = []
     transport = ScriptedTransport([opening, card_screen, choosing, completed])
     session = OriginalSession(transport)
     session.payload = parent

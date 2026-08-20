@@ -93,6 +93,7 @@ class OriginalBackend:
         except KeyError as error:
             raise ValueError("action is not legal at the current Original decision") from error
         payload = self.raw_payload
+        starting_deck_size = len((payload.get("game_state") or {}).get("deck") or ())
         executed: list[str] = []
         for index, command in enumerate(commands):
             payload = self.session.execute(command)
@@ -105,6 +106,10 @@ class OriginalBackend:
             ActionKind.TAKE_SINGING_BOWL,
         }:
             payload = self._settle_reward_completion(payload, executed)
+        if not isinstance(action, str) and action.kind is ActionKind.CHOOSE_CARD_REWARD:
+            payload = self._wait_for_deck_growth(
+                payload, starting_size=starting_deck_size, executed=executed,
+            )
         fold_single_event = (
             not isinstance(action, str)
             and action.kind in {ActionKind.CHOOSE_EVENT_OPTION, ActionKind.CHOOSE_NEOW_OPTION}
@@ -165,6 +170,21 @@ class OriginalBackend:
         return self._wait_for_screen_change(
             payload, while_screen="CARD_REWARD", executed=executed,
         )
+
+    def _wait_for_deck_growth(
+        self, payload: dict[str, Any], *, starting_size: int,
+        executed: list[str], limit: int = 60,
+    ) -> dict[str, Any]:
+        for _ in range(limit):
+            deck = (payload.get("game_state") or {}).get("deck") or ()
+            if len(deck) > starting_size:
+                return payload
+            available = {str(item).lower() for item in payload.get("available_commands") or ()}
+            if "wait" not in available:
+                raise RuntimeError("card reward closed before the selected card entered the deck")
+            payload = self.session.execute("wait 1")
+            executed.append("wait 1")
+        raise RuntimeError(f"selected card did not enter the deck within {limit} frames")
 
     def command_sequence(self, action: Action | str) -> tuple[str, ...]:
         """Return validation-only wire commands without exposing them to policy code."""
