@@ -80,7 +80,7 @@ def main() -> int:
             args.truth_root.resolve(), seed=args.seed, profile_id=profile.profile_id,
             policy_id="deterministic-action-v1", repository_root=ROOT,
             jar_paths=jar_paths, autosave=game_root / "saves" / "IRONCLAD.autosave",
-            instrumentation_schema="spirecomm-parity-v3",
+            instrumentation_schema="spirecomm-parity-v4",
             policy_hash=file_hash(ROOT / "src" / "sls" / "validation" / "policies.py"),
             native_build=native_build_metadata(ROOT),
             launch={

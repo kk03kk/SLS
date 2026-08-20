@@ -58,7 +58,7 @@ hashes. `MATCH`, `DIFFERENCE`, and `INCONCLUSIVE` are distinct states. A missing
 map coordinate, intent, RNG stream, continuation field, or unknown screen is an
 `EVIDENCE_GAP`; it is never replaced by a guessed default.
 
-The current Oracle instrumentation contract is `spirecomm-parity-v3`. Besides
+The current Oracle instrumentation contract is `spirecomm-parity-v4`. Besides
 RNG, map, queue and monster-move evidence, v3 exposes already-generated combat
 reward cards without opening the reward UI. V2 remains readable; a V2 combat
 reward without those cards is explicitly inconclusive.

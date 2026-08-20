@@ -22,7 +22,7 @@ import javassist.CannotCompileException;
 import javassist.CtBehavior;
 
 public final class CommunicationStatePatch {
-    public static final String INSTRUMENTATION_SCHEMA = "spirecomm-parity-v3";
+    public static final String INSTRUMENTATION_SCHEMA = "spirecomm-parity-v4";
     public static String inject(String json) {
         if (json == null || json.length() < 2 || json.charAt(json.length() - 1) != '}') {
             return json;
@@ -110,6 +110,8 @@ public final class CommunicationStatePatch {
                     ? "UNKNOWN" : move.intent.name());
                 intent.put("next_move", move == null ? monster.nextMove : move.nextMove);
                 intent.put("base_damage", move == null ? -1 : move.baseDamage);
+                intent.put("damage", monster.getIntentDmg());
+                intent.put("hits", move != null && move.isMultiDamage ? move.multiplier : 1);
                 intent.put("multiplier", move == null ? 0 : move.multiplier);
                 intent.put("multi_damage", move != null && move.isMultiDamage);
                 monsterIntents.add(intent);

@@ -29,7 +29,7 @@ def original_evidence_gaps(
     if canonical_screen not in KNOWN_SCREENS:
         gaps.append({"code": "UNKNOWN_CANONICAL_SCREEN", "path": "$.game_state.screen_type"})
     if payload.get("_parity_schema") and payload.get("_parity_schema") not in {
-        "spirecomm-parity-v2", "spirecomm-parity-v3",
+        "spirecomm-parity-v2", "spirecomm-parity-v3", "spirecomm-parity-v4",
     }:
         gaps.append({"code": "UNSUPPORTED_INSTRUMENTATION_SCHEMA", "path": "$._parity_schema"})
     rng = payload.get("_rng") or game.get("_rng")
@@ -67,6 +67,18 @@ def original_evidence_gaps(
             gaps.append({"code": "INCOMPLETE_MONSTER_INTENTS", "path": "$._monster_intents"})
         elif any(str(item.get("intent") or "").upper() == "DEBUG" for item in intents):
             gaps.append({"code": "UNSETTLED_MONSTER_INTENT", "path": "$._monster_intents"})
+        elif any(
+            str(item.get("intent") or "").upper().startswith("ATTACK")
+            and (
+                "damage" not in item or "hits" not in item
+                or int(item.get("damage", -1)) < 0 or int(item.get("hits", 0)) < 1
+            )
+            for item in intents
+        ):
+            gaps.append({
+                "code": "MISSING_ADJUSTED_MONSTER_INTENT_DAMAGE",
+                "path": "$._monster_intents",
+            })
     if canonical_screen == "COMBAT_REWARD":
         state = game.get("screen_state") or {}
         rewards = (state.get("rewards") or []) if isinstance(state, Mapping) else []

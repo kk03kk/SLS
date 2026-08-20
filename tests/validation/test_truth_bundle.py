@@ -319,6 +319,25 @@ def test_hidden_combat_reward_cards_are_an_evidence_gap_until_oracle_supplies_th
     ]
 
 
+def test_attack_intent_requires_adjusted_damage_and_hit_evidence() -> None:
+    payload = json.loads(json.dumps(TERMINAL_PAYLOAD))
+    payload["game_state"].update({
+        "screen_type": "COMBAT", "combat_state": {
+            "monsters": [{"id": "JawWorm", "current_hp": 44, "max_hp": 44}],
+        },
+    })
+    payload["_monster_intents"] = [{"intent": "ATTACK", "base_damage": 11}]
+    codes = {
+        item["code"] for item in original_evidence_gaps(payload, canonical_screen="COMBAT")
+    }
+    assert "MISSING_ADJUSTED_MONSTER_INTENT_DAMAGE" in codes
+    payload["_monster_intents"][0].update({"damage": 11, "hits": 1})
+    codes = {
+        item["code"] for item in original_evidence_gaps(payload, canonical_screen="COMBAT")
+    }
+    assert "MISSING_ADJUSTED_MONSTER_INTENT_DAMAGE" not in codes
+
+
 def test_autosave_identity_decodes_stock_envelope(tmp_path: Path) -> None:
     value = {
         "seed": 7, "floor_num": 3, "current_room": "MonsterRoom",

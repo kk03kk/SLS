@@ -149,7 +149,7 @@ def main() -> int:
                     args.truth_root, seed=int(manifest["seed"]),
                     profile_id=manifest["profile_id"], policy_id=manifest["policy_id"],
                     evidence_class="RESUMED_AUTOSAVE", capture_mode="PAIRED",
-                    acceptance_eligible=False, instrumentation_schema="spirecomm-parity-v3",
+                    acceptance_eligible=False, instrumentation_schema="spirecomm-parity-v4",
                     repository_root=ROOT, autosave=destination,
                     jar_paths={
                         "game": args.game_root / "desktop-1.0.jar",
