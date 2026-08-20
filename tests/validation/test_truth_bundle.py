@@ -18,7 +18,7 @@ from sls.validation.diff import differences
 from sls.validation.truth import (
     TruthBundleRecorder, autosave_identity, evidence_at_least, load_bundle,
     canonical_json_bytes, continuation_differences, file_hash, recover_partial_bundle,
-    resumable_original_boundary,
+    resume_verification_boundary, resumable_original_boundary,
 )
 from sls.validation.truth import _git_metadata
 
@@ -341,6 +341,23 @@ def test_attack_intent_requires_adjusted_damage_and_hit_evidence() -> None:
         item["code"] for item in original_evidence_gaps(payload, canonical_screen="COMBAT")
     }
     assert "MISSING_ADJUSTED_MONSTER_INTENT_DAMAGE" not in codes
+
+
+def test_resume_intersection_ignores_only_unsettled_adjusted_intent_fields() -> None:
+    payload = json.loads(json.dumps(TERMINAL_PAYLOAD))
+    payload["game_state"].update({
+        "screen_type": "COMBAT", "combat_state": {"turn": 1, "monsters": [{
+            "id": "JawWorm", "current_hp": 44, "max_hp": 44, "block": 0,
+            "move_adjusted_damage": -1, "move_hits": 1,
+        }]},
+    })
+    payload["_monster_intents"] = [{"intent": "ATTACK", "damage": -1, "hits": 1}]
+    refreshed = json.loads(json.dumps(payload))
+    refreshed["_monster_intents"][0]["damage"] = 11
+    code = ["UNSETTLED_ADJUSTED_MONSTER_INTENT_DAMAGE"]
+    assert resume_verification_boundary(
+        payload, ignored_evidence_codes=code,
+    ) == resume_verification_boundary(refreshed, ignored_evidence_codes=code)
 
 
 def test_autosave_identity_decodes_stock_envelope(tmp_path: Path) -> None:

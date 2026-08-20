@@ -258,6 +258,15 @@ def resume_verification_boundary(
             combat["monsters"] = [
                 tuple(item[:4]) + tuple(item[5:]) for item in combat.get("monsters", ())
             ]
+    if {
+        "MISSING_ADJUSTED_MONSTER_INTENT_DAMAGE",
+        "UNSETTLED_ADJUSTED_MONSTER_INTENT_DAMAGE",
+    } & ignored:
+        combat = value["state"].get("combat")
+        if combat:
+            combat["monsters"] = [
+                tuple(item[:5]) + tuple(item[7:]) for item in combat.get("monsters", ())
+            ]
     return value
 
 
