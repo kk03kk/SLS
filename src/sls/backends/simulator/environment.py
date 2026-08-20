@@ -249,12 +249,16 @@ def _combat_cards(
 
 
 def _powers(values: Any, prefix: str) -> tuple[PublicEntity, ...]:
+    visible = [
+        value for value in values
+        if normalize_content_id(value["id"]) not in {"ASLEEP"}
+    ]
     return tuple(
         _entity(
             f"{prefix}:{index}", normalize_content_id(value["id"]),
             amount=int(value["amount"]),
         )
-        for index, value in enumerate(values)
+        for index, value in enumerate(visible)
     )
 
 
