@@ -423,8 +423,8 @@ def _screen_entities(raw: Mapping[str, Any]) -> dict[str, tuple[Any, ...]]:
             for index, option in enumerate(public_combat["choice"]["options"])
         )
     elif screen in {ScreenType.NEOW, ScreenType.EVENT}:
-        event_id = raw["public_run"]["current_event_id"]
-        if event_id == "Match and Keep":
+        event_id = normalize_content_id(raw["public_run"]["current_event_id"])
+        if event_id == "MATCH_AND_KEEP":
             result["event"] = tuple(
                 _entity(
                     slot["instance_id"], slot["content_id"],

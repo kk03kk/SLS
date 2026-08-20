@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import gzip
 import json
 import os
 from pathlib import Path
@@ -30,12 +31,47 @@ from sls.validation.truth import (
     TruthBundleRecorder, file_hash, load_bundle, native_build_metadata,
     resume_verification_boundary, value_hash,
 )
-import gzip
-
-
 PROFILES = {p.profile_id: p for p in (
     IRONCLAD_A0_ACT1, IRONCLAD_A0_ACT2, IRONCLAD_A0_ACT3, IRONCLAD_A0_HEART,
 )}
+
+
+def _restore_simulator_at_step(
+    bundle: Path, manifest: dict, boundaries: list[dict], step: int,
+) -> tuple[SimulatorBackend, object, dict, list[str]]:
+    """Rebuild a target boundary from the nearest loadable native anchor."""
+
+    failures: list[str] = []
+    anchors = sorted(
+        (a for a in manifest.get("anchors", []) if int(a["sequence"]) <= step),
+        key=lambda a: int(a["sequence"]), reverse=True,
+    )
+    for candidate_anchor in anchors:
+        try:
+            anchor_dir = bundle / candidate_anchor["path"]
+            metadata = json.loads((anchor_dir / "metadata.json").read_text(encoding="utf-8"))
+            producer = metadata.get("checkpoint_producer") or {}
+            producer_abi = producer.get("abi") or producer.get("python_abi")
+            if producer_abi and producer_abi != sys.implementation.cache_tag:
+                raise ValueError("native checkpoint ABI is incompatible")
+            with gzip.open(
+                anchor_dir / "simulator-checkpoint.json.gz", "rt", encoding="utf-8",
+            ) as stream:
+                checkpoint = json.load(stream)
+            expected_hash = metadata.get("checkpoint_state_hash")
+            if expected_hash and value_hash(checkpoint) != expected_hash:
+                raise ValueError("native checkpoint state hash mismatch")
+            simulator = SimulatorBackend(PROFILES[manifest["profile_id"]])
+            decision = simulator.load_checkpoint(checkpoint)
+            for sequence in range(int(candidate_anchor["sequence"]), step):
+                selected = boundaries[sequence].get("selected_action")
+                if not selected:
+                    raise ValueError(f"missing action at step {sequence}")
+                decision = simulator.step(Action.from_dict(selected)).decision
+            return simulator, decision, candidate_anchor, failures
+        except (OSError, ValueError, KeyError, RuntimeError, json.JSONDecodeError) as error:
+            failures.append(f"{candidate_anchor['anchor_id']}: {error}")
+    raise ValueError("no compatible native anchor: " + "; ".join(failures))
 
 
 def main() -> int:
@@ -105,11 +141,9 @@ def main() -> int:
                         "state_differences": dict(list(state_diff.items())[:20]),
                         "continuation_differences": dict(list(continuation_diff.items())[:20]),
                     }, ensure_ascii=False))
-                checkpoint_path = anchor_dir / "simulator-checkpoint.json.gz"
-                with gzip.open(checkpoint_path, "rt", encoding="utf-8") as stream:
-                    checkpoint = json.load(stream)
-                simulator = SimulatorBackend(PROFILES[manifest["profile_id"]])
-                simulator_decision = simulator.load_checkpoint(checkpoint)
+                simulator, simulator_decision, simulator_anchor, restore_failures = (
+                    _restore_simulator_at_step(args.bundle, manifest, boundaries, start)
+                )
                 workshop = args.game_root.parents[1] / "workshop" / "content" / "646570"
                 recorder = TruthBundleRecorder(
                     args.truth_root, seed=int(manifest["seed"]),
@@ -137,6 +171,13 @@ def main() -> int:
                         "source_start_step": start, "source_target_step": args.to_step,
                         "ignored_legacy_evidence_codes": ignored_codes,
                         "source_anchor_capability": "RESUME_VERIFIED",
+                        "simulator_restore_mode": (
+                            "EXACT_CHECKPOINT" if int(simulator_anchor["sequence"]) == start
+                            else "ACTION_HISTORY"
+                        ),
+                        "simulator_restore_anchor": simulator_anchor["anchor_id"],
+                        "simulator_restore_range": [int(simulator_anchor["sequence"]), start],
+                        "simulator_restore_failures": restore_failures,
                     },
                 )
                 paired_match = True

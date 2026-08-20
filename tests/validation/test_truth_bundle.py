@@ -351,14 +351,51 @@ def test_offline_replay_reproduces_difference_and_extractor_is_stable(tmp_path: 
     assert target.read_bytes() == initial
 
 
+def test_regression_extractor_falls_back_from_unloadable_nearest_anchor(
+    tmp_path: Path,
+) -> None:
+    from sls.validation.truth import value_hash, write_json_gz
+    from tools.extract_regression import _simulator_at_step
+
+    simulator = SimulatorBackend(IRONCLAD_A0_HEART)
+    decision = simulator.reset(0)
+    checkpoint = simulator.checkpoint()
+    action = decision.actions[0]
+    expected = simulator.step(action).decision
+    older = tmp_path / "anchors" / "older"
+    newer = tmp_path / "anchors" / "newer"
+    write_json_gz(older / "simulator-checkpoint.json.gz", checkpoint)
+    newer.mkdir(parents=True)
+    (newer / "simulator-checkpoint.json.gz").write_bytes(b"not-gzip")
+    manifest = {
+        "profile_id": IRONCLAD_A0_HEART.profile_id,
+        "anchors": [
+            {"anchor_id": "older", "sequence": 0, "path": "anchors/older"},
+            {"anchor_id": "newer", "sequence": 1, "path": "anchors/newer"},
+        ],
+    }
+    boundaries = [{"selected_action": action.to_dict()}, {"selected_action": None}]
+    _, actual, anchor, restored, suffix = _simulator_at_step(
+        tmp_path, manifest, boundaries, 1,
+    )
+    assert anchor["anchor_id"] == "older"
+    assert value_hash(restored) == value_hash(checkpoint)
+    assert suffix == [action.to_dict()]
+    assert actual.observation.to_dict() == expected.observation.to_dict()
+
+
 def test_committed_adapter_regressions_match_expected_canonical_output() -> None:
     root = Path(__file__).resolve().parents[2]
     for path in (root / "tests" / "fixtures" / "regressions").glob("*.json.gz"):
         with gzip.open(path, "rt", encoding="utf-8") as stream:
             fixture = json.load(stream)
         if fixture["category"] == "simulator_adapter":
+            from sls.contracts import Action
+
             simulator = SimulatorBackend(IRONCLAD_A0_HEART)
             decision = simulator.load_checkpoint(fixture["simulator_checkpoint"])
+            for action in fixture.get("action_suffix", []):
+                decision = simulator.step(Action.from_dict(action)).decision
             actual = {
                 "observation": decision.observation.to_dict(),
                 "actions": [action.to_dict() for action in decision.actions],
@@ -373,6 +410,8 @@ def test_committed_adapter_regressions_match_expected_canonical_output() -> None
 
             simulator = SimulatorBackend(IRONCLAD_A0_HEART)
             simulator.load_checkpoint(fixture["simulator_checkpoint"])
+            for prefix_action in fixture.get("action_suffix", []):
+                simulator.step(Action.from_dict(prefix_action))
             decision = simulator.step(Action.from_dict(fixture["action"])).decision
             actual = {
                 "canonical_public_state": canonical_simulator(simulator.raw_state),

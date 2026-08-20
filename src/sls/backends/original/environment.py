@@ -7,7 +7,7 @@ from typing import Any
 from sls.backends.original.adapter import AdaptedOriginalDecision, adapt_original
 from sls.backends.original.session import OriginalSession
 from sls.content.seed import long_to_seed_string
-from sls.contracts import Action, Decision, Transition, ValidationSnapshot
+from sls.contracts import Action, ActionKind, Decision, Transition, ValidationSnapshot
 from sls.curriculum import CurriculumProfile, IRONCLAD_A0_HEART, evaluate_horizon
 
 
@@ -91,9 +91,17 @@ class OriginalBackend:
             raise ValueError("action is not legal at the current Original decision") from error
         payload = self.raw_payload
         executed: list[str] = []
-        for command in commands:
+        for index, command in enumerate(commands):
             payload = self.session.execute(command)
             executed.append(command)
+            if index + 1 < len(commands):
+                payload = self._settle_reward_intermediate(payload, executed)
+        if not isinstance(action, str) and action.kind in {
+            ActionKind.CHOOSE_CARD_REWARD,
+            ActionKind.SKIP_CARD_REWARD,
+            ActionKind.TAKE_SINGING_BOWL,
+        }:
+            payload = self._settle_reward_completion(payload, executed)
         payload = self._fold_protocol_only_boundaries(payload, executed)
         payload = self._settle_debug_intents(payload, executed)
         self._last_executed_commands = tuple(executed)
@@ -113,6 +121,37 @@ class OriginalBackend:
             horizon.terminated,
             False,
             {"reason": horizon.reason, "success": horizon.success},
+        )
+
+    def _wait_for_screen_change(
+        self, payload: dict[str, Any], *, while_screen: str,
+        executed: list[str], limit: int = 60,
+    ) -> dict[str, Any]:
+        for _ in range(limit):
+            screen = str((payload.get("game_state") or {}).get("screen_type") or "").upper()
+            if screen != while_screen:
+                return payload
+            available = {str(item).lower() for item in payload.get("available_commands") or ()}
+            if "wait" not in available:
+                raise RuntimeError(
+                    f"Original UI remained on {while_screen} without an advertised wait command"
+                )
+            payload = self.session.execute("wait 1")
+            executed.append("wait 1")
+        raise RuntimeError(f"Original UI did not leave {while_screen} within {limit} frames")
+
+    def _settle_reward_intermediate(
+        self, payload: dict[str, Any], executed: list[str],
+    ) -> dict[str, Any]:
+        return self._wait_for_screen_change(
+            payload, while_screen="COMBAT_REWARD", executed=executed,
+        )
+
+    def _settle_reward_completion(
+        self, payload: dict[str, Any], executed: list[str],
+    ) -> dict[str, Any]:
+        return self._wait_for_screen_change(
+            payload, while_screen="CARD_REWARD", executed=executed,
         )
 
     def command_sequence(self, action: Action | str) -> tuple[str, ...]:

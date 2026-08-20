@@ -20,6 +20,45 @@ from sls.validation.evidence import original_evidence_gaps
 from sls.validation.truth import load_bundle, value_hash, write_json_gz
 
 
+def _simulator_at_step(
+    bundle: Path, manifest: dict, boundaries: list[dict], step: int,
+):
+    """Restore the nearest compatible anchor, falling back to an earlier one."""
+
+    from sls.backends.simulator import (
+        IRONCLAD_A0_ACT1, IRONCLAD_A0_ACT2, IRONCLAD_A0_ACT3,
+        IRONCLAD_A0_HEART, SimulatorBackend,
+    )
+    from sls.contracts import Action
+    profiles = {p.profile_id: p for p in (
+        IRONCLAD_A0_ACT1, IRONCLAD_A0_ACT2, IRONCLAD_A0_ACT3, IRONCLAD_A0_HEART,
+    )}
+    failures: list[str] = []
+    anchors = sorted(
+        (a for a in manifest.get("anchors", []) if int(a["sequence"]) <= step),
+        key=lambda a: int(a["sequence"]), reverse=True,
+    )
+    for anchor in anchors:
+        try:
+            with gzip.open(
+                bundle / anchor["path"] / "simulator-checkpoint.json.gz", "rt", encoding="utf-8",
+            ) as stream:
+                checkpoint = json.load(stream)
+            simulator = SimulatorBackend(profiles[manifest["profile_id"]])
+            decision = simulator.load_checkpoint(checkpoint)
+            action_suffix = []
+            for sequence in range(int(anchor["sequence"]), step):
+                action = boundaries[sequence].get("selected_action")
+                if not action:
+                    raise ValueError(f"missing action at step {sequence}")
+                action_suffix.append(action)
+                decision = simulator.step(Action.from_dict(action)).decision
+            return simulator, decision, anchor, checkpoint, action_suffix
+        except (OSError, ValueError, KeyError, RuntimeError) as error:
+            failures.append(f"{anchor['anchor_id']}: {error}")
+    raise ValueError("no compatible native anchor: " + "; ".join(failures))
+
+
 def extract(
     bundle: Path, *, step: int, issue: str, output_root: Path,
     target_backend: str = "auto",
@@ -75,28 +114,12 @@ def extract(
             ),
         }
     elif category == "simulator_adapter":
-        anchors = [a for a in manifest.get("anchors", []) if int(a["sequence"]) <= step]
-        anchor = max(anchors, key=lambda a: int(a["sequence"]), default=None)
-        if anchor is None:
-            raise ValueError("simulator adapter fixture requires a native anchor")
-        from sls.backends.simulator import (
-            IRONCLAD_A0_ACT1, IRONCLAD_A0_ACT2, IRONCLAD_A0_ACT3,
-            IRONCLAD_A0_HEART, SimulatorBackend,
+        _, _, anchor, checkpoint, action_suffix = _simulator_at_step(
+            bundle, manifest, boundaries, step,
         )
-        from sls.contracts import Action
-        profiles = {p.profile_id: p for p in (
-            IRONCLAD_A0_ACT1, IRONCLAD_A0_ACT2, IRONCLAD_A0_ACT3, IRONCLAD_A0_HEART,
-        )}
-        with gzip.open(bundle / anchor["path"] / "simulator-checkpoint.json.gz", "rt", encoding="utf-8") as stream:
-            checkpoint = json.load(stream)
-        simulator = SimulatorBackend(profiles[manifest["profile_id"]])
-        simulator.load_checkpoint(checkpoint)
-        for sequence in range(int(anchor["sequence"]), step):
-            previous_action = boundaries[sequence].get("selected_action")
-            if not previous_action:
-                raise ValueError(f"missing action at step {sequence}")
-            simulator.step(Action.from_dict(previous_action))
-        fixture["simulator_checkpoint"] = simulator.checkpoint()
+        fixture["simulator_checkpoint"] = checkpoint
+        fixture["action_suffix"] = action_suffix
+        fixture["restore_anchor"] = anchor["anchor_id"]
         fixture["profile_id"] = manifest["profile_id"]
         fixture["expected"] = {
             "observation": adapted.observation.to_dict(),
@@ -107,27 +130,7 @@ def extract(
         fixture["raw_original_payload"] = boundary["raw_original_payload"]
         expected = boundary.get("canonical_simulator_decision")
         if expected is None:
-            anchors = [a for a in manifest.get("anchors", []) if int(a["sequence"]) <= step]
-            anchor = max(anchors, key=lambda a: int(a["sequence"]), default=None)
-            if anchor is None:
-                raise ValueError("adapter fixture requires a native anchor")
-            from sls.backends.simulator import (
-                IRONCLAD_A0_ACT1, IRONCLAD_A0_ACT2, IRONCLAD_A0_ACT3,
-                IRONCLAD_A0_HEART, SimulatorBackend,
-            )
-            from sls.contracts import Action
-            profiles = {p.profile_id: p for p in (
-                IRONCLAD_A0_ACT1, IRONCLAD_A0_ACT2, IRONCLAD_A0_ACT3, IRONCLAD_A0_HEART,
-            )}
-            with gzip.open(bundle / anchor["path"] / "simulator-checkpoint.json.gz", "rt", encoding="utf-8") as stream:
-                checkpoint = json.load(stream)
-            simulator = SimulatorBackend(profiles[manifest["profile_id"]])
-            decision = simulator.load_checkpoint(checkpoint)
-            for sequence in range(int(anchor["sequence"]), step):
-                action = boundaries[sequence].get("selected_action")
-                if not action:
-                    raise ValueError(f"missing action at step {sequence}")
-                decision = simulator.step(Action.from_dict(action)).decision
+            _, decision, _, _, _ = _simulator_at_step(bundle, manifest, boundaries, step)
             expected = {
                 "observation": decision.observation.to_dict(),
                 "actions": [action.to_dict() for action in decision.actions],
@@ -162,31 +165,18 @@ def extract(
         fixture["action"] = boundary.get("selected_action")
         fixture["after"] = boundaries[step + 1].get("rng") if step + 1 < len(boundaries) else None
     elif category == "transition":
-        anchors = [a for a in manifest.get("anchors", []) if int(a["sequence"]) <= step]
-        anchor = max(anchors, key=lambda a: int(a["sequence"]), default=None)
-        if anchor is None or step + 1 >= len(boundaries):
+        if step + 1 >= len(boundaries):
             raise ValueError("transition fixture requires an anchor and next boundary")
-        from sls.backends.simulator import (
-            IRONCLAD_A0_ACT1, IRONCLAD_A0_ACT2, IRONCLAD_A0_ACT3,
-            IRONCLAD_A0_HEART, SimulatorBackend,
-        )
         from sls.contracts import Action
-        profiles = {p.profile_id: p for p in (
-            IRONCLAD_A0_ACT1, IRONCLAD_A0_ACT2, IRONCLAD_A0_ACT3, IRONCLAD_A0_HEART,
-        )}
-        with gzip.open(bundle / anchor["path"] / "simulator-checkpoint.json.gz", "rt", encoding="utf-8") as stream:
-            checkpoint = json.load(stream)
-        simulator = SimulatorBackend(profiles[manifest["profile_id"]])
-        simulator.load_checkpoint(checkpoint)
-        for sequence in range(int(anchor["sequence"]), step):
-            previous_action = boundaries[sequence].get("selected_action")
-            if not previous_action:
-                raise ValueError(f"missing action at step {sequence}")
-            simulator.step(Action.from_dict(previous_action))
+        _, _, anchor, checkpoint, action_suffix = _simulator_at_step(
+            bundle, manifest, boundaries, step,
+        )
         action = boundary.get("selected_action")
         if not action:
             raise ValueError("transition fixture requires a selected action")
-        fixture["simulator_checkpoint"] = simulator.checkpoint()
+        fixture["simulator_checkpoint"] = checkpoint
+        fixture["action_suffix"] = action_suffix
+        fixture["restore_anchor"] = anchor["anchor_id"]
         fixture["action"] = action
         after = boundaries[step + 1]
         after_decision = adapt_original(after["raw_original_payload"]).decision

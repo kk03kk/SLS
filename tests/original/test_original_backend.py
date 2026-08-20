@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from sls.backends.original import OriginalBackend, OriginalSession
+from sls.backends.original.adapter import adapt_original
 from sls.contracts import ActionKind, ScreenType
 from sls.curriculum import IRONCLAD_A0_ACT1
 
@@ -101,3 +102,41 @@ def test_combat_boundary_waits_until_stock_intent_is_materialized() -> None:
     assert result["_monster_intents"] == [{"intent": "BUFF"}]
     assert executed == ["wait 1"]
     assert transport.sent == ["wait 1"]
+
+
+def test_composite_card_reward_waits_for_each_ui_transition() -> None:
+    parent = game_payload([])
+    parent["game_state"].update({
+        "floor": 1, "screen_type": "COMBAT_REWARD", "deck": [],
+        "screen_state": {"rewards": [
+            {"reward_type": "GOLD", "gold": 11}, {"reward_type": "CARD"},
+        ]},
+    })
+    parent["available_commands"] = ["choose", "proceed", "wait"]
+    parent["_combat_reward_cards"] = [[{"id": "Anger", "upgrades": 0}]]
+    opening = {**parent, "game_state": {**parent["game_state"]}}
+    card_screen = game_payload(["anger"])
+    card_screen["game_state"].update({
+        "floor": 1, "screen_type": "CARD_REWARD",
+        "screen_state": {"cards": [{"id": "Anger", "upgrades": 0}]},
+    })
+    card_screen["available_commands"] = ["choose", "skip", "wait"]
+    choosing = {**card_screen, "game_state": {**card_screen["game_state"]}}
+    completed = {**parent, "game_state": {**parent["game_state"]}}
+    completed["game_state"]["deck"] = [{"id": "Anger", "upgrades": 0}]
+    completed["game_state"]["screen_state"] = {
+        "rewards": [{"reward_type": "GOLD", "gold": 11}],
+    }
+    completed["_combat_reward_cards"] = []
+    transport = ScriptedTransport([opening, card_screen, choosing, completed])
+    session = OriginalSession(transport)
+    session.payload = parent
+    backend = OriginalBackend(session, IRONCLAD_A0_ACT1)
+    backend._adapted = adapt_original(parent)
+    action = next(
+        item for item in backend._adapted.decision.actions
+        if item.kind is ActionKind.CHOOSE_CARD_REWARD
+    )
+    transition = backend.step(action)
+    assert [card.card_id for card in transition.decision.observation.deck] == ["ANGER"]
+    assert backend.last_executed_commands == ("choose 1", "wait 1", "choose 0", "wait 1")

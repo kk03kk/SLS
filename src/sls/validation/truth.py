@@ -204,10 +204,11 @@ def continuation_differences(
             result[f"$.{key}"] = (left, right)
     left_event, right_event = original.get("event_id"), simulator.get("event_id")
     if left_event is not None and right_event is not None:
+        from sls.content.normalize import normalize_content_id
         left_token = str(left_event).rsplit(".", 1)[-1]
         if left_token == "NeowEvent":
             left_token = "NEOW"
-        if left_token.upper() != str(right_event).upper():
+        if normalize_content_id(left_token) != normalize_content_id(right_event):
             result["$.event_id"] = (left_event, right_event)
     left_kind, right_kind = original.get("continuation_kind"), simulator.get("continuation_kind")
     left_kind = {"GRID": "CARD_REWARD"}.get(str(left_kind).upper(), left_kind)

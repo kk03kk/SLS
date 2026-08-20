@@ -82,19 +82,26 @@ def replay(
     if profile_id not in PROFILES:
         raise ValueError(f"unknown profile: {profile_id}")
     anchors = manifest.get("anchors") or []
+    requested_anchor = None
     if from_anchor:
-        selected = next((a for a in anchors if a["anchor_id"] == from_anchor), None)
-        if selected is None:
+        requested_anchor = next((a for a in anchors if a["anchor_id"] == from_anchor), None)
+        if requested_anchor is None:
             raise ValueError(f"unknown anchor: {from_anchor}")
-        from_step = max(from_step, int(selected["sequence"]))
-    else:
-        eligible = [a for a in anchors if int(a["sequence"]) <= from_step]
-        selected = max(eligible, key=lambda a: int(a["sequence"]), default=None)
-    simulator = SimulatorBackend(PROFILES[profile_id])
+        from_step = max(from_step, int(requested_anchor["sequence"]))
+    eligible = sorted(
+        (a for a in anchors if int(a["sequence"]) <= from_step),
+        key=lambda a: int(a["sequence"]), reverse=True,
+    )
+    if requested_anchor is not None:
+        requested_sequence = int(requested_anchor["sequence"])
+        eligible = [a for a in eligible if int(a["sequence"]) <= requested_sequence]
     restore_mode = "ACTION_HISTORY"
+    restore_anchor = None
+    restore_failures: list[str] = []
     start = 0
-    if selected is not None:
-        start = int(selected["sequence"])
+    decision = None
+    simulator = None
+    for selected in eligible:
         try:
             metadata_path = bundle / selected["path"] / "metadata.json"
             metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
@@ -106,12 +113,23 @@ def replay(
             expected_checkpoint_hash = metadata.get("checkpoint_state_hash")
             if expected_checkpoint_hash and value_hash(checkpoint) != expected_checkpoint_hash:
                 raise ValueError("native checkpoint state hash mismatch")
-            decision = simulator.load_checkpoint(checkpoint)
+            candidate = SimulatorBackend(PROFILES[profile_id])
+            decision = candidate.load_checkpoint(checkpoint)
+            simulator = candidate
+            start = int(selected["sequence"])
             restore_mode = "EXACT_CHECKPOINT"
-        except Exception:
-            decision = simulator.reset(int(manifest["seed"]))
-            start = 0
-    else:
+            restore_anchor = selected["anchor_id"]
+            break
+        except (OSError, ValueError, KeyError, RuntimeError, json.JSONDecodeError) as error:
+            restore_failures.append(f"{selected['anchor_id']}: {error}")
+    if simulator is None:
+        if manifest.get("evidence_class") == "RESUMED_AUTOSAVE":
+            detail = "; ".join(restore_failures) or "bundle contains no native anchor"
+            raise ValueError(
+                "derived resume bundle has no compatible checkpoint and cannot be rebuilt "
+                f"from the seed-local action history: {detail}"
+            )
+        simulator = SimulatorBackend(PROFILES[profile_id])
         decision = simulator.reset(int(manifest["seed"]))
     upper = len(boundaries) - 1 if to_step is None else min(to_step, len(boundaries) - 1)
     if window:
@@ -170,7 +188,9 @@ def replay(
                 "values": report_values[first], "evidence_gaps": gaps,
                 "first_rng_path": rng_paths[0] if rng_paths else None,
                 "nearest_anchor": nearest["anchor_id"] if nearest else None,
-                "restore_mode": restore_mode, "difference_count": len(report_values),
+                "restore_mode": restore_mode, "restore_anchor": restore_anchor,
+                "restore_failures": restore_failures,
+                "difference_count": len(report_values),
                 "rng_divergence": _rng_report(
                     boundary["raw_original_payload"], simulator.raw_state,
                     previous_original_rng, previous_simulator_rng,
