@@ -17,7 +17,8 @@ from sls.validation.evidence import original_evidence_gaps
 from sls.validation.diff import differences
 from sls.validation.truth import (
     TruthBundleRecorder, autosave_identity, evidence_at_least, load_bundle,
-    canonical_json_bytes, file_hash, recover_partial_bundle, resumable_original_boundary,
+    canonical_json_bytes, continuation_differences, file_hash, recover_partial_bundle,
+    resumable_original_boundary,
 )
 from sls.validation.truth import _git_metadata
 
@@ -124,6 +125,13 @@ def test_resume_normalization_drops_floor_local_rng_after_combat() -> None:
     assert normalized["normalizations"] == [
         "drop_rng.neow_after_floor0", "drop_rng.floor_local_after_combat",
     ]
+
+
+def test_ui_fold_is_recorded_evidence_not_cross_backend_continuation_state() -> None:
+    assert not continuation_differences(
+        {"continuation_kind": "MAP", "ui_boundary_folded": True},
+        {"continuation_kind": 5, "ui_boundary_folded": False},
+    )
 
 
 def test_truth_bundle_rejects_tampered_payload(tmp_path: Path) -> None:

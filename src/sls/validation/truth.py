@@ -192,7 +192,7 @@ def continuation_differences(
     for key in (
         "event_phase", "action_phase", "combat_turn",
         "card_selection_source", "card_selection_task", "card_selection_count",
-        "post_combat", "loading_post_combat", "ui_boundary_folded",
+        "post_combat", "loading_post_combat",
         "action_queue_types", "card_queue_types",
     ):
         left, right = original.get(key), simulator.get(key)
