@@ -118,8 +118,12 @@ py::dict power(const char *id, int amount, const char *name = nullptr) {
 py::list player_powers(const Player &p) {
     py::list result;
     for (const auto &[status, amount] : p.orderedPowers()) {
+        // Panache stores damage in statusMap, while the stock AbstractPower
+        // exposes its remaining five-card countdown as `amount`.
+        const int publicAmount = status == PlayerStatus::PANACHE
+            ? p.panacheCounter : amount;
         result.append(power(
-            playerStatusEnumStrings[static_cast<int>(status)], amount,
+            playerStatusEnumStrings[static_cast<int>(status)], publicAmount,
             playerStatusStrings[static_cast<int>(status)]));
     }
     return result;

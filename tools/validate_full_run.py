@@ -86,6 +86,7 @@ def main() -> int:
             launch={
                 "java": str(game_root / "jre" / "bin" / "javaw.exe"),
                 "skip_launcher": True, "skip_intro": os.environ.get("SLS_SKIP_INTRO", "1") == "1",
+                "fps_limit": int(os.environ.get("SLS_ORIGINAL_FPS", "60")),
                 "mods": ["basemod", "CommunicationMod", "spirecomm-parity"],
             },
         )

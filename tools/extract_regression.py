@@ -15,7 +15,7 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from sls.backends.original.adapter import adapt_original
 from sls.contracts.continuation import continuation_original
-from sls.validation.compare import canonical_original
+from sls.validation.compare import canonical_original, canonical_simulator
 from sls.validation.evidence import original_evidence_gaps
 from sls.validation.truth import load_bundle, value_hash, write_json_gz
 
@@ -160,9 +160,45 @@ def extract(
         fixture["expected_paths"] = expected_paths
         fixture["unresolved_evidence_paths"] = unresolved
     elif category == "rng":
-        fixture["before"] = boundary.get("rng") or {}
-        fixture["action"] = boundary.get("selected_action")
-        fixture["after"] = boundaries[step + 1].get("rng") if step + 1 < len(boundaries) else None
+        if step == 0:
+            raise ValueError("RNG fixture requires the preceding action boundary")
+        previous = boundaries[step - 1]
+        action = previous.get("selected_action")
+        if not action:
+            raise ValueError("RNG fixture requires a preceding selected action")
+        before_simulator, _, anchor, checkpoint, action_suffix = _simulator_at_step(
+            bundle, manifest, boundaries, step - 1,
+        )
+        before_simulator_rng = canonical_simulator(before_simulator.raw_state).get("rng", {})
+        after_simulator, _, _, _, _ = _simulator_at_step(
+            bundle, manifest, boundaries, step,
+        )
+        after_simulator_rng = canonical_simulator(after_simulator.raw_state).get("rng", {})
+        before_original_rng = previous.get("rng") or {}
+        after_original_rng = boundary.get("rng") or {}
+        deltas = {}
+        for stream in sorted(
+            set(before_original_rng) | set(after_original_rng)
+            | set(before_simulator_rng) | set(after_simulator_rng)
+        ):
+            def delta(before: dict, after: dict):
+                if stream not in before or stream not in after:
+                    return None
+                return int(after[stream]["counter"]) - int(before[stream]["counter"])
+            deltas[stream] = {
+                "original": delta(before_original_rng, after_original_rng),
+                "simulator": delta(before_simulator_rng, after_simulator_rng),
+            }
+        fixture.update({
+            "profile_id": manifest["profile_id"],
+            "restore_anchor": anchor["anchor_id"],
+            "simulator_checkpoint": checkpoint,
+            "action_suffix": action_suffix,
+            "before": {"original": before_original_rng, "simulator": before_simulator_rng},
+            "action": action,
+            "after": {"original": after_original_rng, "simulator": after_simulator_rng},
+            "counter_delta": deltas,
+        })
     elif category == "transition":
         if step + 1 >= len(boundaries):
             raise ValueError("transition fixture requires an anchor and next boundary")

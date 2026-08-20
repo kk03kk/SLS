@@ -18,6 +18,22 @@ sys.path.insert(0, str(ROOT / "src"))
 from sls.validation.runtime import RuntimeJournal, prepare_runtime, process_identity, recover_pending
 
 
+AUTHORITATIVE_FPS = 60
+
+
+def pin_display_fps(path: Path, fps: int = AUTHORITATIVE_FPS) -> None:
+    """Pin Original's frame clock after the journal has protected the file."""
+
+    lines = path.read_text(encoding="utf-8").splitlines()
+    if len(lines) < 6:
+        raise ValueError(f"invalid Original display config: {path}")
+    int(lines[0])
+    int(lines[1])
+    int(lines[2])
+    lines[2] = str(fps)
+    path.write_text("\n".join(lines[:6]) + "\n", encoding="utf-8")
+
+
 def launcher_command(game_root: Path, mod_the_spire: Path, *, skip_intro: bool) -> list[str]:
     command = [
         str(game_root / "jre" / "bin" / "javaw.exe"),
@@ -81,10 +97,11 @@ def main() -> int:
     recover_pending(journals)
     entry, entry_args = _entry(args.mode, args)
     save = args.game_root / "saves" / "IRONCLAD.autosave"
+    display_config = args.game_root / "info.displayconfig"
     journal_path = prepare_runtime(
         repository=ROOT, game_root=args.game_root, config=args.config,
         python=args.python, max_steps=args.max_steps, profile=args.profile,
-        save_files=(save, Path(str(save) + ".backUp")), entry=entry,
+        save_files=(save, Path(str(save) + ".backUp"), display_config), entry=entry,
         entry_args=entry_args, external_owner=True,
     )
     journal = RuntimeJournal.open(journal_path)
@@ -103,9 +120,11 @@ def main() -> int:
     environment["SLS_RUN_COMPLETION"] = str(completion)
     environment["SLS_GAME_ROOT"] = str(args.game_root.resolve())
     environment["SLS_SKIP_INTRO"] = "1" if args.skip_intro else "0"
+    environment["SLS_ORIGINAL_FPS"] = str(AUTHORITATIVE_FPS)
     process: subprocess.Popen[bytes] | None = None
     marker: dict[str, object] | None = None
     try:
+        pin_display_fps(display_config)
         with stdout_path.open("wb") as stdout, stderr_path.open("wb") as stderr:
             process = subprocess.Popen(
                 command, cwd=args.game_root, env=environment, stdout=stdout, stderr=stderr,

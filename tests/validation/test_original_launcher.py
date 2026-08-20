@@ -1,7 +1,7 @@
 from argparse import Namespace
 from pathlib import Path
 
-from tools.run_original import _entry, launcher_command
+from tools.run_original import _entry, launcher_command, pin_display_fps
 
 
 def test_launcher_is_headless_strict_and_skips_intro() -> None:
@@ -31,3 +31,14 @@ def test_intro_flag_can_be_disabled_for_equivalence_control() -> None:
     command = launcher_command(Path(r"D:\game"), Path(r"D:\mts.jar"), skip_intro=False)
     assert "--skip-launcher" in command
     assert "--skip-intro" not in command
+
+
+def test_authoritative_fps_is_pinned_without_changing_other_display_settings(
+    tmp_path: Path,
+) -> None:
+    config = tmp_path / "info.displayconfig"
+    config.write_text("1600\n900\n144\nfalse\nfalse\ntrue\n", encoding="utf-8")
+    pin_display_fps(config)
+    assert config.read_text(encoding="utf-8").splitlines() == [
+        "1600", "900", "60", "false", "false", "true",
+    ]

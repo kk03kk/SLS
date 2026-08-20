@@ -3160,7 +3160,16 @@ void BattleContext::chooseDiscardToHandCards(
 void BattleContext::chooseDiscoveryCard(CardId id) {
     const auto discoveryAmount = cardSelectInfo.data0;
     if (cardSelectInfo.discoveryRerollOnRetrieve) {
-        (void) generateDiscoveryCards(cardRandomRng, player.cc, cardSelectInfo.discoveryCardType);
+        // DiscoveryAction.update() regenerates and discards its three choices
+        // on every update, including the retrieval updates after the reward
+        // screen closes.  The authoritative Original runtime is pinned to
+        // 60 FPS; its 0.25 s ACTION_DUR_FAST produces fourteen retrieval
+        // updates for this action.  Preserve those RNG side effects even
+        // though only the originally displayed choice is added to the hand.
+        constexpr int ORIGINAL_RETRIEVAL_UPDATES_AT_60_FPS = 14;
+        for (int update = 0; update < ORIGINAL_RETRIEVAL_UPDATES_AT_60_FPS; ++update) {
+            (void) generateDiscoveryCards(cardRandomRng, player.cc, cardSelectInfo.discoveryCardType);
+        }
     }
     CardInstance c(id);
     c.setCostForTurn(0);

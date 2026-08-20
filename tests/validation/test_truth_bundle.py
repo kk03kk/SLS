@@ -489,6 +489,29 @@ def test_committed_adapter_regressions_match_expected_canonical_output() -> None
                 expected["continuation"], actual["continuation"],
             ), path.name
             continue
+        if fixture["category"] == "rng":
+            from sls.contracts import Action
+            from sls.validation.compare import canonical_simulator
+
+            simulator = SimulatorBackend(IRONCLAD_A0_HEART)
+            simulator.load_checkpoint(fixture["simulator_checkpoint"])
+            for prefix_action in fixture.get("action_suffix", []):
+                simulator.step(Action.from_dict(prefix_action))
+            before = canonical_simulator(simulator.raw_state)["rng"]
+            before.pop("neow", None)
+            assert not differences(before, fixture["before"]["original"]), path.name
+            simulator.step(Action.from_dict(fixture["action"]))
+            after = canonical_simulator(simulator.raw_state)["rng"]
+            after.pop("neow", None)
+            assert not differences(after, fixture["after"]["original"]), path.name
+            for stream, expected_delta in fixture["counter_delta"].items():
+                if expected_delta["original"] is None:
+                    continue
+                assert (
+                    after[stream]["counter"] - before[stream]["counter"]
+                    == expected_delta["original"]
+                ), (path.name, stream)
+            continue
         if fixture["category"] != "adapter":
             continue
         decision = adapt_original(fixture["raw_original_payload"]).decision
