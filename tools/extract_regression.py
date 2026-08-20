@@ -96,6 +96,10 @@ def extract(
     )
     if category == "adapter" and target_backend == "simulator-adapter":
         category = "simulator_adapter"
+    elif target_backend == "simulator-transition":
+        category = "transition"
+    elif target_backend == "original-adapter":
+        category = "adapter"
     fixture: dict[str, object] = {
         "schema": "sls-minimal-regression-v1", "issue": issue, "category": category,
         "provenance": {
@@ -301,7 +305,9 @@ def main() -> int:
     parser.add_argument("--issue", required=True)
     parser.add_argument("--output-root", type=Path, default=ROOT / "tests" / "fixtures" / "regressions")
     parser.add_argument(
-        "--target", choices=("auto", "original-adapter", "simulator-adapter"), default="auto",
+        "--target", choices=(
+            "auto", "original-adapter", "simulator-adapter", "simulator-transition",
+        ), default="auto",
     )
     args = parser.parse_args()
     try:

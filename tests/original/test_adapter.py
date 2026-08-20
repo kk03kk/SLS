@@ -77,6 +77,36 @@ def test_combat_card_targets_use_decision_scoped_ids() -> None:
     assert adapted.commands[play.candidate_id] == ("play 1 0",)
 
 
+def test_combat_card_uses_authoritative_cost_for_turn() -> None:
+    payload = {
+        "in_game": True,
+        "ready_for_command": True,
+        "available_commands": ["play", "end"],
+        "game_state": base_game(
+            screen_type="NONE",
+            combat_state={
+                "turn": 1,
+                "player": {"current_hp": 80, "max_hp": 80, "energy": 3},
+                "hand": [{
+                    "id": "Wild Strike", "upgrades": 0, "cost": 0,
+                    "base_cost": 1, "cost_for_turn": 0,
+                    "is_playable": True, "has_target": True,
+                }],
+                "draw_pile": [], "discard_pile": [], "exhaust_pile": [],
+                "monsters": [{
+                    "id": "Sentry", "current_hp": 40, "max_hp": 40,
+                    "block": 0, "intent": "ATTACK",
+                }],
+            },
+        ),
+    }
+
+    card = adapt_original(payload).decision.observation.hand[0]
+
+    assert card.base_cost == 1
+    assert card.current_cost == 0
+
+
 def test_combat_card_reward_is_folded_into_semantic_candidates() -> None:
     payload = {
         "in_game": True,

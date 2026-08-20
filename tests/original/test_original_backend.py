@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import json
+
 from sls.backends.original import OriginalBackend, OriginalSession
 from sls.backends.original.adapter import adapt_original
 from sls.contracts import ActionKind, ScreenType
@@ -410,3 +412,32 @@ def test_leave_shop_uses_room_proceed_instead_of_reentering_shop() -> None:
     transition = backend.step(backend._adapted.decision.actions[0])
     assert transition.decision.observation.screen is ScreenType.MAP
     assert backend.last_executed_commands == ("leave", "proceed")
+
+
+def test_command_boundary_requires_two_equal_nonadvancing_snapshots() -> None:
+    transient = game_payload([])
+    transient["available_commands"] = ["state", "wait"]
+    transient["game_state"]["combat_state"] = {
+        "hand": [{"id": "Wild Strike", "cost_for_turn": 1}],
+    }
+    transient["game_state"]["screen_type"] = "NONE"
+    transient["_continuation"] = {
+        "action_phase": "WAITING_ON_USER",
+        "action_queue_types": [],
+        "card_queue_types": [],
+        "active_card_souls": [{"card_uuid": "card-1"}],
+    }
+    stable = json.loads(json.dumps(transient))
+    stable["game_state"]["combat_state"]["hand"][0]["cost_for_turn"] = 0
+    stable["_continuation"]["active_card_souls"] = []
+    transport = ScriptedTransport([stable, stable, json.loads(json.dumps(stable))])
+    session = OriginalSession(transport)
+    session.payload = transient
+    backend = OriginalBackend(session, IRONCLAD_A0_ACT1)
+    executed: list[str] = []
+
+    result = backend._settle_command_boundary(transient, executed)
+
+    assert result["game_state"]["combat_state"]["hand"][0]["cost_for_turn"] == 0
+    assert transport.sent == ["wait 30", "state", "state"]
+    assert executed == ["wait 30", "state", "state"]

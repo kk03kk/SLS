@@ -65,11 +65,17 @@ def _entry(mode: str, args: argparse.Namespace) -> tuple[Path, list[str]]:
         ]
     if args.bundle is None or not args.anchor or args.to_step is None:
         raise ValueError("resume requires --bundle, --anchor and --to-step")
-    return ROOT / "tools" / "replay_original_segment.py", [
+    values = [
         args.bundle.resolve().as_posix(), "--anchor", args.anchor,
         "--to-step", str(args.to_step), "--game-root", args.game_root.resolve().as_posix(),
         "--continue-steps", str(args.continue_steps),
     ]
+    action_plan = getattr(args, "action_plan", None)
+    if action_plan is not None:
+        values = values[:-2]
+        values.extend(["--action-plan", action_plan.resolve().as_posix()])
+        values.extend(["--action-plan-offset", str(getattr(args, "action_plan_offset", 0))])
+    return ROOT / "tools" / "replay_original_segment.py", values
 
 
 def main() -> int:
@@ -88,6 +94,8 @@ def main() -> int:
     parser.add_argument("--anchor")
     parser.add_argument("--to-step", type=int)
     parser.add_argument("--continue-steps", type=int, default=0)
+    parser.add_argument("--action-plan", type=Path)
+    parser.add_argument("--action-plan-offset", type=int, default=0)
     parser.add_argument("--require-clean", action="store_true")
     parser.add_argument("--timeout", type=int, default=300)
     parser.add_argument("--skip-intro", action=argparse.BooleanOptionalAction, default=True)

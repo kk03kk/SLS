@@ -8,6 +8,7 @@ from sls.backends.original.adapter import AdaptedOriginalDecision, adapt_origina
 from sls.backends.original.session import OriginalSession
 from sls.content.seed import long_to_seed_string
 from sls.contracts import Action, ActionKind, Decision, Transition, ValidationSnapshot
+from sls.contracts.continuation import continuation_original
 from sls.curriculum import CurriculumProfile, IRONCLAD_A0_HEART, evaluate_horizon
 
 
@@ -25,7 +26,7 @@ class OriginalBackend:
         self.profile = profile
         self._adapted: AdaptedOriginalDecision | None = None
         self._last_executed_commands: tuple[str, ...] = ()
-        self._last_validation_evidence: dict[str, int] = {}
+        self._last_validation_evidence: dict[str, Any] = {}
 
     @property
     def raw_payload(self) -> dict[str, Any]:
@@ -97,6 +98,22 @@ class OriginalBackend:
         except KeyError as error:
             raise ValueError("action is not legal at the current Original decision") from error
         payload = self.raw_payload
+        pending_discard_souls: set[str] = set()
+        liquid_memories = False
+        if not isinstance(action, str) and action.kind is ActionKind.USE_POTION:
+            liquid_memories = any(
+                potion.instance_id == action.subject_id
+                and potion.content_id == "LIQUID_MEMORIES"
+                for potion in self._adapted.decision.observation.potions
+            )
+            if liquid_memories:
+                pending_discard_souls = {
+                    str(item.get("card_uuid"))
+                    for item in continuation_original(payload).get("active_card_souls") or ()
+                    if isinstance(item, dict)
+                    and str(item.get("destination") or "").upper() == "DISCARD_PILE"
+                    and item.get("card_uuid")
+                }
         timing_before = payload.get("_timing_evidence") or {}
         starting_deck_size = len((payload.get("game_state") or {}).get("deck") or ())
         executed: list[str] = []
@@ -139,6 +156,7 @@ class OriginalBackend:
         )
         payload = self._settle_combat_terminal(payload, executed)
         payload = self._settle_debug_intents(payload, executed)
+        payload = self._settle_command_boundary(payload, executed)
         self._last_executed_commands = tuple(executed)
         timing_after = payload.get("_timing_evidence") or {}
         self._last_validation_evidence = {}
@@ -148,6 +166,14 @@ class OriginalBackend:
             self._last_validation_evidence["discovery_retrieval_updates"] = int(
                 timing_after["discovery_retrieval_updates"]
             )
+        if liquid_memories and pending_discard_souls:
+            hand = (((payload.get("game_state") or {}).get("combat_state") or {}).get("hand") or ())
+            reset_count = sum(
+                str(card.get("uuid")) in pending_discard_souls
+                for card in hand if isinstance(card, dict)
+            )
+            if reset_count:
+                self._last_validation_evidence["card_soul_cost_reset_count"] = reset_count
         self._adapted = adapt_original(payload)
         horizon = evaluate_horizon(self.profile, self._adapted.decision.observation)
         decision = self._adapted.decision
@@ -247,7 +273,7 @@ class OriginalBackend:
         return self._last_executed_commands
 
     @property
-    def last_validation_evidence(self) -> dict[str, int]:
+    def last_validation_evidence(self) -> dict[str, Any]:
         return dict(self._last_validation_evidence)
 
     def validation_snapshot(self) -> ValidationSnapshot:
@@ -353,6 +379,67 @@ class OriginalBackend:
             if executed is not None:
                 executed.append("wait 1")
         return payload
+
+    def _settle_command_boundary(
+        self, payload: dict[str, Any], executed: list[str] | None = None,
+        *, limit: int = 6,
+    ) -> dict[str, Any]:
+        """Require two identical non-advancing snapshots at a command boundary.
+
+        CommunicationMod state conversion can run concurrently with a stock
+        action update. A single ready payload can therefore expose a torn
+        transition (for example, a Liquid Memories card after it enters the
+        hand but before ``setCostForTurn(0)``). At a choice-free idle combat
+        boundary, all active card ``Soul`` continuations first finish. Two
+        subsequent ``state`` replies then establish transport quiescence.
+        Selection screens are never advanced here because rendering can be
+        causally relevant to RNG consumption.
+        """
+
+        available = {str(item).lower() for item in payload.get("available_commands") or ()}
+        if "state" not in available:
+            return payload
+        game = payload.get("game_state") or {}
+        continuation = payload.get("_continuation") or game.get("_continuation") or {}
+        combat = game.get("combat_state") or {}
+        safe_idle_combat = (
+            bool(combat)
+            and str(game.get("screen_type") or "NONE").upper() in {"", "NONE"}
+            and str(continuation.get("action_phase") or "").upper() == "WAITING_ON_USER"
+            and not (continuation.get("action_queue_types") or ())
+            and not (continuation.get("card_queue_types") or ())
+            and "wait" in available
+        )
+        if safe_idle_combat:
+            souls_known = "active_card_souls" in continuation
+            for _ in range(limit):
+                active_souls = continuation.get("active_card_souls") or ()
+                if souls_known and not active_souls:
+                    break
+                command = "wait 30" if souls_known else "wait 1"
+                payload = self.session.execute(command)
+                if executed is not None:
+                    executed.append(command)
+                continuation = payload.get("_continuation") or (
+                    (payload.get("game_state") or {}).get("_continuation") or {}
+                )
+                if not souls_known:
+                    break
+            else:
+                raise RuntimeError(
+                    f"Original card Soul continuation did not settle after {limit} waits"
+                )
+        previous: dict[str, Any] | None = None
+        for _ in range(limit):
+            current = self.session.execute("state")
+            if executed is not None:
+                executed.append("state")
+            if previous is not None and current == previous:
+                return current
+            previous = current
+        raise RuntimeError(
+            f"Original command boundary did not stabilize after {limit} state snapshots"
+        )
 
     def _settle_combat_terminal(
         self, payload: dict[str, Any], executed: list[str] | None = None,

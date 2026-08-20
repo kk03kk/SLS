@@ -9,6 +9,8 @@ import com.megacrit.cardcrawl.neow.NeowEvent;
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.cards.CardQueueItem;
+import com.megacrit.cardcrawl.cards.Soul;
+import com.megacrit.cardcrawl.cards.SoulGroup;
 import com.megacrit.cardcrawl.map.MapRoomNode;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.monsters.EnemyMoveInfo;
@@ -26,7 +28,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Field;
 
 public final class CommunicationStatePatch {
-    public static final String INSTRUMENTATION_SCHEMA = "spirecomm-parity-v7";
+    public static final String INSTRUMENTATION_SCHEMA = "spirecomm-parity-v9";
     private static final Method CALCULATE_DAMAGE = privateCalculateDamage();
 
     private static Method privateCalculateDamage() {
@@ -170,6 +172,28 @@ public final class CommunicationStatePatch {
         }
         continuation.put("action_queue_types", actionTypes);
         continuation.put("card_queue_types", cardQueueTypes);
+        ArrayList<Map<String, Object>> activeCardSouls =
+            new ArrayList<Map<String, Object>>();
+        if (AbstractDungeon.getCurrRoom() != null
+                && AbstractDungeon.getCurrRoom().souls != null) {
+            ArrayList<Soul> souls = ReflectionHacks.getPrivate(
+                AbstractDungeon.getCurrRoom().souls, SoulGroup.class, "souls"
+            );
+            for (Soul soul : souls) {
+                if (soul.isReadyForReuse || soul.card == null) {
+                    continue;
+                }
+                Map<String, Object> value = new LinkedHashMap<String, Object>();
+                value.put("card_uuid", soul.card.uuid == null
+                    ? null : soul.card.uuid.toString());
+                value.put("card_id", soul.card.cardID);
+                value.put("destination", soul.group == null ? null : soul.group.type.name());
+                value.put("cost_for_turn", soul.card.costForTurn);
+                value.put("done", soul.isDone);
+                activeCardSouls.add(value);
+            }
+        }
+        continuation.put("active_card_souls", activeCardSouls);
         ArrayList<Map<String, Object>> bottledCards = new ArrayList<Map<String, Object>>();
         if (AbstractDungeon.player != null && AbstractDungeon.player.masterDeck != null) {
             for (int index = 0; index < AbstractDungeon.player.masterDeck.group.size(); ++index) {

@@ -58,7 +58,7 @@ hashes. `MATCH`, `DIFFERENCE`, and `INCONCLUSIVE` are distinct states. A missing
 map coordinate, intent, RNG stream, continuation field, or unknown screen is an
 `EVIDENCE_GAP`; it is never replaced by a guessed default.
 
-The current Oracle instrumentation contract is `spirecomm-parity-v7`. Besides
+The current Oracle instrumentation contract is `spirecomm-parity-v9`. Besides
 RNG, map, queue, adjusted monster-intent, and generated reward evidence, v5
 records validation-only Discovery timing evidence. Stock `DiscoveryAction`
 consumes card RNG once per retrieval render update, so paired and offline replay
@@ -72,6 +72,16 @@ a run with equivalent duplicate cards rebinds the bottle to the first matching
 master-deck card. A `RESUMED_AUTOSAVE` segment records this lossy stock
 normalization and aligns its native checkpoint to the observed resumed state;
 live-run checkpoints retain the originally selected card identity.
+
+Version 8 also records every serialized combat card's authoritative
+`costForTurn`. Older combat payloads without it are evidence gaps: temporary
+changes such as Liquid Memories cannot be reconstructed from the base `cost`.
+
+Version 9 records active stock card `Soul` continuations with card UUID,
+destination, dynamic cost, and completion state. These presentation objects
+can mutate gameplay state later (notably `clearPowers()` after a rapid
+discard-to-hand retrieval), so paired replay passes the observed consequence
+as validation-only evidence rather than exposing animation state to policy.
 
 ## Offline daily loop
 
@@ -102,6 +112,27 @@ checkpoint. Prepare a local Original replay from the nearest room:
 D:\Anaconda\envs\DL\python.exe tools/run_original.py resume `
   --bundle <bundle> --anchor <anchor-id> --to-step <step> --continue-steps 8
 ```
+
+For a searched or hand-reviewed local suffix, pass a versioned semantic plan
+instead of a policy step count:
+
+```powershell
+D:\Anaconda\envs\DL\python.exe tools/run_original.py resume `
+  --bundle <bundle> --anchor <anchor-id> --to-step <step> `
+  --action-plan configs/validation/action-plans/<plan>.json `
+  --action-plan-offset <already-executed-actions>
+```
+
+Every planned action must be an exact legal canonical candidate in both
+backends. Candidate drift aborts the segment instead of falling back to an
+index or another action. The derived bundle records the plan path, content
+hash, source provenance, and action count.
+
+At an idle combat command boundary, capture folds all active card `Soul`
+continuations and then requires two identical non-advancing `state` snapshots.
+This prevents delayed `clearPowers()` calls and half-updated action payloads
+from becoming policy decisions, while avoiding frame advances on Discovery and
+other selection screens whose rendering can consume RNG.
 
 `parity_continue` only triggers the stock Ironclad Resume path at the main
 menu. It never constructs player, map, or RNG state. The resume hash permits

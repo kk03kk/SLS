@@ -1,0 +1,42 @@
+{
+  "schema": "sls-semantic-action-plan-v1",
+  "source": {
+    "kind": "OFFLINE_CHECKPOINT_BEAM_SEARCH",
+    "source_run_id": "20260820T181031.470467Z-seed-0",
+    "source_anchor": "a0003-s000052-enter_room",
+    "source_step": 52,
+    "search": {"beam_width": 80, "combat_depth": 27},
+    "expected": {"room": "MonsterRoomElite", "remaining_hp": 14}
+  },
+  "actions": [
+    {"schema_version":1,"kind":"REST","subject_id":null,"target_id":null,"option_id":"rest-option:0","node_id":null,"reward_id":null,"metadata":{}},
+    {"schema_version":1,"kind":"CHOOSE_MAP_NODE","subject_id":null,"target_id":null,"option_id":null,"node_id":"map:0:7","reward_id":null,"metadata":{}},
+    {"schema_version":1,"kind":"PLAY_CARD","subject_id":"HAND:0","target_id":"MONSTER:2","option_id":null,"node_id":null,"reward_id":null,"metadata":{}},
+    {"schema_version":1,"kind":"USE_POTION","subject_id":"POTION:0","target_id":null,"option_id":null,"node_id":null,"reward_id":null,"metadata":{}},
+    {"schema_version":1,"kind":"PLAY_CARD","subject_id":"HAND:4","target_id":"MONSTER:2","option_id":null,"node_id":null,"reward_id":null,"metadata":{}},
+    {"schema_version":1,"kind":"PLAY_CARD","subject_id":"HAND:1","target_id":"MONSTER:2","option_id":null,"node_id":null,"reward_id":null,"metadata":{}},
+    {"schema_version":1,"kind":"PLAY_CARD","subject_id":"HAND:0","target_id":null,"option_id":null,"node_id":null,"reward_id":null,"metadata":{}},
+    {"schema_version":1,"kind":"END_TURN","subject_id":null,"target_id":null,"option_id":null,"node_id":null,"reward_id":null,"metadata":{}},
+    {"schema_version":1,"kind":"PLAY_CARD","subject_id":"HAND:0","target_id":"MONSTER:2","option_id":null,"node_id":null,"reward_id":null,"metadata":{}},
+    {"schema_version":1,"kind":"PLAY_CARD","subject_id":"HAND:0","target_id":"MONSTER:0","option_id":null,"node_id":null,"reward_id":null,"metadata":{}},
+    {"schema_version":1,"kind":"PLAY_CARD","subject_id":"HAND:2","target_id":"MONSTER:1","option_id":null,"node_id":null,"reward_id":null,"metadata":{}},
+    {"schema_version":1,"kind":"END_TURN","subject_id":null,"target_id":null,"option_id":null,"node_id":null,"reward_id":null,"metadata":{}},
+    {"schema_version":1,"kind":"PLAY_CARD","subject_id":"HAND:4","target_id":"MONSTER:1","option_id":null,"node_id":null,"reward_id":null,"metadata":{}},
+    {"schema_version":1,"kind":"PLAY_CARD","subject_id":"HAND:1","target_id":null,"option_id":null,"node_id":null,"reward_id":null,"metadata":{}},
+    {"schema_version":1,"kind":"PLAY_CARD","subject_id":"HAND:1","target_id":null,"option_id":null,"node_id":null,"reward_id":null,"metadata":{}},
+    {"schema_version":1,"kind":"END_TURN","subject_id":null,"target_id":null,"option_id":null,"node_id":null,"reward_id":null,"metadata":{}},
+    {"schema_version":1,"kind":"PLAY_CARD","subject_id":"HAND:1","target_id":"MONSTER:1","option_id":null,"node_id":null,"reward_id":null,"metadata":{}},
+    {"schema_version":1,"kind":"END_TURN","subject_id":null,"target_id":null,"option_id":null,"node_id":null,"reward_id":null,"metadata":{}},
+    {"schema_version":1,"kind":"PLAY_CARD","subject_id":"HAND:2","target_id":"MONSTER:1","option_id":null,"node_id":null,"reward_id":null,"metadata":{}},
+    {"schema_version":1,"kind":"PLAY_CARD","subject_id":"HAND:0","target_id":"MONSTER:0","option_id":null,"node_id":null,"reward_id":null,"metadata":{}},
+    {"schema_version":1,"kind":"PLAY_CARD","subject_id":"HAND:1","target_id":"MONSTER:0","option_id":null,"node_id":null,"reward_id":null,"metadata":{}},
+    {"schema_version":1,"kind":"END_TURN","subject_id":null,"target_id":null,"option_id":null,"node_id":null,"reward_id":null,"metadata":{}},
+    {"schema_version":1,"kind":"PLAY_CARD","subject_id":"HAND:1","target_id":"MONSTER:0","option_id":null,"node_id":null,"reward_id":null,"metadata":{}},
+    {"schema_version":1,"kind":"PLAY_CARD","subject_id":"HAND:1","target_id":"MONSTER:0","option_id":null,"node_id":null,"reward_id":null,"metadata":{}},
+    {"schema_version":1,"kind":"PLAY_CARD","subject_id":"HAND:1","target_id":null,"option_id":null,"node_id":null,"reward_id":null,"metadata":{}},
+    {"schema_version":1,"kind":"END_TURN","subject_id":null,"target_id":null,"option_id":null,"node_id":null,"reward_id":null,"metadata":{}},
+    {"schema_version":1,"kind":"END_TURN","subject_id":null,"target_id":null,"option_id":null,"node_id":null,"reward_id":null,"metadata":{}},
+    {"schema_version":1,"kind":"PLAY_CARD","subject_id":"HAND:3","target_id":"MONSTER:0","option_id":null,"node_id":null,"reward_id":null,"metadata":{}},
+    {"schema_version":1,"kind":"PLAY_CARD","subject_id":"HAND:3","target_id":"MONSTER:0","option_id":null,"node_id":null,"reward_id":null,"metadata":{}}
+  ]
+}

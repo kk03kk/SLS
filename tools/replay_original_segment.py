@@ -36,6 +36,35 @@ PROFILES = {p.profile_id: p for p in (
 )}
 
 
+def _load_action_plan(path: Path) -> tuple[list[Action], dict[str, object]]:
+    value = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(value, dict) or value.get("schema") != "sls-semantic-action-plan-v1":
+        raise ValueError("unsupported semantic action plan schema")
+    raw_actions = value.get("actions")
+    if not isinstance(raw_actions, list) or not raw_actions:
+        raise ValueError("semantic action plan must contain a non-empty actions list")
+    actions = [Action.from_dict(item) for item in raw_actions]
+    return actions, value
+
+
+def _planned_action(
+    planned: Action, original_decision: object, simulator_decision: object, *, offset: int,
+) -> Action:
+    original = {item.candidate_id: item for item in original_decision.actions}
+    simulator = {item.candidate_id: item for item in simulator_decision.actions}
+    candidate_id = planned.candidate_id
+    missing = []
+    if candidate_id not in original:
+        missing.append("Original")
+    if candidate_id not in simulator:
+        missing.append("Simulator")
+    if missing:
+        raise RuntimeError(
+            f"planned action {offset} is not legal in {'/'.join(missing)}: {candidate_id}"
+        )
+    return original[candidate_id]
+
+
 def _restore_simulator_at_step(
     bundle: Path, manifest: dict, boundaries: list[dict], step: int,
 ) -> tuple[SimulatorBackend, object, dict, list[str]]:
@@ -114,8 +143,23 @@ def main() -> int:
     parser.add_argument("--game-root", type=Path, default=Path(r"D:\Steam\steamapps\common\SlayTheSpire"))
     parser.add_argument("--truth-root", type=Path, default=ROOT / "validation-results" / "truth")
     parser.add_argument("--continue-steps", type=int, default=0)
+    parser.add_argument(
+        "--action-plan", type=Path,
+        help="strict semantic action plan to execute after --to-step",
+    )
+    parser.add_argument("--action-plan-offset", type=int, default=0)
     args = parser.parse_args()
     try:
+        action_plan: list[Action] = []
+        action_plan_document: dict[str, object] | None = None
+        if args.action_plan is not None:
+            action_plan, action_plan_document = _load_action_plan(args.action_plan)
+            if args.continue_steps:
+                raise ValueError("--action-plan and --continue-steps are mutually exclusive")
+            if args.action_plan_offset < 0 or args.action_plan_offset > len(action_plan):
+                raise ValueError("--action-plan-offset is outside the action plan")
+        elif args.action_plan_offset:
+            raise ValueError("--action-plan-offset requires --action-plan")
         manifest, boundaries = load_bundle(args.bundle)
         anchor = next(a for a in manifest["anchors"] if a["anchor_id"] == args.anchor)
         anchor_dir = args.bundle / anchor["path"]
@@ -164,6 +208,8 @@ def main() -> int:
                         item for item in actual_resume.get("normalizations", [])
                         if item != "normalize_continuation.bottled_identity_for_stock_autosave"
                     ]
+                if "active_card_souls" not in expected_resume.get("continuation", {}):
+                    actual_resume.get("continuation", {}).pop("active_card_souls", None)
                 restored_hash = value_hash(actual_resume)
                 expected_resume_hash = value_hash(expected_resume)
                 if restored_hash != expected_resume_hash:
@@ -191,7 +237,7 @@ def main() -> int:
                     args.truth_root, seed=int(manifest["seed"]),
                     profile_id=manifest["profile_id"], policy_id=manifest["policy_id"],
                     evidence_class="RESUMED_AUTOSAVE", capture_mode="PAIRED",
-                    acceptance_eligible=False, instrumentation_schema="spirecomm-parity-v7",
+                    acceptance_eligible=False, instrumentation_schema="spirecomm-parity-v9",
                     repository_root=ROOT, autosave=destination,
                     jar_paths={
                         "game": args.game_root / "desktop-1.0.jar",
@@ -222,6 +268,14 @@ def main() -> int:
                         "simulator_restore_anchor": simulator_anchor["anchor_id"],
                         "simulator_restore_range": [int(simulator_anchor["sequence"]), start],
                         "simulator_restore_failures": restore_failures,
+                        "action_plan": None if args.action_plan is None else {
+                            "path": str(args.action_plan.resolve()),
+                            "sha256": file_hash(args.action_plan),
+                            "schema": action_plan_document["schema"],
+                            "source": action_plan_document.get("source"),
+                            "action_count": len(action_plan),
+                            "start_offset": args.action_plan_offset,
+                        },
                     },
                 )
                 paired_match = True
@@ -266,10 +320,21 @@ def main() -> int:
                 target_payload = json.loads(json.dumps(backend.raw_payload))
                 target_action_evidence = backend.last_validation_evidence
                 continued = 0
-                for _ in range(args.continue_steps):
+                continuation_count = (
+                    len(action_plan) - args.action_plan_offset
+                    if action_plan else args.continue_steps
+                )
+                for offset in range(continuation_count):
                     if not paired_match or decision.terminal or simulator_decision.terminal:
                         break
-                    semantic = deterministic_action(decision, simulator_decision)
+                    semantic = (
+                        _planned_action(
+                            action_plan[args.action_plan_offset + offset],
+                            decision, simulator_decision,
+                            offset=args.action_plan_offset + offset,
+                        )
+                        if action_plan else deterministic_action(decision, simulator_decision)
+                    )
                     commands = backend.command_sequence(semantic)
                     recorder.select_last_action(semantic, commands)
                     decision = backend.step(semantic).decision

@@ -2074,7 +2074,13 @@ void BattleContext::onAfterUseCard() {
             // 1. sets the damage on all shivs in hand if you have accuracy power,
             // 2. sets the cost of all skills in hand to -9 if you have corruption
             // we will handle these tasks elsewhere
-            cards.moveToDiscardPile(c);
+            // Canonical Original boundaries fold the stock discard Soul. Its
+            // completion calls AbstractCard.clearPowers()/resetAttributes(),
+            // so turn-only cost changes cannot remain on the settled discard
+            // card even when it is immediately made observable by a policy.
+            CardInstance settledCard = c;
+            settledCard.costForTurn = settledCard.cost;
+            cards.moveToDiscardPile(settledCard);
         }
     }
     // TODO these must be done in the cards method itself

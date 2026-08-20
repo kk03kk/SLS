@@ -56,7 +56,9 @@ class SimulatorBackend:
         self, action: Action | str, *, validation_evidence: Mapping[str, Any] | None = None,
     ) -> Transition:
         if validation_evidence:
-            unknown = set(validation_evidence) - {"discovery_retrieval_updates"}
+            unknown = set(validation_evidence) - {
+                "discovery_retrieval_updates", "card_soul_cost_reset_count",
+            }
             if unknown:
                 raise ValueError(f"unknown validation evidence: {sorted(unknown)}")
             if "discovery_retrieval_updates" in validation_evidence:
@@ -68,7 +70,13 @@ class SimulatorBackend:
             bits = self._candidate_bits[candidate_id]
         except KeyError as error:
             raise ValueError("action is not legal at the current decision boundary") from error
-        next_decision = self._adapt(self._native.step(bits))
+        raw = self._native.step(bits)
+        if validation_evidence and "card_soul_cost_reset_count" in validation_evidence:
+            self._native._reset_last_hand_card_costs_for_validation(
+                int(validation_evidence["card_soul_cost_reset_count"]),
+            )
+            raw = self._native.snapshot()
+        next_decision = self._adapt(raw)
         decision = evaluate_horizon(self.profile, next_decision.observation)
         if decision.terminated != next_decision.terminal:
             next_decision = Decision(
@@ -136,7 +144,8 @@ class SimulatorBackend:
         )
         powers = _powers(combat["player"].get("powers", ()) if combat else (), "PLAYER_POWER")
         for index, monster in enumerate(combat.get("monsters", ()) if combat else ()):
-            powers += _powers(monster.get("powers", ()), f"MONSTER:{index}:POWER")
+            if not bool(monster.get("is_gone", False)) and int(monster.get("current_hp", 0)) > 0:
+                powers += _powers(monster.get("powers", ()), f"MONSTER:{index}:POWER")
 
         actions, candidate_bits = _semantic_actions(raw, card_zones["HAND"])
         self._candidate_bits = candidate_bits

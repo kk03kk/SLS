@@ -27,6 +27,22 @@ def test_communication_mod_entry_uses_properties_safe_paths() -> None:
     assert all(":" in value for value in path_values)
 
 
+def test_resume_action_plan_replaces_policy_continuation() -> None:
+    args = Namespace(
+        bundle=Path(r"D:\SLS\validation-results\truth\bundle"),
+        anchor="a0001", to_step=3, continue_steps=0,
+        action_plan=Path(r"D:\SLS\configs\validation\action-plans\plan.json"),
+        action_plan_offset=4,
+        game_root=Path(r"D:\Steam\steamapps\common\SlayTheSpire"),
+    )
+
+    _, values = _entry("resume", args)
+
+    assert "--continue-steps" not in values
+    assert values[values.index("--action-plan") + 1].endswith("/plan.json")
+    assert values[values.index("--action-plan-offset") + 1] == "4"
+
+
 def test_intro_flag_can_be_disabled_for_equivalence_control() -> None:
     command = launcher_command(Path(r"D:\game"), Path(r"D:\mts.jar"), skip_intro=False)
     assert "--skip-launcher" in command

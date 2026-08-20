@@ -399,6 +399,26 @@ def test_attack_intent_requires_adjusted_damage_and_hit_evidence() -> None:
     assert "MISSING_ADJUSTED_MONSTER_INTENT_DAMAGE" not in codes
 
 
+def test_combat_dynamic_cost_is_required_evidence() -> None:
+    payload = json.loads(json.dumps(TERMINAL_PAYLOAD))
+    payload["game_state"].update({
+        "screen_type": "COMBAT", "combat_state": {
+            "hand": [{"id": "Wild Strike", "cost": 1}], "monsters": [],
+        },
+    })
+    payload["_monster_intents"] = []
+
+    codes = {
+        item["code"] for item in original_evidence_gaps(payload, canonical_screen="COMBAT")
+    }
+    assert "MISSING_DYNAMIC_CARD_COSTS" in codes
+    payload["game_state"]["combat_state"]["hand"][0]["cost_for_turn"] = 0
+    codes = {
+        item["code"] for item in original_evidence_gaps(payload, canonical_screen="COMBAT")
+    }
+    assert "MISSING_DYNAMIC_CARD_COSTS" not in codes
+
+
 def test_resume_intersection_ignores_only_unsettled_adjusted_intent_fields() -> None:
     payload = json.loads(json.dumps(TERMINAL_PAYLOAD))
     payload["game_state"].update({

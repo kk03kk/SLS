@@ -398,7 +398,7 @@ def _cards(
             normalize_card_id(card.get("id")),
             zone,
             _integer(card.get("upgrades")),
-            _integer(card.get("cost", card.get("base_cost"))),
+            _integer(card.get("base_cost", card.get("cost"))),
             _integer(card.get("cost_for_turn", card.get("cost", card.get("base_cost")))),
             bool(card.get("is_playable", False)) if zone == "HAND" else False,
             index if zone == "DRAW" and visible_order else None,

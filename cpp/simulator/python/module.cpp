@@ -3004,6 +3004,17 @@ public:
         battle_->cardSelectInfo.discoveryRetrievalUpdates = updates;
     }
 
+    void reset_last_hand_card_costs_for_validation(int count) {
+        require_reset();
+        if (!battle_ || count < 1 || count > battle_->cards.cardsInHand) {
+            throw std::invalid_argument("Card Soul reset evidence is invalid");
+        }
+        const int begin = battle_->cards.cardsInHand - count;
+        for (int index = begin; index < battle_->cards.cardsInHand; ++index) {
+            battle_->cards.hand[index].costForTurn = battle_->cards.hand[index].cost;
+        }
+    }
+
     py::dict step(std::uint32_t bits) {
         require_reset();
         if (battle_) {
@@ -4093,6 +4104,9 @@ PYBIND11_MODULE(_lightspeed, module) {
         .def("_set_discovery_retrieval_updates_for_validation",
              &LightspeedRunState::set_discovery_retrieval_updates_for_validation,
              py::arg("updates"))
+        .def("_reset_last_hand_card_costs_for_validation",
+             &LightspeedRunState::reset_last_hand_card_costs_for_validation,
+             py::arg("count"))
         .def("step", &LightspeedRunState::step, py::arg("bits"))
         .def("advance_all_rng", &LightspeedRunState::advance_all_rng)
         .def("courier_restock_probe", &LightspeedRunState::courier_restock_probe,

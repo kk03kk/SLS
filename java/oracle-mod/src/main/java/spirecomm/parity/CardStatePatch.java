@@ -17,6 +17,7 @@ public final class CardStatePatch {
             HashMap<String, Object> result, AbstractCard card
         ) {
             result.put("base_cost", card.cost);
+            result.put("cost_for_turn", card.costForTurn);
             result.put("special_data", card.misc);
             result.put("free_to_play_once", card.freeToPlayOnce);
             result.put("retain", card.retain);

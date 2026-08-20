@@ -31,6 +31,7 @@ def original_evidence_gaps(
     if payload.get("_parity_schema") and payload.get("_parity_schema") not in {
         "spirecomm-parity-v2", "spirecomm-parity-v3", "spirecomm-parity-v4",
         "spirecomm-parity-v5", "spirecomm-parity-v6", "spirecomm-parity-v7",
+        "spirecomm-parity-v8", "spirecomm-parity-v9",
     }:
         gaps.append({"code": "UNSUPPORTED_INSTRUMENTATION_SCHEMA", "path": "$._parity_schema"})
     rng = payload.get("_rng") or game.get("_rng")
@@ -45,7 +46,9 @@ def original_evidence_gaps(
     continuation = payload.get("_continuation") or game.get("_continuation")
     if not isinstance(continuation, Mapping):
         gaps.append({"code": "MISSING_CONTINUATION_EVIDENCE", "path": "$._continuation"})
-    elif payload.get("_parity_schema") == "spirecomm-parity-v7":
+    elif payload.get("_parity_schema") in {
+        "spirecomm-parity-v7", "spirecomm-parity-v8", "spirecomm-parity-v9",
+    }:
         require(continuation, "bottled_cards", "$._continuation.bottled_cards")
     raw_screen = str(game.get("screen_type") or "").upper()
     if raw_screen == "GRID" or (game.get("combat_state") and raw_screen == "CARD_REWARD"):
@@ -66,7 +69,24 @@ def original_evidence_gaps(
             require(parity_run, "current_map_x", "$._parity_run.current_map_x")
             require(parity_run, "current_map_y", "$._parity_run.current_map_y")
     if canonical_screen == "COMBAT":
-        monsters = ((game.get("combat_state") or {}).get("monsters") or ())
+        combat = game.get("combat_state") or {}
+        monsters = combat.get("monsters") or ()
+        combat_cards = [
+            card
+            for zone in ("hand", "draw_pile", "discard_pile", "exhaust_pile")
+            for card in (combat.get(zone) or ())
+            if isinstance(card, Mapping)
+        ]
+        if any("cost_for_turn" not in card for card in combat_cards):
+            gaps.append({
+                "code": "MISSING_DYNAMIC_CARD_COSTS",
+                "path": "$.game_state.combat_state.*[].cost_for_turn",
+            })
+        if not isinstance(continuation, Mapping) or "active_card_souls" not in continuation:
+            gaps.append({
+                "code": "MISSING_ACTIVE_CARD_SOULS",
+                "path": "$._continuation.active_card_souls",
+            })
         intents = payload.get("_monster_intents")
         if not isinstance(intents, list) or len(intents) != len(monsters):
             gaps.append({"code": "MISSING_MONSTER_INTENTS", "path": "$._monster_intents"})
