@@ -8,6 +8,9 @@
 
 #include <algorithm>
 #include <cassert>
+#include <cctype>
+#include <cstring>
+#include <stdexcept>
 
 using namespace sts;
 
@@ -91,43 +94,32 @@ int& RelicContainer::getRelicValueRef(RelicId r) {
     return relics[0].data;
 }
 
-int SeedHelper::getDigitValue(char c) {
-    if (c < 'A') {
-        return c - '0';
-    }
-    if (c < 'O') {
-        return c - 'A' + 10;
-    }
-    return c - 'A' + 9;
-}
-
 std::string SeedHelper::getString(std::uint64_t seed) {
-    constexpr auto chars = "0123456789ABCDEFGHIJKLMNPQRSTUVWXYZ";
-
-    auto uSeed = static_cast<std::uint64_t>(seed);
-    std::string str;
-
-    do {
-        int rem = static_cast<int>(uSeed % SEED_BASE);
-        uSeed /= SEED_BASE;
-        str += chars[rem];
-    } while (uSeed != 0);
-
-    for (int i = 0; i < str.size() / 2; i++) {
-        std::swap(str[i], str[str.size() - 1 - i]);
+    constexpr auto characters = "0123456789ABCDEFGHIJKLMNPQRSTUVWXYZ";
+    std::string result;
+    while (seed != 0) {
+        result.push_back(characters[seed % SEED_BASE]);
+        seed /= SEED_BASE;
     }
-    return str;
+    std::reverse(result.begin(), result.end());
+    return result;
 }
 
 std::uint64_t SeedHelper::getLong(const std::string &seed) {
-    std::uint64_t ret = 0;
-    for (auto it = seed.begin(); it != seed.end(); ++it) {
-        ret *= SEED_BASE;
-        int c = toupper(*it);
-        int value = getDigitValue(c);
-        ret += value;
+    constexpr auto characters = "0123456789ABCDEFGHIJKLMNPQRSTUVWXYZ";
+    std::uint64_t result = 0;
+    for (const unsigned char raw : seed) {
+        const char character = raw == 'o' || raw == 'O'
+            ? '0'
+            : static_cast<char>(std::toupper(raw));
+        const char *position = std::strchr(characters, character);
+        if (position == nullptr) {
+            throw std::invalid_argument("invalid Slay the Spire seed character");
+        }
+        result = result * SEED_BASE
+            + static_cast<std::uint64_t>(position - characters);
     }
-    return ret;
+    return result;
 }
 
 CardId sts::getAnyColorCard(Random &cardRng, CardRarity rarity) { // used for prismatic shard

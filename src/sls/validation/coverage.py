@@ -15,17 +15,24 @@ class CoverageSummary:
     matching_runs: int
     semantic_steps: int
     screens: tuple[str, ...]
-    action_kinds: tuple[str, ...]
+    candidate_action_kinds: tuple[str, ...]
+    selected_action_kinds: tuple[str, ...]
 
 
 def summarize(traces: Iterable[ParityTrace]) -> CoverageSummary:
     values = tuple(traces)
     screens = {step.screen for trace in values for step in trace.steps}
-    action_kinds = {
+    selected_action_kinds = {
         str(step.action["kind"])
         for trace in values
         for step in trace.steps
         if step.action is not None
+    }
+    candidate_action_kinds = {
+        kind
+        for trace in values
+        for step in trace.steps
+        for kind in step.candidate_kinds
     }
     return CoverageSummary(
         len(values),
@@ -33,5 +40,6 @@ def summarize(traces: Iterable[ParityTrace]) -> CoverageSummary:
         sum(trace.matches for trace in values),
         sum(len(trace.steps) for trace in values),
         tuple(sorted(screens)),
-        tuple(sorted(action_kinds)),
+        tuple(sorted(candidate_action_kinds)),
+        tuple(sorted(selected_action_kinds)),
     )

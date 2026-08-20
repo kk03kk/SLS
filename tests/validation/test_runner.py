@@ -60,3 +60,5 @@ def test_terminal_pair_produces_matching_trace() -> None:
     coverage = summarize((trace,))
     assert coverage.matching_runs == 1
     assert coverage.screens == ("GAME_OVER",)
+    assert coverage.candidate_action_kinds == ()
+    assert coverage.selected_action_kinds == ()

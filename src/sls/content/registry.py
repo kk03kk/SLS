@@ -29,11 +29,12 @@ class ContentRegistry:
         if self.payload.get("schema_version") != 1:
             raise ValueError("unsupported content registry schema")
         required = {"id", "ordinal"}
+        allowed = required | {"game_id"}
         for category, items in self.categories.items():
             ids: list[str] = []
             ordinals: list[int] = []
             for item in items:
-                if set(item) != required:
+                if not required.issubset(item) or not set(item).issubset(allowed):
                     raise ValueError(f"invalid fields for {category}/{item.get('id')}")
                 ids.append(item["id"])
                 ordinals.append(item["ordinal"])

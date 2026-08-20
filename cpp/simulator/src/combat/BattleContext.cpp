@@ -6,6 +6,9 @@
 #include "game/GameContext.h"
 #include "game/Game.h"
 
+#include <stdexcept>
+#include <string>
+
 using namespace sts;
 
 namespace sts {
@@ -1249,11 +1252,8 @@ void BattleContext::useAttackCard() {
 
 
         default:
-#ifdef sts_asserts
-            std::cerr << "attempted to use unimplemented card: " << c.getName() << std::endl;
-            assert(false);
-#endif
-            break;
+            throw std::logic_error(
+                std::string("unimplemented attack card: ") + c.getName());
     }
 }
 
@@ -1559,11 +1559,8 @@ void BattleContext::useSkillCard() {
             break;
 
         default:
-#ifdef sts_asserts
-            std::cerr << "attempted to use unimplemented card: " << c.getName() << std::endl;
-            assert(false);
-#endif
-            break;
+            throw std::logic_error(
+                std::string("unimplemented skill card: ") + c.getName());
     }
 }
 
@@ -1655,11 +1652,8 @@ void BattleContext::usePowerCard() {
             break;
 
         default:
-#ifdef sts_asserts
-            std::cerr << "attempted to use unimplemented card: " << c.getName() << std::endl;
-            assert(false);
-#endif
-            break;
+            throw std::logic_error(
+                std::string("unimplemented power card: ") + c.getName());
     }
 
 }

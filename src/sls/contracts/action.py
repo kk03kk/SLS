@@ -54,6 +54,7 @@ _REQUIRED_FIELDS: dict[ActionKind, tuple[str, ...]] = {
     ActionKind.DISCARD_POTION: ("subject_id",),
     ActionKind.CHOOSE_MAP_NODE: ("node_id",),
     ActionKind.CHOOSE_CARD_REWARD: ("subject_id",),
+    ActionKind.SKIP_CARD_REWARD: ("option_id",),
     ActionKind.TAKE_REWARD: ("reward_id",),
     ActionKind.BUY_CARD: ("subject_id",),
     ActionKind.BUY_RELIC: ("subject_id",),

@@ -258,6 +258,14 @@ def _actions(
                         ),
                         f"choose {choice_index}", f"choose {card_index}",
                     )
+                add(
+                    Action(
+                        ActionKind.SKIP_CARD_REWARD,
+                        option_id=f"reward-card:{occurrence}",
+                    ),
+                    f"choose {choice_index}",
+                    "skip",
+                )
             elif reward_type == "GOLD":
                 add(Action(ActionKind.TAKE_REWARD, reward_id=f"reward-gold:{occurrence}"), f"choose {choice_index}")
             elif reward_type == "POTION":
@@ -431,13 +439,40 @@ def _screen_entities(
             for index, value in enumerate(_sequence(state.get("relics") or choices))
         )
     elif screen is ScreenType.COMBAT_REWARD:
-        entities = []
+        entities: list[PublicEntity] = []
         counters: dict[str, int] = {}
         for reward in _mappings(state.get("rewards")):
             kind = str(reward.get("reward_type") or "UNKNOWN").upper()
             index = counters.get(kind, 0)
             counters[kind] = index + 1
-            entities.append(PublicEntity(f"reward-{kind.lower()}:{index}", kind))
+            if kind == "CARD":
+                entities.extend(
+                    PublicEntity(
+                        f"reward-card:{index}:{card_index}",
+                        normalize_card_id(card.get("id")),
+                        (("upgrades", _integer(card.get("upgrades"))),),
+                    )
+                    for card_index, card in enumerate(_mappings(reward.get("cards")))
+                )
+            elif kind == "GOLD":
+                entities.append(PublicEntity(
+                    f"reward-gold:{index}", "GOLD",
+                    (("amount", _integer(reward.get("gold", reward.get("amount")))),),
+                ))
+            elif kind == "RELIC":
+                entities.append(PublicEntity(
+                    f"reward-relic:{index}",
+                    normalize_content_id(reward.get("id", reward.get("relic"))),
+                ))
+            elif kind == "POTION":
+                entities.append(PublicEntity(
+                    f"reward-potion:{index}",
+                    normalize_potion_id(reward.get("id", reward.get("potion"))),
+                ))
+            elif "SAPPHIRE" in kind:
+                entities.append(PublicEntity("reward-key:sapphire", "SAPPHIRE_KEY"))
+            elif "KEY" in kind:
+                entities.append(PublicEntity("reward-key:emerald", "EMERALD_KEY"))
         result["reward"] = tuple(entities)
     elif screen is ScreenType.CARD_REWARD:
         result["reward"] = tuple(

@@ -97,3 +97,39 @@ def test_full_run_checkpoint_replays_the_same_transition() -> None:
 
     assert actual == expected
     assert replay.raw_state == first.raw_state
+
+
+def test_full_run_checkpoint_is_exact_across_decision_boundaries() -> None:
+    """Exercise run screens, combat choices, rewards, RNG and card identity."""
+
+    from sls.backends.simulator import IRONCLAD_A0_HEART, SimulatorBackend
+    from sls.validation.policies import PRIORITY
+
+    for seed in (0, 1, 2, 9, 10, 11, 12):
+        first = SimulatorBackend(IRONCLAD_A0_HEART)
+        decision = first.reset(seed)
+        for step_index in range(250):
+            checkpoint = first.checkpoint()
+            replay = SimulatorBackend(IRONCLAD_A0_HEART)
+            restored = replay.load_checkpoint(checkpoint)
+            assert restored == decision
+            assert replay.raw_state == first.raw_state
+            if decision.terminal:
+                break
+
+            ordered = sorted(
+                decision.actions,
+                key=lambda action: (
+                    PRIORITY.get(action.kind, 999), action.candidate_id,
+                ),
+            )
+            action = ordered[
+                (seed + step_index // 17) % min(len(ordered), 3)
+            ]
+            expected = first.step(action)
+            actual = replay.step(action)
+            assert actual == expected
+            assert replay.raw_state == first.raw_state
+            decision = expected.decision
+        else:
+            pytest.fail(f"seed {seed} did not terminate within 250 decisions")

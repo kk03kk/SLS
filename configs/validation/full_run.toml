@@ -8,3 +8,12 @@ output_dir = "validation-results/corpus"
 [acceptance]
 require_complete_runs = 10
 allow_unexplained_differences = 0
+require_screens = ["NEOW", "MAP", "COMBAT", "COMBAT_REWARD"]
+require_candidate_actions = [
+  "CHOOSE_NEOW_OPTION",
+  "CHOOSE_MAP_NODE",
+  "PLAY_CARD",
+  "END_TURN",
+  "CHOOSE_CARD_REWARD",
+  "SKIP_CARD_REWARD",
+]

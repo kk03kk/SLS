@@ -150,7 +150,10 @@ class SimulatorBackend:
             enemies=enemies,
             powers=powers,
             relics=tuple(
-                _entity(f"RELIC:{index}", value["content_id"], counter=int(value["counter"]))
+                _entity(
+                    f"RELIC:{index}", value["content_id"],
+                    counter=max(0, int(value["counter"])),
+                )
                 for index, value in enumerate(inventory["relics"])
             ),
             potions=tuple(
@@ -338,6 +341,11 @@ def _run_action(
         return Action(ActionKind.CHOOSE_MAP_NODE, node_id=node_id)
     if screen is ScreenType.COMBAT_REWARD:
         if reward_type == 0:
+            if idx2 == 5:
+                return Action(
+                    ActionKind.SKIP_CARD_REWARD,
+                    option_id=f"reward-card:{idx1}",
+                )
             return Action(ActionKind.CHOOSE_CARD_REWARD, subject_id=f"reward-card:{idx1}:{idx2}")
         if reward_type == 1:
             return Action(ActionKind.TAKE_REWARD, reward_id=f"reward-gold:{idx1}")

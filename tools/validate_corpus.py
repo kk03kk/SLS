@@ -95,6 +95,10 @@ def main() -> int:
         parser.error("[acceptance] must be a TOML table")
     required_complete = int(acceptance.get("require_complete_runs", len(seeds)))
     allowed_differences = int(acceptance.get("allow_unexplained_differences", 0))
+    required_screens = {str(value) for value in acceptance.get("require_screens", ())}
+    required_actions = {
+        str(value) for value in acceptance.get("require_candidate_actions", ())
+    }
     if required_complete < 0 or allowed_differences < 0:
         parser.error("acceptance thresholds must be non-negative")
     transport = StdioTransport(
@@ -122,6 +126,8 @@ def main() -> int:
         summary.complete_runs >= required_complete
         and unexplained <= allowed_differences
         and summary.seeds == len(seeds)
+        and required_screens.issubset(summary.screens)
+        and required_actions.issubset(summary.candidate_action_kinds)
     )
     output_dir.mkdir(parents=True, exist_ok=True)
     report = {
@@ -129,6 +135,8 @@ def main() -> int:
         "acceptance": {
             "require_complete_runs": required_complete,
             "allow_unexplained_differences": allowed_differences,
+            "require_screens": sorted(required_screens),
+            "require_candidate_actions": sorted(required_actions),
         },
         "profile": profile.profile_id,
         "summary": asdict(summary),

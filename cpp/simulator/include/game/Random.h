@@ -5,6 +5,8 @@
 #ifndef STS_LIGHTSPEED_RANDOM_H
 #define STS_LIGHTSPEED_RANDOM_H
 
+#include <stdexcept>
+
 namespace java {
 
     class Random {
@@ -32,15 +34,25 @@ namespace java {
         }
 
         int32_t nextInt(int32_t bound) {
+            if (bound <= 0) {
+                throw std::invalid_argument("bound must be positive");
+            }
             int r = next(31);
             int m = bound - 1;
             if ((bound & m) == 0)  // i.e., bound is a power of 2
                 r = static_cast<int32_t>( ((bound * static_cast<std::uint64_t>(r)) >> 31) );
             else {
-                for (int32_t u = r;
-                     u - (r = u % bound) + m < 0;
-                     u = next(31))
-                    ;
+                for (int32_t u = r;; u = next(31)) {
+                    r = u % bound;
+                    // java.util.Random performs this expression with signed
+                    // 32-bit wraparound. Avoid C++ signed-overflow UB while
+                    // retaining the rejection condition exactly.
+                    const auto wrapped = static_cast<std::int32_t>(
+                        static_cast<std::uint32_t>(u) -
+                        static_cast<std::uint32_t>(r) +
+                        static_cast<std::uint32_t>(m));
+                    if (wrapped >= 0) break;
+                }
             }
             return r;
         }
@@ -95,6 +107,9 @@ namespace sts {
 
         // n must be greater than 0
         std::uint64_t nextLong(std::uint64_t n) {
+            if (n == 0) {
+                throw std::invalid_argument("n must be positive");
+            }
             std::uint64_t bits;
             std::uint64_t value;
             do {

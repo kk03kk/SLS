@@ -21,6 +21,15 @@ SOURCES = {
     "events": ("Events.h", "Event"),
 }
 
+GAME_ID_ARRAYS = {
+    "cards": ("Cards.h", "cardStringIds"),
+    "relics": ("Relics.h", "relicIds"),
+    "potions": ("Potions.h", "potionIds"),
+    "monsters": ("MonsterIds.h", "monsterIdStrings"),
+    "encounters": ("MonsterEncounters.h", "monsterEncounterStrings"),
+    "events": ("Events.h", "eventIdStrings"),
+}
+
 
 def enum_items(path: Path, enum_name: str) -> list[dict[str, int | str]]:
     source = path.read_text(encoding="utf-8")
@@ -48,6 +57,21 @@ def enum_items(path: Path, enum_name: str) -> list[dict[str, int | str]]:
     return result
 
 
+def string_array(path: Path, array_name: str) -> list[str]:
+    source = path.read_text(encoding="utf-8")
+    match = re.search(
+        rf"\b{re.escape(array_name)}\s*\[\s*\]\s*(?:=\s*)?\{{(.*?)\}};",
+        source,
+        re.DOTALL,
+    )
+    if match is None:
+        raise RuntimeError(f"cannot find string array {array_name} in {path}")
+    return [
+        bytes(value, "utf-8").decode("unicode_escape")
+        for value in re.findall(r'"((?:\\.|[^"\\])*)"', match.group(1))
+    ]
+
+
 def main() -> int:
     categories = {}
     hashes = {}
@@ -55,6 +79,16 @@ def main() -> int:
         path = HEADERS / filename
         categories[category] = enum_items(path, enum_name)
         hashes[filename] = hashlib.sha256(path.read_bytes()).hexdigest()
+    for category, (filename, array_name) in GAME_ID_ARRAYS.items():
+        path = HEADERS / filename
+        values = string_array(path, array_name)
+        for item in categories[category]:
+            ordinal = int(item["ordinal"])
+            if ordinal >= len(values):
+                raise RuntimeError(
+                    f"{array_name} has no entry for {category} ordinal {ordinal}"
+                )
+            item["game_id"] = values[ordinal]
     payload = {
         "schema_version": 1,
         "source": {

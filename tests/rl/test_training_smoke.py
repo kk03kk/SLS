@@ -30,6 +30,15 @@ def test_one_native_ppo_update_and_exact_resume(tmp_path: Path) -> None:
         assert all(torch.isfinite(torch.tensor(value)) for value in metrics.values())
         path = save_checkpoint(tmp_path / "checkpoint.pt", trainer)
         expected_seed = trainer.next_seed
+        expected_metrics = trainer.train_update()
+        expected_model = {
+            key: value.detach().clone()
+            for key, value in trainer.model.state_dict().items()
+        }
         load_checkpoint(path, trainer)
         assert trainer.update == 1
         assert trainer.next_seed == expected_seed
+        actual_metrics = trainer.train_update()
+        assert actual_metrics == pytest.approx(expected_metrics, rel=0.0, abs=0.0)
+        for key, value in trainer.model.state_dict().items():
+            assert torch.equal(value, expected_model[key]), key

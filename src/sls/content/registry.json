@@ -2,1482 +2,1852 @@
   "categories": {
     "cards": [
       {
+        "game_id": "Accuracy",
         "id": "ACCURACY",
         "ordinal": 1
       },
       {
+        "game_id": "Acrobatics",
         "id": "ACROBATICS",
         "ordinal": 2
       },
       {
+        "game_id": "Adrenaline",
         "id": "ADRENALINE",
         "ordinal": 3
       },
       {
+        "game_id": "After Image",
         "id": "AFTER_IMAGE",
         "ordinal": 4
       },
       {
+        "game_id": "Aggregate",
         "id": "AGGREGATE",
         "ordinal": 5
       },
       {
+        "game_id": "Venomology",
         "id": "ALCHEMIZE",
         "ordinal": 6
       },
       {
+        "game_id": "All For One",
         "id": "ALL_FOR_ONE",
         "ordinal": 7
       },
       {
+        "game_id": "All Out Attack",
         "id": "ALL_OUT_ATTACK",
         "ordinal": 8
       },
       {
+        "game_id": "Alpha",
         "id": "ALPHA",
         "ordinal": 9
       },
       {
+        "game_id": "Amplify",
         "id": "AMPLIFY",
         "ordinal": 10
       },
       {
+        "game_id": "Anger",
         "id": "ANGER",
         "ordinal": 11
       },
       {
+        "game_id": "Apotheosis",
         "id": "APOTHEOSIS",
         "ordinal": 12
       },
       {
+        "game_id": "Ghostly",
         "id": "APPARITION",
         "ordinal": 13
       },
       {
+        "game_id": "Armaments",
         "id": "ARMAMENTS",
         "ordinal": 14
       },
       {
+        "game_id": "AscendersBane",
         "id": "ASCENDERS_BANE",
         "ordinal": 15
       },
       {
+        "game_id": "Auto Shields",
         "id": "AUTO_SHIELDS",
         "ordinal": 16
       },
       {
+        "game_id": "A Thousand Cuts",
         "id": "A_THOUSAND_CUTS",
         "ordinal": 17
       },
       {
+        "game_id": "Backflip",
         "id": "BACKFLIP",
         "ordinal": 18
       },
       {
+        "game_id": "Backstab",
         "id": "BACKSTAB",
         "ordinal": 19
       },
       {
+        "game_id": "Ball Lightning",
         "id": "BALL_LIGHTNING",
         "ordinal": 20
       },
       {
+        "game_id": "Bandage Up",
         "id": "BANDAGE_UP",
         "ordinal": 21
       },
       {
+        "game_id": "Bane",
         "id": "BANE",
         "ordinal": 22
       },
       {
+        "game_id": "Barrage",
         "id": "BARRAGE",
         "ordinal": 23
       },
       {
+        "game_id": "Barricade",
         "id": "BARRICADE",
         "ordinal": 24
       },
       {
+        "game_id": "Bash",
         "id": "BASH",
         "ordinal": 25
       },
       {
+        "game_id": "BattleHymn",
         "id": "BATTLE_HYMN",
         "ordinal": 26
       },
       {
+        "game_id": "Battle Trance",
         "id": "BATTLE_TRANCE",
         "ordinal": 27
       },
       {
+        "game_id": "Beam Cell",
         "id": "BEAM_CELL",
         "ordinal": 28
       },
       {
+        "game_id": "BecomeAlmighty",
         "id": "BECOME_ALMIGHTY",
         "ordinal": 29
       },
       {
+        "game_id": "Berserk",
         "id": "BERSERK",
         "ordinal": 30
       },
       {
+        "game_id": "Beta",
         "id": "BETA",
         "ordinal": 31
       },
       {
+        "game_id": "Biased Cognition",
         "id": "BIASED_COGNITION",
         "ordinal": 32
       },
       {
+        "game_id": "Bite",
         "id": "BITE",
         "ordinal": 33
       },
       {
+        "game_id": "Blade Dance",
         "id": "BLADE_DANCE",
         "ordinal": 34
       },
       {
+        "game_id": "Blasphemy",
         "id": "BLASPHEMY",
         "ordinal": 35
       },
       {
+        "game_id": "Blind",
         "id": "BLIND",
         "ordinal": 36
       },
       {
+        "game_id": "Blizzard",
         "id": "BLIZZARD",
         "ordinal": 37
       },
       {
+        "game_id": "Bloodletting",
         "id": "BLOODLETTING",
         "ordinal": 38
       },
       {
+        "game_id": "Blood for Blood",
         "id": "BLOOD_FOR_BLOOD",
         "ordinal": 39
       },
       {
+        "game_id": "Bludgeon",
         "id": "BLUDGEON",
         "ordinal": 40
       },
       {
+        "game_id": "Blur",
         "id": "BLUR",
         "ordinal": 41
       },
       {
+        "game_id": "Body Slam",
         "id": "BODY_SLAM",
         "ordinal": 42
       },
       {
+        "game_id": "BootSequence",
         "id": "BOOT_SEQUENCE",
         "ordinal": 43
       },
       {
+        "game_id": "Bouncing Flask",
         "id": "BOUNCING_FLASK",
         "ordinal": 44
       },
       {
+        "game_id": "BowlingBash",
         "id": "BOWLING_BASH",
         "ordinal": 45
       },
       {
+        "game_id": "Brilliance",
         "id": "BRILLIANCE",
         "ordinal": 46
       },
       {
+        "game_id": "Brutality",
         "id": "BRUTALITY",
         "ordinal": 47
       },
       {
+        "game_id": "Buffer",
         "id": "BUFFER",
         "ordinal": 48
       },
       {
+        "game_id": "Bullet Time",
         "id": "BULLET_TIME",
         "ordinal": 49
       },
       {
+        "game_id": "Lockon",
         "id": "BULLSEYE",
         "ordinal": 50
       },
       {
+        "game_id": "Burn",
         "id": "BURN",
         "ordinal": 51
       },
       {
+        "game_id": "Burning Pact",
         "id": "BURNING_PACT",
         "ordinal": 52
       },
       {
+        "game_id": "Burst",
         "id": "BURST",
         "ordinal": 53
       },
       {
+        "game_id": "Calculated Gamble",
         "id": "CALCULATED_GAMBLE",
         "ordinal": 54
       },
       {
+        "game_id": "Caltrops",
         "id": "CALTROPS",
         "ordinal": 55
       },
       {
+        "game_id": "Capacitor",
         "id": "CAPACITOR",
         "ordinal": 56
       },
       {
+        "game_id": "Carnage",
         "id": "CARNAGE",
         "ordinal": 57
       },
       {
+        "game_id": "CarveReality",
         "id": "CARVE_REALITY",
         "ordinal": 58
       },
       {
+        "game_id": "Catalyst",
         "id": "CATALYST",
         "ordinal": 59
       },
       {
+        "game_id": "Chaos",
         "id": "CHAOS",
         "ordinal": 60
       },
       {
+        "game_id": "Conserve Battery",
         "id": "CHARGE_BATTERY",
         "ordinal": 61
       },
       {
+        "game_id": "Chill",
         "id": "CHILL",
         "ordinal": 62
       },
       {
+        "game_id": "Choke",
         "id": "CHOKE",
         "ordinal": 63
       },
       {
+        "game_id": "Chrysalis",
         "id": "CHRYSALIS",
         "ordinal": 64
       },
       {
+        "game_id": "Clash",
         "id": "CLASH",
         "ordinal": 65
       },
       {
+        "game_id": "Gash",
         "id": "CLAW",
         "ordinal": 66
       },
       {
+        "game_id": "Cleave",
         "id": "CLEAVE",
         "ordinal": 67
       },
       {
+        "game_id": "Cloak And Dagger",
         "id": "CLOAK_AND_DAGGER",
         "ordinal": 68
       },
       {
+        "game_id": "Clothesline",
         "id": "CLOTHESLINE",
         "ordinal": 69
       },
       {
+        "game_id": "Clumsy",
         "id": "CLUMSY",
         "ordinal": 70
       },
       {
+        "game_id": "Cold Snap",
         "id": "COLD_SNAP",
         "ordinal": 71
       },
       {
+        "game_id": "Collect",
         "id": "COLLECT",
         "ordinal": 72
       },
       {
+        "game_id": "Combust",
         "id": "COMBUST",
         "ordinal": 73
       },
       {
+        "game_id": "Compile Driver",
         "id": "COMPILE_DRIVER",
         "ordinal": 74
       },
       {
+        "game_id": "Concentrate",
         "id": "CONCENTRATE",
         "ordinal": 75
       },
       {
+        "game_id": "Conclude",
         "id": "CONCLUDE",
         "ordinal": 76
       },
       {
+        "game_id": "ConjureBlade",
         "id": "CONJURE_BLADE",
         "ordinal": 77
       },
       {
+        "game_id": "Consecrate",
         "id": "CONSECRATE",
         "ordinal": 78
       },
       {
+        "game_id": "Consume",
         "id": "CONSUME",
         "ordinal": 79
       },
       {
+        "game_id": "Coolheaded",
         "id": "COOLHEADED",
         "ordinal": 80
       },
       {
+        "game_id": "Core Surge",
         "id": "CORE_SURGE",
         "ordinal": 81
       },
       {
+        "game_id": "Corpse Explosion",
         "id": "CORPSE_EXPLOSION",
         "ordinal": 82
       },
       {
+        "game_id": "Corruption",
         "id": "CORRUPTION",
         "ordinal": 83
       },
       {
+        "game_id": "Creative AI",
         "id": "CREATIVE_AI",
         "ordinal": 84
       },
       {
+        "game_id": "Crescendo",
         "id": "CRESCENDO",
         "ordinal": 85
       },
       {
+        "game_id": "Crippling Poison",
         "id": "CRIPPLING_CLOUD",
         "ordinal": 86
       },
       {
+        "game_id": "CrushJoints",
         "id": "CRUSH_JOINTS",
         "ordinal": 87
       },
       {
+        "game_id": "CurseOfTheBell",
         "id": "CURSE_OF_THE_BELL",
         "ordinal": 88
       },
       {
+        "game_id": "CutThroughFate",
         "id": "CUT_THROUGH_FATE",
         "ordinal": 89
       },
       {
+        "game_id": "Dagger Spray",
         "id": "DAGGER_SPRAY",
         "ordinal": 90
       },
       {
+        "game_id": "Dagger Throw",
         "id": "DAGGER_THROW",
         "ordinal": 91
       },
       {
+        "game_id": "Darkness",
         "id": "DARKNESS",
         "ordinal": 92
       },
       {
+        "game_id": "Dark Embrace",
         "id": "DARK_EMBRACE",
         "ordinal": 93
       },
       {
+        "game_id": "Dark Shackles",
         "id": "DARK_SHACKLES",
         "ordinal": 94
       },
       {
+        "game_id": "Dash",
         "id": "DASH",
         "ordinal": 95
       },
       {
+        "game_id": "Dazed",
         "id": "DAZED",
         "ordinal": 96
       },
       {
+        "game_id": "Deadly Poison",
         "id": "DEADLY_POISON",
         "ordinal": 97
       },
       {
+        "game_id": "Decay",
         "id": "DECAY",
         "ordinal": 98
       },
       {
+        "game_id": "DeceiveReality",
         "id": "DECEIVE_REALITY",
         "ordinal": 99
       },
       {
+        "game_id": "Deep Breath",
         "id": "DEEP_BREATH",
         "ordinal": 100
       },
       {
+        "game_id": "Defend_B",
         "id": "DEFEND_BLUE",
         "ordinal": 101
       },
       {
+        "game_id": "Defend_G",
         "id": "DEFEND_GREEN",
         "ordinal": 102
       },
       {
+        "game_id": "Defend_P",
         "id": "DEFEND_PURPLE",
         "ordinal": 103
       },
       {
+        "game_id": "Defend_R",
         "id": "DEFEND_RED",
         "ordinal": 104
       },
       {
+        "game_id": "Deflect",
         "id": "DEFLECT",
         "ordinal": 105
       },
       {
+        "game_id": "Defragment",
         "id": "DEFRAGMENT",
         "ordinal": 106
       },
       {
+        "game_id": "Demon Form",
         "id": "DEMON_FORM",
         "ordinal": 107
       },
       {
+        "game_id": "DeusExMachina",
         "id": "DEUS_EX_MACHINA",
         "ordinal": 108
       },
       {
+        "game_id": "DevaForm",
         "id": "DEVA_FORM",
         "ordinal": 109
       },
       {
+        "game_id": "Devotion",
         "id": "DEVOTION",
         "ordinal": 110
       },
       {
+        "game_id": "Die Die Die",
         "id": "DIE_DIE_DIE",
         "ordinal": 111
       },
       {
+        "game_id": "Disarm",
         "id": "DISARM",
         "ordinal": 112
       },
       {
+        "game_id": "Discovery",
         "id": "DISCOVERY",
         "ordinal": 113
       },
       {
+        "game_id": "Distraction",
         "id": "DISTRACTION",
         "ordinal": 114
       },
       {
+        "game_id": "Dodge and Roll",
         "id": "DODGE_AND_ROLL",
         "ordinal": 115
       },
       {
+        "game_id": "Doom and Gloom",
         "id": "DOOM_AND_GLOOM",
         "ordinal": 116
       },
       {
+        "game_id": "Doppelganger",
         "id": "DOPPELGANGER",
         "ordinal": 117
       },
       {
+        "game_id": "Double Energy",
         "id": "DOUBLE_ENERGY",
         "ordinal": 118
       },
       {
+        "game_id": "Double Tap",
         "id": "DOUBLE_TAP",
         "ordinal": 119
       },
       {
+        "game_id": "Doubt",
         "id": "DOUBT",
         "ordinal": 120
       },
       {
+        "game_id": "Dramatic Entrance",
         "id": "DRAMATIC_ENTRANCE",
         "ordinal": 121
       },
       {
+        "game_id": "Dropkick",
         "id": "DROPKICK",
         "ordinal": 122
       },
       {
+        "game_id": "Dualcast",
         "id": "DUALCAST",
         "ordinal": 123
       },
       {
+        "game_id": "Dual Wield",
         "id": "DUAL_WIELD",
         "ordinal": 124
       },
       {
+        "game_id": "Echo Form",
         "id": "ECHO_FORM",
         "ordinal": 125
       },
       {
+        "game_id": "Electrodynamics",
         "id": "ELECTRODYNAMICS",
         "ordinal": 126
       },
       {
+        "game_id": "EmptyBody",
         "id": "EMPTY_BODY",
         "ordinal": 127
       },
       {
+        "game_id": "EmptyFist",
         "id": "EMPTY_FIST",
         "ordinal": 128
       },
       {
+        "game_id": "EmptyMind",
         "id": "EMPTY_MIND",
         "ordinal": 129
       },
       {
+        "game_id": "Endless Agony",
         "id": "ENDLESS_AGONY",
         "ordinal": 130
       },
       {
+        "game_id": "Enlightenment",
         "id": "ENLIGHTENMENT",
         "ordinal": 131
       },
       {
+        "game_id": "Entrench",
         "id": "ENTRENCH",
         "ordinal": 132
       },
       {
+        "game_id": "Envenom",
         "id": "ENVENOM",
         "ordinal": 133
       },
       {
+        "game_id": "Undo",
         "id": "EQUILIBRIUM",
         "ordinal": 134
       },
       {
+        "game_id": "Eruption",
         "id": "ERUPTION",
         "ordinal": 135
       },
       {
+        "game_id": "Escape Plan",
         "id": "ESCAPE_PLAN",
         "ordinal": 136
       },
       {
+        "game_id": "Establishment",
         "id": "ESTABLISHMENT",
         "ordinal": 137
       },
       {
+        "game_id": "Evaluate",
         "id": "EVALUATE",
         "ordinal": 138
       },
       {
+        "game_id": "Eviscerate",
         "id": "EVISCERATE",
         "ordinal": 139
       },
       {
+        "game_id": "Evolve",
         "id": "EVOLVE",
         "ordinal": 140
       },
       {
+        "game_id": "Exhume",
         "id": "EXHUME",
         "ordinal": 141
       },
       {
+        "game_id": "Expertise",
         "id": "EXPERTISE",
         "ordinal": 142
       },
       {
+        "game_id": "Expunger",
         "id": "EXPUNGER",
         "ordinal": 143
       },
       {
+        "game_id": "FameAndFortune",
         "id": "FAME_AND_FORTUNE",
         "ordinal": 144
       },
       {
+        "game_id": "Fasting2",
         "id": "FASTING",
         "ordinal": 145
       },
       {
+        "game_id": "FearNoEvil",
         "id": "FEAR_NO_EVIL",
         "ordinal": 146
       },
       {
+        "game_id": "Feed",
         "id": "FEED",
         "ordinal": 147
       },
       {
+        "game_id": "Feel No Pain",
         "id": "FEEL_NO_PAIN",
         "ordinal": 148
       },
       {
+        "game_id": "Fiend Fire",
         "id": "FIEND_FIRE",
         "ordinal": 149
       },
       {
+        "game_id": "Finesse",
         "id": "FINESSE",
         "ordinal": 150
       },
       {
+        "game_id": "Finisher",
         "id": "FINISHER",
         "ordinal": 151
       },
       {
+        "game_id": "Fire Breathing",
         "id": "FIRE_BREATHING",
         "ordinal": 152
       },
       {
+        "game_id": "Fission",
         "id": "FISSION",
         "ordinal": 153
       },
       {
+        "game_id": "Flame Barrier",
         "id": "FLAME_BARRIER",
         "ordinal": 154
       },
       {
+        "game_id": "Flash of Steel",
         "id": "FLASH_OF_STEEL",
         "ordinal": 155
       },
       {
+        "game_id": "Flechettes",
         "id": "FLECHETTES",
         "ordinal": 156
       },
       {
+        "game_id": "Flex",
         "id": "FLEX",
         "ordinal": 157
       },
       {
+        "game_id": "FlurryOfBlows",
         "id": "FLURRY_OF_BLOWS",
         "ordinal": 158
       },
       {
+        "game_id": "Flying Knee",
         "id": "FLYING_KNEE",
         "ordinal": 159
       },
       {
+        "game_id": "FlyingSleeves",
         "id": "FLYING_SLEEVES",
         "ordinal": 160
       },
       {
+        "game_id": "FollowUp",
         "id": "FOLLOW_UP",
         "ordinal": 161
       },
       {
+        "game_id": "Footwork",
         "id": "FOOTWORK",
         "ordinal": 162
       },
       {
+        "game_id": "Force Field",
         "id": "FORCE_FIELD",
         "ordinal": 163
       },
       {
+        "game_id": "ForeignInfluence",
         "id": "FOREIGN_INFLUENCE",
         "ordinal": 164
       },
       {
+        "game_id": "Wireheading",
         "id": "FORESIGHT",
         "ordinal": 165
       },
       {
+        "game_id": "Forethought",
         "id": "FORETHOUGHT",
         "ordinal": 166
       },
       {
+        "game_id": "FTL",
         "id": "FTL",
         "ordinal": 167
       },
       {
+        "game_id": "Fusion",
         "id": "FUSION",
         "ordinal": 168
       },
       {
+        "game_id": "Genetic Algorithm",
         "id": "GENETIC_ALGORITHM",
         "ordinal": 169
       },
       {
+        "game_id": "Ghostly Armor",
         "id": "GHOSTLY_ARMOR",
         "ordinal": 170
       },
       {
+        "game_id": "Glacier",
         "id": "GLACIER",
         "ordinal": 171
       },
       {
+        "game_id": "Glass Knife",
         "id": "GLASS_KNIFE",
         "ordinal": 172
       },
       {
+        "game_id": "Good Instincts",
         "id": "GOOD_INSTINCTS",
         "ordinal": 173
       },
       {
+        "game_id": "Go for the Eyes",
         "id": "GO_FOR_THE_EYES",
         "ordinal": 174
       },
       {
+        "game_id": "Grand Finale",
         "id": "GRAND_FINALE",
         "ordinal": 175
       },
       {
+        "game_id": "Halt",
         "id": "HALT",
         "ordinal": 176
       },
       {
+        "game_id": "HandOfGreed",
         "id": "HAND_OF_GREED",
         "ordinal": 177
       },
       {
+        "game_id": "Havoc",
         "id": "HAVOC",
         "ordinal": 178
       },
       {
+        "game_id": "Headbutt",
         "id": "HEADBUTT",
         "ordinal": 179
       },
       {
+        "game_id": "Heatsinks",
         "id": "HEATSINKS",
         "ordinal": 180
       },
       {
+        "game_id": "Heavy Blade",
         "id": "HEAVY_BLADE",
         "ordinal": 181
       },
       {
+        "game_id": "Heel Hook",
         "id": "HEEL_HOOK",
         "ordinal": 182
       },
       {
+        "game_id": "Hello World",
         "id": "HELLO_WORLD",
         "ordinal": 183
       },
       {
+        "game_id": "Hemokinesis",
         "id": "HEMOKINESIS",
         "ordinal": 184
       },
       {
+        "game_id": "Hologram",
         "id": "HOLOGRAM",
         "ordinal": 185
       },
       {
+        "game_id": "Hyperbeam",
         "id": "HYPERBEAM",
         "ordinal": 186
       },
       {
+        "game_id": "Immolate",
         "id": "IMMOLATE",
         "ordinal": 187
       },
       {
+        "game_id": "Impatience",
         "id": "IMPATIENCE",
         "ordinal": 188
       },
       {
+        "game_id": "Impervious",
         "id": "IMPERVIOUS",
         "ordinal": 189
       },
       {
+        "game_id": "Indignation",
         "id": "INDIGNATION",
         "ordinal": 190
       },
       {
+        "game_id": "Infernal Blade",
         "id": "INFERNAL_BLADE",
         "ordinal": 191
       },
       {
+        "game_id": "Infinite Blades",
         "id": "INFINITE_BLADES",
         "ordinal": 192
       },
       {
+        "game_id": "Inflame",
         "id": "INFLAME",
         "ordinal": 193
       },
       {
+        "game_id": "Injury",
         "id": "INJURY",
         "ordinal": 194
       },
       {
+        "game_id": "InnerPeace",
         "id": "INNER_PEACE",
         "ordinal": 195
       },
       {
+        "game_id": "Insight",
         "id": "INSIGHT",
         "ordinal": 196
       },
       {
+        "game_id": "Intimidate",
         "id": "INTIMIDATE",
         "ordinal": 197
       },
       {
+        "game_id": "Iron Wave",
         "id": "IRON_WAVE",
         "ordinal": 198
       },
       {
+        "game_id": "J.A.X.",
         "id": "JAX",
         "ordinal": 199
       },
       {
+        "game_id": "Jack Of All Trades",
         "id": "JACK_OF_ALL_TRADES",
         "ordinal": 200
       },
       {
+        "game_id": "Judgement",
         "id": "JUDGMENT",
         "ordinal": 201
       },
       {
+        "game_id": "Juggernaut",
         "id": "JUGGERNAUT",
         "ordinal": 202
       },
       {
+        "game_id": "JustLucky",
         "id": "JUST_LUCKY",
         "ordinal": 203
       },
       {
+        "game_id": "Leap",
         "id": "LEAP",
         "ordinal": 204
       },
       {
+        "game_id": "Leg Sweep",
         "id": "LEG_SWEEP",
         "ordinal": 205
       },
       {
+        "game_id": "LessonLearned",
         "id": "LESSON_LEARNED",
         "ordinal": 206
       },
       {
+        "game_id": "LikeWater",
         "id": "LIKE_WATER",
         "ordinal": 207
       },
       {
+        "game_id": "Limit Break",
         "id": "LIMIT_BREAK",
         "ordinal": 208
       },
       {
+        "game_id": "LiveForever",
         "id": "LIVE_FOREVER",
         "ordinal": 209
       },
       {
+        "game_id": "Loop",
         "id": "LOOP",
         "ordinal": 210
       },
       {
+        "game_id": "Machine Learning",
         "id": "MACHINE_LEARNING",
         "ordinal": 211
       },
       {
+        "game_id": "Madness",
         "id": "MADNESS",
         "ordinal": 212
       },
       {
+        "game_id": "Magnetism",
         "id": "MAGNETISM",
         "ordinal": 213
       },
       {
+        "game_id": "Malaise",
         "id": "MALAISE",
         "ordinal": 214
       },
       {
+        "game_id": "Masterful Stab",
         "id": "MASTERFUL_STAB",
         "ordinal": 215
       },
       {
+        "game_id": "Master of Strategy",
         "id": "MASTER_OF_STRATEGY",
         "ordinal": 216
       },
       {
+        "game_id": "MasterReality",
         "id": "MASTER_REALITY",
         "ordinal": 217
       },
       {
+        "game_id": "Mayhem",
         "id": "MAYHEM",
         "ordinal": 218
       },
       {
+        "game_id": "Meditate",
         "id": "MEDITATE",
         "ordinal": 219
       },
       {
+        "game_id": "Melter",
         "id": "MELTER",
         "ordinal": 220
       },
       {
+        "game_id": "MentalFortress",
         "id": "MENTAL_FORTRESS",
         "ordinal": 221
       },
       {
+        "game_id": "Metallicize",
         "id": "METALLICIZE",
         "ordinal": 222
       },
       {
+        "game_id": "Metamorphosis",
         "id": "METAMORPHOSIS",
         "ordinal": 223
       },
       {
+        "game_id": "Meteor Strike",
         "id": "METEOR_STRIKE",
         "ordinal": 224
       },
       {
+        "game_id": "Mind Blast",
         "id": "MIND_BLAST",
         "ordinal": 225
       },
       {
+        "game_id": "Miracle",
         "id": "MIRACLE",
         "ordinal": 226
       },
       {
+        "game_id": "Multi-Cast",
         "id": "MULTI_CAST",
         "ordinal": 227
       },
       {
+        "game_id": "Necronomicurse",
         "id": "NECRONOMICURSE",
         "ordinal": 228
       },
       {
+        "game_id": "Neutralize",
         "id": "NEUTRALIZE",
         "ordinal": 229
       },
       {
+        "game_id": "Night Terror",
         "id": "NIGHTMARE",
         "ordinal": 230
       },
       {
+        "game_id": "Nirvana",
         "id": "NIRVANA",
         "ordinal": 231
       },
       {
+        "game_id": "Normality",
         "id": "NORMALITY",
         "ordinal": 232
       },
       {
+        "game_id": "Noxious Fumes",
         "id": "NOXIOUS_FUMES",
         "ordinal": 233
       },
       {
+        "game_id": "Offering",
         "id": "OFFERING",
         "ordinal": 234
       },
       {
+        "game_id": "Omega",
         "id": "OMEGA",
         "ordinal": 235
       },
       {
+        "game_id": "Omniscience",
         "id": "OMNISCIENCE",
         "ordinal": 236
       },
       {
+        "game_id": "Outmaneuver",
         "id": "OUTMANEUVER",
         "ordinal": 237
       },
       {
+        "game_id": "Steam Power",
         "id": "OVERCLOCK",
         "ordinal": 238
       },
       {
+        "game_id": "Pain",
         "id": "PAIN",
         "ordinal": 239
       },
       {
+        "game_id": "Panacea",
         "id": "PANACEA",
         "ordinal": 240
       },
       {
+        "game_id": "Panache",
         "id": "PANACHE",
         "ordinal": 241
       },
       {
+        "game_id": "PanicButton",
         "id": "PANIC_BUTTON",
         "ordinal": 242
       },
       {
+        "game_id": "Parasite",
         "id": "PARASITE",
         "ordinal": 243
       },
       {
+        "game_id": "Perfected Strike",
         "id": "PERFECTED_STRIKE",
         "ordinal": 244
       },
       {
+        "game_id": "Perseverance",
         "id": "PERSEVERANCE",
         "ordinal": 245
       },
       {
+        "game_id": "Phantasmal Killer",
         "id": "PHANTASMAL_KILLER",
         "ordinal": 246
       },
       {
+        "game_id": "PiercingWail",
         "id": "PIERCING_WAIL",
         "ordinal": 247
       },
       {
+        "game_id": "Poisoned Stab",
         "id": "POISONED_STAB",
         "ordinal": 248
       },
       {
+        "game_id": "Pommel Strike",
         "id": "POMMEL_STRIKE",
         "ordinal": 249
       },
       {
+        "game_id": "Power Through",
         "id": "POWER_THROUGH",
         "ordinal": 250
       },
       {
+        "game_id": "Pray",
         "id": "PRAY",
         "ordinal": 251
       },
       {
+        "game_id": "Predator",
         "id": "PREDATOR",
         "ordinal": 252
       },
       {
+        "game_id": "Prepared",
         "id": "PREPARED",
         "ordinal": 253
       },
       {
+        "game_id": "PathToVictory",
         "id": "PRESSURE_POINTS",
         "ordinal": 254
       },
       {
+        "game_id": "Pride",
         "id": "PRIDE",
         "ordinal": 255
       },
       {
+        "game_id": "Prostrate",
         "id": "PROSTRATE",
         "ordinal": 256
       },
       {
+        "game_id": "Protect",
         "id": "PROTECT",
         "ordinal": 257
       },
       {
+        "game_id": "Pummel",
         "id": "PUMMEL",
         "ordinal": 258
       },
       {
+        "game_id": "Purity",
         "id": "PURITY",
         "ordinal": 259
       },
       {
+        "game_id": "Quick Slash",
         "id": "QUICK_SLASH",
         "ordinal": 260
       },
       {
+        "game_id": "Rage",
         "id": "RAGE",
         "ordinal": 261
       },
       {
+        "game_id": "Ragnarok",
         "id": "RAGNAROK",
         "ordinal": 262
       },
       {
+        "game_id": "Rainbow",
         "id": "RAINBOW",
         "ordinal": 263
       },
       {
+        "game_id": "Rampage",
         "id": "RAMPAGE",
         "ordinal": 264
       },
       {
+        "game_id": "ReachHeaven",
         "id": "REACH_HEAVEN",
         "ordinal": 265
       },
       {
+        "game_id": "Reaper",
         "id": "REAPER",
         "ordinal": 266
       },
       {
+        "game_id": "Reboot",
         "id": "REBOOT",
         "ordinal": 267
       },
       {
+        "game_id": "Rebound",
         "id": "REBOUND",
         "ordinal": 268
       },
       {
+        "game_id": "Reckless Charge",
         "id": "RECKLESS_CHARGE",
         "ordinal": 269
       },
       {
+        "game_id": "Redo",
         "id": "RECURSION",
         "ordinal": 270
       },
       {
+        "game_id": "Recycle",
         "id": "RECYCLE",
         "ordinal": 271
       },
       {
+        "game_id": "Reflex",
         "id": "REFLEX",
         "ordinal": 272
       },
       {
+        "game_id": "Regret",
         "id": "REGRET",
         "ordinal": 273
       },
       {
+        "game_id": "Reinforced Body",
         "id": "REINFORCED_BODY",
         "ordinal": 274
       },
       {
+        "game_id": "Reprogram",
         "id": "REPROGRAM",
         "ordinal": 275
       },
       {
+        "game_id": "Riddle With Holes",
         "id": "RIDDLE_WITH_HOLES",
         "ordinal": 276
       },
       {
+        "game_id": "Rip and Tear",
         "id": "RIP_AND_TEAR",
         "ordinal": 277
       },
       {
+        "game_id": "RitualDagger",
         "id": "RITUAL_DAGGER",
         "ordinal": 278
       },
       {
+        "game_id": "Rupture",
         "id": "RUPTURE",
         "ordinal": 279
       },
       {
+        "game_id": "Adaptation",
         "id": "RUSHDOWN",
         "ordinal": 280
       },
       {
+        "game_id": "Sadistic Nature",
         "id": "SADISTIC_NATURE",
         "ordinal": 281
       },
       {
+        "game_id": "Safety",
         "id": "SAFETY",
         "ordinal": 282
       },
       {
+        "game_id": "Sanctity",
         "id": "SANCTITY",
         "ordinal": 283
       },
       {
+        "game_id": "SandsOfTime",
         "id": "SANDS_OF_TIME",
         "ordinal": 284
       },
       {
+        "game_id": "SashWhip",
         "id": "SASH_WHIP",
         "ordinal": 285
       },
       {
+        "game_id": "Scrape",
         "id": "SCRAPE",
         "ordinal": 286
       },
       {
+        "game_id": "Scrawl",
         "id": "SCRAWL",
         "ordinal": 287
       },
       {
+        "game_id": "Searing Blow",
         "id": "SEARING_BLOW",
         "ordinal": 288
       },
       {
+        "game_id": "Second Wind",
         "id": "SECOND_WIND",
         "ordinal": 289
       },
       {
+        "game_id": "Secret Technique",
         "id": "SECRET_TECHNIQUE",
         "ordinal": 290
       },
       {
+        "game_id": "Secret Weapon",
         "id": "SECRET_WEAPON",
         "ordinal": 291
       },
       {
+        "game_id": "Seeing Red",
         "id": "SEEING_RED",
         "ordinal": 292
       },
       {
+        "game_id": "Seek",
         "id": "SEEK",
         "ordinal": 293
       },
       {
+        "game_id": "Self Repair",
         "id": "SELF_REPAIR",
         "ordinal": 294
       },
       {
+        "game_id": "Sentinel",
         "id": "SENTINEL",
         "ordinal": 295
       },
       {
+        "game_id": "Setup",
         "id": "SETUP",
         "ordinal": 296
       },
       {
+        "game_id": "Sever Soul",
         "id": "SEVER_SOUL",
         "ordinal": 297
       },
       {
+        "game_id": "Shame",
         "id": "SHAME",
         "ordinal": 298
       },
       {
+        "game_id": "Shiv",
         "id": "SHIV",
         "ordinal": 299
       },
       {
+        "game_id": "Shockwave",
         "id": "SHOCKWAVE",
         "ordinal": 300
       },
       {
+        "game_id": "Shrug It Off",
         "id": "SHRUG_IT_OFF",
         "ordinal": 301
       },
       {
+        "game_id": "SignatureMove",
         "id": "SIGNATURE_MOVE",
         "ordinal": 302
       },
       {
+        "game_id": "Vengeance",
         "id": "SIMMERING_FURY",
         "ordinal": 303
       },
       {
+        "game_id": "Skewer",
         "id": "SKEWER",
         "ordinal": 304
       },
       {
+        "game_id": "Skim",
         "id": "SKIM",
         "ordinal": 305
       },
       {
+        "game_id": "Slice",
         "id": "SLICE",
         "ordinal": 306
       },
       {
+        "game_id": "Slimed",
         "id": "SLIMED",
         "ordinal": 307
       },
       {
+        "game_id": "Smite",
         "id": "SMITE",
         "ordinal": 308
       },
       {
+        "game_id": "Underhanded Strike",
         "id": "SNEAKY_STRIKE",
         "ordinal": 309
       },
       {
+        "game_id": "SpiritShield",
         "id": "SPIRIT_SHIELD",
         "ordinal": 310
       },
       {
+        "game_id": "Spot Weakness",
         "id": "SPOT_WEAKNESS",
         "ordinal": 311
       },
       {
+        "game_id": "Stack",
         "id": "STACK",
         "ordinal": 312
       },
       {
+        "game_id": "Static Discharge",
         "id": "STATIC_DISCHARGE",
         "ordinal": 313
       },
       {
+        "game_id": "Steam",
         "id": "STEAM_BARRIER",
         "ordinal": 314
       },
       {
+        "game_id": "Storm",
         "id": "STORM",
         "ordinal": 315
       },
       {
+        "game_id": "Storm of Steel",
         "id": "STORM_OF_STEEL",
         "ordinal": 316
       },
       {
+        "game_id": "Streamline",
         "id": "STREAMLINE",
         "ordinal": 317
       },
       {
+        "game_id": "Strike_B",
         "id": "STRIKE_BLUE",
         "ordinal": 318
       },
       {
+        "game_id": "Strike_G",
         "id": "STRIKE_GREEN",
         "ordinal": 319
       },
       {
+        "game_id": "Strike_P",
         "id": "STRIKE_PURPLE",
         "ordinal": 320
       },
       {
+        "game_id": "Strike_R",
         "id": "STRIKE_RED",
         "ordinal": 321
       },
       {
+        "game_id": "Study",
         "id": "STUDY",
         "ordinal": 322
       },
       {
+        "game_id": "Sucker Punch",
         "id": "SUCKER_PUNCH",
         "ordinal": 323
       },
       {
+        "game_id": "Sunder",
         "id": "SUNDER",
         "ordinal": 324
       },
       {
+        "game_id": "Survivor",
         "id": "SURVIVOR",
         "ordinal": 325
       },
       {
+        "game_id": "Sweeping Beam",
         "id": "SWEEPING_BEAM",
         "ordinal": 326
       },
       {
+        "game_id": "Swift Strike",
         "id": "SWIFT_STRIKE",
         "ordinal": 327
       },
       {
+        "game_id": "Swivel",
         "id": "SWIVEL",
         "ordinal": 328
       },
       {
+        "game_id": "Sword Boomerang",
         "id": "SWORD_BOOMERANG",
         "ordinal": 329
       },
       {
+        "game_id": "Tactician",
         "id": "TACTICIAN",
         "ordinal": 330
       },
       {
+        "game_id": "TalkToTheHand",
         "id": "TALK_TO_THE_HAND",
         "ordinal": 331
       },
       {
+        "game_id": "Tantrum",
         "id": "TANTRUM",
         "ordinal": 332
       },
       {
+        "game_id": "Tempest",
         "id": "TEMPEST",
         "ordinal": 333
       },
       {
+        "game_id": "Terror",
         "id": "TERROR",
         "ordinal": 334
       },
       {
+        "game_id": "The Bomb",
         "id": "THE_BOMB",
         "ordinal": 335
       },
       {
+        "game_id": "Thinking Ahead",
         "id": "THINKING_AHEAD",
         "ordinal": 336
       },
       {
+        "game_id": "ThirdEye",
         "id": "THIRD_EYE",
         "ordinal": 337
       },
       {
+        "game_id": "ThroughViolence",
         "id": "THROUGH_VIOLENCE",
         "ordinal": 338
       },
       {
+        "game_id": "Thunderclap",
         "id": "THUNDERCLAP",
         "ordinal": 339
       },
       {
+        "game_id": "Thunder Strike",
         "id": "THUNDER_STRIKE",
         "ordinal": 340
       },
       {
+        "game_id": "Tools of the Trade",
         "id": "TOOLS_OF_THE_TRADE",
         "ordinal": 341
       },
       {
+        "game_id": "ClearTheMind",
         "id": "TRANQUILITY",
         "ordinal": 342
       },
       {
+        "game_id": "Transmutation",
         "id": "TRANSMUTATION",
         "ordinal": 343
       },
       {
+        "game_id": "Trip",
         "id": "TRIP",
         "ordinal": 344
       },
       {
+        "game_id": "True Grit",
         "id": "TRUE_GRIT",
         "ordinal": 345
       },
       {
+        "game_id": "Turbo",
         "id": "TURBO",
         "ordinal": 346
       },
       {
+        "game_id": "Twin Strike",
         "id": "TWIN_STRIKE",
         "ordinal": 347
       },
       {
+        "game_id": "Unload",
         "id": "UNLOAD",
         "ordinal": 348
       },
       {
+        "game_id": "Uppercut",
         "id": "UPPERCUT",
         "ordinal": 349
       },
       {
+        "game_id": "Vault",
         "id": "VAULT",
         "ordinal": 350
       },
       {
+        "game_id": "Vigilance",
         "id": "VIGILANCE",
         "ordinal": 351
       },
       {
+        "game_id": "Violence",
         "id": "VIOLENCE",
         "ordinal": 352
       },
       {
+        "game_id": "Void",
         "id": "VOID",
         "ordinal": 353
       },
       {
+        "game_id": "Wallop",
         "id": "WALLOP",
         "ordinal": 354
       },
       {
+        "game_id": "Warcry",
         "id": "WARCRY",
         "ordinal": 355
       },
       {
+        "game_id": "WaveOfTheHand",
         "id": "WAVE_OF_THE_HAND",
         "ordinal": 356
       },
       {
+        "game_id": "Weave",
         "id": "WEAVE",
         "ordinal": 357
       },
       {
+        "game_id": "Well Laid Plans",
         "id": "WELL_LAID_PLANS",
         "ordinal": 358
       },
       {
+        "game_id": "WheelKick",
         "id": "WHEEL_KICK",
         "ordinal": 359
       },
       {
+        "game_id": "Whirlwind",
         "id": "WHIRLWIND",
         "ordinal": 360
       },
       {
+        "game_id": "White Noise",
         "id": "WHITE_NOISE",
         "ordinal": 361
       },
       {
+        "game_id": "Wild Strike",
         "id": "WILD_STRIKE",
         "ordinal": 362
       },
       {
+        "game_id": "WindmillStrike",
         "id": "WINDMILL_STRIKE",
         "ordinal": 363
       },
       {
+        "game_id": "Wish",
         "id": "WISH",
         "ordinal": 364
       },
       {
+        "game_id": "Worship",
         "id": "WORSHIP",
         "ordinal": 365
       },
       {
+        "game_id": "Wound",
         "id": "WOUND",
         "ordinal": 366
       },
       {
+        "game_id": "Wraith Form v2",
         "id": "WRAITH_FORM",
         "ordinal": 367
       },
       {
+        "game_id": "WreathOfFlame",
         "id": "WREATH_OF_FLAME",
         "ordinal": 368
       },
       {
+        "game_id": "Writhe",
         "id": "WRITHE",
         "ordinal": 369
       },
       {
+        "game_id": "Zap",
         "id": "ZAP",
         "ordinal": 370
       }
@@ -1502,1638 +1872,2045 @@
     ],
     "encounters": [
       {
+        "game_id": "Cultist",
         "id": "CULTIST",
         "ordinal": 1
       },
       {
+        "game_id": "Jaw Worm",
         "id": "JAW_WORM",
         "ordinal": 2
       },
       {
+        "game_id": "Two Louse",
         "id": "TWO_LOUSE",
         "ordinal": 3
       },
       {
+        "game_id": "Small Slimes",
         "id": "SMALL_SLIMES",
         "ordinal": 4
       },
       {
+        "game_id": "Blue Slaver",
         "id": "BLUE_SLAVER",
         "ordinal": 5
       },
       {
+        "game_id": "Gremlin Gang",
         "id": "GREMLIN_GANG",
         "ordinal": 6
       },
       {
+        "game_id": "Looter",
         "id": "LOOTER",
         "ordinal": 7
       },
       {
+        "game_id": "Large Slime",
         "id": "LARGE_SLIME",
         "ordinal": 8
       },
       {
+        "game_id": "Lots Of Slimes",
         "id": "LOTS_OF_SLIMES",
         "ordinal": 9
       },
       {
+        "game_id": "Exordium Thugs",
         "id": "EXORDIUM_THUGS",
         "ordinal": 10
       },
       {
+        "game_id": "Exordium Wildlife",
         "id": "EXORDIUM_WILDLIFE",
         "ordinal": 11
       },
       {
+        "game_id": "Red Slaver",
         "id": "RED_SLAVER",
         "ordinal": 12
       },
       {
+        "game_id": "Three Louse",
         "id": "THREE_LOUSE",
         "ordinal": 13
       },
       {
+        "game_id": "Two Fungi Beasts",
         "id": "TWO_FUNGI_BEASTS",
         "ordinal": 14
       },
       {
+        "game_id": "Gremlin Nob",
         "id": "GREMLIN_NOB",
         "ordinal": 15
       },
       {
+        "game_id": "Lagavulin",
         "id": "LAGAVULIN",
         "ordinal": 16
       },
       {
+        "game_id": "Three Sentries",
         "id": "THREE_SENTRIES",
         "ordinal": 17
       },
       {
+        "game_id": "Slime Boss",
         "id": "SLIME_BOSS",
         "ordinal": 18
       },
       {
+        "game_id": "The Guardian",
         "id": "THE_GUARDIAN",
         "ordinal": 19
       },
       {
+        "game_id": "Hexaghost",
         "id": "HEXAGHOST",
         "ordinal": 20
       },
       {
+        "game_id": "Spheric Guardian",
         "id": "SPHERIC_GUARDIAN",
         "ordinal": 21
       },
       {
+        "game_id": "Chosen",
         "id": "CHOSEN",
         "ordinal": 22
       },
       {
+        "game_id": "Shell Parasite",
         "id": "SHELL_PARASITE",
         "ordinal": 23
       },
       {
+        "game_id": "Three Byrds",
         "id": "THREE_BYRDS",
         "ordinal": 24
       },
       {
+        "game_id": "Two Thieves",
         "id": "TWO_THIEVES",
         "ordinal": 25
       },
       {
+        "game_id": "Chosen And Byrds",
         "id": "CHOSEN_AND_BYRDS",
         "ordinal": 26
       },
       {
+        "game_id": "Sentry And Sphere",
         "id": "SENTRY_AND_SPHERE",
         "ordinal": 27
       },
       {
+        "game_id": "Snake Plant",
         "id": "SNAKE_PLANT",
         "ordinal": 28
       },
       {
+        "game_id": "Snecko",
         "id": "SNECKO",
         "ordinal": 29
       },
       {
+        "game_id": "Centurion And Healer",
         "id": "CENTURION_AND_HEALER",
         "ordinal": 30
       },
       {
+        "game_id": "Cultist And Chosen",
         "id": "CULTIST_AND_CHOSEN",
         "ordinal": 31
       },
       {
+        "game_id": "Three Cultist",
         "id": "THREE_CULTIST",
         "ordinal": 32
       },
       {
+        "game_id": "Shelled Parasite And Fungi",
         "id": "SHELLED_PARASITE_AND_FUNGI",
         "ordinal": 33
       },
       {
+        "game_id": "Gremlin Leader",
         "id": "GREMLIN_LEADER",
         "ordinal": 34
       },
       {
+        "game_id": "Slavers",
         "id": "SLAVERS",
         "ordinal": 35
       },
       {
+        "game_id": "Book Of Stabbing",
         "id": "BOOK_OF_STABBING",
         "ordinal": 36
       },
       {
+        "game_id": "Automaton",
         "id": "AUTOMATON",
         "ordinal": 37
       },
       {
+        "game_id": "Collector",
         "id": "COLLECTOR",
         "ordinal": 38
       },
       {
+        "game_id": "Champ",
         "id": "CHAMP",
         "ordinal": 39
       },
       {
+        "game_id": "Three Darklings",
         "id": "THREE_DARKLINGS",
         "ordinal": 40
       },
       {
+        "game_id": "Orb Walker",
         "id": "ORB_WALKER",
         "ordinal": 41
       },
       {
+        "game_id": "Three Shapes",
         "id": "THREE_SHAPES",
         "ordinal": 42
       },
       {
+        "game_id": "Spire Growth",
         "id": "SPIRE_GROWTH",
         "ordinal": 43
       },
       {
+        "game_id": "Transient",
         "id": "TRANSIENT",
         "ordinal": 44
       },
       {
+        "game_id": "Four Shapes",
         "id": "FOUR_SHAPES",
         "ordinal": 45
       },
       {
+        "game_id": "Maw",
         "id": "MAW",
         "ordinal": 46
       },
       {
+        "game_id": "Sphere And Two Shapes",
         "id": "SPHERE_AND_TWO_SHAPES",
         "ordinal": 47
       },
       {
+        "game_id": "Jaw Worm Horde",
         "id": "JAW_WORM_HORDE",
         "ordinal": 48
       },
       {
+        "game_id": "Writhing Mass",
         "id": "WRITHING_MASS",
         "ordinal": 49
       },
       {
+        "game_id": "Giant Head",
         "id": "GIANT_HEAD",
         "ordinal": 50
       },
       {
+        "game_id": "Nemesis",
         "id": "NEMESIS",
         "ordinal": 51
       },
       {
+        "game_id": "Reptomancer",
         "id": "REPTOMANCER",
         "ordinal": 52
       },
       {
+        "game_id": "Awakened One",
         "id": "AWAKENED_ONE",
         "ordinal": 53
       },
       {
+        "game_id": "Time Eater",
         "id": "TIME_EATER",
         "ordinal": 54
       },
       {
+        "game_id": "Donu And Deca",
         "id": "DONU_AND_DECA",
         "ordinal": 55
       },
       {
+        "game_id": "Shield And Spear",
         "id": "SHIELD_AND_SPEAR",
         "ordinal": 56
       },
       {
+        "game_id": "The Heart",
         "id": "THE_HEART",
         "ordinal": 57
       },
       {
+        "game_id": "LAGAVULIN_EVENT",
         "id": "LAGAVULIN_EVENT",
         "ordinal": 58
       },
       {
+        "game_id": "COLOSSEUM_EVENT_SLAVERS",
         "id": "COLOSSEUM_EVENT_SLAVERS",
         "ordinal": 59
       },
       {
+        "game_id": "COLOSSEUM_EVENT_NOBS",
         "id": "COLOSSEUM_EVENT_NOBS",
         "ordinal": 60
       },
       {
+        "game_id": "MASKED_BANDITS_EVENT",
         "id": "MASKED_BANDITS_EVENT",
         "ordinal": 61
       },
       {
+        "game_id": "MUSHROOMS_EVENT",
         "id": "MUSHROOMS_EVENT",
         "ordinal": 62
       },
       {
+        "game_id": "MYSTERIOUS_SPHERE_EVENT",
         "id": "MYSTERIOUS_SPHERE_EVENT",
         "ordinal": 63
       }
     ],
     "events": [
       {
+        "game_id": "MONSTER",
         "id": "MONSTER",
         "ordinal": 1
       },
       {
+        "game_id": "REST",
         "id": "REST",
         "ordinal": 2
       },
       {
+        "game_id": "SHOP",
         "id": "SHOP",
         "ordinal": 3
       },
       {
+        "game_id": "TREASURE",
         "id": "TREASURE",
         "ordinal": 4
       },
       {
+        "game_id": "NEOW",
         "id": "NEOW",
         "ordinal": 5
       },
       {
+        "game_id": "Accursed Blacksmith",
         "id": "OMINOUS_FORGE",
         "ordinal": 6
       },
       {
+        "game_id": "Addict",
         "id": "PLEADING_VAGRANT",
         "ordinal": 7
       },
       {
+        "game_id": "Back to Basics",
         "id": "ANCIENT_WRITING",
         "ordinal": 8
       },
       {
+        "game_id": "Beggar",
         "id": "OLD_BEGGAR",
         "ordinal": 9
       },
       {
+        "game_id": "Big Fish",
         "id": "BIG_FISH",
         "ordinal": 10
       },
       {
+        "game_id": "Bonfire Elementals",
         "id": "BONFIRE_SPIRITS",
         "ordinal": 11
       },
       {
+        "game_id": "Colosseum",
         "id": "COLOSSEUM",
         "ordinal": 12
       },
       {
+        "game_id": "Cursed Tome",
         "id": "CURSED_TOME",
         "ordinal": 13
       },
       {
+        "game_id": "Dead Adventurer",
         "id": "DEAD_ADVENTURER",
         "ordinal": 14
       },
       {
+        "game_id": "Designer",
         "id": "DESIGNER_IN_SPIRE",
         "ordinal": 15
       },
       {
+        "game_id": "Drug Dealer",
         "id": "AUGMENTER",
         "ordinal": 16
       },
       {
+        "game_id": "Duplicator",
         "id": "DUPLICATOR",
         "ordinal": 17
       },
       {
+        "game_id": "Face Trader",
         "id": "FACE_TRADER",
         "ordinal": 18
       },
       {
+        "game_id": "Falling",
         "id": "FALLING",
         "ordinal": 19
       },
       {
+        "game_id": "Forgotten Altar",
         "id": "FORGOTTEN_ALTAR",
         "ordinal": 20
       },
       {
+        "game_id": "Fountain of Cleansing",
         "id": "THE_DIVINE_FOUNTAIN",
         "ordinal": 21
       },
       {
+        "game_id": "Ghosts",
         "id": "GHOSTS",
         "ordinal": 22
       },
       {
+        "game_id": "Golden Idol",
         "id": "GOLDEN_IDOL",
         "ordinal": 23
       },
       {
+        "game_id": "Golden Shrine",
         "id": "GOLDEN_SHRINE",
         "ordinal": 24
       },
       {
+        "game_id": "Golden Wing",
         "id": "WING_STATUE",
         "ordinal": 25
       },
       {
+        "game_id": "Knowing Skull",
         "id": "KNOWING_SKULL",
         "ordinal": 26
       },
       {
+        "game_id": "Lab",
         "id": "LAB",
         "ordinal": 27
       },
       {
+        "game_id": "Liars Game",
         "id": "THE_SSSSSERPENT",
         "ordinal": 28
       },
       {
+        "game_id": "Living Wall",
         "id": "LIVING_WALL",
         "ordinal": 29
       },
       {
+        "game_id": "Masked Bandits",
         "id": "MASKED_BANDITS",
         "ordinal": 30
       },
       {
+        "game_id": "Match and Keep",
         "id": "MATCH_AND_KEEP",
         "ordinal": 31
       },
       {
+        "game_id": "Mindbloom",
         "id": "MINDBLOOM",
         "ordinal": 32
       },
       {
+        "game_id": "Mushrooms",
         "id": "HYPNOTIZING_COLORED_MUSHROOMS",
         "ordinal": 33
       },
       {
+        "game_id": "Mysterious Sphere",
         "id": "MYSTERIOUS_SPHERE",
         "ordinal": 34
       },
       {
+        "game_id": "Nest",
         "id": "THE_NEST",
         "ordinal": 35
       },
       {
+        "game_id": "Nloth",
         "id": "NLOTH",
         "ordinal": 36
       },
       {
+        "game_id": "Note For Yourself",
         "id": "NOTE_FOR_YOURSELF",
         "ordinal": 37
       },
       {
+        "game_id": "Purifier",
         "id": "PURIFIER",
         "ordinal": 38
       },
       {
+        "game_id": "Scrap Ooze",
         "id": "SCRAP_OOZE",
         "ordinal": 39
       },
       {
+        "game_id": "Secret Portal",
         "id": "SECRET_PORTAL",
         "ordinal": 40
       },
       {
+        "game_id": "Sensory Stone",
         "id": "SENSORY_STONE",
         "ordinal": 41
       },
       {
+        "game_id": "Shining Light",
         "id": "SHINING_LIGHT",
         "ordinal": 42
       },
       {
+        "game_id": "The Cleric",
         "id": "THE_CLERIC",
         "ordinal": 43
       },
       {
+        "game_id": "The Joust",
         "id": "THE_JOUST",
         "ordinal": 44
       },
       {
+        "game_id": "The Library",
         "id": "THE_LIBRARY",
         "ordinal": 45
       },
       {
+        "game_id": "The Mausoleum",
         "id": "THE_MAUSOLEUM",
         "ordinal": 46
       },
       {
+        "game_id": "The Moai Head",
         "id": "THE_MOAI_HEAD",
         "ordinal": 47
       },
       {
+        "game_id": "The Woman in Blue",
         "id": "THE_WOMAN_IN_BLUE",
         "ordinal": 48
       },
       {
+        "game_id": "Tomb of Lord Red Mask",
         "id": "TOMB_OF_LORD_RED_MASK",
         "ordinal": 49
       },
       {
+        "game_id": "Transmorgrifier",
         "id": "TRANSMORGRIFIER",
         "ordinal": 50
       },
       {
+        "game_id": "Upgrade Shrine",
         "id": "UPGRADE_SHRINE",
         "ordinal": 51
       },
       {
+        "game_id": "Vampires",
         "id": "VAMPIRES",
         "ordinal": 52
       },
       {
+        "game_id": "WeMeetAgain",
         "id": "WE_MEET_AGAIN",
         "ordinal": 53
       },
       {
+        "game_id": "Wheel of Change",
         "id": "WHEEL_OF_CHANGE",
         "ordinal": 54
       },
       {
+        "game_id": "Winding Halls",
         "id": "WINDING_HALLS",
         "ordinal": 55
       },
       {
+        "game_id": "World of Goop",
         "id": "WORLD_OF_GOOP",
         "ordinal": 56
       }
     ],
     "monsters": [
       {
+        "game_id": "ACID_SLIME_L",
         "id": "ACID_SLIME_L",
         "ordinal": 1
       },
       {
+        "game_id": "ACID_SLIME_M",
         "id": "ACID_SLIME_M",
         "ordinal": 2
       },
       {
+        "game_id": "ACID_SLIME_S",
         "id": "ACID_SLIME_S",
         "ordinal": 3
       },
       {
+        "game_id": "AWAKENED_ONE",
         "id": "AWAKENED_ONE",
         "ordinal": 4
       },
       {
+        "game_id": "BEAR",
         "id": "BEAR",
         "ordinal": 5
       },
       {
+        "game_id": "BLUE_SLAVER",
         "id": "BLUE_SLAVER",
         "ordinal": 6
       },
       {
+        "game_id": "BOOK_OF_STABBING",
         "id": "BOOK_OF_STABBING",
         "ordinal": 7
       },
       {
+        "game_id": "BRONZE_AUTOMATON",
         "id": "BRONZE_AUTOMATON",
         "ordinal": 8
       },
       {
+        "game_id": "BRONZE_ORB",
         "id": "BRONZE_ORB",
         "ordinal": 9
       },
       {
+        "game_id": "BYRD",
         "id": "BYRD",
         "ordinal": 10
       },
       {
+        "game_id": "CENTURION",
         "id": "CENTURION",
         "ordinal": 11
       },
       {
+        "game_id": "CHOSEN",
         "id": "CHOSEN",
         "ordinal": 12
       },
       {
+        "game_id": "CORRUPT_HEART",
         "id": "CORRUPT_HEART",
         "ordinal": 13
       },
       {
+        "game_id": "CULTIST",
         "id": "CULTIST",
         "ordinal": 14
       },
       {
+        "game_id": "DAGGER",
         "id": "DAGGER",
         "ordinal": 15
       },
       {
+        "game_id": "DARKLING",
         "id": "DARKLING",
         "ordinal": 16
       },
       {
+        "game_id": "DECA",
         "id": "DECA",
         "ordinal": 17
       },
       {
+        "game_id": "DONU",
         "id": "DONU",
         "ordinal": 18
       },
       {
+        "game_id": "EXPLODER",
         "id": "EXPLODER",
         "ordinal": 19
       },
       {
+        "game_id": "FAT_GREMLIN",
         "id": "FAT_GREMLIN",
         "ordinal": 20
       },
       {
+        "game_id": "FUNGI_BEAST",
         "id": "FUNGI_BEAST",
         "ordinal": 21
       },
       {
+        "game_id": "GIANT_HEAD",
         "id": "GIANT_HEAD",
         "ordinal": 22
       },
       {
+        "game_id": "GREEN_LOUSE",
         "id": "GREEN_LOUSE",
         "ordinal": 23
       },
       {
+        "game_id": "GREMLIN_LEADER",
         "id": "GREMLIN_LEADER",
         "ordinal": 24
       },
       {
+        "game_id": "GREMLIN_NOB",
         "id": "GREMLIN_NOB",
         "ordinal": 25
       },
       {
+        "game_id": "GREMLIN_WIZARD",
         "id": "GREMLIN_WIZARD",
         "ordinal": 26
       },
       {
+        "game_id": "HEXAGHOST",
         "id": "HEXAGHOST",
         "ordinal": 27
       },
       {
+        "game_id": "JAW_WORM",
         "id": "JAW_WORM",
         "ordinal": 28
       },
       {
+        "game_id": "LAGAVULIN",
         "id": "LAGAVULIN",
         "ordinal": 29
       },
       {
+        "game_id": "LOOTER",
         "id": "LOOTER",
         "ordinal": 30
       },
       {
+        "game_id": "MAD_GREMLIN",
         "id": "MAD_GREMLIN",
         "ordinal": 31
       },
       {
+        "game_id": "MUGGER",
         "id": "MUGGER",
         "ordinal": 32
       },
       {
+        "game_id": "MYSTIC",
         "id": "MYSTIC",
         "ordinal": 33
       },
       {
+        "game_id": "NEMESIS",
         "id": "NEMESIS",
         "ordinal": 34
       },
       {
+        "game_id": "ORB_WALKER",
         "id": "ORB_WALKER",
         "ordinal": 35
       },
       {
+        "game_id": "POINTY",
         "id": "POINTY",
         "ordinal": 36
       },
       {
+        "game_id": "RED_LOUSE",
         "id": "RED_LOUSE",
         "ordinal": 37
       },
       {
+        "game_id": "RED_SLAVER",
         "id": "RED_SLAVER",
         "ordinal": 38
       },
       {
+        "game_id": "REPTOMANCER",
         "id": "REPTOMANCER",
         "ordinal": 39
       },
       {
+        "game_id": "REPULSOR",
         "id": "REPULSOR",
         "ordinal": 40
       },
       {
+        "game_id": "ROMEO",
         "id": "ROMEO",
         "ordinal": 41
       },
       {
+        "game_id": "SENTRY",
         "id": "SENTRY",
         "ordinal": 42
       },
       {
+        "game_id": "SHELLED_PARASITE",
         "id": "SHELLED_PARASITE",
         "ordinal": 43
       },
       {
+        "game_id": "SHIELD_GREMLIN",
         "id": "SHIELD_GREMLIN",
         "ordinal": 44
       },
       {
+        "game_id": "SLIME_BOSS",
         "id": "SLIME_BOSS",
         "ordinal": 45
       },
       {
+        "game_id": "SNAKE_PLANT",
         "id": "SNAKE_PLANT",
         "ordinal": 46
       },
       {
+        "game_id": "SNEAKY_GREMLIN",
         "id": "SNEAKY_GREMLIN",
         "ordinal": 47
       },
       {
+        "game_id": "SNECKO",
         "id": "SNECKO",
         "ordinal": 48
       },
       {
+        "game_id": "SPHERIC_GUARDIAN",
         "id": "SPHERIC_GUARDIAN",
         "ordinal": 49
       },
       {
+        "game_id": "SPIKER",
         "id": "SPIKER",
         "ordinal": 50
       },
       {
+        "game_id": "SPIKE_SLIME_L",
         "id": "SPIKE_SLIME_L",
         "ordinal": 51
       },
       {
+        "game_id": "SPIKE_SLIME_M",
         "id": "SPIKE_SLIME_M",
         "ordinal": 52
       },
       {
+        "game_id": "SPIKE_SLIME_S",
         "id": "SPIKE_SLIME_S",
         "ordinal": 53
       },
       {
+        "game_id": "SPIRE_GROWTH",
         "id": "SPIRE_GROWTH",
         "ordinal": 54
       },
       {
+        "game_id": "SPIRE_SHIELD",
         "id": "SPIRE_SHIELD",
         "ordinal": 55
       },
       {
+        "game_id": "SPIRE_SPEAR",
         "id": "SPIRE_SPEAR",
         "ordinal": 56
       },
       {
+        "game_id": "TASKMASTER",
         "id": "TASKMASTER",
         "ordinal": 57
       },
       {
+        "game_id": "THE_CHAMP",
         "id": "THE_CHAMP",
         "ordinal": 58
       },
       {
+        "game_id": "THE_COLLECTOR",
         "id": "THE_COLLECTOR",
         "ordinal": 59
       },
       {
+        "game_id": "THE_GUARDIAN",
         "id": "THE_GUARDIAN",
         "ordinal": 60
       },
       {
+        "game_id": "THE_MAW",
         "id": "THE_MAW",
         "ordinal": 61
       },
       {
+        "game_id": "TIME_EATER",
         "id": "TIME_EATER",
         "ordinal": 62
       },
       {
+        "game_id": "TORCH_HEAD",
         "id": "TORCH_HEAD",
         "ordinal": 63
       },
       {
+        "game_id": "TRANSIENT",
         "id": "TRANSIENT",
         "ordinal": 64
       },
       {
+        "game_id": "WRITHING_MASS",
         "id": "WRITHING_MASS",
         "ordinal": 65
       }
     ],
     "potions": [
       {
+        "game_id": "EMPTY_POTION_ID",
         "id": "EMPTY_POTION_SLOT",
         "ordinal": 1
       },
       {
+        "game_id": "Ambrosia",
         "id": "AMBROSIA",
         "ordinal": 2
       },
       {
+        "game_id": "Ancient Potion",
         "id": "ANCIENT_POTION",
         "ordinal": 3
       },
       {
+        "game_id": "AttackPotion",
         "id": "ATTACK_POTION",
         "ordinal": 4
       },
       {
+        "game_id": "BlessingOfTheForge",
         "id": "BLESSING_OF_THE_FORGE",
         "ordinal": 5
       },
       {
+        "game_id": "Block Potion",
         "id": "BLOCK_POTION",
         "ordinal": 6
       },
       {
+        "game_id": "BloodPotion",
         "id": "BLOOD_POTION",
         "ordinal": 7
       },
       {
+        "game_id": "BottledMiracle",
         "id": "BOTTLED_MIRACLE",
         "ordinal": 8
       },
       {
+        "game_id": "ColorlessPotion",
         "id": "COLORLESS_POTION",
         "ordinal": 9
       },
       {
+        "game_id": "CultistPotion",
         "id": "CULTIST_POTION",
         "ordinal": 10
       },
       {
+        "game_id": "CunningPotion",
         "id": "CUNNING_POTION",
         "ordinal": 11
       },
       {
+        "game_id": "Dexterity Potion",
         "id": "DEXTERITY_POTION",
         "ordinal": 12
       },
       {
+        "game_id": "DistilledChaos",
         "id": "DISTILLED_CHAOS",
         "ordinal": 13
       },
       {
+        "game_id": "DuplicationPotion",
         "id": "DUPLICATION_POTION",
         "ordinal": 14
       },
       {
+        "game_id": "ElixirPotion",
         "id": "ELIXIR_POTION",
         "ordinal": 15
       },
       {
+        "game_id": "Energy Potion",
         "id": "ENERGY_POTION",
         "ordinal": 16
       },
       {
+        "game_id": "EntropicBrew",
         "id": "ENTROPIC_BREW",
         "ordinal": 17
       },
       {
+        "game_id": "EssenceOfDarkness",
         "id": "ESSENCE_OF_DARKNESS",
         "ordinal": 18
       },
       {
+        "game_id": "EssenceOfSteel",
         "id": "ESSENCE_OF_STEEL",
         "ordinal": 19
       },
       {
+        "game_id": "Explosive Potion",
         "id": "EXPLOSIVE_POTION",
         "ordinal": 20
       },
       {
+        "game_id": "FairyPotion",
         "id": "FAIRY_POTION",
         "ordinal": 21
       },
       {
+        "game_id": "FearPotion",
         "id": "FEAR_POTION",
         "ordinal": 22
       },
       {
+        "game_id": "Fire Potion",
         "id": "FIRE_POTION",
         "ordinal": 23
       },
       {
+        "game_id": "SteroidPotion",
         "id": "FLEX_POTION",
         "ordinal": 24
       },
       {
+        "game_id": "FocusPotion",
         "id": "FOCUS_POTION",
         "ordinal": 25
       },
       {
+        "game_id": "Fruit Juice",
         "id": "FRUIT_JUICE",
         "ordinal": 26
       },
       {
+        "game_id": "GamblersBrew",
         "id": "GAMBLERS_BREW",
         "ordinal": 27
       },
       {
+        "game_id": "GhostInAJar",
         "id": "GHOST_IN_A_JAR",
         "ordinal": 28
       },
       {
+        "game_id": "HeartOfIron",
         "id": "HEART_OF_IRON",
         "ordinal": 29
       },
       {
+        "game_id": "LiquidBronze",
         "id": "LIQUID_BRONZE",
         "ordinal": 30
       },
       {
+        "game_id": "LiquidMemories",
         "id": "LIQUID_MEMORIES",
         "ordinal": 31
       },
       {
+        "game_id": "Poison Potion",
         "id": "POISON_POTION",
         "ordinal": 32
       },
       {
+        "game_id": "PotionOfCapacity",
         "id": "POTION_OF_CAPACITY",
         "ordinal": 33
       },
       {
+        "game_id": "PowerPotion",
         "id": "POWER_POTION",
         "ordinal": 34
       },
       {
+        "game_id": "Regen Potion",
         "id": "REGEN_POTION",
         "ordinal": 35
       },
       {
+        "game_id": "SkillPotion",
         "id": "SKILL_POTION",
         "ordinal": 36
       },
       {
+        "game_id": "SmokeBomb",
         "id": "SMOKE_BOMB",
         "ordinal": 37
       },
       {
+        "game_id": "SneckoOil",
         "id": "SNECKO_OIL",
         "ordinal": 38
       },
       {
+        "game_id": "SpeedPotion",
         "id": "SPEED_POTION",
         "ordinal": 39
       },
       {
+        "game_id": "StancePotion",
         "id": "STANCE_POTION",
         "ordinal": 40
       },
       {
+        "game_id": "Strength Potion",
         "id": "STRENGTH_POTION",
         "ordinal": 41
       },
       {
+        "game_id": "Swift Potion",
         "id": "SWIFT_POTION",
         "ordinal": 42
       },
       {
+        "game_id": "Weak Potion",
         "id": "WEAK_POTION",
         "ordinal": 43
       }
     ],
     "relics": [
       {
+        "game_id": "Akabeko",
         "id": "AKABEKO",
         "ordinal": 0
       },
       {
+        "game_id": "Art of War",
         "id": "ART_OF_WAR",
         "ordinal": 1
       },
       {
+        "game_id": "Bird Faced Urn",
         "id": "BIRD_FACED_URN",
         "ordinal": 2
       },
       {
+        "game_id": "Bloody Idol",
         "id": "BLOODY_IDOL",
         "ordinal": 3
       },
       {
+        "game_id": "Blue Candle",
         "id": "BLUE_CANDLE",
         "ordinal": 4
       },
       {
+        "game_id": "Brimstone",
         "id": "BRIMSTONE",
         "ordinal": 5
       },
       {
+        "game_id": "Calipers",
         "id": "CALIPERS",
         "ordinal": 6
       },
       {
+        "game_id": "CaptainsWheel",
         "id": "CAPTAINS_WHEEL",
         "ordinal": 7
       },
       {
+        "game_id": "Centennial Puzzle",
         "id": "CENTENNIAL_PUZZLE",
         "ordinal": 8
       },
       {
+        "game_id": "CeramicFish",
         "id": "CERAMIC_FISH",
         "ordinal": 9
       },
       {
+        "game_id": "Champion Belt",
         "id": "CHAMPION_BELT",
         "ordinal": 10
       },
       {
+        "game_id": "Charon's Ashes",
         "id": "CHARONS_ASHES",
         "ordinal": 11
       },
       {
+        "game_id": "Chemical X",
         "id": "CHEMICAL_X",
         "ordinal": 12
       },
       {
+        "game_id": "CloakClasp",
         "id": "CLOAK_CLASP",
         "ordinal": 13
       },
       {
+        "game_id": "Darkstone Periapt",
         "id": "DARKSTONE_PERIAPT",
         "ordinal": 14
       },
       {
+        "game_id": "Dead Branch",
         "id": "DEAD_BRANCH",
         "ordinal": 15
       },
       {
+        "game_id": "Yang",
         "id": "DUALITY",
         "ordinal": 16
       },
       {
+        "game_id": "Ectoplasm",
         "id": "ECTOPLASM",
         "ordinal": 17
       },
       {
+        "game_id": "Emotion Chip",
         "id": "EMOTION_CHIP",
         "ordinal": 18
       },
       {
+        "game_id": "FrozenCore",
         "id": "FROZEN_CORE",
         "ordinal": 19
       },
       {
+        "game_id": "Frozen Eye",
         "id": "FROZEN_EYE",
         "ordinal": 20
       },
       {
+        "game_id": "Gambling Chip",
         "id": "GAMBLING_CHIP",
         "ordinal": 21
       },
       {
+        "game_id": "Ginger",
         "id": "GINGER",
         "ordinal": 22
       },
       {
+        "game_id": "GoldenEye",
         "id": "GOLDEN_EYE",
         "ordinal": 23
       },
       {
+        "game_id": "Gremlin Horn",
         "id": "GREMLIN_HORN",
         "ordinal": 24
       },
       {
+        "game_id": "HandDrill",
         "id": "HAND_DRILL",
         "ordinal": 25
       },
       {
+        "game_id": "Happy Flower",
         "id": "HAPPY_FLOWER",
         "ordinal": 26
       },
       {
+        "game_id": "HornCleat",
         "id": "HORN_CLEAT",
         "ordinal": 27
       },
       {
+        "game_id": "HoveringKite",
         "id": "HOVERING_KITE",
         "ordinal": 28
       },
       {
+        "game_id": "Ice Cream",
         "id": "ICE_CREAM",
         "ordinal": 29
       },
       {
+        "game_id": "Incense Burner",
         "id": "INCENSE_BURNER",
         "ordinal": 30
       },
       {
+        "game_id": "InkBottle",
         "id": "INK_BOTTLE",
         "ordinal": 31
       },
       {
+        "game_id": "Inserter",
         "id": "INSERTER",
         "ordinal": 32
       },
       {
+        "game_id": "Kunai",
         "id": "KUNAI",
         "ordinal": 33
       },
       {
+        "game_id": "Letter Opener",
         "id": "LETTER_OPENER",
         "ordinal": 34
       },
       {
+        "game_id": "Lizard Tail",
         "id": "LIZARD_TAIL",
         "ordinal": 35
       },
       {
+        "game_id": "Magic Flower",
         "id": "MAGIC_FLOWER",
         "ordinal": 36
       },
       {
+        "game_id": "Mark of the Bloom",
         "id": "MARK_OF_THE_BLOOM",
         "ordinal": 37
       },
       {
+        "game_id": "Medical Kit",
         "id": "MEDICAL_KIT",
         "ordinal": 38
       },
       {
+        "game_id": "Melange",
         "id": "MELANGE",
         "ordinal": 39
       },
       {
+        "game_id": "Mercury Hourglass",
         "id": "MERCURY_HOURGLASS",
         "ordinal": 40
       },
       {
+        "game_id": "Mummified Hand",
         "id": "MUMMIFIED_HAND",
         "ordinal": 41
       },
       {
+        "game_id": "Necronomicon",
         "id": "NECRONOMICON",
         "ordinal": 42
       },
       {
+        "game_id": "Nilry's Codex",
         "id": "NILRYS_CODEX",
         "ordinal": 43
       },
       {
+        "game_id": "Nunchaku",
         "id": "NUNCHAKU",
         "ordinal": 44
       },
       {
+        "game_id": "Odd Mushroom",
         "id": "ODD_MUSHROOM",
         "ordinal": 45
       },
       {
+        "game_id": "Omamori",
         "id": "OMAMORI",
         "ordinal": 46
       },
       {
+        "game_id": "OrangePellets",
         "id": "ORANGE_PELLETS",
         "ordinal": 47
       },
       {
+        "game_id": "Orichalcum",
         "id": "ORICHALCUM",
         "ordinal": 48
       },
       {
+        "game_id": "Ornamental Fan",
         "id": "ORNAMENTAL_FAN",
         "ordinal": 49
       },
       {
+        "game_id": "Paper Crane",
         "id": "PAPER_KRANE",
         "ordinal": 50
       },
       {
+        "game_id": "Paper Frog",
         "id": "PAPER_PHROG",
         "ordinal": 51
       },
       {
+        "game_id": "Pen Nib",
         "id": "PEN_NIB",
         "ordinal": 52
       },
       {
+        "game_id": "Philosopher's Stone",
         "id": "PHILOSOPHERS_STONE",
         "ordinal": 53
       },
       {
+        "game_id": "Pocketwatch",
         "id": "POCKETWATCH",
         "ordinal": 54
       },
       {
+        "game_id": "Red Skull",
         "id": "RED_SKULL",
         "ordinal": 55
       },
       {
+        "game_id": "Runic Cube",
         "id": "RUNIC_CUBE",
         "ordinal": 56
       },
       {
+        "game_id": "Runic Dome",
         "id": "RUNIC_DOME",
         "ordinal": 57
       },
       {
+        "game_id": "Runic Pyramid",
         "id": "RUNIC_PYRAMID",
         "ordinal": 58
       },
       {
+        "game_id": "SacredBark",
         "id": "SACRED_BARK",
         "ordinal": 59
       },
       {
+        "game_id": "Self Forming Clay",
         "id": "SELF_FORMING_CLAY",
         "ordinal": 60
       },
       {
+        "game_id": "Shuriken",
         "id": "SHURIKEN",
         "ordinal": 61
       },
       {
+        "game_id": "Snecko Eye",
         "id": "SNECKO_EYE",
         "ordinal": 62
       },
       {
+        "game_id": "Snake Skull",
         "id": "SNECKO_SKULL",
         "ordinal": 63
       },
       {
+        "game_id": "Sozu",
         "id": "SOZU",
         "ordinal": 64
       },
       {
+        "game_id": "StoneCalendar",
         "id": "STONE_CALENDAR",
         "ordinal": 65
       },
       {
+        "game_id": "Strange Spoon",
         "id": "STRANGE_SPOON",
         "ordinal": 66
       },
       {
+        "game_id": "StrikeDummy",
         "id": "STRIKE_DUMMY",
         "ordinal": 67
       },
       {
+        "game_id": "Sundial",
         "id": "SUNDIAL",
         "ordinal": 68
       },
       {
+        "game_id": "TheAbacus",
         "id": "THE_ABACUS",
         "ordinal": 69
       },
       {
+        "game_id": "Boot",
         "id": "THE_BOOT",
         "ordinal": 70
       },
       {
+        "game_id": "The Specimen",
         "id": "THE_SPECIMEN",
         "ordinal": 71
       },
       {
+        "game_id": "Tingsha",
         "id": "TINGSHA",
         "ordinal": 72
       },
       {
+        "game_id": "Toolbox",
         "id": "TOOLBOX",
         "ordinal": 73
       },
       {
+        "game_id": "Torii",
         "id": "TORII",
         "ordinal": 74
       },
       {
+        "game_id": "Tough Bandages",
         "id": "TOUGH_BANDAGES",
         "ordinal": 75
       },
       {
+        "game_id": "Toy Ornithopter",
         "id": "TOY_ORNITHOPTER",
         "ordinal": 76
       },
       {
+        "game_id": "TungstenRod",
         "id": "TUNGSTEN_ROD",
         "ordinal": 77
       },
       {
+        "game_id": "Turnip",
         "id": "TURNIP",
         "ordinal": 78
       },
       {
+        "game_id": "TwistedFunnel",
         "id": "TWISTED_FUNNEL",
         "ordinal": 79
       },
       {
+        "game_id": "Unceasing Top",
         "id": "UNCEASING_TOP",
         "ordinal": 80
       },
       {
+        "game_id": "Velvet Choker",
         "id": "VELVET_CHOKER",
         "ordinal": 81
       },
       {
+        "game_id": "VioletLotus",
         "id": "VIOLET_LOTUS",
         "ordinal": 82
       },
       {
+        "game_id": "WarpedTongs",
         "id": "WARPED_TONGS",
         "ordinal": 83
       },
       {
+        "game_id": "WristBlade",
         "id": "WRIST_BLADE",
         "ordinal": 84
       },
       {
+        "game_id": "Black Blood",
         "id": "BLACK_BLOOD",
         "ordinal": 85
       },
       {
+        "game_id": "Burning Blood",
         "id": "BURNING_BLOOD",
         "ordinal": 86
       },
       {
+        "game_id": "Meat on the Bone",
         "id": "MEAT_ON_THE_BONE",
         "ordinal": 87
       },
       {
+        "game_id": "FaceOfCleric",
         "id": "FACE_OF_CLERIC",
         "ordinal": 88
       },
       {
+        "game_id": "Anchor",
         "id": "ANCHOR",
         "ordinal": 89
       },
       {
+        "game_id": "Ancient Tea Set",
         "id": "ANCIENT_TEA_SET",
         "ordinal": 90
       },
       {
+        "game_id": "Bag of Marbles",
         "id": "BAG_OF_MARBLES",
         "ordinal": 91
       },
       {
+        "game_id": "Bag of Preparation",
         "id": "BAG_OF_PREPARATION",
         "ordinal": 92
       },
       {
+        "game_id": "Blood Vial",
         "id": "BLOOD_VIAL",
         "ordinal": 93
       },
       {
+        "game_id": "Bottled Flame",
         "id": "BOTTLED_FLAME",
         "ordinal": 94
       },
       {
+        "game_id": "Bottled Lightning",
         "id": "BOTTLED_LIGHTNING",
         "ordinal": 95
       },
       {
+        "game_id": "Bottled Tornado",
         "id": "BOTTLED_TORNADO",
         "ordinal": 96
       },
       {
+        "game_id": "Bronze Scales",
         "id": "BRONZE_SCALES",
         "ordinal": 97
       },
       {
+        "game_id": "Busted Crown",
         "id": "BUSTED_CROWN",
         "ordinal": 98
       },
       {
+        "game_id": "ClockworkSouvenir",
         "id": "CLOCKWORK_SOUVENIR",
         "ordinal": 99
       },
       {
+        "game_id": "Coffee Dripper",
         "id": "COFFEE_DRIPPER",
         "ordinal": 100
       },
       {
+        "game_id": "Cracked Core",
         "id": "CRACKED_CORE",
         "ordinal": 101
       },
       {
+        "game_id": "Cursed Key",
         "id": "CURSED_KEY",
         "ordinal": 102
       },
       {
+        "game_id": "Damaru",
         "id": "DAMARU",
         "ordinal": 103
       },
       {
+        "game_id": "DataDisk",
         "id": "DATA_DISK",
         "ordinal": 104
       },
       {
+        "game_id": "Du-Vu Doll",
         "id": "DU_VU_DOLL",
         "ordinal": 105
       },
       {
+        "game_id": "Enchiridion",
         "id": "ENCHIRIDION",
         "ordinal": 106
       },
       {
+        "game_id": "FossilizedHelix",
         "id": "FOSSILIZED_HELIX",
         "ordinal": 107
       },
       {
+        "game_id": "Fusion Hammer",
         "id": "FUSION_HAMMER",
         "ordinal": 108
       },
       {
+        "game_id": "Girya",
         "id": "GIRYA",
         "ordinal": 109
       },
       {
+        "game_id": "Cables",
         "id": "GOLD_PLATED_CABLES",
         "ordinal": 110
       },
       {
+        "game_id": "GremlinMask",
         "id": "GREMLIN_VISAGE",
         "ordinal": 111
       },
       {
+        "game_id": "HolyWater",
         "id": "HOLY_WATER",
         "ordinal": 112
       },
       {
+        "game_id": "Lantern",
         "id": "LANTERN",
         "ordinal": 113
       },
       {
+        "game_id": "Mark of Pain",
         "id": "MARK_OF_PAIN",
         "ordinal": 114
       },
       {
+        "game_id": "MutagenicStrength",
         "id": "MUTAGENIC_STRENGTH",
         "ordinal": 115
       },
       {
+        "game_id": "NeowsBlessing",
         "id": "NEOWS_LAMENT",
         "ordinal": 116
       },
       {
+        "game_id": "Ninja Scroll",
         "id": "NINJA_SCROLL",
         "ordinal": 117
       },
       {
+        "game_id": "Nuclear Battery",
         "id": "NUCLEAR_BATTERY",
         "ordinal": 118
       },
       {
+        "game_id": "Oddly Smooth Stone",
         "id": "ODDLY_SMOOTH_STONE",
         "ordinal": 119
       },
       {
+        "game_id": "Pantograph",
         "id": "PANTOGRAPH",
         "ordinal": 120
       },
       {
+        "game_id": "PreservedInsect",
         "id": "PRESERVED_INSECT",
         "ordinal": 121
       },
       {
+        "game_id": "PureWater",
         "id": "PURE_WATER",
         "ordinal": 122
       },
       {
+        "game_id": "Red Mask",
         "id": "RED_MASK",
         "ordinal": 123
       },
       {
+        "game_id": "Ring of the Serpent",
         "id": "RING_OF_THE_SERPENT",
         "ordinal": 124
       },
       {
+        "game_id": "Ring of the Snake",
         "id": "RING_OF_THE_SNAKE",
         "ordinal": 125
       },
       {
+        "game_id": "Runic Capacitor",
         "id": "RUNIC_CAPACITOR",
         "ordinal": 126
       },
       {
+        "game_id": "SlaversCollar",
         "id": "SLAVERS_COLLAR",
         "ordinal": 127
       },
       {
+        "game_id": "Sling",
         "id": "SLING_OF_COURAGE",
         "ordinal": 128
       },
       {
+        "game_id": "Symbiotic Virus",
         "id": "SYMBIOTIC_VIRUS",
         "ordinal": 129
       },
       {
+        "game_id": "TeardropLocket",
         "id": "TEARDROP_LOCKET",
         "ordinal": 130
       },
       {
+        "game_id": "Thread and Needle",
         "id": "THREAD_AND_NEEDLE",
         "ordinal": 131
       },
       {
+        "game_id": "Vajra",
         "id": "VAJRA",
         "ordinal": 132
       },
       {
+        "game_id": "Astrolabe",
         "id": "ASTROLABE",
         "ordinal": 133
       },
       {
+        "game_id": "Black Star",
         "id": "BLACK_STAR",
         "ordinal": 134
       },
       {
+        "game_id": "Calling Bell",
         "id": "CALLING_BELL",
         "ordinal": 135
       },
       {
+        "game_id": "Cauldron",
         "id": "CAULDRON",
         "ordinal": 136
       },
       {
+        "game_id": "CultistMask",
         "id": "CULTIST_HEADPIECE",
         "ordinal": 137
       },
       {
+        "game_id": "DollysMirror",
         "id": "DOLLYS_MIRROR",
         "ordinal": 138
       },
       {
+        "game_id": "Dream Catcher",
         "id": "DREAM_CATCHER",
         "ordinal": 139
       },
       {
+        "game_id": "Empty Cage",
         "id": "EMPTY_CAGE",
         "ordinal": 140
       },
       {
+        "game_id": "Eternal Feather",
         "id": "ETERNAL_FEATHER",
         "ordinal": 141
       },
       {
+        "game_id": "Frozen Egg 2",
         "id": "FROZEN_EGG",
         "ordinal": 142
       },
       {
+        "game_id": "Golden Idol",
         "id": "GOLDEN_IDOL",
         "ordinal": 143
       },
       {
+        "game_id": "Juzu Bracelet",
         "id": "JUZU_BRACELET",
         "ordinal": 144
       },
       {
+        "game_id": "Lee's Waffle",
         "id": "LEES_WAFFLE",
         "ordinal": 145
       },
       {
+        "game_id": "Mango",
         "id": "MANGO",
         "ordinal": 146
       },
       {
+        "game_id": "Matryoshka",
         "id": "MATRYOSHKA",
         "ordinal": 147
       },
       {
+        "game_id": "MawBank",
         "id": "MAW_BANK",
         "ordinal": 148
       },
       {
+        "game_id": "MealTicket",
         "id": "MEAL_TICKET",
         "ordinal": 149
       },
       {
+        "game_id": "Membership Card",
         "id": "MEMBERSHIP_CARD",
         "ordinal": 150
       },
       {
+        "game_id": "Molten Egg 2",
         "id": "MOLTEN_EGG",
         "ordinal": 151
       },
       {
+        "game_id": "Nloth's Gift",
         "id": "NLOTHS_GIFT",
         "ordinal": 152
       },
       {
+        "game_id": "NlothsMask",
         "id": "NLOTHS_HUNGRY_FACE",
         "ordinal": 153
       },
       {
+        "game_id": "Old Coin",
         "id": "OLD_COIN",
         "ordinal": 154
       },
       {
+        "game_id": "Orrery",
         "id": "ORRERY",
         "ordinal": 155
       },
       {
+        "game_id": "Pandora's Box",
         "id": "PANDORAS_BOX",
         "ordinal": 156
       },
       {
+        "game_id": "Peace Pipe",
         "id": "PEACE_PIPE",
         "ordinal": 157
       },
       {
+        "game_id": "Pear",
         "id": "PEAR",
         "ordinal": 158
       },
       {
+        "game_id": "Potion Belt",
         "id": "POTION_BELT",
         "ordinal": 159
       },
       {
+        "game_id": "Prayer Wheel",
         "id": "PRAYER_WHEEL",
         "ordinal": 160
       },
       {
+        "game_id": "PrismaticShard",
         "id": "PRISMATIC_SHARD",
         "ordinal": 161
       },
       {
+        "game_id": "Question Card",
         "id": "QUESTION_CARD",
         "ordinal": 162
       },
       {
+        "game_id": "Regal Pillow",
         "id": "REGAL_PILLOW",
         "ordinal": 163
       },
       {
+        "game_id": "SsserpentHead",
         "id": "SSSERPENT_HEAD",
         "ordinal": 164
       },
       {
+        "game_id": "Shovel",
         "id": "SHOVEL",
         "ordinal": 165
       },
       {
+        "game_id": "Singing Bowl",
         "id": "SINGING_BOWL",
         "ordinal": 166
       },
       {
+        "game_id": "Smiling Mask",
         "id": "SMILING_MASK",
         "ordinal": 167
       },
       {
+        "game_id": "Spirit Poop",
         "id": "SPIRIT_POOP",
         "ordinal": 168
       },
       {
+        "game_id": "Strawberry",
         "id": "STRAWBERRY",
         "ordinal": 169
       },
       {
+        "game_id": "The Courier",
         "id": "THE_COURIER",
         "ordinal": 170
       },
       {
+        "game_id": "Tiny Chest",
         "id": "TINY_CHEST",
         "ordinal": 171
       },
       {
+        "game_id": "Tiny House",
         "id": "TINY_HOUSE",
         "ordinal": 172
       },
       {
+        "game_id": "Toxic Egg 2",
         "id": "TOXIC_EGG",
         "ordinal": 173
       },
       {
+        "game_id": "War Paint",
         "id": "WAR_PAINT",
         "ordinal": 174
       },
       {
+        "game_id": "Whetstone",
         "id": "WHETSTONE",
         "ordinal": 175
       },
       {
+        "game_id": "White Beast Statue",
         "id": "WHITE_BEAST_STATUE",
         "ordinal": 176
       },
       {
+        "game_id": "WingedGreaves",
         "id": "WING_BOOTS",
         "ordinal": 177
       },
       {
+        "game_id": "Circlet",
         "id": "CIRCLET",
         "ordinal": 178
       },
       {
+        "game_id": "Red Circlet",
         "id": "RED_CIRCLET",
         "ordinal": 179
       }

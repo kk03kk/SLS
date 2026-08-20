@@ -590,7 +590,7 @@ std::vector<search::GameAction> getAllRewardActions(const sts::GameContext &gc) 
 
     const auto &r = gc.info.rewardsContainer;
     for (int i = 0; i < r.goldRewardCount; ++i) {
-        actions.emplace_back(search::GameAction::RewardsActionType::GOLD);
+        actions.emplace_back(search::GameAction::RewardsActionType::GOLD, i);
     }
 
     for (int i = 0; i < r.cardRewardCount; ++i) {

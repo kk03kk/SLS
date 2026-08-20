@@ -8,13 +8,14 @@ from pathlib import Path
 from typing import Any, Mapping
 
 
-TRACE_SCHEMA = "sls-parity-trace-v1"
+TRACE_SCHEMA = "sls-parity-trace-v2"
 
 
 @dataclass(frozen=True, slots=True)
 class TraceStep:
     sequence: int
     screen: str
+    candidate_kinds: tuple[str, ...]
     action: Mapping[str, Any] | None
     observation_differences: Mapping[str, Any]
     action_differences: Mapping[str, Any]

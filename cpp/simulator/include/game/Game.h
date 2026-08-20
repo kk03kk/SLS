@@ -24,10 +24,9 @@ namespace sts {
     namespace SeedHelper {
         constexpr int SEED_BASE = 35;
 
-        int getDigitValue(char c);
         std::string getString(std::uint64_t seed);
         std::uint64_t getLong(const std::string &seed);
-    };
+    }
 
     CardId getAnyColorCard(Random &cardRng, CardRarity rarity);
     CardId getRandomClassCardOfTypeAndRarity(Random &cardRng, CharacterClass cc, CardType type, CardRarity rarity);

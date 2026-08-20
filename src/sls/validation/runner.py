@@ -51,6 +51,7 @@ def run_paired(
             step = TraceStep(
                 sequence,
                 simulator_decision.observation.screen.value,
+                tuple(sorted({action.kind.value for action in simulator_decision.actions})),
                 None if action is None else action.to_dict(),
                 observation_diff,
                 action_diff,

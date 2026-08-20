@@ -159,7 +159,7 @@ mechanisms; they are not a second environment or training contract.
 ## `reference/original-game`
 
 - `manifest.json`: ownership boundary and expected external runtime files.
-- `decompiled/`: CFR output mirroring original Java packages. Its 4,874 files
+- `decompiled/`: CFR output mirroring original Java packages. Its 4,873 Java files
   are static rule-reference evidence only; none is imported, compiled, or packaged.
 
 ## `tools`
@@ -170,6 +170,7 @@ mechanisms; they are not a second environment or training contract.
 - `check_original.py`: verify imported hashes and Java compiler.
 - `build_oracle.py`: deterministic Oracle JAR compilation.
 - `generate_content_registry.py`: regenerate registry from C++ headers.
+- `audit_static.py`: machine-check Java/C++ IDs, registry freshness, supported card cases, and historical markers.
 - `validate_full_run.py`: one-seed CommunicationMod parity entry.
 - `validate_corpus.py`: TOML-driven multi-seed parity corpus, acceptance gate, traces, and coverage summary.
 - `train_full_run.py`: canonical FullRun PPO entry and resume/save/evaluate loop.
@@ -192,6 +193,8 @@ mechanisms; they are not a second environment or training contract.
 - `contracts/test_observation.py`: policy visibility and hidden draw order.
 - `contracts/test_decision.py`: candidate and termination invariants.
 - `content/test_registry.py`: generated registry validation.
+- `content/test_static_audit.py`: decompiled-Java/C++ static audit gate.
+- `content/test_seed.py`: Java-compatible seed conversion and unsigned round trips.
 - `original/test_adapter.py`: map/combat CommunicationMod adaptation.
 - `original/test_original_backend.py`: start/reset and Neow UI folding.
 - `simulator/test_simulator_backend.py`: native FullRun canonical reset.

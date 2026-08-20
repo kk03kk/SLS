@@ -1146,7 +1146,15 @@ py::dict screen_info_state(const GameContext &gc) {
     result["complete"] = true;
     switch (gc.screenState) {
         case ScreenState::EVENT_SCREEN: {
-            result["event_data"] = gc.info.eventData;
+            // ScreenStateInfo is reused across rooms.  Only expose eventData
+            // for events whose state machine actually reads it; otherwise a
+            // stale value from an earlier event makes equivalent checkpoints
+            // compare unequal.
+            const bool uses_event_data =
+                gc.curEvent == Event::CURSED_TOME ||
+                gc.curEvent == Event::COLOSSEUM ||
+                gc.curEvent == Event::SCRAP_OOZE;
+            result["event_data"] = uses_event_data ? gc.info.eventData : 0;
             if (gc.curEvent == Event::NEOW) {
                 py::list options;
                 for (const auto &option : gc.info.neowRewards) {
@@ -1203,14 +1211,17 @@ py::dict screen_info_state(const GameContext &gc) {
         case ScreenState::TREASURE_ROOM:
             result["have_gold"] = gc.info.haveGold;
             result["chest_size"] = static_cast<int>(gc.info.chestSize);
+            result["relic_tier"] = static_cast<int>(gc.info.tier);
             result["continuation"] = "map";
             break;
         case ScreenState::SHOP_ROOM:
             result["shop"] = shop_state(gc.info.shop);
             result["continuation"] = "map";
             break;
-        case ScreenState::MAP_SCREEN:
         case ScreenState::REST_ROOM:
+            result["continuation"] = "map";
+            break;
+        case ScreenState::MAP_SCREEN:
         case ScreenState::INVALID:
             break;
         case ScreenState::BATTLE:
@@ -1275,6 +1286,7 @@ void restore_screen_info(GameContext &gc, const py::dict &state) {
         case ScreenState::TREASURE_ROOM:
             gc.info.haveGold = state["have_gold"].cast<bool>();
             gc.info.chestSize = static_cast<ChestSize>(state["chest_size"].cast<int>());
+            gc.info.tier = static_cast<RelicTier>(state["relic_tier"].cast<int>());
             break;
         case ScreenState::SHOP_ROOM:
             gc.info.shop = restore_shop(state["shop"].cast<py::dict>());
@@ -1435,172 +1447,6 @@ public:
         multi_select_bits_ = 0;
         multi_select_indices_.clear();
         has_pre_step_moves_ = false;
-        reward_pool_.clear();
-        reward_prepared_ = false;
-        auto_skipped_potion_rewards_ = 0;
-        auto_skipped_relic_rewards_ = 0;
-    }
-
-    void set_reward_card_pool(const std::vector<std::string> &cards) {
-        require_reset();
-        reward_pool_.clear();
-        for (const auto &name : cards) {
-            const auto card = parse_card(name);
-            const auto rarity = card.getRarity();
-            if (rarity != CardRarity::COMMON && rarity != CardRarity::UNCOMMON &&
-                    rarity != CardRarity::RARE) {
-                throw std::invalid_argument(
-                    "Mini-run reward pool only accepts common, uncommon, or rare cards");
-            }
-            if (std::find(reward_pool_.begin(), reward_pool_.end(), card.id)
-                    == reward_pool_.end()) {
-                reward_pool_.push_back(card.id);
-            }
-        }
-        for (const auto rarity : {
-                CardRarity::COMMON, CardRarity::UNCOMMON, CardRarity::RARE}) {
-            const auto count = std::count_if(
-                reward_pool_.begin(), reward_pool_.end(),
-                [rarity](CardId id) { return Card(id).getRarity() == rarity; });
-            if (count < 3) {
-                throw std::invalid_argument(
-                    "Mini-run reward pool requires at least three cards per rarity");
-            }
-        }
-    }
-
-    void align_mini_run_start_rng() {
-        require_reset();
-        // The original harness reaches the map through Neow before replacing
-        // the deck/relics. Those native setup operations consume one Neow RNG
-        // value and five relic-pool shuffle values. They do not affect the
-        // already-created first BattleContext, but they remain observable at
-        // reward generation and in parity checkpoints.
-        gc_->neowRng.randomLong();
-        // Base-game relic-pool setup records five RNG calls while constructing
-        // deterministic per-tier pools; its serialized RandomXS128 state is
-        // unchanged at this boundary, but the public counter is observable.
-        gc_->relicRng.counter += 5;
-    }
-
-    py::dict prepare_mini_run_rewards() {
-        require_reset();
-        if (!finalized_ || bc_->outcome != Outcome::PLAYER_VICTORY) {
-            throw std::logic_error("Mini-run rewards require a completed victory");
-        }
-        if (!reward_prepared_) {
-            restrict_card_rewards();
-            auto &rewards = gc_->info.rewardsContainer;
-            while (rewards.goldRewardCount > 0) {
-                search::GameAction(search::GameAction::RewardsActionType::GOLD, 0)
-                    .execute(*gc_);
-            }
-            // Potion rewards are intentionally absent from the agent boundary.
-            while (rewards.potionCount > 0) {
-                ++auto_skipped_potion_rewards_;
-                rewards.removePotionReward(0);
-            }
-            // Five-fight v2 exercises elite combat before relic learning. The
-            // original reward is generated (including RNG/pool effects), then
-            // deliberately left unclaimed at the agent boundary.
-            while (rewards.relicCount > 0) {
-                ++auto_skipped_relic_rewards_;
-                rewards.removeRelicReward(0);
-            }
-            reward_prepared_ = true;
-        }
-        return mini_run_snapshot();
-    }
-
-    py::dict choose_mini_run_card(int option_index) {
-        require_reset();
-        if (!reward_prepared_) {
-            throw std::logic_error("Call prepare_mini_run_rewards before choosing");
-        }
-        auto &rewards = gc_->info.rewardsContainer;
-        if (option_index >= 0) {
-            if (rewards.cardRewardCount != 1 ||
-                    option_index >= rewards.cardRewards[0].size()) {
-                throw std::invalid_argument("Invalid mini-run card reward index");
-            }
-            search::GameAction(
-                search::GameAction::RewardsActionType::CARD, 0, option_index)
-                .execute(*gc_);
-        }
-        search::GameAction(search::GameAction::RewardsActionType::SKIP).execute(*gc_);
-        return mini_run_snapshot();
-    }
-
-    py::dict start_next_combat(const std::string &encounter, bool elite = false) {
-        require_reset();
-        if (!finalized_ || bc_->outcome != Outcome::PLAYER_VICTORY ||
-                gc_->screenState == ScreenState::REWARDS) {
-            throw std::logic_error(
-                "Finish the current reward choice before starting the next combat");
-        }
-        ++gc_->floorNum;
-        gc_->curRoom = elite ? Room::ELITE : Room::MONSTER;
-        gc_->miscRng = Random(gc_->seed + static_cast<std::uint64_t>(gc_->floorNum));
-        install_combat_reward_callback();
-        bc_ = std::make_unique<BattleContext>();
-        bc_->init(*gc_, parse_encounter(encounter));
-        finalized_ = false;
-        escaped_ = false;
-        multi_select_bits_ = 0;
-        multi_select_indices_.clear();
-        has_pre_step_moves_ = false;
-        reward_prepared_ = false;
-        return snapshot();
-    }
-
-    py::dict mini_run_snapshot() const {
-        require_reset();
-        py::dict result;
-        result["seed"] = gc_->seed;
-        result["ascension"] = gc_->ascension;
-        result["act"] = gc_->act;
-        result["floor"] = gc_->floorNum;
-        result["current_hp"] = gc_->curHp;
-        result["max_hp"] = gc_->maxHp;
-        result["gold"] = gc_->gold;
-        result["auto_skipped_potion_rewards"] = auto_skipped_potion_rewards_;
-        result["auto_skipped_relic_rewards"] = auto_skipped_relic_rewards_;
-
-        py::list deck;
-        for (const auto &card : gc_->deck.cards) {
-            py::dict value;
-            value["id"] = getCardEnumName(card.id);
-            value["upgrades"] = card.getUpgraded();
-            value["misc"] = card.misc;
-            deck.append(value);
-        }
-        result["master_deck"] = deck;
-
-        py::list relics;
-        for (const auto &relic : gc_->relics.relics) {
-            py::dict value;
-            value["id"] = relicIds[static_cast<int>(relic.id)];
-            value["name"] = getRelicName(relic.id);
-            value["counter"] = relic.data;
-            relics.append(value);
-        }
-        result["relics"] = relics;
-
-        py::list cards;
-        const auto &rewards = gc_->info.rewardsContainer;
-        if (rewards.cardRewardCount > 0) {
-            for (const auto &card : rewards.cardRewards[0]) {
-                py::dict value;
-                value["id"] = getCardEnumName(card.id);
-                value["upgrades"] = card.getUpgraded();
-                value["misc"] = card.misc;
-                cards.append(value);
-            }
-        }
-        result["card_reward"] = cards;
-        result["reward_prepared"] = reward_prepared_;
-        result["rng"] = full_run_rng_state(*gc_);
-        return result;
     }
 
     void set_card_piles(
@@ -1748,6 +1594,16 @@ public:
 
         bc_->turn = combat["turn"].cast<int>() - 1;
         const auto combat_internal = combat["_internal"].cast<py::dict>();
+        bc_->cards.nextUniqueCardId = combat_internal["next_unique_card_id"].cast<int>();
+        const auto stasis_cards = combat_internal["stasis_cards"].cast<py::list>();
+        if (stasis_cards.size() != bc_->cards.stasisCards.size()) {
+            throw std::invalid_argument("Combat checkpoint has invalid stasis card count");
+        }
+        for (int index = 0; index < static_cast<int>(stasis_cards.size()); ++index) {
+            bc_->cards.stasisCards[index] = stasis_cards[index].is_none()
+                ? CardInstance(CardId::INVALID)
+                : restore_card(stasis_cards[index].cast<py::dict>());
+        }
         if (combat_internal.contains("slime_split_ghosts")) {
             for (const auto item : combat_internal["slime_split_ghosts"].cast<py::list>()) {
                 const auto ghost = item.cast<py::dict>();
@@ -1858,6 +1714,10 @@ public:
             bc_->cardSelectInfo.canPickAnyNumber = choice["can_pick_any_number"].cast<bool>();
             bc_->cardSelectInfo.pickCount = choice["pick_count"].cast<int>();
             bc_->cardSelectInfo.data0 = choice["data0"].cast<int>();
+            bc_->cardSelectInfo.discoveryCardType =
+                static_cast<CardType>(choice["discovery_card_type"].cast<int>());
+            bc_->cardSelectInfo.discoveryRerollOnRetrieve =
+                choice["discovery_reroll_on_retrieve"].cast<bool>();
             const auto generated = choice["cards"].cast<py::list>();
             if (generated.size() != 3) {
                 throw std::invalid_argument("Choice checkpoint requires three generated-card slots");
@@ -2149,10 +2009,6 @@ private:
     bool has_pre_step_moves_ = false;
     std::uint32_t multi_select_bits_ = 0;
     std::vector<int> multi_select_indices_;
-    std::vector<CardId> reward_pool_;
-    bool reward_prepared_ = false;
-    int auto_skipped_potion_rewards_ = 0;
-    int auto_skipped_relic_rewards_ = 0;
 
     void install_combat_reward_callback() {
         gc_->regainControlAction = [](GameContext &gc) {
@@ -2164,41 +2020,6 @@ private:
                 next.screenState = ScreenState::MAP_SCREEN;
             };
         };
-    }
-
-    void restrict_card_rewards() {
-        if (reward_pool_.empty()) return;
-        auto &rewards = gc_->info.rewardsContainer;
-        for (int reward_index = 0; reward_index < rewards.cardRewardCount;
-                ++reward_index) {
-            auto &reward = rewards.cardRewards[reward_index];
-            std::vector<CardId> used;
-            for (int index = 0; index < reward.size(); ++index) {
-                const auto original = reward[index];
-                const auto allowed = std::find(
-                    reward_pool_.begin(), reward_pool_.end(), original.id)
-                    != reward_pool_.end();
-                const auto duplicate = std::find(
-                    used.begin(), used.end(), original.id) != used.end();
-                if (!allowed || duplicate) {
-                    std::vector<CardId> candidates;
-                    for (const auto id : reward_pool_) {
-                        if (Card(id).getRarity() == original.getRarity() &&
-                                std::find(used.begin(), used.end(), id) == used.end()) {
-                            candidates.push_back(id);
-                        }
-                    }
-                    if (candidates.empty()) {
-                        throw std::logic_error(
-                            "Restricted mini-run reward pool exhausted a rarity");
-                    }
-                    const auto selected = candidates[gc_->cardRng.random(
-                        static_cast<int>(candidates.size()) - 1)];
-                    reward[index] = Card(selected, original.upgraded);
-                }
-                used.push_back(reward[index].id);
-            }
-        }
     }
 
     int selected_count() const {
@@ -2618,12 +2439,20 @@ private:
         combat_internal["monster_skip_turn_bits"] = bc_->monsters.skipTurn.to_ulong();
         combat_internal["potion_count"] = bc_->potionCount;
         combat_internal["potion_capacity"] = bc_->potionCapacity;
+        combat_internal["next_unique_card_id"] = bc_->cards.nextUniqueCardId;
+        py::list stasis_cards;
+        for (const auto &card : bc_->cards.stasisCards) {
+            if (card.getId() == CardId::INVALID) stasis_cards.append(py::none());
+            else stasis_cards.append(card_dict(card));
+        }
+        combat_internal["stasis_cards"] = stasis_cards;
         py::list potion_ids;
         for (int index = 0; index < 5; ++index) {
             potion_ids.append(static_cast<int>(bc_->potions[index]));
         }
         combat_internal["potion_ids"] = potion_ids;
-        if (bc_->encounter == MonsterEncounter::SLIME_BOSS) {
+        if (bc_->encounter == MonsterEncounter::SLIME_BOSS ||
+                bc_->encounter == MonsterEncounter::LARGE_SLIME) {
             py::list ghosts;
             for (const int slot : {4, 5, 6}) {
                 const auto &monster = bc_->monsters.arr[slot];
@@ -2687,14 +2516,25 @@ private:
         }
         if (bc_->inputState == InputState::CARD_SELECT) {
             py::dict choice_internal;
-            choice_internal["task"] = static_cast<int>(bc_->cardSelectInfo.cardSelectTask);
+            const auto task = bc_->cardSelectInfo.cardSelectTask;
+            choice_internal["task"] = static_cast<int>(task);
             choice_internal["can_pick_zero"] = bc_->cardSelectInfo.canPickZero;
             choice_internal["can_pick_any_number"] = bc_->cardSelectInfo.canPickAnyNumber;
             choice_internal["pick_count"] = bc_->cardSelectInfo.pickCount;
-            choice_internal["data0"] = bc_->cardSelectInfo.data0;
+            choice_internal["data0"] =
+                task == CardSelectTask::DISCOVERY || task == CardSelectTask::DUAL_WIELD
+                    ? bc_->cardSelectInfo.data0 : 0;
+            choice_internal["discovery_card_type"] =
+                static_cast<int>(task == CardSelectTask::DISCOVERY
+                    ? bc_->cardSelectInfo.discoveryCardType : CardType::INVALID);
+            choice_internal["discovery_reroll_on_retrieve"] =
+                task == CardSelectTask::DISCOVERY &&
+                bc_->cardSelectInfo.discoveryRerollOnRetrieve;
             py::list generated;
             for (const auto card : bc_->cardSelectInfo.cards) {
-                generated.append(static_cast<int>(card));
+                generated.append(static_cast<int>(
+                    task == CardSelectTask::DISCOVERY || task == CardSelectTask::CODEX
+                        ? card : CardId::INVALID));
             }
             choice_internal["cards"] = generated;
             choice_internal["selected_bits"] = multi_select_bits_;
@@ -2945,7 +2785,13 @@ public:
         py::list replay_actions;
         for (const auto bits : action_history_) replay_actions.append(bits);
         result["replay_actions"] = replay_actions;
-        result["replay_required"] = battle_ && gc_->curRoom == Room::EVENT;
+        // A combat card-selection boundary can retain the card currently
+        // resolving plus queued cleanup/callback actions.  Those closures are
+        // deliberately not serialized.  Exact FullRun checkpoints therefore
+        // reconstruct such boundaries from the seed and canonical action
+        // history, just as event combats already do for event continuations.
+        result["replay_required"] = battle_ &&
+            (gc_->curRoom == Room::EVENT || battle_->inputState == InputState::CARD_SELECT);
         if (has_terminal_display_moves_) {
             py::list moves;
             for (const auto move : terminal_display_moves_) {
@@ -4113,7 +3959,7 @@ py::dict complete_power_order_probe() {
 }  // namespace
 
 PYBIND11_MODULE(_lightspeed, module) {
-    module.doc() = "Step-wise sts_lightspeed battle bridge for spirecomm";
+    module.doc() = "Canonical FullRun sts_lightspeed bridge and rule probes";
     module.def("rng_probe", &rng_probe, py::arg("seed"));
     module.def("shuffle_probe", &shuffle_probe, py::arg("seed"));
     module.def("action_queue_probe", &action_queue_probe);
@@ -4147,15 +3993,6 @@ PYBIND11_MODULE(_lightspeed, module) {
              py::arg("scenario"))
         .def("set_potions", &LightspeedBattle::set_potions, py::arg("potions"))
         .def("set_rng_state", &LightspeedBattle::set_rng_state, py::arg("rng"))
-        .def("set_reward_card_pool", &LightspeedBattle::set_reward_card_pool,
-             py::arg("cards"))
-        .def("align_mini_run_start_rng", &LightspeedBattle::align_mini_run_start_rng)
-        .def("prepare_mini_run_rewards", &LightspeedBattle::prepare_mini_run_rewards)
-        .def("choose_mini_run_card", &LightspeedBattle::choose_mini_run_card,
-             py::arg("option_index"))
-        .def("start_next_combat", &LightspeedBattle::start_next_combat,
-             py::arg("encounter"), py::arg("elite") = false)
-        .def("mini_run_snapshot", &LightspeedBattle::mini_run_snapshot)
         .def("load_checkpoint", &LightspeedBattle::load_checkpoint,
              py::arg("checkpoint"))
         .def("step", &LightspeedBattle::step,

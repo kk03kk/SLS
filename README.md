@@ -53,6 +53,7 @@ reference evidence, not runtime code.
 
 - `docs/architecture.md`: contracts, backend relationship, parity, and RL flow.
 - `docs/repository-map.md`: responsibility of every first-party directory/file.
+- `docs/static-audit.md`: local static evidence, fixes, known gaps, and proof boundary.
 - `docs/local-runtime.md`: files that must come from the local game/Mod installation.
 
 ## Training

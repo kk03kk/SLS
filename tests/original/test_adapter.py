@@ -75,3 +75,37 @@ def test_combat_card_targets_use_decision_scoped_ids() -> None:
     assert play.subject_id == "HAND:0"
     assert play.target_id == "MONSTER:0"
     assert adapted.commands[play.candidate_id] == ("play 1 0",)
+
+
+def test_combat_card_reward_is_folded_into_semantic_candidates() -> None:
+    payload = {
+        "in_game": True,
+        "ready_for_command": True,
+        "available_commands": ["choose", "proceed"],
+        "game_state": base_game(
+            screen_type="COMBAT_REWARD",
+            screen_state={
+                "rewards": [{
+                    "reward_type": "CARD",
+                    "cards": [
+                        {"id": "Ghostly", "upgrades": 0},
+                        {"id": "Venomology", "upgrades": 1},
+                    ],
+                }],
+            },
+        ),
+    }
+    adapted = adapt_original(payload)
+    rewards = adapted.decision.observation.reward_options
+    assert [(item.instance_id, item.content_id) for item in rewards] == [
+        ("reward-card:0:0", "APPARITION"),
+        ("reward-card:0:1", "ALCHEMIZE"),
+    ]
+    kinds = [action.kind for action in adapted.decision.actions]
+    assert kinds.count(ActionKind.CHOOSE_CARD_REWARD) == 2
+    skip = next(
+        action for action in adapted.decision.actions
+        if action.kind is ActionKind.SKIP_CARD_REWARD
+    )
+    assert skip.option_id == "reward-card:0"
+    assert adapted.commands[skip.candidate_id] == ("choose 0", "skip")

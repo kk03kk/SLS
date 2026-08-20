@@ -31,3 +31,8 @@ def test_duplicate_candidates_are_rejected() -> None:
 def test_transition_and_decision_termination_agree() -> None:
     with pytest.raises(ValueError, match="termination"):
         Transition(Decision(observation(), (), terminal=True), 0.0, terminated=False)
+
+
+def test_non_terminal_decision_requires_progress() -> None:
+    with pytest.raises(ValueError, match="legal action"):
+        Decision(observation(), ())

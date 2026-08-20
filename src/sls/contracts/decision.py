@@ -19,6 +19,8 @@ class Decision:
         validate_candidate_set(self.actions)
         if self.terminal and self.actions:
             raise ValueError("a terminal decision cannot expose legal actions")
+        if not self.terminal and not self.actions:
+            raise ValueError("a non-terminal decision must expose a legal action")
 
 
 @dataclass(frozen=True, slots=True)
