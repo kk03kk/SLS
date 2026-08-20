@@ -5,7 +5,9 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Mapping, Sequence
 
-from sls.content.normalize import normalize_card_id, normalize_content_id, normalize_potion_id
+from sls.content.normalize import (
+    normalize_card_id, normalize_content_id, normalize_event_id, normalize_potion_id,
+)
 from sls.contracts import (
     Action,
     ActionKind,
@@ -30,6 +32,26 @@ ROOM_SYMBOLS = {
     "T": "TREASURE",
     "R": "REST",
 }
+
+
+def _event_option_indices(
+    payload: Mapping[str, Any], game: Mapping[str, Any], state: Mapping[str, Any], count: int,
+) -> tuple[int, ...]:
+    continuation = payload.get("_continuation") or game.get("_continuation") or {}
+    event_id = normalize_event_id(
+        state.get("event_id") or game.get("event_id") or continuation.get("event_id")
+    )
+    phase = str(continuation.get("event_phase") or "")
+    if event_id == "GOLDEN_IDOL" and phase == "1":
+        return tuple(range(2, 2 + count))
+    return tuple(range(count))
+
+
+def _reward_kind(reward: Mapping[str, Any]) -> str:
+    """Collapse stock reward subclasses that share one canonical domain."""
+
+    kind = str(reward.get("reward_type") or "UNKNOWN").upper()
+    return "GOLD" if kind == "STOLEN_GOLD" else kind
 
 
 @dataclass(frozen=True, slots=True)
@@ -216,8 +238,12 @@ def _actions(
     choices = _sequence(game.get("choice_list"))
     if screen in {ScreenType.NEOW, ScreenType.EVENT} and "choose" in available:
         kind = ActionKind.CHOOSE_NEOW_OPTION if screen is ScreenType.NEOW else ActionKind.CHOOSE_EVENT_OPTION
-        for index, _ in enumerate(choices):
-            add(Action(kind, option_id=f"event-option:{index}"), f"choose {index}")
+        semantic_indices = (
+            tuple(range(len(choices))) if screen is ScreenType.NEOW
+            else _event_option_indices(payload, game, state, len(choices))
+        )
+        for wire_index, semantic_index in enumerate(semantic_indices):
+            add(Action(kind, option_id=f"event-option:{semantic_index}"), f"choose {wire_index}")
     elif screen is ScreenType.MAP and "choose" in available:
         nodes = _mappings(state.get("next_nodes"))
         for index, node in enumerate(nodes):
@@ -254,7 +280,7 @@ def _actions(
         counters: dict[str, int] = {}
         reward_card_groups = _sequence(payload.get("_combat_reward_cards"))
         for choice_index, reward in enumerate(_mappings(state.get("rewards"))):
-            reward_type = str(reward.get("reward_type") or "UNKNOWN").upper()
+            reward_type = _reward_kind(reward)
             occurrence = counters.get(reward_type, 0)
             counters[reward_type] = occurrence + 1
             if reward_type == "CARD":
@@ -506,12 +532,18 @@ def _screen_entities(
             for index, value in enumerate(choices)
         )
     elif screen in {ScreenType.NEOW, ScreenType.EVENT}:
-        event_id = "NEOW" if screen is ScreenType.NEOW else normalize_content_id(
+        event_id = "NEOW" if screen is ScreenType.NEOW else normalize_event_id(
             state.get("event_id") or game.get("event_id") or "EVENT"
         )
+        semantic_indices = (
+            tuple(range(len(choices))) if screen is ScreenType.NEOW
+            else _event_option_indices(payload, game, state, len(choices))
+        )
         result["event"] = tuple(
-            PublicEntity(f"event-option:{index}", f"{event_id}:OPTION:{index}")
-            for index, value in enumerate(choices)
+            PublicEntity(
+                f"event-option:{semantic_index}", f"{event_id}:OPTION:{semantic_index}"
+            )
+            for semantic_index in semantic_indices
         )
     elif screen is ScreenType.REST:
         result["rest"] = tuple(
@@ -528,7 +560,7 @@ def _screen_entities(
         counters: dict[str, int] = {}
         reward_card_groups = _sequence(payload.get("_combat_reward_cards"))
         for reward in _mappings(state.get("rewards")):
-            kind = str(reward.get("reward_type") or "UNKNOWN").upper()
+            kind = _reward_kind(reward)
             index = counters.get(kind, 0)
             counters[kind] = index + 1
             if kind == "CARD":

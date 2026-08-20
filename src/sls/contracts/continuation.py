@@ -89,6 +89,7 @@ def continuation_simulator(state: Mapping[str, Any]) -> dict[str, Any]:
     inventory = state.get("public_inventory") or {}
     deck = inventory.get("deck") or ()
     player = state.get("player_state") or {}
+    progress = state.get("progress_state") or {}
     internal_deck = player.get("deck") or ()
     bottle_types = ("ATTACK", "SKILL", "POWER")
     bottled_cards = []
@@ -124,7 +125,10 @@ def continuation_simulator(state: Mapping[str, Any]) -> dict[str, Any]:
         ),
         "post_combat": bool(
             state.get("post_combat", False)
-            or public.get("screen_state") == 2
+            or (
+                public.get("screen_state") == 2
+                and int(progress.get("current_room", -1)) in {3, 4, 6}
+            )
             or info.get("from_rewards", False)
         ),
         "loading_post_combat": bool(state.get("loading_post_combat", False)),

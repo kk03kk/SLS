@@ -12,6 +12,7 @@ import sls.validation.runtime as runtime_module
 
 from sls.backends.original.adapter import adapt_original
 from sls.backends.simulator import IRONCLAD_A0_HEART, SimulatorBackend
+from sls.contracts.continuation import continuation_simulator
 from sls.validation.runtime import RuntimeJournal
 from sls.validation.evidence import original_evidence_gaps
 from sls.validation.diff import differences
@@ -173,6 +174,45 @@ def test_ui_fold_is_recorded_evidence_not_cross_backend_continuation_state() -> 
         {"continuation_kind": "MAP", "ui_boundary_folded": True},
         {"continuation_kind": 5, "ui_boundary_folded": False},
     )
+
+
+def test_original_chest_continuation_aliases_canonical_treasure() -> None:
+    assert not continuation_differences(
+        {"continuation_kind": "CHEST"},
+        {"continuation_kind": 6},
+    )
+
+
+def test_treasure_reward_screen_is_not_post_combat() -> None:
+    continuation = continuation_simulator({
+        "public_run": {"screen_state": 2},
+        "progress_state": {"current_room": 5},
+        "screen_info": {},
+    })
+    assert continuation["post_combat"] is False
+
+
+def test_original_event_class_aliases_native_event_id() -> None:
+    assert not continuation_differences(
+        {"event_id": "com.megacrit.cardcrawl.events.exordium.GoldenIdolEvent"},
+        {"event_id": "Golden Idol"},
+    )
+    assert not continuation_differences(
+        {"event_id": "com.megacrit.cardcrawl.events.exordium.Cleric"},
+        {"event_id": "The Cleric"},
+    )
+    assert not continuation_differences(
+        {"event_phase": "0"}, {"event_phase": 0},
+    )
+
+
+def test_resume_intersection_drops_missing_legacy_event_phase() -> None:
+    payload = json.loads(json.dumps(TERMINAL_PAYLOAD))
+    payload["_continuation"] = {"event_phase": "1", "event_id": "GoldenIdolEvent"}
+    value = resume_verification_boundary(
+        payload, ignored_evidence_codes=["MISSING_EVENT_PHASE"],
+    )
+    assert "event_phase" not in value["continuation"]
 
 
 def test_terminal_continuation_ignores_inert_original_action_queue() -> None:
@@ -615,6 +655,35 @@ def test_committed_adapter_regressions_match_expected_canonical_output() -> None
             category, field_path = expected_path.split(":", 1)
             prefix = "$.observation" if category == "observation" else "$.actions"
             assert prefix + field_path[1:] not in current, (path.name, expected_path)
+
+
+def test_legacy_golden_idol_checkpoint_migrates_to_exact_continuation() -> None:
+    root = Path(__file__).resolve().parents[2]
+    path = root / "tests" / "fixtures" / "regressions" / (
+        "curse-unplayable-cost.json.gz"
+    )
+    with gzip.open(path, "rt", encoding="utf-8") as stream:
+        fixture = json.load(stream)
+
+    legacy = fixture["simulator_checkpoint"]
+    assert legacy["screen_info"] == {
+        "complete": False, "event_data": 0, "screen_state": 1,
+    }
+    simulator = SimulatorBackend(IRONCLAD_A0_HEART)
+    decision = simulator.load_checkpoint(legacy)
+    migrated = json.loads(json.dumps(simulator.checkpoint()))
+    assert migrated["screen_info"] == {
+        "complete": True,
+        "continuation": "map",
+        "event_data": 0,
+        "hp_amount_0": 20,
+        "hp_amount_1": 6,
+        "screen_state": 1,
+    }
+
+    restored = SimulatorBackend(IRONCLAD_A0_HEART)
+    assert restored.load_checkpoint(migrated) == decision
+    assert restored.raw_state == simulator.raw_state
 
 
 def test_discovery_timing_evidence_replays_the_observed_fifteen_update_variant() -> None:

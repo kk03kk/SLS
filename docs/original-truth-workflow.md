@@ -58,7 +58,7 @@ hashes. `MATCH`, `DIFFERENCE`, and `INCONCLUSIVE` are distinct states. A missing
 map coordinate, intent, RNG stream, continuation field, or unknown screen is an
 `EVIDENCE_GAP`; it is never replaced by a guessed default.
 
-The current Oracle instrumentation contract is `spirecomm-parity-v9`. Besides
+The current Oracle instrumentation contract is `spirecomm-parity-v10`. Besides
 RNG, map, queue, adjusted monster-intent, and generated reward evidence, v5
 records validation-only Discovery timing evidence. Stock `DiscoveryAction`
 consumes card RNG once per retrieval render update, so paired and offline replay
@@ -82,6 +82,10 @@ destination, dynamic cost, and completion state. These presentation objects
 can mutate gameplay state later (notably `clearPowers()` after a rapid
 discard-to-hand retrieval), so paired replay passes the observed consequence
 as validation-only evidence rather than exposing animation state to policy.
+
+Version 10 records the allowlisted stock event phase (`screenNum`, `screen`,
+or `curScreen`). Phase-aware adapters use it to map visible UI positions to
+stable semantic option IDs; an event without phase evidence is inconclusive.
 
 ## Offline daily loop
 

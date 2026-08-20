@@ -78,3 +78,28 @@ def normalize_potion_id(value: object) -> str:
 
 def normalize_power_id(value: object) -> str:
     return normalize_content_id(value)
+
+
+@lru_cache(maxsize=1)
+def _event_aliases() -> dict[str, str]:
+    aliases: dict[str, str] = {}
+    for item in load_content_registry().categories.get("events", ()):
+        canonical = str(item["id"])
+        for value in (canonical, item.get("game_id")):
+            if value:
+                aliases[_compact(value)] = canonical
+                aliases[_compact(str(value) + "Event")] = canonical
+                # Stock event class names commonly omit a leading article
+                # from the display/game ID (for example Cleric vs The Cleric).
+                words = str(value).split()
+                if words and words[0].upper() in {"A", "AN", "THE"}:
+                    without_article = " ".join(words[1:])
+                    aliases[_compact(without_article)] = canonical
+                    aliases[_compact(without_article + "Event")] = canonical
+    return aliases
+
+
+def normalize_event_id(value: object) -> str:
+    """Normalize event IDs, including stock Java class-name suffixes."""
+
+    return _event_aliases().get(_compact(value), normalize_content_id(value))

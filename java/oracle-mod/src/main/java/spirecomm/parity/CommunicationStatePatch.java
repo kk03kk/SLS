@@ -4,6 +4,7 @@ import com.autoplay.gson.Gson;
 import com.evacipated.cardcrawl.modthespire.lib.SpirePatch;
 import com.evacipated.cardcrawl.modthespire.lib.SpireRawPatch;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
+import com.megacrit.cardcrawl.events.AbstractEvent;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.neow.NeowEvent;
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
@@ -28,7 +29,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Field;
 
 public final class CommunicationStatePatch {
-    public static final String INSTRUMENTATION_SCHEMA = "spirecomm-parity-v9";
+    public static final String INSTRUMENTATION_SCHEMA = "spirecomm-parity-v10";
     private static final Method CALCULATE_DAMAGE = privateCalculateDamage();
 
     private static Method privateCalculateDamage() {
@@ -57,6 +58,29 @@ public final class CommunicationStatePatch {
         } finally {
             ReflectionHacks.setPrivate(monster, AbstractMonster.class, "intentDmg", previous);
         }
+    }
+
+    private static Object eventPhase(AbstractEvent event) {
+        if (event == null) {
+            return null;
+        }
+        for (String name : new String[] {"screenNum", "screen", "curScreen"}) {
+            for (Class<?> type = event.getClass(); type != null; type = type.getSuperclass()) {
+                try {
+                    Field field = type.getDeclaredField(name);
+                    field.setAccessible(true);
+                    Object value = field.get(event);
+                    if (value instanceof Number || value instanceof Enum<?>) {
+                        return value.toString();
+                    }
+                } catch (NoSuchFieldException ignored) {
+                    // Continue through the registered stock event hierarchy.
+                } catch (Exception error) {
+                    throw new RuntimeException("cannot inspect stock event phase", error);
+                }
+            }
+        }
+        return "UNKNOWN";
     }
 
     private static boolean pendingBottleSelection() {
@@ -136,7 +160,8 @@ public final class CommunicationStatePatch {
         continuation.put("event_id", AbstractDungeon.getCurrRoom() == null
             || AbstractDungeon.getCurrRoom().event == null ? null
             : AbstractDungeon.getCurrRoom().event.getClass().getName());
-        continuation.put("event_phase", null);
+        continuation.put("event_phase", AbstractDungeon.getCurrRoom() == null
+            ? null : eventPhase(AbstractDungeon.getCurrRoom().event));
         continuation.put("action_phase", AbstractDungeon.actionManager == null ? null
             : AbstractDungeon.actionManager.phase.name());
         continuation.put("combat_turn", com.megacrit.cardcrawl.actions.GameActionManager.turn);

@@ -203,6 +203,17 @@ def continuation_differences(
         }:
             continue
         left, right = original.get(key), simulator.get(key)
+        if key == "event_phase":
+            # Oracle reflection emits numeric Java fields as strings so enum
+            # and integer phases share one stable wire representation.
+            try:
+                left = int(left) if left is not None else None
+            except (TypeError, ValueError):
+                pass
+            try:
+                right = int(right) if right is not None else None
+            except (TypeError, ValueError):
+                pass
         if key == "card_selection_task":
             left = {"PURGE": "REMOVE"}.get(str(left).upper(), left)
             right = {"PURGE": "REMOVE"}.get(str(right).upper(), right)
@@ -214,14 +225,16 @@ def continuation_differences(
             result[f"$.{key}"] = (left, right)
     left_event, right_event = original.get("event_id"), simulator.get("event_id")
     if left_event is not None and right_event is not None:
-        from sls.content.normalize import normalize_content_id
+        from sls.content.normalize import normalize_event_id
         left_token = str(left_event).rsplit(".", 1)[-1]
         if left_token == "NeowEvent":
             left_token = "NEOW"
-        if normalize_content_id(left_token) != normalize_content_id(right_event):
+        if normalize_event_id(left_token) != normalize_event_id(right_event):
             result["$.event_id"] = (left_event, right_event)
     left_kind, right_kind = original.get("continuation_kind"), simulator.get("continuation_kind")
-    left_kind = {"GRID": "CARD_REWARD"}.get(str(left_kind).upper(), left_kind)
+    left_kind = {
+        "GRID": "CARD_REWARD", "CHEST": "TREASURE",
+    }.get(str(left_kind).upper(), left_kind)
     right_kind = aliases.get(right_kind, right_kind)
     if left_kind is not None and right_kind is not None and str(left_kind).upper() != str(right_kind).upper():
         result["$.continuation_kind"] = (left_kind, right_kind)
@@ -278,6 +291,8 @@ def resume_verification_boundary(
 
     value = resumable_original_boundary(payload)
     ignored = set(ignored_evidence_codes)
+    if "MISSING_EVENT_PHASE" in ignored:
+        value.get("continuation", {}).pop("event_phase", None)
     if {"MISSING_MONSTER_INTENTS", "INCOMPLETE_MONSTER_INTENTS"} & ignored:
         combat = value["state"].get("combat")
         if combat:

@@ -136,6 +136,12 @@ py::list monster_powers(const Monster &m) {
         result.append(power(
             enemyStatusStrings[index], amount, enemyStatusStrings[index]));
     }
+    // Stock exposes SplitPower on the living Slime Boss. The simulator keeps
+    // the threshold in monster-specific logic rather than its status map, so
+    // derive the same public-only entity here without altering combat state.
+    if (m.id == MonsterId::SLIME_BOSS && !m.isDeadOrEscaped()) {
+        result.append(power("SPLIT", -1, "SPLIT"));
+    }
     return result;
 }
 
@@ -922,8 +928,13 @@ py::dict run_progress_state(const GameContext &gc) {
 }
 
 void restore_run_progress_state(GameContext &gc, const py::dict &state) {
+    const bool registeredLegacyEvent =
+        state["screen_state"].cast<int>() == static_cast<int>(ScreenState::EVENT_SCREEN) &&
+        (state["current_event"].cast<int>() == static_cast<int>(Event::GOLDEN_IDOL) ||
+         state["current_event"].cast<int>() == static_cast<int>(Event::THE_CLERIC));
     if (state.contains("screen_continuation_serialized") &&
-            !state["screen_continuation_serialized"].cast<bool>()) {
+            !state["screen_continuation_serialized"].cast<bool>() &&
+            !registeredLegacyEvent) {
         throw std::invalid_argument("Checkpoint contains an unsupported screen continuation");
     }
     gc.outcome = static_cast<GameOutcome>(state["outcome"].cast<int>());
@@ -1028,7 +1039,11 @@ py::dict shop_state(const Shop &shop) {
 
 py::dict public_screen_state(const GameContext &gc) {
     py::dict result;
-    if (gc.screenState == ScreenState::EVENT_SCREEN && gc.curEvent == Event::MATCH_AND_KEEP) {
+    if (gc.screenState == ScreenState::EVENT_SCREEN && gc.curEvent == Event::GOLDEN_IDOL) {
+        result["phase"] = gc.hasRelic(RelicId::GOLDEN_IDOL) ? 1 : 0;
+    } else if (gc.screenState == ScreenState::EVENT_SCREEN && gc.curEvent == Event::THE_CLERIC) {
+        result["phase"] = 0;
+    } else if (gc.screenState == ScreenState::EVENT_SCREEN && gc.curEvent == Event::MATCH_AND_KEEP) {
         py::list slots;
         for (int index = 0; index < gc.info.toSelectCards.size(); ++index) {
             const auto &slot = gc.info.toSelectCards[index];
@@ -1175,6 +1190,18 @@ py::dict screen_info_state(const GameContext &gc) {
                     options.append(value);
                 }
                 result["neow_options"] = options;
+            } else if (gc.curEvent == Event::GOLDEN_IDOL) {
+                // Registered exact continuation. Golden Idol's second screen
+                // is represented by possession of the relic; the remaining
+                // choices read only these two setup-time values. Keep this
+                // deliberately event-specific instead of claiming arbitrary
+                // event state is serializable.
+                result["hp_amount_0"] = gc.info.hpAmount0;
+                result["hp_amount_1"] = gc.info.hpAmount1;
+                result["continuation"] = "map";
+            } else if (gc.curEvent == Event::THE_CLERIC) {
+                result["hp_amount_0"] = gc.info.hpAmount0;
+                result["continuation"] = "map";
             } else {
                 // Each event owns additional phase fields. Their exhaustive
                 // schema belongs to the run-content step, so reject exact
@@ -1254,7 +1281,10 @@ void restore_screen_info(GameContext &gc, const py::dict &state) {
     if (state["screen_state"].cast<int>() != static_cast<int>(gc.screenState)) {
         throw std::invalid_argument("Screen info does not match progress screen state");
     }
-    if (!state["complete"].cast<bool>()) {
+    const bool registeredLegacyEvent =
+        gc.screenState == ScreenState::EVENT_SCREEN &&
+        (gc.curEvent == Event::GOLDEN_IDOL || gc.curEvent == Event::THE_CLERIC);
+    if (!state["complete"].cast<bool>() && !registeredLegacyEvent) {
         throw std::invalid_argument("Checkpoint contains an unsupported event continuation");
     }
     gc.info = ScreenStateInfo();
@@ -1272,6 +1302,29 @@ void restore_screen_info(GameContext &gc, const py::dict &state) {
                         static_cast<Neow::Bonus>(value["bonus"].cast<int>()),
                         static_cast<Neow::Drawback>(value["drawback"].cast<int>())};
                 }
+            } else if (gc.curEvent == Event::GOLDEN_IDOL) {
+                const bool unfavorable = gc.ascension >= 15;
+                gc.info.hpAmount0 = state.contains("hp_amount_0")
+                    ? state["hp_amount_0"].cast<int>()
+                    : gc.fractionMaxHp(unfavorable ? 0.35f : 0.25f);
+                gc.info.hpAmount1 = state.contains("hp_amount_1")
+                    ? state["hp_amount_1"].cast<int>()
+                    : gc.fractionMaxHp(unfavorable ? 0.10f : 0.08f);
+                gc.regainControlAction = [](GameContext &context) {
+                    context.screenState = ScreenState::MAP_SCREEN;
+                    context.regainControlAction = nullptr;
+                };
+            } else if (gc.curEvent == Event::THE_CLERIC) {
+                gc.info.hpAmount0 = state.contains("hp_amount_0")
+                    ? state["hp_amount_0"].cast<int>()
+                    : gc.fractionMaxHp(0.25f);
+                gc.regainControlAction = [](GameContext &context) {
+                    context.screenState = ScreenState::MAP_SCREEN;
+                    context.regainControlAction = nullptr;
+                };
+            } else {
+                throw std::invalid_argument(
+                    "Checkpoint event is not registered for exact continuation");
             }
             break;
         case ScreenState::REWARDS:
@@ -2878,8 +2931,18 @@ public:
             ? state["replay_actions"].cast<py::list>() : py::list();
         const bool replay_required = state.contains("replay_required") &&
             state["replay_required"].cast<bool>();
+        const auto progress = state.contains("progress_state")
+            ? state["progress_state"].cast<py::dict>() : py::dict();
+        const auto screen = state.contains("screen_info")
+            ? state["screen_info"].cast<py::dict>() : py::dict();
+        const bool registeredLegacyEvent =
+            !screen.empty() && !screen["complete"].cast<bool>() &&
+            screen["screen_state"].cast<int>() == static_cast<int>(ScreenState::EVENT_SCREEN) &&
+            !progress.empty() &&
+            (progress["current_event"].cast<int>() == static_cast<int>(Event::GOLDEN_IDOL) ||
+             progress["current_event"].cast<int>() == static_cast<int>(Event::THE_CLERIC));
         if ((state.contains("screen_info") &&
-                !state["screen_info"].cast<py::dict>()["complete"].cast<bool>()) ||
+                !screen["complete"].cast<bool>() && !registeredLegacyEvent) ||
                 replay_required) {
             if (!state.contains("replay_actions")) {
                 throw std::invalid_argument(

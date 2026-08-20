@@ -139,3 +139,32 @@ def test_combat_card_reward_is_folded_into_semantic_candidates() -> None:
     )
     assert skip.option_id == "reward-card:0"
     assert adapted.commands[skip.candidate_id] == ("choose 0", "skip")
+
+
+def test_golden_idol_second_phase_uses_stable_semantic_option_ids() -> None:
+    payload = {
+        "in_game": True,
+        "ready_for_command": True,
+        "available_commands": ["choose"],
+        "_continuation": {
+            "event_id": "com.megacrit.cardcrawl.events.exordium.GoldenIdolEvent",
+            "event_phase": "1",
+        },
+        "game_state": base_game(
+            screen_type="EVENT",
+            choice_list=["curse", "damage", "max hp"],
+            screen_state={"event_id": "Golden Idol"},
+        ),
+    }
+
+    adapted = adapt_original(payload)
+
+    assert [action.option_id for action in adapted.decision.actions] == [
+        "event-option:2", "event-option:3", "event-option:4",
+    ]
+    assert list(adapted.commands.values()) == [
+        ("choose 0",), ("choose 1",), ("choose 2",),
+    ]
+    assert [item.instance_id for item in adapted.decision.observation.event_options] == [
+        "event-option:2", "event-option:3", "event-option:4",
+    ]

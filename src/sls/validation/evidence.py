@@ -31,7 +31,7 @@ def original_evidence_gaps(
     if payload.get("_parity_schema") and payload.get("_parity_schema") not in {
         "spirecomm-parity-v2", "spirecomm-parity-v3", "spirecomm-parity-v4",
         "spirecomm-parity-v5", "spirecomm-parity-v6", "spirecomm-parity-v7",
-        "spirecomm-parity-v8", "spirecomm-parity-v9",
+        "spirecomm-parity-v8", "spirecomm-parity-v9", "spirecomm-parity-v10",
     }:
         gaps.append({"code": "UNSUPPORTED_INSTRUMENTATION_SCHEMA", "path": "$._parity_schema"})
     rng = payload.get("_rng") or game.get("_rng")
@@ -48,9 +48,14 @@ def original_evidence_gaps(
         gaps.append({"code": "MISSING_CONTINUATION_EVIDENCE", "path": "$._continuation"})
     elif payload.get("_parity_schema") in {
         "spirecomm-parity-v7", "spirecomm-parity-v8", "spirecomm-parity-v9",
+        "spirecomm-parity-v10",
     }:
         require(continuation, "bottled_cards", "$._continuation.bottled_cards")
     raw_screen = str(game.get("screen_type") or "").upper()
+    if canonical_screen == "EVENT":
+        event = continuation_original(payload)
+        if event.get("event_phase") in {None, "", "UNKNOWN"}:
+            gaps.append({"code": "MISSING_EVENT_PHASE", "path": "$._continuation.event_phase"})
     if raw_screen == "GRID" or (game.get("combat_state") and raw_screen == "CARD_REWARD"):
         selection = continuation_original(payload)
         for key in ("card_selection_source", "card_selection_task", "card_selection_count"):

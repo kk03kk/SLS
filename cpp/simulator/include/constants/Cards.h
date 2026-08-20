@@ -857,7 +857,7 @@ namespace sts {
             case CardId::WRITHE:
             case CardId::NECRONOMICURSE:
             case CardId::CURSE_OF_THE_BELL:
-                return -3;
+                return -2;
 
 
             default:
