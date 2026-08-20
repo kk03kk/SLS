@@ -528,14 +528,20 @@ def _screen_entities(
                     (("amount", _integer(reward.get("gold", reward.get("amount")))),),
                 ))
             elif kind == "RELIC":
+                relic = reward.get("relic")
                 entities.append(PublicEntity(
                     f"reward-relic:{index}",
-                    normalize_content_id(reward.get("id", reward.get("relic"))),
+                    normalize_content_id(
+                        reward.get("id") or _mapping(relic).get("id") or relic
+                    ),
                 ))
             elif kind == "POTION":
+                potion = reward.get("potion")
                 entities.append(PublicEntity(
                     f"reward-potion:{index}",
-                    normalize_potion_id(reward.get("id", reward.get("potion"))),
+                    normalize_potion_id(
+                        reward.get("id") or _mapping(potion).get("id") or potion
+                    ),
                 ))
             elif "SAPPHIRE" in kind:
                 entities.append(PublicEntity("reward-key:sapphire", "SAPPHIRE_KEY"))
