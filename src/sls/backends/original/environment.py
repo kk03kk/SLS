@@ -65,6 +65,9 @@ class OriginalBackend:
         if "parity_continue" not in available:
             raise RuntimeError(f"parity_continue is unavailable: {sorted(available)}")
         payload = self.session.execute("parity_continue")
+        payload = self._fold_protocol_only_boundaries(
+            payload, fold_single_event=False,
+        )
         payload = self._settle_debug_intents(payload)
         self._adapted = adapt_original(payload)
         return self._adapted.decision

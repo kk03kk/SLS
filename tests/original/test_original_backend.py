@@ -191,3 +191,20 @@ def test_map_action_folds_shop_room_entry_wrapper() -> None:
     assert transition.decision.observation.screen is ScreenType.SHOP
     assert backend.last_executed_commands == ("choose 0", "choose 0")
     assert transition.decision.actions[0].kind is ActionKind.LEAVE_SHOP
+
+
+def test_resume_folds_shop_room_without_selecting_single_event() -> None:
+    menu = {"in_game": False, "ready_for_command": True, "available_commands": ["parity_continue"]}
+    shop_room = game_payload(["shop"])
+    shop_room["game_state"].update({"floor": 3, "screen_type": "SHOP_ROOM"})
+    shop = game_payload([])
+    shop["game_state"].update({
+        "floor": 3, "screen_type": "SHOP_SCREEN",
+        "screen_state": {"cards": [], "relics": [], "potions": []},
+    })
+    shop["available_commands"] = ["leave", "wait"]
+    transport = ScriptedTransport([menu, shop_room, shop])
+    backend = OriginalBackend(OriginalSession(transport), IRONCLAD_A0_ACT1)
+    decision = backend.resume()
+    assert decision.observation.screen is ScreenType.SHOP
+    assert transport.sent == ["ready", "parity_continue", "choose 0"]
