@@ -20,9 +20,39 @@ import java.util.Map;
 import java.util.ArrayList;
 import javassist.CannotCompileException;
 import javassist.CtBehavior;
+import java.lang.reflect.Method;
 
 public final class CommunicationStatePatch {
     public static final String INSTRUMENTATION_SCHEMA = "spirecomm-parity-v4";
+    private static final Method CALCULATE_DAMAGE = privateCalculateDamage();
+
+    private static Method privateCalculateDamage() {
+        try {
+            Method method = AbstractMonster.class.getDeclaredMethod("calculateDamage", int.class);
+            method.setAccessible(true);
+            return method;
+        } catch (Exception error) {
+            throw new RuntimeException("cannot access stock monster damage calculation", error);
+        }
+    }
+
+    private static int adjustedIntentDamage(AbstractMonster monster, EnemyMoveInfo move) {
+        if (move == null || move.baseDamage < 0) {
+            return -1;
+        }
+        int previous = monster.getIntentDmg();
+        if (previous >= 0) {
+            return previous;
+        }
+        try {
+            CALCULATE_DAMAGE.invoke(monster, move.baseDamage);
+            return monster.getIntentDmg();
+        } catch (Exception error) {
+            throw new RuntimeException("stock monster damage calculation failed", error);
+        } finally {
+            ReflectionHacks.setPrivate(monster, AbstractMonster.class, "intentDmg", previous);
+        }
+    }
     public static String inject(String json) {
         if (json == null || json.length() < 2 || json.charAt(json.length() - 1) != '}') {
             return json;
@@ -110,7 +140,7 @@ public final class CommunicationStatePatch {
                     ? "UNKNOWN" : move.intent.name());
                 intent.put("next_move", move == null ? monster.nextMove : move.nextMove);
                 intent.put("base_damage", move == null ? -1 : move.baseDamage);
-                intent.put("damage", monster.getIntentDmg());
+                intent.put("damage", adjustedIntentDamage(monster, move));
                 intent.put("hits", move != null && move.isMultiDamage ? move.multiplier : 1);
                 intent.put("multiplier", move == null ? 0 : move.multiplier);
                 intent.put("multi_damage", move != null && move.isMultiDamage);
