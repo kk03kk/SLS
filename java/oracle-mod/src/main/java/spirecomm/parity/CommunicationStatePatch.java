@@ -13,6 +13,7 @@ import com.megacrit.cardcrawl.map.MapRoomNode;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.monsters.EnemyMoveInfo;
 import com.megacrit.cardcrawl.rewards.RewardItem;
+import com.megacrit.cardcrawl.rooms.AbstractRoom;
 import basemod.ReflectionHacks;
 import communicationmod.GameStateConverter;
 import java.util.LinkedHashMap;
@@ -111,6 +112,13 @@ public final class CommunicationStatePatch {
         continuation.put("card_selection_source", null);
         continuation.put("card_selection_task", null);
         continuation.put("card_selection_count", 0);
+        if (AbstractDungeon.screen == AbstractDungeon.CurrentScreen.CARD_REWARD
+                && AbstractDungeon.getCurrRoom() != null
+                && AbstractDungeon.getCurrRoom().phase == AbstractRoom.RoomPhase.COMBAT) {
+            continuation.put("card_selection_source", "GENERATED");
+            continuation.put("card_selection_task", "DISCOVERY");
+            continuation.put("card_selection_count", 1);
+        }
         continuation.put("post_combat", AbstractDungeon.getCurrRoom() != null
             && AbstractDungeon.getCurrRoom().isBattleOver);
         continuation.put("loading_post_combat", AbstractDungeon.loading_post_combat);

@@ -44,7 +44,8 @@ def original_evidence_gaps(
     continuation = payload.get("_continuation") or game.get("_continuation")
     if not isinstance(continuation, Mapping):
         gaps.append({"code": "MISSING_CONTINUATION_EVIDENCE", "path": "$._continuation"})
-    if str(game.get("screen_type") or "").upper() == "GRID":
+    raw_screen = str(game.get("screen_type") or "").upper()
+    if raw_screen == "GRID" or (game.get("combat_state") and raw_screen == "CARD_REWARD"):
         selection = continuation_original(payload)
         for key in ("card_selection_source", "card_selection_task", "card_selection_count"):
             if selection.get(key) in {None, "", 0}:

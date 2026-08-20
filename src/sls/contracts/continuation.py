@@ -14,7 +14,8 @@ def continuation_original(payload: Mapping[str, Any]) -> dict[str, Any]:
         result["screen"] = result.get("screen") or game.get("screen_type")
         result["event_phase"] = result.get("event_phase") or screen_state.get("phase")
         result["action_phase"] = result.get("action_phase") or game.get("action_phase")
-        if str(game.get("screen_type") or "").upper() == "GRID":
+        raw_screen = str(game.get("screen_type") or "").upper()
+        if raw_screen == "GRID":
             task = result.get("card_selection_task")
             if not task:
                 task = (
@@ -27,6 +28,10 @@ def continuation_original(payload: Mapping[str, Any]) -> dict[str, Any]:
             result["card_selection_count"] = int(
                 result.get("card_selection_count") or screen_state.get("num_cards") or 0
             )
+        elif game.get("combat_state") and raw_screen == "CARD_REWARD":
+            result["card_selection_source"] = result.get("card_selection_source") or "GENERATED"
+            result["card_selection_task"] = result.get("card_selection_task") or "DISCOVERY"
+            result["card_selection_count"] = int(result.get("card_selection_count") or 1)
         if game.get("combat_state"):
             result["continuation_kind"] = "COMBAT"
         else:
@@ -65,18 +70,20 @@ def continuation_simulator(state: Mapping[str, Any]) -> dict[str, Any]:
     screen = state.get("public_screen") or {}
     info = state.get("screen_info") or {}
     checkpoint = state.get("combat_checkpoint") or {}
+    choice = combat.get("choice") or {}
     return {
         "room_class": public.get("room_type"), "screen": public.get("screen_state"),
         "event_id": public.get("current_event_id"), "event_phase": screen.get("phase"),
         "action_phase": checkpoint.get("input_state"),
         "combat_turn": int(combat.get("turn", 0) or 0) if combat else None,
         "card_selection_source": (
-            (combat.get("choice") or {}).get("source")
+            choice.get("source")
             or ("MASTER_DECK" if info.get("select_type") is not None else None)
         ),
-        "card_selection_task": info.get("type") or screen.get("select_type"),
+        "card_selection_task": choice.get("task") or info.get("type") or screen.get("select_type"),
         "card_selection_count": int(
-            info.get("select_count", info.get("count", screen.get("select_count", 0))) or 0
+            (1 if choice else 0)
+            or info.get("select_count", info.get("count", screen.get("select_count", 0))) or 0
         ),
         "post_combat": bool(state.get("post_combat", False) or public.get("screen_state") == 2),
         "loading_post_combat": bool(state.get("loading_post_combat", False)),

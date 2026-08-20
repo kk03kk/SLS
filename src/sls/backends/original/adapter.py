@@ -170,6 +170,8 @@ def _actions(
                     add(Action(ActionKind.PLAY_CARD, subject_id=card.instance_id), f"play {index + 1}")
         choice = _mappings(_mapping(combat.get("card_select")).get("cards"))
         if not choice:
+            choice = _mappings(_mapping(game.get("screen_state")).get("cards"))
+        if not choice:
             choice = _mappings(game.get("choice_list"))
         if "choose" in available and choice:
             for index, _ in enumerate(choice):
@@ -479,8 +481,14 @@ def _screen_entities(
     }
     choices = _sequence(game.get("choice_list"))
     if combat and choices:
+        screen_cards = _mappings(state.get("cards"))
         result["choice"] = tuple(
-            PublicEntity(f"CHOICE:{index}", normalize_content_id(_choice_id(value)))
+            PublicEntity(
+                f"CHOICE:{index}",
+                normalize_card_id(screen_cards[index].get("id"))
+                if index < len(screen_cards)
+                else normalize_content_id(_choice_id(value)),
+            )
             for index, value in enumerate(choices)
         )
     elif screen in {ScreenType.NEOW, ScreenType.EVENT}:

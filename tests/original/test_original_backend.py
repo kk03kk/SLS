@@ -120,6 +120,24 @@ def test_combat_boundary_waits_for_adjusted_attack_damage() -> None:
     assert executed == ["wait 1"]
 
 
+def test_combat_card_choice_reads_screen_state_cards() -> None:
+    payload = game_payload(["Panache", "Mayhem", "Thinking Ahead"])
+    payload["game_state"].update({
+        "floor": 6, "screen_type": "CARD_REWARD",
+        "combat_state": {"hand": [], "monsters": []},
+        "screen_state": {"cards": [
+            {"id": "Panache"}, {"id": "Mayhem"}, {"id": "Thinking Ahead"},
+        ]},
+    })
+    decision = adapt_original(payload).decision
+    assert [action.kind for action in decision.actions] == [
+        ActionKind.SELECT_CARD, ActionKind.SELECT_CARD, ActionKind.SELECT_CARD,
+    ]
+    assert [item.content_id for item in decision.observation.choice_options] == [
+        "PANACHE", "MAYHEM", "THINKING_AHEAD",
+    ]
+
+
 def test_composite_card_reward_waits_for_each_ui_transition() -> None:
     parent = game_payload([])
     parent["game_state"].update({
