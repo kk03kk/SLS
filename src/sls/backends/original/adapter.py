@@ -411,14 +411,12 @@ def _enemy(monster: Mapping[str, Any], index: int, parity: Mapping[str, Any]) ->
     intent = str(parity.get("intent") or monster.get("intent") or "UNKNOWN").upper()
     if intent == "DEBUG" and (monster_id, _integer(monster.get("move_id"))) == ("CULTIST", 3):
         intent = "BUFF"
-    non_attack = intent in {
-        "BUFF", "DEBUFF", "DEFEND", "ESCAPE", "MAGIC", "SLEEP", "STUN", "UNKNOWN",
-    }
+    is_attack = intent in {"ATTACK", "ATTACK_BUFF", "ATTACK_DEBUFF", "ATTACK_DEFEND"}
     damage = _integer(
         parity.get("damage", monster.get("move_adjusted_damage", monster.get("intent_damage")))
     )
     hits = _integer(parity.get("hits", monster.get("move_hits", monster.get("intent_hits", 1))))
-    if non_attack:
+    if not is_attack:
         damage, hits = 0, 0
     return Enemy(
         f"MONSTER:{index}", monster_id,
