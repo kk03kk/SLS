@@ -488,6 +488,10 @@ def _screen_entities(
                 normalize_card_id(screen_cards[index].get("id"))
                 if index < len(screen_cards)
                 else normalize_content_id(_choice_id(value)),
+                (
+                    ("source", "GENERATED"),
+                    ("upgrades", _integer(screen_cards[index].get("upgrades"))),
+                ) if index < len(screen_cards) else (),
             )
             for index, value in enumerate(choices)
         )
