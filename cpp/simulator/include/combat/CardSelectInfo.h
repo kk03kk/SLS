@@ -69,6 +69,7 @@ namespace sts {
         int data0 = 0;
         CardType discoveryCardType = CardType::INVALID;
         bool discoveryRerollOnRetrieve = false;
+        int discoveryRetrievalUpdates = 14;
 
         CardSelectTask cardSelectTask;
 

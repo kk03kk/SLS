@@ -205,7 +205,10 @@ def replay(
         if sequence < upper:
             if not selected_action:
                 raise ValueError(f"missing action before boundary {sequence + 1}")
-            decision = simulator.step(Action.from_dict(selected_action)).decision
+            decision = simulator.step(
+                Action.from_dict(selected_action),
+                validation_evidence=boundary.get("action_evidence") or {},
+            ).decision
     return True, None
 
 

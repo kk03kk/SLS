@@ -420,6 +420,7 @@ class TruthBundleRecorder:
             "continuation": continuation,
             "candidates": [candidate.to_dict() for candidate in original_decision.actions],
             "selected_action": action_value,
+            "action_evidence": {},
             "commands": list(commands),
             "action_executed": False,
             "original_boundary_hash": value_hash({"state": original_canonical, "continuation": continuation["original"]}),
@@ -505,7 +506,7 @@ class TruthBundleRecorder:
             "continuation": {"original": continuation, "simulator": None},
             "candidates": [candidate.to_dict() for candidate in original_decision.actions],
             "selected_action": None if action is None else action.to_dict(),
-            "commands": list(commands), "action_executed": False,
+            "action_evidence": {}, "commands": list(commands), "action_executed": False,
             "original_boundary_hash": value_hash({"state": canonical, "continuation": continuation}),
             "simulator_boundary_hash": None, "differences": {}, "difference_signature": None,
             "comparison": {
@@ -562,15 +563,19 @@ class TruthBundleRecorder:
             metadata["capability"],
         ))
 
-    def mark_last_action_executed(self, commands: Iterable[str]) -> None:
+    def mark_last_action_executed(
+        self, commands: Iterable[str], action_evidence: Mapping[str, Any] | None = None,
+    ) -> None:
         if self._last_boundary is None:
             raise RuntimeError("no truth boundary is available")
         values = list(commands)
         self._last_boundary["commands"] = values
         self._last_boundary["action_executed"] = True
+        evidence = dict(action_evidence or {})
+        self._last_boundary["action_evidence"] = evidence
         append_jsonl(self._update_stage, {
             "sequence": self._last_boundary["sequence"], "commands": values,
-            "action_executed": True,
+            "action_executed": True, "action_evidence": evidence,
         })
 
     def mark_initial_resume_verified(

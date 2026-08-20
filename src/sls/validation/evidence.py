@@ -30,6 +30,7 @@ def original_evidence_gaps(
         gaps.append({"code": "UNKNOWN_CANONICAL_SCREEN", "path": "$.game_state.screen_type"})
     if payload.get("_parity_schema") and payload.get("_parity_schema") not in {
         "spirecomm-parity-v2", "spirecomm-parity-v3", "spirecomm-parity-v4",
+        "spirecomm-parity-v5",
     }:
         gaps.append({"code": "UNSUPPORTED_INSTRUMENTATION_SCHEMA", "path": "$._parity_schema"})
     rng = payload.get("_rng") or game.get("_rng")

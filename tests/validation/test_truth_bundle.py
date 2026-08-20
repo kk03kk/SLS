@@ -443,8 +443,12 @@ def test_committed_adapter_regressions_match_expected_canonical_output() -> None
 
             simulator = SimulatorBackend(IRONCLAD_A0_HEART)
             decision = simulator.load_checkpoint(fixture["simulator_checkpoint"])
-            for action in fixture.get("action_suffix", []):
-                decision = simulator.step(Action.from_dict(action)).decision
+            evidence_suffix = fixture.get("action_evidence_suffix", [])
+            for index, action in enumerate(fixture.get("action_suffix", [])):
+                evidence = evidence_suffix[index] if index < len(evidence_suffix) else {}
+                decision = simulator.step(
+                    Action.from_dict(action), validation_evidence=evidence,
+                ).decision
             durable_checkpoint = json.loads(json.dumps(simulator.checkpoint()))
             restored = SimulatorBackend(IRONCLAD_A0_HEART)
             restored_decision = restored.load_checkpoint(durable_checkpoint)
@@ -463,9 +467,14 @@ def test_committed_adapter_regressions_match_expected_canonical_output() -> None
 
             simulator = SimulatorBackend(IRONCLAD_A0_HEART)
             simulator.load_checkpoint(fixture["simulator_checkpoint"])
-            for prefix_action in fixture.get("action_suffix", []):
-                simulator.step(Action.from_dict(prefix_action))
-            decision = simulator.step(Action.from_dict(fixture["action"])).decision
+            evidence_suffix = fixture.get("action_evidence_suffix", [])
+            for index, prefix_action in enumerate(fixture.get("action_suffix", [])):
+                evidence = evidence_suffix[index] if index < len(evidence_suffix) else {}
+                simulator.step(Action.from_dict(prefix_action), validation_evidence=evidence)
+            decision = simulator.step(
+                Action.from_dict(fixture["action"]),
+                validation_evidence=fixture.get("action_evidence") or {},
+            ).decision
             actual = {
                 "canonical_public_state": canonical_simulator(simulator.raw_state),
                 "canonical_decision": {
@@ -495,12 +504,17 @@ def test_committed_adapter_regressions_match_expected_canonical_output() -> None
 
             simulator = SimulatorBackend(IRONCLAD_A0_HEART)
             simulator.load_checkpoint(fixture["simulator_checkpoint"])
-            for prefix_action in fixture.get("action_suffix", []):
-                simulator.step(Action.from_dict(prefix_action))
+            evidence_suffix = fixture.get("action_evidence_suffix", [])
+            for index, prefix_action in enumerate(fixture.get("action_suffix", [])):
+                evidence = evidence_suffix[index] if index < len(evidence_suffix) else {}
+                simulator.step(Action.from_dict(prefix_action), validation_evidence=evidence)
             before = canonical_simulator(simulator.raw_state)["rng"]
             before.pop("neow", None)
             assert not differences(before, fixture["before"]["original"]), path.name
-            simulator.step(Action.from_dict(fixture["action"]))
+            simulator.step(
+                Action.from_dict(fixture["action"]),
+                validation_evidence=fixture.get("action_evidence") or {},
+            )
             after = canonical_simulator(simulator.raw_state)["rng"]
             after.pop("neow", None)
             assert not differences(after, fixture["after"]["original"]), path.name
@@ -525,3 +539,29 @@ def test_committed_adapter_regressions_match_expected_canonical_output() -> None
             category, field_path = expected_path.split(":", 1)
             prefix = "$.observation" if category == "observation" else "$.actions"
             assert prefix + field_path[1:] not in current, (path.name, expected_path)
+
+
+def test_discovery_timing_evidence_replays_the_observed_fifteen_update_variant() -> None:
+    # Original bundle 20260820T175146.915871Z-seed-0 recorded 15 retrieval
+    # updates and card_random counter 50 from the same room-entry autosave.
+    root = Path(__file__).resolve().parents[2]
+    path = root / "tests" / "fixtures" / "regressions" / (
+        "original-colorless-potion-card-rng-order.json.gz"
+    )
+    with gzip.open(path, "rt", encoding="utf-8") as stream:
+        fixture = json.load(stream)
+    from sls.contracts import Action
+    from sls.validation.compare import canonical_simulator
+
+    simulator = SimulatorBackend(IRONCLAD_A0_HEART)
+    simulator.load_checkpoint(fixture["simulator_checkpoint"])
+    simulator.step(Action.from_dict(fixture["action_suffix"][0]))
+    simulator.step(
+        Action.from_dict(fixture["action"]),
+        validation_evidence={"discovery_retrieval_updates": 15},
+    )
+    assert canonical_simulator(simulator.raw_state)["rng"]["card_random"] == {
+        "counter": 50,
+        "seed0": 8409297769953316801,
+        "seed1": 6897397330030733022,
+    }

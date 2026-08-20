@@ -24,7 +24,7 @@ import javassist.CtBehavior;
 import java.lang.reflect.Method;
 
 public final class CommunicationStatePatch {
-    public static final String INSTRUMENTATION_SCHEMA = "spirecomm-parity-v4";
+    public static final String INSTRUMENTATION_SCHEMA = "spirecomm-parity-v5";
     private static final Method CALCULATE_DAMAGE = privateCalculateDamage();
 
     private static Method privateCalculateDamage() {
@@ -137,6 +137,10 @@ public final class CommunicationStatePatch {
         }
         continuation.put("action_queue_types", actionTypes);
         continuation.put("card_queue_types", cardQueueTypes);
+        Map<String, Object> timingEvidence = new LinkedHashMap<String, Object>();
+        timingEvidence.put("fps_limit", Settings.MAX_FPS);
+        timingEvidence.put("discovery_completion_serial", DiscoveryTimingPatch.completionSerial);
+        timingEvidence.put("discovery_retrieval_updates", DiscoveryTimingPatch.lastRetrievalUpdates);
         ArrayList<Map<String, Object>> monsterIntents = new ArrayList<Map<String, Object>>();
         if (AbstractDungeon.getMonsters() != null) {
             for (AbstractMonster monster : AbstractDungeon.getMonsters().monsters) {
@@ -178,6 +182,7 @@ public final class CommunicationStatePatch {
             + ",\"_rng\":" + gson.toJson(rng)
             + ",\"_parity_run\":" + gson.toJson(run)
             + ",\"_continuation\":" + gson.toJson(continuation)
+            + ",\"_timing_evidence\":" + gson.toJson(timingEvidence)
             + ",\"_monster_intents\":" + gson.toJson(monsterIntents)
             + ",\"_combat_reward_cards\":" + gson.toJson(combatRewardCards)
             + ",\"math_seed\":" + Long.toUnsignedString(ParityRng.mathSeed)

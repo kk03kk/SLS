@@ -138,6 +138,38 @@ def test_combat_card_choice_reads_screen_state_cards() -> None:
     ]
 
 
+def test_discovery_timing_is_validation_only_action_evidence() -> None:
+    payload = game_payload(["Panache", "Mayhem", "Thinking Ahead"])
+    payload["game_state"].update({
+        "floor": 6, "screen_type": "CARD_REWARD",
+        "combat_state": {"hand": [], "monsters": []},
+        "screen_state": {"cards": [
+            {"id": "Panache"}, {"id": "Mayhem"}, {"id": "Thinking Ahead"},
+        ]},
+    })
+    payload["_timing_evidence"] = {
+        "discovery_completion_serial": 0, "discovery_retrieval_updates": 0,
+    }
+    completed = game_payload([])
+    completed["game_state"].update({
+        "floor": 6, "screen_type": "COMBAT",
+        "combat_state": {"hand": [{"id": "Panache"}], "monsters": []},
+    })
+    completed["available_commands"] = ["end"]
+    completed["_timing_evidence"] = {
+        "discovery_completion_serial": 1, "discovery_retrieval_updates": 15,
+    }
+    transport = ScriptedTransport([completed])
+    session = OriginalSession(transport)
+    session.payload = payload
+    backend = OriginalBackend(session, IRONCLAD_A0_ACT1)
+    backend._adapted = adapt_original(payload)
+    action = backend._adapted.decision.actions[0]
+    assert action.metadata == ()
+    backend.step(action)
+    assert backend.last_validation_evidence == {"discovery_retrieval_updates": 15}
+
+
 def test_composite_card_reward_waits_for_each_ui_transition() -> None:
     parent = game_payload([])
     parent["game_state"].update({

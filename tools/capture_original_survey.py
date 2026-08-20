@@ -47,7 +47,7 @@ def main() -> int:
         args.truth_root, seed=args.seed, profile_id=args.profile,
         policy_id=f"original-survey-v1:{args.variant}", evidence_class="LIVE_FULLRUN",
         capture_mode="ORIGINAL_SURVEY", acceptance_eligible=False,
-        instrumentation_schema="spirecomm-parity-v4", repository_root=ROOT,
+        instrumentation_schema="spirecomm-parity-v5", repository_root=ROOT,
         autosave=game_root / "saves" / "IRONCLAD.autosave",
         jar_paths={
             "game": game_root / "desktop-1.0.jar",
@@ -89,7 +89,9 @@ def main() -> int:
                 outcome = "STEP_LIMIT"
                 break
             decision = backend.step(action).decision
-            recorder.mark_last_action_executed(backend.last_executed_commands)
+            recorder.mark_last_action_executed(
+                backend.last_executed_commands, backend.last_validation_evidence,
+            )
     except Exception as exception:
         error = f"{type(exception).__name__}: {exception}"
     finally:

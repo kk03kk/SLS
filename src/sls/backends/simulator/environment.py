@@ -52,7 +52,17 @@ class SimulatorBackend:
         self._native.reset(int(seed), self.profile.ascension)
         return self._adapt(self._native.snapshot())
 
-    def step(self, action: Action | str) -> Transition:
+    def step(
+        self, action: Action | str, *, validation_evidence: Mapping[str, Any] | None = None,
+    ) -> Transition:
+        if validation_evidence:
+            unknown = set(validation_evidence) - {"discovery_retrieval_updates"}
+            if unknown:
+                raise ValueError(f"unknown validation evidence: {sorted(unknown)}")
+            if "discovery_retrieval_updates" in validation_evidence:
+                self._native._set_discovery_retrieval_updates_for_validation(
+                    int(validation_evidence["discovery_retrieval_updates"]),
+                )
         candidate_id = action if isinstance(action, str) else action.candidate_id
         try:
             bits = self._candidate_bits[candidate_id]

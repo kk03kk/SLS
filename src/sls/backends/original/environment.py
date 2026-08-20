@@ -25,6 +25,7 @@ class OriginalBackend:
         self.profile = profile
         self._adapted: AdaptedOriginalDecision | None = None
         self._last_executed_commands: tuple[str, ...] = ()
+        self._last_validation_evidence: dict[str, int] = {}
 
     @property
     def raw_payload(self) -> dict[str, Any]:
@@ -33,6 +34,7 @@ class OriginalBackend:
         return self.session.payload
 
     def reset(self, seed: int) -> Decision:
+        self._last_validation_evidence = {}
         payload = self.session.payload or self.session.connect()
         if payload.get("in_game"):
             available = {str(item).lower() for item in payload.get("available_commands") or ()}
@@ -54,6 +56,8 @@ class OriginalBackend:
 
     def resume(self) -> Decision:
         """Resume an official autosave through the Oracle's stock-menu trigger."""
+
+        self._last_validation_evidence = {}
 
         payload = self.session.payload or self.session.connect()
         if payload.get("in_game"):
@@ -93,6 +97,7 @@ class OriginalBackend:
         except KeyError as error:
             raise ValueError("action is not legal at the current Original decision") from error
         payload = self.raw_payload
+        timing_before = payload.get("_timing_evidence") or {}
         starting_deck_size = len((payload.get("game_state") or {}).get("deck") or ())
         executed: list[str] = []
         for index, command in enumerate(commands):
@@ -122,6 +127,14 @@ class OriginalBackend:
         )
         payload = self._settle_debug_intents(payload, executed)
         self._last_executed_commands = tuple(executed)
+        timing_after = payload.get("_timing_evidence") or {}
+        self._last_validation_evidence = {}
+        if int(timing_after.get("discovery_completion_serial", 0)) != int(
+            timing_before.get("discovery_completion_serial", 0)
+        ):
+            self._last_validation_evidence["discovery_retrieval_updates"] = int(
+                timing_after["discovery_retrieval_updates"]
+            )
         self._adapted = adapt_original(payload)
         horizon = evaluate_horizon(self.profile, self._adapted.decision.observation)
         decision = self._adapted.decision
@@ -200,6 +213,10 @@ class OriginalBackend:
     @property
     def last_executed_commands(self) -> tuple[str, ...]:
         return self._last_executed_commands
+
+    @property
+    def last_validation_evidence(self) -> dict[str, int]:
+        return dict(self._last_validation_evidence)
 
     def validation_snapshot(self) -> ValidationSnapshot:
         return self.session.validation_snapshot()

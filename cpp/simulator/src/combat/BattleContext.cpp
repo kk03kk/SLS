@@ -3024,6 +3024,7 @@ void BattleContext::openDiscoveryScreen(std::array<CardId, 3> discoveryCards, in
     // duration/retrieval branches.  Consequently the first update after a
     // choice consumes a second throw-away set of cardRandomRng draws.
     cardSelectInfo.discoveryRerollOnRetrieve = true;
+    cardSelectInfo.discoveryRetrievalUpdates = 14;
 }
 
 void BattleContext::openSimpleCardSelectScreen(CardSelectTask task, int count) {
@@ -3166,8 +3167,7 @@ void BattleContext::chooseDiscoveryCard(CardId id) {
         // 60 FPS; its 0.25 s ACTION_DUR_FAST produces fourteen retrieval
         // updates for this action.  Preserve those RNG side effects even
         // though only the originally displayed choice is added to the hand.
-        constexpr int ORIGINAL_RETRIEVAL_UPDATES_AT_60_FPS = 14;
-        for (int update = 0; update < ORIGINAL_RETRIEVAL_UPDATES_AT_60_FPS; ++update) {
+        for (int update = 0; update < cardSelectInfo.discoveryRetrievalUpdates; ++update) {
             (void) generateDiscoveryCards(cardRandomRng, player.cc, cardSelectInfo.discoveryCardType);
         }
     }

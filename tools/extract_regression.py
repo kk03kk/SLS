@@ -52,7 +52,10 @@ def _simulator_at_step(
                 if not action:
                     raise ValueError(f"missing action at step {sequence}")
                 action_suffix.append(action)
-                decision = simulator.step(Action.from_dict(action)).decision
+                decision = simulator.step(
+                    Action.from_dict(action),
+                    validation_evidence=boundaries[sequence].get("action_evidence") or {},
+                ).decision
             return simulator, decision, anchor, checkpoint, action_suffix
         except (OSError, ValueError, KeyError, RuntimeError) as error:
             failures.append(f"{anchor['anchor_id']}: {error}")
@@ -118,6 +121,10 @@ def extract(
         )
         fixture["simulator_checkpoint"] = checkpoint
         fixture["action_suffix"] = action_suffix
+        fixture["action_evidence_suffix"] = [
+            boundaries[index].get("action_evidence") or {}
+            for index in range(int(anchor["sequence"]), step)
+        ]
         fixture["restore_anchor"] = anchor["anchor_id"]
         fixture["profile_id"] = manifest["profile_id"]
         fixture["expected"] = {
@@ -170,6 +177,17 @@ def extract(
             bundle, manifest, boundaries, step - 1,
         )
         before_simulator_rng = canonical_simulator(before_simulator.raw_state).get("rng", {})
+        action_evidence = previous.get("action_evidence") or {}
+        choice = (before_simulator.raw_state.get("public_combat") or {}).get("choice") or {}
+        if not action_evidence and choice.get("task") == "DISCOVERY":
+            internal_choice = (
+                (before_simulator.raw_state.get("combat_checkpoint") or {})
+                .get("game_state", {}).get("combat_state", {})
+                .get("_internal", {}).get("choice", {})
+            )
+            updates = internal_choice.get("discovery_retrieval_updates")
+            if updates is not None:
+                action_evidence = {"discovery_retrieval_updates": int(updates)}
         after_simulator, _, _, _, _ = _simulator_at_step(
             bundle, manifest, boundaries, step,
         )
@@ -194,8 +212,13 @@ def extract(
             "restore_anchor": anchor["anchor_id"],
             "simulator_checkpoint": checkpoint,
             "action_suffix": action_suffix,
+            "action_evidence_suffix": [
+                boundaries[index].get("action_evidence") or {}
+                for index in range(int(anchor["sequence"]), step - 1)
+            ],
             "before": {"original": before_original_rng, "simulator": before_simulator_rng},
             "action": action,
+            "action_evidence": action_evidence,
             "after": {"original": after_original_rng, "simulator": after_simulator_rng},
             "counter_delta": deltas,
         })
@@ -211,8 +234,13 @@ def extract(
             raise ValueError("transition fixture requires a selected action")
         fixture["simulator_checkpoint"] = checkpoint
         fixture["action_suffix"] = action_suffix
+        fixture["action_evidence_suffix"] = [
+            boundaries[index].get("action_evidence") or {}
+            for index in range(int(anchor["sequence"]), step)
+        ]
         fixture["restore_anchor"] = anchor["anchor_id"]
         fixture["action"] = action
+        fixture["action_evidence"] = boundary.get("action_evidence") or {}
         after = boundaries[step + 1]
         after_decision = adapt_original(after["raw_original_payload"]).decision
         after_canonical = canonical_original(after["raw_original_payload"])
@@ -238,6 +266,9 @@ def extract(
         start = int(anchor["sequence"])
         fixture["anchor"] = anchor
         fixture["action_suffix"] = [b.get("selected_action") for b in boundaries[start:step + 1]]
+        fixture["action_evidence_suffix"] = [
+            b.get("action_evidence") or {} for b in boundaries[start:step + 1]
+        ]
         fixture["expected"] = {
             "canonical_public_state": boundary["canonical_public_state"],
             "rng": boundary.get("rng") or {},

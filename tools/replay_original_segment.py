@@ -67,7 +67,10 @@ def _restore_simulator_at_step(
                 selected = boundaries[sequence].get("selected_action")
                 if not selected:
                     raise ValueError(f"missing action at step {sequence}")
-                decision = simulator.step(Action.from_dict(selected)).decision
+                decision = simulator.step(
+                    Action.from_dict(selected),
+                    validation_evidence=boundaries[sequence].get("action_evidence") or {},
+                ).decision
             return simulator, decision, candidate_anchor, failures
         except (OSError, ValueError, KeyError, RuntimeError, json.JSONDecodeError) as error:
             failures.append(f"{candidate_anchor['anchor_id']}: {error}")
@@ -149,7 +152,7 @@ def main() -> int:
                     args.truth_root, seed=int(manifest["seed"]),
                     profile_id=manifest["profile_id"], policy_id=manifest["policy_id"],
                     evidence_class="RESUMED_AUTOSAVE", capture_mode="PAIRED",
-                    acceptance_eligible=False, instrumentation_schema="spirecomm-parity-v4",
+                    acceptance_eligible=False, instrumentation_schema="spirecomm-parity-v5",
                     repository_root=ROOT, autosave=destination,
                     jar_paths={
                         "game": args.game_root / "desktop-1.0.jar",
@@ -214,9 +217,14 @@ def main() -> int:
                     if semantic is None:
                         raise ValueError(f"missing action at step {source_sequence}")
                     decision = backend.step(semantic).decision
-                    simulator_decision = simulator.step(semantic).decision
-                    recorder.mark_last_action_executed(backend.last_executed_commands)
+                    simulator_decision = simulator.step(
+                        semantic, validation_evidence=backend.last_validation_evidence,
+                    ).decision
+                    recorder.mark_last_action_executed(
+                        backend.last_executed_commands, backend.last_validation_evidence,
+                    )
                 target_payload = json.loads(json.dumps(backend.raw_payload))
+                target_action_evidence = backend.last_validation_evidence
                 continued = 0
                 for _ in range(args.continue_steps):
                     if not paired_match or decision.terminal or simulator_decision.terminal:
@@ -225,8 +233,12 @@ def main() -> int:
                     commands = backend.command_sequence(semantic)
                     recorder.select_last_action(semantic, commands)
                     decision = backend.step(semantic).decision
-                    simulator_decision = simulator.step(semantic).decision
-                    recorder.mark_last_action_executed(backend.last_executed_commands)
+                    simulator_decision = simulator.step(
+                        semantic, validation_evidence=backend.last_validation_evidence,
+                    ).decision
+                    recorder.mark_last_action_executed(
+                        backend.last_executed_commands, backend.last_validation_evidence,
+                    )
                     continued += 1
                     observation_diff = differences(
                         decision.observation.to_dict(), simulator_decision.observation.to_dict(),
@@ -262,6 +274,24 @@ def main() -> int:
                 actual_resumable = resume_verification_boundary(
                     target_payload, ignored_evidence_codes=target_ignored,
                 )
+                timing_rebased = False
+                if args.to_step > start:
+                    source_action_boundary = boundaries[args.to_step - 1]
+                    source_action = source_action_boundary.get("selected_action") or {}
+                    source_timing = source_action_boundary.get("action_evidence") or {}
+                    actual_timing = target_action_evidence
+                    timing_rebased = (
+                        source_action.get("kind") == "SELECT_CARD"
+                        and "discovery_retrieval_updates" in actual_timing
+                        and source_timing.get("discovery_retrieval_updates")
+                        != actual_timing["discovery_retrieval_updates"]
+                    )
+                if timing_rebased:
+                    for value in (expected_resumable, actual_resumable):
+                        (value.get("state", {}).get("rng") or {}).pop("card_random", None)
+                        value["normalizations"].append(
+                            "drop_rng.card_random_after_timing_rebase"
+                        )
                 diff = differences(expected_resumable, actual_resumable)
                 print(json.dumps({
                     "anchor": args.anchor, "target_step": args.to_step,
@@ -270,6 +300,7 @@ def main() -> int:
                     "differences": diff, "paired_matches": paired_match,
                     "derived_bundle": str(derived_bundle),
                     "ignored_legacy_evidence_codes": target_ignored,
+                    "timing_rebased": timing_rebased,
                     "continued_steps": continued,
                 }, ensure_ascii=False), file=sys.stderr, flush=True)
                 return 0 if not diff and paired_match else 1

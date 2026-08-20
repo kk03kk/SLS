@@ -119,9 +119,13 @@ def run_paired(
             original_decision = original.step(action).decision
             if recorder is not None:
                 recorder.mark_last_action_executed(
-                    getattr(original, "last_executed_commands", commands)
+                    getattr(original, "last_executed_commands", commands),
+                    getattr(original, "last_validation_evidence", {}),
                 )
-            simulator_decision = simulator.step(action).decision
+            simulator_decision = simulator.step(
+                action,
+                validation_evidence=getattr(original, "last_validation_evidence", {}),
+            ).decision
     except Exception as exception:
         error = f"{type(exception).__name__}: {exception}"
     return ParityTrace(seed, simulator.profile.profile_id, tuple(steps), complete, error)

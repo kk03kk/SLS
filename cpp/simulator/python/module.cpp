@@ -1728,6 +1728,9 @@ public:
                 static_cast<CardType>(choice["discovery_card_type"].cast<int>());
             bc_->cardSelectInfo.discoveryRerollOnRetrieve =
                 choice["discovery_reroll_on_retrieve"].cast<bool>();
+            bc_->cardSelectInfo.discoveryRetrievalUpdates =
+                choice.contains("discovery_retrieval_updates")
+                    ? choice["discovery_retrieval_updates"].cast<int>() : 14;
             const auto generated = choice["cards"].cast<py::list>();
             if (generated.size() != 3) {
                 throw std::invalid_argument("Choice checkpoint requires three generated-card slots");
@@ -2540,6 +2543,9 @@ private:
             choice_internal["discovery_reroll_on_retrieve"] =
                 task == CardSelectTask::DISCOVERY &&
                 bc_->cardSelectInfo.discoveryRerollOnRetrieve;
+            choice_internal["discovery_retrieval_updates"] =
+                task == CardSelectTask::DISCOVERY
+                    ? bc_->cardSelectInfo.discoveryRetrievalUpdates : 0;
             py::list generated;
             for (const auto card : bc_->cardSelectInfo.cards) {
                 generated.append(static_cast<int>(
@@ -2958,6 +2964,20 @@ public:
                 "Battle skipping can only be changed outside combat");
         }
         gc_->skipBattles = enabled;
+    }
+
+    void set_discovery_retrieval_updates_for_validation(int updates) {
+        require_reset();
+        if (updates < 1 || updates > 120) {
+            throw std::invalid_argument("Discovery retrieval updates are out of range");
+        }
+        if (!battle_ || battle_->inputState != InputState::CARD_SELECT ||
+                battle_->cardSelectInfo.cardSelectTask != CardSelectTask::DISCOVERY ||
+                !battle_->cardSelectInfo.discoveryRerollOnRetrieve) {
+            throw std::logic_error(
+                "Discovery timing evidence is invalid at the current boundary");
+        }
+        battle_->cardSelectInfo.discoveryRetrievalUpdates = updates;
     }
 
     py::dict step(std::uint32_t bits) {
@@ -4046,6 +4066,9 @@ PYBIND11_MODULE(_lightspeed, module) {
         .def("_set_skip_battles_for_testing",
              &LightspeedRunState::set_skip_battles_for_testing,
              py::arg("enabled"))
+        .def("_set_discovery_retrieval_updates_for_validation",
+             &LightspeedRunState::set_discovery_retrieval_updates_for_validation,
+             py::arg("updates"))
         .def("step", &LightspeedRunState::step, py::arg("bits"))
         .def("advance_all_rng", &LightspeedRunState::advance_all_rng)
         .def("courier_restock_probe", &LightspeedRunState::courier_restock_probe,
