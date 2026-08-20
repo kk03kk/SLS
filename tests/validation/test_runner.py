@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from sls.contracts import Decision, Observation, Player, RunContext, ScreenType
+from sls.contracts import Action, ActionKind, Decision, Observation, Player, RunContext, ScreenType
 from sls.validation import run_paired, summarize
 
 
@@ -64,3 +64,21 @@ def test_terminal_pair_produces_matching_trace() -> None:
     assert coverage.screens == ("GAME_OVER",)
     assert coverage.candidate_action_kinds == ()
     assert coverage.selected_action_kinds == ()
+
+
+def test_selector_failure_still_records_the_difference_boundary() -> None:
+    original_action = Action(ActionKind.CHOOSE_MAP_NODE, node_id="map:1:0")
+    simulator_action = Action(ActionKind.CHOOSE_MAP_NODE, node_id="map:2:0")
+
+    class NonterminalOriginal(Original):
+        def reset(self, seed: int) -> Decision:
+            return Decision(observation(), (original_action,), False)
+
+    class NonterminalSimulator(Simulator):
+        def reset(self, seed: int) -> Decision:
+            return Decision(observation(), (simulator_action,), False)
+
+    trace = run_paired(NonterminalOriginal(), NonterminalSimulator(), seed=7)
+    assert len(trace.steps) == 1
+    assert "$.selector" in trace.steps[0].action_differences
+    assert trace.error == "RuntimeError: Original and Simulator expose no common canonical action"

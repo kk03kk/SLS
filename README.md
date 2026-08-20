@@ -51,6 +51,10 @@ reference evidence, not runtime code.
 
 ## Documentation
 
+The Original truth-bundle, offline replay, minimal-regression, and official
+autosave workflow is documented in
+[`docs/original-truth-workflow.md`](docs/original-truth-workflow.md).
+
 - `docs/architecture.md`: contracts, backend relationship, parity, and RL flow.
 - `docs/repository-map.md`: responsibility of every first-party directory/file.
 - `docs/static-audit.md`: local static evidence, fixes, known gaps, and proof boundary.

@@ -60,18 +60,9 @@ def adapt_original(payload: Mapping[str, Any]) -> AdaptedOriginalDecision:
     discard = _cards(combat.get("discard_pile"), "DISCARD")
     exhaust = _cards(combat.get("exhaust_pile"), "EXHAUST")
     deck = _cards(game.get("deck"), "DECK", preserve_order=True)
+    parity_intents = _mappings(payload.get("_monster_intents"))
     enemies = tuple(
-        Enemy(
-            f"MONSTER:{index}",
-            normalize_content_id(monster.get("id")),
-            _integer(monster.get("current_hp")),
-            _integer(monster.get("max_hp")),
-            _integer(monster.get("block")),
-            str(monster.get("intent") or "UNKNOWN").upper(),
-            _integer(monster.get("move_adjusted_damage", monster.get("intent_damage"))),
-            _integer(monster.get("move_hits", monster.get("intent_hits", 1))),
-            (("is_gone", bool(monster.get("is_gone", False))),),
-        )
+        _enemy(monster, index, parity_intents[index] if index < len(parity_intents) else {})
         for index, monster in enumerate(_mappings(combat.get("monsters")))
     )
     powers = _powers(_mapping(combat.get("player")).get("powers"), "PLAYER_POWER")
@@ -128,7 +119,7 @@ def adapt_original(payload: Mapping[str, Any]) -> AdaptedOriginalDecision:
             for index, item in enumerate(_mappings(game.get("potions")))
             if normalize_potion_id(item.get("id")) != "EMPTY_POTION_SLOT"
         ),
-        map_nodes=_map_nodes(game),
+        map_nodes=_map_nodes(game, parity_run),
         choice_options=options["choice"],
         reward_options=options["reward"],
         shop_items=options["shop"],
@@ -391,17 +382,63 @@ def _powers(values: Any, prefix: str) -> tuple[PublicEntity, ...]:
     )
 
 
-def _map_nodes(game: Mapping[str, Any]) -> tuple[MapNode, ...]:
+def _enemy(monster: Mapping[str, Any], index: int, parity: Mapping[str, Any]) -> Enemy:
+    monster_id = normalize_content_id(monster.get("id"))
+    intent = str(parity.get("intent") or monster.get("intent") or "UNKNOWN").upper()
+    if intent == "DEBUG" and (monster_id, _integer(monster.get("move_id"))) == ("CULTIST", 3):
+        intent = "BUFF"
+    non_attack = intent in {
+        "BUFF", "DEBUFF", "DEFEND", "ESCAPE", "MAGIC", "SLEEP", "STUN", "UNKNOWN",
+    }
+    damage = _integer(
+        parity.get("damage", monster.get("move_adjusted_damage", monster.get("intent_damage")))
+    )
+    hits = _integer(parity.get("hits", monster.get("move_hits", monster.get("intent_hits", 1))))
+    if non_attack:
+        damage, hits = 0, 0
+    return Enemy(
+        f"MONSTER:{index}", monster_id,
+        _integer(monster.get("current_hp")), _integer(monster.get("max_hp")),
+        _integer(monster.get("block")), intent, damage, hits,
+        (("is_gone", bool(monster.get("is_gone", False))),),
+    )
+
+
+def _map_nodes(game: Mapping[str, Any], parity_run: Mapping[str, Any]) -> tuple[MapNode, ...]:
     nodes = []
     reachable = {
         (_integer(node.get("x")), _integer(node.get("y")))
         for node in _mappings(_mapping(game.get("screen_state")).get("next_nodes"))
     }
+    if _integer(game.get("floor")) == 0 and not reachable:
+        reachable = {
+            (_integer(node.get("x")), 0)
+            for node in _mappings(game.get("map")) if _integer(node.get("y")) == 0
+        }
+    burning = (
+        _integer(parity_run.get("burning_elite_x"), -1),
+        _integer(parity_run.get("burning_elite_y"), -1),
+    )
+    current = (
+        _integer(parity_run.get("current_map_x"), -99),
+        _integer(parity_run.get("current_map_y"), -99),
+    )
+    if current != (-99, -99) and not reachable:
+        for node in _mappings(game.get("map")):
+            if (_integer(node.get("x")), _integer(node.get("y"))) == current:
+                reachable = {
+                    (_integer(edge.get("x")), _integer(edge.get("y")))
+                    for edge in _mappings(node.get("children"))
+                }
+                break
     for node in _mappings(game.get("map")):
         x, y = _integer(node.get("x")), _integer(node.get("y"))
         nodes.append(MapNode(
             f"map:{x}:{y}", x, y,
-            ROOM_SYMBOLS.get(str(node.get("symbol")), str(node.get("symbol") or "UNKNOWN")),
+            (
+                "BURNING_ELITE" if (x, y) == burning else
+                ROOM_SYMBOLS.get(str(node.get("symbol")), str(node.get("symbol") or "UNKNOWN"))
+            ),
             (x, y) in reachable,
             tuple(
                 f"map:{_integer(edge.get('x'))}:{15 if _integer(edge.get('y')) == 16 else _integer(edge.get('y'))}"
@@ -424,8 +461,11 @@ def _screen_entities(
             for index, value in enumerate(choices)
         )
     elif screen in {ScreenType.NEOW, ScreenType.EVENT}:
+        event_id = "NEOW" if screen is ScreenType.NEOW else normalize_content_id(
+            state.get("event_id") or game.get("event_id") or "EVENT"
+        )
         result["event"] = tuple(
-            PublicEntity(f"event-option:{index}", normalize_content_id(_choice_id(value)))
+            PublicEntity(f"event-option:{index}", f"{event_id}:OPTION:{index}")
             for index, value in enumerate(choices)
         )
     elif screen is ScreenType.REST:
@@ -475,10 +515,14 @@ def _screen_entities(
                 entities.append(PublicEntity("reward-key:emerald", "EMERALD_KEY"))
         result["reward"] = tuple(entities)
     elif screen is ScreenType.CARD_REWARD:
+        is_grid = str(game.get("screen_type") or "").upper() == "GRID"
         result["reward"] = tuple(
             PublicEntity(
                 f"select-card:{index}", normalize_card_id(card.get("id")),
-                (("upgrades", _integer(card.get("upgrades"))),),
+                (
+                    (("deck_index", index), ("upgrades", _integer(card.get("upgrades"))))
+                    if is_grid else (("upgrades", _integer(card.get("upgrades"))),)
+                ),
             )
             for index, card in enumerate(_mappings(state.get("cards")))
         )

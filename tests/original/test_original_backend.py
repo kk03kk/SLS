@@ -57,3 +57,30 @@ def test_reset_folds_the_original_only_neow_dialog() -> None:
     assert decision.observation.screen is ScreenType.NEOW
     assert len(decision.actions) == 4
     assert all(action.kind is ActionKind.CHOOSE_NEOW_OPTION for action in decision.actions)
+
+
+def test_step_folds_grid_confirmation_and_single_neow_leave_boundary() -> None:
+    menu = {"in_game": False, "ready_for_command": True, "available_commands": ["start"]}
+    grid = game_payload([])
+    grid["available_commands"] = ["confirm"]
+    grid["game_state"]["screen_type"] = "GRID"
+    leave = game_payload(["Leave"])
+    map_payload = game_payload([])
+    map_payload["game_state"]["screen_type"] = "MAP"
+    map_payload["game_state"]["screen_state"] = {
+        "next_nodes": [{"x": 1, "y": 0}],
+    }
+    map_payload["available_commands"] = ["choose", "wait", "reset_run"]
+    stable_map_payload = {**map_payload, "game_state": {**map_payload["game_state"]}}
+    restored_menu = {"in_game": False, "ready_for_command": True, "available_commands": ["start"]}
+    transport = ScriptedTransport([
+        menu, game_payload(["Continue"]), game_payload(["A", "B", "C", "D"]),
+        grid, leave, map_payload, stable_map_payload, restored_menu,
+    ])
+    backend = OriginalBackend(OriginalSession(transport), IRONCLAD_A0_ACT1)
+    decision = backend.reset(0)
+    transition = backend.step(decision.actions[0])
+    assert transition.decision.observation.screen is ScreenType.MAP
+    assert backend.last_executed_commands == ("choose 0", "confirm", "choose 0", "wait 30")
+    backend.return_to_menu()
+    assert transport.sent[-1] == "reset_run"

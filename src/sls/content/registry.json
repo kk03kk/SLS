@@ -3919,11 +3919,11 @@
   "schema_version": 1,
   "source": {
     "header_sha256": {
-      "Cards.h": "68f5ba20a4b4337cee31d18a10c238bbf9c597241088c9837afafa54dfd67cda",
+      "Cards.h": "d1da0452e9868f7e31a7cef3100d0745ccb2ebb0c1e2bb6fdd90d48dae45e163",
       "CharacterClasses.h": "81dc2b5ca3395b826c2e33677b4943b6cc35b67b1c81f5d076b8abda02db289d",
       "Events.h": "d558be77e7f187784a7eb66c21a537b458304d7dcbc934c6498d635a74cb97f1",
       "MonsterEncounters.h": "5363596ba4d216bf635c1f8d6066e180712c590529210d6264746b877e27bcce",
-      "MonsterIds.h": "9323e51faf3c1583158469792e4b4e9c0569ad9fef7355460c98e2c815aa36f1",
+      "MonsterIds.h": "913c21a6b69d22cbe0ff99d99e46b75a6cea83462f519d1150b7fc9360f2e792",
       "Potions.h": "d16d41c0b95028d7338b05f455511c266907e5ec31be711a705ceeb077ea1938",
       "Relics.h": "092473d34e953ec4e9328d602250b67cb2d12c6df0be9b7bbaf435de47aa88d0"
     },

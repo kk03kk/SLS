@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Callable
+from typing import Any, Callable
 
 from sls.backends.original import OriginalBackend
 from sls.backends.simulator import SimulatorBackend
@@ -25,6 +25,7 @@ def run_paired(
     include_rng: bool = True,
     selector: ActionSelector = deterministic_action,
     stop_on_difference: bool = True,
+    recorder: Any | None = None,
 ) -> ParityTrace:
     steps: list[TraceStep] = []
     error: str | None = None
@@ -58,7 +59,18 @@ def run_paired(
                         terminal_kind = "OUTCOME_MISMATCH"
                     else:
                         terminal_kind = "VICTORY" if original_alive else "DEATH"
-            action = None if terminal else selector(original_decision, simulator_decision)
+            selection_error: str | None = None
+            action = None
+            if not terminal:
+                try:
+                    action = selector(original_decision, simulator_decision)
+                except Exception as exception:
+                    selection_error = f"{type(exception).__name__}: {exception}"
+                    action_diff = dict(action_diff)
+                    action_diff["$.selector"] = (selection_error, None)
+            commands = ()
+            if action is not None and hasattr(original, "command_sequence"):
+                commands = original.command_sequence(action)
             step = TraceStep(
                 sequence,
                 simulator_decision.observation.screen.value,
@@ -72,6 +84,24 @@ def run_paired(
                 state_diff,
             )
             steps.append(step)
+            if recorder is not None:
+                recorder.record_boundary(
+                    sequence=sequence,
+                    original_payload=original.raw_payload,
+                    original_decision=original_decision,
+                    simulator_state=simulator.raw_state,
+                    simulator_decision=simulator_decision,
+                    action=action,
+                    commands=commands,
+                    observation_diff=observation_diff,
+                    action_diff=action_diff,
+                    state_diff=state_diff,
+                    checkpoint=simulator.checkpoint(),
+                    terminal_kind=terminal_kind,
+                )
+            if selection_error is not None:
+                error = selection_error
+                break
             if stop_on_difference and not step.matches:
                 break
             if terminal:
@@ -82,6 +112,10 @@ def run_paired(
                 break
             assert action is not None
             original_decision = original.step(action).decision
+            if recorder is not None:
+                recorder.mark_last_action_executed(
+                    getattr(original, "last_executed_commands", commands)
+                )
             simulator_decision = simulator.step(action).decision
     except Exception as exception:
         error = f"{type(exception).__name__}: {exception}"

@@ -21,6 +21,7 @@ from sls.contracts import (
     ValidationSnapshot,
 )
 from sls.curriculum import CurriculumProfile, IRONCLAD_A0_HEART, evaluate_horizon
+from sls.contracts.continuation import continuation_simulator
 
 
 class SimulatorBackend:
@@ -202,6 +203,7 @@ class SimulatorBackend:
                 "public_screen": raw.get("public_screen"),
             },
             rng_streams=rng,
+            continuation=continuation_simulator(raw),
         )
 
 

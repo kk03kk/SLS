@@ -6,6 +6,7 @@ import argparse
 import os
 from pathlib import Path
 import sys
+from contextlib import nullcontext
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -19,7 +20,8 @@ from sls.backends.simulator import (
     IRONCLAD_A0_HEART,
     SimulatorBackend,
 )
-from sls.validation import run_paired
+from sls.validation import TruthBundleRecorder, run_paired
+from sls.validation.runtime import OriginalRuntimeGuard
 
 
 PROFILES = {
@@ -48,19 +50,55 @@ def main() -> int:
         default=Path(os.environ.get("SLS_PARITY_OUTPUT", "validation-results/full-run.json")),
     )
     parser.add_argument("--without-rng", action="store_true")
+    parser.add_argument("--truth-root", type=Path)
+    parser.add_argument("--runtime-journal", type=Path)
+    parser.add_argument("--require-clean", action="store_true")
     args = parser.parse_args()
+    if args.require_clean:
+        import subprocess
+        status = subprocess.run(
+            ["git", "status", "--porcelain"], cwd=ROOT, check=True,
+            capture_output=True, text=True,
+        ).stdout
+        if status.strip():
+            parser.error("--require-clean refuses an authoritative capture from a dirty worktree")
+    profile = PROFILES[args.profile]
+    game_root = Path(os.environ.get("SLS_GAME_ROOT", r"D:\Steam\steamapps\common\SlayTheSpire"))
+    external = ROOT / "external" / "original-game"
+    workshop = game_root.parents[1] / "workshop" / "content" / "646570"
+    jar_paths = {
+        "game": game_root / "desktop-1.0.jar",
+        "ModTheSpire": workshop / "1605060445" / "ModTheSpire.jar",
+        "BaseMod": workshop / "1605833019" / "BaseMod.jar",
+        "CommunicationMod": workshop / "2131373661" / "CommunicationMod.jar",
+        "Oracle": game_root / "mods" / "SpirecommParity.jar",
+    }
+    recorder = None
+    if args.truth_root:
+        recorder = TruthBundleRecorder(
+            args.truth_root.resolve(), seed=args.seed, profile_id=profile.profile_id,
+            policy_id="deterministic-action-v1", repository_root=ROOT,
+            jar_paths=jar_paths, autosave=game_root / "saves" / "IRONCLAD.autosave",
+        )
     protocol_log = os.environ.get("SLS_PROTOCOL_LOG")
     transport = StdioTransport(
         log_path=Path(protocol_log).resolve() if protocol_log else None,
+        event_sink=None if recorder is None else recorder.record_protocol,
     )
-    profile = PROFILES[args.profile]
-    trace = run_paired(
-        OriginalBackend(OriginalSession(transport), profile),
-        SimulatorBackend(profile),
-        seed=args.seed,
-        max_steps=args.max_steps,
-        include_rng=not args.without_rng,
-    )
+    guard = OriginalRuntimeGuard(args.runtime_journal) if args.runtime_journal else nullcontext()
+    with guard:
+        original = OriginalBackend(OriginalSession(transport), profile)
+        try:
+            trace = run_paired(
+                original, SimulatorBackend(profile), seed=args.seed, max_steps=args.max_steps,
+                include_rng=not args.without_rng, recorder=recorder,
+            )
+            if recorder is not None:
+                outcome = trace.steps[-1].terminal_kind if trace.steps else None
+                bundle = recorder.finalize(complete=trace.complete, outcome=outcome, error=trace.error)
+                print(f"TRUTH_BUNDLE {bundle}", file=sys.stderr, flush=True)
+        finally:
+            original.return_to_menu()
     path = trace.write(args.output)
     print(
         f"PARITY seed={args.seed} steps={len(trace.steps)} "

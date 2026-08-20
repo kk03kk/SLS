@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 import sys
 from pathlib import Path
-from typing import Any, Protocol, TextIO
+from typing import Any, Callable, Protocol, TextIO
 
 
 class Transport(Protocol):
@@ -21,12 +21,16 @@ class StdioTransport:
         stdin: TextIO = sys.stdin,
         stdout: TextIO = sys.stdout,
         log_path: Path | None = None,
+        event_sink: Callable[[str, Any], None] | None = None,
     ) -> None:
         self.stdin = stdin
         self.stdout = stdout
         self.log_path = log_path
+        self.event_sink = event_sink
 
     def _log(self, direction: str, data: Any) -> None:
+        if self.event_sink is not None:
+            self.event_sink(direction, data)
         if self.log_path is None:
             return
         self.log_path.parent.mkdir(parents=True, exist_ok=True)

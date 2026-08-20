@@ -6,6 +6,7 @@ from typing import Any
 
 from sls.backends.original.transport import StdioTransport, Transport
 from sls.contracts import ValidationSnapshot
+from sls.contracts.continuation import continuation_original
 
 
 class OriginalSession:
@@ -51,4 +52,5 @@ class OriginalSession:
         return ValidationSnapshot(
             public_state=game,
             rng_streams=self.payload.get("_rng") or game.get("_rng") or {},
+            continuation=continuation_original(self.payload),
         )
