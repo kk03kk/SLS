@@ -19,11 +19,12 @@ from sls.backends.simulator import (
     SimulatorBackend,
 )
 from sls.contracts import Action
-from sls.validation.compare import parity_differences
+from sls.validation.compare import canonical_original, canonical_simulator, parity_differences
 from sls.validation.diff import differences
 from sls.validation.policies import action_ids
 from sls.contracts.continuation import continuation_original, continuation_simulator
-from sls.validation.truth import continuation_differences, difference_signature, load_bundle
+from sls.validation.truth import continuation_differences, file_hash, load_bundle, value_hash
+from sls.validation.evidence import comparison_result, original_evidence_gaps
 
 
 PROFILES = {p.profile_id: p for p in (
@@ -34,6 +35,40 @@ PROFILES = {p.profile_id: p for p in (
 def _checkpoint(path: Path) -> dict[str, Any]:
     with gzip.open(path, "rt", encoding="utf-8") as stream:
         return json.load(stream)
+
+
+def _rng_report(
+    original: dict[str, Any], simulator: dict[str, Any],
+    previous_original: dict[str, Any] | None, previous_simulator: dict[str, Any] | None,
+    *, drop_dead_neow: bool = False,
+) -> dict[str, Any] | None:
+    left = canonical_original(original).get("rng", {})
+    right = canonical_simulator(simulator).get("rng", {})
+    if drop_dead_neow:
+        left.pop("neow", None)
+        right.pop("neow", None)
+        continuation = original.get("_continuation") or (original.get("game_state") or {}).get("_continuation") or {}
+        if continuation.get("post_combat"):
+            for stream in ("monster_hp", "ai", "shuffle", "card_random", "misc"):
+                left.pop(stream, None)
+                right.pop(stream, None)
+    streams = []
+    for name in sorted(set(left) | set(right)):
+        if left.get(name) == right.get(name):
+            continue
+        before_left = (previous_original or {}).get(name)
+        before_right = (previous_simulator or {}).get(name)
+        streams.append({
+            "stream": name, "original": left.get(name), "simulator": right.get(name),
+            "original_counter_delta": None if before_left is None or left.get(name) is None else (
+                left[name]["counter"] - before_left["counter"]
+            ),
+            "simulator_counter_delta": None if before_right is None or right.get(name) is None else (
+                right[name]["counter"] - before_right["counter"]
+            ),
+            "kind": "COUNTER" if left.get(name, {}).get("counter") != right.get(name, {}).get("counter") else "STATE",
+        })
+    return {"streams": streams} if streams else None
 
 
 def replay(
@@ -56,13 +91,23 @@ def replay(
         eligible = [a for a in anchors if int(a["sequence"]) <= from_step]
         selected = max(eligible, key=lambda a: int(a["sequence"]), default=None)
     simulator = SimulatorBackend(PROFILES[profile_id])
+    restore_mode = "ACTION_HISTORY"
     start = 0
     if selected is not None:
         start = int(selected["sequence"])
         try:
-            decision = simulator.load_checkpoint(_checkpoint(
-                bundle / selected["path"] / "simulator-checkpoint.json.gz"
-            ))
+            metadata_path = bundle / selected["path"] / "metadata.json"
+            metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+            producer = metadata.get("checkpoint_producer") or {}
+            producer_abi = producer.get("abi") or producer.get("python_abi")
+            if producer_abi and producer_abi != sys.implementation.cache_tag:
+                raise ValueError("native checkpoint ABI is incompatible")
+            checkpoint = _checkpoint(bundle / selected["path"] / "simulator-checkpoint.json.gz")
+            expected_checkpoint_hash = metadata.get("checkpoint_state_hash")
+            if expected_checkpoint_hash and value_hash(checkpoint) != expected_checkpoint_hash:
+                raise ValueError("native checkpoint state hash mismatch")
+            decision = simulator.load_checkpoint(checkpoint)
+            restore_mode = "EXACT_CHECKPOINT"
         except Exception:
             decision = simulator.reset(int(manifest["seed"]))
             start = 0
@@ -71,6 +116,8 @@ def replay(
     upper = len(boundaries) - 1 if to_step is None else min(to_step, len(boundaries) - 1)
     if window:
         upper = min(upper, from_step + window - 1)
+    previous_original_rng = None
+    previous_simulator_rng = None
     for sequence in range(start, upper + 1):
         boundary = boundaries[sequence]
         if int(boundary["sequence"]) != sequence:
@@ -78,7 +125,10 @@ def replay(
         original = adapt_original(boundary["raw_original_payload"]).decision
         observation_diff = differences(original.observation.to_dict(), decision.observation.to_dict())
         action_diff = differences(action_ids(original.actions), action_ids(decision.actions))
-        state_diff = parity_differences(boundary["raw_original_payload"], simulator.raw_state)
+        state_diff = parity_differences(
+            boundary["raw_original_payload"], simulator.raw_state,
+            drop_dead_neow=manifest.get("evidence_class") == "RESUMED_AUTOSAVE",
+        )
         continuation_diff = continuation_differences(
             continuation_original(boundary["raw_original_payload"]),
             continuation_simulator(simulator.raw_state),
@@ -89,24 +139,48 @@ def replay(
             **{f"state:{k}": v for k, v in state_diff.items()},
             **{f"continuation:{k}": v for k, v in continuation_diff.items()},
         }
-        if sequence >= from_step and combined:
-            cursor = boundary["cursor"]
-            signature = difference_signature(
-                evidence_class=manifest["evidence_class"], profile=profile_id,
-                screen=cursor["screen"], act=int(cursor["act"]), floor=int(cursor["floor"]),
-                category="paired-boundary", values=combined,
-                preceding_action=None if sequence == 0 else (
-                    (boundaries[sequence - 1].get("selected_action") or {}).get("kind")
-                ),
+        gaps = original_evidence_gaps(
+            boundary["raw_original_payload"], canonical_screen=boundary["cursor"]["screen"],
+        )
+        cursor = boundary["cursor"]
+        comparison = comparison_result(
+            evidence_class=manifest["evidence_class"], profile=profile_id,
+            screen=cursor["screen"], act=int(cursor["act"]), floor=int(cursor["floor"]),
+            differences=combined, evidence_gaps=gaps,
+            preceding_action=None if sequence == 0 else (
+                (boundaries[sequence - 1].get("selected_action") or {}).get("kind")
+            ), occurrence_signature=None,
+        )
+        if sequence >= from_step and comparison["status"] != "MATCH":
+            report_values = (
+                {f"evidence:{item['path']}": [None, item["code"]] for item in gaps}
+                if gaps else combined
             )
-            first = sorted(combined)[0]
-            rng_paths = [path for path in sorted(combined) if "rng" in path.lower()]
+            first = sorted(report_values)[0]
+            rng_paths = [path for path in sorted(report_values) if "rng" in path.lower()]
+            nearest = max(
+                (a for a in anchors if int(a["sequence"]) <= sequence),
+                key=lambda a: int(a["sequence"]), default=None,
+            )
             return False, {
-                "step": sequence, "signature": signature, "first_field_path": first,
-                "values": combined[first], "first_rng_path": rng_paths[0] if rng_paths else None,
-                "nearest_anchor": selected["anchor_id"] if selected else None,
-                "difference_count": len(combined),
+                "step": sequence, "status": comparison["status"],
+                "category": comparison["category"],
+                "signature": comparison["occurrence_signature"],
+                "cluster_key": comparison["cluster_key"], "first_field_path": first,
+                "values": report_values[first], "evidence_gaps": gaps,
+                "first_rng_path": rng_paths[0] if rng_paths else None,
+                "nearest_anchor": nearest["anchor_id"] if nearest else None,
+                "restore_mode": restore_mode, "difference_count": len(report_values),
+                "rng_divergence": _rng_report(
+                    boundary["raw_original_payload"], simulator.raw_state,
+                    previous_original_rng, previous_simulator_rng,
+                    drop_dead_neow=manifest.get("evidence_class") == "RESUMED_AUTOSAVE",
+                ),
             }
+        current_original_rng = canonical_original(boundary["raw_original_payload"]).get("rng", {})
+        current_simulator_rng = canonical_simulator(simulator.raw_state).get("rng", {})
+        previous_original_rng = current_original_rng
+        previous_simulator_rng = current_simulator_rng
         selected_action = boundary.get("selected_action")
         if sequence < upper:
             if not selected_action:

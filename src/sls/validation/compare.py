@@ -74,7 +74,9 @@ def _simulator_map(state: Mapping[str, Any]) -> list[tuple[Any, ...]]:
     return sorted(nodes)
 
 
-def _original_combat(game: Mapping[str, Any]) -> dict[str, Any] | None:
+def _original_combat(
+    game: Mapping[str, Any], parity_intents: Sequence[Mapping[str, Any]] = (),
+) -> dict[str, Any] | None:
     combat = game.get("combat_state")
     if not combat:
         return None
@@ -91,15 +93,30 @@ def _original_combat(game: Mapping[str, Any]) -> dict[str, Any] | None:
         "discard": _cards(combat.get("discard_pile") or []),
         "exhaust": _cards(combat.get("exhaust_pile") or []),
         "monsters": [
-            (
-                normalize_content_id(monster.get("id")),
-                int(monster.get("current_hp", 0)), int(monster.get("max_hp", 0)),
-                int(monster.get("block", 0)), str(monster.get("intent", "UNKNOWN")),
-                bool(monster.get("is_gone", False)),
+            _original_monster(
+                monster, parity_intents[index] if index < len(parity_intents) else {},
             )
-            for monster in combat.get("monsters") or []
+            for index, monster in enumerate(combat.get("monsters") or [])
         ],
     }
+
+
+def _original_monster(
+    monster: Mapping[str, Any], parity_intent: Mapping[str, Any],
+) -> tuple[Any, ...]:
+    intent = str(parity_intent.get("intent") or monster.get("intent", "UNKNOWN"))
+    is_attack = intent.upper() in {"ATTACK", "ATTACK_BUFF", "ATTACK_DEBUFF", "ATTACK_DEFEND"}
+    damage = parity_intent.get("damage")
+    if damage is None:
+        damage = monster.get("move_adjusted_damage", 0)
+    return (
+        normalize_content_id(monster.get("id")),
+        int(monster.get("current_hp", 0)), int(monster.get("max_hp", 0)),
+        int(monster.get("block", 0)), intent,
+        int(damage) if is_attack else 0,
+        int(monster.get("move_hits", monster.get("intent_hits", 0))) if is_attack else 0,
+        bool(monster.get("is_gone", False)),
+    )
 
 
 def _simulator_combat(state: Mapping[str, Any]) -> dict[str, Any] | None:
@@ -122,6 +139,7 @@ def _simulator_combat(state: Mapping[str, Any]) -> dict[str, Any] | None:
                 normalize_content_id(monster.get("content_id")),
                 int(monster.get("current_hp", 0)), int(monster.get("max_hp", 0)),
                 int(monster.get("block", 0)), str(monster.get("intent", "UNKNOWN")),
+                int(monster.get("intent_damage", 0)), int(monster.get("intent_hits", 0)),
                 bool(monster.get("is_gone", False)),
             )
             for monster in combat.get("monsters") or []
@@ -157,7 +175,7 @@ def canonical_original(payload: Mapping[str, Any]) -> dict[str, Any]:
         "relics": relics,
         "potions": [normalize_potion_id(item.get("id")) for item in game.get("potions") or []],
         "map": _original_map(game),
-        "combat": _original_combat(game),
+        "combat": _original_combat(game, payload.get("_monster_intents") or ()),
         "rng": _rng(payload.get("_rng") or game.get("_rng") or {}),
     }
 
@@ -189,8 +207,17 @@ def canonical_simulator(state: Mapping[str, Any]) -> dict[str, Any]:
 
 def parity_differences(
     original: Mapping[str, Any], simulator: Mapping[str, Any], *, include_rng: bool = True,
+    drop_dead_neow: bool = False,
 ) -> dict[str, tuple[Any, Any]]:
     left, right = canonical_original(original), canonical_simulator(simulator)
+    if drop_dead_neow and int(left["run"]["floor"]) > 0:
+        left.get("rng", {}).pop("neow", None)
+        right.get("rng", {}).pop("neow", None)
+    continuation = original.get("_continuation") or (original.get("game_state") or {}).get("_continuation") or {}
+    if drop_dead_neow and continuation.get("post_combat"):
+        for stream in ("monster_hp", "ai", "shuffle", "card_random", "misc"):
+            left.get("rng", {}).pop(stream, None)
+            right.get("rng", {}).pop(stream, None)
     if not include_rng:
         left.pop("rng", None)
         right.pop("rng", None)

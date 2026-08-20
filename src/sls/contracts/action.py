@@ -24,6 +24,7 @@ class ActionKind(str, Enum):
     DISCARD_POTION = "DISCARD_POTION"
     CHOOSE_MAP_NODE = "CHOOSE_MAP_NODE"
     CHOOSE_CARD_REWARD = "CHOOSE_CARD_REWARD"
+    TAKE_SINGING_BOWL = "TAKE_SINGING_BOWL"
     SKIP_CARD_REWARD = "SKIP_CARD_REWARD"
     TAKE_REWARD = "TAKE_REWARD"
     SKIP_REWARD = "SKIP_REWARD"
@@ -54,6 +55,7 @@ _REQUIRED_FIELDS: dict[ActionKind, tuple[str, ...]] = {
     ActionKind.DISCARD_POTION: ("subject_id",),
     ActionKind.CHOOSE_MAP_NODE: ("node_id",),
     ActionKind.CHOOSE_CARD_REWARD: ("subject_id",),
+    ActionKind.TAKE_SINGING_BOWL: ("option_id",),
     ActionKind.SKIP_CARD_REWARD: ("option_id",),
     ActionKind.TAKE_REWARD: ("reward_id",),
     ActionKind.BUY_CARD: ("subject_id",),

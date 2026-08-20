@@ -17,10 +17,10 @@ are copied by `tools/import_original_game.py` into the ignored directory
 `SpirecommParity.jar` is not a local prerequisite. It is built from committed
 source by `tools/build_oracle.py` and written to `.build/oracle/`.
 
-CommunicationMod must be configured to launch either:
-
-- `tools/validate_full_run.py` for one seed;
-- `tools/validate_corpus.py` for a seed corpus.
+Do not edit CommunicationMod by hand for validation. `tools/run_original.py`
+temporarily installs a strict recoverable configuration and launches the game
+with its own headless `javaw.exe`. The configured Python is
+`D:\Anaconda\envs\DL\python.exe`; no project `.venv` is created or required.
 
 The native `_lightspeed` extension is also generated locally by
 `tools/build_native.py`; it is not committed.

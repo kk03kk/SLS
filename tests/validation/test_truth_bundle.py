@@ -1,20 +1,25 @@
 from __future__ import annotations
 
 import gzip
+import base64
 import json
 from pathlib import Path
 import subprocess
 import sys
 
 import pytest
+import sls.validation.runtime as runtime_module
 
 from sls.backends.original.adapter import adapt_original
 from sls.backends.simulator import IRONCLAD_A0_HEART, SimulatorBackend
 from sls.validation.runtime import RuntimeJournal
+from sls.validation.evidence import original_evidence_gaps
 from sls.validation.diff import differences
 from sls.validation.truth import (
-    TruthBundleRecorder, evidence_at_least, load_bundle, resumable_original_boundary,
+    TruthBundleRecorder, autosave_identity, evidence_at_least, load_bundle,
+    canonical_json_bytes, file_hash, recover_partial_bundle, resumable_original_boundary,
 )
+from sls.validation.truth import _git_metadata
 
 
 TERMINAL_PAYLOAD = {
@@ -54,11 +59,43 @@ def make_bundle(tmp_path: Path) -> Path:
 def test_truth_bundle_round_trip_and_recanonicalizes_raw_payload(tmp_path: Path) -> None:
     bundle = make_bundle(tmp_path)
     manifest, boundaries = load_bundle(bundle)
-    assert manifest["schema"] == "sls-original-truth-bundle-v1"
+    assert manifest["schema"] == "sls-original-truth-bundle-v2"
+    assert manifest["capture_mode"] == "PAIRED"
     assert boundaries[0]["raw_original_payload"]["game_state"]["message"].startswith("中文")
     assert adapt_original(boundaries[0]["raw_original_payload"]).decision.terminal
     assert evidence_at_least("LIVE_FULLRUN", "RESUMED_AUTOSAVE")
     assert not evidence_at_least("ORACLE_SCENARIO", "RESUMED_AUTOSAVE")
+    anchor = manifest["anchors"][0]
+    metadata = json.loads((bundle / anchor["path"] / "metadata.json").read_text(encoding="utf-8"))
+    with gzip.open(bundle / anchor["path"] / "simulator-checkpoint.json.gz", "rt", encoding="utf-8") as stream:
+        checkpoint = json.load(stream)
+    from sls.validation.truth import value_hash
+    assert metadata["checkpoint_state_hash"] == value_hash(checkpoint)
+
+
+def test_canonical_json_preserves_unpaired_surrogate_as_an_escape() -> None:
+    encoded = canonical_json_bytes({"text": "中文\udcaa"})
+    assert b"\\udcaa" in encoded
+    assert json.loads(encoded)["text"].endswith("\udcaa")
+
+
+def test_git_dirty_hash_includes_untracked_source(tmp_path: Path) -> None:
+    subprocess.run(["git", "init", "-q"], cwd=tmp_path, check=True)
+    subprocess.run(["git", "config", "user.email", "truth@example.invalid"], cwd=tmp_path, check=True)
+    subprocess.run(["git", "config", "user.name", "Truth Test"], cwd=tmp_path, check=True)
+    tracked = tmp_path / "tracked.txt"
+    tracked.write_text("base", encoding="utf-8")
+    subprocess.run(["git", "add", "tracked.txt"], cwd=tmp_path, check=True)
+    subprocess.run(["git", "commit", "-qm", "base"], cwd=tmp_path, check=True)
+    _, clean_hash, dirty = _git_metadata(tmp_path)
+    assert dirty is False
+    untracked = tmp_path / "new.py"
+    untracked.write_text("first", encoding="utf-8")
+    _, first_hash, dirty = _git_metadata(tmp_path)
+    untracked.write_text("second", encoding="utf-8")
+    _, second_hash, _ = _git_metadata(tmp_path)
+    assert dirty is True
+    assert clean_hash != first_hash != second_hash
 
 
 def test_resume_normalization_drops_only_dead_neow_rng_after_floor_zero() -> None:
@@ -74,6 +111,21 @@ def test_resume_normalization_drops_only_dead_neow_rng_after_floor_zero() -> Non
     assert normalized["normalizations"] == ["drop_rng.neow_after_floor0"]
 
 
+def test_resume_normalization_drops_floor_local_rng_after_combat() -> None:
+    payload = json.loads(json.dumps(TERMINAL_PAYLOAD))
+    payload["game_state"]["floor"] = 1
+    payload["_continuation"] = {"post_combat": True}
+    payload["_rng"] = {
+        name: {"seed0": 1, "seed1": 2, "counter": 3}
+        for name in ("neow", "ai", "shuffle", "card_random", "misc", "monster_hp", "card")
+    }
+    normalized = resumable_original_boundary(payload)
+    assert set(normalized["state"]["rng"]) == {"card"}
+    assert normalized["normalizations"] == [
+        "drop_rng.neow_after_floor0", "drop_rng.floor_local_after_combat",
+    ]
+
+
 def test_truth_bundle_rejects_tampered_payload(tmp_path: Path) -> None:
     bundle = make_bundle(tmp_path)
     path = bundle / "boundaries.jsonl.gz"
@@ -85,6 +137,25 @@ def test_truth_bundle_rejects_tampered_payload(tmp_path: Path) -> None:
             stream.write(json.dumps(value, ensure_ascii=False) + "\n")
     with pytest.raises(ValueError, match="hash mismatch"):
         load_bundle(bundle)
+
+
+def test_v1_truth_bundle_remains_read_only_compatible(tmp_path: Path) -> None:
+    bundle = make_bundle(tmp_path)
+    boundary_path = bundle / "boundaries.jsonl.gz"
+    with gzip.open(boundary_path, "rt", encoding="utf-8") as stream:
+        values = [json.loads(line) for line in stream]
+    values[0]["schema"] = "sls-original-truth-boundary-v1"
+    with boundary_path.open("wb") as raw:
+        with gzip.GzipFile(filename="", mode="wb", fileobj=raw, mtime=0) as stream:
+            stream.write((json.dumps(values[0], ensure_ascii=False) + "\n").encode("utf-8"))
+    manifest_path = bundle / "manifest.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest["schema"] = "sls-original-truth-bundle-v1"
+    manifest["artifacts"]["boundaries.jsonl.gz"] = file_hash(boundary_path)
+    manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+    loaded, boundaries = load_bundle(bundle)
+    assert loaded["schema"].endswith("v1")
+    assert boundaries[0]["schema"].endswith("v1")
 
 
 def test_runtime_journal_restores_existing_and_removes_created_files(tmp_path: Path) -> None:
@@ -102,6 +173,157 @@ def test_runtime_journal_restores_existing_and_removes_created_files(tmp_path: P
     assert not created.exists()
     RuntimeJournal.open(journal.path).recover()
     assert existing.read_text(encoding="utf-8") == "user-save"
+
+
+def test_runtime_journal_refuses_corrupt_backup(tmp_path: Path) -> None:
+    existing = tmp_path / "save.autosave"
+    existing.write_text("user-save", encoding="utf-8")
+    journal = RuntimeJournal(tmp_path / "journal.json")
+    backup = tmp_path / "backup"
+    journal.backup(existing, backup)
+    next(backup.iterdir()).write_text("corrupt", encoding="utf-8")
+    existing.write_text("validation-save", encoding="utf-8")
+    with pytest.raises(RuntimeError, match="recovery failed"):
+        journal.recover()
+    assert RuntimeJournal.open(journal.path).data["status"] == "RECOVERY_FAILED"
+
+
+def test_pending_recovery_refuses_a_live_owned_process(tmp_path: Path, monkeypatch) -> None:
+    root = tmp_path / "journals" / "one"
+    journal = RuntimeJournal(root / "journal.json")
+    executable = tmp_path / "javaw.exe"
+    executable.write_bytes(b"java")
+    journal.record_process(pid=123, executable=executable, command=(str(executable),))
+    journal.mark_active()
+    monkeypatch.setattr(runtime_module, "process_identity", lambda pid: {
+        "ProcessId": pid, "ExecutablePath": str(executable), "CommandLine": str(executable),
+    })
+    with pytest.raises(RuntimeError, match="while owned game process is alive"):
+        runtime_module.recover_pending(tmp_path / "journals")
+
+
+def test_partial_truth_recovery_is_aborted_and_not_eligible(tmp_path: Path) -> None:
+    simulator = SimulatorBackend(IRONCLAD_A0_HEART)
+    simulator_decision = simulator.reset(0)
+    original_decision = adapt_original(TERMINAL_PAYLOAD).decision
+    recorder = TruthBundleRecorder(
+        tmp_path, seed=0, profile_id=IRONCLAD_A0_HEART.profile_id,
+        policy_id="interrupted", repository_root=Path(__file__).resolve().parents[2],
+    )
+    recorder.record_boundary(
+        sequence=0, original_payload=TERMINAL_PAYLOAD,
+        original_decision=original_decision, simulator_state=simulator.raw_state,
+        simulator_decision=simulator_decision, action=None, commands=(),
+        observation_diff={}, action_diff={}, state_diff={},
+        checkpoint=simulator.checkpoint(), terminal_kind=None,
+    )
+    with recorder._boundary_stage.open("ab") as stream:
+        stream.write(b'{"truncated":')
+    recovered = recover_partial_bundle(recorder.path)
+    manifest, boundaries = load_bundle(recovered)
+    assert len(boundaries) == 1
+    assert manifest["aborted"] is True
+    assert manifest["acceptance_eligible"] is False
+
+
+def test_staged_action_updates_merge_before_finalize(tmp_path: Path) -> None:
+    simulator = SimulatorBackend(IRONCLAD_A0_HEART)
+    simulator_decision = simulator.reset(0)
+    recorder = TruthBundleRecorder(
+        tmp_path, seed=0, profile_id=IRONCLAD_A0_HEART.profile_id,
+        policy_id="updates", repository_root=Path(__file__).resolve().parents[2],
+    )
+    recorder.record_boundary(
+        sequence=0, original_payload=TERMINAL_PAYLOAD,
+        original_decision=adapt_original(TERMINAL_PAYLOAD).decision,
+        simulator_state=simulator.raw_state, simulator_decision=simulator_decision,
+        action=None, commands=(), observation_diff={}, action_diff={}, state_diff={},
+        checkpoint=simulator.checkpoint(), terminal_kind=None,
+    )
+    action = simulator_decision.actions[0]
+    recorder.select_last_action(action, ("choose 0",))
+    recorder.mark_last_action_executed(("choose 0", "wait 1"))
+    _, boundaries = load_bundle(recorder.finalize(complete=False, outcome=None, error=None))
+    assert boundaries[0]["selected_action"] == action.to_dict()
+    assert boundaries[0]["commands"] == ["choose 0", "wait 1"]
+    assert boundaries[0]["action_executed"] is True
+
+
+def test_verified_resume_promotes_initial_native_anchor(tmp_path: Path) -> None:
+    simulator = SimulatorBackend(IRONCLAD_A0_HEART)
+    simulator_decision = simulator.reset(0)
+    recorder = TruthBundleRecorder(
+        tmp_path / "truth", seed=0, profile_id=IRONCLAD_A0_HEART.profile_id,
+        policy_id="resume", repository_root=Path(__file__).resolve().parents[2],
+    )
+    recorder.record_boundary(
+        sequence=0, original_payload=TERMINAL_PAYLOAD,
+        original_decision=adapt_original(TERMINAL_PAYLOAD).decision,
+        simulator_state=simulator.raw_state, simulator_decision=simulator_decision,
+        action=None, commands=(), observation_diff={}, action_diff={}, state_diff={},
+        checkpoint=simulator.checkpoint(), terminal_kind=None,
+    )
+    save_value = {"seed": 0, "floor_num": 0, "current_room": "MonsterRoom"}
+    raw = json.dumps(save_value).encode("utf-8")
+    encoded = bytes(item ^ b"key"[index % 3] for index, item in enumerate(raw))
+    save = tmp_path / "IRONCLAD.autosave"
+    save.write_bytes(base64.b64encode(encoded))
+    recorder.mark_initial_resume_verified(save, source_run_id="source", source_anchor_id="a1")
+    bundle = recorder.finalize(complete=False, outcome="RESUMED_WINDOW", error=None)
+    manifest, _ = load_bundle(bundle)
+    assert manifest["anchors"][0]["capability"] == "RESUME_VERIFIED"
+    metadata = json.loads(
+        (bundle / manifest["anchors"][0]["path"] / "metadata.json").read_text(encoding="utf-8")
+    )
+    assert metadata["derived_from"] == {"source_run_id": "source", "source_anchor_id": "a1"}
+    assert metadata["files"]["original.autosave"] == file_hash(save)
+
+
+def test_missing_original_fields_are_inconclusive_evidence() -> None:
+    gaps = original_evidence_gaps(TERMINAL_PAYLOAD, canonical_screen="GAME_OVER")
+    codes = {item["code"] for item in gaps}
+    assert "MISSING_CONTINUATION_EVIDENCE" in codes
+    assert "MISSING_BURNING_ELITE_X" in codes
+
+
+def test_hidden_combat_reward_cards_are_an_evidence_gap_until_oracle_supplies_them() -> None:
+    payload = json.loads(json.dumps(TERMINAL_PAYLOAD))
+    payload["available_commands"] = ["choose", "proceed"]
+    payload["game_state"].update({
+        "screen_type": "COMBAT_REWARD", "current_hp": 80,
+        "screen_state": {"rewards": [
+            {"reward_type": "GOLD", "gold": 11}, {"reward_type": "CARD"},
+        ]},
+    })
+    codes = {
+        item["code"] for item in original_evidence_gaps(payload, canonical_screen="COMBAT_REWARD")
+    }
+    assert "MISSING_COMBAT_REWARD_CARD_OPTIONS" in codes
+    payload["_combat_reward_cards"] = [[
+        {"id": "Anger", "upgrades": 0},
+        {"id": "Clothesline", "upgrades": 0},
+        {"id": "Whirlwind", "upgrades": 0},
+    ]]
+    decision = adapt_original(payload).decision
+    assert len(decision.actions) == 6
+    assert [item.content_id for item in decision.observation.reward_options] == [
+        "ANGER", "CLOTHESLINE", "WHIRLWIND", "GOLD",
+    ]
+
+
+def test_autosave_identity_decodes_stock_envelope(tmp_path: Path) -> None:
+    value = {
+        "seed": 7, "floor_num": 3, "current_room": "MonsterRoom",
+        "room_x": 2, "room_y": 1,
+    }
+    raw = json.dumps(value).encode("utf-8")
+    encoded = bytes(item ^ b"key"[index % 3] for index, item in enumerate(raw))
+    path = tmp_path / "IRONCLAD.autosave"
+    path.write_bytes(base64.b64encode(encoded))
+    assert autosave_identity(path) == {
+        "seed": 7, "floor": 3, "character": "IRONCLAD",
+        "room_class": "MonsterRoom", "map_x": 2, "map_y": 1,
+    }
 
 
 def test_offline_replay_reproduces_difference_and_extractor_is_stable(tmp_path: Path) -> None:
@@ -122,10 +344,11 @@ def test_offline_replay_reproduces_difference_and_extractor_is_stable(tmp_path: 
     ]
     first = subprocess.run(command, cwd=root, text=True, capture_output=True)
     assert first.returncode == 0, first.stderr
-    initial = (output / "truth-test.json.gz").read_bytes()
+    target = output / "truth-test.instrumentation-request.json.gz"
+    initial = target.read_bytes()
     second = subprocess.run(command, cwd=root, text=True, capture_output=True)
     assert second.returncode == 0, second.stderr
-    assert (output / "truth-test.json.gz").read_bytes() == initial
+    assert target.read_bytes() == initial
 
 
 def test_committed_adapter_regressions_match_expected_canonical_output() -> None:
@@ -133,6 +356,47 @@ def test_committed_adapter_regressions_match_expected_canonical_output() -> None
     for path in (root / "tests" / "fixtures" / "regressions").glob("*.json.gz"):
         with gzip.open(path, "rt", encoding="utf-8") as stream:
             fixture = json.load(stream)
+        if fixture["category"] == "simulator_adapter":
+            simulator = SimulatorBackend(IRONCLAD_A0_HEART)
+            decision = simulator.load_checkpoint(fixture["simulator_checkpoint"])
+            actual = {
+                "observation": decision.observation.to_dict(),
+                "actions": [action.to_dict() for action in decision.actions],
+                "terminal": decision.terminal,
+            }
+            assert not differences(actual, fixture["expected"]), path.name
+            continue
+        if fixture["category"] == "transition":
+            from sls.contracts import Action
+            from sls.contracts.continuation import continuation_simulator
+            from sls.validation.compare import canonical_simulator
+
+            simulator = SimulatorBackend(IRONCLAD_A0_HEART)
+            simulator.load_checkpoint(fixture["simulator_checkpoint"])
+            decision = simulator.step(Action.from_dict(fixture["action"])).decision
+            actual = {
+                "canonical_public_state": canonical_simulator(simulator.raw_state),
+                "canonical_decision": {
+                    "observation": decision.observation.to_dict(),
+                    "actions": [action.to_dict() for action in decision.actions],
+                    "terminal": decision.terminal,
+                },
+                "rng": canonical_simulator(simulator.raw_state)["rng"],
+                "continuation": continuation_simulator(simulator.raw_state),
+            }
+            # Official resumes do not preserve the exhausted Neow stream.
+            for value in (actual["canonical_public_state"].get("rng", {}), actual["rng"]):
+                value.pop("neow", None)
+            expected = fixture["expected"]
+            assert not differences(
+                {key: actual[key] for key in ("canonical_public_state", "canonical_decision", "rng")},
+                {key: expected[key] for key in ("canonical_public_state", "canonical_decision", "rng")},
+            ), path.name
+            from sls.validation.truth import continuation_differences
+            assert not continuation_differences(
+                expected["continuation"], actual["continuation"],
+            ), path.name
+            continue
         if fixture["category"] != "adapter":
             continue
         decision = adapt_original(fixture["raw_original_payload"]).decision

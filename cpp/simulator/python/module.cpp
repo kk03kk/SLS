@@ -534,6 +534,9 @@ py::dict public_combat_state(
             display_monster.moveHistory[0] = (*display_moves)[index];
         }
         const auto damage = display_monster.getMoveBaseDamage(bc);
+        const int adjusted_damage = damage.attackCount > 0
+            ? display_monster.calculateDamageToPlayer(bc, damage.damage)
+            : 0;
         py::dict value;
         value["instance_id"] = instance_id;
         value["content_id"] = monsterIdStrings[static_cast<int>(monster.id)];
@@ -549,7 +552,7 @@ py::dict public_combat_state(
                 display_monster.moveHistory[0] == MonsterMoveId::BYRD_STUNNED
             ? "BUFF"
             : intent_name(display_monster, &bc);
-        value["intent_damage"] = hide_intents ? 0 : std::max(0, damage.damage);
+        value["intent_damage"] = hide_intents ? 0 : adjusted_damage;
         value["intent_hits"] = hide_intents ? 0 : damage.attackCount;
         value["powers"] = monster_powers(monster);
         value["is_gone"] = monster.isDeadOrEscaped();
@@ -559,6 +562,9 @@ py::dict public_combat_state(
             const Monster &monster, const std::string &instance_id) {
         const bool hide_intents = bc.player.hasRelic<RelicId::RUNIC_DOME>();
         const auto damage = monster.getMoveBaseDamage(bc);
+        const int adjusted_damage = damage.attackCount > 0
+            ? monster.calculateDamageToPlayer(bc, damage.damage)
+            : 0;
         py::dict value;
         value["instance_id"] = instance_id;
         value["content_id"] = monsterIdStrings[static_cast<int>(monster.id)];
@@ -566,7 +572,7 @@ py::dict public_combat_state(
         value["max_hp"] = monster.maxHp;
         value["block"] = monster.block;
         value["intent"] = hide_intents ? "NONE" : intent_name(monster, &bc);
-        value["intent_damage"] = hide_intents ? 0 : std::max(0, damage.damage);
+        value["intent_damage"] = hide_intents ? 0 : adjusted_damage;
         value["intent_hits"] = hide_intents ? 0 : damage.attackCount;
         value["powers"] = monster_powers(monster);
         value["is_gone"] = monster.isDeadOrEscaped();

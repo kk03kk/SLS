@@ -22,6 +22,7 @@ from sls.contracts import (
 )
 from sls.curriculum import CurriculumProfile, IRONCLAD_A0_HEART, evaluate_horizon
 from sls.contracts.continuation import continuation_simulator
+from sls.content.normalize import normalize_content_id
 
 
 class SimulatorBackend:
@@ -123,9 +124,9 @@ class SimulatorBackend:
             )
             for index, monster in enumerate(combat.get("monsters", ()) if combat else ())
         )
-        powers = _powers(combat["player"].get("powers", ()) if combat else (), "player-power")
+        powers = _powers(combat["player"].get("powers", ()) if combat else (), "PLAYER_POWER")
         for index, monster in enumerate(combat.get("monsters", ()) if combat else ()):
-            powers += _powers(monster.get("powers", ()), f"monster:{index}:power")
+            powers += _powers(monster.get("powers", ()), f"MONSTER:{index}:POWER")
 
         actions, candidate_bits = _semantic_actions(raw, card_zones["HAND"])
         self._candidate_bits = candidate_bits
@@ -249,7 +250,10 @@ def _combat_cards(
 
 def _powers(values: Any, prefix: str) -> tuple[PublicEntity, ...]:
     return tuple(
-        _entity(f"{prefix}:{index}", value["id"], amount=int(value["amount"]))
+        _entity(
+            f"{prefix}:{index}", normalize_content_id(value["id"]),
+            amount=int(value["amount"]),
+        )
         for index, value in enumerate(values)
     )
 
@@ -343,9 +347,14 @@ def _run_action(
         return Action(ActionKind.CHOOSE_MAP_NODE, node_id=node_id)
     if screen is ScreenType.COMBAT_REWARD:
         if reward_type == 0:
-            if idx2 == 5:
+            if idx2 == 6:
                 return Action(
                     ActionKind.SKIP_CARD_REWARD,
+                    option_id=f"reward-card:{idx1}",
+                )
+            if idx2 == 5:
+                return Action(
+                    ActionKind.TAKE_SINGING_BOWL,
                     option_id=f"reward-card:{idx1}",
                 )
             return Action(ActionKind.CHOOSE_CARD_REWARD, subject_id=f"reward-card:{idx1}:{idx2}")
@@ -458,7 +467,7 @@ def _screen_entities(raw: Mapping[str, Any]) -> dict[str, tuple[Any, ...]]:
             entities.append(_entity("reward-key:emerald", "EMERALD_KEY"))
         if rewards["sapphire_key"]:
             entities.append(_entity("reward-key:sapphire", "SAPPHIRE_KEY"))
-        result["reward"] = tuple(entities)
+        result["reward"] = tuple(sorted(entities, key=lambda item: item.instance_id))
     elif screen is ScreenType.CARD_REWARD:
         result["reward"] = tuple(
             _entity(

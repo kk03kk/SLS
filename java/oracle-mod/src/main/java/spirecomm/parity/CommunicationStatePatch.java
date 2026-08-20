@@ -7,9 +7,13 @@ import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.neow.NeowEvent;
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
+import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.cards.CardQueueItem;
 import com.megacrit.cardcrawl.map.MapRoomNode;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
+import com.megacrit.cardcrawl.monsters.EnemyMoveInfo;
+import com.megacrit.cardcrawl.rewards.RewardItem;
+import basemod.ReflectionHacks;
 import communicationmod.GameStateConverter;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -18,6 +22,7 @@ import javassist.CannotCompileException;
 import javassist.CtBehavior;
 
 public final class CommunicationStatePatch {
+    public static final String INSTRUMENTATION_SCHEMA = "spirecomm-parity-v3";
     public static String inject(String json) {
         if (json == null || json.length() < 2 || json.charAt(json.length() - 1) != '}') {
             return json;
@@ -46,6 +51,8 @@ public final class CommunicationStatePatch {
         run.put("ruby_key", Settings.hasRubyKey);
         run.put("emerald_key", Settings.hasEmeraldKey);
         run.put("sapphire_key", Settings.hasSapphireKey);
+        run.put("burning_elite_x", null);
+        run.put("burning_elite_y", null);
         if (AbstractDungeon.getCurrMapNode() != null) {
             run.put("current_map_x", AbstractDungeon.getCurrMapNode().x);
             run.put("current_map_y", AbstractDungeon.getCurrMapNode().y);
@@ -96,16 +103,43 @@ public final class CommunicationStatePatch {
         if (AbstractDungeon.getMonsters() != null) {
             for (AbstractMonster monster : AbstractDungeon.getMonsters().monsters) {
                 Map<String, Object> intent = new LinkedHashMap<String, Object>();
-                intent.put("intent", monster.intent == null ? "UNKNOWN" : monster.intent.name());
+                EnemyMoveInfo move = ReflectionHacks.getPrivate(
+                    monster, AbstractMonster.class, "move"
+                );
+                intent.put("intent", move == null || move.intent == null
+                    ? "UNKNOWN" : move.intent.name());
+                intent.put("next_move", move == null ? monster.nextMove : move.nextMove);
+                intent.put("base_damage", move == null ? -1 : move.baseDamage);
+                intent.put("multiplier", move == null ? 0 : move.multiplier);
+                intent.put("multi_damage", move != null && move.isMultiDamage);
                 monsterIntents.add(intent);
+            }
+        }
+        ArrayList<ArrayList<Map<String, Object>>> combatRewardCards =
+            new ArrayList<ArrayList<Map<String, Object>>>();
+        if (AbstractDungeon.combatRewardScreen != null
+                && AbstractDungeon.combatRewardScreen.rewards != null) {
+            for (RewardItem reward : AbstractDungeon.combatRewardScreen.rewards) {
+                if (reward.type == RewardItem.RewardType.CARD && reward.cards != null) {
+                    ArrayList<Map<String, Object>> cards = new ArrayList<Map<String, Object>>();
+                    for (AbstractCard card : reward.cards) {
+                        Map<String, Object> value = new LinkedHashMap<String, Object>();
+                        value.put("id", card.cardID);
+                        value.put("upgrades", card.timesUpgraded);
+                        cards.add(value);
+                    }
+                    combatRewardCards.add(cards);
+                }
             }
         }
         Gson gson = new Gson();
         return json.substring(0, json.length() - 1)
+            + ",\"_parity_schema\":" + gson.toJson(INSTRUMENTATION_SCHEMA)
             + ",\"_rng\":" + gson.toJson(rng)
             + ",\"_parity_run\":" + gson.toJson(run)
             + ",\"_continuation\":" + gson.toJson(continuation)
             + ",\"_monster_intents\":" + gson.toJson(monsterIntents)
+            + ",\"_combat_reward_cards\":" + gson.toJson(combatRewardCards)
             + ",\"math_seed\":" + Long.toUnsignedString(ParityRng.mathSeed)
             + (OracleScenarioPatch.activeScenario == null ? ""
                 : ",\"_parity_scenario\":"

@@ -21,6 +21,7 @@ from sls.backends.simulator import (
     SimulatorBackend,
 )
 from sls.validation import TruthBundleRecorder, run_paired
+from sls.validation.truth import file_hash, native_build_metadata
 from sls.validation.runtime import OriginalRuntimeGuard
 
 
@@ -79,6 +80,14 @@ def main() -> int:
             args.truth_root.resolve(), seed=args.seed, profile_id=profile.profile_id,
             policy_id="deterministic-action-v1", repository_root=ROOT,
             jar_paths=jar_paths, autosave=game_root / "saves" / "IRONCLAD.autosave",
+            instrumentation_schema="spirecomm-parity-v3",
+            policy_hash=file_hash(ROOT / "src" / "sls" / "validation" / "policies.py"),
+            native_build=native_build_metadata(ROOT),
+            launch={
+                "java": str(game_root / "jre" / "bin" / "javaw.exe"),
+                "skip_launcher": True, "skip_intro": os.environ.get("SLS_SKIP_INTRO", "1") == "1",
+                "mods": ["basemod", "CommunicationMod", "spirecomm-parity"],
+            },
         )
     protocol_log = os.environ.get("SLS_PROTOCOL_LOG")
     transport = StdioTransport(
@@ -93,12 +102,12 @@ def main() -> int:
                 original, SimulatorBackend(profile), seed=args.seed, max_steps=args.max_steps,
                 include_rng=not args.without_rng, recorder=recorder,
             )
-            if recorder is not None:
-                outcome = trace.steps[-1].terminal_kind if trace.steps else None
-                bundle = recorder.finalize(complete=trace.complete, outcome=outcome, error=trace.error)
-                print(f"TRUTH_BUNDLE {bundle}", file=sys.stderr, flush=True)
         finally:
             original.return_to_menu()
+        if recorder is not None:
+            outcome = trace.steps[-1].terminal_kind if trace.steps else None
+            bundle = recorder.finalize(complete=trace.complete, outcome=outcome, error=trace.error)
+            print(f"TRUTH_BUNDLE {bundle}", file=sys.stderr, flush=True)
     path = trace.write(args.output)
     print(
         f"PARITY seed={args.seed} steps={len(trace.steps)} "
@@ -110,4 +119,12 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    from sls.validation.runtime import write_completion
+    try:
+        result = main()
+    except BaseException as error:
+        write_completion(2, entry="capture", error=f"{type(error).__name__}: {error}", argv=sys.argv)
+        raise
+    else:
+        write_completion(result, entry="capture")
+        raise SystemExit(result)

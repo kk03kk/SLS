@@ -14,6 +14,7 @@ PRIORITY = {
     ActionKind.SELECT_CARD: 40,
     ActionKind.CONFIRM: 50,
     ActionKind.CHOOSE_CARD_REWARD: 60,
+    ActionKind.TAKE_SINGING_BOWL: 61,
     ActionKind.TAKE_REWARD: 70,
     ActionKind.TAKE_BLUE_KEY: 71,
     ActionKind.CHOOSE_BOSS_RELIC: 80,

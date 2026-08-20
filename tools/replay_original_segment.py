@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from pathlib import Path
 import shutil
 import sys
@@ -13,13 +14,23 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from sls.backends.original import OriginalBackend, OriginalSession, StdioTransport
-from sls.backends.simulator import IRONCLAD_A0_ACT1, IRONCLAD_A0_ACT2, IRONCLAD_A0_ACT3, IRONCLAD_A0_HEART
+from sls.backends.simulator import (
+    IRONCLAD_A0_ACT1, IRONCLAD_A0_ACT2, IRONCLAD_A0_ACT3, IRONCLAD_A0_HEART,
+    SimulatorBackend,
+)
 from sls.contracts import Action
 from sls.contracts.continuation import continuation_original
-from sls.validation.compare import canonical_original
+from sls.validation.compare import canonical_original, parity_differences
 from sls.validation.diff import differences
+from sls.validation.evidence import original_evidence_gaps
+from sls.validation.policies import action_ids, deterministic_action
+from contextlib import nullcontext
 from sls.validation.runtime import OriginalRuntimeGuard
-from sls.validation.truth import load_bundle, resumable_original_boundary, value_hash
+from sls.validation.truth import (
+    TruthBundleRecorder, file_hash, load_bundle, native_build_metadata,
+    resume_verification_boundary, value_hash,
+)
+import gzip
 
 
 PROFILES = {p.profile_id: p for p in (
@@ -32,8 +43,10 @@ def main() -> int:
     parser.add_argument("bundle", type=Path)
     parser.add_argument("--anchor", required=True)
     parser.add_argument("--to-step", type=int, required=True)
-    parser.add_argument("--runtime-journal", type=Path, required=True)
+    parser.add_argument("--runtime-journal", type=Path)
     parser.add_argument("--game-root", type=Path, default=Path(r"D:\Steam\steamapps\common\SlayTheSpire"))
+    parser.add_argument("--truth-root", type=Path, default=ROOT / "validation-results" / "truth")
+    parser.add_argument("--continue-steps", type=int, default=0)
     args = parser.parse_args()
     try:
         manifest, boundaries = load_bundle(args.bundle)
@@ -49,7 +62,8 @@ def main() -> int:
         transport = StdioTransport()
         session = OriginalSession(transport)
         backend = OriginalBackend(session, PROFILES[manifest["profile_id"]])
-        with OriginalRuntimeGuard(args.runtime_journal):
+        guard = OriginalRuntimeGuard(args.runtime_journal) if args.runtime_journal else nullcontext()
+        with guard:
             try:
                 payload = session.connect()
                 if payload.get("in_game"):
@@ -65,10 +79,18 @@ def main() -> int:
                         raise RuntimeError("main menu cannot refresh autosave commands")
                     session.execute("state")
                 decision = backend.resume()
-                restored_hash = value_hash(resumable_original_boundary(backend.raw_payload))
-                expected_resume_hash = anchor.get("resume_boundary_hash") or value_hash(
-                    resumable_original_boundary(boundaries[start]["raw_original_payload"])
+                expected_gaps = original_evidence_gaps(
+                    boundaries[start]["raw_original_payload"],
+                    canonical_screen=boundaries[start]["cursor"]["screen"],
                 )
+                ignored_codes = [item["code"] for item in expected_gaps]
+                restored_hash = value_hash(resume_verification_boundary(
+                    backend.raw_payload, ignored_evidence_codes=ignored_codes,
+                ))
+                expected_resume_hash = value_hash(resume_verification_boundary(
+                    boundaries[start]["raw_original_payload"],
+                    ignored_evidence_codes=ignored_codes,
+                ))
                 if restored_hash != expected_resume_hash:
                     expected_boundary = boundaries[start]
                     state_diff = differences(
@@ -83,28 +105,152 @@ def main() -> int:
                         "state_differences": dict(list(state_diff.items())[:20]),
                         "continuation_differences": dict(list(continuation_diff.items())[:20]),
                     }, ensure_ascii=False))
-                for sequence in range(start, args.to_step):
-                    action = boundaries[sequence].get("selected_action")
-                    if not action:
-                        raise ValueError(f"missing action at step {sequence}")
-                    decision = backend.step(Action.from_dict(action)).decision
+                checkpoint_path = anchor_dir / "simulator-checkpoint.json.gz"
+                with gzip.open(checkpoint_path, "rt", encoding="utf-8") as stream:
+                    checkpoint = json.load(stream)
+                simulator = SimulatorBackend(PROFILES[manifest["profile_id"]])
+                simulator_decision = simulator.load_checkpoint(checkpoint)
+                workshop = args.game_root.parents[1] / "workshop" / "content" / "646570"
+                recorder = TruthBundleRecorder(
+                    args.truth_root, seed=int(manifest["seed"]),
+                    profile_id=manifest["profile_id"], policy_id=manifest["policy_id"],
+                    evidence_class="RESUMED_AUTOSAVE", capture_mode="PAIRED",
+                    acceptance_eligible=False, instrumentation_schema="spirecomm-parity-v3",
+                    repository_root=ROOT, autosave=destination,
+                    jar_paths={
+                        "game": args.game_root / "desktop-1.0.jar",
+                        "Oracle": args.game_root / "mods" / "SpirecommParity.jar",
+                        "ModTheSpire": workshop / "1605060445" / "ModTheSpire.jar",
+                        "BaseMod": workshop / "1605833019" / "BaseMod.jar",
+                        "CommunicationMod": workshop / "2131373661" / "CommunicationMod.jar",
+                    },
+                    policy_hash=file_hash(ROOT / "src" / "sls" / "validation" / "policies.py"),
+                    native_build=native_build_metadata(ROOT),
+                    launch={
+                        "java": str(args.game_root / "jre" / "bin" / "javaw.exe"),
+                        "skip_launcher": True,
+                        "skip_intro": os.environ.get("SLS_SKIP_INTRO", "1") == "1",
+                        "mods": ["basemod", "CommunicationMod", "spirecomm-parity"],
+                    },
+                    provenance={
+                        "source_run_id": args.bundle.name, "source_anchor": args.anchor,
+                        "source_start_step": start, "source_target_step": args.to_step,
+                        "ignored_legacy_evidence_codes": ignored_codes,
+                        "source_anchor_capability": "RESUME_VERIFIED",
+                    },
+                )
+                paired_match = True
+                for source_sequence in range(start, args.to_step + 1):
+                    observation_diff = differences(
+                        decision.observation.to_dict(), simulator_decision.observation.to_dict(),
+                    )
+                    action_diff = differences(
+                        action_ids(decision.actions), action_ids(simulator_decision.actions),
+                    )
+                    state_diff = parity_differences(
+                        backend.raw_payload, simulator.raw_state, drop_dead_neow=True,
+                    )
+                    selected = boundaries[source_sequence].get("selected_action") if source_sequence < args.to_step else None
+                    semantic = None if selected is None else Action.from_dict(selected)
+                    commands = () if semantic is None else backend.command_sequence(semantic)
+                    record = recorder.record_boundary(
+                        sequence=source_sequence - start, original_payload=backend.raw_payload,
+                        original_decision=decision, simulator_state=simulator.raw_state,
+                        simulator_decision=simulator_decision, action=semantic, commands=commands,
+                        observation_diff=observation_diff, action_diff=action_diff,
+                        state_diff=state_diff, checkpoint=simulator.checkpoint(), terminal_kind=None,
+                    )
+                    if source_sequence == start:
+                        recorder.mark_initial_resume_verified(
+                            source,
+                            anchor_dir / "original.autosave.backUp",
+                            source_run_id=args.bundle.name, source_anchor_id=args.anchor,
+                        )
+                    paired_match = paired_match and record["comparison"]["status"] == "MATCH"
+                    if source_sequence == args.to_step:
+                        break
+                    if semantic is None:
+                        raise ValueError(f"missing action at step {source_sequence}")
+                    decision = backend.step(semantic).decision
+                    simulator_decision = simulator.step(semantic).decision
+                    recorder.mark_last_action_executed(backend.last_executed_commands)
+                target_payload = json.loads(json.dumps(backend.raw_payload))
+                continued = 0
+                for _ in range(args.continue_steps):
+                    if not paired_match or decision.terminal or simulator_decision.terminal:
+                        break
+                    semantic = deterministic_action(decision, simulator_decision)
+                    commands = backend.command_sequence(semantic)
+                    recorder.select_last_action(semantic, commands)
+                    decision = backend.step(semantic).decision
+                    simulator_decision = simulator.step(semantic).decision
+                    recorder.mark_last_action_executed(backend.last_executed_commands)
+                    continued += 1
+                    observation_diff = differences(
+                        decision.observation.to_dict(), simulator_decision.observation.to_dict(),
+                    )
+                    action_diff = differences(
+                        action_ids(decision.actions), action_ids(simulator_decision.actions),
+                    )
+                    state_diff = parity_differences(
+                        backend.raw_payload, simulator.raw_state, drop_dead_neow=True,
+                    )
+                    record = recorder.record_boundary(
+                        sequence=args.to_step - start + continued,
+                        original_payload=backend.raw_payload, original_decision=decision,
+                        simulator_state=simulator.raw_state, simulator_decision=simulator_decision,
+                        action=None, commands=(), observation_diff=observation_diff,
+                        action_diff=action_diff, state_diff=state_diff,
+                        checkpoint=simulator.checkpoint(), terminal_kind=None,
+                    )
+                    paired_match = record["comparison"]["status"] == "MATCH"
+                derived_bundle = recorder.finalize(
+                    complete=False,
+                    outcome="RESUMED_WINDOW" if paired_match else "FIRST_DIFFERENCE",
+                    error=None,
+                )
                 expected = boundaries[args.to_step]
-                expected_resumable = resumable_original_boundary(expected["raw_original_payload"])
-                actual_resumable = resumable_original_boundary(backend.raw_payload)
+                target_gaps = original_evidence_gaps(
+                    expected["raw_original_payload"], canonical_screen=expected["cursor"]["screen"],
+                )
+                target_ignored = [item["code"] for item in target_gaps]
+                expected_resumable = resume_verification_boundary(
+                    expected["raw_original_payload"], ignored_evidence_codes=target_ignored,
+                )
+                actual_resumable = resume_verification_boundary(
+                    target_payload, ignored_evidence_codes=target_ignored,
+                )
                 diff = differences(expected_resumable, actual_resumable)
                 print(json.dumps({
                     "anchor": args.anchor, "target_step": args.to_step,
                     "anchor_hash_verified": True, "matches": not diff,
                     "resume_normalizations": actual_resumable["normalizations"],
-                    "differences": diff,
+                    "differences": diff, "paired_matches": paired_match,
+                    "derived_bundle": str(derived_bundle),
+                    "ignored_legacy_evidence_codes": target_ignored,
+                    "continued_steps": continued,
                 }, ensure_ascii=False), file=sys.stderr, flush=True)
-                return 0 if not diff else 1
+                return 0 if not diff and paired_match else 1
             finally:
                 backend.return_to_menu()
     except (OSError, ValueError, KeyError, StopIteration, RuntimeError) as error:
         print(json.dumps({"valid": False, "error": str(error)}, ensure_ascii=False), file=sys.stderr)
+        from sls.validation.runtime import write_completion
+        write_completion(2, entry="resume", error=f"{type(error).__name__}: {error}")
         return 2
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    from sls.validation.runtime import write_completion
+    try:
+        result = main()
+    except BaseException as error:
+        write_completion(
+            2, entry="resume", error=f"{type(error).__name__}: {error}", argv=sys.argv,
+        )
+        raise
+    else:
+        marker = os.environ.get("SLS_RUN_COMPLETION")
+        if not marker or not Path(marker).is_file():
+            write_completion(result, entry="resume")
+        raise SystemExit(result)

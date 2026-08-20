@@ -84,8 +84,9 @@ def run_paired(
                 state_diff,
             )
             steps.append(step)
+            truth_record = None
             if recorder is not None:
-                recorder.record_boundary(
+                truth_record = recorder.record_boundary(
                     sequence=sequence,
                     original_payload=original.raw_payload,
                     original_decision=original_decision,
@@ -102,7 +103,11 @@ def run_paired(
             if selection_error is not None:
                 error = selection_error
                 break
-            if stop_on_difference and not step.matches:
+            if stop_on_difference and (
+                not step.matches
+                or truth_record is not None
+                and truth_record.get("comparison", {}).get("status") != "MATCH"
+            ):
                 break
             if terminal:
                 complete = original_decision.terminal and simulator_decision.terminal

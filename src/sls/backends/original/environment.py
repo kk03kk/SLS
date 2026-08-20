@@ -65,6 +65,7 @@ class OriginalBackend:
         if "parity_continue" not in available:
             raise RuntimeError(f"parity_continue is unavailable: {sorted(available)}")
         payload = self.session.execute("parity_continue")
+        payload = self._settle_debug_intents(payload)
         self._adapted = adapt_original(payload)
         return self._adapted.decision
 
@@ -94,6 +95,7 @@ class OriginalBackend:
             payload = self.session.execute(command)
             executed.append(command)
         payload = self._fold_protocol_only_boundaries(payload, executed)
+        payload = self._settle_debug_intents(payload, executed)
         self._last_executed_commands = tuple(executed)
         self._adapted = adapt_original(payload)
         horizon = evaluate_horizon(self.profile, self._adapted.decision.observation)
@@ -145,6 +147,7 @@ class OriginalBackend:
     ) -> dict[str, Any]:
         """Fold confirmations that carry no player choice or gameplay semantics."""
 
+        folded = False
         for _ in range(8):
             game = payload.get("game_state") or {}
             available = {str(item).lower() for item in payload.get("available_commands") or ()}
@@ -154,6 +157,7 @@ class OriginalBackend:
                 payload = self.session.execute("confirm")
                 if executed is not None:
                     executed.append("confirm")
+                folded = True
                 continue
             if (
                 int(game.get("floor", 0) or 0) == 0
@@ -163,6 +167,7 @@ class OriginalBackend:
                 payload = self.session.execute("choose 0")
                 if executed is not None:
                     executed.append("choose 0")
+                folded = True
                 available_after = {
                     str(item).lower() for item in payload.get("available_commands") or ()
                 }
@@ -172,4 +177,30 @@ class OriginalBackend:
                         executed.append("wait 30")
                 continue
             break
+        if folded:
+            continuation = payload.get("_continuation")
+            if isinstance(continuation, dict):
+                continuation["ui_boundary_folded"] = True
+        return payload
+
+    def _settle_debug_intents(
+        self, payload: dict[str, Any], executed: list[str] | None = None,
+    ) -> dict[str, Any]:
+        """Advance presentation frames until stock monster intents are materialized."""
+
+        frames = 0
+        for _ in range(8):
+            game = payload.get("game_state") or {}
+            if not game.get("combat_state"):
+                break
+            intents = payload.get("_monster_intents") or []
+            if intents and all(str(item.get("intent") or "").upper() != "DEBUG" for item in intents):
+                break
+            available = {str(item).lower() for item in payload.get("available_commands") or ()}
+            if "wait" not in available:
+                break
+            payload = self.session.execute("wait 1")
+            frames += 1
+            if executed is not None:
+                executed.append("wait 1")
         return payload

@@ -22,3 +22,11 @@ require_candidate_actions = [
   "CHOOSE_CARD_REWARD",
   "SKIP_CARD_REWARD",
 ]
+require_selected_actions = [
+  "CHOOSE_NEOW_OPTION",
+  "CHOOSE_MAP_NODE",
+  "PLAY_CARD",
+  "END_TURN",
+  "CHOOSE_CARD_REWARD",
+  "SKIP_CARD_REWARD",
+]

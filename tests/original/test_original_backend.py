@@ -84,3 +84,20 @@ def test_step_folds_grid_confirmation_and_single_neow_leave_boundary() -> None:
     assert backend.last_executed_commands == ("choose 0", "confirm", "choose 0", "wait 30")
     backend.return_to_menu()
     assert transport.sent[-1] == "reset_run"
+
+
+def test_combat_boundary_waits_until_stock_intent_is_materialized() -> None:
+    combat = game_payload([])
+    combat["available_commands"] = ["wait"]
+    combat["game_state"]["combat_state"] = {"monsters": [{"id": "Cultist"}]}
+    combat["_monster_intents"] = [{"intent": "DEBUG"}]
+    settled = {**combat, "_monster_intents": [{"intent": "BUFF"}]}
+    transport = ScriptedTransport([settled])
+    session = OriginalSession(transport)
+    session.payload = combat
+    backend = OriginalBackend(session, IRONCLAD_A0_ACT1)
+    executed: list[str] = []
+    result = backend._settle_debug_intents(combat, executed)
+    assert result["_monster_intents"] == [{"intent": "BUFF"}]
+    assert executed == ["wait 1"]
+    assert transport.sent == ["wait 1"]

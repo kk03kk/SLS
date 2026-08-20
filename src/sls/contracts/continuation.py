@@ -10,10 +10,29 @@ def continuation_original(payload: Mapping[str, Any]) -> dict[str, Any]:
     if isinstance(injected, Mapping):
         result = dict(injected)
         game = payload.get("game_state") or {}
+        screen_state = game.get("screen_state") or {}
+        result["screen"] = result.get("screen") or game.get("screen_type")
+        result["event_phase"] = result.get("event_phase") or screen_state.get("phase")
+        result["action_phase"] = result.get("action_phase") or game.get("action_phase")
+        if str(game.get("screen_type") or "").upper() == "GRID":
+            task = result.get("card_selection_task")
+            if not task:
+                task = (
+                    "TRANSFORM" if screen_state.get("for_transform") else
+                    "UPGRADE" if screen_state.get("for_upgrade") else
+                    "PURGE" if screen_state.get("for_purge") else "SELECT"
+                )
+            result["card_selection_source"] = result.get("card_selection_source") or "MASTER_DECK"
+            result["card_selection_task"] = task
+            result["card_selection_count"] = int(
+                result.get("card_selection_count") or screen_state.get("num_cards") or 0
+            )
         if game.get("combat_state"):
             result["continuation_kind"] = "COMBAT"
-        elif str(result.get("continuation_kind") or "").upper() in {"", "NONE"}:
-            result["continuation_kind"] = str(game.get("screen_type") or "NONE").upper()
+        else:
+            result["combat_turn"] = None
+            if str(result.get("continuation_kind") or "").upper() in {"", "NONE"}:
+                result["continuation_kind"] = str(game.get("screen_type") or "NONE").upper()
         return result
     game = payload.get("game_state") or {}
     combat = game.get("combat_state") or {}
@@ -27,7 +46,7 @@ def continuation_original(payload: Mapping[str, Any]) -> dict[str, Any]:
         "event_id": game.get("event_id") or game.get("current_event_id"),
         "event_phase": game.get("event_phase") or screen_state.get("phase"),
         "action_phase": combat.get("action_phase") or game.get("action_phase"),
-        "combat_turn": int(combat.get("turn", 0) or 0),
+        "combat_turn": int(combat.get("turn", 0) or 0) if combat else None,
         "card_selection_source": selection.get("source") or screen_state.get("source"),
         "card_selection_task": selection.get("type") or screen_state.get("type") or screen_state.get("select_type"),
         "card_selection_count": int(selection.get("num_cards", screen_state.get("num_cards", 0)) or 0),
@@ -50,11 +69,16 @@ def continuation_simulator(state: Mapping[str, Any]) -> dict[str, Any]:
         "room_class": public.get("room_type"), "screen": public.get("screen_state"),
         "event_id": public.get("current_event_id"), "event_phase": screen.get("phase"),
         "action_phase": checkpoint.get("input_state"),
-        "combat_turn": int(combat.get("turn", 0) or 0),
-        "card_selection_source": (combat.get("choice") or {}).get("source"),
+        "combat_turn": int(combat.get("turn", 0) or 0) if combat else None,
+        "card_selection_source": (
+            (combat.get("choice") or {}).get("source")
+            or ("MASTER_DECK" if info.get("select_type") is not None else None)
+        ),
         "card_selection_task": info.get("type") or screen.get("select_type"),
-        "card_selection_count": int(info.get("count", 0) or 0),
-        "post_combat": bool(state.get("post_combat", False)),
+        "card_selection_count": int(
+            info.get("select_count", info.get("count", screen.get("select_count", 0))) or 0
+        ),
+        "post_combat": bool(state.get("post_combat", False) or public.get("screen_state") == 2),
         "loading_post_combat": bool(state.get("loading_post_combat", False)),
         "ui_boundary_folded": bool(state.get("ui_boundary_folded", False)),
         "continuation_kind": info.get("kind") or public.get("screen_state"),

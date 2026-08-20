@@ -191,9 +191,9 @@ bool isValidRewardsAction(const GameContext &gc, const search::GameAction a) {
                 return false;
             }
             if (a.getIdx2() == 5) {
-                // singing bowl if exists
-                return true;
+                return gc.hasRelic(sts::RelicId::SINGING_BOWL);
             }
+            if (a.getIdx2() == 6) return true;
             return a.getIdx2() < r.cardRewards[a.getIdx1()].size();
         }
 
@@ -333,9 +333,9 @@ void executeRewardsAction(GameContext &gc, const search::GameAction a) {
 
         case search::GameAction::RewardsActionType::CARD:
             if (a.getIdx2() == 5) { // singing bowl
-                if (gc.hasRelic(sts::RelicId::SINGING_BOWL)) {
-                    gc.playerIncreaseMaxHp(2);
-                }
+                gc.playerIncreaseMaxHp(2);
+            } else if (a.getIdx2() == 6) { // skip only this card reward
+                // Removing the reward is the only semantic effect.
             } else {
                 gc.obtainCard(r.cardRewards[a.getIdx1()][a.getIdx2()]);
             }
@@ -597,6 +597,10 @@ std::vector<search::GameAction> getAllRewardActions(const sts::GameContext &gc) 
         for (int x = 0; x < r.cardRewards[i].size(); ++x) {
             actions.emplace_back(search::GameAction::RewardsActionType::CARD, i, x);
         }
+        if (gc.hasRelic(sts::RelicId::SINGING_BOWL)) {
+            actions.emplace_back(search::GameAction::RewardsActionType::CARD, i, 5);
+        }
+        actions.emplace_back(search::GameAction::RewardsActionType::CARD, i, 6);
     }
 
     for (int i = 0; i < r.relicCount; ++i) {

@@ -9,7 +9,8 @@ import json
 import os
 from pathlib import Path
 import shutil
-from typing import Any, Iterable
+import subprocess
+from typing import Any, Iterable, Mapping
 
 
 RUNTIME_JOURNAL_SCHEMA = "sls-original-runtime-journal-v1"
@@ -26,6 +27,19 @@ def _sha256(path: Path) -> str:
 def _write(path: Path, value: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def write_completion(exit_code: int, **details: Any) -> None:
+    marker = os.environ.get("SLS_RUN_COMPLETION")
+    if not marker:
+        return
+    target = Path(marker)
+    temporary = target.with_suffix(target.suffix + ".tmp")
+    _write(temporary, {
+        "schema": "sls-original-run-completion-v1", "exit_code": int(exit_code),
+        "finished_at": datetime.now(timezone.utc).isoformat(), **details,
+    })
+    os.replace(temporary, target)
 
 
 class RuntimeJournal:
@@ -73,6 +87,19 @@ class RuntimeJournal:
         self.data["status"] = "ACTIVE"
         self._flush()
 
+    def record_process(
+        self, *, pid: int, executable: Path, command: Iterable[str],
+        started_at: str | None = None, identity: Mapping[str, Any] | None = None,
+    ) -> None:
+        self.data["process"] = {
+            "pid": int(pid), "executable": str(executable.resolve()),
+            "command": list(command),
+            "started_at": started_at or datetime.now(timezone.utc).isoformat(),
+            "creation_date": None if identity is None else identity.get("CreationDate"),
+            "observed_command_line": None if identity is None else identity.get("CommandLine"),
+        }
+        self._flush()
+
     def recover(self) -> None:
         errors: list[str] = []
         for entry in reversed(self.data["entries"]):
@@ -83,6 +110,11 @@ class RuntimeJournal:
                         raise FileNotFoundError(f"missing backup {backup}")
                     target.parent.mkdir(parents=True, exist_ok=True)
                     shutil.copy2(backup, target)
+                    actual = _sha256(target)
+                    if actual != entry["original_sha256"]:
+                        raise OSError(
+                            f"restored hash mismatch: expected {entry['original_sha256']}, got {actual}"
+                        )
                 elif target.exists():
                     target.unlink()
             except OSError as error:
@@ -113,22 +145,71 @@ class OriginalRuntimeGuard(AbstractContextManager["OriginalRuntimeGuard"]):
         self.journal.recover()
 
 
-def recover_pending(journal_root: Path) -> list[Path]:
+def recover_pending(journal_root: Path, *, refuse_live_process: bool = True) -> list[Path]:
     recovered: list[Path] = []
     if not journal_root.exists():
         return recovered
     for path in sorted(journal_root.glob("*/journal.json")):
         journal = RuntimeJournal.open(path)
         if journal.data.get("status") in {"PREPARING", "ACTIVE", "RECOVERY_FAILED"}:
+            if refuse_live_process and owned_process_matches(journal):
+                raise RuntimeError(
+                    f"refusing to restore Original files while owned game process is alive: {path}"
+                )
             journal.recover()
             recovered.append(path)
     return recovered
+
+
+def process_identity(pid: int) -> dict[str, Any] | None:
+    """Return a small Windows process identity without a third-party dependency."""
+
+    if os.name != "nt":
+        return None
+    script = (
+        f"$p=Get-CimInstance Win32_Process -Filter \"ProcessId={int(pid)}\";"
+        "if($null-ne $p){$p|Select-Object ProcessId,ExecutablePath,CommandLine,CreationDate|"
+        "ConvertTo-Json -Compress}"
+    )
+    result = subprocess.run(
+        ["powershell", "-NoProfile", "-Command", script],
+        capture_output=True, text=True, encoding="utf-8", errors="replace",
+    )
+    if result.returncode or not result.stdout.strip():
+        return None
+    try:
+        value = json.loads(result.stdout)
+    except json.JSONDecodeError:
+        return None
+    return value if isinstance(value, dict) else None
+
+
+def owned_process_matches(journal: RuntimeJournal) -> bool:
+    recorded = journal.data.get("process") or {}
+    if not recorded.get("pid") or not recorded.get("executable"):
+        return False
+    live = process_identity(int(recorded["pid"]))
+    if live is None:
+        return False
+    executable = str(live.get("ExecutablePath") or "")
+    try:
+        if Path(executable).resolve() != Path(recorded["executable"]).resolve():
+            return False
+        if recorded.get("creation_date") and live.get("CreationDate") != recorded["creation_date"]:
+            return False
+        expected_line = str(recorded.get("observed_command_line") or "").strip()
+        if expected_line and str(live.get("CommandLine") or "").strip() != expected_line:
+            return False
+        return True
+    except OSError:
+        return False
 
 
 def prepare_runtime(
     *, repository: Path, game_root: Path, config: Path, python: Path,
     max_steps: int, profile: str, save_files: Iterable[Path], install: bool = True,
     entry: Path | None = None, entry_args: Iterable[str] = (),
+    external_owner: bool = False,
 ) -> Path:
     """Prepare exactly four authoritative mods and return the recovery journal."""
 
@@ -173,10 +254,10 @@ def prepare_runtime(
                 f"--runtime-journal {journal.path.as_posix()}"
             )
         else:
-            command = " ".join((
-                python.as_posix(), entry.as_posix(), *entry_args,
-                "--runtime-journal", journal.path.as_posix(),
-            ))
+            parts = [python.as_posix(), entry.as_posix(), *entry_args]
+            if not external_owner:
+                parts.extend(("--runtime-journal", journal.path.as_posix()))
+            command = " ".join(parts)
         escaped = command.replace(":", "\\:")
         config.write_text(
             f"command={escaped}\nrunAtGameStart=true\nverbose=true\n",
@@ -195,6 +276,7 @@ def prepare_runtime(
         "dependencies": {name: _sha256(path) for name, path in dependencies.items()},
         "disabled_mods": [path.name for path in extra_mods],
         "mod_list": str(mod_list),
+        "owner": "EXTERNAL_LAUNCHER" if external_owner else "VALIDATOR_CHILD",
     }
     journal.mark_active()
     return journal.path

@@ -23,6 +23,14 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 
 /** Whitelist-only setup boundaries for original-game differential tests. */
 public final class OracleScenarioPatch {
@@ -33,9 +41,64 @@ public final class OracleScenarioPatch {
         "duration_weak",
         "retain_ethereal"
     ));
-    public static String activeScenario = null;
+    private static final Map<String, String> CARD_ALLOWLIST = loadCardAllowlist();
+    public static Map<String, String> activeScenario = null;
 
     private OracleScenarioPatch() {}
+
+    private static Map<String, String> loadCardAllowlist() {
+        Map<String, String> result = new LinkedHashMap<String, String>();
+        try {
+            InputStream stream = OracleScenarioPatch.class.getResourceAsStream(
+                "/spirecomm/parity/scenario-card-allowlist.tsv"
+            );
+            if (stream == null) throw new IllegalStateException("missing scenario card allowlist");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split("\\t", 2);
+                if (parts.length == 2) result.put(parts[0], parts[1]);
+            }
+            reader.close();
+        } catch (Exception error) {
+            throw new ExceptionInInitializerError(error);
+        }
+        return Collections.unmodifiableMap(result);
+    }
+
+    private static String setupDigest(AbstractPlayer player) {
+        StringBuilder value = new StringBuilder();
+        value.append("energy=").append(player.energy.energy)
+            .append(";block=").append(player.currentBlock);
+        for (AbstractCard card : player.hand.group) value.append(";hand=").append(card.cardID).append('+').append(card.timesUpgraded);
+        for (AbstractCard card : player.drawPile.group) value.append(";draw=").append(card.cardID).append('+').append(card.timesUpgraded);
+        for (AbstractCard card : player.discardPile.group) value.append(";discard=").append(card.cardID).append('+').append(card.timesUpgraded);
+        for (AbstractCard card : player.exhaustPile.group) value.append(";exhaust=").append(card.cardID).append('+').append(card.timesUpgraded);
+        for (com.megacrit.cardcrawl.powers.AbstractPower power : player.powers) {
+            value.append(";power=").append(power.ID).append(':').append(power.amount);
+        }
+        for (com.megacrit.cardcrawl.relics.AbstractRelic relic : player.relics) {
+            value.append(";relic=").append(relic.relicId).append(':').append(relic.counter);
+        }
+        try {
+            byte[] digest = MessageDigest.getInstance("SHA-256").digest(
+                value.toString().getBytes(StandardCharsets.UTF_8)
+            );
+            StringBuilder hex = new StringBuilder();
+            for (byte item : digest) hex.append(String.format("%02x", item & 0xff));
+            return hex.toString();
+        } catch (Exception error) {
+            throw new IllegalStateException(error);
+        }
+    }
+
+    private static void activate(String id, String source, AbstractPlayer player) {
+        Map<String, String> evidence = new LinkedHashMap<String, String>();
+        evidence.put("scenario_id", id);
+        evidence.put("source", source);
+        evidence.put("setup_digest", setupDigest(player));
+        activeScenario = evidence;
+    }
 
     private static AbstractCard card(String id) {
         AbstractCard prototype = CardLibrary.getCard(id);
@@ -85,7 +148,7 @@ public final class OracleScenarioPatch {
         } else {
             throw new IllegalArgumentException("Unknown oracle scenario: " + id);
         }
-        activeScenario = id;
+        activate(id, "RULE_TEST", player);
         CommunicationMod.mustSendGameState = true;
         GameStateListener.registerStateChange();
     }
@@ -96,7 +159,11 @@ public final class OracleScenarioPatch {
      * reflection path, and only exercises base/+1 variants.
      */
     private static void applyCardProbe(String cardId, int upgrades) {
-        AbstractCard prototype = CardLibrary.getCard(cardId);
+        String gameId = CARD_ALLOWLIST.get(cardId.toUpperCase(Locale.ROOT));
+        if (gameId == null) {
+            throw new IllegalArgumentException("parity_card is not in the packaged Ironclad allowlist");
+        }
+        AbstractCard prototype = CardLibrary.getCard(gameId);
         if (prototype == null || prototype.color != CardColor.RED) {
             throw new IllegalArgumentException("parity_card requires an Ironclad card id");
         }
@@ -120,7 +187,8 @@ public final class OracleScenarioPatch {
         player.drawPile.addToBottom(card("Defend_R"));
         player.discardPile.addToBottom(card("Defend_R"));
         player.exhaustPile.addToBottom(card("Defend_R"));
-        activeScenario = "card_probe:" + probe.cardID + ":" + upgrades;
+        activate("card_probe:" + cardId.toUpperCase(Locale.ROOT) + ":" + upgrades,
+            "RULE_TEST:IRONCLAD_CARD_ALLOWLIST", player);
         CommunicationMod.mustSendGameState = true;
         GameStateListener.registerStateChange();
     }

@@ -70,7 +70,7 @@ def adapt_original(payload: Mapping[str, Any]) -> AdaptedOriginalDecision:
         powers += _powers(monster.get("powers"), f"MONSTER:{monster_index}:POWER")
 
     actions, commands = _actions(payload, game, combat, screen_state, screen, hand)
-    options = _screen_entities(game, combat, screen_state, screen)
+    options = _screen_entities(payload, game, combat, screen_state, screen)
     outcome = str(game.get("screen_type") or "").upper()
     terminal = screen is ScreenType.GAME_OVER or outcome in {"DEATH", "VICTORY"}
     if terminal:
@@ -232,15 +232,21 @@ def _actions(
         for index, _ in enumerate(cards):
             add(Action(kind, subject_id=f"select-card:{index}"), f"choose {index}")
         if "skip" in available:
-            add(Action(ActionKind.SKIP_CARD_REWARD), "skip")
+            add(Action(ActionKind.SKIP_CARD_REWARD, option_id="reward-card:0"), "skip")
+        if "bowl" in available:
+            add(Action(ActionKind.TAKE_SINGING_BOWL, option_id="reward-card:0"), "bowl")
     elif screen is ScreenType.COMBAT_REWARD:
         counters: dict[str, int] = {}
+        reward_card_groups = _sequence(payload.get("_combat_reward_cards"))
         for choice_index, reward in enumerate(_mappings(state.get("rewards"))):
             reward_type = str(reward.get("reward_type") or "UNKNOWN").upper()
             occurrence = counters.get(reward_type, 0)
             counters[reward_type] = occurrence + 1
             if reward_type == "CARD":
-                cards = _mappings(reward.get("cards"))
+                cards = _mappings(
+                    reward.get("cards")
+                    or (reward_card_groups[occurrence] if occurrence < len(reward_card_groups) else ())
+                )
                 for card_index, _ in enumerate(cards):
                     add(
                         Action(
@@ -257,6 +263,17 @@ def _actions(
                     f"choose {choice_index}",
                     "skip",
                 )
+                if any(
+                    normalize_content_id(item.get("id")) == "SINGING_BOWL"
+                    for item in _mappings(game.get("relics"))
+                ):
+                    add(
+                        Action(
+                            ActionKind.TAKE_SINGING_BOWL,
+                            option_id=f"reward-card:{occurrence}",
+                        ),
+                        f"choose {choice_index}", "bowl",
+                    )
             elif reward_type == "GOLD":
                 add(Action(ActionKind.TAKE_REWARD, reward_id=f"reward-gold:{occurrence}"), f"choose {choice_index}")
             elif reward_type == "POTION":
@@ -449,7 +466,8 @@ def _map_nodes(game: Mapping[str, Any], parity_run: Mapping[str, Any]) -> tuple[
 
 
 def _screen_entities(
-    game: Mapping[str, Any], combat: Mapping[str, Any], state: Mapping[str, Any], screen: ScreenType,
+    payload: Mapping[str, Any], game: Mapping[str, Any], combat: Mapping[str, Any],
+    state: Mapping[str, Any], screen: ScreenType,
 ) -> dict[str, tuple[Any, ...]]:
     result: dict[str, tuple[Any, ...]] = {
         "choice": (), "reward": (), "shop": (), "event": (), "rest": (), "boss": (),
@@ -481,18 +499,23 @@ def _screen_entities(
     elif screen is ScreenType.COMBAT_REWARD:
         entities: list[PublicEntity] = []
         counters: dict[str, int] = {}
+        reward_card_groups = _sequence(payload.get("_combat_reward_cards"))
         for reward in _mappings(state.get("rewards")):
             kind = str(reward.get("reward_type") or "UNKNOWN").upper()
             index = counters.get(kind, 0)
             counters[kind] = index + 1
             if kind == "CARD":
+                cards = _mappings(
+                    reward.get("cards")
+                    or (reward_card_groups[index] if index < len(reward_card_groups) else ())
+                )
                 entities.extend(
                     PublicEntity(
                         f"reward-card:{index}:{card_index}",
                         normalize_card_id(card.get("id")),
                         (("upgrades", _integer(card.get("upgrades"))),),
                     )
-                    for card_index, card in enumerate(_mappings(reward.get("cards")))
+                    for card_index, card in enumerate(cards)
                 )
             elif kind == "GOLD":
                 entities.append(PublicEntity(
@@ -513,7 +536,7 @@ def _screen_entities(
                 entities.append(PublicEntity("reward-key:sapphire", "SAPPHIRE_KEY"))
             elif "KEY" in kind:
                 entities.append(PublicEntity("reward-key:emerald", "EMERALD_KEY"))
-        result["reward"] = tuple(entities)
+        result["reward"] = tuple(sorted(entities, key=lambda item: item.instance_id))
     elif screen is ScreenType.CARD_REWARD:
         is_grid = str(game.get("screen_type") or "").upper() == "GRID"
         result["reward"] = tuple(

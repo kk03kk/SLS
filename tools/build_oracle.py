@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import hashlib
+import json
 import os
+import re
 import shutil
 import subprocess
 import zipfile
@@ -26,6 +28,27 @@ DEPENDENCIES = tuple(
         "CommunicationMod.jar",
     )
 )
+
+
+def scenario_card_allowlist() -> bytes:
+    pools = (ROOT / "cpp" / "simulator" / "include" / "constants" / "CardPools.h").read_text(
+        encoding="utf-8"
+    )
+    match = re.search(r"colorCardPool\[4\]\[72\]\s*\{\s*\{(.*?)\}\s*,", pools, re.DOTALL)
+    if match is None:
+        raise RuntimeError("cannot derive the Ironclad scenario allowlist")
+    ids = set(re.findall(r"CardId::([A-Z0-9_]+)", match.group(1))) | {
+        "STRIKE_RED", "DEFEND_RED", "BASH",
+    }
+    registry = json.loads((ROOT / "src" / "sls" / "content" / "registry.json").read_text(encoding="utf-8"))
+    mapping = {
+        item["id"]: item["game_id"] for item in registry["categories"]["cards"]
+        if item.get("game_id")
+    }
+    missing = sorted(ids - mapping.keys())
+    if missing:
+        raise RuntimeError(f"scenario allowlist IDs are missing from registry: {missing}")
+    return "".join(f"{card_id}\t{mapping[card_id]}\n" for card_id in sorted(ids)).encode("utf-8")
 
 
 def main() -> int:
@@ -53,8 +76,15 @@ def main() -> int:
         entry.external_attr = 0o100644 << 16
         archive.writestr(entry, path.read_bytes())
 
+    def add_bytes(archive: zipfile.ZipFile, data: bytes, name: str) -> None:
+        entry = zipfile.ZipInfo(name, date_time=(1980, 1, 1, 0, 0, 0))
+        entry.compress_type = zipfile.ZIP_DEFLATED
+        entry.external_attr = 0o100644 << 16
+        archive.writestr(entry, data)
+
     with zipfile.ZipFile(OUTPUT, "w") as archive:
         add(archive, ORACLE / "ModTheSpire.json", "ModTheSpire.json")
+        add_bytes(archive, scenario_card_allowlist(), "spirecomm/parity/scenario-card-allowlist.tsv")
         for path in sorted(CLASSES.rglob("*.class")):
             add(archive, path, path.relative_to(CLASSES).as_posix())
     print(f"{OUTPUT}\nsha256={hashlib.sha256(OUTPUT.read_bytes()).hexdigest()}")
