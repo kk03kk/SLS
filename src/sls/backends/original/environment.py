@@ -205,6 +205,12 @@ class OriginalBackend:
                     executed.append("confirm")
                 folded = True
                 continue
+            if screen == "SHOP_ROOM" and len(choices or ()) == 1 and "choose" in available:
+                payload = self.session.execute("choose 0")
+                if executed is not None:
+                    executed.append("choose 0")
+                folded = True
+                continue
             if (
                 fold_single_event
                 and screen == "EVENT" and len(choices or ()) == 1

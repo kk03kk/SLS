@@ -165,3 +165,29 @@ def test_event_action_folds_single_forced_leave_outside_neow() -> None:
     transition = backend.step(action)
     assert transition.decision.observation.screen is ScreenType.MAP
     assert backend.last_executed_commands == ("choose 0", "choose 0")
+
+
+def test_map_action_folds_shop_room_entry_wrapper() -> None:
+    # Regression: 20260820T170551.039303Z-seed-0.partial after boundary 1.
+    map_payload = game_payload(["x=1"])
+    map_payload["game_state"].update({
+        "floor": 2, "screen_type": "MAP",
+        "screen_state": {"next_nodes": [{"x": 1, "y": 2}]},
+    })
+    shop_room = game_payload(["shop"])
+    shop_room["game_state"].update({"floor": 3, "screen_type": "SHOP_ROOM"})
+    shop = game_payload([])
+    shop["game_state"].update({
+        "floor": 3, "screen_type": "SHOP_SCREEN",
+        "screen_state": {"cards": [], "relics": [], "potions": []},
+    })
+    shop["available_commands"] = ["leave", "wait"]
+    transport = ScriptedTransport([shop_room, shop])
+    session = OriginalSession(transport)
+    session.payload = map_payload
+    backend = OriginalBackend(session, IRONCLAD_A0_ACT1)
+    backend._adapted = adapt_original(map_payload)
+    transition = backend.step(backend._adapted.decision.actions[0])
+    assert transition.decision.observation.screen is ScreenType.SHOP
+    assert backend.last_executed_commands == ("choose 0", "choose 0")
+    assert transition.decision.actions[0].kind is ActionKind.LEAVE_SHOP
