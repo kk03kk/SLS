@@ -2857,7 +2857,16 @@ public:
                 py::int_(run["math_seed"].cast<std::uint64_t>()));
             for (const auto item : requested_history) step(item.cast<std::uint32_t>());
             const auto replayed = snapshot();
-            if (!replayed.equal(state)) {
+            // Checkpoints are persisted as JSON.  pybind snapshots may contain
+            // tuples, which become lists after a JSON/gzip round trip even
+            // though the checkpoint is otherwise byte-for-byte equivalent in
+            // the durable representation.
+            const auto json = py::module_::import("json");
+            const auto normalized_replayed = json.attr("loads")(
+                json.attr("dumps")(replayed, py::arg("sort_keys") = true));
+            const auto normalized_requested = json.attr("loads")(
+                json.attr("dumps")(state, py::arg("sort_keys") = true));
+            if (!normalized_replayed.equal(normalized_requested)) {
                 throw std::invalid_argument(
                     "Deterministic replay does not reproduce the requested checkpoint");
             }

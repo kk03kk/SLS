@@ -140,3 +140,28 @@ def test_composite_card_reward_waits_for_each_ui_transition() -> None:
     transition = backend.step(action)
     assert [card.card_id for card in transition.decision.observation.deck] == ["ANGER"]
     assert backend.last_executed_commands == ("choose 1", "wait 1", "choose 0", "wait 1")
+
+
+def test_event_action_folds_single_forced_leave_outside_neow() -> None:
+    # Regression: 20260820T170023.957843Z-seed-0 step 1 (Big Fish).
+    event = game_payload(["Banana", "Donut", "Box"])
+    event["game_state"].update({"floor": 2, "screen_state": {"event_id": "Big Fish"}})
+    leave = game_payload(["Leave"])
+    leave["game_state"].update({"floor": 2, "screen_state": {"event_id": "Big Fish"}})
+    map_payload = game_payload([])
+    map_payload["game_state"].update({
+        "floor": 2, "screen_type": "MAP",
+        "screen_state": {"next_nodes": [{"x": 1, "y": 2}]},
+    })
+    transport = ScriptedTransport([leave, map_payload])
+    session = OriginalSession(transport)
+    session.payload = event
+    backend = OriginalBackend(session, IRONCLAD_A0_ACT1)
+    backend._adapted = adapt_original(event)
+    action = next(
+        item for item in backend._adapted.decision.actions
+        if item.kind is ActionKind.CHOOSE_EVENT_OPTION
+    )
+    transition = backend.step(action)
+    assert transition.decision.observation.screen is ScreenType.MAP
+    assert backend.last_executed_commands == ("choose 0", "choose 0")

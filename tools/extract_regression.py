@@ -75,8 +75,7 @@ def extract(
         (boundary.get("canonical_simulator_decision") or {}).get("observation") or {}
     ).get("screen")
     folded_ui_boundary = (
-        int(game.get("floor", 0) or 0) == 0
-        and len(game.get("choice_list") or ()) == 1
+        len(game.get("choice_list") or ()) == 1
         and str(game.get("screen_type") or "").upper() == "EVENT"
         and expected_screen == "MAP"
     )

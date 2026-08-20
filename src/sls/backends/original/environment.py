@@ -102,7 +102,13 @@ class OriginalBackend:
             ActionKind.TAKE_SINGING_BOWL,
         }:
             payload = self._settle_reward_completion(payload, executed)
-        payload = self._fold_protocol_only_boundaries(payload, executed)
+        fold_single_event = (
+            not isinstance(action, str)
+            and action.kind in {ActionKind.CHOOSE_EVENT_OPTION, ActionKind.CHOOSE_NEOW_OPTION}
+        )
+        payload = self._fold_protocol_only_boundaries(
+            payload, executed, fold_single_event=fold_single_event,
+        )
         payload = self._settle_debug_intents(payload, executed)
         self._last_executed_commands = tuple(executed)
         self._adapted = adapt_original(payload)
@@ -183,6 +189,7 @@ class OriginalBackend:
 
     def _fold_protocol_only_boundaries(
         self, payload: dict[str, Any], executed: list[str] | None = None,
+        *, fold_single_event: bool = True,
     ) -> dict[str, Any]:
         """Fold confirmations that carry no player choice or gameplay semantics."""
 
@@ -199,7 +206,7 @@ class OriginalBackend:
                 folded = True
                 continue
             if (
-                int(game.get("floor", 0) or 0) == 0
+                fold_single_event
                 and screen == "EVENT" and len(choices or ()) == 1
                 and "choose" in available
             ):

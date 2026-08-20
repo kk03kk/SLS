@@ -396,6 +396,10 @@ def test_committed_adapter_regressions_match_expected_canonical_output() -> None
             decision = simulator.load_checkpoint(fixture["simulator_checkpoint"])
             for action in fixture.get("action_suffix", []):
                 decision = simulator.step(Action.from_dict(action)).decision
+            durable_checkpoint = json.loads(json.dumps(simulator.checkpoint()))
+            restored = SimulatorBackend(IRONCLAD_A0_HEART)
+            restored_decision = restored.load_checkpoint(durable_checkpoint)
+            assert restored_decision.observation.to_dict() == decision.observation.to_dict()
             actual = {
                 "observation": decision.observation.to_dict(),
                 "actions": [action.to_dict() for action in decision.actions],
