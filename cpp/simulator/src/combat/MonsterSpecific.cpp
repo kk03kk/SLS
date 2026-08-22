@@ -800,7 +800,9 @@ void Monster::takeTurn(BattleContext &bc) {     // todo, maybe for monsters that
         case MMID::HEXAGHOST_ACTIVATE: {// 5
             miscInfo = bc.player.curHp / 12 + 1; // set divider damage
             setMove(MMID::HEXAGHOST_DIVIDER);
-            bc.noOpRollMove();
+            // The Original sets Divider directly from takeTurn() and does not
+            // enqueue RollMoveAction for Activate.  The initial getMove call
+            // already consumed the encounter's only aiRng draw at this point.
             break;
         }
 

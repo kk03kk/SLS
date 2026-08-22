@@ -138,6 +138,57 @@ def test_open_boss_chest_is_folded_into_the_next_act() -> None:
     assert folded["game_state"]["act"] == 2
 
 
+def test_terminal_neow_leave_is_folded_into_map() -> None:
+    leave = game_payload(["Leave"])
+    leave["available_commands"] = ["choose"]
+    leave["game_state"].update({
+        "screen_type": "EVENT", "room_type": "NeowRoom", "floor": 0,
+    })
+    mapped = game_payload([])
+    mapped["game_state"].update({"screen_type": "MAP", "floor": 0})
+    transport = ScriptedTransport([mapped])
+    backend = OriginalBackend(OriginalSession(transport), IRONCLAD_A0_ACT1)
+    backend.session.payload = leave
+    folded = backend._fold_protocol_only_boundaries(leave, [], fold_single_event=False)
+    assert transport.sent == ["choose 0"]
+    assert folded["game_state"]["screen_type"] == "MAP"
+
+
+def test_terminal_event_after_card_selection_is_folded_into_map() -> None:
+    leave = game_payload(["离开"])
+    leave["available_commands"] = ["choose"]
+    leave["game_state"].update({
+        "screen_type": "EVENT",
+        "room_type": "EventRoom",
+        "floor": 3,
+        # The first ready payload after GridSelectScreen closes can expose the
+        # localized choice before CommunicationMod fills screen_state.options.
+        "screen_state": {"event_id": "Upgrade Shrine"},
+    })
+    mapped = game_payload([])
+    mapped["game_state"].update({"screen_type": "MAP", "floor": 3})
+    transport = ScriptedTransport([mapped])
+    backend = OriginalBackend(OriginalSession(transport), IRONCLAD_A0_ACT1)
+    backend.session.payload = leave
+    folded = backend._fold_terminal_selection_event(leave, [])
+    assert transport.sent == ["choose 0"]
+    assert folded["game_state"]["screen_type"] == "MAP"
+
+
+def test_selection_completion_advances_transient_none_with_wait() -> None:
+    transient = game_payload([])
+    transient["available_commands"] = ["wait"]
+    transient["game_state"].update({"screen_type": "NONE", "floor": 3})
+    event = game_payload(["离开"])
+    event["game_state"].update({"screen_type": "EVENT", "floor": 3})
+    transport = ScriptedTransport([event])
+    backend = OriginalBackend(OriginalSession(transport), IRONCLAD_A0_ACT1)
+    backend.session.payload = transient
+    result = backend._wait_for_selection_completion(transient, [])
+    assert transport.sent == ["wait 1"]
+    assert result["game_state"]["screen_type"] == "EVENT"
+
+
 def test_grid_cards_use_master_deck_uuid_indices_and_oracle_bottle_task() -> None:
     payload = game_payload([])
     payload["game_state"].update({
@@ -192,6 +243,50 @@ def test_completed_rest_screen_is_folded_to_map() -> None:
     assert result["game_state"]["screen_type"] == "MAP"
     assert result["_continuation"]["ui_boundary_folded"] is True
     assert executed == ["proceed"]
+
+
+def test_headbutt_grid_is_a_discard_continuation() -> None:
+    payload = game_payload([])
+    payload["game_state"].update({
+        "screen_type": "GRID",
+        "choice_list": ["Strike"],
+        "combat_state": {"card_in_play": {"id": "Headbutt"}},
+        "screen_state": {
+            "cards": [{"id": "Strike_R", "upgrades": 0}],
+            "num_cards": 1,
+        },
+    })
+    payload["_continuation"] = {
+        "action_queue_types": [
+            "com.megacrit.cardcrawl.actions.utility.UseCardAction",
+        ],
+    }
+    decision = adapt_original(payload).decision
+    assert dict(decision.observation.choice_options[0].properties)["source"] == "DISCARD"
+    continuation = continuation_original(payload)
+    assert continuation["card_selection_source"] == "DISCARD"
+    assert continuation["card_selection_task"] == "HEADBUTT"
+
+
+def test_liquid_memories_grid_is_a_discard_continuation() -> None:
+    payload = game_payload([])
+    payload["game_state"].update({
+        "screen_type": "GRID",
+        "current_action": "BetterDiscardPileToHandAction",
+        "choice_list": ["Strike"],
+        "combat_state": {"card_in_play": None},
+        "screen_state": {
+            "cards": [{"id": "Strike_R", "upgrades": 0}],
+            "num_cards": 1,
+        },
+    })
+    payload["_continuation"] = {"action_queue_types": []}
+
+    decision = adapt_original(payload).decision
+    assert dict(decision.observation.choice_options[0].properties)["source"] == "DISCARD"
+    continuation = continuation_original(payload)
+    assert continuation["card_selection_source"] == "DISCARD"
+    assert continuation["card_selection_task"] == "LIQUID_MEMORIES_POTION"
 
 
 def test_lethal_combat_animation_is_settled_to_terminal_screen() -> None:
@@ -250,6 +345,26 @@ def test_combat_boundary_waits_for_adjusted_attack_damage() -> None:
     result = backend._settle_debug_intents(combat, executed)
     assert result["_monster_intents"][0]["damage"] == 11
     assert executed == ["wait 1"]
+
+
+def test_discovery_selection_allows_stock_retrieval_animation_past_30_frames() -> None:
+    transient = game_payload(["Panache", "Mayhem", "Thinking Ahead"])
+    transient["available_commands"] = ["wait"]
+    transient["game_state"]["screen_type"] = "CARD_REWARD"
+    transient["_continuation"] = {"card_selection_task": "DISCOVERY"}
+    settled = game_payload([])
+    settled["game_state"].update({"screen_type": "NONE", "room_phase": "COMBAT"})
+    settled["_continuation"] = {"action_phase": "WAITING_ON_USER"}
+    transport = ScriptedTransport([transient] * 30 + [settled])
+    session = OriginalSession(transport)
+    session.payload = transient
+    backend = OriginalBackend(session, IRONCLAD_A0_ACT1)
+    executed: list[str] = []
+
+    result = backend._wait_for_selection_completion(transient, executed)
+
+    assert result["_continuation"]["action_phase"] == "WAITING_ON_USER"
+    assert executed == ["wait 1"] * 31
 
 
 def test_combat_card_choice_reads_screen_state_cards() -> None:

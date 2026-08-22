@@ -2,7 +2,15 @@ from __future__ import annotations
 
 from dataclasses import replace
 
-from sls.contracts import Observation, Player, RunContext, ScreenType
+from sls.contracts import (
+    Action,
+    ActionKind,
+    Decision,
+    Observation,
+    Player,
+    RunContext,
+    ScreenType,
+)
 from sls.curriculum import (
     IRONCLAD_A0_ACT1,
     IRONCLAD_A0_ACT2,
@@ -59,3 +67,19 @@ def test_death_takes_precedence_over_completed_act() -> None:
 def test_profile_contract_version_changed() -> None:
     assert IRONCLAD_A0_ACT1.version == 2
     assert replace(IRONCLAD_A0_ACT1).version == 2
+
+
+def test_offline_replay_applies_the_same_act_horizon_wrapper() -> None:
+    from tools.replay_truth import _apply_profile_horizon
+
+    legal = (Action(ActionKind.END_TURN),)
+    previous = Decision(_observation(1, ScreenType.BOSS_REWARD), legal, False)
+    raw_map = Decision(
+        _observation(2, ScreenType.MAP),
+        # The raw Original adapter still sees legal Act 2 map candidates.
+        legal,
+        False,
+    )
+    replayed = _apply_profile_horizon(IRONCLAD_A0_ACT1, previous, raw_map)
+    assert replayed.terminal
+    assert replayed.actions == ()

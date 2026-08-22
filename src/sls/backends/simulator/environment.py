@@ -27,7 +27,7 @@ from sls.curriculum import (
     evaluate_horizon,
 )
 from sls.contracts.continuation import continuation_simulator
-from sls.content.normalize import normalize_content_id
+from sls.content.normalize import normalize_content_id, normalize_power_id
 
 
 class SimulatorBackend:
@@ -79,6 +79,21 @@ class SimulatorBackend:
         except KeyError as error:
             raise ValueError("action is not legal at the current decision boundary") from error
         raw = self._native.step(bits)
+        if _is_completed_neow_reward(raw):
+            # Stock closes the terminal Neow CardRewardScreen before exposing
+            # the map.  The native engine represents that UI-only close as its
+            # generic reward skip action, so fold it inside the same semantic
+            # transition instead of leaking a spurious SKIP_REWARD boundary.
+            fold = [
+                candidate for candidate in raw.get("legal_actions", ())
+                if candidate.get("domain") != "COMBAT"
+                and int(candidate.get("reward_type", -1)) == 6
+            ]
+            if len(fold) != 1:
+                raise RuntimeError(
+                    "completed Neow reward must expose exactly one native UI fold"
+                )
+            raw = self._native.step(int(fold[0]["bits"]))
         if validation_evidence and "card_soul_cost_reset_count" in validation_evidence:
             self._native._reset_last_hand_card_costs_for_validation(
                 int(validation_evidence["card_soul_cost_reset_count"]),
@@ -151,8 +166,10 @@ class SimulatorBackend:
             Enemy(
                 f"MONSTER:{index}", str(monster["content_id"]),
                 int(monster["current_hp"]), int(monster["max_hp"]), int(monster["block"]),
-                str(monster["intent"]), int(monster["intent_damage"]),
-                int(monster["intent_hits"]), (("is_gone", bool(monster["is_gone"])),),
+                "UNKNOWN" if bool(monster["is_gone"]) else str(monster["intent"]),
+                0 if bool(monster["is_gone"]) else int(monster["intent_damage"]),
+                0 if bool(monster["is_gone"]) else int(monster["intent_hits"]),
+                (("is_gone", bool(monster["is_gone"])),),
             )
             for index, monster in enumerate(combat.get("monsters", ()) if combat else ())
         )
@@ -164,6 +181,23 @@ class SimulatorBackend:
         actions, candidate_bits = _semantic_actions(raw, card_zones["HAND"])
         self._candidate_bits = candidate_bits
         options = _screen_entities(raw)
+        map_nodes = tuple(
+            MapNode(
+                str(node["node_id"]), int(node["x"]), int(node["y"]),
+                (
+                    "BURNING_ELITE"
+                    if node["burning"] and not bool(player_state["green_key"])
+                    else str(node["room_type"])
+                ),
+                bool(node["reachable"]), tuple(
+                    "map:boss" if str(item).rsplit(":", 1)[-1] == "15" else str(item)
+                    for item in node["outgoing_node_ids"]
+                ),
+            )
+            for node in raw["public_map"]
+        )
+        if any(action.node_id == "map:boss" for action in actions):
+            map_nodes += (MapNode("map:boss", 0, 15, "BOSS", True),)
         if screen is ScreenType.GAME_OVER:
             card_zones = {zone: () for zone in card_zones}
             enemies = ()
@@ -200,18 +234,7 @@ class SimulatorBackend:
                 for value in inventory["potions"]
                 if value["content_id"] not in {"INVALID", "EMPTY_POTION_SLOT"}
             ),
-            map_nodes=tuple(
-                MapNode(
-                    str(node["node_id"]), int(node["x"]), int(node["y"]),
-                    (
-                        "BURNING_ELITE"
-                        if node["burning"] and not bool(player_state["green_key"])
-                        else str(node["room_type"])
-                    ),
-                    bool(node["reachable"]), tuple(str(item) for item in node["outgoing_node_ids"]),
-                )
-                for node in raw["public_map"]
-            ),
+            map_nodes=map_nodes,
             choice_options=options["choice"],
             reward_options=options["reward"],
             shop_items=options["shop"],
@@ -295,14 +318,39 @@ def _combat_cards(
 def _powers(values: Any, prefix: str) -> tuple[PublicEntity, ...]:
     visible = [
         value for value in values
-        if normalize_content_id(value["id"]) not in {"ASLEEP"}
+        if normalize_power_id(value["id"]) not in {"ASLEEP"}
     ]
     return tuple(
         _entity(
-            f"{prefix}:{index}", normalize_content_id(value["id"]),
+            f"{prefix}:{index}", normalize_power_id(value["id"]),
             amount=int(value["amount"]),
         )
         for index, value in enumerate(visible)
+    )
+
+
+def _is_neow_card_reward(raw: Mapping[str, Any]) -> bool:
+    public = raw.get("public_run") or {}
+    screen = raw.get("public_screen") or {}
+    return bool(
+        int(public.get("screen_state", 0) or 0) == 2
+        and str(public.get("current_event_id") or "").upper() == "NEOW"
+        and len(screen.get("card_rewards") or ()) == 1
+        and not any(screen.get(key) for key in ("gold", "relics", "potions"))
+    )
+
+
+def _is_completed_neow_reward(raw: Mapping[str, Any]) -> bool:
+    public = raw.get("public_run") or {}
+    screen = raw.get("public_screen") or {}
+    info = raw.get("screen_info") or {}
+    return bool(
+        int(public.get("screen_state", 0) or 0) == 2
+        and str(public.get("current_event_id") or "").upper() == "NEOW"
+        and str(info.get("continuation") or "").lower() == "map"
+        and not any(screen.get(key) for key in (
+            "card_rewards", "gold", "relics", "potions", "emerald_key", "sapphire_key",
+        ))
     )
 
 
@@ -311,6 +359,8 @@ def _screen_type(raw: Mapping[str, Any]) -> ScreenType:
     if int(public["outcome"]) != 1:
         return ScreenType.GAME_OVER
     screen = int(public["screen_state"])
+    if _is_neow_card_reward(raw):
+        return ScreenType.CARD_REWARD
     if screen == 1:
         return ScreenType.NEOW if public["current_event_id"] == "NEOW" else ScreenType.EVENT
     return {
@@ -332,22 +382,40 @@ def _semantic_actions(
     progress = raw["progress_state"]
     semantic: list[Action] = []
     mapping: dict[str, int] = {}
+    native_target_to_public: dict[int, int] = {}
+    for public_index, monster in enumerate(
+        (raw.get("public_combat") or {}).get("monsters") or ()
+    ):
+        instance_id = str(monster.get("instance_id") or "")
+        if instance_id.startswith("monster:") and instance_id[8:].isdigit():
+            native_target_to_public[int(instance_id[8:])] = public_index
     for ordinal, native in enumerate(raw["legal_actions"]):
+        if _is_neow_card_reward(raw) and int(native["reward_type"]) == 6:
+            # The native Rewards container has a generic skip-all action that
+            # stock's Neow CardRewardScreen does not expose.
+            continue
         if native.get("domain") == "COMBAT":
             action_type = int(native["action_type"])
             source = int(native["source_index"])
             target = int(native["target_index"])
+            public_target = native_target_to_public.get(target, target)
             if action_type == 0:
                 action = Action(
                     ActionKind.PLAY_CARD,
                     subject_id=hand[source].instance_id,
-                    target_id=f"MONSTER:{target}" if native.get("requires_target") else None,
+                    target_id=(
+                        f"MONSTER:{public_target}" if native.get("requires_target") else None
+                    ),
                 )
             elif action_type == 1:
                 kind = ActionKind.DISCARD_POTION if target == 6 else ActionKind.USE_POTION
                 action = Action(
                     kind, subject_id=f"POTION:{source}",
-                    target_id=f"MONSTER:{target}" if native.get("requires_target") else None,
+                    target_id=(
+                        f"MONSTER:{public_target}"
+                        if kind is ActionKind.USE_POTION and native.get("requires_target")
+                        else None
+                    ),
                 )
             elif action_type == 2:
                 options = raw["public_combat"]["choice"]["options"]
@@ -370,6 +438,27 @@ def _semantic_actions(
             raise RuntimeError(f"native legal actions collapse to one semantic identity: {action.candidate_id}")
         semantic.append(action)
         mapping[action.candidate_id] = int(native["bits"])
+    if screen is ScreenType.COMBAT_REWARD:
+        def reward_order(action: Action) -> tuple[int, str]:
+            identity = action.reward_id or action.subject_id or action.option_id or ""
+            if action.kind is ActionKind.TAKE_REWARD:
+                prefix_order = {
+                    "reward-gold": 0, "reward-relic": 1,
+                    "reward-key": 2, "reward-potion": 3,
+                }
+                return next(
+                    ((value, identity) for prefix, value in prefix_order.items()
+                     if identity.startswith(prefix)),
+                    (3, identity),
+                )
+            return ({
+                ActionKind.TAKE_BLUE_KEY: 2,
+                ActionKind.CHOOSE_CARD_REWARD: 4,
+                ActionKind.TAKE_SINGING_BOWL: 5,
+                ActionKind.SKIP_CARD_REWARD: 6,
+                ActionKind.SKIP_REWARD: 7,
+            }.get(action.kind, 6), identity)
+        semantic.sort(key=reward_order)
     return tuple(semantic), mapping
 
 
@@ -425,6 +514,12 @@ def _run_action(
             subject_id=f"boss-relic:{idx1}" if idx1 < 3 else None,
         )
     if screen is ScreenType.CARD_REWARD:
+        if _is_neow_card_reward(raw):
+            if reward_type != 0:
+                raise RuntimeError(f"unsupported Neow card reward action type: {reward_type}")
+            if idx2 == 6:
+                return Action(ActionKind.SKIP_CARD_REWARD, option_id="reward-card:0")
+            return Action(ActionKind.SELECT_CARD, subject_id=f"select-card:{idx2}")
         select_type = raw["public_screen"].get("select_type")
         kind = {
             "UPGRADE": ActionKind.UPGRADE_CARD,
@@ -441,12 +536,16 @@ def _run_action(
         }
         return Action(kinds[idx1], option_id=f"rest-option:{idx1}")
     if screen is ScreenType.SHOP:
+        prices = raw["public_screen"]["prices"]
         if reward_type == 0:
-            return Action(ActionKind.BUY_CARD, subject_id=f"shop-card:{idx1}")
+            visible = sum(int(price) >= 0 for price in prices[:idx1])
+            return Action(ActionKind.BUY_CARD, subject_id=f"shop-card:{visible}")
         if reward_type == 3:
-            return Action(ActionKind.BUY_POTION, subject_id=f"shop-potion:{idx1}")
+            visible = sum(int(price) >= 0 for price in prices[10:10 + idx1])
+            return Action(ActionKind.BUY_POTION, subject_id=f"shop-potion:{visible}")
         if reward_type == 4:
-            return Action(ActionKind.BUY_RELIC, subject_id=f"shop-relic:{idx1}")
+            visible = sum(int(price) >= 0 for price in prices[7:7 + idx1])
+            return Action(ActionKind.BUY_RELIC, subject_id=f"shop-relic:{visible}")
         if reward_type == 5:
             return Action(ActionKind.CONFIRM, option_id="shop-remove")
         return Action(ActionKind.LEAVE_SHOP)
@@ -517,30 +616,51 @@ def _screen_entities(raw: Mapping[str, Any]) -> dict[str, tuple[Any, ...]]:
             entities.append(_entity("reward-key:sapphire", "SAPPHIRE_KEY"))
         result["reward"] = tuple(sorted(entities, key=lambda item: item.instance_id))
     elif screen is ScreenType.CARD_REWARD:
-        result["reward"] = tuple(
-            _entity(
-                option["instance_id"], option["content_id"],
-                upgrades=int(option["upgrades"]), deck_index=int(option["deck_index"]),
+        if _is_neow_card_reward(raw):
+            result["reward"] = tuple(
+                _entity(
+                    f"select-card:{index}", option["content_id"],
+                    upgrades=int(option["upgrades"]),
+                )
+                for index, option in enumerate(public_screen["card_rewards"][0])
             )
-            for option in public_screen.get("card_options", ())
-        )
+        else:
+            result["reward"] = tuple(
+                _entity(
+                    option["instance_id"], option["content_id"],
+                    upgrades=int(option["upgrades"]), deck_index=int(option["deck_index"]),
+                )
+                for option in public_screen.get("card_options", ())
+            )
     elif screen is ScreenType.SHOP:
         shop = public_screen
         items: list[ShopItem] = []
+        visible_index = 0
         for index, card in enumerate(shop["cards"]):
+            if int(shop["prices"][index]) < 0:
+                continue
             items.append(ShopItem(
-                f"shop-card:{index}", card["content_id"], "CARD", int(shop["prices"][index]),
-                int(shop["prices"][index]) < 0,
+                f"shop-card:{visible_index}", card["content_id"], "CARD",
+                int(shop["prices"][index]), False,
             ))
+            visible_index += 1
+        visible_index = 0
         for index, content_id in enumerate(shop["relics"]):
+            if int(shop["prices"][7 + index]) < 0:
+                continue
             items.append(ShopItem(
-                f"shop-relic:{index}", content_id, "RELIC", int(shop["prices"][7 + index]),
-                int(shop["prices"][7 + index]) < 0,
+                f"shop-relic:{visible_index}", content_id, "RELIC",
+                int(shop["prices"][7 + index]), False,
             ))
+            visible_index += 1
+        visible_index = 0
         for index, content_id in enumerate(shop["potions"]):
+            if int(shop["prices"][10 + index]) < 0:
+                continue
             items.append(ShopItem(
-                f"shop-potion:{index}", content_id, "POTION", int(shop["prices"][10 + index]),
-                int(shop["prices"][10 + index]) < 0,
+                f"shop-potion:{visible_index}", content_id, "POTION",
+                int(shop["prices"][10 + index]), False,
             ))
+            visible_index += 1
         result["shop"] = tuple(items)
     return result

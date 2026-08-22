@@ -77,7 +77,18 @@ def normalize_potion_id(value: object) -> str:
 
 
 def normalize_power_id(value: object) -> str:
-    return normalize_content_id(value)
+    normalized = normalize_content_id(value)
+    return {
+        # Gremlin Nob's stock AngerPower is native MonsterStatus::ENRAGE.
+        "ANGER": "ENRAGE",
+        # Stock FlexPower is the end-of-turn Strength-loss marker represented
+        # by PlayerStatus::LOSE_STRENGTH in the native simulator.
+        "FLEX": "LOSE_STRENGTH",
+        # Stock's WeakPower public ID is "Weakened".
+        "WEAKENED": "WEAK",
+        # Stock's RegenPower public ID is "Regenerate".
+        "REGENERATE": "REGEN",
+    }.get(normalized, normalized)
 
 
 @lru_cache(maxsize=1)
@@ -96,6 +107,7 @@ def _event_aliases() -> dict[str, str]:
                     without_article = " ".join(words[1:])
                     aliases[_compact(without_article)] = canonical
                     aliases[_compact(without_article + "Event")] = canonical
+    aliases[_compact("GremlinWheelGame")] = "WHEEL_OF_CHANGE"
     return aliases
 
 

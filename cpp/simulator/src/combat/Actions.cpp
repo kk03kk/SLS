@@ -1074,6 +1074,14 @@ Action Actions::GambleAction() {
     return {[] (BattleContext &bc) {
         bc.inputState = InputState::CARD_SELECT;
         bc.cardSelectInfo.cardSelectTask = CardSelectTask::GAMBLE;
+        // Gambling Chip / Gambler's Brew accepts any subset of the current
+        // hand, including the empty set.  Initialise the whole selection
+        // contract rather than inheriting stale values from an earlier card
+        // selector; otherwise an exact checkpoint can resume to a different
+        // public boundary even though the combat state is identical.
+        bc.cardSelectInfo.pickCount = bc.cards.cardsInHand;
+        bc.cardSelectInfo.canPickAnyNumber = true;
+        bc.cardSelectInfo.canPickZero = true;
     }};
 }
 

@@ -28,14 +28,25 @@ def continuation_original(payload: Mapping[str, Any]) -> dict[str, Any]:
         result["action_phase"] = result.get("action_phase") or game.get("action_phase")
         raw_screen = str(game.get("screen_type") or "").upper()
         if raw_screen == "GRID":
+            combat = game.get("combat_state") or {}
+            card_in_play = combat.get("card_in_play") or {}
+            from sls.content.normalize import normalize_card_id
+            headbutt_selection = normalize_card_id(card_in_play.get("id")) == "HEADBUTT"
+            liquid_memories_selection = str(
+                game.get("current_action") or ""
+            ).endswith("BetterDiscardPileToHandAction")
             task = result.get("card_selection_task")
             if not task:
                 task = (
+                    "HEADBUTT" if headbutt_selection else
+                    "LIQUID_MEMORIES_POTION" if liquid_memories_selection else
                     "TRANSFORM" if screen_state.get("for_transform") else
                     "UPGRADE" if screen_state.get("for_upgrade") else
                     "PURGE" if screen_state.get("for_purge") else "SELECT"
                 )
-            result["card_selection_source"] = result.get("card_selection_source") or "MASTER_DECK"
+            result["card_selection_source"] = result.get("card_selection_source") or (
+                "DISCARD" if headbutt_selection or liquid_memories_selection else "MASTER_DECK"
+            )
             result["card_selection_task"] = task
             result["card_selection_count"] = int(
                 result.get("card_selection_count") or screen_state.get("num_cards") or 0
@@ -109,6 +120,17 @@ def continuation_simulator(state: Mapping[str, Any]) -> dict[str, Any]:
     terminal_kind = None
     if int(public.get("outcome", 1)) != 1:
         terminal_kind = "DEATH" if int(player.get("current_hp", 0)) <= 0 else "VICTORY"
+    neow_card_reward = bool(
+        int(public.get("screen_state", 0) or 0) == 2
+        and str(public.get("current_event_id") or "").upper() == "NEOW"
+        and len(screen.get("card_rewards") or ()) == 1
+        and not any(screen.get(key) for key in ("gold", "relics", "potions"))
+    )
+    action_queue_types = list(checkpoint.get("action_queue_types") or ())
+    if choice.get("task") == "HEADBUTT" and not action_queue_types:
+        # The native input state is suspended inside the played Headbutt.  The
+        # Original exposes that suspension as its pending UseCardAction.
+        action_queue_types = ["com.megacrit.cardcrawl.actions.utility.UseCardAction"]
     return {
         "room_class": public.get("room_type"), "screen": public.get("screen_state"),
         "event_id": public.get("current_event_id"), "event_phase": screen.get("phase"),
@@ -133,8 +155,11 @@ def continuation_simulator(state: Mapping[str, Any]) -> dict[str, Any]:
         ),
         "loading_post_combat": bool(state.get("loading_post_combat", False)),
         "ui_boundary_folded": bool(state.get("ui_boundary_folded", False)),
-        "continuation_kind": terminal_kind or info.get("kind") or public.get("screen_state"),
-        "action_queue_types": list(checkpoint.get("action_queue_types") or ()),
+        "continuation_kind": (
+            terminal_kind or ("CARD_REWARD" if neow_card_reward else None)
+            or info.get("kind") or public.get("screen_state")
+        ),
+        "action_queue_types": action_queue_types,
         "card_queue_types": list(checkpoint.get("card_queue_types") or ()),
         "bottled_cards": bottled_cards,
     }

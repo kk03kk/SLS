@@ -104,7 +104,11 @@ def _original_combat(
 def _original_monster(
     monster: Mapping[str, Any], parity_intent: Mapping[str, Any],
 ) -> tuple[Any, ...]:
-    intent = str(parity_intent.get("intent") or monster.get("intent", "UNKNOWN"))
+    gone = bool(monster.get("is_gone", False)) or int(monster.get("current_hp", 0)) <= 0
+    intent = (
+        "UNKNOWN" if gone
+        else str(parity_intent.get("intent") or monster.get("intent", "UNKNOWN"))
+    )
     is_attack = intent.upper() in {"ATTACK", "ATTACK_BUFF", "ATTACK_DEBUFF", "ATTACK_DEFEND"}
     damage = parity_intent.get("damage")
     if damage is None:
@@ -113,9 +117,9 @@ def _original_monster(
         normalize_content_id(monster.get("id")),
         int(monster.get("current_hp", 0)), int(monster.get("max_hp", 0)),
         int(monster.get("block", 0)), intent,
-        int(damage) if is_attack else 0,
-        int(monster.get("move_hits", monster.get("intent_hits", 0))) if is_attack else 0,
-        bool(monster.get("is_gone", False)),
+        int(damage) if is_attack and not gone else 0,
+        int(monster.get("move_hits", monster.get("intent_hits", 0))) if is_attack and not gone else 0,
+        gone,
     )
 
 
@@ -138,8 +142,10 @@ def _simulator_combat(state: Mapping[str, Any]) -> dict[str, Any] | None:
             (
                 normalize_content_id(monster.get("content_id")),
                 int(monster.get("current_hp", 0)), int(monster.get("max_hp", 0)),
-                int(monster.get("block", 0)), str(monster.get("intent", "UNKNOWN")),
-                int(monster.get("intent_damage", 0)), int(monster.get("intent_hits", 0)),
+                int(monster.get("block", 0)),
+                "UNKNOWN" if bool(monster.get("is_gone", False)) else str(monster.get("intent", "UNKNOWN")),
+                0 if bool(monster.get("is_gone", False)) else int(monster.get("intent_damage", 0)),
+                0 if bool(monster.get("is_gone", False)) else int(monster.get("intent_hits", 0)),
                 bool(monster.get("is_gone", False)),
             )
             for monster in combat.get("monsters") or []

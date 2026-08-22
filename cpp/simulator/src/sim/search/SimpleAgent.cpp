@@ -591,7 +591,10 @@ void search::SimpleAgent::stepOutOfCombat(GameContext &gc) {
             break;
 
         case ScreenState::BOSS_RELIC_REWARDS: {
-            int bestIdx;
+            // A newly added or deliberately low-priority relic may retain the
+            // sentinel priority. Keep a valid deterministic fallback instead
+            // of executing an uninitialised action index.
+            int bestIdx = 0;
             int bestPriority = 1000;
             for (int i = 0; i < 3; ++i) {
                 const auto priority = bossRelicPriorityMap[static_cast<int>(gc.info.bossRelics[i])];
@@ -765,7 +768,9 @@ void search::SimpleAgent::stepCardReward(GameContext &gc) {
     }
 
     if (pickableCards.empty()) {
-        takeAction(gc, GameAction(GameAction::RewardsActionType::CARD, lastRewardIdx, 5) );
+        // No acceptable card and no guaranteed Singing Bowl: leave the whole
+        // reward screen. A CARD action with idx2=5 is only legal with the Bowl.
+        takeAction(gc, GameAction(GameAction::RewardsActionType::SKIP));
         return;
     }
 

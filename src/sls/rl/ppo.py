@@ -12,6 +12,7 @@ from torch.distributions import Categorical
 from sls.contracts import Decision
 from sls.model import Policy, PolicyBatch
 from sls.rl.rollout import RolloutBatch, generalized_advantage_estimate
+from sls.rl.reward import REWARD_SCHEMA, shape_act_one_reward
 from sls.rl.workers import WorkerPool
 
 
@@ -27,14 +28,21 @@ class PPOConfig:
     max_gradient_norm: float = 0.5
     epochs: int = 4
     minibatch_size: int = 256
+    potential_shaping: bool = False
+    potential_scale: float = 0.2
+    reward_schema: str = REWARD_SCHEMA
 
     def __post_init__(self) -> None:
         if self.rollout_steps <= 0 or self.epochs <= 0 or self.minibatch_size <= 0:
             raise ValueError("PPO sizes must be positive")
         if not 0.0 < self.gamma <= 1.0 or not 0.0 <= self.gae_lambda <= 1.0:
             raise ValueError("invalid discount configuration")
+        if self.potential_scale < 0.0:
+            raise ValueError("potential_scale cannot be negative")
+        if self.reward_schema != REWARD_SCHEMA:
+            raise ValueError(f"unsupported reward schema: {self.reward_schema}")
 
-    def to_dict(self) -> dict[str, int | float]:
+    def to_dict(self) -> dict[str, int | float | bool | str]:
         return asdict(self)
 
 
@@ -87,7 +95,17 @@ class PPOTrainer:
             action_steps.append(actions.cpu())
             log_probability_steps.append(distribution.log_prob(actions).cpu())
             value_steps.append(output.value.cpu())
-            reward_steps.append(torch.tensor([item.reward for item in transitions], dtype=torch.float32))
+            rewards = []
+            for current, item in zip(self.decisions, transitions):
+                reward = float(item.reward)
+                if self.config.potential_shaping:
+                    reward = shape_act_one_reward(
+                        reward, current.observation, item.decision.observation,
+                        gamma=self.config.gamma, scale=self.config.potential_scale,
+                        terminal=item.terminated,
+                    )
+                rewards.append(reward)
+            reward_steps.append(torch.tensor(rewards, dtype=torch.float32))
             terminal_steps.append(torch.tensor([item.terminated for item in transitions], dtype=torch.bool))
             next_decisions = [item.decision for item in transitions]
             for index, transition in enumerate(transitions):
@@ -122,7 +140,10 @@ class PPOTrainer:
         normalized_advantages = (
             rollout.advantages - rollout.advantages.mean()
         ) / (rollout.advantages.std(unbiased=False) + 1e-8)
-        totals = {"policy": 0.0, "value": 0.0, "entropy": 0.0, "loss": 0.0}
+        totals = {
+            "policy": 0.0, "value": 0.0, "entropy": 0.0, "loss": 0.0,
+            "approx_kl": 0.0, "gradient_norm": 0.0,
+        }
         updates = 0
         self.model.train()
         for _ in range(self.config.epochs):
@@ -156,11 +177,19 @@ class PPOTrainer:
                 )
                 self.optimizer.zero_grad(set_to_none=True)
                 loss.backward()
-                torch.nn.utils.clip_grad_norm_(self.model.parameters(), self.config.max_gradient_norm)
+                gradient_norm = torch.nn.utils.clip_grad_norm_(
+                    self.model.parameters(), self.config.max_gradient_norm,
+                )
                 self.optimizer.step()
+                approximate_kl = (
+                    rollout.old_log_probabilities[selected].to(self.device)
+                    - log_probabilities
+                ).mean()
                 for key, value in (
                     ("policy", policy_loss), ("value", value_loss),
                     ("entropy", entropy), ("loss", loss),
+                    ("approx_kl", approximate_kl),
+                    ("gradient_norm", gradient_norm),
                 ):
                     totals[key] += float(value.detach())
                 updates += 1

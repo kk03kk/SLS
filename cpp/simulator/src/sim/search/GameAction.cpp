@@ -335,7 +335,10 @@ void executeRewardsAction(GameContext &gc, const search::GameAction a) {
             if (a.getIdx2() == 5) { // singing bowl
                 gc.playerIncreaseMaxHp(2);
             } else if (a.getIdx2() == 6) { // skip only this card reward
-                // Removing the reward is the only semantic effect.
+                // Stock closes CardRewardScreen back to CombatRewardScreen,
+                // but leaves its RewardItem available.  Only proceeding from
+                // the parent screen abandons it permanently.
+                break;
             } else {
                 gc.obtainCard(r.cardRewards[a.getIdx1()][a.getIdx2()]);
             }

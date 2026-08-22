@@ -26,6 +26,7 @@ def _records(
         Path("root"),
         {
             "seed": 0,
+            "profile_id": "IRONCLAD_A0_ACT1",
             "evidence_class": "LIVE_FULLRUN",
             "capture_mode": "PAIRED",
             "anchors": [{
@@ -39,6 +40,7 @@ def _records(
         Path("child"),
         {
             "seed": 0,
+            "profile_id": "IRONCLAD_A0_ACT1",
             "evidence_class": child_class,
             "capture_mode": "PAIRED",
             "provenance": {"source_run_id": "root", "source_anchor": "boss"},

@@ -62,6 +62,7 @@
     "ARTIFACT",
     "ART_OF_WAR",
     "ASCENDERS_BANE",
+    "ASLEEP",
     "ASTROLABE",
     "ATTACK",
     "ATTACK_BUFF",
@@ -431,6 +432,7 @@
     "HEMOKINESIS",
     "HEX",
     "HEXAGHOST",
+    "HIDDEN_CARD",
     "HOLOGRAM",
     "HOLY_WATER",
     "HORN_CLEAT",
@@ -791,6 +793,7 @@
     "SPIRE_SPEAR",
     "SPIRIT_POOP",
     "SPIRIT_SHIELD",
+    "SPLIT",
     "SPORE_CLOUD",
     "SPOT_WEAKNESS",
     "SSSERPENT_HEAD",
@@ -812,6 +815,7 @@
     "STRIKE_GREEN",
     "STRIKE_PURPLE",
     "STRIKE_RED",
+    "STRONG_DEBUFF",
     "STUDY",
     "STUN",
     "SUCKER_PUNCH",
@@ -982,6 +986,7 @@
     "ARTIFACT",
     "ART_OF_WAR",
     "ASCENDERS_BANE",
+    "ASLEEP",
     "ASTROLABE",
     "ATTACK_POTION",
     "AUGMENTER",
@@ -1319,6 +1324,7 @@
     "HEMOKINESIS",
     "HEX",
     "HEXAGHOST",
+    "HIDDEN_CARD",
     "HOLOGRAM",
     "HOLY_WATER",
     "HORN_CLEAT",
@@ -1639,6 +1645,7 @@
     "SPIRE_SPEAR",
     "SPIRIT_POOP",
     "SPIRIT_SHIELD",
+    "SPLIT",
     "SPORE_CLOUD",
     "SPOT_WEAKNESS",
     "SSSERPENT_HEAD",
@@ -1851,5 +1858,5 @@
     "reward"
   ],
   "schema": "sls-policy-input-v2",
-  "sha256": "e88123b0e2d9fc1d61d897ea280916d67fc15b73cdd1464180a9d95d090249ab"
+  "sha256": "98e69b9733abfa4662ead56c0d02fb604b67575a2ba4c1785ba3fe736e7f01b6"
 }

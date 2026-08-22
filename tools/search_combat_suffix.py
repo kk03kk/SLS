@@ -54,11 +54,18 @@ def search(checkpoint: Path, simulations: int) -> dict:
                 "outcome": backend.raw_state["public_run"]["outcome"],
             })
     return {
-        "schema": "sls-combat-suffix-search-v1",
-        "checkpoint": str(checkpoint.resolve()),
-        "checkpoint_sha256": value_hash(_load(checkpoint)),
-        "search": native_result,
-        "steps": steps,
+        "schema": "sls-semantic-action-plan-v1",
+        "actions": [step["semantic_action"] for step in steps],
+        "expected_boundaries": steps,
+        "source": {
+            "kind": "NATIVE_COMBAT_CHECKPOINT",
+            "checkpoint": str(checkpoint.resolve()),
+            "checkpoint_sha256": value_hash(_load(checkpoint)),
+        },
+        "search_evidence": {
+            "schema": "sls-combat-suffix-search-v1",
+            **native_result,
+        },
     }
 
 
@@ -75,7 +82,7 @@ def main() -> int:
         args.output.write_text(text, encoding="utf-8")
     else:
         print(text, end="")
-    return 0 if result["search"]["found"] else 1
+    return 0 if result["search_evidence"]["found"] else 1
 
 
 if __name__ == "__main__":

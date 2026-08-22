@@ -23,6 +23,7 @@ POTIONS = CONSTANTS / "Potions.h"
 EVENTS = CONSTANTS / "Events.h"
 GAME_CONTEXT = ROOT / "cpp" / "simulator" / "src" / "game" / "GameContext.cpp"
 POLICY_VOCABULARY = ROOT / "configs" / "model" / "policy_vocabulary_v2.json"
+NATIVE_MODULE = ROOT / "cpp" / "simulator" / "python" / "module.cpp"
 
 IRONCLAD_REACHABLE_STATUSES = {"BURN", "DAZED", "SLIMED", "VOID", "WOUND"}
 IRONCLAD_REACHABLE_CURSES = {
@@ -71,6 +72,15 @@ def audit() -> dict[str, Any]:
     )
     if not vocabulary_unique:
         failures.append("policy vocabulary contains token collisions")
+    native_intents = set(re.findall(
+        r'return\s+"([A-Z_]+)"',
+        NATIVE_MODULE.read_text(encoding="utf-8"),
+    ))
+    missing_native_intents = sorted(
+        native_intents - set((actual_vocabulary or {}).get("categorical", []))
+    )
+    if missing_native_intents:
+        failures.append("native monster intents are missing from policy vocabulary")
 
     hash_mismatches: list[str] = []
     for filename, expected in registry["source"]["header_sha256"].items():
@@ -192,7 +202,8 @@ def audit() -> dict[str, Any]:
             },
             "policy_vocabulary_sha256": expected_vocabulary["sha256"],
             "policy_vocabulary_content_tokens": len(expected_vocabulary["content"]),
-            "policy_vocabulary_unique": vocabulary_unique,
+        "policy_vocabulary_unique": vocabulary_unique,
+        "native_intents_missing_from_policy_vocabulary": missing_native_intents,
             "java_id_missing": missing_java,
             "ironclad_playable_cards": len(ironclad),
             "ironclad_missing_use_cases": missing_ironclad,

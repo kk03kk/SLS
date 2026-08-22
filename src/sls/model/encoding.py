@@ -6,6 +6,7 @@ import hashlib
 import json
 from functools import lru_cache
 from pathlib import Path
+import re
 from typing import Any
 
 from sls.content import load_content_registry
@@ -30,6 +31,11 @@ NUMERIC_FIELDS = (
 NUMERIC_FIELD_IDS = {name: index for index, name in enumerate(NUMERIC_FIELDS)}
 CATEGORICAL_FIELDS = ("screen", "zone", "intent", "item_type", "source", "visible_boss")
 CATEGORICAL_FIELD_IDS = {name: index for index, name in enumerate(CATEGORICAL_FIELDS)}
+MONSTER_INTENTS = (
+    "ATTACK", "ATTACK_BUFF", "ATTACK_DEBUFF", "ATTACK_DEFEND", "BUFF",
+    "DEBUFF", "STRONG_DEBUFF", "DEFEND", "DEFEND_BUFF", "DEFEND_DEBUFF",
+    "ESCAPE", "MAGIC", "SLEEP", "STUN", "UNKNOWN", "DEBUG",
+)
 
 _PLAYER_POWERS = """
 DOUBLE_DAMAGE DRAW_REDUCTION FRAIL INTANGIBLE VULNERABLE WEAK BIAS CONFUSED
@@ -55,13 +61,13 @@ SHARP_HIDE BARRICADE MINION MINION_LEADER PAINFUL_STABS REGROW SHIFTING STASIS
 _SPECIAL_CONTENT = {
     "IRONCLAD", "GOLD", "EMERALD_KEY", "SAPPHIRE_KEY", "RUBY_KEY", "NEOW",
     "REST", "SMITH", "RECALL", "LIFT", "TOKE", "DIG", "PROCEED", "OPTION",
+    # Public placeholder used by Match and Keep before a card is revealed.
+    "HIDDEN_CARD",
 }
 _CATEGORY_VALUES = {
     "NONE", *[item.value for item in ScreenType],
     "DECK", "HAND", "DRAW", "DISCARD", "EXHAUST",
-    "ATTACK", "ATTACK_BUFF", "ATTACK_DEBUFF", "ATTACK_DEFEND", "BUFF",
-    "DEBUFF", "DEFEND", "DEFEND_BUFF", "DEFEND_DEBUFF", "ESCAPE", "MAGIC",
-    "SLEEP", "STUN", "UNKNOWN", "DEBUG", "CARD", "RELIC", "POTION",
+    *MONSTER_INTENTS, "CARD", "RELIC", "POTION",
     "EXHAUST_PILE", "DISCARD_PILE", "DRAW_PILE", "GENERATED", "MASTER_DECK",
     "MONSTER", "ELITE", "EVENT", "REST", "SHOP", "TREASURE", "BOSS",
     "BURNING_ELITE", "M", "E", "?", "R", "$", "T", "B",
@@ -69,11 +75,35 @@ _CATEGORY_VALUES = {
 VOCABULARY_PATH = (
     Path(__file__).resolve().parents[3] / "configs" / "model" / "policy_vocabulary_v2.json"
 )
+_CONSTANT_HEADERS = Path(__file__).resolve().parents[3] / "cpp" / "simulator" / "include" / "constants"
+_NATIVE_MODULE = Path(__file__).resolve().parents[3] / "cpp" / "simulator" / "python" / "module.cpp"
+
+
+def _cpp_string_array(filename: str, array_name: str) -> set[str]:
+    source = (_CONSTANT_HEADERS / filename).read_text(encoding="utf-8")
+    match = re.search(
+        rf"\b{re.escape(array_name)}\s*\[\s*\]\s*\{{(.*?)\}};",
+        source,
+        re.DOTALL,
+    )
+    if match is None:
+        raise RuntimeError(f"cannot locate policy vocabulary source {array_name}")
+    return set(re.findall(r'"([A-Z][A-Z0-9_]*)"', match.group(1))) - {"INVALID"}
+
+
+def _native_public_power_tokens() -> set[str]:
+    """Return synthetic public powers that are not backed by a status enum."""
+
+    source = _NATIVE_MODULE.read_text(encoding="utf-8")
+    return set(re.findall(r'\bpower\("([A-Z][A-Z0-9_]*)"', source))
 
 
 def build_policy_vocabulary() -> dict[str, Any]:
     registry = load_content_registry()
     content = set(_SPECIAL_CONTENT) | set(_PLAYER_POWERS) | set(_MONSTER_POWERS)
+    content.update(_cpp_string_array("PlayerStatusEffects.h", "playerStatusEnumStrings"))
+    content.update(_cpp_string_array("MonsterStatusEffects.h", "monsterStatusEnumStrings"))
+    content.update(_native_public_power_tokens())
     for items in registry.categories.values():
         content.update(str(item["id"]) for item in items)
     # Some categorical slots (notably the visible boss) legitimately carry a
@@ -142,4 +172,3 @@ def categorical_token(value: str | None, *, path: str) -> int:
         return values.index(raw)
     except ValueError as error:
         raise ValueError(f"unknown policy categorical value at {path}: {value}") from error
-

@@ -1,0 +1,37 @@
+[run]
+profile = "IRONCLAD_A0_ACT1"
+seed = 0
+device = "auto"
+workers = 8
+updates = 200
+save_interval = 10
+evaluate_interval = 10
+evaluation_seed_start = 10000
+evaluation_seed_count = 100
+evaluation_max_steps = 512
+require_readiness = true
+readiness_config = "configs/validation/act1_training.toml"
+readiness_root = "validation-results/truth"
+output = "runs/act1-pilot-v2"
+
+[model]
+embedding_dim = 128
+transformer_layers = 4
+attention_heads = 4
+feedforward_dim = 256
+dropout = 0.0
+
+[ppo]
+rollout_steps = 128
+learning_rate = 0.0003
+gamma = 0.99
+gae_lambda = 0.95
+clip_ratio = 0.2
+value_coefficient = 0.5
+entropy_coefficient = 0.01
+max_gradient_norm = 0.5
+epochs = 4
+minibatch_size = 256
+potential_shaping = true
+potential_scale = 0.2
+reward_schema = "sls-act1-potential-v1"

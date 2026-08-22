@@ -1,6 +1,7 @@
 profile = "IRONCLAD_A0_ACT1"
 
 [requirements]
+profile = "IRONCLAD_A0_ACT1"
 routes = 3
 bosses = ["SLIME_BOSS", "THE_GUARDIAN", "HEXAGHOST"]
 screens = [

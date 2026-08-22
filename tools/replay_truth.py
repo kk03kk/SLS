@@ -18,7 +18,8 @@ from sls.backends.simulator import (
     IRONCLAD_A0_ACT1, IRONCLAD_A0_ACT2, IRONCLAD_A0_ACT3, IRONCLAD_A0_HEART,
     SimulatorBackend,
 )
-from sls.contracts import Action
+from sls.contracts import Action, Decision
+from sls.curriculum import completed_act_between, evaluate_horizon
 from sls.validation.compare import canonical_original, canonical_simulator, parity_differences
 from sls.validation.diff import differences
 from sls.validation.policies import action_ids
@@ -30,6 +31,25 @@ from sls.validation.evidence import comparison_result, original_evidence_gaps
 PROFILES = {p.profile_id: p for p in (
     IRONCLAD_A0_ACT1, IRONCLAD_A0_ACT2, IRONCLAD_A0_ACT3, IRONCLAD_A0_HEART,
 )}
+
+
+def _apply_profile_horizon(profile: Any, previous: Decision | None, current: Decision) -> Decision:
+    """Recreate the backend-level terminal wrapper around a raw Original payload."""
+
+    if previous is None:
+        return current
+    horizon = evaluate_horizon(
+        profile,
+        current.observation,
+        act_completed=completed_act_between(previous.observation, current.observation),
+    )
+    if horizon.terminated == current.terminal:
+        return current
+    return Decision(
+        current.observation,
+        () if horizon.terminated else current.actions,
+        horizon.terminated,
+    )
 
 
 def _checkpoint(path: Path) -> dict[str, Any]:
@@ -136,11 +156,18 @@ def replay(
         upper = min(upper, from_step + window - 1)
     previous_original_rng = None
     previous_simulator_rng = None
+    previous_original_decision = (
+        adapt_original(boundaries[start - 1]["raw_original_payload"]).decision
+        if start > 0 else None
+    )
     for sequence in range(start, upper + 1):
         boundary = boundaries[sequence]
         if int(boundary["sequence"]) != sequence:
             raise ValueError(f"missing or unordered boundary at {sequence}")
-        original = adapt_original(boundary["raw_original_payload"]).decision
+        original = _apply_profile_horizon(
+            PROFILES[profile_id], previous_original_decision,
+            adapt_original(boundary["raw_original_payload"]).decision,
+        )
         observation_diff = differences(original.observation.to_dict(), decision.observation.to_dict())
         action_diff = differences(action_ids(original.actions), action_ids(decision.actions))
         state_diff = parity_differences(
@@ -201,6 +228,7 @@ def replay(
         current_simulator_rng = canonical_simulator(simulator.raw_state).get("rng", {})
         previous_original_rng = current_original_rng
         previous_simulator_rng = current_simulator_rng
+        previous_original_decision = original
         selected_action = boundary.get("selected_action")
         if sequence < upper:
             if not selected_action:

@@ -401,6 +401,11 @@ class TruthBundleRecorder:
         write_json(self.path / "recording.json", {
             "schema": "sls-original-recording-v1", "status": "RECORDING",
             "seed": seed, "profile_id": profile_id, "capture_mode": capture_mode,
+            "policy_id": policy_id, "evidence_class": evidence_class,
+            "acceptance_eligible": self.acceptance_eligible,
+            "instrumentation_schema": instrumentation_schema,
+            "launch": self.launch, "native_build": self.native_build,
+            "policy_hash": policy_hash, "provenance": self.provenance,
             "created_at": datetime.now(timezone.utc).isoformat(),
         })
 
@@ -879,10 +884,29 @@ def recover_partial_bundle(path: Path) -> Path:
                 artifacts[str(artifact.relative_to(path)).replace("\\", "/")] = file_hash(artifact)
     manifest = {
         "schema": TRUTH_BUNDLE_SCHEMA, "seed": recording["seed"],
-        "profile_id": recording["profile_id"], "policy_id": "unknown-after-crash",
-        "evidence_class": "LIVE_FULLRUN", "capture_mode": recording["capture_mode"],
+        "profile_id": recording["profile_id"],
+        "policy_id": recording.get("policy_id", "unknown-after-crash"),
+        "evidence_class": recording.get("evidence_class", "LIVE_FULLRUN"),
+        "capture_mode": recording["capture_mode"],
         "acceptance_eligible": False, "anchors": anchors,
+        "instrumentation": {"schema": recording.get("instrumentation_schema")},
+        "launch": recording.get("launch") or {},
+        "native_build": recording.get("native_build") or {},
+        "policy": {
+            "id": recording.get("policy_id", "unknown-after-crash"),
+            "sha256": recording.get("policy_hash"),
+        },
+        "provenance": recording.get("provenance") or {},
         "trace_schema": BOUNDARY_SCHEMA, "checkpoint_schema": CHECKPOINT_SCHEMA,
+        "segments": [{"start": 0, "end": len(boundaries) - 1}],
+        "start_state": {
+            "cursor": boundaries[0]["cursor"],
+            "boundary_hash": boundaries[0]["original_boundary_hash"],
+        },
+        "end_state": {
+            "cursor": boundaries[-1]["cursor"],
+            "boundary_hash": boundaries[-1]["original_boundary_hash"],
+        },
         "complete": False, "aborted": True, "outcome": None,
         "error": "recovered from interrupted recording",
         "termination_reason": "PROCESS_INTERRUPTED", "artifacts": artifacts,

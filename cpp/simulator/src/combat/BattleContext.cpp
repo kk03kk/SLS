@@ -505,18 +505,25 @@ void BattleContext::exitBattle(GameContext &g) const {
     updateCardsOnExit(g.deck);
 
     g.info.stolenGold = 0;
+    g.info.suppressCombatGold = false;
     if (requiresStolenGoldCheck()) {
+        bool allThievesEscaped = monsters.monsterCount > 0;
         for (int i = 0; i < monsters.monsterCount; ++i) {
             const auto &m = monsters.arr[i];
 
             const bool canHaveStolenGold = m.id == MonsterId::LOOTER || m.id == MonsterId::MUGGER;
             const bool escaped = m.curHp > 0 && (m.moveHistory[0] == MMID::LOOTER_ESCAPE ||
                                                  m.moveHistory[0] == MMID::MUGGER_ESCAPE);
+            allThievesEscaped = allThievesEscaped && canHaveStolenGold && escaped;
 
             if (canHaveStolenGold && !escaped) {
                 g.info.stolenGold += m.miscInfo;
             }
         }
+        // A room won solely because its thief escaped still grants the card
+        // (and possible potion) reward, but Java never constructs the normal
+        // gold RewardItem and therefore does not consume treasureRng.
+        g.info.suppressCombatGold = allThievesEscaped;
     }
 
     if (outcome == Outcome::PLAYER_LOSS) {
@@ -536,6 +543,10 @@ void BattleContext::exitBattle(GameContext &g) const {
 }
 
 void BattleContext::updateRelicsOnExit(GameContext &g) const {
+    // Stock onVictory hooks enqueue their heals before the action queue runs.
+    // Conditional relics therefore inspect the HP at victory, not HP after an
+    // earlier relic's queued heal has resolved.
+    const int hpAtVictory = g.curHp;
     for (auto &r : g.relics.relics) {
         switch (r.id) {
             case RelicId::HAPPY_FLOWER:
@@ -596,7 +607,7 @@ void BattleContext::updateRelicsOnExit(GameContext &g) const {
                 break;
 
             case RelicId::MEAT_ON_THE_BONE:
-                if (outcome == Outcome::PLAYER_VICTORY && g.curHp <= g.maxHp / 2) {
+                if (outcome == Outcome::PLAYER_VICTORY && hpAtVictory <= g.maxHp / 2) {
                     g.playerHeal(12);
                 }
                 break;

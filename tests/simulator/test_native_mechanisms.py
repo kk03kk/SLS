@@ -124,7 +124,15 @@ def test_map_graph_invariants_and_full_run_structure_without_combat() -> None:
             actions = state["legal_actions"]
             if not actions:
                 break
-            action = actions[(seed + decision_index * 7) % len(actions)]
+            candidates = [
+                action for action in actions
+                # Skipping only the nested CardRewardScreen intentionally
+                # returns to the unchanged parent RewardItem in stock. Avoid
+                # repeatedly selecting that semantic no-op in this structural
+                # traversal probe.
+                if not (action.get("reward_type") == 0 and action.get("idx2") == 6)
+            ] or actions
+            action = candidates[(seed + decision_index * 7) % len(candidates)]
             run.step(action["bits"])
         else:
             pytest.fail(f"seed {seed} did not terminate structurally")
@@ -227,6 +235,16 @@ def test_full_run_checkpoint_replays_the_same_transition() -> None:
 
     assert actual == expected
     assert replay.raw_state == first.raw_state
+
+
+def test_native_simple_agent_has_valid_boss_relic_fallback() -> None:
+    from sls.backends.simulator import IRONCLAD_A0_ACT1, SimulatorBackend
+
+    backend = SimulatorBackend(IRONCLAD_A0_ACT1)
+    backend.reset(10041)
+    result = backend._native.scripted_playout_act1()
+    assert result["act_one_boss"] == "HEXAGHOST"
+    assert result["scripted_action_count"] > 0
 
 
 def test_full_run_checkpoint_is_exact_across_decision_boundaries() -> None:

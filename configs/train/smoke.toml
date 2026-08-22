@@ -7,6 +7,7 @@ updates = 1
 save_interval = 1
 evaluate_interval = 999
 evaluation_seeds = [10000]
+require_readiness = false
 output = "runs/smoke"
 
 [model]
@@ -27,3 +28,6 @@ entropy_coefficient = 0.01
 max_gradient_norm = 0.5
 epochs = 1
 minibatch_size = 2
+potential_shaping = true
+potential_scale = 0.2
+reward_schema = "sls-act1-potential-v1"

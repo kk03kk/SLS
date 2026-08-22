@@ -170,7 +170,12 @@ mechanisms; they are not a second environment or training contract.
 - `check_original.py`: verify imported hashes and Java compiler.
 - `build_oracle.py`: deterministic Oracle JAR compilation.
 - `generate_content_registry.py`: regenerate registry from C++ headers.
+- `generate_policy_vocabulary.py`: generate/check the committed collision-free policy input v2 vocabulary.
 - `audit_static.py`: machine-check Java/C++ IDs, registry freshness, supported card cases, and historical markers.
+- `find_act1_boss_seeds.py`: locate the lowest native seed for each Act 1 boss.
+- `search_combat_suffix.py`, `search_act1_suffix.py`: read-only native checkpoint suffix search for local Original verification.
+- `validate_training_readiness.py`: curriculum-scoped, provenance-aware Act 1 parity gate.
+- `benchmark_act1.py`: guarded fixed-100-seed random/deterministic/native/untrained baselines.
 - `validate_full_run.py`: one-seed CommunicationMod parity entry.
 - `validate_corpus.py`: TOML-driven multi-seed parity corpus, acceptance gate, traces, and coverage summary.
 - `train_full_run.py`: canonical FullRun PPO entry and resume/save/evaluate loop.
@@ -178,7 +183,10 @@ mechanisms; they are not a second environment or training contract.
 ## `configs`
 
 - `validation/full_run.toml`: profile, parity seeds, output, step limit, RNG, and acceptance gate.
+- `validation/act1_training.toml`: independent three-route Act 1 training-readiness requirements.
+- `model/policy_vocabulary_v2.json`: exact generated policy tokens and vocabulary hash.
 - `train/full_run.toml`: profile, worker, model, PPO, checkpoint, and evaluation settings.
+- `train/act1_smoke.toml`, `train/act1_pilot.toml`: guarded 20/200-update GPU stages.
 - `train/smoke.toml`: one-update CPU integration configuration.
 
 ## `requirements`

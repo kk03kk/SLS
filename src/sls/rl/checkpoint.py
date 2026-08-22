@@ -46,7 +46,10 @@ def save_checkpoint(path: str | Path, trainer: PPOTrainer) -> Path:
 
 
 def load_checkpoint(path: str | Path, trainer: PPOTrainer) -> Mapping[str, Any]:
-    payload = torch.load(Path(path), map_location=trainer.device, weights_only=False)
+    # RNG states are CPU ByteTensors even when the trainer runs on CUDA.
+    # Loading the whole payload directly onto the trainer device corrupts that
+    # contract; model and optimizer loaders already move their own tensors.
+    payload = torch.load(Path(path), map_location="cpu", weights_only=False)
     if payload.get("schema") != CHECKPOINT_SCHEMA:
         raise ValueError("unsupported training checkpoint")
     expected = {

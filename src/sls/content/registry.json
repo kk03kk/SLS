@@ -3919,7 +3919,7 @@
   "schema_version": 1,
   "source": {
     "header_sha256": {
-      "Cards.h": "db1b56e0c08d314ddea045de708a8ca70f7596c77c0b7468ff7fb03519535344",
+      "Cards.h": "41f38c7ad6f03d70f03ed9746ee5bc8e57717ce66255a31775230c6d3fbbb9ef",
       "CharacterClasses.h": "81dc2b5ca3395b826c2e33677b4943b6cc35b67b1c81f5d076b8abda02db289d",
       "Events.h": "d558be77e7f187784a7eb66c21a537b458304d7dcbc934c6498d635a74cb97f1",
       "MonsterEncounters.h": "5363596ba4d216bf635c1f8d6066e180712c590529210d6264746b877e27bcce",

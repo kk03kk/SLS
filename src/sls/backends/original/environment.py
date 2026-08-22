@@ -121,6 +121,9 @@ class OriginalBackend:
                     and item.get("card_uuid")
                 }
         timing_before = payload.get("_timing_evidence") or {}
+        selection_task_before = str(
+            (payload.get("_continuation") or {}).get("card_selection_task") or ""
+        ).upper()
         starting_deck_size = len((payload.get("game_state") or {}).get("deck") or ())
         executed: list[str] = []
         for index, command in enumerate(commands):
@@ -163,6 +166,21 @@ class OriginalBackend:
         payload = self._settle_combat_terminal(payload, executed)
         payload = self._settle_debug_intents(payload, executed)
         payload = self._settle_command_boundary(payload, executed)
+        if not isinstance(action, str) and action.kind in {
+            ActionKind.UPGRADE_CARD, ActionKind.REMOVE_CARD, ActionKind.SELECT_CARD,
+        }:
+            payload = self._wait_for_selection_completion(
+                payload,
+                executed,
+                limit=180 if selection_task_before == "DISCOVERY" else 30,
+            )
+            payload = self._fold_terminal_selection_event(payload, executed)
+            payload = self._fold_protocol_only_boundaries(
+                payload, executed, fold_single_event=fold_single_event,
+            )
+            payload = self._fold_protocol_only_boundaries(
+                payload, executed, fold_single_event=fold_single_event,
+            )
         self._last_executed_commands = tuple(executed)
         timing_after = payload.get("_timing_evidence") or {}
         self._last_validation_evidence = {}
@@ -220,6 +238,61 @@ class OriginalBackend:
             payload = self.session.execute("wait 1")
             executed.append("wait 1")
         raise RuntimeError(f"Original UI did not leave {while_screen} within {limit} frames")
+
+    def _wait_for_selection_completion(
+        self, payload: dict[str, Any], executed: list[str], *, limit: int = 30,
+    ) -> dict[str, Any]:
+        """Advance stock frames past transient GRID/NONE selection teardown."""
+
+        continuation = payload.get("_continuation") or {}
+        effective_limit = max(limit, 180) if str(
+            continuation.get("card_selection_task") or ""
+        ).upper() == "DISCOVERY" else limit
+        for _ in range(effective_limit):
+            game = payload.get("game_state") or {}
+            screen = str(game.get("screen_type") or "NONE").upper()
+            continuation = payload.get("_continuation") or {}
+            if (
+                screen == "NONE"
+                and str(continuation.get("action_phase") or "").upper() == "WAITING_ON_USER"
+                and str(game.get("room_phase") or "").upper() == "COMBAT"
+            ):
+                return payload
+            if screen not in {"GRID", "NONE", "CARD_REWARD"}:
+                return payload
+            available = {str(item).lower() for item in payload.get("available_commands") or ()}
+            if "wait" not in available:
+                raise RuntimeError(
+                    f"selection remained on transient {screen} without wait"
+                )
+            payload = self.session.execute("wait 1")
+            executed.append("wait 1")
+        raise RuntimeError(
+            f"selection did not reach a semantic screen within {effective_limit} frames"
+        )
+
+    def _fold_terminal_selection_event(
+        self, payload: dict[str, Any], executed: list[str],
+    ) -> dict[str, Any]:
+        """Fold the sole event completion revealed after a card selection."""
+
+        game = payload.get("game_state") or {}
+        choices = game.get("choice_list") or ()
+        if str(game.get("screen_type") or "").upper() != "EVENT" or len(choices) != 1:
+            return payload
+        available = {str(item).lower() for item in payload.get("available_commands") or ()}
+        if "choose" not in available:
+            raise RuntimeError("terminal post-selection event does not advertise choose")
+        payload = self.session.execute("choose 0")
+        executed.append("choose 0")
+        available = {str(item).lower() for item in payload.get("available_commands") or ()}
+        if "wait" in available:
+            payload = self.session.execute("wait 30")
+            executed.append("wait 30")
+        continuation = payload.get("_continuation")
+        if isinstance(continuation, dict):
+            continuation["ui_boundary_folded"] = True
+        return payload
 
     def _settle_reward_intermediate(
         self, payload: dict[str, Any], executed: list[str],
@@ -358,9 +431,39 @@ class OriginalBackend:
                     executed.append("proceed")
                 folded = True
                 continue
+            neow_terminal = bool(
+                screen == "EVENT"
+                and (
+                    room_class.endswith("NeowRoom")
+                    or str(
+                        continuation_original(payload).get("event_id") or ""
+                    ).endswith("NeowEvent")
+                )
+            )
+            event_state = game.get("screen_state") or {}
+            event_options = event_state.get("options") or ()
+            event_choice_texts = [str(choices[0]).lower()] if len(choices or ()) == 1 else []
+            if len(event_options) == 1:
+                event_choice_texts.extend(
+                    str(event_options[0].get(field) or "").lower()
+                    for field in ("label", "text")
+                )
+            terminal_event_choice = bool(
+                screen == "EVENT"
+                and len(choices or ()) == 1
+                and any(
+                    token in text
+                    for text in event_choice_texts
+                    for token in ("leave", "proceed", "continue", "离开", "继续")
+                )
+            )
             if (
-                fold_single_event
-                and screen == "EVENT" and len(choices or ()) == 1
+                (
+                    screen == "NEOW" or neow_terminal
+                    or terminal_event_choice
+                    or (fold_single_event and screen == "EVENT")
+                )
+                and len(choices or ()) == 1
                 and "choose" in available
             ):
                 payload = self.session.execute("choose 0")

@@ -103,6 +103,7 @@ def evaluate_route(records: Mapping[str, BundleRecord], leaf_id: str) -> dict[st
     if not chain or chain[0].manifest.get("evidence_class") != "LIVE_FULLRUN":
         failures.append("NO_LIVE_FULLRUN_ROOT")
     seed = chain[0].manifest.get("seed") if chain else None
+    profile = chain[0].manifest.get("profile_id") if chain else None
     screens: set[str] = set()
     actions: set[str] = set()
     rooms: set[str] = set()
@@ -119,6 +120,8 @@ def evaluate_route(records: Mapping[str, BundleRecord], leaf_id: str) -> dict[st
             failures.append(f"NOT_PAIRED:{record.path.name}")
         if manifest.get("seed") != seed:
             failures.append(f"SEED_MISMATCH:{record.path.name}")
+        if manifest.get("profile_id") != profile:
+            failures.append(f"PROFILE_MISMATCH:{record.path.name}")
         # A resumed child supersedes its parent's tail starting at the source
         # anchor.  The child re-records that boundary after stock autosave
         # normalization, so only the strict prefix is part of this route.
@@ -159,7 +162,7 @@ def evaluate_route(records: Mapping[str, BundleRecord], leaf_id: str) -> dict[st
     if not reached_act_two:
         failures.append("ACT_TWO_NOT_REACHED")
     return {
-        "leaf": leaf_id, "seed": seed, "valid": not failures,
+        "leaf": leaf_id, "seed": seed, "profile": profile, "valid": not failures,
         "chain": [record.path.name for record in chain], "failures": failures,
         "reached_act_two": reached_act_two, "used_boundaries": used_boundaries,
         "coverage": {
@@ -176,6 +179,9 @@ def readiness_report(root: Path, requirements: Mapping[str, Any]) -> dict[str, A
         if any(int((boundary.get("cursor") or {}).get("act", 0) or 0) >= 2 for boundary in record.boundaries):
             routes.append(evaluate_route(records, bundle_id))
     valid = [route for route in routes if route["valid"]]
+    required_profile = requirements.get("profile")
+    if required_profile is not None:
+        valid = [route for route in valid if route["profile"] == str(required_profile)]
     bosses = {value for route in valid for value in route["coverage"]["bosses"]}
     screens = {value for route in valid for value in route["coverage"]["screens"]}
     actions = {value for route in valid for value in route["coverage"]["selected_actions"]}
@@ -185,6 +191,10 @@ def readiness_report(root: Path, requirements: Mapping[str, Any]) -> dict[str, A
     required_actions = set(map(str, requirements.get("selected_actions", ())))
     room_suffixes = set(map(str, requirements.get("room_suffixes", ())))
     failures = []
+    if required_profile is not None and any(
+        route["valid"] and route["profile"] != str(required_profile) for route in routes
+    ):
+        failures.append("WRONG_PROFILE_ROUTES_EXCLUDED")
     if len({route["seed"] for route in valid}) < int(requirements.get("routes", 3)):
         failures.append("INSUFFICIENT_COMPLETED_ROUTES")
     if not required_bosses.issubset(bosses): failures.append("MISSING_BOSSES")

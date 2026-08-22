@@ -133,6 +133,7 @@ namespace sts {
 
         // from combats
         int stolenGold = 0;
+        bool suppressCombatGold = false;
 
         // Shop Room
         Shop shop;

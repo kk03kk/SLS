@@ -80,7 +80,7 @@ def extract(
     continuation_evidence = continuation_original(boundary["raw_original_payload"])
     folded_ui_boundary = bool(continuation_evidence.get("ui_boundary_folded")) or (
         len(game.get("choice_list") or ()) == 1
-        and str(game.get("screen_type") or "").upper() == "EVENT"
+        and str(game.get("screen_type") or "").upper() in {"EVENT", "NEOW"}
         and expected_screen == "MAP"
     ) or (
         str(game.get("screen_type") or "").upper() == "CHEST"

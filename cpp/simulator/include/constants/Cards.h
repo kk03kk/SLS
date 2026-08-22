@@ -557,6 +557,7 @@ namespace sts {
             case CardId::INFERNAL_BLADE:
             case CardId::INTIMIDATE:
             case CardId::PUMMEL:
+            case CardId::SEEING_RED:
             case CardId::SHOCKWAVE:
             case CardId::EXHUME:
             case CardId::FEED:

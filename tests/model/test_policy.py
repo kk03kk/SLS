@@ -18,7 +18,12 @@ from sls.contracts import (
 )
 from sls.model import ModelConfig, Policy, PolicyBatch
 from sls.model.batching import encode_decision
-from sls.model.encoding import NUMERIC_FIELD_IDS, policy_vocabulary
+from sls.model.encoding import (
+    NUMERIC_FIELD_IDS,
+    categorical_token,
+    content_token,
+    policy_vocabulary,
+)
 
 
 def test_policy_scores_the_current_candidate_set() -> None:
@@ -128,6 +133,19 @@ def test_map_outgoing_edges_preserve_destinations() -> None:
     assert encoded.entity_adjacency.sum() == 1
 
 
+def test_boss_map_action_resolves_to_explicit_entity() -> None:
+    observation = Observation(
+        Player("IRONCLAD", 80, 80, 0, 0, 3),
+        RunContext(0, 1, 16, 99, False, False, False),
+        ScreenType.MAP,
+        map_nodes=(MapNode("map:boss", 0, 15, "BOSS", True),),
+    )
+    encoded = encode_decision(Decision(
+        observation, (Action(ActionKind.CHOOSE_MAP_NODE, node_id="map:boss"),),
+    ))
+    assert encoded.action_reference_mask[0, 3]
+
+
 def test_unknown_content_fails_instead_of_hashing() -> None:
     decision = _combat_decision()
     bad = Decision(
@@ -161,3 +179,11 @@ def test_unknown_metadata_and_dangling_references_fail() -> None:
 def test_registry_ids_have_unique_exact_tokens() -> None:
     content = policy_vocabulary()["content"]
     assert len(content) == len(set(content))
+
+
+def test_strong_debuff_intent_has_an_exact_token() -> None:
+    assert categorical_token("STRONG_DEBUFF", path="enemy.intent") > 0
+
+
+def test_public_hidden_card_placeholder_has_an_exact_token() -> None:
+    assert content_token("HIDDEN_CARD")[0] > 0

@@ -62,13 +62,22 @@ autosave workflow is documented in
 
 ## Training
 
-FullRun PPO uses the same canonical Decision contract as validation. Build the
-native simulator and install the model extra, then run:
+PPO uses the same canonical Decision contract as validation. Policy input v2
+uses the committed exact vocabulary and entity/action references; it has no
+string hash buckets. Verify the vocabulary and the curriculum-scoped parity
+gate before a large run:
 
 ```bash
 python tools/bootstrap.py --with-model
+python tools/generate_policy_vocabulary.py --check
+python tools/validate_training_readiness.py
+python tools/benchmark_act1.py
 python tools/train_full_run.py --config configs/train/full_run.toml
 ```
 
-Large training runs are gated on the selected Original/Simulator parity corpus;
-the presence of the trainer does not imply that parity acceptance is complete.
+The Act 1 gate is separate from final 10-seed Heart FullRun acceptance. It
+requires three hash-continuous Original routes covering Slime Boss, Guardian,
+and Hexaghost. The 20-update and 200-update guarded configurations are
+`configs/train/act1_smoke.toml` and `configs/train/act1_pilot.toml`. A one-update
+ungated developer integration check remains in `configs/train/smoke.toml` and
+does not constitute a training run or parity evidence.

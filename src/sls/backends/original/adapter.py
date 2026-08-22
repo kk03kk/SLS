@@ -7,6 +7,7 @@ from typing import Any, Mapping, Sequence
 
 from sls.content.normalize import (
     normalize_card_id, normalize_content_id, normalize_event_id, normalize_potion_id,
+    normalize_power_id,
 )
 from sls.contracts import (
     Action,
@@ -89,7 +90,8 @@ def adapt_original(payload: Mapping[str, Any]) -> AdaptedOriginalDecision:
     )
     powers = _powers(_mapping(combat.get("player")).get("powers"), "PLAYER_POWER")
     for monster_index, monster in enumerate(_mappings(combat.get("monsters"))):
-        powers += _powers(monster.get("powers"), f"MONSTER:{monster_index}:POWER")
+        if not bool(monster.get("is_gone", False)) and _integer(monster.get("current_hp")) > 0:
+            powers += _powers(monster.get("powers"), f"MONSTER:{monster_index}:POWER")
 
     actions, commands = _actions(payload, game, combat, screen_state, screen, hand)
     options = _screen_entities(payload, game, combat, screen_state, screen)
@@ -437,7 +439,7 @@ def _cards(
 def _powers(values: Any, prefix: str) -> tuple[PublicEntity, ...]:
     return tuple(
         PublicEntity(
-            f"{prefix}:{index}", normalize_content_id(value.get("id")),
+            f"{prefix}:{index}", normalize_power_id(value.get("id")),
             (("amount", _integer(value.get("amount"))),),
         )
         for index, value in enumerate(_mappings(values))
@@ -446,6 +448,7 @@ def _powers(values: Any, prefix: str) -> tuple[PublicEntity, ...]:
 
 def _enemy(monster: Mapping[str, Any], index: int, parity: Mapping[str, Any]) -> Enemy:
     monster_id = normalize_content_id(monster.get("id"))
+    gone = bool(monster.get("is_gone", False)) or _integer(monster.get("current_hp")) <= 0
     intent = str(parity.get("intent") or monster.get("intent") or "UNKNOWN").upper()
     if intent == "DEBUG" and (monster_id, _integer(monster.get("move_id"))) == ("CULTIST", 3):
         intent = "BUFF"
@@ -454,13 +457,15 @@ def _enemy(monster: Mapping[str, Any], index: int, parity: Mapping[str, Any]) ->
         parity.get("damage", monster.get("move_adjusted_damage", monster.get("intent_damage")))
     )
     hits = _integer(parity.get("hits", monster.get("move_hits", monster.get("intent_hits", 1))))
-    if not is_attack:
+    if gone:
+        intent, damage, hits = "UNKNOWN", 0, 0
+    elif not is_attack:
         damage, hits = 0, 0
     return Enemy(
         f"MONSTER:{index}", monster_id,
         _integer(monster.get("current_hp")), _integer(monster.get("max_hp")),
         _integer(monster.get("block")), intent, damage, hits,
-        (("is_gone", bool(monster.get("is_gone", False))),),
+        (("is_gone", gone),),
     )
 
 
@@ -501,10 +506,16 @@ def _map_nodes(game: Mapping[str, Any], parity_run: Mapping[str, Any]) -> tuple[
             ),
             (x, y) in reachable,
             tuple(
-                f"map:{_integer(edge.get('x'))}:{15 if _integer(edge.get('y')) == 16 else _integer(edge.get('y'))}"
+                (
+                    "map:boss" if _integer(edge.get("y")) == 16 else
+                    f"map:{_integer(edge.get('x'))}:{_integer(edge.get('y'))}"
+                )
                 for edge in _mappings(node.get("children"))
             ),
         ))
+    screen_state = _mapping(game.get("screen_state"))
+    if bool(screen_state.get("boss_available")) and not _mappings(screen_state.get("next_nodes")):
+        nodes.append(MapNode("map:boss", 0, 15, "BOSS", True))
     return tuple(nodes)
 
 
@@ -518,6 +529,18 @@ def _screen_entities(
     choices = _sequence(game.get("choice_list"))
     if combat and choices:
         screen_cards = _mappings(state.get("cards"))
+        card_in_play = combat.get("card_in_play") or {}
+        discard_selection = (
+            normalize_card_id(card_in_play.get("id")) == "HEADBUTT"
+            or str(game.get("current_action") or "").endswith(
+                "BetterDiscardPileToHandAction"
+            )
+        )
+        choice_source = (
+            "DISCARD"
+            if discard_selection
+            else "GENERATED"
+        )
         result["choice"] = tuple(
             PublicEntity(
                 f"CHOICE:{index}",
@@ -525,7 +548,7 @@ def _screen_entities(
                 if index < len(screen_cards)
                 else normalize_content_id(_choice_id(value)),
                 (
-                    ("source", "GENERATED"),
+                    ("source", choice_source),
                     ("upgrades", _integer(screen_cards[index].get("upgrades"))),
                 ) if index < len(screen_cards) else (),
             )

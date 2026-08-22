@@ -6,7 +6,11 @@ workers = 8
 updates = 1000
 save_interval = 10
 evaluate_interval = 10
-evaluation_seeds = [10000, 10001, 10002, 10003]
+evaluation_seed_start = 10000
+evaluation_seed_count = 100
+require_readiness = true
+readiness_config = "configs/validation/act1_training.toml"
+readiness_root = "validation-results/truth"
 output = "runs/full-run"
 
 [model]
@@ -27,3 +31,6 @@ entropy_coefficient = 0.01
 max_gradient_norm = 0.5
 epochs = 4
 minibatch_size = 256
+potential_shaping = true
+potential_scale = 0.2
+reward_schema = "sls-act1-potential-v1"

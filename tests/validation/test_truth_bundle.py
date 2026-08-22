@@ -192,6 +192,17 @@ def test_treasure_reward_screen_is_not_post_combat() -> None:
     assert continuation["post_combat"] is False
 
 
+def test_native_headbutt_continuation_exposes_pending_use_card() -> None:
+    continuation = continuation_simulator({
+        "public_run": {"screen_state": 9},
+        "public_combat": {"choice": {"source": "DISCARD", "task": "HEADBUTT"}},
+        "combat_checkpoint": {"action_queue_types": []},
+    })
+    assert continuation["action_queue_types"] == [
+        "com.megacrit.cardcrawl.actions.utility.UseCardAction",
+    ]
+
+
 def test_original_event_class_aliases_native_event_id() -> None:
     assert not continuation_differences(
         {"event_id": "com.megacrit.cardcrawl.events.exordium.GoldenIdolEvent"},
@@ -620,9 +631,11 @@ def test_committed_adapter_regressions_match_expected_canonical_output() -> None
                 "rng": canonical_simulator(simulator.raw_state)["rng"],
                 "continuation": continuation_simulator(simulator.raw_state),
             }
-            # Official resumes do not preserve the exhausted Neow stream.
-            for value in (actual["canonical_public_state"].get("rng", {}), actual["rng"]):
-                value.pop("neow", None)
+            # Official resumes do not preserve the exhausted Neow stream;
+            # LIVE_FULLRUN fixtures retain and compare it.
+            if fixture.get("provenance", {}).get("evidence_class") == "RESUMED_AUTOSAVE":
+                for value in (actual["canonical_public_state"].get("rng", {}), actual["rng"]):
+                    value.pop("neow", None)
             expected = fixture["expected"]
             assert not differences(
                 {key: actual[key] for key in ("canonical_public_state", "canonical_decision", "rng")},

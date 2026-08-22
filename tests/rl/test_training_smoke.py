@@ -26,6 +26,7 @@ def test_one_native_ppo_update_and_exact_resume(tmp_path: Path) -> None:
         metrics = trainer.train_update()
         assert trainer.update == 1
         assert all(torch.isfinite(torch.tensor(value)) for value in metrics.values())
+        assert {"approx_kl", "gradient_norm"} <= metrics.keys()
         path = save_checkpoint(tmp_path / "checkpoint.pt", trainer)
         expected_seed = trainer.next_seed
         expected_metrics = trainer.train_update()
@@ -45,3 +46,17 @@ def test_one_native_ppo_update_and_exact_resume(tmp_path: Path) -> None:
         torch.save({"schema": "sls-full-run-ppo-v1"}, legacy)
         with pytest.raises(ValueError, match="unsupported training checkpoint"):
             load_checkpoint(legacy, trainer)
+
+
+@pytest.mark.skipif(not torch.cuda.is_available(), reason="CUDA is unavailable")
+def test_cuda_checkpoint_keeps_cpu_rng_state_loadable(tmp_path: Path) -> None:
+    model = Policy(ModelConfig(
+        embedding_dim=32, transformer_layers=1, attention_heads=4,
+        feedforward_dim=64,
+    ))
+    config = PPOConfig(rollout_steps=1, epochs=1, minibatch_size=1)
+    with WorkerPool(IRONCLAD_A0_ACT1, 1) as workers:
+        trainer = PPOTrainer(model, workers, config, device="cuda", seed=0)
+        path = save_checkpoint(tmp_path / "cuda.pt", trainer)
+        load_checkpoint(path, trainer)
+        assert trainer.device.type == "cuda"

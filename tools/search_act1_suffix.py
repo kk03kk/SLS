@@ -63,11 +63,18 @@ def _plan_evidence(checkpoint: dict, actions: list[Action]) -> list[dict]:
     return result
 
 
-def search(checkpoint: dict, *, simulations: int, max_prefix_steps: int) -> dict:
+def search(
+    checkpoint: dict, *, simulations: int, max_prefix_steps: int,
+    target: str = "boss",
+) -> dict:
     queue = deque([(checkpoint, [])])
     seen: set[str] = set()
     boss_states = 0
     restore_failures = 0
+    initial = SimulatorBackend(IRONCLAD_A0_HEART)
+    initial_decision = initial.load_checkpoint(checkpoint)
+    start_floor = initial_decision.observation.run.floor
+    starts_in_combat = initial_decision.observation.screen.value == "COMBAT"
     while queue:
         state, prefix = queue.popleft()
         digest = value_hash(state)
@@ -81,7 +88,17 @@ def search(checkpoint: dict, *, simulations: int, max_prefix_steps: int) -> dict
             restore_failures += 1
             continue
         observation = decision.observation
-        if observation.screen.value == "COMBAT" and observation.run.floor == 16:
+        target_combat = bool(
+            observation.screen.value == "COMBAT"
+            and (
+                (target == "boss" and observation.run.floor == 16)
+                or (
+                    target == "next-combat"
+                    and observation.run.floor >= start_floor + (0 if starts_in_combat else 1)
+                )
+            )
+        )
+        if target_combat:
             boss_states += 1
             native = dict(backend._native.search_battle_suffix(simulations))
             if native["found"]:
@@ -107,6 +124,7 @@ def search(checkpoint: dict, *, simulations: int, max_prefix_steps: int) -> dict
                             "algorithm": "BattleScumSearcher2",
                             "max_prefix_steps": max_prefix_steps,
                             "boss_simulations": simulations,
+                            "target": target,
                         },
                     },
                 }
@@ -138,11 +156,12 @@ def main() -> int:
     parser.add_argument("checkpoint", type=Path)
     parser.add_argument("--simulations", type=int, choices=(150000, 450000), default=150000)
     parser.add_argument("--max-prefix-steps", type=int, default=14)
+    parser.add_argument("--target", choices=("boss", "next-combat"), default="boss")
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
     result = search(
         _checkpoint(args.checkpoint), simulations=args.simulations,
-        max_prefix_steps=args.max_prefix_steps,
+        max_prefix_steps=args.max_prefix_steps, target=args.target,
     )
     text = json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
     if args.output:

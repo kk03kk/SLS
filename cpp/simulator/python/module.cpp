@@ -135,7 +135,8 @@ py::list monster_powers(const Monster &m) {
     // Stock inserts SplitPower before debuffs subsequently applied to the
     // Slime Boss. Keep that public ordering even though the native simulator
     // models the threshold outside the status map.
-    if (m.id == MonsterId::SLIME_BOSS && !m.isDeadOrEscaped()) {
+    if ((m.id == MonsterId::SLIME_BOSS || m.id == MonsterId::ACID_SLIME_L
+            || m.id == MonsterId::SPIKE_SLIME_L) && !m.isDeadOrEscaped()) {
         result.append(power("SPLIT", -1, "SPLIT"));
     }
     for (const auto &[status, amount] : m.orderedPowers()) {
@@ -683,6 +684,7 @@ int relic_counter(const RelicInstance &relic, const Player &player) {
         case RelicId::HAPPY_FLOWER: return player.happyFlowerCounter;
         case RelicId::INCENSE_BURNER: return player.incenseBurnerCounter;
         case RelicId::INK_BOTTLE: return player.inkBottleCounter;
+        case RelicId::LETTER_OPENER: return player.skillsPlayedThisTurn % 3;
         case RelicId::NUNCHAKU: return player.nunchakuCounter;
         case RelicId::PEN_NIB: return player.penNibCounter;
         case RelicId::SUNDIAL: return player.sundialCounter;
@@ -1456,7 +1458,8 @@ py::dict combat_action_state(
         requires_target = battle->cards.hand[action.getSourceIdx()].requiresTarget();
     } else if (battle != nullptr && action.getActionType() == search::ActionType::POTION &&
             action.getSourceIdx() >= 0 && action.getSourceIdx() < battle->potionCapacity) {
-        requires_target = potionRequiresTarget(battle->potions[action.getSourceIdx()]);
+        requires_target = action.getTargetIdx() != 6
+            && potionRequiresTarget(battle->potions[action.getSourceIdx()]);
     }
     value["requires_target"] = requires_target;
     if (action.getActionType() == search::ActionType::MULTI_CARD_SELECT) {

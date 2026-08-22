@@ -1147,6 +1147,7 @@ void GameContext::enterAct3VictoryRoom() {
 void GameContext::enterBattle(MonsterEncounter encounter) {
     screenState = ScreenState::BATTLE;
     info.encounter = encounter;
+    info.suppressCombatGold = false;
     if (skipBattles) {
         afterBattle();
     }
@@ -2038,8 +2039,10 @@ void GameContext::openTreasureRoomChest() {
 
 Rewards GameContext::createCombatReward() {
     Rewards reward;
-    int goldAmt = treasureRng.random(10, 20);
-    addGoldReward(reward, goldAmt);
+    if (!info.suppressCombatGold) {
+        int goldAmt = treasureRng.random(10, 20);
+        addGoldReward(reward, goldAmt);
+    }
     addPotionRewards(reward);
     reward.addCardReward(createCardReward(Room::MONSTER));
     if (hasRelic(RelicId::PRAYER_WHEEL)) {
