@@ -34,7 +34,7 @@ class CurriculumProfile:
     ascension: int
     horizon: EpisodeHorizon
     start_distribution: str = "NATURAL_RUN_START"
-    version: int = 1
+    version: int = 2
 
 
 IRONCLAD_A0_ACT1 = CurriculumProfile("IRONCLAD_A0_ACT1", "IRONCLAD", 0, EpisodeHorizon.ACT_1)
@@ -85,3 +85,19 @@ def evaluate_horizon(
     if completed is not None and completed >= int(profile.horizon):
         return HorizonDecision(True, True, f"ACT_{int(profile.horizon)}_CLEARED")
     return HorizonDecision(False, False, None)
+
+
+def completed_act_between(previous: Observation, current: Observation) -> int | None:
+    """Return the highest act completed by an observed forward transition.
+
+    The native simulator transitions directly from the boss-relic continuation
+    to the next act's map, so an ``ACT_TRANSITION`` screen is not a reliable
+    episode boundary.  Comparing public act numbers works for both backends and
+    deliberately waits until the transition has actually happened.
+    """
+
+    previous_act = int(previous.run.act)
+    current_act = int(current.run.act)
+    if current_act <= previous_act:
+        return None
+    return current_act - 1

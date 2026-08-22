@@ -20,7 +20,12 @@ from sls.contracts import (
     Transition,
     ValidationSnapshot,
 )
-from sls.curriculum import CurriculumProfile, IRONCLAD_A0_HEART, evaluate_horizon
+from sls.curriculum import (
+    CurriculumProfile,
+    IRONCLAD_A0_HEART,
+    completed_act_between,
+    evaluate_horizon,
+)
 from sls.contracts.continuation import continuation_simulator
 from sls.content.normalize import normalize_content_id
 
@@ -65,6 +70,9 @@ class SimulatorBackend:
                 self._native._set_discovery_retrieval_updates_for_validation(
                     int(validation_evidence["discovery_retrieval_updates"]),
                 )
+        if self._last_raw is None:
+            raise RuntimeError("reset must be called before step")
+        previous_observation = self._adapt(self._last_raw).observation
         candidate_id = action if isinstance(action, str) else action.candidate_id
         try:
             bits = self._candidate_bits[candidate_id]
@@ -77,7 +85,13 @@ class SimulatorBackend:
             )
             raw = self._native.snapshot()
         next_decision = self._adapt(raw)
-        decision = evaluate_horizon(self.profile, next_decision.observation)
+        decision = evaluate_horizon(
+            self.profile,
+            next_decision.observation,
+            act_completed=completed_act_between(
+                previous_observation, next_decision.observation,
+            ),
+        )
         if decision.terminated != next_decision.terminal:
             next_decision = Decision(
                 next_decision.observation,

@@ -9,7 +9,12 @@ from sls.backends.original.session import OriginalSession
 from sls.content.seed import long_to_seed_string
 from sls.contracts import Action, ActionKind, Decision, Transition, ValidationSnapshot
 from sls.contracts.continuation import continuation_original
-from sls.curriculum import CurriculumProfile, IRONCLAD_A0_HEART, evaluate_horizon
+from sls.curriculum import (
+    CurriculumProfile,
+    IRONCLAD_A0_HEART,
+    completed_act_between,
+    evaluate_horizon,
+)
 
 
 class OriginalBackend:
@@ -92,6 +97,7 @@ class OriginalBackend:
     def step(self, action: Action | str) -> Transition:
         if self._adapted is None:
             raise RuntimeError("reset must be called before step")
+        previous_observation = self._adapted.decision.observation
         candidate_id = action if isinstance(action, str) else action.candidate_id
         try:
             commands = self._adapted.commands[candidate_id]
@@ -175,7 +181,13 @@ class OriginalBackend:
             if reset_count:
                 self._last_validation_evidence["card_soul_cost_reset_count"] = reset_count
         self._adapted = adapt_original(payload)
-        horizon = evaluate_horizon(self.profile, self._adapted.decision.observation)
+        horizon = evaluate_horizon(
+            self.profile,
+            self._adapted.decision.observation,
+            act_completed=completed_act_between(
+                previous_observation, self._adapted.decision.observation,
+            ),
+        )
         decision = self._adapted.decision
         if horizon.terminated != decision.terminal:
             decision = Decision(
