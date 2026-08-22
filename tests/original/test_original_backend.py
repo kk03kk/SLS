@@ -90,6 +90,54 @@ def test_step_folds_grid_confirmation_and_single_neow_leave_boundary() -> None:
     assert transport.sent[-1] == "reset_run"
 
 
+def test_power_entities_have_backend_independent_semantic_order() -> None:
+    from sls.backends.original.adapter import _powers
+
+    powers = _powers([
+        {"id": "Vulnerable", "amount": 2},
+        {"id": "Split", "amount": -1},
+    ], "MONSTER:0:POWER")
+    assert [(item.content_id, dict(item.properties)["amount"]) for item in powers] == [
+        ("VULNERABLE", 2), ("SPLIT", -1),
+    ]
+
+
+def test_boss_chest_is_folded_into_the_boss_relic_decision() -> None:
+    chest = game_payload([])
+    chest["available_commands"] = ["choose", "proceed"]
+    chest["game_state"].update({
+        "screen_type": "CHEST",
+        "room_class": "com.megacrit.cardcrawl.rooms.TreasureRoomBoss",
+        "screen_state": {"chest_open": False, "chest_type": "BossChest"},
+    })
+    reward = game_payload(["Relic A", "Relic B", "Relic C"])
+    reward["game_state"]["screen_type"] = "BOSS_REWARD"
+    transport = ScriptedTransport([reward])
+    backend = OriginalBackend(OriginalSession(transport), IRONCLAD_A0_ACT1)
+    backend.session.payload = chest
+    folded = backend._fold_protocol_only_boundaries(chest, [])
+    assert transport.sent == ["choose 0"]
+    assert folded["game_state"]["screen_type"] == "BOSS_REWARD"
+
+
+def test_open_boss_chest_is_folded_into_the_next_act() -> None:
+    chest = game_payload([])
+    chest["available_commands"] = ["proceed"]
+    chest["game_state"].update({
+        "screen_type": "CHEST",
+        "room_class": "com.megacrit.cardcrawl.rooms.TreasureRoomBoss",
+        "screen_state": {"chest_open": True, "chest_type": "BossChest"},
+    })
+    act_two = game_payload([])
+    act_two["game_state"].update({"screen_type": "MAP", "act": 2, "floor": 17})
+    transport = ScriptedTransport([act_two])
+    backend = OriginalBackend(OriginalSession(transport), IRONCLAD_A0_ACT1)
+    backend.session.payload = chest
+    folded = backend._fold_protocol_only_boundaries(chest, [])
+    assert transport.sent == ["proceed"]
+    assert folded["game_state"]["act"] == 2
+
+
 def test_grid_cards_use_master_deck_uuid_indices_and_oracle_bottle_task() -> None:
     payload = game_payload([])
     payload["game_state"].update({

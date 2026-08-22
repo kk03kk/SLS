@@ -16,6 +16,7 @@
 #include "sim/search/Action.h"
 #include "sim/search/GameAction.h"
 #include "sim/search/SimpleAgent.h"
+#include "sim/search/BattleScumSearcher2.h"
 
 namespace py = pybind11;
 using namespace sts;
@@ -131,16 +132,16 @@ py::list player_powers(const Player &p) {
 
 py::list monster_powers(const Monster &m) {
     py::list result;
+    // Stock inserts SplitPower before debuffs subsequently applied to the
+    // Slime Boss. Keep that public ordering even though the native simulator
+    // models the threshold outside the status map.
+    if (m.id == MonsterId::SLIME_BOSS && !m.isDeadOrEscaped()) {
+        result.append(power("SPLIT", -1, "SPLIT"));
+    }
     for (const auto &[status, amount] : m.orderedPowers()) {
         const int index = static_cast<int>(status);
         result.append(power(
             enemyStatusStrings[index], amount, enemyStatusStrings[index]));
-    }
-    // Stock exposes SplitPower on the living Slime Boss. The simulator keeps
-    // the threshold in monster-specific logic rather than its status map, so
-    // derive the same public-only entity here without altering combat state.
-    if (m.id == MonsterId::SLIME_BOSS && !m.isDeadOrEscaped()) {
-        result.append(power("SPLIT", -1, "SPLIT"));
     }
     return result;
 }
@@ -1213,7 +1214,9 @@ py::dict screen_info_state(const GameContext &gc) {
         case ScreenState::REWARDS:
             result["rewards"] = rewards_state(gc.info.rewardsContainer);
             result["stolen_gold"] = gc.info.stolenGold;
-            result["continuation"] = "map";
+            result["continuation"] = (
+                gc.curRoom == Room::BOSS && (gc.act == 1 || gc.act == 2)
+            ) ? "boss_treasure" : "map";
             break;
         case ScreenState::BOSS_RELIC_REWARDS: {
             py::list relics;
@@ -1330,11 +1333,24 @@ void restore_screen_info(GameContext &gc, const py::dict &state) {
         case ScreenState::REWARDS:
             gc.info.rewardsContainer = restore_rewards(state["rewards"].cast<py::dict>());
             gc.info.stolenGold = state["stolen_gold"].cast<int>();
+            if (gc.curRoom == Room::BOSS && (gc.act == 1 || gc.act == 2)) {
+                gc.regainControlAction = [](GameContext &context) {
+                    context.enterBossTreasureRoom();
+                };
+            } else {
+                gc.regainControlAction = [](GameContext &context) {
+                    context.screenState = ScreenState::MAP_SCREEN;
+                    context.regainControlAction = nullptr;
+                };
+            }
             break;
         case ScreenState::BOSS_RELIC_REWARDS: {
             const auto relics = state["boss_relics"].cast<py::list>();
             if (relics.size() != 3) throw std::invalid_argument("Boss relic checkpoint must contain three relics");
             for (int i = 0; i < 3; ++i) gc.info.bossRelics[i] = static_cast<RelicId>(relics[i].cast<int>());
+            gc.regainControlAction = [](GameContext &context) {
+                context.transitionToAct(context.act + 1);
+            };
             break;
         }
         case ScreenState::CARD_SELECT: {
@@ -1390,7 +1406,15 @@ void restore_screen_info(GameContext &gc, const py::dict &state) {
     }
     if (state.contains("continuation")) {
         const auto continuation = state["continuation"].cast<std::string>();
-        if (continuation == "map") {
+        if (continuation == "boss_treasure" ||
+                (continuation == "map" && gc.curRoom == Room::BOSS &&
+                 (gc.act == 1 || gc.act == 2))) {
+            // Older exact checkpoints used the generic "map" label here.
+            // The public room/act fields disambiguate that legacy value.
+            gc.regainControlAction = [](GameContext &context) {
+                context.enterBossTreasureRoom();
+            };
+        } else if (continuation == "map") {
             gc.regainControlAction = [](GameContext &context) {
                 context.screenState = ScreenState::MAP_SCREEN;
             };
@@ -2837,12 +2861,20 @@ public:
         run_state["monster_list_offset"] = gc_->monsterListOffset;
         run_state["elite_monster_list_offset"] = gc_->eliteMonsterListOffset;
         run_state["second_boss"] = static_cast<int>(gc_->secondBoss);
-        run_state["map"] = gc_->map->toString(true);
+        try {
+            run_state["map"] = gc_->map->toString(true);
+        } catch (const std::out_of_range &error) {
+            throw std::out_of_range(std::string("snapshot.run_state.map: ") + error.what());
+        }
         run_state["burning_elite_x"] = gc_->map->burningEliteX;
         run_state["burning_elite_y"] = gc_->map->burningEliteY;
         run_state["burning_elite_buff"] = gc_->map->burningEliteBuff;
         result["run_state"] = run_state;
-        result["rng"] = full_run_rng_state(*gc_);
+        try {
+            result["rng"] = full_run_rng_state(*gc_);
+        } catch (const std::out_of_range &error) {
+            throw std::out_of_range(std::string("snapshot.rng: ") + error.what());
+        }
         const auto offset = gc_->act == 1 ? 1 : gc_->act * (100 * (gc_->act - 1));
         py::dict map_rng;
         map_rng["algorithm"] = "sts.RandomXS128/Map.fromSeed:v1";
@@ -2854,16 +2886,34 @@ public:
         py::dict derived_rng;
         derived_rng["map"] = map_rng;
         result["derived_rng"] = derived_rng;
-        result["ordered_pools"] = ordered_pool_state(*gc_);
-        result["player_state"] = run_player_state(*gc_);
-        result["public_inventory"] = public_inventory_state(*gc_, battle_.get());
-        auto progress = run_progress_state(*gc_);
-        auto screen = screen_info_state(*gc_);
+        try {
+            result["ordered_pools"] = ordered_pool_state(*gc_);
+            result["player_state"] = run_player_state(*gc_);
+            result["public_inventory"] = public_inventory_state(*gc_, battle_.get());
+        } catch (const std::out_of_range &error) {
+            throw std::out_of_range(std::string("snapshot.inventory: ") + error.what());
+        }
+        py::dict progress;
+        py::dict screen;
+        try {
+            progress = run_progress_state(*gc_);
+            screen = screen_info_state(*gc_);
+        } catch (const std::out_of_range &error) {
+            throw std::out_of_range(std::string("snapshot.continuation: ") + error.what());
+        }
         progress["screen_continuation_serialized"] = screen["complete"];
         result["progress_state"] = progress;
         result["screen_info"] = screen;
-        result["public_screen"] = public_screen_state(*gc_);
-        result["public_map"] = public_map_state(*gc_);
+        try {
+            result["public_screen"] = public_screen_state(*gc_);
+        } catch (const std::out_of_range &error) {
+            throw std::out_of_range(std::string("snapshot.public_screen: ") + error.what());
+        }
+        try {
+            result["public_map"] = public_map_state(*gc_);
+        } catch (const std::out_of_range &error) {
+            throw std::out_of_range(std::string("snapshot.public_map: ") + error.what());
+        }
         py::dict public_run;
         public_run["character_id"] = "IRONCLAD";
         public_run["ascension"] = gc_->ascension;
@@ -2920,7 +2970,11 @@ public:
                 *battle_, has_terminal_display_moves_ ? &terminal_display_moves_ : nullptr);
             result["legal_actions"] = combat_legal_actions(*battle_);
         } else {
-            result["legal_actions"] = run_legal_actions(*gc_);
+            try {
+                result["legal_actions"] = run_legal_actions(*gc_);
+            } catch (const std::out_of_range &error) {
+                throw std::out_of_range(std::string("snapshot.legal_actions: ") + error.what());
+            }
         }
         return result;
     }
@@ -3109,7 +3163,11 @@ public:
         if (!action.isValidAction(*gc_)) {
             throw std::invalid_argument("Run action is not legal in the current state");
         }
-        action.execute(*gc_);
+        try {
+            action.execute(*gc_);
+        } catch (const std::out_of_range &error) {
+            throw std::out_of_range(std::string("Run action execution: ") + error.what());
+        }
         action_history_.push_back(bits);
         // afterBattle intentionally leaves the room's screen value untouched
         // at a terminal Act 3/4 victory.  A structural test may resolve combat
@@ -3119,7 +3177,11 @@ public:
                 gc_->outcome == GameOutcome::UNDECIDED) {
             start_battle();
         }
-        return snapshot();
+        try {
+            return snapshot();
+        } catch (const std::out_of_range &error) {
+            throw std::out_of_range(std::string("Run snapshot after action: ") + error.what());
+        }
     }
 
     py::dict advance_all_rng() {
@@ -3201,6 +3263,53 @@ public:
         if (battle_->outcome != Outcome::PLAYER_LOSS) battle_.reset();
         auto result = snapshot();
         result["scripted_combat_action_count"] = agent.actionHistory.size();
+        return result;
+    }
+
+    py::dict scripted_playout_act1() {
+        require_reset();
+        search::SimpleAgent agent;
+        agent.curGameContext = gc_.get();
+        const auto act_one_boss = gc_->boss;
+        BattleContext battle;
+        while (gc_->outcome == GameOutcome::UNDECIDED && gc_->act == 1) {
+            if (gc_->screenState == ScreenState::BATTLE) {
+                battle = BattleContext();
+                battle.init(*gc_);
+                agent.playoutBattle(battle);
+                battle.exitBattle(*gc_);
+            } else {
+                agent.stepOutOfCombat(*gc_);
+            }
+        }
+        action_history_.assign(agent.actionHistory.begin(), agent.actionHistory.end());
+        auto result = snapshot();
+        result["scripted_action_count"] = agent.actionHistory.size();
+        result["act_one_success"] = gc_->act > 1;
+        result["act_one_boss"] = monsterEncounterEnumNames[static_cast<int>(act_one_boss)];
+        return result;
+    }
+
+    py::dict search_battle_suffix(std::int64_t simulations) const {
+        require_reset();
+        if (!battle_) {
+            throw std::logic_error("Battle suffix search requires a battle screen");
+        }
+        if (simulations <= 0) {
+            throw std::invalid_argument("Battle suffix search budget must be positive");
+        }
+        search::BattleScumSearcher2 searcher(*battle_);
+        searcher.search(simulations);
+        py::dict result;
+        result["found"] = searcher.outcomePlayerHp > 0;
+        result["outcome_player_hp"] = searcher.outcomePlayerHp;
+        result["requested_simulations"] = simulations;
+        result["completed_simulations"] = searcher.root.simulationCount;
+        py::list actions;
+        for (const auto &action : searcher.bestActionSequence) {
+            actions.append(action.bits);
+        }
+        result["action_bits"] = actions;
         return result;
     }
 
@@ -4175,6 +4284,9 @@ PYBIND11_MODULE(_lightspeed, module) {
         .def("courier_restock_probe", &LightspeedRunState::courier_restock_probe,
              py::arg("purchased_card"))
         .def("scripted_playout", &LightspeedRunState::scripted_playout)
-        .def("resolve_battle_scripted", &LightspeedRunState::resolve_battle_scripted);
+        .def("scripted_playout_act1", &LightspeedRunState::scripted_playout_act1)
+        .def("resolve_battle_scripted", &LightspeedRunState::resolve_battle_scripted)
+        .def("search_battle_suffix", &LightspeedRunState::search_battle_suffix,
+             py::arg("simulations"));
     module.attr("lightspeed_commit") = "7476a81954020087da31d41d16fddf475746ec2d";
 }

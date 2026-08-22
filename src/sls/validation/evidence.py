@@ -75,6 +75,19 @@ def original_evidence_gaps(
             require(parity_run, "current_map_y", "$._parity_run.current_map_y")
     if canonical_screen == "COMBAT":
         combat = game.get("combat_state") or {}
+        combat_player = combat.get("player") or {}
+        has_parity_max_energy = (
+            isinstance(parity_run, Mapping) and "max_energy" in parity_run
+        )
+        if (
+            int(game.get("act", 1) or 1) > 1
+            and "max_energy" not in combat_player
+            and not has_parity_max_energy
+        ):
+            gaps.append({
+                "code": "MISSING_MAX_ENERGY",
+                "path": "$._parity_run.max_energy",
+            })
         monsters = combat.get("monsters") or ()
         combat_cards = [
             card

@@ -134,6 +134,37 @@ def test_map_graph_invariants_and_full_run_structure_without_combat() -> None:
         assert "combat_state" not in final
 
 
+def test_checkpoint_restores_boss_reward_continuations() -> None:
+    run = native.LightspeedRunState()
+    run.reset(0)
+    run._set_skip_battles_for_testing(True)
+    reward_checkpoint = None
+    for _ in range(400):
+        state = run.snapshot()
+        public = state["public_run"]
+        if public["act"] == 1 and public["floor"] == 16 and public["screen_state"] == 2:
+            reward_checkpoint = state
+            break
+        actions = state["legal_actions"]
+        assert actions
+        skip = next((item for item in actions if item.get("reward_type") == 6), None)
+        run.step((skip or actions[0])["bits"])
+    assert reward_checkpoint is not None
+
+    restored = native.LightspeedRunState()
+    restored.load_state(reward_checkpoint)
+    reward_state = restored.snapshot()
+    skip = next(item for item in reward_state["legal_actions"] if item.get("reward_type") == 6)
+    boss_relic_state = restored.step(skip["bits"])
+    assert boss_relic_state["public_run"]["screen_state"] == 3
+
+    second = native.LightspeedRunState()
+    second.load_state(boss_relic_state)
+    choose = second.snapshot()["legal_actions"][0]
+    act_two = second.step(choose["bits"])
+    assert act_two["public_run"]["act"] == 2
+
+
 def test_smoke_bomb_restrictions_and_curl_up_lethal_order() -> None:
     smoke = native.smoke_bomb_core_probe()
     assert smoke["normal_legal"] is True

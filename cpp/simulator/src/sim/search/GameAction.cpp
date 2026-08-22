@@ -303,7 +303,7 @@ bool search::GameAction::isValidAction(const sts::GameContext &gc) const {
             return isValidRewardsAction(gc, *this);
 
         case ScreenState::BOSS_RELIC_REWARDS:
-            return getIdx1() < 4;
+            return getIdx1() < 3;
 
         case ScreenState::CARD_SELECT:
             return isValidCardSelectScreenAction(gc, *this);
@@ -680,7 +680,7 @@ std::vector<search::GameAction> search::GameAction::getAllActionsInState(const s
             return getAllRewardActions(gc);
 
         case ScreenState::BOSS_RELIC_REWARDS:
-            return {0,1,2,3};
+            return {0,1,2};
 
         case ScreenState::CARD_SELECT: {
             std::vector<search::GameAction> actions;

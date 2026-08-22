@@ -459,6 +459,25 @@ def test_combat_dynamic_cost_is_required_evidence() -> None:
     assert "MISSING_DYNAMIC_CARD_COSTS" not in codes
 
 
+def test_act_two_combat_requires_authoritative_max_energy() -> None:
+    payload = json.loads(json.dumps(TERMINAL_PAYLOAD))
+    payload["game_state"].update({
+        "act": 2,
+        "screen_type": "COMBAT",
+        "combat_state": {"player": {"energy": 4}, "monsters": []},
+    })
+    payload["_monster_intents"] = []
+    codes = {
+        item["code"] for item in original_evidence_gaps(payload, canonical_screen="COMBAT")
+    }
+    assert "MISSING_MAX_ENERGY" in codes
+    payload["_parity_run"] = {**payload.get("_parity_run", {}), "max_energy": 4}
+    codes = {
+        item["code"] for item in original_evidence_gaps(payload, canonical_screen="COMBAT")
+    }
+    assert "MISSING_MAX_ENERGY" not in codes
+
+
 def test_resume_intersection_ignores_only_unsettled_adjusted_intent_fields() -> None:
     payload = json.loads(json.dumps(TERMINAL_PAYLOAD))
     payload["game_state"].update({

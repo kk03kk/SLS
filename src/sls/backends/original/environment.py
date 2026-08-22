@@ -312,6 +312,25 @@ class OriginalBackend:
             available = {str(item).lower() for item in payload.get("available_commands") or ()}
             choices = game.get("choice_list")
             screen = str(game.get("screen_type") or "").upper()
+            room_class = str(game.get("room_class") or game.get("room_type") or "")
+            chest_state = game.get("screen_state") or {}
+            if (
+                screen == "CHEST"
+                and room_class.endswith("TreasureRoomBoss")
+            ):
+                # Clicking the Act boss chest carries no gameplay choice; the
+                # semantic decisions are the relic screen and next Act map.
+                opened = bool(chest_state.get("chest_open", False))
+                command = "proceed" if opened and "proceed" in available else (
+                    "choose 0" if not opened and "choose" in available else None
+                )
+                if command is None:
+                    break
+                payload = self.session.execute(command)
+                if executed is not None:
+                    executed.append(command)
+                folded = True
+                continue
             if screen == "GRID" and not choices and "confirm" in available:
                 payload = self.session.execute("confirm")
                 if executed is not None:

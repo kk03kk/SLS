@@ -82,6 +82,11 @@ def extract(
         len(game.get("choice_list") or ()) == 1
         and str(game.get("screen_type") or "").upper() == "EVENT"
         and expected_screen == "MAP"
+    ) or (
+        str(game.get("screen_type") or "").upper() == "CHEST"
+        and str(
+            game.get("room_class") or continuation_evidence.get("room_class") or ""
+        ).endswith("TreasureRoomBoss")
     )
     evidence_gaps = original_evidence_gaps(
         boundary["raw_original_payload"], canonical_screen=boundary["cursor"]["screen"],
