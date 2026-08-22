@@ -10,10 +10,6 @@ evaluation_seeds = [10000, 10001, 10002, 10003]
 output = "runs/full-run"
 
 [model]
-entity_feature_dim = 32
-action_feature_dim = 24
-entity_type_count = 16
-action_type_count = 32
 embedding_dim = 128
 transformer_layers = 4
 attention_heads = 4

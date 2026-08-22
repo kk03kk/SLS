@@ -7,10 +7,12 @@ import hashlib
 import json
 from pathlib import Path
 import re
+import sys
 from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "src"))
 REGISTRY = ROOT / "src" / "sls" / "content" / "registry.json"
 JAVA = ROOT / "reference" / "original-game" / "decompiled"
 CONSTANTS = ROOT / "cpp" / "simulator" / "include" / "constants"
@@ -20,6 +22,7 @@ RELIC_POOLS = CONSTANTS / "RelicPools.h"
 POTIONS = CONSTANTS / "Potions.h"
 EVENTS = CONSTANTS / "Events.h"
 GAME_CONTEXT = ROOT / "cpp" / "simulator" / "src" / "game" / "GameContext.cpp"
+POLICY_VOCABULARY = ROOT / "configs" / "model" / "policy_vocabulary_v2.json"
 
 IRONCLAD_REACHABLE_STATUSES = {"BURN", "DAZED", "SLIMED", "VOID", "WOUND"}
 IRONCLAD_REACHABLE_CURSES = {
@@ -52,6 +55,22 @@ def audit() -> dict[str, Any]:
     registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
     categories = registry["categories"]
     failures: list[str] = []
+
+    from sls.model.encoding import build_policy_vocabulary
+    expected_vocabulary = build_policy_vocabulary()
+    actual_vocabulary = (
+        json.loads(POLICY_VOCABULARY.read_text(encoding="utf-8"))
+        if POLICY_VOCABULARY.exists() else None
+    )
+    if actual_vocabulary != expected_vocabulary:
+        failures.append("policy vocabulary is stale or missing")
+    vocabulary_unique = bool(actual_vocabulary) and all(
+        len(values) == len(set(values))
+        for key in ("content", "categorical")
+        if isinstance((values := actual_vocabulary.get(key)), list)
+    )
+    if not vocabulary_unique:
+        failures.append("policy vocabulary contains token collisions")
 
     hash_mismatches: list[str] = []
     for filename, expected in registry["source"]["header_sha256"].items():
@@ -171,6 +190,9 @@ def audit() -> dict[str, Any]:
             "registry_counts": {
                 category: len(items) for category, items in categories.items()
             },
+            "policy_vocabulary_sha256": expected_vocabulary["sha256"],
+            "policy_vocabulary_content_tokens": len(expected_vocabulary["content"]),
+            "policy_vocabulary_unique": vocabulary_unique,
             "java_id_missing": missing_java,
             "ironclad_playable_cards": len(ironclad),
             "ironclad_missing_use_cases": missing_ironclad,

@@ -12,7 +12,7 @@ import torch
 from sls.rl.ppo import PPOTrainer
 
 
-CHECKPOINT_SCHEMA = "sls-full-run-ppo-v1"
+CHECKPOINT_SCHEMA = "sls-full-run-ppo-v2"
 
 
 def save_checkpoint(path: str | Path, trainer: PPOTrainer) -> Path:

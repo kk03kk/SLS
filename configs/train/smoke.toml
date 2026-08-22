@@ -10,10 +10,6 @@ evaluation_seeds = [10000]
 output = "runs/smoke"
 
 [model]
-entity_feature_dim = 16
-action_feature_dim = 12
-entity_type_count = 16
-action_type_count = 32
 embedding_dim = 32
 transformer_layers = 1
 attention_heads = 4

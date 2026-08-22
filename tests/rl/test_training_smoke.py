@@ -15,8 +15,6 @@ from sls.rl import PPOConfig, PPOTrainer, WorkerPool, load_checkpoint, save_chec
 
 def test_one_native_ppo_update_and_exact_resume(tmp_path: Path) -> None:
     model = Policy(ModelConfig(
-        entity_feature_dim=16,
-        action_feature_dim=12,
         embedding_dim=32,
         transformer_layers=1,
         attention_heads=4,
@@ -42,3 +40,8 @@ def test_one_native_ppo_update_and_exact_resume(tmp_path: Path) -> None:
         assert actual_metrics == pytest.approx(expected_metrics, rel=0.0, abs=0.0)
         for key, value in trainer.model.state_dict().items():
             assert torch.equal(value, expected_model[key]), key
+
+        legacy = tmp_path / "legacy-v1.pt"
+        torch.save({"schema": "sls-full-run-ppo-v1"}, legacy)
+        with pytest.raises(ValueError, match="unsupported training checkpoint"):
+            load_checkpoint(legacy, trainer)
