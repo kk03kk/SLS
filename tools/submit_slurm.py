@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 from pathlib import Path
 import shlex
 import shutil
@@ -19,7 +20,14 @@ TASK_CONFIGS = {
 }
 
 
-def main() -> int:
+def _absolute_without_symlink_resolution(path: Path) -> str:
+    """Expand a user path and absolutize it while preserving env entry symlinks."""
+
+    expanded = os.path.expanduser(os.fspath(path))
+    return os.path.abspath(expanded)
+
+
+def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser()
     parser.add_argument("task", choices=("preflight", "benchmark", "smoke", "pilot", "train"))
     parser.add_argument("--python", type=Path, default=Path(sys.executable))
@@ -34,9 +42,15 @@ def main() -> int:
     parser.add_argument("--resume", action="store_true")
     parser.add_argument("--workers", type=int, help="selected result from benchmark_workers.py")
     parser.add_argument("--dry-run", action="store_true")
-    args = parser.parse_args()
+    return parser
+
+
+def build_sbatch_command(args: argparse.Namespace, *, root: Path = ROOT) -> list[str]:
+    """Build a Slurm command without executing it or touching the filesystem."""
+
     if args.cpus <= 0:
-        parser.error("--cpus must be positive")
+        raise ValueError("--cpus must be positive")
+    python = _absolute_without_symlink_resolution(args.python)
     if args.task == "train":
         partition, walltime = "gpu-long", "3-00:00:00"
     else:
@@ -44,26 +58,35 @@ def main() -> int:
     partition = args.partition or partition
     walltime = args.time or walltime
     if args.task == "preflight":
-        command = [str(args.python.resolve()), str(ROOT / "tools" / "preflight_training.py"), "--jobs", str(args.cpus)]
+        command = [str(python), str(root / "tools" / "preflight_training.py"), "--jobs", str(args.cpus)]
     elif args.task == "benchmark":
-        command = [str(args.python.resolve()), str(ROOT / "tools" / "benchmark_workers.py")]
+        command = [str(python), str(root / "tools" / "benchmark_workers.py")]
     else:
-        config = (args.config or ROOT / TASK_CONFIGS[args.task]).resolve()
-        command = [str(args.python.resolve()), str(ROOT / "tools" / "train_full_run.py"), "--config", str(config)]
+        config = (args.config or root / TASK_CONFIGS[args.task]).resolve()
+        command = [str(python), str(root / "tools" / "train_full_run.py"), "--config", str(config)]
         if args.workers is not None:
             command += ["--workers", str(args.workers)]
         if args.resume:
             command += ["--resume", "auto"]
-    logs = ROOT / "runs" / "slurm-logs"
-    logs.mkdir(parents=True, exist_ok=True)
-    sbatch = [
+    logs = root / "runs" / "slurm-logs"
+    return [
         "sbatch", "--parsable", f"--account={args.account}", f"--qos={args.qos}",
         f"--partition={partition}", f"--gres=gpu:{args.gpu}:1", f"--cpus-per-task={args.cpus}",
         f"--mem={args.memory}", f"--time={walltime}", "--signal=B:TERM@300",
-        f"--job-name=sls-{args.task}", f"--chdir={ROOT}",
+        f"--job-name=sls-{args.task}", f"--chdir={root}",
         f"--output={logs / '%x-%j.out'}", f"--error={logs / '%x-%j.err'}",
         "--wrap", shlex.join(command),
     ]
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = _parser()
+    args = parser.parse_args(argv)
+    try:
+        sbatch = build_sbatch_command(args)
+    except ValueError as error:
+        parser.error(str(error))
+    (ROOT / "runs" / "slurm-logs").mkdir(parents=True, exist_ok=True)
     print(shlex.join(sbatch))
     if args.dry_run:
         return 0
