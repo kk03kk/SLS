@@ -139,6 +139,7 @@ def main() -> int:
         try:
             readiness = verify_readiness_lock(
                 readiness_path, require_clean=not bool(run.get("allow_dirty", False)),
+                expected_level=str(run.get("readiness_level", "ENGINEERING_READY")),
             )
         except Exception as error:
             print(json.dumps({"error": "ACT1_PARITY_READINESS_FAILED", "reason": str(error)}, sort_keys=True), file=sys.stderr)
@@ -181,6 +182,7 @@ def main() -> int:
         "encoding_schema": ENCODING_SCHEMA,
         "vocabulary_sha256": vocabulary_hash(),
         "readiness_lock_sha256": readiness_digest,
+        "readiness_level": str(run.get("readiness_level", "ENGINEERING_READY")),
         "native_source_sha256": source_digest,
         "native_artifact": native_artifact(),
         "model": model.config.to_dict(),

@@ -37,15 +37,23 @@ tail -f runs/slurm-logs/sls-benchmark-*.out
 
 ## 3. Smoke、pilot 与正式训练
 
+Act 1 使用两级证据门槛。`ENGINEERING_READY` 仅证明三种 Boss 的三条
+完整路线，可运行 preflight、benchmark 和 20-update smoke；它不能启动
+pilot 或正式训练。pilot/train 还要求本地 Original 完成两轮、每轮四个
+覆盖驱动新 seed 的 `TRAINING_READY` lock。服务器不生成该 lock，也不能
+用低等级 lock 或命令行参数绕过。
+
 ```bash
 "$TRAIN_PY" tools/submit_slurm.py smoke --python "$TRAIN_PY" --workers N
 tail -f runs/slurm-logs/sls-smoke-*.out
 
+test -f configs/validation/act1_training_readiness.lock.json
 "$TRAIN_PY" tools/submit_slurm.py pilot --python "$TRAIN_PY" --workers N
 tail -f runs/slurm-logs/sls-pilot-*.out
 ```
 
-先检查 smoke 的 `run-manifest.json` 为 `COMPLETE`，没有 NaN/Inf，checkpoint exact resume 正常。pilot 每 10 updates 在固定 100 seeds 上评估。只有最近连续三次评估的成功率或 median failure floor 优于未训练基线，同时 entropy、KL、value loss、gradient norm 和 step/cycle limit 触发率正常，才提交长期训练：
+缺少 `act1_training_readiness.lock.json` 是预期的安全停止，不应创建占位文件。
+先检查 smoke 的 `run-manifest.json` 为 `COMPLETE`，没有 NaN/Inf，checkpoint exact resume 正常。只有本地推送真实生成的 `TRAINING_READY` lock 后才运行 pilot。pilot 每 10 updates 在固定 100 seeds 上评估。只有最近连续三次评估的成功率或 median failure floor 优于未训练基线，同时 entropy、KL、value loss、gradient norm 和 step/cycle limit 触发率正常，才提交长期训练：
 
 ```bash
 "$TRAIN_PY" tools/submit_slurm.py train --python "$TRAIN_PY" --workers N

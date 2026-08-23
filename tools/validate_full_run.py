@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+from functools import partial
 import os
 from pathlib import Path
 import sys
@@ -21,6 +22,7 @@ from sls.backends.simulator import (
     SimulatorBackend,
 )
 from sls.validation import TruthBundleRecorder, run_paired
+from sls.validation.policies import deterministic_action
 from sls.validation.truth import file_hash, native_build_metadata
 from sls.validation.runtime import OriginalRuntimeGuard
 
@@ -45,6 +47,7 @@ def main() -> int:
         default=os.environ.get("SLS_PARITY_PROFILE", "IRONCLAD_A0_HEART"),
     )
     parser.add_argument("--max-steps", type=int, default=int(os.environ.get("SLS_PARITY_MAX_STEPS", "10000")))
+    parser.add_argument("--variant", type=int, default=0)
     parser.add_argument(
         "--output",
         type=Path,
@@ -78,7 +81,7 @@ def main() -> int:
     if args.truth_root:
         recorder = TruthBundleRecorder(
             args.truth_root.resolve(), seed=args.seed, profile_id=profile.profile_id,
-            policy_id="deterministic-action-v1", repository_root=ROOT,
+            policy_id=f"deterministic-action-v1:variant-{args.variant}", repository_root=ROOT,
             jar_paths=jar_paths, autosave=game_root / "saves" / "IRONCLAD.autosave",
             instrumentation_schema="spirecomm-parity-v10",
             policy_hash=file_hash(ROOT / "src" / "sls" / "validation" / "policies.py"),
@@ -102,6 +105,7 @@ def main() -> int:
             trace = run_paired(
                 original, SimulatorBackend(profile), seed=args.seed, max_steps=args.max_steps,
                 include_rng=not args.without_rng, recorder=recorder,
+                selector=partial(deterministic_action, variant=args.variant),
             )
         finally:
             original.return_to_menu()

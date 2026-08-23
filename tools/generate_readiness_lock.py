@@ -13,7 +13,9 @@ sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(ROOT / "tools"))
 
 from sls.rl.training_contract import git_state
-from sls.validation.readiness_lock import DEFAULT_LOCK, build_readiness_lock
+from sls.validation.readiness_lock import (
+    DEFAULT_LOCK, ENGINEERING_READY, READINESS_LEVELS, build_readiness_lock,
+)
 from replay_truth import replay
 
 
@@ -31,13 +33,19 @@ def main() -> int:
     parser.add_argument("--config", type=Path, default=ROOT / "configs" / "validation" / "act1_training.toml")
     parser.add_argument("--output", type=Path, default=DEFAULT_LOCK)
     parser.add_argument("--allow-dirty", action="store_true", help="development/test only")
+    parser.add_argument("--level", choices=sorted(READINESS_LEVELS), default=ENGINEERING_READY)
+    parser.add_argument("--expansion-report", type=Path)
     args = parser.parse_args()
     if git_state()["dirty"] and not args.allow_dirty:
         raise SystemExit("readiness lock generation requires a clean Git worktree")
     with args.config.open("rb") as stream:
         requirements = tomllib.load(stream)["requirements"]
+    expansion = None
+    if args.expansion_report is not None:
+        expansion = json.loads(args.expansion_report.read_text(encoding="utf-8"))
     lock = build_readiness_lock(
         args.root, requirements, replay_validator=_verify_segment,
+        level=args.level, expansion_report=expansion,
     )
     text = json.dumps(lock, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
     args.output.parent.mkdir(parents=True, exist_ok=True)

@@ -187,3 +187,7 @@ def test_strong_debuff_intent_has_an_exact_token() -> None:
 
 def test_public_hidden_card_placeholder_has_an_exact_token() -> None:
     assert content_token("HIDDEN_CARD")[0] > 0
+
+
+def test_canonical_dex_loss_power_has_an_exact_token() -> None:
+    assert content_token("LOSE_DEXTERITY")[0] > 0

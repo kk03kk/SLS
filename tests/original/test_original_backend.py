@@ -314,6 +314,117 @@ def test_lethal_combat_animation_is_settled_to_terminal_screen() -> None:
     assert executed == ["wait 30"]
 
 
+def test_lethal_combat_uses_combat_player_hp_over_stale_run_hp() -> None:
+    dying = game_payload([])
+    dying["game_state"].update({
+        "screen_type": "NONE", "current_hp": 7,
+        "combat_state": {
+            "player": {"current_hp": 0}, "turn": 5,
+            "monsters": [{"id": "Sentry", "current_hp": 15, "is_gone": False}],
+        },
+    })
+    dying["available_commands"] = ["wait", "state"]
+    dead = {**dying, "game_state": {**dying["game_state"]}}
+    dead["_continuation"] = {"screen": "DEATH"}
+    transport = ScriptedTransport([dead])
+    session = OriginalSession(transport)
+    session.payload = dying
+    backend = OriginalBackend(session, IRONCLAD_A0_ACT1)
+    executed: list[str] = []
+    assert backend._settle_combat_terminal(dying, executed) is dead
+    assert executed == ["wait 30"]
+
+
+def test_post_card_boundary_waits_for_delayed_selection_ui() -> None:
+    transient = game_payload([])
+    transient["game_state"].update({
+        "screen_type": "NONE",
+        "combat_state": {"player": {"current_hp": 31}, "monsters": [{"current_hp": 20}]},
+    })
+    transient["available_commands"] = ["wait", "state"]
+    selection = {**transient, "available_commands": ["choose", "wait", "state"]}
+    selection["game_state"] = {
+        **transient["game_state"], "screen_type": "GRID",
+        "screen_state": {"cards": [{"id": "Strike_R"}], "num_cards": 1},
+    }
+    transport = ScriptedTransport([selection])
+    session = OriginalSession(transport)
+    session.payload = transient
+    backend = OriginalBackend(session, IRONCLAD_A0_ACT1)
+    executed: list[str] = []
+    assert backend._wait_for_actionable_combat_boundary(transient, executed) is selection
+    assert executed == ["wait 1"]
+
+
+def test_hand_select_uses_stable_hand_choice_indices() -> None:
+    payload = game_payload([])
+    payload["available_commands"] = ["choose", "wait", "state"]
+    payload["game_state"].update({
+        "screen_type": "HAND_SELECT",
+        "combat_state": {
+            "turn": 5,
+            "player": {"current_hp": 31, "max_hp": 80, "energy": 2},
+            "monsters": [{"id": "Sentry", "current_hp": 20}],
+            "card_in_play": {"id": "Armaments"},
+            "hand": [
+                {"id": "Anger", "uuid": "anger", "upgrades": 0, "cost": 0},
+                {"id": "Defend_R", "uuid": "defend", "upgrades": 0, "cost": 1},
+            ],
+        },
+        "screen_state": {
+            "max_cards": 1,
+            "hand": [
+                {"id": "Anger", "uuid": "anger", "upgrades": 0},
+                {"id": "Defend_R", "uuid": "defend", "upgrades": 0},
+            ],
+        },
+    })
+    payload["_continuation"] = {
+        "screen": "HAND_SELECT", "action_queue_types": [
+            "com.megacrit.cardcrawl.actions.utility.UseCardAction",
+        ],
+    }
+    decision = adapt_original(payload).decision
+    assert decision.observation.screen is ScreenType.COMBAT
+    assert [item.instance_id for item in decision.observation.choice_options] == [
+        "CHOICE:0", "CHOICE:1",
+    ]
+    assert [item.subject_id for item in decision.actions] == ["CHOICE:0", "CHOICE:1"]
+    adapted = adapt_original(payload)
+    assert adapted.commands[decision.actions[0].candidate_id] == ("choose 0",)
+    assert adapted.commands[decision.actions[1].candidate_id] == ("choose 1",)
+    continuation = continuation_original(payload)
+    assert continuation["card_selection_source"] == "HAND"
+    assert continuation["card_selection_task"] == "ARMAMENTS"
+    assert continuation["card_selection_count"] == 1
+
+
+def test_completed_hand_selection_folds_protocol_only_confirm() -> None:
+    selected = game_payload([])
+    selected["available_commands"] = ["confirm", "wait", "state"]
+    selected["game_state"].update({
+        "screen_type": "HAND_SELECT", "room_phase": "COMBAT",
+        "combat_state": {"player": {"current_hp": 20}, "monsters": [{"current_hp": 10}]},
+        "screen_state": {
+            "max_cards": 1, "can_pick_zero": False,
+            "selected": [{"id": "Anger"}], "hand": [{"id": "Defend_R"}],
+        },
+    })
+    done = {**selected, "available_commands": ["play", "end", "wait", "state"]}
+    done["game_state"] = {
+        **selected["game_state"], "screen_type": "NONE",
+        "screen_state": {},
+    }
+    done["_continuation"] = {"action_phase": "WAITING_ON_USER"}
+    transport = ScriptedTransport([done])
+    session = OriginalSession(transport)
+    session.payload = selected
+    backend = OriginalBackend(session, IRONCLAD_A0_ACT1)
+    executed: list[str] = []
+    assert backend._wait_for_selection_completion(selected, executed) is done
+    assert executed == ["confirm"]
+
+
 def test_combat_boundary_waits_until_stock_intent_is_materialized() -> None:
     combat = game_payload([])
     combat["available_commands"] = ["wait"]

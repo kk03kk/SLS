@@ -51,6 +51,7 @@ def _entry(mode: str, args: argparse.Namespace) -> tuple[Path, list[str]]:
         values = [
             "--seed", str(args.seed), "--profile", args.profile,
             "--max-steps", str(args.max_steps),
+            "--variant", str(getattr(args, "variant", 0)),
             "--truth-root", (ROOT / "validation-results" / "truth").resolve().as_posix(),
             "--output", (ROOT / "validation-results" / "full-run.json").resolve().as_posix(),
         ]

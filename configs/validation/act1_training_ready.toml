@@ -1,0 +1,26 @@
+profile = "IRONCLAD_A0_ACT1"
+
+[requirements]
+profile = "IRONCLAD_A0_ACT1"
+routes = 3
+bosses = ["SLIME_BOSS", "THE_GUARDIAN", "HEXAGHOST"]
+screens = [
+  "NEOW", "MAP", "COMBAT", "COMBAT_REWARD", "CARD_REWARD", "EVENT",
+  "REST", "SHOP", "TREASURE", "BOSS_REWARD",
+]
+selected_actions = [
+  "CHOOSE_NEOW_OPTION", "CHOOSE_MAP_NODE", "PLAY_CARD", "END_TURN",
+  "CHOOSE_CARD_REWARD", "SKIP_CARD_REWARD", "TAKE_REWARD", "SKIP_REWARD",
+  "CHOOSE_EVENT_OPTION", "REST", "OPEN_CHEST", "CHOOSE_BOSS_RELIC",
+]
+room_suffixes = [
+  "MonsterRoom", "MonsterRoomElite", "EventRoom", "ShopRoom", "TreasureRoom",
+  "RestRoom", "MonsterRoomBoss", "TreasureRoomBoss",
+]
+
+[requirements.expansion]
+rounds = 2
+seeds_per_round = 4
+min_floor = 8
+min_boundaries = 50
+oracle_schema = "spirecomm-parity-v10"

@@ -162,6 +162,11 @@ class SimulatorBackend:
                 ("DISCARD", "discard_pile"), ("EXHAUST", "exhaust_pile"),
             )
         }
+        hand_choice_sources = _hand_choice_sources(raw)
+        if combat and hand_choice_sources:
+            card_zones["HAND"] = _combat_cards(
+                [combat.get("hand", ())[index] for index in hand_choice_sources], "HAND",
+            )
         enemies = tuple(
             Enemy(
                 f"MONSTER:{index}", str(monster["content_id"]),
@@ -382,6 +387,10 @@ def _semantic_actions(
     progress = raw["progress_state"]
     semantic: list[Action] = []
     mapping: dict[str, int] = {}
+    hand_choice_sources = _hand_choice_sources(raw)
+    hand_choice_index = {
+        source: index for index, source in enumerate(hand_choice_sources)
+    }
     native_target_to_public: dict[int, int] = {}
     for public_index, monster in enumerate(
         (raw.get("public_combat") or {}).get("monsters") or ()
@@ -421,12 +430,12 @@ def _semantic_actions(
                 options = raw["public_combat"]["choice"]["options"]
                 action = Action(
                     ActionKind.SELECT_CARD,
-                    subject_id=f"CHOICE:{source}",
+                    subject_id=f"CHOICE:{hand_choice_index.get(source, source)}",
                 )
             elif action_type == 3:
                 options = raw["public_combat"]["choice"]["options"]
                 selected = ",".join(
-                    f"CHOICE:{int(value)}"
+                    f"CHOICE:{hand_choice_index.get(int(value), int(value))}"
                     for value in native.get("selected_indices", ())
                 )
                 action = Action(ActionKind.CONFIRM, option_id=f"combat-selection:{selected}")
@@ -562,12 +571,16 @@ def _screen_entities(raw: Mapping[str, Any]) -> dict[str, tuple[Any, ...]]:
     public_combat = raw.get("public_combat", {})
     actions = raw["legal_actions"]
     if screen is ScreenType.COMBAT and "choice" in public_combat:
+        choice_options = public_combat["choice"]["options"]
+        hand_choice_sources = _hand_choice_sources(raw)
+        if hand_choice_sources:
+            choice_options = [choice_options[index] for index in hand_choice_sources]
         result["choice"] = tuple(
             _entity(
                 f"CHOICE:{index}", option["content_id"],
                 upgrades=int(option["upgrades"]), source=str(public_combat["choice"]["source"]),
             )
-            for index, option in enumerate(public_combat["choice"]["options"])
+            for index, option in enumerate(choice_options)
         )
     elif screen in {ScreenType.NEOW, ScreenType.EVENT}:
         event_id = normalize_content_id(raw["public_run"]["current_event_id"])
@@ -664,3 +677,16 @@ def _screen_entities(raw: Mapping[str, Any]) -> dict[str, tuple[Any, ...]]:
             visible_index += 1
         result["shop"] = tuple(items)
     return result
+
+
+def _hand_choice_sources(raw: Mapping[str, Any]) -> tuple[int, ...]:
+    combat = raw.get("public_combat") or {}
+    choice = combat.get("choice") or {}
+    if str(choice.get("source") or "").upper() != "HAND":
+        return ()
+    return tuple(sorted({
+        int(action["source_index"])
+        for action in raw.get("legal_actions") or ()
+        if action.get("domain") == "COMBAT"
+        and int(action.get("action_type", -1)) == 2
+    }))

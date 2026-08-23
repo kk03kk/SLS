@@ -79,6 +79,9 @@ def normalize_potion_id(value: object) -> str:
 def normalize_power_id(value: object) -> str:
     normalized = normalize_content_id(value)
     return {
+        # Stock DexLossPower exposes "DexLoss" while the native simulator
+        # models the same end-of-turn marker as LOSE_DEXTERITY.
+        "DEX_LOSS": "LOSE_DEXTERITY",
         # Gremlin Nob's stock AngerPower is native MonsterStatus::ENRAGE.
         "ANGER": "ENRAGE",
         # Stock FlexPower is the end-of-turn Strength-loss marker represented

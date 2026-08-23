@@ -20,11 +20,21 @@ def test_communication_mod_entry_uses_properties_safe_paths() -> None:
         bundle=Path(r"D:\SLS\validation-results\truth\bundle"),
         anchor="a0001", to_step=3, continue_steps=2,
         game_root=Path(r"D:\Steam\steamapps\common\SlayTheSpire"),
+        variant=0,
     )
     entry, values = _entry("resume", args)
     path_values = [entry.as_posix(), values[0], values[values.index("--game-root") + 1]]
     assert all("\\" not in value for value in path_values)
     assert all(":" in value for value in path_values)
+
+
+def test_capture_forwards_deterministic_policy_variant() -> None:
+    args = Namespace(
+        seed=17, profile="IRONCLAD_A0_ACT1", max_steps=80,
+        variant=3, require_clean=True,
+    )
+    _, values = _entry("capture", args)
+    assert values[values.index("--variant") + 1] == "3"
 
 
 def test_resume_action_plan_replaces_policy_continuation() -> None:

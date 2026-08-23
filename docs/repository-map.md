@@ -176,6 +176,8 @@ mechanisms; they are not a second environment or training contract.
 - `search_combat_suffix.py`, `search_act1_suffix.py`: read-only native checkpoint suffix search for local Original verification.
 - `validate_training_readiness.py`: curriculum-scoped, provenance-aware Act 1 parity gate.
 - `generate_readiness_lock.py`, `verify_readiness_lock.py`: create the local evidence attestation and verify it on artifact-free Linux checkouts.
+- `select_act1_validation_seeds.py`: deterministic coverage-novel Act 1 seed/variant selection over native simulator trajectories.
+- `record_act1_validation_round.py`: deterministic provenance assembly for a selected local Original expansion round.
 - `benchmark_act1.py`: guarded fixed-100-seed random/deterministic/native/untrained baselines.
 - `preflight_training.py`, `benchmark_workers.py`: Linux/CUDA/native exact-resume preflight and centralized-inference worker selection.
 - `submit_slurm.py`: single-GPU Slurm submission for preflight, benchmark, smoke, pilot, and long training.
@@ -186,8 +188,10 @@ mechanisms; they are not a second environment or training contract.
 ## `configs`
 
 - `validation/full_run.toml`: profile, parity seeds, output, step limit, RNG, and acceptance gate.
-- `validation/act1_training.toml`: independent three-route Act 1 training-readiness requirements.
-- `validation/act1_readiness.lock.json`: committed three-route evidence and cross-platform source-contract attestation.
+- `validation/act1_training.toml`: three-route `ENGINEERING_READY` requirements.
+- `validation/act1_training_ready.toml`: strict two-round expansion requirements for pilot/training.
+- `validation/act1_readiness.lock.json`: committed engineering-only evidence and cross-platform source-contract attestation.
+- `validation/act1_training_readiness.lock.json`: generated only after two real clean expansion rounds; intentionally absent before then.
 - `model/policy_vocabulary_v2.json`: exact generated policy tokens and vocabulary hash.
 - `train/full_run.toml`: profile, worker, model, PPO, checkpoint, and evaluation settings.
 - `train/act1_smoke.toml`, `train/act1_pilot.toml`: guarded 20/200-update GPU stages.

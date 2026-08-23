@@ -14,6 +14,31 @@ D:\Anaconda\envs\DL\python.exe tools/build_oracle.py
 D:\Anaconda\envs\DL\python.exe tools/run_original.py capture --seed 0 --max-steps 10
 ```
 
+Coverage expansion uses a fixed deterministic policy variant.  Select four
+novel seeds without launching Original, then capture exactly the reported
+seed/variant pairs:
+
+```powershell
+D:\Anaconda\envs\DL\python.exe tools/select_act1_validation_seeds.py `
+  --seed-start 0 --seed-end 999 --variants 0,1,2,3 --max-steps 128 `
+  --count 4 --output validation-results/act1-selection-round1.json
+D:\Anaconda\envs\DL\python.exe tools/run_original.py capture `
+  --seed <seed> --variant <variant> --profile IRONCLAD_A0_ACT1 `
+  --max-steps 512 --require-clean
+D:\Anaconda\envs\DL\python.exe tools/record_act1_validation_round.py `
+  --selection validation-results/act1-selection-round1.json --round 1
+```
+
+The round recorder never attests parity by itself: it selects a clean,
+current-Oracle provenance leaf for each reported pair. Strict lock generation
+then independently validates the chain and offline-replays every segment.
+
+The committed three-route lock is `ENGINEERING_READY` and permits only
+preflight/benchmark/smoke. Pilot and long training require a separately
+generated `TRAINING_READY` lock backed by two clean four-seed expansion
+rounds. A missing strict lock is a deliberate training stop, never a reason to
+create a placeholder or weaken verification.
+
 The coordinator creates a write-ahead journal, protects the user's Ironclad
 saves and ModTheSpire configuration, installs the current Oracle, writes the
 strict three-mod list, launches ModTheSpire through the game's `javaw.exe`,

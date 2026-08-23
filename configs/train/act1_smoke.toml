@@ -11,6 +11,7 @@ evaluation_seed_count = 100
 evaluation_max_steps = 512
 require_readiness = true
 readiness_lock = "configs/validation/act1_readiness.lock.json"
+readiness_level = "ENGINEERING_READY"
 output = "runs/act1-smoke-v3"
 
 [model]

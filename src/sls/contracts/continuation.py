@@ -51,6 +51,19 @@ def continuation_original(payload: Mapping[str, Any]) -> dict[str, Any]:
             result["card_selection_count"] = int(
                 result.get("card_selection_count") or screen_state.get("num_cards") or 0
             )
+        elif raw_screen == "HAND_SELECT":
+            combat = game.get("combat_state") or {}
+            card_in_play = combat.get("card_in_play") or {}
+            from sls.content.normalize import normalize_card_id
+            result["card_selection_source"] = "HAND"
+            result["card_selection_task"] = (
+                result.get("card_selection_task")
+                or normalize_card_id(card_in_play.get("id"))
+            )
+            result["card_selection_count"] = int(
+                result.get("card_selection_count")
+                or screen_state.get("max_cards") or 0
+            )
         elif game.get("combat_state") and raw_screen == "CARD_REWARD":
             result["card_selection_source"] = result.get("card_selection_source") or "GENERATED"
             result["card_selection_task"] = result.get("card_selection_task") or "DISCOVERY"
@@ -127,7 +140,7 @@ def continuation_simulator(state: Mapping[str, Any]) -> dict[str, Any]:
         and not any(screen.get(key) for key in ("gold", "relics", "potions"))
     )
     action_queue_types = list(checkpoint.get("action_queue_types") or ())
-    if choice.get("task") == "HEADBUTT" and not action_queue_types:
+    if choice.get("task") in {"HEADBUTT", "ARMAMENTS"} and not action_queue_types:
         # The native input state is suspended inside the played Headbutt.  The
         # Original exposes that suspension as its pending UseCardAction.
         action_queue_types = ["com.megacrit.cardcrawl.actions.utility.UseCardAction"]

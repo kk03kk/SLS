@@ -3,6 +3,7 @@ from sls.content.normalize import (
     normalize_card_id,
     normalize_content_id,
     normalize_potion_id,
+    normalize_power_id,
 )
 
 
@@ -19,3 +20,9 @@ def test_original_internal_ids_normalize_through_the_registry() -> None:
     assert normalize_potion_id("SteroidPotion") == "FLEX_POTION"
     assert normalize_content_id("Yang") == "DUALITY"
     assert normalize_content_id("WingedGreaves") == "WING_BOOTS"
+
+
+def test_stock_dex_loss_power_uses_native_canonical_id() -> None:
+    assert normalize_power_id("DexLoss") == "LOSE_DEXTERITY"
+    assert normalize_power_id("DEX_LOSS") == "LOSE_DEXTERITY"
+    assert normalize_power_id("LOSE_DEXTERITY") == "LOSE_DEXTERITY"

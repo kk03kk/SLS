@@ -198,12 +198,27 @@ def _actions(
                             )
                 else:
                     add(Action(ActionKind.PLAY_CARD, subject_id=card.instance_id), f"play {index + 1}")
+        raw_screen = str(game.get("screen_type") or "").upper()
+        if raw_screen == "HAND_SELECT" and "choose" in available:
+            raw_hand = _mappings(combat.get("hand"))
+            hand_index_by_uuid = {
+                str(card.get("uuid")): index
+                for index, card in enumerate(raw_hand) if card.get("uuid") is not None
+            }
+            for wire_index, card in enumerate(_mappings(state.get("hand"))):
+                hand_index = hand_index_by_uuid.get(str(card.get("uuid")))
+                if hand_index is None:
+                    raise ValueError("HAND_SELECT card is absent from the combat hand")
+                add(
+                    Action(ActionKind.SELECT_CARD, subject_id=f"CHOICE:{hand_index}"),
+                    f"choose {wire_index}",
+                )
         choice = _mappings(_mapping(combat.get("card_select")).get("cards"))
         if not choice:
             choice = _mappings(_mapping(game.get("screen_state")).get("cards"))
         if not choice:
             choice = _mappings(game.get("choice_list"))
-        if "choose" in available and choice:
+        if raw_screen != "HAND_SELECT" and "choose" in available and choice:
             for index, _ in enumerate(choice):
                 add(Action(ActionKind.SELECT_CARD, subject_id=f"CHOICE:{index}"), f"choose {index}")
         if "confirm" in available:
@@ -527,7 +542,16 @@ def _screen_entities(
         "choice": (), "reward": (), "shop": (), "event": (), "rest": (), "boss": (),
     }
     choices = _sequence(game.get("choice_list"))
-    if combat and choices:
+    raw_screen = str(game.get("screen_type") or "").upper()
+    if combat and raw_screen == "HAND_SELECT":
+        result["choice"] = tuple(
+            PublicEntity(
+                f"CHOICE:{index}", normalize_card_id(card.get("id")),
+                (("source", "HAND"), ("upgrades", _integer(card.get("upgrades")))),
+            )
+            for index, card in enumerate(_mappings(combat.get("hand")))
+        )
+    elif combat and choices:
         screen_cards = _mappings(state.get("cards"))
         card_in_play = combat.get("card_in_play") or {}
         discard_selection = (

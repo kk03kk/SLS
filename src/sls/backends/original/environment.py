@@ -164,6 +164,7 @@ class OriginalBackend:
             ),
         )
         payload = self._settle_combat_terminal(payload, executed)
+        payload = self._wait_for_actionable_combat_boundary(payload, executed)
         payload = self._settle_debug_intents(payload, executed)
         payload = self._settle_command_boundary(payload, executed)
         if not isinstance(action, str) and action.kind in {
@@ -252,15 +253,30 @@ class OriginalBackend:
             game = payload.get("game_state") or {}
             screen = str(game.get("screen_type") or "NONE").upper()
             continuation = payload.get("_continuation") or {}
+            available = {str(item).lower() for item in payload.get("available_commands") or ()}
+            if screen == "HAND_SELECT":
+                state = game.get("screen_state") or {}
+                selected = state.get("selected") or ()
+                required = int(state.get("max_cards", 0) or 0)
+                protocol_only_confirm = bool(
+                    required > 0 and len(selected) >= required
+                    and not bool(state.get("can_pick_zero", False))
+                )
+                if protocol_only_confirm and "confirm" in available:
+                    payload = self.session.execute("confirm")
+                    executed.append("confirm")
+                    continue
+                # A partial or optional multi-selection remains a semantic
+                # boundary; do not choose or confirm it automatically.
+                return payload
             if (
                 screen == "NONE"
                 and str(continuation.get("action_phase") or "").upper() == "WAITING_ON_USER"
                 and str(game.get("room_phase") or "").upper() == "COMBAT"
             ):
                 return payload
-            if screen not in {"GRID", "NONE", "CARD_REWARD"}:
+            if screen not in {"GRID", "NONE", "CARD_REWARD", "HAND_SELECT"}:
                 return payload
-            available = {str(item).lower() for item in payload.get("available_commands") or ()}
             if "wait" not in available:
                 raise RuntimeError(
                     f"selection remained on transient {screen} without wait"
@@ -514,6 +530,50 @@ class OriginalBackend:
                 executed.append("wait 1")
         return payload
 
+    def _wait_for_actionable_combat_boundary(
+        self, payload: dict[str, Any], executed: list[str] | None = None,
+        *, limit: int = 30,
+    ) -> dict[str, Any]:
+        """Advance a torn post-card boundary until stock exposes its choice.
+
+        CommunicationMod can publish ``ready_for_command`` after a card leaves
+        the hand but before cards such as Armaments create their selection UI.
+        Such a payload has a live combat, no policy command, and only the
+        validation ``wait/state`` commands.  It is not a policy boundary.
+        """
+
+        for _ in range(limit):
+            game = payload.get("game_state") or {}
+            continuation = payload.get("_continuation") or game.get("_continuation") or {}
+            if not game.get("combat_state") or str(
+                continuation.get("screen") or ""
+            ).upper() in {"DEATH", "VICTORY", "GAME_OVER", "COMPLETE"}:
+                return payload
+            try:
+                adapt_original(payload)
+            except ValueError as error:
+                if str(error) != "a non-terminal decision must expose a legal action":
+                    raise
+            else:
+                return payload
+            available = {str(item).lower() for item in payload.get("available_commands") or ()}
+            if "wait" not in available:
+                raise RuntimeError("live Original combat has no policy command or advertised wait")
+            payload = self.session.execute("wait 1")
+            if executed is not None:
+                executed.append("wait 1")
+        game = payload.get("game_state") or {}
+        combat = game.get("combat_state") or {}
+        continuation = payload.get("_continuation") or game.get("_continuation") or {}
+        raise RuntimeError(
+            "Original combat did not expose a policy command after 30 frames: "
+            f"available={payload.get('available_commands')}, "
+            f"screen={game.get('screen_type')}, "
+            f"continuation={continuation}, "
+            f"screen_state={game.get('screen_state')}, "
+            f"card_select={combat.get('card_select')}"
+        )
+
     def _settle_command_boundary(
         self, payload: dict[str, Any], executed: list[str] | None = None,
         *, limit: int = 6,
@@ -592,7 +652,10 @@ class OriginalBackend:
             if not combat:
                 return payload
             monsters = combat.get("monsters") or ()
-            player_dead = int(game.get("current_hp", 0) or 0) <= 0
+            combat_player = combat.get("player") or {}
+            player_dead = int(
+                combat_player.get("current_hp", game.get("current_hp", 0)) or 0
+            ) <= 0
             monsters_dead = bool(monsters) and all(
                 int(monster.get("current_hp", 0) or 0) <= 0
                 or bool(monster.get("is_gone", False))

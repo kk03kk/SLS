@@ -128,13 +128,24 @@ def _simulator_combat(state: Mapping[str, Any]) -> dict[str, Any] | None:
     if not combat:
         return None
     player = combat.get("player") or {}
+    hand = combat.get("hand") or []
+    choice = combat.get("choice") or {}
+    if str(choice.get("source") or "").upper() == "HAND":
+        sources = sorted({
+            int(action["source_index"])
+            for action in state.get("legal_actions") or ()
+            if action.get("domain") == "COMBAT"
+            and int(action.get("action_type", -1)) == 2
+        })
+        if sources:
+            hand = [hand[index] for index in sources]
     return {
         "turn": int(combat.get("turn", 0)),
         "player": (
             int(player.get("current_hp", 0)), int(player.get("max_hp", 0)),
             int(player.get("block", 0)), int(player.get("energy", 0)),
         ),
-        "hand": _cards(combat.get("hand") or []),
+        "hand": _cards(hand),
         "draw": _cards(combat.get("draw_pile") or []),
         "discard": _cards(combat.get("discard_pile") or []),
         "exhaust": _cards(combat.get("exhaust_pile") or []),

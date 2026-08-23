@@ -9,7 +9,8 @@ evaluate_interval = 10
 evaluation_seed_start = 10000
 evaluation_seed_count = 100
 require_readiness = true
-readiness_lock = "configs/validation/act1_readiness.lock.json"
+readiness_lock = "configs/validation/act1_training_readiness.lock.json"
+readiness_level = "TRAINING_READY"
 output = "runs/full-run"
 
 [model]
