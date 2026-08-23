@@ -11,7 +11,7 @@ requires-python = ">=3.12"
 dependencies = []
 
 [project.optional-dependencies]
-model = ["torch==2.6.0"]
+model = ["torch>=2.6,<3"]
 test = ["pytest==8.4.1"]
 
 [tool.setuptools]
