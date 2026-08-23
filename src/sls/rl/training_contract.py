@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import hashlib
-import importlib.util
+import importlib
 import json
 from pathlib import Path
 import subprocess
@@ -59,10 +59,14 @@ def native_source_digest() -> str:
 
 
 def native_artifact() -> dict[str, str] | None:
-    spec = importlib.util.find_spec("sls.backends.simulator.native")
-    if spec is None or spec.origin is None:
+    try:
+        module = importlib.import_module("sls.backends.simulator.native")
+    except ImportError:
         return None
-    path = Path(spec.origin).resolve()
+    origin = getattr(module, "__file__", None)
+    if origin is None:
+        return None
+    path = Path(origin).resolve()
     return {"path": str(path), "sha256": sha256_file(path)}
 
 

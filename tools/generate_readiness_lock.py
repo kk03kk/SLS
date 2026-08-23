@@ -10,9 +10,19 @@ import tomllib
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT / "tools"))
 
 from sls.rl.training_contract import git_state
 from sls.validation.readiness_lock import DEFAULT_LOCK, build_readiness_lock
+from replay_truth import replay
+
+
+def _verify_segment(bundle: Path, start: int, end: int) -> None:
+    matched, difference = replay(bundle, from_step=start, to_step=end)
+    if not matched:
+        raise ValueError(
+            f"current offline replay failed for {bundle.name}[{start}:{end}]: {difference}"
+        )
 
 
 def main() -> int:
@@ -26,7 +36,9 @@ def main() -> int:
         raise SystemExit("readiness lock generation requires a clean Git worktree")
     with args.config.open("rb") as stream:
         requirements = tomllib.load(stream)["requirements"]
-    lock = build_readiness_lock(args.root, requirements)
+    lock = build_readiness_lock(
+        args.root, requirements, replay_validator=_verify_segment,
+    )
     text = json.dumps(lock, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
     args.output.parent.mkdir(parents=True, exist_ok=True)
     temporary = args.output.with_suffix(args.output.suffix + ".tmp")

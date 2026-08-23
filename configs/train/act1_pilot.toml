@@ -10,8 +10,7 @@ evaluation_seed_start = 10000
 evaluation_seed_count = 100
 evaluation_max_steps = 512
 require_readiness = true
-readiness_config = "configs/validation/act1_training.toml"
-readiness_root = "validation-results/truth"
+readiness_lock = "configs/validation/act1_readiness.lock.json"
 output = "runs/act1-pilot-v2"
 
 [model]
@@ -35,3 +34,7 @@ minibatch_size = 256
 potential_shaping = true
 potential_scale = 0.2
 reward_schema = "sls-act1-potential-v1"
+episode_limit_schema = "sls-act1-episode-limit-v1"
+max_episode_steps = 512
+max_boundary_visits = 4
+limit_failure_reward = -1.0

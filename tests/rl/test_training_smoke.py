@@ -10,7 +10,7 @@ pytest.importorskip("sls.backends.simulator.native", exc_type=ImportError)
 
 from sls.curriculum import IRONCLAD_A0_ACT1
 from sls.model import ModelConfig, Policy
-from sls.rl import PPOConfig, PPOTrainer, WorkerPool, load_checkpoint, save_checkpoint
+from sls.rl import PPOConfig, PPOTrainer, WorkerPool, evaluate, load_checkpoint, save_checkpoint
 
 
 def test_one_native_ppo_update_and_exact_resume(tmp_path: Path) -> None:
@@ -52,6 +52,26 @@ def test_one_native_ppo_update_and_exact_resume(tmp_path: Path) -> None:
         torch.save({"schema": "sls-full-run-ppo-v2"}, legacy_v2)
         with pytest.raises(ValueError, match="unsupported training checkpoint"):
             load_checkpoint(legacy_v2, trainer)
+
+
+def test_synthetic_step_limit_is_a_failure_terminal() -> None:
+    model = Policy(ModelConfig(embedding_dim=32, transformer_layers=1, attention_heads=4, feedforward_dim=64))
+    config = PPOConfig(
+        rollout_steps=1, epochs=1, minibatch_size=1,
+        max_episode_steps=1, potential_shaping=False,
+    )
+    with WorkerPool(IRONCLAD_A0_ACT1, 1) as workers:
+        trainer = PPOTrainer(model, workers, config, seed=0)
+        rollout = trainer.collect()
+        assert rollout.returns.tolist() == [-1.0]
+        assert trainer.last_collect_terminations["step_limit"] == 1
+        assert trainer.episodes == 1
+
+
+def test_evaluation_can_stop_at_safe_inference_boundary() -> None:
+    model = Policy(ModelConfig(embedding_dim=32, transformer_layers=1, attention_heads=4, feedforward_dim=64))
+    with pytest.raises(InterruptedError):
+        evaluate(model, IRONCLAD_A0_ACT1, (0,), stop_requested=lambda: True)
 
 
 @pytest.mark.skipif(not torch.cuda.is_available(), reason="CUDA is unavailable")

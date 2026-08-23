@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import statistics
+from typing import Callable
 
 import torch
 
@@ -37,6 +38,7 @@ def evaluate(
     device: str | torch.device = "cpu",
     max_steps: int = 512,
     max_boundary_visits: int = 4,
+    stop_requested: Callable[[], bool] | None = None,
 ) -> EvaluationResult:
     model.eval().to(device)
     seed_values = list(seeds)
@@ -58,6 +60,8 @@ def evaluate(
     for boss in bosses:
         boss_results.setdefault(boss, [])
     for _ in range(max_steps):
+        if stop_requested is not None and stop_requested():
+            raise InterruptedError("evaluation interrupted at a safe inference boundary")
         if not active:
             break
         batch = PolicyBatch.from_decisions(

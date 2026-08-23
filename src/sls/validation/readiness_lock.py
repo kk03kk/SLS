@@ -5,7 +5,7 @@ from __future__ import annotations
 from itertools import product
 import json
 from pathlib import Path
-from typing import Any, Mapping
+from typing import Any, Callable, Mapping
 
 from sls.model.encoding import ENCODING_SCHEMA, vocabulary_hash
 from sls.rl.checkpoint import CHECKPOINT_SCHEMA
@@ -65,7 +65,12 @@ def _select_routes(report: Mapping[str, Any], requirements: Mapping[str, Any]) -
     return sorted(candidates, key=lambda items: (-_coverage_score(items, requirements)[0], -_coverage_score(items, requirements)[1], _coverage_score(items, requirements)[2]))[0]
 
 
-def build_readiness_lock(root: Path, requirements: Mapping[str, Any]) -> dict[str, Any]:
+def build_readiness_lock(
+    root: Path,
+    requirements: Mapping[str, Any],
+    *,
+    replay_validator: Callable[[Path, int, int], None],
+) -> dict[str, Any]:
     report = readiness_report(root, requirements)
     if not report["ready"]:
         raise ValueError(f"Act 1 evidence is not ready: {report['failures']}")
@@ -73,6 +78,13 @@ def build_readiness_lock(root: Path, requirements: Mapping[str, Any]) -> dict[st
     records, invalid = load_records(root)
     if invalid:
         raise ValueError(f"truth corpus contains invalid bundles: {invalid}")
+    for route in selected:
+        for segment in route["segments"]:
+            replay_validator(
+                records[str(segment["bundle"])].path,
+                int(segment["from_step"]),
+                int(segment["to_step"]),
+            )
     bundle_ids = sorted({bundle for route in selected for bundle in route["chain"]})
     bundles = []
     for bundle_id in bundle_ids:
@@ -96,6 +108,7 @@ def build_readiness_lock(root: Path, requirements: Mapping[str, Any]) -> dict[st
                 "leaf": route["leaf"], "seed": route["seed"],
                 "boss": next(boss for boss in requirements["bosses"] if boss in route["coverage"]["bosses"]),
                 "chain": route["chain"], "used_boundaries": route["used_boundaries"],
+                "segments": route["segments"],
                 "coverage": route["coverage"],
             }
             for route in selected

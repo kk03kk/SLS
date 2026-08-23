@@ -32,6 +32,7 @@ def main() -> int:
     parser.add_argument("--time")
     parser.add_argument("--config", type=Path)
     parser.add_argument("--resume", action="store_true")
+    parser.add_argument("--workers", type=int, help="selected result from benchmark_workers.py")
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
     if args.cpus <= 0:
@@ -49,6 +50,8 @@ def main() -> int:
     else:
         config = (args.config or ROOT / TASK_CONFIGS[args.task]).resolve()
         command = [str(args.python.resolve()), str(ROOT / "tools" / "train_full_run.py"), "--config", str(config)]
+        if args.workers is not None:
+            command += ["--workers", str(args.workers)]
         if args.resume:
             command += ["--resume", "auto"]
     logs = ROOT / "runs" / "slurm-logs"

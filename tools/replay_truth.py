@@ -96,6 +96,10 @@ def replay(
     to_step: int | None = None, window: int = 0,
 ) -> tuple[bool, dict[str, Any] | None]:
     manifest, boundaries = load_bundle(bundle)
+    resumed_segment = bool(
+        manifest.get("evidence_class") == "RESUMED_AUTOSAVE"
+        or (manifest.get("provenance") or {}).get("source_run_id")
+    )
     if not boundaries:
         raise ValueError("truth bundle has no boundaries")
     profile_id = manifest["profile_id"]
@@ -143,7 +147,7 @@ def replay(
         except (OSError, ValueError, KeyError, RuntimeError, json.JSONDecodeError) as error:
             restore_failures.append(f"{selected['anchor_id']}: {error}")
     if simulator is None:
-        if manifest.get("evidence_class") == "RESUMED_AUTOSAVE":
+        if resumed_segment:
             detail = "; ".join(restore_failures) or "bundle contains no native anchor"
             raise ValueError(
                 "derived resume bundle has no compatible checkpoint and cannot be rebuilt "
@@ -172,7 +176,7 @@ def replay(
         action_diff = differences(action_ids(original.actions), action_ids(decision.actions))
         state_diff = parity_differences(
             boundary["raw_original_payload"], simulator.raw_state,
-            drop_dead_neow=manifest.get("evidence_class") == "RESUMED_AUTOSAVE",
+            drop_dead_neow=resumed_segment,
         )
         continuation_diff = continuation_differences(
             continuation_original(boundary["raw_original_payload"]),
@@ -221,7 +225,7 @@ def replay(
                 "rng_divergence": _rng_report(
                     boundary["raw_original_payload"], simulator.raw_state,
                     previous_original_rng, previous_simulator_rng,
-                    drop_dead_neow=manifest.get("evidence_class") == "RESUMED_AUTOSAVE",
+                    drop_dead_neow=resumed_segment,
                 ),
             }
         current_original_rng = canonical_original(boundary["raw_original_payload"]).get("rng", {})

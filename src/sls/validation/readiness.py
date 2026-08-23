@@ -110,6 +110,7 @@ def evaluate_route(records: Mapping[str, BundleRecord], leaf_id: str) -> dict[st
     bosses: set[str] = set()
     reached_act_two = False
     used_boundaries = 0
+    segments: list[dict[str, int | str]] = []
     for chain_index, record in enumerate(chain):
         if reached_act_two:
             break
@@ -136,6 +137,8 @@ def evaluate_route(records: Mapping[str, BundleRecord], leaf_id: str) -> dict[st
                 )
             else:
                 exclusive_end = int(source_anchor.get("sequence", 0))
+        segment_start: int | None = None
+        segment_end: int | None = None
         for boundary in record.boundaries:
             sequence = int(boundary.get("sequence", 0))
             if exclusive_end is not None and sequence >= exclusive_end:
@@ -148,6 +151,8 @@ def evaluate_route(records: Mapping[str, BundleRecord], leaf_id: str) -> dict[st
                 failures.append(f"NON_MATCH_BOUNDARY:{record.path.name}:{sequence}")
                 break
             used_boundaries += 1
+            segment_start = sequence if segment_start is None else segment_start
+            segment_end = sequence
             screens.add(str(cursor.get("screen")))
             rooms.add(str(cursor.get("room")))
             action = boundary.get("selected_action")
@@ -159,11 +164,18 @@ def evaluate_route(records: Mapping[str, BundleRecord], leaf_id: str) -> dict[st
             if act >= 2:
                 reached_act_two = True
                 break
+        if segment_start is not None and segment_end is not None:
+            segments.append({
+                "bundle": record.path.name,
+                "from_step": segment_start,
+                "to_step": segment_end,
+            })
     if not reached_act_two:
         failures.append("ACT_TWO_NOT_REACHED")
     return {
         "leaf": leaf_id, "seed": seed, "profile": profile, "valid": not failures,
         "chain": [record.path.name for record in chain], "failures": failures,
+        "segments": segments,
         "reached_act_two": reached_act_two, "used_boundaries": used_boundaries,
         "coverage": {
             "screens": sorted(screens), "selected_actions": sorted(actions),

@@ -175,7 +175,10 @@ mechanisms; they are not a second environment or training contract.
 - `find_act1_boss_seeds.py`: locate the lowest native seed for each Act 1 boss.
 - `search_combat_suffix.py`, `search_act1_suffix.py`: read-only native checkpoint suffix search for local Original verification.
 - `validate_training_readiness.py`: curriculum-scoped, provenance-aware Act 1 parity gate.
+- `generate_readiness_lock.py`, `verify_readiness_lock.py`: create the local evidence attestation and verify it on artifact-free Linux checkouts.
 - `benchmark_act1.py`: guarded fixed-100-seed random/deterministic/native/untrained baselines.
+- `preflight_training.py`, `benchmark_workers.py`: Linux/CUDA/native exact-resume preflight and centralized-inference worker selection.
+- `submit_slurm.py`: single-GPU Slurm submission for preflight, benchmark, smoke, pilot, and long training.
 - `validate_full_run.py`: one-seed CommunicationMod parity entry.
 - `validate_corpus.py`: TOML-driven multi-seed parity corpus, acceptance gate, traces, and coverage summary.
 - `train_full_run.py`: canonical FullRun PPO entry and resume/save/evaluate loop.
@@ -184,6 +187,7 @@ mechanisms; they are not a second environment or training contract.
 
 - `validation/full_run.toml`: profile, parity seeds, output, step limit, RNG, and acceptance gate.
 - `validation/act1_training.toml`: independent three-route Act 1 training-readiness requirements.
+- `validation/act1_readiness.lock.json`: committed three-route evidence and cross-platform source-contract attestation.
 - `model/policy_vocabulary_v2.json`: exact generated policy tokens and vocabulary hash.
 - `train/full_run.toml`: profile, worker, model, PPO, checkpoint, and evaluation settings.
 - `train/act1_smoke.toml`, `train/act1_pilot.toml`: guarded 20/200-update GPU stages.
@@ -209,6 +213,7 @@ mechanisms; they are not a second environment or training contract.
 - `simulator/test_native_mechanisms.py`: native RNG/rules/lifecycle probes and exact checkpoint replay.
 - `model/test_policy.py`: variable-candidate policy shapes.
 - `rl/test_rollout.py`: terminal-safe GAE.
+- `rl/test_episode_limit.py`: stable policy-boundary hashing and finite training episode semantics.
 - `rl/test_training_smoke.py`: spawned native rollout, PPO update, checkpoint restore.
 - `validation/test_compare.py`: public state canonical equality.
 - `validation/test_runner.py`: trace and coverage behavior.

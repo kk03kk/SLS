@@ -66,11 +66,24 @@ delayed selection continuations do not terminate early. Training rollouts may
 apply the versioned potential-based Act 1 shaping reward; evaluation and model
 selection continue to use only the unshaped terminal outcome.
 
+Training additionally applies `sls-act1-episode-limit-v1`: a nonterminal run
+that reaches 512 decisions or visits the same policy-visible boundary more than
+four times becomes a training failure with reward -1 and a terminal GAE mask.
+The backend's authoritative transition and reward remain unchanged. Per-worker
+step/visit state is part of checkpoint v3, so exact resume cannot cross or lose
+an episode-limit boundary.
+
 The training gate is curriculum-scoped rather than the final release gate.
 Act 1 PPO requires three provenance- and resume-hash-continuous paired Original
 routes, one for every Act 1 boss, with zero selected-boundary gaps or
 differences through the first Act 2 boundary. Final Heart FullRun acceptance
 remains the stricter independent 10-seed release requirement.
+
+The ignored Original artifacts are converted locally into a committed
+readiness lock after current-code replay of every selected route segment. A
+Linux training host verifies the lock against Git blob-based adapter,
+canonicalizer, policy, vocabulary, checkpoint, and native-source contracts;
+it never needs the game or truth bundles.
 
 ## Reproducibility profiles
 

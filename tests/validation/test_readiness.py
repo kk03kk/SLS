@@ -65,6 +65,10 @@ def test_route_stops_at_first_act_two_boundary() -> None:
     assert result["valid"] is True
     assert result["reached_act_two"] is True
     assert result["used_boundaries"] == 3
+    assert result["segments"] == [
+        {"bundle": "root", "from_step": 0, "to_step": 0},
+        {"bundle": "child", "from_step": 0, "to_step": 1},
+    ]
     assert result["coverage"]["bosses"] == ["SLIME_BOSS"]
 
 

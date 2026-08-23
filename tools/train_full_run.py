@@ -122,10 +122,16 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=Path, default=ROOT / "configs" / "train" / "full_run.toml")
     parser.add_argument("--resume", help="checkpoint path or 'auto' for OUTPUT/latest.pt")
+    parser.add_argument("--workers", type=int, help="override configured worker count")
     args = parser.parse_args()
     config_bytes = args.config.read_bytes()
     payload = tomllib.loads(config_bytes.decode("utf-8"))
     run = payload["run"]
+    if args.workers is not None:
+        if args.workers <= 0:
+            parser.error("--workers must be positive")
+        run = {**run, "workers": args.workers}
+        payload = {**payload, "run": run}
     profile = PROFILES[str(run["profile"])]
     readiness_digest = "UNVERIFIED"
     if bool(run.get("require_readiness", False)):
@@ -219,12 +225,16 @@ def main() -> int:
                     **metrics,
                 }
                 if not controller.requested and trainer.update % evaluate_interval == 0:
-                    result = evaluate(
-                        trainer.model, profile, evaluation_seeds, device=device,
-                        max_steps=ppo.max_episode_steps,
-                        max_boundary_visits=ppo.max_boundary_visits,
-                    )
-                    record["evaluation"] = asdict(result)
+                    try:
+                        result = evaluate(
+                            trainer.model, profile, evaluation_seeds, device=device,
+                            max_steps=ppo.max_episode_steps,
+                            max_boundary_visits=ppo.max_boundary_visits,
+                            stop_requested=lambda: controller.requested,
+                        )
+                        record["evaluation"] = asdict(result)
+                    except InterruptedError:
+                        record["evaluation_interrupted"] = True
                 with log_path.open("a", encoding="utf-8") as stream:
                     stream.write(json.dumps(record, sort_keys=True) + "\n")
                     stream.flush()

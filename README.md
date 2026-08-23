@@ -71,6 +71,8 @@ gate before a large run:
 python tools/bootstrap.py --with-model
 python tools/generate_policy_vocabulary.py --check
 python tools/validate_training_readiness.py
+python tools/generate_readiness_lock.py
+python tools/verify_readiness_lock.py
 python tools/benchmark_act1.py
 python tools/train_full_run.py --config configs/train/full_run.toml
 ```
@@ -81,3 +83,7 @@ and Hexaghost. The 20-update and 200-update guarded configurations are
 `configs/train/act1_smoke.toml` and `configs/train/act1_pilot.toml`. A one-update
 ungated developer integration check remains in `configs/train/smoke.toml` and
 does not constitute a training run or parity evidence.
+
+NUS Linux/Slurm 的拉取、preflight、worker benchmark、smoke、pilot、长期训练和
+安全恢复命令见 [`docs/nus-training-zh.md`](docs/nus-training-zh.md)。服务器只验证
+提交的 readiness lock，不需要 Original 游戏或本地 truth bundles。
