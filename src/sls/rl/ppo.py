@@ -11,8 +11,12 @@ from torch.distributions import Categorical
 
 from sls.contracts import Decision
 from sls.model import Policy, PolicyBatch
+from sls.rl.episode_limit import (
+    EPISODE_LIMIT_SCHEMA, EpisodeLimitState, TERMINATION_REASONS,
+)
 from sls.rl.rollout import RolloutBatch, generalized_advantage_estimate
 from sls.rl.reward import REWARD_SCHEMA, shape_act_one_reward
+from sls.rl.training_contract import native_source_digest
 from sls.rl.workers import WorkerPool
 
 
@@ -31,6 +35,10 @@ class PPOConfig:
     potential_shaping: bool = False
     potential_scale: float = 0.2
     reward_schema: str = REWARD_SCHEMA
+    episode_limit_schema: str = EPISODE_LIMIT_SCHEMA
+    max_episode_steps: int = 512
+    max_boundary_visits: int = 4
+    limit_failure_reward: float = -1.0
 
     def __post_init__(self) -> None:
         if self.rollout_steps <= 0 or self.epochs <= 0 or self.minibatch_size <= 0:
@@ -41,6 +49,12 @@ class PPOConfig:
             raise ValueError("potential_scale cannot be negative")
         if self.reward_schema != REWARD_SCHEMA:
             raise ValueError(f"unsupported reward schema: {self.reward_schema}")
+        if self.episode_limit_schema != EPISODE_LIMIT_SCHEMA:
+            raise ValueError(f"unsupported episode limit schema: {self.episode_limit_schema}")
+        if self.max_episode_steps <= 0 or self.max_boundary_visits <= 0:
+            raise ValueError("episode limits must be positive")
+        if self.limit_failure_reward >= 0.0:
+            raise ValueError("limit_failure_reward must be negative")
 
     def to_dict(self) -> dict[str, int | float | bool | str]:
         return asdict(self)
@@ -55,6 +69,8 @@ class PPOTrainer:
         *,
         device: str | torch.device = "cpu",
         seed: int = 0,
+        readiness_lock_digest: str = "UNVERIFIED",
+        native_contract_digest: str | None = None,
     ) -> None:
         self.model = model.to(device)
         self.workers = workers
@@ -65,7 +81,12 @@ class PPOTrainer:
         self.next_seed = int(seed)
         self.update = 0
         self.episodes = 0
+        self.readiness_lock_digest = str(readiness_lock_digest)
+        self.native_contract_digest = native_contract_digest or native_source_digest()
         self.decisions = workers.reset(self._take_seeds(workers.size))
+        self.episode_limits = [EpisodeLimitState.initial(item) for item in self.decisions]
+        self.termination_counts = {reason: 0 for reason in TERMINATION_REASONS}
+        self.last_collect_terminations = {reason: 0 for reason in TERMINATION_REASONS}
 
     def _take_seeds(self, count: int) -> list[int]:
         result = list(range(self.next_seed, self.next_seed + count))
@@ -80,6 +101,7 @@ class PPOTrainer:
         value_steps: list[torch.Tensor] = []
         reward_steps: list[torch.Tensor] = []
         terminal_steps: list[torch.Tensor] = []
+        collect_terminations = {reason: 0 for reason in TERMINATION_REASONS}
         self.model.eval()
         for _ in range(self.config.rollout_steps):
             batch = PolicyBatch.from_decisions(self.decisions, self.model.config).to(self.device)
@@ -96,23 +118,47 @@ class PPOTrainer:
             log_probability_steps.append(distribution.log_prob(actions).cpu())
             value_steps.append(output.value.cpu())
             rewards = []
-            for current, item in zip(self.decisions, transitions):
+            terminals = []
+            next_decisions = [item.decision for item in transitions]
+            reset_indices: list[int] = []
+            for index, (current, item) in enumerate(zip(self.decisions, transitions)):
+                reason: str | None = None
+                terminal = bool(item.terminated or item.truncated)
                 reward = float(item.reward)
+                if item.terminated:
+                    reason = "success" if bool(item.info.get("success")) else "death"
+                elif item.truncated:
+                    reason = "backend_truncated"
+                else:
+                    reason = self.episode_limits[index].observe(
+                        item.decision,
+                        max_steps=self.config.max_episode_steps,
+                        max_boundary_visits=self.config.max_boundary_visits,
+                    )
+                    if reason is not None:
+                        terminal = True
+                        reward = self.config.limit_failure_reward
                 if self.config.potential_shaping:
                     reward = shape_act_one_reward(
                         reward, current.observation, item.decision.observation,
                         gamma=self.config.gamma, scale=self.config.potential_scale,
-                        terminal=item.terminated,
+                        terminal=terminal,
                     )
                 rewards.append(reward)
+                terminals.append(terminal)
+                if reason is not None:
+                    collect_terminations[reason] += 1
+                    self.termination_counts[reason] += 1
+                    reset_indices.append(index)
             reward_steps.append(torch.tensor(rewards, dtype=torch.float32))
-            terminal_steps.append(torch.tensor([item.terminated for item in transitions], dtype=torch.bool))
-            next_decisions = [item.decision for item in transitions]
-            for index, transition in enumerate(transitions):
-                if transition.terminated or transition.truncated:
-                    next_decisions[index] = self.workers.reset_one(index, self._take_seeds(1)[0])
-                    self.episodes += 1
+            terminal_steps.append(torch.tensor(terminals, dtype=torch.bool))
+            for index in reset_indices:
+                next_decisions[index] = self.workers.reset_one(index, self._take_seeds(1)[0])
+                self.episode_limits[index] = EpisodeLimitState.initial(next_decisions[index])
+                self.episodes += 1
             self.decisions = next_decisions
+
+        self.last_collect_terminations = collect_terminations
 
         bootstrap_batch = PolicyBatch.from_decisions(self.decisions, self.model.config).to(self.device)
         bootstrap = self.model(*bootstrap_batch.model_inputs()).value.cpu()
@@ -197,4 +243,6 @@ class PPOTrainer:
         return {key: value / updates for key, value in totals.items()}
 
     def train_update(self) -> dict[str, float]:
-        return self.optimize(self.collect())
+        metrics = self.optimize(self.collect())
+        metrics.update({f"terminations_{key}": float(value) for key, value in self.last_collect_terminations.items()})
+        return metrics

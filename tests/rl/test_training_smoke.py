@@ -28,6 +28,7 @@ def test_one_native_ppo_update_and_exact_resume(tmp_path: Path) -> None:
         assert all(torch.isfinite(torch.tensor(value)) for value in metrics.values())
         assert {"approx_kl", "gradient_norm"} <= metrics.keys()
         path = save_checkpoint(tmp_path / "checkpoint.pt", trainer)
+        expected_limits = [item.to_dict() for item in trainer.episode_limits]
         expected_seed = trainer.next_seed
         expected_metrics = trainer.train_update()
         expected_model = {
@@ -37,6 +38,7 @@ def test_one_native_ppo_update_and_exact_resume(tmp_path: Path) -> None:
         load_checkpoint(path, trainer)
         assert trainer.update == 1
         assert trainer.next_seed == expected_seed
+        assert [item.to_dict() for item in trainer.episode_limits] == expected_limits
         actual_metrics = trainer.train_update()
         assert actual_metrics == pytest.approx(expected_metrics, rel=0.0, abs=0.0)
         for key, value in trainer.model.state_dict().items():
@@ -46,6 +48,10 @@ def test_one_native_ppo_update_and_exact_resume(tmp_path: Path) -> None:
         torch.save({"schema": "sls-full-run-ppo-v1"}, legacy)
         with pytest.raises(ValueError, match="unsupported training checkpoint"):
             load_checkpoint(legacy, trainer)
+        legacy_v2 = tmp_path / "legacy-v2.pt"
+        torch.save({"schema": "sls-full-run-ppo-v2"}, legacy_v2)
+        with pytest.raises(ValueError, match="unsupported training checkpoint"):
+            load_checkpoint(legacy_v2, trainer)
 
 
 @pytest.mark.skipif(not torch.cuda.is_available(), reason="CUDA is unavailable")
