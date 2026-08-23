@@ -154,7 +154,7 @@ def evaluate_route(records: Mapping[str, BundleRecord], leaf_id: str) -> dict[st
             if action:
                 actions.add(str(action.get("kind")))
             run = (boundary.get("canonical_public_state") or {}).get("run") or {}
-            if run.get("boss"):
+            if act <= 1 and run.get("boss"):
                 bosses.add(str(run["boss"]))
             if act >= 2:
                 reached_act_two = True
