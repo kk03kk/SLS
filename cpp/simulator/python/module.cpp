@@ -696,7 +696,11 @@ int relic_counter(const RelicInstance &relic, const BattleContext &battle) {
         // the active value here without changing checkpoint/gameplay state.
         case RelicId::NEOWS_LAMENT: return std::max(0, relic.data - 1);
         case RelicId::NUNCHAKU: return player.nunchakuCounter;
-        case RelicId::PEN_NIB: return player.penNibCounter;
+        // Native uses -1 internally while the tenth-attack power is armed;
+        // stock keeps the relic's policy-visible counter at 9 until that
+        // attack is played and then resets it to 0.
+        case RelicId::PEN_NIB:
+            return player.penNibCounter == -1 ? 9 : player.penNibCounter;
         // Stock resets at battle start and increments atTurnStart. Native
         // BattleContext::turn is zero-based while the visible counter is one-
         // based at policy boundaries.
