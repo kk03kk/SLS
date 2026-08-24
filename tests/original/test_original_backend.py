@@ -658,6 +658,7 @@ def test_map_action_folds_match_and_keep_intro_and_rules() -> None:
     })
     rules["_continuation"] = {"event_id": "Match and Keep!"}
     rules["_match_slots"] = []
+    rules["available_commands"] = ["choose", "wait"]
     play = game_payload([])
     play["game_state"].update({
         "floor": 7, "screen_type": "EVENT",
@@ -672,7 +673,7 @@ def test_map_action_folds_match_and_keep_intro_and_rules() -> None:
         }
         for index in range(12)
     ]
-    transport = ScriptedTransport([intro, rules, play, play])
+    transport = ScriptedTransport([intro, rules, rules, play, play])
     session = OriginalSession(transport)
     session.payload = map_payload
     backend = OriginalBackend(session, IRONCLAD_A0_ACT1)
@@ -682,7 +683,7 @@ def test_map_action_folds_match_and_keep_intro_and_rules() -> None:
 
     assert len(transition.decision.actions) == 66
     assert backend.last_executed_commands == (
-        "choose 0", "choose 0", "choose 0", "wait 30",
+        "choose 0", "choose 0", "wait 120", "choose 0", "wait 120",
     )
 
 

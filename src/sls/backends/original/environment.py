@@ -505,9 +505,10 @@ class OriginalBackend:
                     str(item).lower() for item in payload.get("available_commands") or ()
                 }
                 if "wait" in available_after:
-                    payload = self.session.execute("wait 30")
+                    wait_command = "wait 120" if match_intro else "wait 30"
+                    payload = self.session.execute(wait_command)
                     if executed is not None:
-                        executed.append("wait 30")
+                        executed.append(wait_command)
                 continue
             break
         if folded:
