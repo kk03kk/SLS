@@ -29,6 +29,12 @@ def test_stock_dex_loss_power_uses_native_canonical_id() -> None:
     assert normalize_power_id("LOSE_DEXTERITY") == "LOSE_DEXTERITY"
 
 
+def test_stock_duplication_power_uses_native_canonical_id() -> None:
+    assert normalize_power_id("DuplicationPower") == "DUPLICATION"
+    assert normalize_power_id("DUPLICATION_POWER") == "DUPLICATION"
+    assert normalize_power_id("DUPLICATION") == "DUPLICATION"
+
+
 def test_stock_sssserpent_class_alias_matches_liars_game() -> None:
     assert normalize_event_id("Sssserpent") == "THE_SSSSSERPENT"
     assert normalize_event_id("Liars Game") == "THE_SSSSSERPENT"

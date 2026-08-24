@@ -678,15 +678,25 @@ py::dict rng_state(const Random &rng) {
     return result;
 }
 
-int relic_counter(const RelicInstance &relic, const Player &player) {
+int relic_counter(const RelicInstance &relic, const BattleContext &battle) {
+    const auto &player = battle.player;
     switch (relic.id) {
         case RelicId::BURNING_BLOOD: return -1;
         case RelicId::HAPPY_FLOWER: return player.happyFlowerCounter;
         case RelicId::INCENSE_BURNER: return player.incenseBurnerCounter;
         case RelicId::INK_BOTTLE: return player.inkBottleCounter;
         case RelicId::LETTER_OPENER: return player.skillsPlayedThisTurn % 3;
+        // Stock decrements Neow's Lament as the battle begins, before the
+        // first policy-visible combat boundary. GameContext keeps the
+        // pre-battle value until BattleContext::updateRelicsOnExit, so project
+        // the active value here without changing checkpoint/gameplay state.
+        case RelicId::NEOWS_LAMENT: return std::max(0, relic.data - 1);
         case RelicId::NUNCHAKU: return player.nunchakuCounter;
         case RelicId::PEN_NIB: return player.penNibCounter;
+        // Stock resets at battle start and increments atTurnStart. Native
+        // BattleContext::turn is zero-based while the visible counter is one-
+        // based at policy boundaries.
+        case RelicId::STONE_CALENDAR: return battle.turn + 1;
         case RelicId::SUNDIAL: return player.sundialCounter;
         default: return relic.data;
     }
@@ -853,7 +863,7 @@ py::dict public_inventory_state(
         // GameContext is synchronized only when the battle exits.  Project the
         // active combat value so the public FullRun boundary matches Original.
         value["counter"] = battle != nullptr
-            ? relic_counter(relic, battle->player)
+            ? relic_counter(relic, *battle)
             : relic.data;
         relics.append(value);
     }
@@ -2026,7 +2036,7 @@ public:
             py::dict value;
             value["id"] = relicIds[static_cast<int>(relic.id)];
             value["name"] = getRelicName(relic.id);
-            value["counter"] = relic_counter(relic, bc_->player);
+            value["counter"] = relic_counter(relic, *bc_);
             relics.append(value);
         }
         game["relics"] = relics;

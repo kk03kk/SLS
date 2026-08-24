@@ -966,6 +966,9 @@ Action Actions::WarcryAction() {
         } else {
             bc.inputState = InputState::CARD_SELECT;
             bc.cardSelectInfo.cardSelectTask = CardSelectTask::WARCRY;
+            bc.cardSelectInfo.pickCount = 1;
+            bc.cardSelectInfo.canPickAnyNumber = false;
+            bc.cardSelectInfo.canPickZero = false;
         }
     }};
 }
