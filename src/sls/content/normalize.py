@@ -101,6 +101,8 @@ def normalize_power_id(value: object) -> str:
         # The player variant exposes IntangiblePlayer while the native
         # PlayerStatus enum uses the shared public mechanism name.
         "INTANGIBLE_PLAYER": "INTANGIBLE",
+        # Panic Button's stock NoBlockPower includes an implementation suffix.
+        "NO_BLOCK_POWER": "NO_BLOCK",
         # Swivel's ForcefieldPower exposes the stock ID "Nullify Attack";
         # native names the same one-attack marker FREE_ATTACK_POWER.
         "NULLIFY_ATTACK": "FREE_ATTACK_POWER",

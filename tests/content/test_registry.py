@@ -32,6 +32,9 @@ def test_stock_dex_loss_power_uses_native_canonical_id() -> None:
     assert normalize_power_id("IntangiblePlayer") == "INTANGIBLE"
     assert normalize_power_id("INTANGIBLE_PLAYER") == "INTANGIBLE"
     assert normalize_power_id("INTANGIBLE") == "INTANGIBLE"
+    assert normalize_power_id("NoBlockPower") == "NO_BLOCK"
+    assert normalize_power_id("NO_BLOCK_POWER") == "NO_BLOCK"
+    assert normalize_power_id("NO_BLOCK") == "NO_BLOCK"
 
 
 def test_stock_duplication_power_uses_native_canonical_id() -> None:
