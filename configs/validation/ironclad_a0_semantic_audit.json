@@ -1,5 +1,5 @@
 {
-  "audit_sha256": "ba9d6b8c8f0743a5d29644573ecfe2039b848891b723c835b830b12e5bf2bc42",
+  "audit_sha256": "0b58d8c6f060ec443de5754b388360baad5615ef7cecdc037b54273fd26525c7",
   "content_scope_sha256": "1e9ba31232cea5813b88cf6d75c7be28deaca4ac84c32079745477866fc0649d",
   "entries": {
     "cards": [
@@ -1831,8 +1831,8 @@
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:469",
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:550",
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:863",
-          "src/sls/backends/original/environment.py:184",
-          "src/sls/backends/original/environment.py:259",
+          "src/sls/backends/original/environment.py:190",
+          "src/sls/backends/original/environment.py:298",
           "src/sls/contracts/continuation.py:76"
         ],
         "status": "VERIFIED",
@@ -7798,7 +7798,7 @@
           "src/sls/backends/original/adapter.py:633",
           "src/sls/backends/original/adapter.py:634",
           "src/sls/backends/original/adapter.py:655",
-          "src/sls/backends/original/environment.py:492",
+          "src/sls/backends/original/environment.py:531",
           "src/sls/backends/simulator/environment.py:416",
           "src/sls/backends/simulator/environment.py:428",
           "src/sls/backends/simulator/environment.py:444",

@@ -167,6 +167,12 @@ class OriginalBackend:
         payload = self._wait_for_actionable_combat_boundary(payload, executed)
         payload = self._settle_debug_intents(payload, executed)
         payload = self._settle_command_boundary(payload, executed)
+        if (
+            not isinstance(action, str)
+            and action.kind is ActionKind.CHOOSE_EVENT_OPTION
+            and str(action.option_id or "").startswith("match-pair:")
+        ):
+            payload = self._settle_match_completion(payload, executed)
         # Some events (notably Match and Keep) materialize their initial
         # Continue dialog only after the room-entry command has settled.  Fold
         # those protocol-only dialogs, then settle the actual interactive
@@ -230,6 +236,39 @@ class OriginalBackend:
             False,
             {"reason": horizon.reason, "success": horizon.success},
         )
+
+    def _settle_match_completion(
+        self, payload: dict[str, Any], executed: list[str], *, limit: int = 20,
+    ) -> dict[str, Any]:
+        """Fold stock Match cleanup animation and its forced Continue dialog."""
+
+        for _ in range(limit):
+            game = payload.get("game_state") or {}
+            screen = str(game.get("screen_type") or "").upper()
+            if screen != "EVENT":
+                return payload
+            if payload.get("_match_slots"):
+                return payload
+            event_id = str(
+                (payload.get("_continuation") or {}).get("event_id")
+                or (game.get("screen_state") or {}).get("event_id")
+                or ""
+            )
+            if event_id != "Match and Keep!":
+                return payload
+            choices = game.get("choice_list") or ()
+            available = {
+                str(item).lower() for item in payload.get("available_commands") or ()
+            }
+            if len(choices) == 1 and "choose" in available:
+                payload = self.session.execute("choose 0")
+                executed.append("choose 0")
+                continue
+            if "wait" not in available:
+                raise RuntimeError("Match cleanup has no wait or forced Continue command")
+            payload = self.session.execute("wait 30")
+            executed.append("wait 30")
+        raise RuntimeError("Match cleanup did not settle within the bounded wait")
 
     def _wait_for_screen_change(
         self, payload: dict[str, Any], *, while_screen: str,

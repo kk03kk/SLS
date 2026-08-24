@@ -687,6 +687,39 @@ def test_map_action_folds_match_and_keep_intro_and_rules() -> None:
     )
 
 
+def test_match_completion_folds_internal_cards_and_forced_continue() -> None:
+    cleanup = game_payload([f"card{index}" for index in range(12)])
+    cleanup["game_state"].update({
+        "floor": 7, "screen_type": "EVENT",
+        "screen_state": {"event_id": "Match and Keep!"},
+    })
+    cleanup["_continuation"] = {"event_id": "Match and Keep!"}
+    cleanup["_match_slots"] = []
+    cleanup["available_commands"] = ["wait"]
+    leave = game_payload(["Continue"])
+    leave["game_state"].update({
+        "floor": 7, "screen_type": "EVENT",
+        "screen_state": {"event_id": "Match and Keep!"},
+    })
+    leave["_continuation"] = {"event_id": "Match and Keep!"}
+    leave["_match_slots"] = []
+    map_payload = game_payload([])
+    map_payload["game_state"].update({
+        "floor": 7, "screen_type": "MAP",
+        "screen_state": {"next_nodes": [{"x": 1, "y": 7}]},
+    })
+    transport = ScriptedTransport([leave, map_payload])
+    session = OriginalSession(transport)
+    session.payload = cleanup
+    backend = OriginalBackend(session, IRONCLAD_A0_ACT1)
+    executed: list[str] = []
+
+    result = backend._settle_match_completion(cleanup, executed)
+
+    assert result["game_state"]["screen_type"] == "MAP"
+    assert executed == ["wait 30", "choose 0"]
+
+
 def test_map_action_folds_shop_room_entry_wrapper() -> None:
     # Regression: 20260820T170551.039303Z-seed-0.partial after boundary 1.
     map_payload = game_payload(["x=1"])
