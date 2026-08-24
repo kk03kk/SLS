@@ -5,7 +5,6 @@ from __future__ import annotations
 import hashlib
 import json
 import os
-import re
 import shutil
 import subprocess
 import zipfile
@@ -31,15 +30,14 @@ DEPENDENCIES = tuple(
 
 
 def scenario_card_allowlist() -> bytes:
-    pools = (ROOT / "cpp" / "simulator" / "include" / "constants" / "CardPools.h").read_text(
-        encoding="utf-8"
+    scope = json.loads(
+        (ROOT / "configs" / "validation" / "ironclad_a0_content_scope.json").read_text(
+            encoding="utf-8"
+        )
     )
-    match = re.search(r"colorCardPool\[4\]\[72\]\s*\{\s*\{(.*?)\}\s*,", pools, re.DOTALL)
-    if match is None:
-        raise RuntimeError("cannot derive the Ironclad scenario allowlist")
-    ids = set(re.findall(r"CardId::([A-Z0-9_]+)", match.group(1))) | {
-        "STRIKE_RED", "DEFEND_RED", "BASH",
-    }
+    if scope.get("scope_id") != "sls-ironclad-a0-content-v1":
+        raise RuntimeError("unexpected Ironclad card-probe content scope")
+    ids = set(map(str, scope["cards"]["ids"]))
     registry = json.loads((ROOT / "src" / "sls" / "content" / "registry.json").read_text(encoding="utf-8"))
     mapping = {
         item["id"]: item["game_id"] for item in registry["categories"]["cards"]

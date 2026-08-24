@@ -5,7 +5,7 @@ import com.evacipated.cardcrawl.modthespire.lib.SpirePostfixPatch;
 import com.evacipated.cardcrawl.modthespire.lib.SpirePrefixPatch;
 import com.evacipated.cardcrawl.modthespire.lib.SpireReturn;
 import com.megacrit.cardcrawl.cards.AbstractCard;
-import com.megacrit.cardcrawl.cards.AbstractCard.CardColor;
+import com.megacrit.cardcrawl.cards.AbstractCard.CardType;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.CardLibrary;
@@ -14,6 +14,7 @@ import com.megacrit.cardcrawl.powers.EquilibriumPower;
 import com.megacrit.cardcrawl.powers.IntangiblePlayerPower;
 import com.megacrit.cardcrawl.powers.WeakPower;
 import com.megacrit.cardcrawl.powers.watcher.EstablishmentPower;
+import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.helpers.RelicLibrary;
 import communicationmod.CommandExecutor;
 import communicationmod.CommunicationMod;
@@ -68,7 +69,8 @@ public final class OracleScenarioPatch {
 
     private static String setupDigest(AbstractPlayer player) {
         StringBuilder value = new StringBuilder();
-        value.append("energy=").append(player.energy.energy)
+        value.append("hp=").append(player.currentHealth).append('/').append(player.maxHealth)
+            .append(";energy=").append(player.energy.energy)
             .append(";block=").append(player.currentBlock);
         for (AbstractCard card : player.hand.group) value.append(";hand=").append(card.cardID).append('+').append(card.timesUpgraded);
         for (AbstractCard card : player.drawPile.group) value.append(";draw=").append(card.cardID).append('+').append(card.timesUpgraded);
@@ -79,6 +81,14 @@ public final class OracleScenarioPatch {
         }
         for (com.megacrit.cardcrawl.relics.AbstractRelic relic : player.relics) {
             value.append(";relic=").append(relic.relicId).append(':').append(relic.counter);
+        }
+        for (AbstractMonster monster : AbstractDungeon.getMonsters().monsters) {
+            value.append(";monster=").append(monster.id)
+                .append(':').append(monster.currentHealth).append('/').append(monster.maxHealth)
+                .append(':').append(monster.currentBlock).append(':').append(monster.intent);
+            for (com.megacrit.cardcrawl.powers.AbstractPower power : monster.powers) {
+                value.append(":power=").append(power.ID).append(':').append(power.amount);
+            }
         }
         try {
             byte[] digest = MessageDigest.getInstance("SHA-256").digest(
@@ -121,6 +131,31 @@ public final class OracleScenarioPatch {
         AbstractDungeon.actionManager.cardQueue.clear();
     }
 
+    private static void installProbeRelics(AbstractPlayer player, CardType type) {
+        player.relics.clear();
+        player.relics.add(RelicLibrary.getRelic("Burning Blood").makeCopy());
+        if (type == CardType.STATUS) {
+            player.relics.add(RelicLibrary.getRelic("Medical Kit").makeCopy());
+        } else if (type == CardType.CURSE) {
+            player.relics.add(RelicLibrary.getRelic("Blue Candle").makeCopy());
+        }
+    }
+
+    private static void normalizeProbeTarget() {
+        if (AbstractDungeon.getMonsters() == null ||
+                AbstractDungeon.getMonsters().monsters.size() != 1) {
+            throw new IllegalStateException("parity_card requires a one-monster combat");
+        }
+        AbstractMonster monster = AbstractDungeon.getMonsters().monsters.get(0);
+        monster.currentHealth = 999;
+        monster.maxHealth = 999;
+        monster.currentBlock = 0;
+        monster.powers.clear();
+        monster.isDying = false;
+        monster.isEscaping = false;
+        monster.intent = AbstractMonster.Intent.ATTACK;
+    }
+
     private static void apply(String id) {
         AbstractPlayer player = AbstractDungeon.player;
         clearCombatState(player);
@@ -154,9 +189,10 @@ public final class OracleScenarioPatch {
     }
 
     /**
-     * Stable, deliberately narrow boundary for single-Ironclad-card traces.
-     * It accepts an actual CardLibrary red card only, never a class name or a
-     * reflection path, and only exercises base/+1 variants.
+     * Stable, deliberately narrow boundary for single-card traces in the
+     * packaged Ironclad A0 reachable-content closure.  It accepts a registry
+     * id only, never a class name or a reflection path, and only exercises
+     * base/+1 variants.
      */
     private static void applyCardProbe(String cardId, int upgrades) {
         String gameId = CARD_ALLOWLIST.get(cardId.toUpperCase(Locale.ROOT));
@@ -164,8 +200,8 @@ public final class OracleScenarioPatch {
             throw new IllegalArgumentException("parity_card is not in the packaged Ironclad allowlist");
         }
         AbstractCard prototype = CardLibrary.getCard(gameId);
-        if (prototype == null || prototype.color != CardColor.RED) {
-            throw new IllegalArgumentException("parity_card requires an Ironclad card id");
+        if (prototype == null) {
+            throw new IllegalArgumentException("parity_card requires a packaged card id");
         }
         // Never upgrade CardLibrary's shared prototype: doing so contaminates
         // every later reward/deck copy in the same original-game process.
@@ -178,6 +214,10 @@ public final class OracleScenarioPatch {
         }
         AbstractPlayer player = AbstractDungeon.player;
         clearCombatState(player);
+        installProbeRelics(player, probe.type);
+        player.currentHealth = 80;
+        player.maxHealth = 80;
+        normalizeProbeTarget();
         // Four energy covers Blood for Blood while retaining a deterministic
         // baseline for X-cost cards.  The support cards make hand/discard/
         // exhaust selection effects observable without changing card identity.

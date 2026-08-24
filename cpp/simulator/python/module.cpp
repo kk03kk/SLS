@@ -1637,6 +1637,50 @@ public:
         }
     }
 
+    void reset_card_probe(
+        std::uint64_t seed,
+        const std::string &card_id,
+        bool upgraded) {
+        auto probe = CardInstance(parse_card(card_id));
+        std::vector<std::string> relics{"Burning Blood"};
+        if (probe.getType() == CardType::STATUS) {
+            relics.emplace_back("Medical Kit");
+        } else if (probe.getType() == CardType::CURSE) {
+            relics.emplace_back("Blue Candle");
+        }
+        reset(seed, "CULTIST", 0, {}, relics, true);
+        const auto spec = card_id + (upgraded ? "+" : "");
+        set_card_piles(
+            {spec, "Strike_R"}, {"Defend_R"},
+            {"Defend_R"}, {"Defend_R"});
+
+        auto &player = bc_->player;
+        player.curHp = 80;
+        player.maxHp = 80;
+        player.block = 0;
+        player.energy = 4;
+        player.justAppliedBits = 0;
+        player.statusBits0 = 0;
+        player.statusBits1 = 0;
+        player.statusMap.clear();
+        player.powerOrder.clear();
+        gc_->curHp = 80;
+        gc_->maxHp = 80;
+
+        auto &monster = bc_->monsters.arr[0];
+        monster.curHp = 999;
+        monster.maxHp = 999;
+        monster.block = 0;
+        monster.resetAllStatusEffects();
+        monster.halfDead = false;
+        monster.isEscapingB = false;
+        monster.escapeNext = false;
+        monster.setMove(MonsterMoveId::CULTIST_DARK_STRIKE);
+        bc_->actionQueue.clear();
+        bc_->cardQueue.clear();
+        bc_->inputState = InputState::PLAYER_NORMAL;
+    }
+
     void apply_scenario(const std::string &scenario) {
         require_reset();
         auto &player = bc_->player;
@@ -4342,6 +4386,8 @@ PYBIND11_MODULE(_lightspeed, module) {
         .def("set_card_piles", &LightspeedBattle::set_card_piles,
              py::arg("hand"), py::arg("draw"), py::arg("discard"),
              py::arg("exhaust"))
+        .def("reset_card_probe", &LightspeedBattle::reset_card_probe,
+             py::arg("seed"), py::arg("card_id"), py::arg("upgraded"))
         .def("set_player_health", &LightspeedBattle::set_player_health,
              py::arg("current_hp"), py::arg("max_hp"))
         .def("apply_scenario", &LightspeedBattle::apply_scenario,
