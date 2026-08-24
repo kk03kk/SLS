@@ -3309,14 +3309,24 @@ void BattleContext::chooseGambleCards(const fixed_list<int, 10> &idxs) {
     if (idxs.empty()) {
         return;
     }
-    auto listCopy = idxs;
-    std::sort(listCopy.begin(), listCopy.end(), [](auto a, auto b) { return b < a; });
+    auto ascending = idxs;
+    std::sort(ascending.begin(), ascending.end());
+    fixed_list<CardInstance, 10> selectedCards;
+    for (const auto handIdx : ascending) {
+        selectedCards.push_back(cards.hand[handIdx]);
+    }
+    auto descending = ascending;
+    std::sort(descending.begin(), descending.end(), [](auto a, auto b) { return b < a; });
 
-    // assume idxs is sorted in descending order
-    addToTop( Actions::DrawCards(listCopy.size()) );
-    for (const auto handIdx : listCopy) {
-        auto c = cards.hand[handIdx];
+    addToTop(Actions::DrawCards(selectedCards.size()));
+    for (const auto handIdx : descending) {
         cards.removeFromHandAtIdx(handIdx);
+    }
+    // HandCardSelectScreen preserves click/visible order in selectedCards;
+    // GamblingChipAction iterates that group in the same order. Removal must
+    // be descending for index safety, but discard/manual-trigger order must
+    // remain ascending rather than being accidentally reversed.
+    for (const auto &c : selectedCards) {
         cards.moveToDiscardPile(c);
         onManualDiscard(c);
     }
