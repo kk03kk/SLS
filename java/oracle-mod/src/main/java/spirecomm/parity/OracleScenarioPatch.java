@@ -238,6 +238,7 @@ public final class OracleScenarioPatch {
         player.hand.addToBottom(card("Strike_R"));
         player.hand.addToBottom(probe);
         player.drawPile.addToBottom(card("Defend_R"));
+        player.drawPile.addToTop(card("Strike_R"));
         player.discardPile.addToBottom(card("Defend_R"));
         player.exhaustPile.addToBottom(card("Defend_R"));
         // Stock hand insertions recalculate dynamic card values before the

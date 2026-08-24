@@ -168,3 +168,14 @@ def test_upgraded_jack_of_all_trades_preserves_rng_generation_order() -> None:
     assert [
         card.card_id for card in adapt_original(battle.snapshot()).decision.observation.hand
     ] == ["STRIKE_RED", "IMPATIENCE", "PANACEA"]
+
+
+def test_card_probe_supports_both_draw_pile_search_types() -> None:
+    for card_id in ("SECRET_TECHNIQUE", "SECRET_WEAPON"):
+        battle = native.LightspeedBattle()
+        battle.reset_card_probe(123, card_id, False)
+        decision = adapt_original(battle.snapshot()).decision
+        assert any(
+            action.kind.value == "PLAY_CARD" and action.subject_id == "HAND:0"
+            for action in decision.actions
+        ), card_id

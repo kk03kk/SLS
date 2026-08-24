@@ -1651,7 +1651,7 @@ public:
         reset(seed, "CULTIST", 0, {}, relics, true);
         const auto spec = card_id + (upgraded && probe.canUpgrade() ? "+" : "");
         set_card_piles(
-            {spec, "Strike_R"}, {"Defend_R"},
+            {spec, "Strike_R"}, {"Defend_R", "Strike_R"},
             {"Defend_R"}, {"Defend_R"});
 
         auto &player = bc_->player;
