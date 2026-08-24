@@ -1,5 +1,5 @@
 {
-  "audit_sha256": "2bdd0e6eee997f08dbbdfbcf18562d430bd3924f2cbf6b94839c1b6a01f260ca",
+  "audit_sha256": "ccc53c8ebb642becb379a78b70ff4fea0adeaf91000c7b67eac3e37f1ae8ac84",
   "content_scope_sha256": "1e9ba31232cea5813b88cf6d75c7be28deaca4ac84c32079745477866fc0649d",
   "entries": {
     "cards": [
@@ -49,7 +49,7 @@
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:35",
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:854",
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:989",
-          "src/sls/content/normalize.py:86"
+          "src/sls/content/normalize.py:90"
         ],
         "status": "VERIFIED",
         "test_references": [
@@ -312,7 +312,7 @@
           "cpp/simulator/src/sim/search/ExpertKnowledge.cpp:38",
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:1063",
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:927",
-          "src/sls/content/normalize.py:104",
+          "src/sls/content/normalize.py:108",
           "src/sls/model/encoding.py:43",
           "src/sls/model/encoding.py:59"
         ],
@@ -1310,7 +1310,7 @@
           "cpp/simulator/src/sim/search/ExpertKnowledge.cpp:251",
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:1036",
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:899",
-          "src/sls/content/normalize.py:104",
+          "src/sls/content/normalize.py:108",
           "src/sls/model/encoding.py:43"
         ],
         "status": "BLOCKED",
@@ -1665,9 +1665,9 @@
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:1106",
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:922",
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:990",
-          "src/sls/content/normalize.py:63",
-          "src/sls/content/normalize.py:66",
-          "src/sls/content/normalize.py:67"
+          "src/sls/content/normalize.py:67",
+          "src/sls/content/normalize.py:70",
+          "src/sls/content/normalize.py:71"
         ],
         "status": "BLOCKED",
         "test_references": []
@@ -2699,7 +2699,7 @@
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:1190",
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:853",
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:988",
-          "src/sls/content/normalize.py:89"
+          "src/sls/content/normalize.py:93"
         ],
         "status": "BLOCKED",
         "test_references": []
@@ -5782,9 +5782,9 @@
           "cpp/simulator/src/sim/search/ExpertKnowledge.cpp:401",
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:1028",
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:892",
-          "src/sls/content/normalize.py:62",
-          "src/sls/content/normalize.py:64",
-          "src/sls/content/normalize.py:65"
+          "src/sls/content/normalize.py:66",
+          "src/sls/content/normalize.py:68",
+          "src/sls/content/normalize.py:69"
         ],
         "status": "BLOCKED",
         "test_references": []
@@ -8284,7 +8284,7 @@
           "cpp/simulator/src/sim/ConsoleSimulator.cpp:880",
           "cpp/simulator/src/sim/search/GameAction.cpp:758",
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:656",
-          "src/sls/content/normalize.py:135"
+          "src/sls/content/normalize.py:139"
         ],
         "status": "BLOCKED",
         "test_references": []
@@ -8469,7 +8469,7 @@
           "cpp/simulator/src/game/GameContext.cpp:3691",
           "cpp/simulator/src/sim/ConsoleSimulator.cpp:1091",
           "cpp/simulator/src/sim/search/GameAction.cpp:749",
-          "src/sls/content/normalize.py:133"
+          "src/sls/content/normalize.py:137"
         ],
         "status": "BLOCKED",
         "test_references": []
@@ -8548,7 +8548,7 @@
           "cpp/simulator/src/game/GameContext.cpp:3757",
           "cpp/simulator/src/sim/ConsoleSimulator.cpp:1103",
           "cpp/simulator/src/sim/search/GameAction.cpp:770",
-          "src/sls/content/normalize.py:136"
+          "src/sls/content/normalize.py:140"
         ],
         "status": "BLOCKED",
         "test_references": []
@@ -8974,7 +8974,8 @@
           "cpp/simulator/src/combat/MonsterGroup.cpp:547",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:156",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:2534",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:54"
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:54",
+          "src/sls/content/normalize.py:57"
         ],
         "status": "BLOCKED",
         "test_references": [
@@ -9084,7 +9085,8 @@
           "cpp/simulator/src/combat/MonsterGroup.cpp:108",
           "cpp/simulator/src/combat/MonsterGroup.cpp:552",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:2730",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:63"
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:63",
+          "src/sls/content/normalize.py:58"
         ],
         "status": "BLOCKED",
         "test_references": [

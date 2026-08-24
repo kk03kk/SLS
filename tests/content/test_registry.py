@@ -69,5 +69,10 @@ def test_amountless_power_set_matches_decompiled_stock_sources() -> None:
 def test_stock_sssserpent_class_alias_matches_liars_game() -> None:
     assert normalize_event_id("Sssserpent") == "THE_SSSSSERPENT"
     assert normalize_event_id("Liars Game") == "THE_SSSSSERPENT"
+
+
+def test_stock_gremlin_class_ids_match_native_monster_ids() -> None:
+    assert normalize_content_id("GremlinWarrior") == "MAD_GREMLIN"
+    assert normalize_content_id("GremlinTsundere") == "SHIELD_GREMLIN"
     assert normalize_event_id("GoopPuddle") == "WORLD_OF_GOOP"
     assert normalize_event_id("World of Goop") == "WORLD_OF_GOOP"

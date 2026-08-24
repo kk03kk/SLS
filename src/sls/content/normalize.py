@@ -52,6 +52,10 @@ def normalize_content_id(value: object) -> str:
         "FROZEN_EGG_2": "FROZEN_EGG",
         "GREMLIN_FAT": "FAT_GREMLIN",
         "GREMLIN_THIEF": "SNEAKY_GREMLIN",
+        # Stock class/save IDs use implementation names for these two
+        # gremlins; native names them by their public combat roles.
+        "GREMLIN_WARRIOR": "MAD_GREMLIN",
+        "GREMLIN_TSUNDERE": "SHIELD_GREMLIN",
         "SERPENT": "SPIRE_GROWTH",
     }.get(normalized, normalized)
 
