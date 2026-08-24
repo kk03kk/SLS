@@ -68,8 +68,11 @@ def _adapt_probe_payload(payload: Mapping[str, Any]) -> AdaptedOriginalDecision:
     combat = dict(game.get("combat_state") or {})
     choice = dict(combat.get("choice") or {})
     if choice.get("options") and not combat.get("card_select"):
-        combat["card_select"] = {"cards": list(choice["options"])}
+        options = list(choice["options"])
+        combat["card_select"] = {"cards": options}
         game["combat_state"] = combat
+        game["choice_list"] = [str(item.get("id") or "") for item in options]
+        game["screen_state"] = {"cards": options}
         value["game_state"] = game
     return adapt_original(value)
 

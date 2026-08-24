@@ -122,6 +122,7 @@ def test_card_audit_adapts_native_generated_card_choices() -> None:
     battle.step("play", card_index=1, target_index=0)
     decision = module._adapt_probe_payload(battle.snapshot()).decision
     assert len(decision.actions) == 3
+    assert len(decision.observation.choice_options) == 3
     assert {action.subject_id for action in decision.actions} == {
         "CHOICE:0", "CHOICE:1", "CHOICE:2"
     }
