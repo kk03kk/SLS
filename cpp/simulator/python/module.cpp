@@ -1763,6 +1763,18 @@ public:
         restore_rng(bc_->potionRng, rng["potion"].cast<py::dict>());
     }
 
+    void set_discovery_retrieval_updates(int updates) {
+        require_reset();
+        if (updates < 1 || updates > 120 ||
+                bc_->inputState != InputState::CARD_SELECT ||
+                bc_->cardSelectInfo.cardSelectTask != CardSelectTask::DISCOVERY ||
+                !bc_->cardSelectInfo.discoveryRerollOnRetrieve) {
+            throw std::invalid_argument(
+                "Discovery timing evidence is invalid at the card probe boundary");
+        }
+        bc_->cardSelectInfo.discoveryRetrievalUpdates = updates;
+    }
+
     void load_checkpoint(const py::dict &checkpoint) {
         const auto game = checkpoint["game_state"].cast<py::dict>();
         const auto combat = game["combat_state"].cast<py::dict>();
@@ -4394,6 +4406,9 @@ PYBIND11_MODULE(_lightspeed, module) {
              py::arg("scenario"))
         .def("set_potions", &LightspeedBattle::set_potions, py::arg("potions"))
         .def("set_rng_state", &LightspeedBattle::set_rng_state, py::arg("rng"))
+        .def("set_discovery_retrieval_updates",
+             &LightspeedBattle::set_discovery_retrieval_updates,
+             py::arg("updates"))
         .def("load_checkpoint", &LightspeedBattle::load_checkpoint,
              py::arg("checkpoint"))
         .def("step", &LightspeedBattle::step,

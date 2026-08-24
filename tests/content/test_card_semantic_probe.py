@@ -126,3 +126,12 @@ def test_card_audit_adapts_native_generated_card_choices() -> None:
     assert {action.subject_id for action in decision.actions} == {
         "CHOICE:0", "CHOICE:1", "CHOICE:2"
     }
+
+
+def test_card_probe_accepts_original_discovery_retrieval_timing() -> None:
+    battle = native.LightspeedBattle()
+    battle.reset_card_probe(123, "DISCOVERY", True)
+    battle.step("play", card_index=1, target_index=0)
+    battle.set_discovery_retrieval_updates(14)
+    battle.step("choose", choice_index=0)
+    assert adapt_original(battle.snapshot()).decision.observation.screen.value == "COMBAT"

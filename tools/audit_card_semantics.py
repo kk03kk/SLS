@@ -176,6 +176,14 @@ def _probe_variant(session: OriginalSession, card_id: str, upgrades: int, seed: 
 
     for boundary in range(1, 33):
         original_payload = _execute_original(session, original, action)
+        timing = dict(original_payload.get("_timing_evidence") or {})
+        if (
+            action.kind is ActionKind.SELECT_CARD
+            and timing.get("discovery_retrieval_updates") is not None
+        ):
+            battle.set_discovery_retrieval_updates(
+                int(timing["discovery_retrieval_updates"])
+            )
         simulator_payload = _execute_native(battle, simulator, action)
         original = adapt_original(original_payload)
         simulator = _adapt_probe_payload(simulator_payload)
