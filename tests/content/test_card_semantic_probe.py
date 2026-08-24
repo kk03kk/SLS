@@ -113,3 +113,15 @@ def test_burn_is_the_stock_upgradeable_status_exception() -> None:
     card = adapt_original(battle.snapshot()).decision.observation.hand[0]
     assert card.card_id == "BURN"
     assert card.upgrades == 1
+
+
+def test_card_audit_adapts_native_generated_card_choices() -> None:
+    module = _load_card_audit()
+    battle = native.LightspeedBattle()
+    battle.reset_card_probe(123, "DISCOVERY", False)
+    battle.step("play", card_index=1, target_index=0)
+    decision = module._adapt_probe_payload(battle.snapshot()).decision
+    assert len(decision.actions) == 3
+    assert {action.subject_id for action in decision.actions} == {
+        "CHOICE:0", "CHOICE:1", "CHOICE:2"
+    }

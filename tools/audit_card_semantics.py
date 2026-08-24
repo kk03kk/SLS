@@ -60,6 +60,20 @@ def _rng(payload: Mapping[str, Any]) -> dict[str, Any]:
     return {str(key): dict(item) for key, item in sorted(value.items())}
 
 
+def _adapt_probe_payload(payload: Mapping[str, Any]) -> AdaptedOriginalDecision:
+    """Expose the LightspeedBattle choice record through the wire adapter shape."""
+
+    value = dict(payload)
+    game = dict(value.get("game_state") or {})
+    combat = dict(game.get("combat_state") or {})
+    choice = dict(combat.get("choice") or {})
+    if choice.get("options") and not combat.get("card_select"):
+        combat["card_select"] = {"cards": list(choice["options"])}
+        game["combat_state"] = combat
+        value["game_state"] = game
+    return adapt_original(value)
+
+
 def _assert_match(
     card_id: str,
     upgrades: int,
@@ -139,7 +153,7 @@ def _probe_variant(session: OriginalSession, card_id: str, upgrades: int, seed: 
     battle.set_rng_state(_rng(original_payload))
     simulator_payload = battle.snapshot()
     original = adapt_original(original_payload)
-    simulator = adapt_original(simulator_payload)
+    simulator = _adapt_probe_payload(simulator_payload)
     hashes = [
         _assert_match(
             card_id, upgrades, 0, original, simulator,
@@ -161,7 +175,7 @@ def _probe_variant(session: OriginalSession, card_id: str, upgrades: int, seed: 
         original_payload = _execute_original(session, original, action)
         simulator_payload = _execute_native(battle, simulator, action)
         original = adapt_original(original_payload)
-        simulator = adapt_original(simulator_payload)
+        simulator = _adapt_probe_payload(simulator_payload)
         hashes.append(
             _assert_match(
                 card_id, upgrades, boundary, original, simulator,
