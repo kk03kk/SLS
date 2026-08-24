@@ -1,9 +1,11 @@
 from sls.content import load_content_registry
 from sls.content.normalize import (
+    AMOUNTLESS_POWER_IDS,
     normalize_card_id,
     normalize_content_id,
     normalize_event_id,
     normalize_potion_id,
+    normalize_power_amount,
     normalize_power_id,
 )
 
@@ -33,6 +35,35 @@ def test_stock_duplication_power_uses_native_canonical_id() -> None:
     assert normalize_power_id("DuplicationPower") == "DUPLICATION"
     assert normalize_power_id("DUPLICATION_POWER") == "DUPLICATION"
     assert normalize_power_id("DUPLICATION") == "DUPLICATION"
+
+
+def test_amountless_stock_powers_use_presence_without_rewriting_numeric_debuffs() -> None:
+    for power_id in ("No Draw", "Barricade", "Corruption", "Painful Stabs"):
+        assert normalize_power_amount(power_id, -1) == 1
+    assert normalize_power_amount("Strength", -1) == -1
+
+
+def test_amountless_power_set_matches_decompiled_stock_sources() -> None:
+    import re
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parents[2]
+    power_root = root / "reference" / "original-game" / "decompiled" / "com" / (
+        "megacrit/cardcrawl/powers"
+    )
+    actual = set()
+    for path in power_root.rglob("*.java"):
+        if "deprecated" in path.parts:
+            continue
+        text = path.read_text(encoding="utf-8", errors="replace")
+        if not re.search(r"this\.amount\s*=\s*-1\s*;", text):
+            continue
+        identifier = re.search(r'public static final String POWER_ID\s*=\s*"([^"]+)"', text)
+        if identifier is None:
+            identifier = re.search(r'public static final String ID\s*=\s*"([^"]+)"', text)
+        assert identifier is not None, path
+        actual.add(normalize_power_id(identifier.group(1)))
+    assert actual == set(AMOUNTLESS_POWER_IDS)
 
 
 def test_stock_sssserpent_class_alias_matches_liars_game() -> None:

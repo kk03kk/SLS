@@ -98,7 +98,7 @@ def test_power_entities_have_backend_independent_semantic_order() -> None:
         {"id": "Split", "amount": -1},
     ], "MONSTER:0:POWER")
     assert [(item.content_id, dict(item.properties)["amount"]) for item in powers] == [
-        ("SPLIT", -1), ("VULNERABLE", 2),
+        ("SPLIT", 1), ("VULNERABLE", 2),
     ]
     reversed_powers = _powers([
         {"id": "Split", "amount": -1},

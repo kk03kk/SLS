@@ -94,7 +94,24 @@ def normalize_power_id(value: object) -> str:
         # DuplicationPotion applies DuplicationPower, whose stock public ID
         # includes the implementation suffix omitted by the native enum.
         "DUPLICATION_POWER": "DUPLICATION",
+        # Swivel's ForcefieldPower exposes the stock ID "Nullify Attack";
+        # native names the same one-attack marker FREE_ATTACK_POWER.
+        "NULLIFY_ATTACK": "FREE_ATTACK_POWER",
     }.get(normalized, normalized)
+
+
+AMOUNTLESS_POWER_IDS = frozenset({
+    "BACK_ATTACK", "BARRICADE", "CORRUPTION", "END_TURN_DEATH",
+    "FREE_ATTACK_POWER", "NO_DRAW", "PAINFUL_STABS", "SPLIT", "STASIS",
+    "SURROUNDED", "UNAWAKENED",
+})
+
+
+def normalize_power_amount(power_id: object, amount: object) -> int:
+    """Map stock's ``-1`` marker convention to canonical presence ``1``."""
+
+    value = int(amount or 0)
+    return 1 if normalize_power_id(power_id) in AMOUNTLESS_POWER_IDS else value
 
 
 @lru_cache(maxsize=1)

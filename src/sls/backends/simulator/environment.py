@@ -28,7 +28,9 @@ from sls.curriculum import (
     evaluate_horizon,
 )
 from sls.contracts.continuation import continuation_simulator
-from sls.content.normalize import normalize_content_id, normalize_power_id
+from sls.content.normalize import (
+    normalize_content_id, normalize_power_amount, normalize_power_id,
+)
 from sls.content.scope import filter_policy_shop
 
 
@@ -400,7 +402,7 @@ def _powers(values: Any, prefix: str) -> tuple[PublicEntity, ...]:
     return tuple(
         _entity(
             f"{prefix}:{index}", normalize_power_id(value["id"]),
-            amount=int(value["amount"]),
+            amount=normalize_power_amount(value["id"], value["amount"]),
         )
         for index, value in enumerate(visible)
     )

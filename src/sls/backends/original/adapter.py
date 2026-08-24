@@ -7,7 +7,7 @@ from typing import Any, Mapping, Sequence
 
 from sls.content.normalize import (
     normalize_card_id, normalize_content_id, normalize_event_id, normalize_potion_id,
-    normalize_power_id,
+    normalize_power_amount, normalize_power_id,
 )
 from sls.content.scope import filter_policy_shop
 from sls.contracts import (
@@ -477,7 +477,7 @@ def _powers(values: Any, prefix: str) -> tuple[PublicEntity, ...]:
     return tuple(
         PublicEntity(
             f"{prefix}:{index}", normalize_power_id(value.get("id")),
-            (("amount", _integer(value.get("amount"))),),
+            (("amount", normalize_power_amount(value.get("id"), value.get("amount"))),),
         )
         for index, value in enumerate(visible)
     )

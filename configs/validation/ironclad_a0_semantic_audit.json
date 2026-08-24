@@ -1,5 +1,5 @@
 {
-  "audit_sha256": "947fbbbb1e075c65f67dcb274161ca58c762ca421d63d9dcba4f451e7ddbb263",
+  "audit_sha256": "92657b7535506743f1d22cec772a457ba85be0adbb23e5a8aef8c949e8f982f9",
   "content_scope_sha256": "1e9ba31232cea5813b88cf6d75c7be28deaca4ac84c32079745477866fc0649d",
   "entries": {
     "cards": [
@@ -312,6 +312,7 @@
           "cpp/simulator/src/sim/search/ExpertKnowledge.cpp:38",
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:1063",
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:927",
+          "src/sls/content/normalize.py:104",
           "src/sls/model/encoding.py:43",
           "src/sls/model/encoding.py:59"
         ],
@@ -1309,6 +1310,7 @@
           "cpp/simulator/src/sim/search/ExpertKnowledge.cpp:251",
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:1036",
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:899",
+          "src/sls/content/normalize.py:104",
           "src/sls/model/encoding.py:43"
         ],
         "status": "BLOCKED",
@@ -7709,7 +7711,7 @@
           "cpp/simulator/src/sim/search/GameAction.cpp:446",
           "cpp/simulator/src/sim/search/GameAction.cpp:685",
           "cpp/simulator/src/sim/search/GameAction.cpp:745",
-          "src/sls/backends/simulator/environment.py:660"
+          "src/sls/backends/simulator/environment.py:662"
         ],
         "status": "BLOCKED",
         "test_references": []
@@ -7795,12 +7797,12 @@
           "src/sls/backends/original/adapter.py:604",
           "src/sls/backends/original/adapter.py:608",
           "src/sls/backends/original/environment.py:478",
-          "src/sls/backends/simulator/environment.py:414",
-          "src/sls/backends/simulator/environment.py:426",
-          "src/sls/backends/simulator/environment.py:442",
-          "src/sls/backends/simulator/environment.py:553",
-          "src/sls/backends/simulator/environment.py:560",
-          "src/sls/backends/simulator/environment.py:658",
+          "src/sls/backends/simulator/environment.py:416",
+          "src/sls/backends/simulator/environment.py:428",
+          "src/sls/backends/simulator/environment.py:444",
+          "src/sls/backends/simulator/environment.py:555",
+          "src/sls/backends/simulator/environment.py:562",
+          "src/sls/backends/simulator/environment.py:660",
           "src/sls/content/source_audit.py:57",
           "src/sls/contracts/continuation.py:145",
           "src/sls/contracts/observation.py:13",
@@ -8282,7 +8284,7 @@
           "cpp/simulator/src/sim/ConsoleSimulator.cpp:880",
           "cpp/simulator/src/sim/search/GameAction.cpp:758",
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:656",
-          "src/sls/content/normalize.py:118"
+          "src/sls/content/normalize.py:135"
         ],
         "status": "BLOCKED",
         "test_references": []
@@ -8467,7 +8469,7 @@
           "cpp/simulator/src/game/GameContext.cpp:3691",
           "cpp/simulator/src/sim/ConsoleSimulator.cpp:1091",
           "cpp/simulator/src/sim/search/GameAction.cpp:749",
-          "src/sls/content/normalize.py:116"
+          "src/sls/content/normalize.py:133"
         ],
         "status": "BLOCKED",
         "test_references": []
@@ -8546,7 +8548,7 @@
           "cpp/simulator/src/game/GameContext.cpp:3757",
           "cpp/simulator/src/sim/ConsoleSimulator.cpp:1103",
           "cpp/simulator/src/sim/search/GameAction.cpp:770",
-          "src/sls/content/normalize.py:119"
+          "src/sls/content/normalize.py:136"
         ],
         "status": "BLOCKED",
         "test_references": []
@@ -9556,8 +9558,8 @@
         "scope_groups": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:2399",
-          "src/sls/backends/simulator/environment.py:115",
-          "src/sls/backends/simulator/environment.py:843",
+          "src/sls/backends/simulator/environment.py:117",
+          "src/sls/backends/simulator/environment.py:845",
           "src/sls/contracts/continuation.py:156",
           "src/sls/contracts/continuation.py:171"
         ],
@@ -11440,7 +11442,7 @@
         "scope_groups": [],
         "simulator_references": [
           "src/sls/backends/original/adapter.py:77",
-          "src/sls/backends/simulator/environment.py:217"
+          "src/sls/backends/simulator/environment.py:219"
         ],
         "status": "BLOCKED",
         "test_references": []
