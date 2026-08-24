@@ -687,7 +687,7 @@
     "content_scope_id": "sls-ironclad-a0-content-v1",
     "content_scope_sha256": "1e9ba31232cea5813b88cf6d75c7be28deaca4ac84c32079745477866fc0649d",
     "encoding_schema": "sls-policy-input-v2",
-    "native_source_sha256": "2f6f156740a5273ed698a40e27b58bec6c0894151b0d74d4cfbd2ba2e358a7d9",
+    "native_source_sha256": "a4c3af2b460c49a2b467baab903a9936a6fbd662cbd9b1df18b9e467ecb9d050",
     "policy_contract_sha256": "46cfe626ae4258ae2582e5bfe5d8476eafdceaf88f10c6c44fec4ab8c9a5579c",
     "semantic_audit_sha256": "ba9d6b8c8f0743a5d29644573ecfe2039b848891b723c835b830b12e5bf2bc42",
     "vocabulary_sha256": "98e69b9733abfa4662ead56c0d02fb604b67575a2ba4c1785ba3fe736e7f01b6"
@@ -745,7 +745,7 @@
     ]
   },
   "level": "ENGINEERING_READY",
-  "lock_sha256": "2307be1544c23e9123a54fe197671f7ae2d17c53192c0a054974df99906779b5",
+  "lock_sha256": "a882ab4e680cc50a24c468238e7d092400fb9cdf43bb3d90483218a70c665e09",
   "profile": "IRONCLAD_A0_ACT1",
   "requirements": {
     "bosses": [
