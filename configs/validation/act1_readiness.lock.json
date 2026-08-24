@@ -685,8 +685,8 @@
     "canonicalizer_sha256": "11ba1887f1a5f25ed8003e078be65400cad92fc4907cff069fde885985b68450",
     "checkpoint_schema": "sls-full-run-ppo-v3",
     "encoding_schema": "sls-policy-input-v2",
-    "native_source_sha256": "592587fc5771643b20d1dce690a6f1cd8574ec93dcaf8d7aee0cb749f75ef54d",
-    "policy_contract_sha256": "c937fed7c7d0c591a860ccf83a3ce93c202276097e6566235554cddb2917c562",
+    "native_source_sha256": "29e693af0277ed0db24f2c541653a42b7fa6afab9b57021928ccc3327dec4ace",
+    "policy_contract_sha256": "46cfe626ae4258ae2582e5bfe5d8476eafdceaf88f10c6c44fec4ab8c9a5579c",
     "vocabulary_sha256": "98e69b9733abfa4662ead56c0d02fb604b67575a2ba4c1785ba3fe736e7f01b6"
   },
   "coverage": {
@@ -742,7 +742,7 @@
     ]
   },
   "level": "ENGINEERING_READY",
-  "lock_sha256": "924aadf776083b5cf56ecaa465adef1cb9ff54026672a4fc4ce8b7c93d161d5f",
+  "lock_sha256": "768872e2958afab612449ff99f9425e266ccd3c310d28c4e1166ae3351f3e6cd",
   "profile": "IRONCLAD_A0_ACT1",
   "requirements": {
     "bosses": [
