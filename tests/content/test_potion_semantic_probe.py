@@ -51,7 +51,7 @@ def test_native_potion_probe_has_the_stable_audit_baseline(
     observation = adapt_original(battle.snapshot()).decision.observation
     assert observation.player.current_hp == hp
     assert observation.player.max_hp == 80
-    assert observation.player.energy == 2
+    assert observation.player.energy == 3
     assert observation.potions[0].content_id == potion_id
     relics = {relic.content_id for relic in observation.relics}
     assert "BURNING_BLOOD" in relics

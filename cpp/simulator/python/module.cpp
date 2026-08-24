@@ -1705,7 +1705,7 @@ public:
         player.curHp = fairy ? 1 : 40;
         player.maxHp = 80;
         player.block = 0;
-        player.energy = 2;
+        player.energy = 3;
         player.justAppliedBits = 0;
         player.statusBits0 = 0;
         player.statusBits1 = 0;

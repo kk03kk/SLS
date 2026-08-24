@@ -278,8 +278,8 @@ public final class OracleScenarioPatch {
         player.currentHealth = "FAIRY_POTION".equalsIgnoreCase(potionId) ? 1 : 40;
         player.maxHealth = 80;
         normalizeProbeTarget();
-        player.energy.energy = 2;
-        EnergyPanel.setEnergy(2);
+        player.energy.energy = 3;
+        EnergyPanel.setEnergy(3);
         player.hand.addToTop(card("Strike_R"));
         player.hand.addToTop(card("Defend_R"));
         player.hand.addToTop(card("Dazed"));
