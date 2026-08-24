@@ -1649,7 +1649,7 @@ public:
             relics.emplace_back("Blue Candle");
         }
         reset(seed, "CULTIST", 0, {}, relics, true);
-        const auto spec = card_id + (upgraded ? "+" : "");
+        const auto spec = card_id + (upgraded && probe.canUpgrade() ? "+" : "");
         set_card_piles(
             {spec, "Strike_R"}, {"Defend_R"},
             {"Defend_R"}, {"Defend_R"});

@@ -97,3 +97,11 @@ def test_berserk_remains_a_visible_power_and_does_not_change_base_energy() -> No
     assert [(power.content_id, dict(power.properties)["amount"]) for power in after.powers] == [
         ("BERSERK", 1), ("VULNERABLE", 2)
     ]
+
+
+def test_card_probe_does_not_force_an_upgrade_onto_stock_unupgradable_cards() -> None:
+    battle = native.LightspeedBattle()
+    battle.reset_card_probe(123, "CLUMSY", True)
+    card = adapt_original(battle.snapshot()).decision.observation.hand[0]
+    assert card.card_id == "CLUMSY"
+    assert card.upgrades == 0
