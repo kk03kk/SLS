@@ -1,5 +1,5 @@
 {
-  "audit_sha256": "ccc53c8ebb642becb379a78b70ff4fea0adeaf91000c7b67eac3e37f1ae8ac84",
+  "audit_sha256": "fa4fa1b0c1e794084631f0ec381f54869d6593505569e75606274ee7afedd584",
   "content_scope_sha256": "1e9ba31232cea5813b88cf6d75c7be28deaca4ac84c32079745477866fc0649d",
   "entries": {
     "cards": [
@@ -854,13 +854,13 @@
           "cpp/simulator/src/combat/BattleContext.cpp:2773",
           "cpp/simulator/src/combat/BattleContext.cpp:979",
           "cpp/simulator/src/combat/CardInstance.cpp:225",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:1010",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:1011",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:1591",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:1799",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:1801",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:1875",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:834",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:1012",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:1592",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:1800",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:1802",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:1876",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:835",
           "cpp/simulator/src/sim/search/ExpertKnowledge.cpp:172",
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:1090",
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:954"
@@ -1506,10 +1506,10 @@
           "cpp/simulator/src/combat/BattleContext.cpp:1833",
           "cpp/simulator/src/combat/BattleContext.cpp:1913",
           "cpp/simulator/src/combat/BattleContext.cpp:1977",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:1056",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:1410",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:1682",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:1872",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:1057",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:1411",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:1683",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:1873",
           "cpp/simulator/src/sim/search/ExpertKnowledge.cpp:176",
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:1043",
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:906"
@@ -3944,9 +3944,9 @@
           "cpp/simulator/src/combat/Monster.cpp:509",
           "cpp/simulator/src/combat/Monster.cpp:87",
           "cpp/simulator/src/combat/MonsterGroup.cpp:622",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:1262",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:1263",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:295",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:901",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:902",
           "cpp/simulator/src/sim/search/ExpertKnowledge.cpp:354",
           "cpp/simulator/src/sim/search/ExpertKnowledge.cpp:47",
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:1183",
@@ -4455,7 +4455,7 @@
         "scope_groups": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:478",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:1062",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:1063",
           "cpp/simulator/src/game/Deck.cpp:248",
           "cpp/simulator/src/game/GameContext.cpp:3245",
           "cpp/simulator/src/sim/search/ExpertKnowledge.cpp:190",
@@ -5674,11 +5674,11 @@
         "scope_groups": [],
         "simulator_references": [
           "cpp/simulator/src/combat/CardInstance.cpp:352",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:1104",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:1194",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:1203",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:1649",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:1873",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:1105",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:1195",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:1204",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:1650",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:1874",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:362",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:382",
           "cpp/simulator/src/sim/search/ExpertKnowledge.cpp:186",
@@ -6519,11 +6519,11 @@
           "cpp/simulator/src/combat/BattleContext.cpp:1261",
           "cpp/simulator/src/combat/BattleContext.cpp:1480",
           "cpp/simulator/src/combat/BattleContext.cpp:425",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:1229",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:1235",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:1238",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:1624",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:1874",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:1230",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:1236",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:1239",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:1625",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:1875",
           "cpp/simulator/src/combat/Player.cpp:380",
           "cpp/simulator/src/sim/search/ExpertKnowledge.cpp:175",
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:1087",
@@ -6606,7 +6606,7 @@
           "cpp/simulator/src/combat/MonsterGroup.cpp:209",
           "cpp/simulator/src/combat/MonsterGroup.cpp:370",
           "cpp/simulator/src/combat/MonsterGroup.cpp:570",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:2075",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:2076",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:41",
           "src/sls/content/normalize.py:49"
         ],
@@ -6640,7 +6640,7 @@
           "cpp/simulator/src/combat/MonsterGroup.cpp:417",
           "cpp/simulator/src/combat/MonsterGroup.cpp:418",
           "cpp/simulator/src/combat/MonsterGroup.cpp:481",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:2309",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:2310",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:45",
           "src/sls/backends/original/adapter.py:500"
         ],
@@ -6737,7 +6737,7 @@
           "cpp/simulator/src/combat/MonsterGroup.cpp:205",
           "cpp/simulator/src/combat/MonsterGroup.cpp:261",
           "cpp/simulator/src/combat/MonsterGroup.cpp:262",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:2431",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:2432",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:95",
           "cpp/simulator/src/game/GameContext.cpp:886"
         ],
@@ -6765,8 +6765,8 @@
           "cpp/simulator/src/combat/BattleContext.cpp:2318",
           "cpp/simulator/src/combat/MonsterGroup.cpp:265",
           "cpp/simulator/src/combat/MonsterGroup.cpp:266",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:2471",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:798",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:2472",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:799",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:81",
           "cpp/simulator/src/game/GameContext.cpp:3178",
           "cpp/simulator/src/game/GameContext.cpp:593"
@@ -6798,7 +6798,7 @@
           "cpp/simulator/src/combat/MonsterGroup.cpp:275",
           "cpp/simulator/src/combat/MonsterGroup.cpp:276",
           "cpp/simulator/src/combat/MonsterGroup.cpp:493",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:2479",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:2480",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:285",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:52"
         ],
@@ -6826,9 +6826,9 @@
           "cpp/simulator/src/combat/MonsterGroup.cpp:296",
           "cpp/simulator/src/combat/MonsterGroup.cpp:297",
           "cpp/simulator/src/combat/MonsterGroup.cpp:302",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:2522",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:2523",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:293",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:878",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:879",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:96"
         ],
         "status": "BLOCKED",
@@ -6853,7 +6853,7 @@
         ],
         "simulator_references": [
           "cpp/simulator/src/combat/MonsterGroup.cpp:157",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:3407",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:3408",
           "cpp/simulator/src/game/GameContext.cpp:650"
         ],
         "status": "BLOCKED",
@@ -6883,9 +6883,9 @@
           "cpp/simulator/src/combat/MonsterGroup.cpp:464",
           "cpp/simulator/src/combat/MonsterGroup.cpp:483",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:236",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:2530",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:2531",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:53",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:910"
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:911"
         ],
         "status": "BLOCKED",
         "test_references": [
@@ -6937,7 +6937,7 @@
           "cpp/simulator/src/combat/MonsterGroup.cpp:339",
           "cpp/simulator/src/combat/MonsterGroup.cpp:372",
           "cpp/simulator/src/combat/MonsterGroup.cpp:568",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:2806",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:2807",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:59",
           "src/sls/content/normalize.py:50"
         ],
@@ -6966,8 +6966,8 @@
           "cpp/simulator/src/combat/Monster.cpp:566",
           "cpp/simulator/src/combat/MonsterGroup.cpp:397",
           "cpp/simulator/src/combat/MonsterGroup.cpp:398",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:2735",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:3414",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:2736",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:3415",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:82",
           "cpp/simulator/src/game/GameContext.cpp:3179",
           "cpp/simulator/src/game/GameContext.cpp:593"
@@ -7021,7 +7021,7 @@
           "cpp/simulator/src/combat/Monster.cpp:578",
           "cpp/simulator/src/combat/MonsterGroup.cpp:401",
           "cpp/simulator/src/combat/MonsterGroup.cpp:402",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:2972",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:2973",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:322",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:85",
           "cpp/simulator/src/game/GameContext.cpp:3177",
@@ -8572,8 +8572,8 @@
         "simulator_references": [
           "cpp/simulator/src/combat/Monster.cpp:560",
           "cpp/simulator/src/combat/MonsterGroup.cpp:158",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:2005",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:3445",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:2006",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:3446",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:358",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:37"
         ],
@@ -8599,7 +8599,7 @@
         "simulator_references": [
           "cpp/simulator/src/combat/MonsterGroup.cpp:129",
           "cpp/simulator/src/combat/MonsterGroup.cpp:504",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:1932",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:1933",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:372",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:38",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:386"
@@ -8627,7 +8627,7 @@
           "cpp/simulator/src/combat/MonsterGroup.cpp:131",
           "cpp/simulator/src/combat/MonsterGroup.cpp:142",
           "cpp/simulator/src/combat/MonsterGroup.cpp:143",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:1918",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:1919",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:39",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:398"
         ],
@@ -8656,7 +8656,7 @@
           "cpp/simulator/src/combat/MonsterGroup.cpp:209",
           "cpp/simulator/src/combat/MonsterGroup.cpp:370",
           "cpp/simulator/src/combat/MonsterGroup.cpp:570",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:2075",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:2076",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:41",
           "src/sls/content/normalize.py:49"
         ],
@@ -8689,7 +8689,7 @@
           "cpp/simulator/src/combat/MonsterGroup.cpp:417",
           "cpp/simulator/src/combat/MonsterGroup.cpp:418",
           "cpp/simulator/src/combat/MonsterGroup.cpp:481",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:2309",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:2310",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:45",
           "src/sls/backends/original/adapter.py:500"
         ],
@@ -8717,7 +8717,7 @@
           "cpp/simulator/src/combat/MonsterGroup.cpp:107",
           "cpp/simulator/src/combat/MonsterGroup.cpp:550",
           "cpp/simulator/src/combat/MonsterGroup.cpp:551",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:2318",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:2319",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:48",
           "src/sls/content/normalize.py:53"
         ],
@@ -8749,7 +8749,7 @@
           "cpp/simulator/src/combat/MonsterGroup.cpp:454",
           "cpp/simulator/src/combat/MonsterGroup.cpp:492",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:185",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:2323",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:2324",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:49"
         ],
         "status": "BLOCKED",
@@ -8774,7 +8774,7 @@
         "simulator_references": [
           "cpp/simulator/src/combat/Monster.cpp:138",
           "cpp/simulator/src/combat/MonsterGroup.cpp:562",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:2342",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:2343",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:300",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:50",
           "src/sls/content/normalize.py:48"
@@ -8802,7 +8802,7 @@
           "cpp/simulator/src/combat/MonsterGroup.cpp:205",
           "cpp/simulator/src/combat/MonsterGroup.cpp:261",
           "cpp/simulator/src/combat/MonsterGroup.cpp:262",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:2431",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:2432",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:95",
           "cpp/simulator/src/game/GameContext.cpp:886"
         ],
@@ -8828,7 +8828,7 @@
         "simulator_references": [
           "cpp/simulator/src/combat/MonsterGroup.cpp:109",
           "cpp/simulator/src/combat/MonsterGroup.cpp:553",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:2465",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:2466",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:51"
         ],
         "status": "BLOCKED",
@@ -8854,8 +8854,8 @@
           "cpp/simulator/src/combat/BattleContext.cpp:2318",
           "cpp/simulator/src/combat/MonsterGroup.cpp:265",
           "cpp/simulator/src/combat/MonsterGroup.cpp:266",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:2471",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:798",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:2472",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:799",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:81",
           "cpp/simulator/src/game/GameContext.cpp:3178",
           "cpp/simulator/src/game/GameContext.cpp:593"
@@ -8886,7 +8886,7 @@
           "cpp/simulator/src/combat/MonsterGroup.cpp:275",
           "cpp/simulator/src/combat/MonsterGroup.cpp:276",
           "cpp/simulator/src/combat/MonsterGroup.cpp:493",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:2479",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:2480",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:285",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:52"
         ],
@@ -8913,9 +8913,9 @@
           "cpp/simulator/src/combat/MonsterGroup.cpp:296",
           "cpp/simulator/src/combat/MonsterGroup.cpp:297",
           "cpp/simulator/src/combat/MonsterGroup.cpp:302",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:2522",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:2523",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:293",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:878",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:879",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:96"
         ],
         "status": "BLOCKED",
@@ -8944,9 +8944,9 @@
           "cpp/simulator/src/combat/MonsterGroup.cpp:464",
           "cpp/simulator/src/combat/MonsterGroup.cpp:483",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:236",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:2530",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:2531",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:53",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:910"
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:911"
         ],
         "status": "BLOCKED",
         "test_references": [
@@ -8973,7 +8973,7 @@
           "cpp/simulator/src/combat/MonsterGroup.cpp:546",
           "cpp/simulator/src/combat/MonsterGroup.cpp:547",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:156",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:2534",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:2535",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:54",
           "src/sls/content/normalize.py:57"
         ],
@@ -8999,7 +8999,7 @@
         "simulator_references": [
           "cpp/simulator/src/combat/Monster.cpp:139",
           "cpp/simulator/src/combat/MonsterGroup.cpp:560",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:2612",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:2613",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:301",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:58",
           "src/sls/content/normalize.py:47"
@@ -9029,7 +9029,7 @@
           "cpp/simulator/src/combat/MonsterGroup.cpp:339",
           "cpp/simulator/src/combat/MonsterGroup.cpp:372",
           "cpp/simulator/src/combat/MonsterGroup.cpp:568",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:2806",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:2807",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:59",
           "src/sls/content/normalize.py:50"
         ],
@@ -9057,8 +9057,8 @@
           "cpp/simulator/src/combat/MonsterGroup.cpp:435",
           "cpp/simulator/src/combat/MonsterGroup.cpp:436",
           "cpp/simulator/src/combat/MonsterGroup.cpp:437",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:1047",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:2675",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:1048",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:2676",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:318",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:98"
         ],
@@ -9084,7 +9084,7 @@
         "simulator_references": [
           "cpp/simulator/src/combat/MonsterGroup.cpp:108",
           "cpp/simulator/src/combat/MonsterGroup.cpp:552",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:2730",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:2731",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:63",
           "src/sls/content/normalize.py:58"
         ],
@@ -9112,8 +9112,8 @@
           "cpp/simulator/src/combat/Monster.cpp:566",
           "cpp/simulator/src/combat/MonsterGroup.cpp:397",
           "cpp/simulator/src/combat/MonsterGroup.cpp:398",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:2735",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:3414",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:2736",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:3415",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:82",
           "cpp/simulator/src/game/GameContext.cpp:3179",
           "cpp/simulator/src/game/GameContext.cpp:593"
@@ -9142,7 +9142,7 @@
           "cpp/simulator/src/combat/MonsterGroup.cpp:105",
           "cpp/simulator/src/combat/MonsterGroup.cpp:548",
           "cpp/simulator/src/combat/MonsterGroup.cpp:549",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:2778",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:2779",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:65",
           "src/sls/content/normalize.py:54"
         ],
@@ -9168,8 +9168,8 @@
         "simulator_references": [
           "cpp/simulator/src/combat/Monster.cpp:572",
           "cpp/simulator/src/combat/MonsterGroup.cpp:158",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:2832",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:3442",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:2833",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:3443",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:68"
         ],
         "status": "BLOCKED",
@@ -9194,10 +9194,10 @@
         "simulator_references": [
           "cpp/simulator/src/combat/MonsterGroup.cpp:132",
           "cpp/simulator/src/combat/MonsterGroup.cpp:503",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:1213",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:2853",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:3404",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:3415",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:1214",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:2854",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:3405",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:3416",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:69"
         ],
         "status": "BLOCKED",
@@ -9224,7 +9224,7 @@
           "cpp/simulator/src/combat/MonsterGroup.cpp:139",
           "cpp/simulator/src/combat/MonsterGroup.cpp:140",
           "cpp/simulator/src/combat/MonsterGroup.cpp:141",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:2802",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:2803",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:70"
         ],
         "status": "BLOCKED",
@@ -9251,7 +9251,7 @@
           "cpp/simulator/src/combat/Monster.cpp:578",
           "cpp/simulator/src/combat/MonsterGroup.cpp:401",
           "cpp/simulator/src/combat/MonsterGroup.cpp:402",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:2972",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:2973",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:322",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:85",
           "cpp/simulator/src/game/GameContext.cpp:3177",
@@ -11127,7 +11127,7 @@
         },
         "scope_groups": [],
         "simulator_references": [
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:1540",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:1541",
           "cpp/simulator/src/game/Deck.cpp:188",
           "cpp/simulator/src/game/GameContext.cpp:352"
         ],
@@ -12618,7 +12618,7 @@
           "cpp/simulator/src/combat/BattleContext.cpp:199",
           "cpp/simulator/src/combat/BattleContext.cpp:475",
           "cpp/simulator/src/combat/BattleContext.cpp:476",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:1539",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:1540",
           "cpp/simulator/src/game/Deck.cpp:157",
           "cpp/simulator/src/game/Deck.cpp:158",
           "cpp/simulator/src/game/GameContext.cpp:1456",
@@ -12926,11 +12926,11 @@
           "cpp/simulator/src/combat/Actions.cpp:573",
           "cpp/simulator/src/combat/Actions.cpp:603",
           "cpp/simulator/src/combat/BattleContext.cpp:211",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:1488",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:3392",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:3447",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:3468",
-          "cpp/simulator/src/combat/MonsterSpecific.cpp:3617",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:1489",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:3393",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:3448",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:3469",
+          "cpp/simulator/src/combat/MonsterSpecific.cpp:3618",
           "cpp/simulator/src/sim/search/ExpertKnowledge.cpp:234",
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:1118"
         ],

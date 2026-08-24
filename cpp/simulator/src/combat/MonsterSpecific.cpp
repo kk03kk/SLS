@@ -666,9 +666,10 @@ void Monster::takeTurn(BattleContext &bc) {     // todo, maybe for monsters that
             attackPlayerHelper(bc, asc2 ? 5 : 4);
             if (doesEscapeNext()) {
                 setMove(MMID::GENERIC_ESCAPE_MOVE);
-            } else {
-                bc.addToBot(Actions::NoOpRollMove());
             }
+            // Stock GremlinWarrior queues SetMoveAction(SCRATCH) directly;
+            // unlike Fat Gremlin it does not call RollMoveAction and must not
+            // consume aiRng between adjacent monsters' turns.
             break;
         }
 
