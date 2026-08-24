@@ -1,6 +1,5 @@
 package spirecomm.parity;
 
-import com.badlogic.gdx.Gdx;
 import com.evacipated.cardcrawl.modthespire.lib.SpirePatch;
 import com.evacipated.cardcrawl.modthespire.lib.SpirePostfixPatch;
 import com.evacipated.cardcrawl.modthespire.lib.SpirePrefixPatch;
@@ -11,18 +10,37 @@ import com.megacrit.cardcrawl.events.AbstractEvent;
 import com.megacrit.cardcrawl.events.shrines.GremlinMatchGame;
 import com.megacrit.cardcrawl.helpers.input.InputHelper;
 import communicationmod.CommandExecutor;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Locale;
 
 /** Deliver one semantic Match-and-Keep pair through the stock input path. */
 public final class MatchInputPatch {
     public static final String COMMAND = "parity_match";
-    private static GremlinMatchGame pendingEvent;
-    private static AbstractCard first;
-    private static AbstractCard second;
-    private static int stage;
+    private static final Method UPDATE_MATCH_LOGIC = updateMatchLogic();
 
     private MatchInputPatch() {}
+
+    private static Method updateMatchLogic() {
+        try {
+            Method method = GremlinMatchGame.class.getDeclaredMethod("updateMatchGameLogic");
+            method.setAccessible(true);
+            return method;
+        } catch (Exception error) {
+            throw new RuntimeException("cannot access stock Match input handler", error);
+        }
+    }
+
+    private static void click(GremlinMatchGame event, AbstractCard card) {
+        InputHelper.mX = Math.round(card.hb.cX);
+        InputHelper.mY = Math.round(card.hb.cY);
+        InputHelper.justClickedLeft = true;
+        try {
+            UPDATE_MATCH_LOGIC.invoke(event);
+        } catch (Exception error) {
+            throw new RuntimeException("stock Match input handler failed", error);
+        }
+    }
 
     private static GremlinMatchGame activeEvent() {
         if (!CommandExecutor.isInDungeon() || AbstractDungeon.getCurrRoom() == null) {
@@ -40,7 +58,7 @@ public final class MatchInputPatch {
     public static class Advertise {
         @SpirePostfixPatch
         public static ArrayList<String> Postfix(ArrayList<String> commands) {
-            if (activeEvent() != null && pendingEvent == null && !commands.contains(COMMAND)) {
+            if (activeEvent() != null && !commands.contains(COMMAND)) {
                 commands.add(COMMAND);
             }
             return commands;
@@ -60,8 +78,8 @@ public final class MatchInputPatch {
                 throw new IllegalArgumentException("parity_match requires two slot indices");
             }
             GremlinMatchGame event = activeEvent();
-            if (event == null || pendingEvent != null) {
-                throw new IllegalStateException("parity_match is unavailable outside an idle Match game");
+            if (event == null) {
+                throw new IllegalStateException("parity_match is unavailable outside a Match game");
             }
             int left = Integer.parseInt(parts[1]);
             int right = Integer.parseInt(parts[2]);
@@ -73,43 +91,9 @@ public final class MatchInputPatch {
             if (leftCard == null || rightCard == null) {
                 throw new IllegalArgumentException("parity_match references a removed or unknown slot");
             }
-            pendingEvent = event;
-            first = leftCard;
-            second = rightCard;
-            stage = 0;
+            click(event, leftCard);
+            click(event, rightCard);
             return SpireReturn.Return(Boolean.TRUE);
-        }
-    }
-
-    @SpirePatch(clz = GremlinMatchGame.class, method = "update")
-    public static class DeliverClicks {
-        @SpirePrefixPatch
-        public static void Prefix(GremlinMatchGame event) {
-            if (pendingEvent != event) {
-                return;
-            }
-            AbstractCard card = stage == 0 ? first : stage == 2 ? second : null;
-            if (card != null) {
-                Gdx.input.setCursorPosition(
-                    Math.round(card.hb.cX),
-                    Math.round(com.megacrit.cardcrawl.core.Settings.HEIGHT - card.hb.cY)
-                );
-                InputHelper.justClickedLeft = true;
-            }
-        }
-
-        @SpirePostfixPatch
-        public static void Postfix(GremlinMatchGame event) {
-            if (pendingEvent != event) {
-                return;
-            }
-            ++stage;
-            if (stage > 2) {
-                pendingEvent = null;
-                first = null;
-                second = null;
-                stage = 0;
-            }
         }
     }
 }
