@@ -154,3 +154,8 @@ def test_card_audit_preserves_hand_selection_source_and_confirm() -> None:
     decision = module._adapt_probe_payload(battle.snapshot()).decision
     assert dict(decision.observation.choice_options[0].properties)["source"] == "HAND"
     assert {action.kind.value for action in decision.actions} == {"SELECT_CARD", "CONFIRM"}
+    battle.step("choose", choice_index=0)
+    selected = module._adapt_probe_payload(battle.snapshot()).decision
+    assert not selected.observation.hand
+    assert not selected.observation.choice_options
+    assert [action.kind.value for action in selected.actions] == ["CONFIRM"]

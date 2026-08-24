@@ -68,7 +68,16 @@ def _adapt_probe_payload(payload: Mapping[str, Any]) -> AdaptedOriginalDecision:
     combat = dict(game.get("combat_state") or {})
     choice = dict(combat.get("choice") or {})
     if choice.get("options") and not combat.get("card_select"):
-        options = list(choice["options"])
+        all_options = list(choice["options"])
+        selected_uuids = {
+            str(item.get("uuid")) for item in all_options if bool(item.get("selected"))
+        }
+        options = [item for item in all_options if not bool(item.get("selected"))]
+        if selected_uuids:
+            combat["hand"] = [
+                item for item in combat.get("hand") or ()
+                if str(item.get("uuid")) not in selected_uuids
+            ]
         combat["card_select"] = {
             "cards": options,
             "source": str(choice.get("source") or "GENERATED"),
@@ -77,11 +86,16 @@ def _adapt_probe_payload(payload: Mapping[str, Any]) -> AdaptedOriginalDecision:
         game["choice_list"] = [str(item.get("id") or "") for item in options]
         game["screen_state"] = {"cards": options}
         value["game_state"] = game
-        if any(str(item.get("kind")) == "proceed" for item in value.get("_legal_actions") or ()):
-            available = list(value.get("available_commands") or ())
+        legal_kinds = {
+            str(item.get("kind")) for item in value.get("_legal_actions") or ()
+        }
+        available = list(value.get("available_commands") or ())
+        if "choose" not in legal_kinds:
+            available = [item for item in available if str(item).lower() != "choose"]
+        if "proceed" in legal_kinds:
             if "confirm" not in available:
                 available.append("confirm")
-            value["available_commands"] = available
+        value["available_commands"] = available
     return adapt_original(value)
 
 
