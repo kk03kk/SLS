@@ -213,17 +213,19 @@ public final class OracleScenarioPatch {
         if (prototype == null) {
             throw new IllegalArgumentException("parity_card requires a packaged card id");
         }
-        // Never upgrade CardLibrary's shared prototype: doing so contaminates
-        // every later reward/deck copy in the same original-game process.
-        AbstractCard probe = prototype.makeCopy();
         if (upgrades < 0 || upgrades > 1) {
             throw new IllegalArgumentException("parity_card upgrades must be 0 or 1");
         }
+        AbstractPlayer player = AbstractDungeon.player;
+        // Reset counters before makeCopy(): Blood for Blood derives its
+        // initial cost from the player's damagedThisCombat value.
+        clearCombatState(player);
+        // Never upgrade CardLibrary's shared prototype: doing so contaminates
+        // every later reward/deck copy in the same original-game process.
+        AbstractCard probe = prototype.makeCopy();
         if (upgrades == 1) {
             probe.upgrade();
         }
-        AbstractPlayer player = AbstractDungeon.player;
-        clearCombatState(player);
         installProbeRelics(player, probe.type);
         player.currentHealth = 80;
         player.maxHealth = 80;
