@@ -42,7 +42,7 @@ public final class CommunicationStatePatch {
     private static ArrayList<Map<String, Object>> matchSlots(AbstractEvent event) {
         ArrayList<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
         if (!(event instanceof GremlinMatchGame)
-                || !"PLAY".equals(String.valueOf(eventPhase(event)))) {
+                || !"PLAY".equals(matchPhase((GremlinMatchGame) event))) {
             if (!(event instanceof GremlinMatchGame)) {
                 matchEvent = null;
                 matchOrder.clear();
@@ -81,6 +81,13 @@ public final class CommunicationStatePatch {
             result.add(value);
         }
         return result;
+    }
+
+    private static String matchPhase(GremlinMatchGame event) {
+        Object phase = ReflectionHacks.getPrivate(
+            event, GremlinMatchGame.class, "screen"
+        );
+        return String.valueOf(phase);
     }
 
     private static String eventId(AbstractEvent event) {

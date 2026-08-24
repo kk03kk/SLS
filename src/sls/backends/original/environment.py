@@ -481,10 +481,17 @@ class OriginalBackend:
                     for token in ("leave", "proceed", "continue", "离开", "继续")
                 )
             )
+            match_intro = bool(
+                screen == "EVENT"
+                and str(continuation_original(payload).get("event_id") or "")
+                == "Match and Keep!"
+                and not (payload.get("_match_slots") or ())
+            )
             if (
                 (
                     screen == "NEOW" or neow_terminal
                     or terminal_event_choice
+                    or match_intro
                     or (fold_single_event and screen == "EVENT")
                 )
                 and len(choices or ()) == 1

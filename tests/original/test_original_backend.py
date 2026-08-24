@@ -638,6 +638,54 @@ def test_event_action_folds_single_forced_leave_outside_neow() -> None:
     assert backend.last_executed_commands == ("choose 0", "choose 0")
 
 
+def test_map_action_folds_match_and_keep_intro_and_rules() -> None:
+    map_payload = game_payload(["x=1"])
+    map_payload["game_state"].update({
+        "floor": 7, "screen_type": "MAP",
+        "screen_state": {"next_nodes": [{"x": 1, "y": 6}]},
+    })
+    intro = game_payload(["Continue"])
+    intro["game_state"].update({
+        "floor": 7, "screen_type": "EVENT",
+        "screen_state": {"event_id": "Match and Keep!"},
+    })
+    intro["_continuation"] = {"event_id": "Match and Keep!"}
+    intro["_match_slots"] = []
+    rules = game_payload(["Start"])
+    rules["game_state"].update({
+        "floor": 7, "screen_type": "EVENT",
+        "screen_state": {"event_id": "Match and Keep!"},
+    })
+    rules["_continuation"] = {"event_id": "Match and Keep!"}
+    rules["_match_slots"] = []
+    play = game_payload([])
+    play["game_state"].update({
+        "floor": 7, "screen_type": "EVENT",
+        "screen_state": {"event_id": "Match and Keep!"},
+    })
+    play["_continuation"] = {"event_id": "Match and Keep!"}
+    play["available_commands"] = ["click", "wait"]
+    play["_match_slots"] = [
+        {
+            "slot": index, "content_id": None, "known": False,
+            "removed": False, "click_x": 640, "click_y": 330,
+        }
+        for index in range(12)
+    ]
+    transport = ScriptedTransport([intro, rules, play, play])
+    session = OriginalSession(transport)
+    session.payload = map_payload
+    backend = OriginalBackend(session, IRONCLAD_A0_ACT1)
+    backend._adapted = adapt_original(map_payload)
+
+    transition = backend.step(backend._adapted.decision.actions[0])
+
+    assert len(transition.decision.actions) == 66
+    assert backend.last_executed_commands == (
+        "choose 0", "choose 0", "choose 0", "wait 30",
+    )
+
+
 def test_map_action_folds_shop_room_entry_wrapper() -> None:
     # Regression: 20260820T170551.039303Z-seed-0.partial after boundary 1.
     map_payload = game_payload(["x=1"])
