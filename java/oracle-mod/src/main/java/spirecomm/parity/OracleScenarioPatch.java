@@ -18,6 +18,9 @@ import com.megacrit.cardcrawl.powers.watcher.EstablishmentPower;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.ui.panels.EnergyPanel;
 import com.megacrit.cardcrawl.helpers.RelicLibrary;
+import com.megacrit.cardcrawl.helpers.PotionHelper;
+import com.megacrit.cardcrawl.potions.AbstractPotion;
+import com.megacrit.cardcrawl.potions.PotionSlot;
 import communicationmod.CommandExecutor;
 import communicationmod.CommunicationMod;
 import communicationmod.GameStateListener;
@@ -39,23 +42,29 @@ import java.security.MessageDigest;
 public final class OracleScenarioPatch {
     public static final String COMMAND = "parity_scenario";
     public static final String CARD_PROBE_COMMAND = "parity_card";
+    public static final String POTION_PROBE_COMMAND = "parity_potion";
     private static final Set<String> SCENARIOS = new HashSet<String>(Arrays.asList(
         "damage_buffer_intangible",
         "duration_weak",
         "retain_ethereal"
     ));
     private static final Map<String, String> CARD_ALLOWLIST = loadCardAllowlist();
+    private static final Map<String, String> POTION_ALLOWLIST = loadAllowlist(
+        "/spirecomm/parity/scenario-potion-allowlist.tsv"
+    );
     public static Map<String, String> activeScenario = null;
 
     private OracleScenarioPatch() {}
 
     private static Map<String, String> loadCardAllowlist() {
+        return loadAllowlist("/spirecomm/parity/scenario-card-allowlist.tsv");
+    }
+
+    private static Map<String, String> loadAllowlist(String resource) {
         Map<String, String> result = new LinkedHashMap<String, String>();
         try {
-            InputStream stream = OracleScenarioPatch.class.getResourceAsStream(
-                "/spirecomm/parity/scenario-card-allowlist.tsv"
-            );
-            if (stream == null) throw new IllegalStateException("missing scenario card allowlist");
+            InputStream stream = OracleScenarioPatch.class.getResourceAsStream(resource);
+            if (stream == null) throw new IllegalStateException("missing scenario allowlist: " + resource);
             BufferedReader reader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8));
             String line;
             while ((line = reader.readLine()) != null) {
@@ -250,6 +259,43 @@ public final class OracleScenarioPatch {
         GameStateListener.registerStateChange();
     }
 
+    private static void applyPotionProbe(String potionId, boolean sacredBark) {
+        String gameId = POTION_ALLOWLIST.get(potionId.toUpperCase(Locale.ROOT));
+        if (gameId == null) {
+            throw new IllegalArgumentException("parity_potion is not in the packaged Ironclad allowlist");
+        }
+        AbstractPotion potion = PotionHelper.getPotion(gameId);
+        if (potion == null) {
+            throw new IllegalArgumentException("parity_potion requires a packaged potion id");
+        }
+        AbstractPlayer player = AbstractDungeon.player;
+        clearCombatState(player);
+        installProbeRelics(player, CardType.SKILL);
+        if (sacredBark) player.relics.add(RelicLibrary.getRelic("SacredBark").makeCopy());
+        player.currentHealth = "FAIRY_POTION".equalsIgnoreCase(potionId) ? 1 : 40;
+        player.maxHealth = 80;
+        normalizeProbeTarget();
+        player.energy.energy = 2;
+        EnergyPanel.setEnergy(2);
+        player.hand.addToBottom(card("Strike_R"));
+        player.hand.addToBottom(card("Defend_R"));
+        player.hand.addToBottom(card("Dazed"));
+        player.drawPile.addToBottom(card("Defend_R"));
+        player.drawPile.addToTop(card("Strike_R"));
+        player.discardPile.addToBottom(card("Defend_R"));
+        player.exhaustPile.addToBottom(card("Defend_R"));
+        player.potions.clear();
+        for (int slot = 0; slot < player.potionSlots; ++slot) {
+            player.potions.add(new PotionSlot(slot));
+        }
+        player.obtainPotion(0, potion);
+        player.hand.applyPowers();
+        activate("potion_probe:" + potionId.toUpperCase(Locale.ROOT) + ":" + sacredBark,
+            "RULE_TEST:IRONCLAD_POTION_ALLOWLIST", player);
+        CommunicationMod.mustSendGameState = true;
+        GameStateListener.registerStateChange();
+    }
+
     @SpirePatch(clz = CommandExecutor.class, method = "getAvailableCommands")
     public static class Advertise {
         @SpirePostfixPatch
@@ -257,6 +303,7 @@ public final class OracleScenarioPatch {
             if (CommandExecutor.isEndCommandAvailable()) {
                 if (!commands.contains(COMMAND)) commands.add(COMMAND);
                 if (!commands.contains(CARD_PROBE_COMMAND)) commands.add(CARD_PROBE_COMMAND);
+                if (!commands.contains(POTION_PROBE_COMMAND)) commands.add(POTION_PROBE_COMMAND);
             }
             return commands;
         }
@@ -272,6 +319,14 @@ public final class OracleScenarioPatch {
                 return SpireReturn.Continue();
             }
             if (!normalized.startsWith(COMMAND + " ")) {
+                if (normalized.startsWith(POTION_PROBE_COMMAND + " ")) {
+                    String[] potionParts = command.trim().split("\\s+");
+                    if (potionParts.length != 3) {
+                        throw new IllegalArgumentException("parity_potion requires POTION_ID and SACRED_BARK");
+                    }
+                    applyPotionProbe(potionParts[1], Boolean.parseBoolean(potionParts[2]));
+                    return SpireReturn.Return(Boolean.TRUE);
+                }
                 if (!normalized.startsWith(CARD_PROBE_COMMAND + " ")) {
                     return SpireReturn.Continue();
                 }

@@ -52,6 +52,11 @@ def _entry(mode: str, args: argparse.Namespace) -> tuple[Path, list[str]]:
             "--seed", str(args.seed),
             "--output", args.audit_output.resolve().as_posix(),
         ]
+    if mode == "potion-audit":
+        return ROOT / "tools" / "audit_potion_semantics.py", [
+            "--seed", str(args.seed),
+            "--output", args.potion_audit_output.resolve().as_posix(),
+        ]
     if mode == "capture":
         values = [
             "--seed", str(args.seed), "--profile", args.profile,
@@ -87,7 +92,7 @@ def _entry(mode: str, args: argparse.Namespace) -> tuple[Path, list[str]]:
 def main() -> int:
     local = Path.home() / "AppData" / "Local" / "ModTheSpire"
     parser = argparse.ArgumentParser()
-    parser.add_argument("mode", choices=("capture", "resume", "survey", "card-audit"))
+    parser.add_argument("mode", choices=("capture", "resume", "survey", "card-audit", "potion-audit"))
     parser.add_argument("--game-root", type=Path, default=Path(r"D:\Steam\steamapps\common\SlayTheSpire"))
     parser.add_argument("--python", type=Path, default=Path(r"D:\Anaconda\envs\DL\python.exe"))
     parser.add_argument("--config", type=Path, default=local / "CommunicationMod" / "config.properties")
@@ -107,6 +112,10 @@ def main() -> int:
     parser.add_argument(
         "--audit-output", type=Path,
         default=ROOT / "configs" / "validation" / "ironclad_a0_card_semantics.json",
+    )
+    parser.add_argument(
+        "--potion-audit-output", type=Path,
+        default=ROOT / "configs" / "validation" / "ironclad_a0_potion_semantics.json",
     )
     parser.add_argument("--skip-intro", action=argparse.BooleanOptionalAction, default=True)
     args = parser.parse_args()

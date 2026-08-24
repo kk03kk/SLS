@@ -29,24 +29,32 @@ DEPENDENCIES = tuple(
 )
 
 
-def scenario_card_allowlist() -> bytes:
+def scenario_content_allowlist(category: str) -> bytes:
     scope = json.loads(
         (ROOT / "configs" / "validation" / "ironclad_a0_content_scope.json").read_text(
             encoding="utf-8"
         )
     )
     if scope.get("scope_id") != "sls-ironclad-a0-content-v1":
-        raise RuntimeError("unexpected Ironclad card-probe content scope")
-    ids = set(map(str, scope["cards"]["ids"]))
+        raise RuntimeError("unexpected Ironclad scenario content scope")
+    ids = set(map(str, scope[category]["ids"]))
     registry = json.loads((ROOT / "src" / "sls" / "content" / "registry.json").read_text(encoding="utf-8"))
     mapping = {
-        item["id"]: item["game_id"] for item in registry["categories"]["cards"]
+        item["id"]: item["game_id"] for item in registry["categories"][category]
         if item.get("game_id")
     }
     missing = sorted(ids - mapping.keys())
     if missing:
         raise RuntimeError(f"scenario allowlist IDs are missing from registry: {missing}")
     return "".join(f"{card_id}\t{mapping[card_id]}\n" for card_id in sorted(ids)).encode("utf-8")
+
+
+def scenario_card_allowlist() -> bytes:
+    return scenario_content_allowlist("cards")
+
+
+def scenario_potion_allowlist() -> bytes:
+    return scenario_content_allowlist("potions")
 
 
 def main() -> int:
@@ -83,6 +91,7 @@ def main() -> int:
     with zipfile.ZipFile(OUTPUT, "w") as archive:
         add(archive, ORACLE / "ModTheSpire.json", "ModTheSpire.json")
         add_bytes(archive, scenario_card_allowlist(), "spirecomm/parity/scenario-card-allowlist.tsv")
+        add_bytes(archive, scenario_potion_allowlist(), "spirecomm/parity/scenario-potion-allowlist.tsv")
         for path in sorted(CLASSES.rglob("*.class")):
             add(archive, path, path.relative_to(CLASSES).as_posix())
     print(f"{OUTPUT}\nsha256={hashlib.sha256(OUTPUT.read_bytes()).hexdigest()}")
