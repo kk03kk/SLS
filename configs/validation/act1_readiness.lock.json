@@ -687,9 +687,9 @@
     "content_scope_id": "sls-ironclad-a0-content-v1",
     "content_scope_sha256": "1e9ba31232cea5813b88cf6d75c7be28deaca4ac84c32079745477866fc0649d",
     "encoding_schema": "sls-policy-input-v2",
-    "native_source_sha256": "cfb3aea2416d6f847aef9710436b8923558b892bd3c609223c2b00cf28564293",
+    "native_source_sha256": "2f6f156740a5273ed698a40e27b58bec6c0894151b0d74d4cfbd2ba2e358a7d9",
     "policy_contract_sha256": "46cfe626ae4258ae2582e5bfe5d8476eafdceaf88f10c6c44fec4ab8c9a5579c",
-    "semantic_audit_sha256": "ccc53c8ebb642becb379a78b70ff4fea0adeaf91000c7b67eac3e37f1ae8ac84",
+    "semantic_audit_sha256": "fa4fa1b0c1e794084631f0ec381f54869d6593505569e75606274ee7afedd584",
     "vocabulary_sha256": "98e69b9733abfa4662ead56c0d02fb604b67575a2ba4c1785ba3fe736e7f01b6"
   },
   "coverage": {
@@ -745,7 +745,7 @@
     ]
   },
   "level": "ENGINEERING_READY",
-  "lock_sha256": "b3ce8d875ac8e4c0dc975817d383a7913e38c626ea081c50b87faacc0a6c47db",
+  "lock_sha256": "9a4639f6d4dfa0e26b35e6e4131c0477bf659e87d591ab225ddf668805c9d6f4",
   "profile": "IRONCLAD_A0_ACT1",
   "requirements": {
     "bosses": [
