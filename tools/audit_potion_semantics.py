@@ -165,6 +165,38 @@ def _probe_variant(
             )
         simulator_payload = _execute_native(battle, simulator, action)
         original = adapt_original(original_payload)
+        if potion_id == "SMOKE_BOMB":
+            scenario_after = dict(original_payload.get("_parity_scenario") or {})
+            original_effect = {
+                "escaped": scenario_after.get("effect_smoked") == "true",
+                "potion_consumed": not original.decision.observation.potions,
+            }
+            native_game = dict(simulator_payload.get("game_state") or {})
+            native_effect = {
+                "escaped": str(simulator_payload.get("outcome") or "").upper() == "ESCAPED",
+                "potion_consumed": all(
+                    str(item.get("id") or "").upper() in {
+                        "POTION SLOT", "EMPTY_POTION_SLOT", "EMPTY POTION SLOT",
+                    }
+                    for item in native_game.get("potions") or ()
+                ),
+            }
+            if original_effect != native_effect or original_effect != {
+                "escaped": True, "potion_consumed": True,
+            }:
+                raise RuntimeError(
+                    f"Smoke Bomb effect attestation mismatch: "
+                    f"Original={original_effect} Simulator={native_effect}"
+                )
+            hashes.append(canonical_digest(original_effect))
+            return {
+                "sacred_bark": sacred_bark,
+                "setup_digest": str(scenario["setup_digest"]),
+                "evidence_mode": "NAMED_SCENARIO_EFFECT",
+                "boundaries": 2,
+                "boundary_hashes": hashes,
+                "effect_sha256": canonical_digest(hashes),
+            }
         simulator = _adapt_probe_payload(simulator_payload)
         hashes.append(_assert_match(
             potion_id, sacred_bark, boundary, original, simulator,

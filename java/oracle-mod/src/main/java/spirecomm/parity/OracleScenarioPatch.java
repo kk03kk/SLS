@@ -21,6 +21,8 @@ import com.megacrit.cardcrawl.helpers.RelicLibrary;
 import com.megacrit.cardcrawl.helpers.PotionHelper;
 import com.megacrit.cardcrawl.potions.AbstractPotion;
 import com.megacrit.cardcrawl.potions.PotionSlot;
+import com.megacrit.cardcrawl.potions.SmokeBomb;
+import com.megacrit.cardcrawl.core.AbstractCreature;
 import communicationmod.CommandExecutor;
 import communicationmod.CommunicationMod;
 import communicationmod.GameStateListener;
@@ -353,6 +355,17 @@ public final class OracleScenarioPatch {
             }
             apply(id);
             return SpireReturn.Return(Boolean.TRUE);
+        }
+    }
+
+    @SpirePatch(clz = SmokeBomb.class, method = "use")
+    public static class AttestSmokeBombEffect {
+        @SpirePostfixPatch
+        public static void Postfix(SmokeBomb __instance, AbstractCreature target) {
+            if (activeScenario != null && String.valueOf(activeScenario.get("scenario_id"))
+                    .toUpperCase(Locale.ROOT).startsWith("POTION_PROBE:SMOKE_BOMB:")) {
+                activeScenario.put("effect_smoked", "true");
+            }
         }
     }
 }
