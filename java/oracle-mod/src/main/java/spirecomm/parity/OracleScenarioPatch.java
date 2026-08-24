@@ -264,14 +264,17 @@ public final class OracleScenarioPatch {
         if (gameId == null) {
             throw new IllegalArgumentException("parity_potion is not in the packaged Ironclad allowlist");
         }
-        AbstractPotion potion = PotionHelper.getPotion(gameId);
-        if (potion == null) {
-            throw new IllegalArgumentException("parity_potion requires a packaged potion id");
-        }
         AbstractPlayer player = AbstractDungeon.player;
         clearCombatState(player);
         installProbeRelics(player, CardType.SKILL);
         if (sacredBark) player.relics.add(RelicLibrary.getRelic("SacredBark").makeCopy());
+        // Potion constructors snapshot getPotency(), which consults Sacred
+        // Bark. Construct only after the probe relic set is final, matching
+        // SacredBark.onEquip's initializeData refresh in a stock run.
+        AbstractPotion potion = PotionHelper.getPotion(gameId);
+        if (potion == null) {
+            throw new IllegalArgumentException("parity_potion requires a packaged potion id");
+        }
         player.currentHealth = "FAIRY_POTION".equalsIgnoreCase(potionId) ? 1 : 40;
         player.maxHealth = 80;
         normalizeProbeTarget();
