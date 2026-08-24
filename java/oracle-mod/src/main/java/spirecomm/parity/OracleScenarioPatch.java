@@ -277,9 +277,9 @@ public final class OracleScenarioPatch {
         normalizeProbeTarget();
         player.energy.energy = 2;
         EnergyPanel.setEnergy(2);
-        player.hand.addToBottom(card("Strike_R"));
-        player.hand.addToBottom(card("Defend_R"));
-        player.hand.addToBottom(card("Dazed"));
+        player.hand.addToTop(card("Strike_R"));
+        player.hand.addToTop(card("Defend_R"));
+        player.hand.addToTop(card("Dazed"));
         player.drawPile.addToBottom(card("Defend_R"));
         player.drawPile.addToTop(card("Strike_R"));
         player.discardPile.addToBottom(card("Defend_R"));
