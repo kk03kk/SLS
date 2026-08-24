@@ -1,5 +1,5 @@
 {
-  "audit_sha256": "0b58d8c6f060ec443de5754b388360baad5615ef7cecdc037b54273fd26525c7",
+  "audit_sha256": "810643c64ddc4994f3667511c2025a0da6cc131719dc746de96dd958e4974989",
   "content_scope_sha256": "1e9ba31232cea5813b88cf6d75c7be28deaca4ac84c32079745477866fc0649d",
   "entries": {
     "cards": [
@@ -194,7 +194,7 @@
         "simulator_references": [
           "cpp/simulator/include/combat/CardSelectInfo.h:16",
           "cpp/simulator/include/combat/CardSelectInfo.h:41",
-          "cpp/simulator/src/combat/Actions.cpp:782",
+          "cpp/simulator/src/combat/Actions.cpp:790",
           "cpp/simulator/src/combat/BattleContext.cpp:1286",
           "cpp/simulator/src/sim/BattleSimulator.cpp:279",
           "cpp/simulator/src/sim/BattleSimulator.cpp:423",
@@ -1816,7 +1816,7 @@
         "simulator_references": [
           "cpp/simulator/include/combat/CardSelectInfo.h:18",
           "cpp/simulator/include/combat/CardSelectInfo.h:43",
-          "cpp/simulator/src/combat/Actions.cpp:1094",
+          "cpp/simulator/src/combat/Actions.cpp:1102",
           "cpp/simulator/src/combat/BattleContext.cpp:1357",
           "cpp/simulator/src/combat/BattleContext.cpp:3033",
           "cpp/simulator/src/sim/BattleSimulator.cpp:293",
@@ -2084,7 +2084,7 @@
         "simulator_references": [
           "cpp/simulator/include/combat/CardSelectInfo.h:19",
           "cpp/simulator/include/combat/CardSelectInfo.h:44",
-          "cpp/simulator/src/combat/Actions.cpp:832",
+          "cpp/simulator/src/combat/Actions.cpp:840",
           "cpp/simulator/src/combat/BattleContext.cpp:1366",
           "cpp/simulator/src/sim/BattleSimulator.cpp:298",
           "cpp/simulator/src/sim/BattleSimulator.cpp:440",
@@ -2287,8 +2287,8 @@
         "simulator_references": [
           "cpp/simulator/include/combat/CardSelectInfo.h:22",
           "cpp/simulator/include/combat/CardSelectInfo.h:47",
-          "cpp/simulator/src/combat/Actions.cpp:850",
-          "cpp/simulator/src/combat/Actions.cpp:863",
+          "cpp/simulator/src/combat/Actions.cpp:858",
+          "cpp/simulator/src/combat/Actions.cpp:871",
           "cpp/simulator/src/combat/BattleContext.cpp:1378",
           "cpp/simulator/src/sim/BattleSimulator.cpp:317",
           "cpp/simulator/src/sim/BattleSimulator.cpp:452",
@@ -2744,8 +2744,8 @@
         "simulator_references": [
           "cpp/simulator/include/combat/CardSelectInfo.h:23",
           "cpp/simulator/include/combat/CardSelectInfo.h:48",
-          "cpp/simulator/src/combat/Actions.cpp:877",
           "cpp/simulator/src/combat/Actions.cpp:885",
+          "cpp/simulator/src/combat/Actions.cpp:893",
           "cpp/simulator/src/combat/BattleContext.cpp:1387",
           "cpp/simulator/src/sim/BattleSimulator.cpp:322",
           "cpp/simulator/src/sim/BattleSimulator.cpp:456",
@@ -2998,7 +2998,7 @@
         "simulator_references": [
           "cpp/simulator/include/combat/CardSelectInfo.h:25",
           "cpp/simulator/include/combat/CardSelectInfo.h:50",
-          "cpp/simulator/src/combat/Actions.cpp:902",
+          "cpp/simulator/src/combat/Actions.cpp:910",
           "cpp/simulator/src/combat/BattleContext.cpp:1119",
           "cpp/simulator/src/sim/BattleSimulator.cpp:339",
           "cpp/simulator/src/sim/BattleSimulator.cpp:472",
@@ -5875,7 +5875,7 @@
         },
         "scope_groups": [],
         "simulator_references": [
-          "cpp/simulator/src/combat/Actions.cpp:1325",
+          "cpp/simulator/src/combat/Actions.cpp:1333",
           "cpp/simulator/src/combat/BattleContext.cpp:1224",
           "cpp/simulator/src/sim/search/ExpertKnowledge.cpp:138",
           "cpp/simulator/src/sim/search/ExpertKnowledge.cpp:383",
@@ -6362,7 +6362,7 @@
         "simulator_references": [
           "cpp/simulator/include/combat/CardSelectInfo.h:35",
           "cpp/simulator/include/combat/CardSelectInfo.h:60",
-          "cpp/simulator/src/combat/Actions.cpp:968",
+          "cpp/simulator/src/combat/Actions.cpp:976",
           "cpp/simulator/src/combat/BattleContext.cpp:1567",
           "cpp/simulator/src/sim/BattleSimulator.cpp:379",
           "cpp/simulator/src/sim/BattleSimulator.cpp:506",
@@ -10954,8 +10954,8 @@
         },
         "scope_groups": [],
         "simulator_references": [
-          "cpp/simulator/src/combat/Actions.cpp:1366",
-          "cpp/simulator/src/combat/Actions.cpp:679"
+          "cpp/simulator/src/combat/Actions.cpp:1374",
+          "cpp/simulator/src/combat/Actions.cpp:687"
         ],
         "status": "BLOCKED",
         "test_references": []
@@ -12925,8 +12925,8 @@
         },
         "scope_groups": [],
         "simulator_references": [
-          "cpp/simulator/src/combat/Actions.cpp:573",
-          "cpp/simulator/src/combat/Actions.cpp:603",
+          "cpp/simulator/src/combat/Actions.cpp:581",
+          "cpp/simulator/src/combat/Actions.cpp:611",
           "cpp/simulator/src/combat/BattleContext.cpp:211",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:1489",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:3393",

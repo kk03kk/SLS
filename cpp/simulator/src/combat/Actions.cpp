@@ -436,6 +436,14 @@ Action Actions::DamageRandomEnemy(int damage) {
 
 Action Actions::ExhaustRandomCardInHand(int count) {
     return {[=] (BattleContext &bc) {
+        // Stock ExhaustAction takes this branch before checking isRandom.
+        // Exhausting the entire hand therefore consumes no cardRandomRng.
+        if (bc.cards.cardsInHand <= count) {
+            while (bc.cards.cardsInHand > 0) {
+                bc.exhaustTopCardInHand();
+            }
+            return;
+        }
         for (int i = 0; i < count; ++i) {
             if (bc.cards.cardsInHand <= 0) {
                 return;
