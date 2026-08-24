@@ -147,6 +147,7 @@ public final class OracleScenarioPatch {
         GameActionManager.totalDiscardedThisTurn = 0;
         GameActionManager.damageReceivedThisTurn = 0;
         GameActionManager.hpLossThisCombat = 0;
+        GameActionManager.turn = 1;
     }
 
     private static void installProbeRelics(AbstractPlayer player, CardType type) {
