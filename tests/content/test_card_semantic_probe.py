@@ -159,3 +159,12 @@ def test_card_audit_preserves_hand_selection_source_and_confirm() -> None:
     assert not selected.observation.hand
     assert not selected.observation.choice_options
     assert [action.kind.value for action in selected.actions] == ["CONFIRM"]
+
+
+def test_upgraded_jack_of_all_trades_preserves_rng_generation_order() -> None:
+    battle = native.LightspeedBattle()
+    battle.reset_card_probe(123, "JACK_OF_ALL_TRADES", True)
+    battle.step("play", card_index=1, target_index=0)
+    assert [
+        card.card_id for card in adapt_original(battle.snapshot()).decision.observation.hand
+    ] == ["STRIKE_RED", "IMPATIENCE", "PANACEA"]

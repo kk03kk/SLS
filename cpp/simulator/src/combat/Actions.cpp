@@ -675,10 +675,10 @@ Action Actions::InfernalBladeAction() {
 Action Actions::JackOfAllTradesAction(bool upgraded) {
     return {[=] (BattleContext &bc) {
         const auto c1 = sts::getTrulyRandomColorlessCardInCombat(bc.cardRandomRng);
-        bc.addToTop( Actions::MakeTempCardInHand(c1) );
+        bc.addToBot( Actions::MakeTempCardInHand(c1) );
         if (upgraded) {
             auto c2 = sts::getTrulyRandomColorlessCardInCombat(bc.cardRandomRng);
-            bc.addToTop( Actions::MakeTempCardInHand(c2) );
+            bc.addToBot( Actions::MakeTempCardInHand(c2) );
         }
     }};
 }
