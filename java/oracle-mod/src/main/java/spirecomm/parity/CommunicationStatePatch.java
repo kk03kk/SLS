@@ -10,8 +10,10 @@ import com.megacrit.cardcrawl.neow.NeowEvent;
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.cards.CardQueueItem;
+import com.megacrit.cardcrawl.cards.CardGroup;
 import com.megacrit.cardcrawl.cards.Soul;
 import com.megacrit.cardcrawl.cards.SoulGroup;
+import com.megacrit.cardcrawl.events.shrines.GremlinMatchGame;
 import com.megacrit.cardcrawl.map.MapRoomNode;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.monsters.EnemyMoveInfo;
@@ -21,6 +23,7 @@ import com.megacrit.cardcrawl.rooms.AbstractRoom;
 import basemod.ReflectionHacks;
 import communicationmod.GameStateConverter;
 import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.ArrayList;
 import javassist.CannotCompileException;
@@ -31,6 +34,54 @@ import java.lang.reflect.Field;
 public final class CommunicationStatePatch {
     public static final String INSTRUMENTATION_SCHEMA = "spirecomm-parity-v10";
     private static final Method CALCULATE_DAMAGE = privateCalculateDamage();
+    private static AbstractEvent matchEvent;
+    private static final ArrayList<String> matchOrder = new ArrayList<String>();
+    private static final Map<String, String> knownMatchCards =
+        new HashMap<String, String>();
+
+    private static ArrayList<Map<String, Object>> matchSlots(AbstractEvent event) {
+        ArrayList<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+        if (!(event instanceof GremlinMatchGame)
+                || !"PLAY".equals(String.valueOf(eventPhase(event)))) {
+            if (!(event instanceof GremlinMatchGame)) {
+                matchEvent = null;
+                matchOrder.clear();
+                knownMatchCards.clear();
+            }
+            return result;
+        }
+        CardGroup cards = ReflectionHacks.getPrivate(
+            event, GremlinMatchGame.class, "cards"
+        );
+        if (matchEvent != event) {
+            matchEvent = event;
+            matchOrder.clear();
+            knownMatchCards.clear();
+            for (AbstractCard card : cards.group) {
+                matchOrder.add(card.uuid.toString());
+            }
+        }
+        Map<String, AbstractCard> current = new HashMap<String, AbstractCard>();
+        for (AbstractCard card : cards.group) {
+            String uuid = card.uuid.toString();
+            current.put(uuid, card);
+            if (!card.isFlipped) {
+                knownMatchCards.put(uuid, card.cardID);
+            }
+        }
+        for (int index = 0; index < matchOrder.size(); ++index) {
+            String uuid = matchOrder.get(index);
+            Map<String, Object> value = new LinkedHashMap<String, Object>();
+            value.put("slot", index);
+            value.put("content_id", knownMatchCards.get(uuid));
+            value.put("known", knownMatchCards.containsKey(uuid));
+            value.put("removed", !current.containsKey(uuid));
+            value.put("click_x", 640 + index % 4 * 210);
+            value.put("click_y", 1080 - (750 - index % 3 * 230));
+            result.add(value);
+        }
+        return result;
+    }
 
     private static String eventId(AbstractEvent event) {
         if (event == null) {
@@ -296,6 +347,9 @@ public final class CommunicationStatePatch {
                 }
             }
         }
+        AbstractEvent currentEvent = AbstractDungeon.getCurrRoom() == null
+            ? null : AbstractDungeon.getCurrRoom().event;
+        ArrayList<Map<String, Object>> matchSlots = matchSlots(currentEvent);
         Gson gson = new Gson();
         return json.substring(0, json.length() - 1)
             + ",\"_parity_schema\":" + gson.toJson(INSTRUMENTATION_SCHEMA)
@@ -305,6 +359,7 @@ public final class CommunicationStatePatch {
             + ",\"_timing_evidence\":" + gson.toJson(timingEvidence)
             + ",\"_monster_intents\":" + gson.toJson(monsterIntents)
             + ",\"_combat_reward_cards\":" + gson.toJson(combatRewardCards)
+            + ",\"_match_slots\":" + gson.toJson(matchSlots)
             + ",\"math_seed\":" + Long.toUnsignedString(ParityRng.mathSeed)
             + (OracleScenarioPatch.activeScenario == null ? ""
                 : ",\"_parity_scenario\":"

@@ -261,3 +261,35 @@ def test_disabled_event_row_preserves_physical_semantic_option_ids() -> None:
     assert [item.instance_id for item in adapted.decision.observation.event_options] == [
         "event-option:0", "event-option:2",
     ]
+
+
+def test_match_and_keep_exposes_pair_actions_with_stable_click_commands() -> None:
+    slots = [
+        {
+            "slot": index, "content_id": None, "known": False, "removed": False,
+            "click_x": 640 + index % 4 * 210,
+            "click_y": 330 + index % 3 * 230,
+        }
+        for index in range(12)
+    ]
+    payload = {
+        "in_game": True,
+        "ready_for_command": True,
+        "available_commands": ["click"],
+        "_match_slots": slots,
+        "_continuation": {"event_id": "Match and Keep!"},
+        "game_state": base_game(
+            screen_type="EVENT", choice_list=[], screen_state={},
+        ),
+    }
+
+    adapted = adapt_original(payload)
+
+    assert len(adapted.decision.actions) == 66
+    first = adapted.decision.actions[0]
+    assert first.option_id == "match-pair:0:1"
+    assert adapted.commands[first.candidate_id] == (
+        "click left 640 330", "click left 850 560", "wait 120",
+    )
+    assert len(adapted.decision.observation.event_options) == 12
+    assert adapted.decision.observation.event_options[0].content_id == "HIDDEN_CARD"

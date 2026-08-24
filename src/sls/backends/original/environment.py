@@ -167,6 +167,14 @@ class OriginalBackend:
         payload = self._wait_for_actionable_combat_boundary(payload, executed)
         payload = self._settle_debug_intents(payload, executed)
         payload = self._settle_command_boundary(payload, executed)
+        # Some events (notably Match and Keep) materialize their initial
+        # Continue dialog only after the room-entry command has settled.  Fold
+        # those protocol-only dialogs, then settle the actual interactive
+        # screen before exposing a policy boundary.
+        payload = self._fold_protocol_only_boundaries(
+            payload, executed, fold_single_event=fold_single_event,
+        )
+        payload = self._settle_command_boundary(payload, executed)
         if not isinstance(action, str) and action.kind in {
             ActionKind.UPGRADE_CARD, ActionKind.REMOVE_CARD, ActionKind.SELECT_CARD,
         }:

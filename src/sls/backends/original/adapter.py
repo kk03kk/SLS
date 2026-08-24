@@ -274,7 +274,30 @@ def _actions(
         return tuple(result), commands
 
     choices = _sequence(game.get("choice_list"))
-    if screen in {ScreenType.NEOW, ScreenType.EVENT} and "choose" in available:
+    match_slots = _mappings(payload.get("_match_slots"))
+    continuation = _mapping(payload.get("_continuation") or game.get("_continuation"))
+    event_id = normalize_event_id(
+        state.get("event_id") or game.get("event_id") or continuation.get("event_id")
+    )
+    if screen is ScreenType.EVENT and event_id == "MATCH_AND_KEEP" and match_slots:
+        available_slots = [
+            slot for slot in match_slots if not bool(slot.get("removed"))
+        ]
+        if "click" not in available:
+            raise ValueError("Match and Keep slots require CommunicationMod click support")
+        for left_index, left in enumerate(available_slots):
+            for right in available_slots[left_index + 1:]:
+                left_slot, right_slot = _integer(left.get("slot")), _integer(right.get("slot"))
+                add(
+                    Action(
+                        ActionKind.CHOOSE_EVENT_OPTION,
+                        option_id=f"match-pair:{left_slot}:{right_slot}",
+                    ),
+                    f"click left {_integer(left.get('click_x'))} {_integer(left.get('click_y'))}",
+                    f"click left {_integer(right.get('click_x'))} {_integer(right.get('click_y'))}",
+                    "wait 120",
+                )
+    elif screen in {ScreenType.NEOW, ScreenType.EVENT} and "choose" in available:
         kind = ActionKind.CHOOSE_NEOW_OPTION if screen is ScreenType.NEOW else ActionKind.CHOOSE_EVENT_OPTION
         semantic_indices = (
             tuple(range(len(choices))) if screen is ScreenType.NEOW
@@ -612,8 +635,25 @@ def _screen_entities(
         )
     elif screen in {ScreenType.NEOW, ScreenType.EVENT}:
         event_id = "NEOW" if screen is ScreenType.NEOW else normalize_event_id(
-            state.get("event_id") or game.get("event_id") or "EVENT"
+            state.get("event_id") or game.get("event_id")
+            or _mapping(payload.get("_continuation") or game.get("_continuation")).get("event_id")
+            or "EVENT"
         )
+        match_slots = _mappings(payload.get("_match_slots"))
+        if event_id == "MATCH_AND_KEEP" and match_slots:
+            result["event"] = tuple(
+                PublicEntity(
+                    f"match-slot:{_integer(slot.get('slot'))}",
+                    normalize_card_id(slot.get("content_id"))
+                    if bool(slot.get("known")) else "HIDDEN_CARD",
+                    (
+                        ("known", bool(slot.get("known"))),
+                        ("removed", bool(slot.get("removed"))),
+                    ),
+                )
+                for slot in match_slots
+            )
+            return result
         semantic_indices = (
             tuple(range(len(choices))) if screen is ScreenType.NEOW
             else _event_option_indices(payload, game, state, len(choices))
