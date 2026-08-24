@@ -5,6 +5,7 @@ import com.evacipated.cardcrawl.modthespire.lib.SpirePostfixPatch;
 import com.evacipated.cardcrawl.modthespire.lib.SpirePrefixPatch;
 import com.evacipated.cardcrawl.modthespire.lib.SpireReturn;
 import com.megacrit.cardcrawl.cards.AbstractCard;
+import com.megacrit.cardcrawl.actions.GameActionManager;
 import com.megacrit.cardcrawl.cards.AbstractCard.CardType;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
@@ -126,10 +127,17 @@ public final class OracleScenarioPatch {
         player.exhaustPile.clear();
         player.limbo.clear();
         player.powers.clear();
+        player.damagedThisCombat = 0;
+        player.cardsPlayedThisTurn = 0;
         player.currentBlock = 0;
         player.energy.energy = 3;
         AbstractDungeon.actionManager.actions.clear();
         AbstractDungeon.actionManager.cardQueue.clear();
+        AbstractDungeon.actionManager.cardsPlayedThisTurn.clear();
+        AbstractDungeon.actionManager.cardsPlayedThisCombat.clear();
+        GameActionManager.totalDiscardedThisTurn = 0;
+        GameActionManager.damageReceivedThisTurn = 0;
+        GameActionManager.hpLossThisCombat = 0;
     }
 
     private static void installProbeRelics(AbstractPlayer player, CardType type) {
