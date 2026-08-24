@@ -240,6 +240,9 @@ public final class OracleScenarioPatch {
         player.drawPile.addToBottom(card("Defend_R"));
         player.discardPile.addToBottom(card("Defend_R"));
         player.exhaustPile.addToBottom(card("Defend_R"));
+        // Stock hand insertions recalculate dynamic card values before the
+        // player can act (Mind Blast, Body Slam, Perfected Strike, etc.).
+        player.hand.applyPowers();
         activate("card_probe:" + cardId.toUpperCase(Locale.ROOT) + ":" + upgrades,
             "RULE_TEST:IRONCLAD_CARD_ALLOWLIST", player);
         CommunicationMod.mustSendGameState = true;
