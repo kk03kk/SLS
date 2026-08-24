@@ -147,7 +147,18 @@ def _execute_native(
                 target_index=int(parts[2]) if len(parts) > 2 else 0,
             )
         elif kind == "choose":
-            battle.step("choose", choice_index=int(parts[1]))
+            wire_index = int(parts[1])
+            choice = dict(
+                ((payload.get("game_state") or {}).get("combat_state") or {}).get("choice")
+                or {}
+            )
+            visible = [
+                item for item in choice.get("options") or ()
+                if not bool(item.get("selected"))
+            ]
+            actual_index = int(visible[wire_index].get("choice_index", wire_index)) \
+                if visible else wire_index
+            battle.step("choose", choice_index=actual_index)
         elif kind in {"confirm", "proceed"}:
             battle.step("proceed")
         elif kind in {"end", "end_turn"}:

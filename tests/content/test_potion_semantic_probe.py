@@ -21,6 +21,16 @@ def _load_build_oracle():
     return module
 
 
+def _load_potion_audit():
+    spec = importlib.util.spec_from_file_location(
+        "audit_potion_semantics", ROOT / "tools" / "audit_potion_semantics.py"
+    )
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
 def test_oracle_potion_allowlist_is_exactly_the_scoped_set() -> None:
     rows = _load_build_oracle().scenario_potion_allowlist().decode("utf-8").splitlines()
     assert [row.split("\t", 1)[0] for row in rows] == sorted(
@@ -67,3 +77,16 @@ def test_blessing_of_the_forge_does_not_upgrade_unupgradable_statuses() -> None:
     assert [(card.card_id, card.upgrades) for card in hand] == [
         ("STRIKE_RED", 1), ("DEFEND_RED", 1), ("DAZED", 0),
     ]
+
+
+def test_potion_audit_maps_filtered_multi_select_indices_back_to_native_hand() -> None:
+    module = _load_potion_audit()
+    battle = native.LightspeedBattle()
+    battle.reset_potion_probe(123, "ELIXIR_POTION", False)
+    battle.step("potion", potion_index=0, target_index=0)
+    first = module._adapt_probe_payload(battle.snapshot())
+    action = next(item for item in first.decision.actions if item.kind.value == "SELECT_CARD")
+    module._execute_native(battle, first, action)
+    second = module._adapt_probe_payload(battle.snapshot())
+    action = next(item for item in second.decision.actions if item.kind.value == "SELECT_CARD")
+    module._execute_native(battle, second, action)
