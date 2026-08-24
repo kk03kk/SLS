@@ -1589,7 +1589,7 @@ void BattleContext::usePowerCard() {
             break;
 
         case CardId::BERSERK:
-            ++player.energyPerTurn;
+            addToBot( Actions::BuffPlayer<PS::BERSERK>(1) );
             addToBot( Actions::DebuffPlayer<PS::VULNERABLE>(up ? 1 : 2, false) );
             break;
 

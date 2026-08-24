@@ -81,3 +81,19 @@ def test_card_audit_reads_the_snapshot_after_a_native_step() -> None:
     payload = module._execute_native(battle, adapted, action)
     assert isinstance(payload, dict)
     assert adapt_original(payload).decision.observation.hand[0].card_id == "STRIKE_RED"
+
+
+def test_berserk_remains_a_visible_power_and_does_not_change_base_energy() -> None:
+    battle = native.LightspeedBattle()
+    battle.reset_card_probe(123, "BERSERK", False)
+    before = adapt_original(battle.snapshot()).decision
+    action = next(
+        item for item in before.actions
+        if item.kind.value == "PLAY_CARD" and item.subject_id == "HAND:0"
+    )
+    battle.step("play", card_index=1, target_index=0)
+    after = adapt_original(battle.snapshot()).decision.observation
+    assert after.player.max_energy == 3
+    assert [(power.content_id, dict(power.properties)["amount"]) for power in after.powers] == [
+        ("BERSERK", 1), ("VULNERABLE", 2)
+    ]

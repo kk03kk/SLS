@@ -2385,7 +2385,7 @@ private:
             }
         } else {
             for (int raw = static_cast<int>(PS::INVALID) + 1;
-                    raw <= static_cast<int>(PS::RETAIN_CARDS); ++raw) {
+                    raw <= static_cast<int>(PS::BERSERK); ++raw) {
                 const auto status = static_cast<PlayerStatus>(raw);
                 if (p.hasStatusRuntime(status)) p.recordPowerApplied(status);
             }

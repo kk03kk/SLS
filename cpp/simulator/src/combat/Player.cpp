@@ -718,6 +718,10 @@ void Player::applyStartOfTurnPowers(BattleContext &bc) {
         }
 
         switch (pair.first) {
+            case PS::BERSERK:
+                bc.addToBot(Actions::GainEnergy(pair.second));
+                break;
+
             case PS::BATTLE_HYMN:
                 bc.addToBot(Actions::MakeTempCardInHand(CardId::SMITE, hasStatus<PS::MASTER_REALITY>(), pair.second) );
                 break;
