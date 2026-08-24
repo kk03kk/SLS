@@ -999,7 +999,9 @@ Action Actions::TimeEaterPlayCardQueueItem(const CardQueueItem &x) {
 Action Actions::UpgradeAllCardsInHand() {
     return {[=] (BattleContext &bc) {
         for (int i = 0; i < bc.cards.cardsInHand; ++i) {
-            bc.cards.hand[i].upgrade();
+            if (bc.cards.hand[i].canUpgrade()) {
+                bc.cards.hand[i].upgrade();
+            }
         }
     }};
 }

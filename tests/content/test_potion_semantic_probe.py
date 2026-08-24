@@ -57,3 +57,13 @@ def test_native_potion_probe_uses_sacred_bark_potency() -> None:
     bark.step("potion", potion_index=0, target_index=0)
     assert adapt_original(normal.snapshot()).decision.observation.player.block == 12
     assert adapt_original(bark.snapshot()).decision.observation.player.block == 24
+
+
+def test_blessing_of_the_forge_does_not_upgrade_unupgradable_statuses() -> None:
+    battle = native.LightspeedBattle()
+    battle.reset_potion_probe(123, "BLESSING_OF_THE_FORGE", False)
+    battle.step("potion", potion_index=0, target_index=0)
+    hand = adapt_original(battle.snapshot()).decision.observation.hand
+    assert [(card.card_id, card.upgrades) for card in hand] == [
+        ("STRIKE_RED", 1), ("DEFEND_RED", 1), ("DAZED", 0),
+    ]
