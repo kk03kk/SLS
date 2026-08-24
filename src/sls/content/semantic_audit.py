@@ -17,6 +17,10 @@ CARD_SEMANTIC_AUDIT_SCHEMA = "sls-ironclad-card-semantics-v1"
 CARD_SEMANTIC_AUDIT_PATH = (
     ROOT / "configs" / "validation" / "ironclad_a0_card_semantics.json"
 )
+POTION_SEMANTIC_AUDIT_SCHEMA = "sls-ironclad-potion-semantics-v1"
+POTION_SEMANTIC_AUDIT_PATH = (
+    ROOT / "configs" / "validation" / "ironclad_a0_potion_semantics.json"
+)
 
 
 def load_card_semantic_audit() -> dict[str, Any]:
@@ -62,6 +66,50 @@ def load_card_semantic_audit() -> dict[str, Any]:
                 raise ValueError(f"card semantic effect digest mismatch: {identifier}")
             if not str(variant.get("setup_digest") or ""):
                 raise ValueError(f"card semantic setup digest is missing: {identifier}")
+    return payload
+
+
+def load_potion_semantic_audit() -> dict[str, Any]:
+    """Validate the committed Original/native potion effect evidence."""
+
+    from sls.content.source_audit import java_sources, registry_game_ids
+    from sls.rl.training_contract import canonical_digest, sha256_file
+
+    payload = json.loads(POTION_SEMANTIC_AUDIT_PATH.read_text(encoding="utf-8"))
+    supplied = payload.get("audit_sha256")
+    unsigned = dict(payload)
+    unsigned.pop("audit_sha256", None)
+    if payload.get("schema") != POTION_SEMANTIC_AUDIT_SCHEMA:
+        raise ValueError("unsupported Ironclad potion semantic audit")
+    if supplied != canonical_digest(unsigned):
+        raise ValueError("Ironclad potion semantic audit digest mismatch")
+    if payload.get("scope_sha256") != ironclad_a0_scope_hash():
+        raise ValueError("Ironclad potion semantic audit is stale for the content scope")
+    scope = json.loads((ROOT / "configs" / "validation" / "ironclad_a0_content_scope.json").read_text(encoding="utf-8"))
+    expected_ids = sorted(map(str, scope["potions"]["ids"]))
+    entries = list(payload.get("entries") or ())
+    if [str(item.get("id")) for item in entries] != expected_ids:
+        raise ValueError("Ironclad potion audit does not cover the exact scoped set")
+    game_ids = registry_game_ids("potions", expected_ids)
+    sources = java_sources("potions")
+    for entry in entries:
+        identifier = str(entry["id"])
+        source = sources[game_ids[identifier]]
+        if entry.get("game_id") != game_ids[identifier] or \
+                entry.get("java_source") != source.path.relative_to(ROOT).as_posix() or \
+                entry.get("java_sha256") != sha256_file(source.path):
+            raise ValueError(f"potion semantic source evidence is stale: {identifier}")
+        variants = list(entry.get("variants") or ())
+        expected_bark = [False] if identifier == "SMOKE_BOMB" else [False, True]
+        if [item.get("sacred_bark") for item in variants] != expected_bark:
+            raise ValueError(f"potion semantic variants are incomplete: {identifier}")
+        for variant in variants:
+            hashes = list(variant.get("boundary_hashes") or ())
+            if not hashes or variant.get("boundaries") != len(hashes) or \
+                    variant.get("effect_sha256") != canonical_digest(hashes):
+                raise ValueError(f"potion semantic effect evidence is invalid: {identifier}")
+            if not str(variant.get("setup_digest") or ""):
+                raise ValueError(f"potion semantic setup digest is missing: {identifier}")
     return payload
 
 

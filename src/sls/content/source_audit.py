@@ -217,7 +217,13 @@ def java_potion_metadata(source: JavaSource) -> dict[str, object]:
         raise ValueError(f"potion rarity is missing in {source.path}")
     return {
         "rarity": rarity.group(1),
-        "requires_target": _assignment(source.text, "targetRequired"),
+        # CommunicationMod exposes the stock drag target contract: explicitly
+        # targetRequired potions and all thrown potions require a wire target,
+        # even when the effect itself ignores it (Explosive/Smoke Bomb).
+        "requires_target": (
+            _assignment(source.text, "targetRequired")
+            or _assignment(source.text, "isThrown")
+        ),
     }
 
 

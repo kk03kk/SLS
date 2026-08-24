@@ -1,5 +1,5 @@
 {
-  "audit_sha256": "2c26bbc8d45f40cb107a2c8fcd10b56ad4b28cfbdd6095d65be104e61da8b10f",
+  "audit_sha256": "be73d25024105479c499b9f80ae0be22ee562e2bd33b7e6963c5a8e0d15e030c",
   "content_scope_sha256": "1e9ba31232cea5813b88cf6d75c7be28deaca4ac84c32079745477866fc0649d",
   "entries": {
     "cards": [
@@ -369,7 +369,7 @@
           "cpp/simulator/src/sim/search/ExpertKnowledge.cpp:38",
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:1063",
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:927",
-          "src/sls/content/normalize.py:118",
+          "src/sls/content/normalize.py:119",
           "src/sls/model/encoding.py:43",
           "src/sls/model/encoding.py:59"
         ],
@@ -1565,7 +1565,7 @@
           "cpp/simulator/src/sim/search/ExpertKnowledge.cpp:251",
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:1036",
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:899",
-          "src/sls/content/normalize.py:118",
+          "src/sls/content/normalize.py:119",
           "src/sls/model/encoding.py:43"
         ],
         "status": "VERIFIED",
@@ -2166,7 +2166,7 @@
         "simulator_references": [
           "cpp/simulator/include/combat/CardSelectInfo.h:18",
           "cpp/simulator/include/combat/CardSelectInfo.h:43",
-          "cpp/simulator/src/combat/Actions.cpp:1106",
+          "cpp/simulator/src/combat/Actions.cpp:1108",
           "cpp/simulator/src/combat/BattleContext.cpp:1357",
           "cpp/simulator/src/combat/BattleContext.cpp:3033",
           "cpp/simulator/src/sim/BattleSimulator.cpp:293",
@@ -7012,7 +7012,7 @@
         },
         "scope_groups": [],
         "simulator_references": [
-          "cpp/simulator/src/combat/Actions.cpp:1337",
+          "cpp/simulator/src/combat/Actions.cpp:1339",
           "cpp/simulator/src/combat/BattleContext.cpp:1224",
           "cpp/simulator/src/sim/search/ExpertKnowledge.cpp:138",
           "cpp/simulator/src/sim/search/ExpertKnowledge.cpp:383",
@@ -9602,7 +9602,7 @@
           "cpp/simulator/src/sim/ConsoleSimulator.cpp:880",
           "cpp/simulator/src/sim/search/GameAction.cpp:758",
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:656",
-          "src/sls/content/normalize.py:149"
+          "src/sls/content/normalize.py:150"
         ],
         "status": "BLOCKED",
         "test_references": []
@@ -9794,7 +9794,7 @@
           "cpp/simulator/src/game/GameContext.cpp:3691",
           "cpp/simulator/src/sim/ConsoleSimulator.cpp:1091",
           "cpp/simulator/src/sim/search/GameAction.cpp:749",
-          "src/sls/content/normalize.py:147"
+          "src/sls/content/normalize.py:148"
         ],
         "status": "BLOCKED",
         "test_references": []
@@ -9876,7 +9876,7 @@
           "cpp/simulator/src/game/GameContext.cpp:3757",
           "cpp/simulator/src/sim/ConsoleSimulator.cpp:1103",
           "cpp/simulator/src/sim/search/GameAction.cpp:770",
-          "src/sls/content/normalize.py:150"
+          "src/sls/content/normalize.py:151"
         ],
         "status": "BLOCKED",
         "test_references": []
@@ -10598,6 +10598,8 @@
         "evidence_levels": [
           "SOURCE_MATCHED",
           "NATIVE_METADATA_VERIFIED",
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED",
           "NATIVE_EXECUTED"
         ],
         "game_id": "Ancient Potion",
@@ -10612,12 +10614,19 @@
           "rarity": 1,
           "requires_target": false
         },
-        "original_evidence": null,
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_potion_semantics.json",
+          "audit_sha256": "a61336cb9ae6a24603440586f2b5a58101c51f22fddbd2bebedf9d26933bc2a4",
+          "sacred_bark": [
+            false,
+            true
+          ]
+        },
         "scope_groups": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:2344"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": []
       },
       {
@@ -10626,6 +10635,8 @@
         "evidence_levels": [
           "SOURCE_MATCHED",
           "NATIVE_METADATA_VERIFIED",
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED",
           "NATIVE_EXECUTED"
         ],
         "game_id": "AttackPotion",
@@ -10640,12 +10651,19 @@
           "rarity": 0,
           "requires_target": false
         },
-        "original_evidence": null,
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_potion_semantics.json",
+          "audit_sha256": "a61336cb9ae6a24603440586f2b5a58101c51f22fddbd2bebedf9d26933bc2a4",
+          "sacred_bark": [
+            false,
+            true
+          ]
+        },
         "scope_groups": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:2348"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": []
       },
       {
@@ -10654,6 +10672,8 @@
         "evidence_levels": [
           "SOURCE_MATCHED",
           "NATIVE_METADATA_VERIFIED",
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED",
           "NATIVE_EXECUTED"
         ],
         "game_id": "BlessingOfTheForge",
@@ -10668,12 +10688,19 @@
           "rarity": 0,
           "requires_target": false
         },
-        "original_evidence": null,
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_potion_semantics.json",
+          "audit_sha256": "a61336cb9ae6a24603440586f2b5a58101c51f22fddbd2bebedf9d26933bc2a4",
+          "sacred_bark": [
+            false,
+            true
+          ]
+        },
         "scope_groups": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:2352"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": []
       },
       {
@@ -10682,6 +10709,8 @@
         "evidence_levels": [
           "SOURCE_MATCHED",
           "NATIVE_METADATA_VERIFIED",
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED",
           "NATIVE_EXECUTED"
         ],
         "game_id": "Block Potion",
@@ -10696,12 +10725,19 @@
           "rarity": 0,
           "requires_target": false
         },
-        "original_evidence": null,
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_potion_semantics.json",
+          "audit_sha256": "a61336cb9ae6a24603440586f2b5a58101c51f22fddbd2bebedf9d26933bc2a4",
+          "sacred_bark": [
+            false,
+            true
+          ]
+        },
         "scope_groups": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:2356"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": []
       },
       {
@@ -10710,6 +10746,8 @@
         "evidence_levels": [
           "SOURCE_MATCHED",
           "NATIVE_METADATA_VERIFIED",
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED",
           "NATIVE_EXECUTED"
         ],
         "game_id": "BloodPotion",
@@ -10725,14 +10763,21 @@
           "rarity": 0,
           "requires_target": false
         },
-        "original_evidence": null,
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_potion_semantics.json",
+          "audit_sha256": "a61336cb9ae6a24603440586f2b5a58101c51f22fddbd2bebedf9d26933bc2a4",
+          "sacred_bark": [
+            false,
+            true
+          ]
+        },
         "scope_groups": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:2361",
           "cpp/simulator/src/game/GameContext.cpp:2302",
           "cpp/simulator/src/sim/search/GameAction.cpp:266"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": []
       },
       {
@@ -10741,6 +10786,8 @@
         "evidence_levels": [
           "SOURCE_MATCHED",
           "NATIVE_METADATA_VERIFIED",
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED",
           "NATIVE_EXECUTED"
         ],
         "game_id": "ColorlessPotion",
@@ -10755,12 +10802,19 @@
           "rarity": 0,
           "requires_target": false
         },
-        "original_evidence": null,
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_potion_semantics.json",
+          "audit_sha256": "a61336cb9ae6a24603440586f2b5a58101c51f22fddbd2bebedf9d26933bc2a4",
+          "sacred_bark": [
+            false,
+            true
+          ]
+        },
         "scope_groups": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:2371"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": []
       },
       {
@@ -10769,6 +10823,8 @@
         "evidence_levels": [
           "SOURCE_MATCHED",
           "NATIVE_METADATA_VERIFIED",
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED",
           "NATIVE_EXECUTED"
         ],
         "game_id": "CultistPotion",
@@ -10783,12 +10839,19 @@
           "rarity": 2,
           "requires_target": false
         },
-        "original_evidence": null,
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_potion_semantics.json",
+          "audit_sha256": "a61336cb9ae6a24603440586f2b5a58101c51f22fddbd2bebedf9d26933bc2a4",
+          "sacred_bark": [
+            false,
+            true
+          ]
+        },
         "scope_groups": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:2375"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": []
       },
       {
@@ -10797,6 +10860,8 @@
         "evidence_levels": [
           "SOURCE_MATCHED",
           "NATIVE_METADATA_VERIFIED",
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED",
           "NATIVE_EXECUTED"
         ],
         "game_id": "Dexterity Potion",
@@ -10811,12 +10876,19 @@
           "rarity": 0,
           "requires_target": false
         },
-        "original_evidence": null,
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_potion_semantics.json",
+          "audit_sha256": "a61336cb9ae6a24603440586f2b5a58101c51f22fddbd2bebedf9d26933bc2a4",
+          "sacred_bark": [
+            false,
+            true
+          ]
+        },
         "scope_groups": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:2383"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": []
       },
       {
@@ -10825,6 +10897,8 @@
         "evidence_levels": [
           "SOURCE_MATCHED",
           "NATIVE_METADATA_VERIFIED",
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED",
           "NATIVE_EXECUTED"
         ],
         "game_id": "DistilledChaos",
@@ -10839,12 +10913,19 @@
           "rarity": 1,
           "requires_target": false
         },
-        "original_evidence": null,
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_potion_semantics.json",
+          "audit_sha256": "a61336cb9ae6a24603440586f2b5a58101c51f22fddbd2bebedf9d26933bc2a4",
+          "sacred_bark": [
+            false,
+            true
+          ]
+        },
         "scope_groups": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:2387"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": []
       },
       {
@@ -10853,6 +10934,8 @@
         "evidence_levels": [
           "SOURCE_MATCHED",
           "NATIVE_METADATA_VERIFIED",
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED",
           "NATIVE_EXECUTED"
         ],
         "game_id": "DuplicationPotion",
@@ -10867,12 +10950,19 @@
           "rarity": 1,
           "requires_target": false
         },
-        "original_evidence": null,
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_potion_semantics.json",
+          "audit_sha256": "a61336cb9ae6a24603440586f2b5a58101c51f22fddbd2bebedf9d26933bc2a4",
+          "sacred_bark": [
+            false,
+            true
+          ]
+        },
         "scope_groups": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:2395"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": []
       },
       {
@@ -10881,6 +10971,8 @@
         "evidence_levels": [
           "SOURCE_MATCHED",
           "NATIVE_METADATA_VERIFIED",
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED",
           "NATIVE_EXECUTED"
         ],
         "game_id": "ElixirPotion",
@@ -10895,7 +10987,14 @@
           "rarity": 1,
           "requires_target": false
         },
-        "original_evidence": null,
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_potion_semantics.json",
+          "audit_sha256": "a61336cb9ae6a24603440586f2b5a58101c51f22fddbd2bebedf9d26933bc2a4",
+          "sacred_bark": [
+            false,
+            true
+          ]
+        },
         "scope_groups": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:2399",
@@ -10904,7 +11003,7 @@
           "src/sls/contracts/continuation.py:156",
           "src/sls/contracts/continuation.py:171"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": []
       },
       {
@@ -10913,6 +11012,8 @@
         "evidence_levels": [
           "SOURCE_MATCHED",
           "NATIVE_METADATA_VERIFIED",
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED",
           "NATIVE_EXECUTED"
         ],
         "game_id": "Energy Potion",
@@ -10927,12 +11028,19 @@
           "rarity": 0,
           "requires_target": false
         },
-        "original_evidence": null,
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_potion_semantics.json",
+          "audit_sha256": "a61336cb9ae6a24603440586f2b5a58101c51f22fddbd2bebedf9d26933bc2a4",
+          "sacred_bark": [
+            false,
+            true
+          ]
+        },
         "scope_groups": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:2403"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": []
       },
       {
@@ -10941,6 +11049,8 @@
         "evidence_levels": [
           "SOURCE_MATCHED",
           "NATIVE_METADATA_VERIFIED",
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED",
           "NATIVE_EXECUTED"
         ],
         "game_id": "EntropicBrew",
@@ -10956,14 +11066,21 @@
           "rarity": 2,
           "requires_target": false
         },
-        "original_evidence": null,
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_potion_semantics.json",
+          "audit_sha256": "a61336cb9ae6a24603440586f2b5a58101c51f22fddbd2bebedf9d26933bc2a4",
+          "sacred_bark": [
+            false,
+            true
+          ]
+        },
         "scope_groups": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:2407",
           "cpp/simulator/src/game/GameContext.cpp:2306",
           "cpp/simulator/src/sim/search/GameAction.cpp:267"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": []
       },
       {
@@ -10972,6 +11089,8 @@
         "evidence_levels": [
           "SOURCE_MATCHED",
           "NATIVE_METADATA_VERIFIED",
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED",
           "NATIVE_EXECUTED"
         ],
         "game_id": "EssenceOfSteel",
@@ -10986,12 +11105,19 @@
           "rarity": 1,
           "requires_target": false
         },
-        "original_evidence": null,
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_potion_semantics.json",
+          "audit_sha256": "a61336cb9ae6a24603440586f2b5a58101c51f22fddbd2bebedf9d26933bc2a4",
+          "sacred_bark": [
+            false,
+            true
+          ]
+        },
         "scope_groups": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:2419"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": []
       },
       {
@@ -11000,6 +11126,8 @@
         "evidence_levels": [
           "SOURCE_MATCHED",
           "NATIVE_METADATA_VERIFIED",
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED",
           "NATIVE_EXECUTED"
         ],
         "game_id": "Explosive Potion",
@@ -11012,14 +11140,21 @@
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/potions/ExplosivePotion.java",
         "metadata": {
           "rarity": 0,
-          "requires_target": false
+          "requires_target": true
         },
-        "original_evidence": null,
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_potion_semantics.json",
+          "audit_sha256": "a61336cb9ae6a24603440586f2b5a58101c51f22fddbd2bebedf9d26933bc2a4",
+          "sacred_bark": [
+            false,
+            true
+          ]
+        },
         "scope_groups": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:2423"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": []
       },
       {
@@ -11029,6 +11164,7 @@
           "SOURCE_MATCHED",
           "NATIVE_METADATA_VERIFIED",
           "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED",
           "NATIVE_EXECUTED"
         ],
         "game_id": "FairyPotion",
@@ -11044,7 +11180,14 @@
           "rarity": 2,
           "requires_target": false
         },
-        "original_evidence": null,
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_potion_semantics.json",
+          "audit_sha256": "a61336cb9ae6a24603440586f2b5a58101c51f22fddbd2bebedf9d26933bc2a4",
+          "sacred_bark": [
+            false,
+            true
+          ]
+        },
         "scope_groups": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:2530",
@@ -11066,6 +11209,8 @@
         "evidence_levels": [
           "SOURCE_MATCHED",
           "NATIVE_METADATA_VERIFIED",
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED",
           "NATIVE_EXECUTED"
         ],
         "game_id": "FearPotion",
@@ -11080,12 +11225,19 @@
           "rarity": 0,
           "requires_target": true
         },
-        "original_evidence": null,
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_potion_semantics.json",
+          "audit_sha256": "a61336cb9ae6a24603440586f2b5a58101c51f22fddbd2bebedf9d26933bc2a4",
+          "sacred_bark": [
+            false,
+            true
+          ]
+        },
         "scope_groups": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:2431"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": []
       },
       {
@@ -11094,6 +11246,8 @@
         "evidence_levels": [
           "SOURCE_MATCHED",
           "NATIVE_METADATA_VERIFIED",
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED",
           "NATIVE_EXECUTED"
         ],
         "game_id": "Fire Potion",
@@ -11108,12 +11262,19 @@
           "rarity": 0,
           "requires_target": true
         },
-        "original_evidence": null,
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_potion_semantics.json",
+          "audit_sha256": "a61336cb9ae6a24603440586f2b5a58101c51f22fddbd2bebedf9d26933bc2a4",
+          "sacred_bark": [
+            false,
+            true
+          ]
+        },
         "scope_groups": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:2435"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": []
       },
       {
@@ -11122,6 +11283,8 @@
         "evidence_levels": [
           "SOURCE_MATCHED",
           "NATIVE_METADATA_VERIFIED",
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED",
           "NATIVE_EXECUTED"
         ],
         "game_id": "SteroidPotion",
@@ -11136,12 +11299,19 @@
           "rarity": 0,
           "requires_target": false
         },
-        "original_evidence": null,
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_potion_semantics.json",
+          "audit_sha256": "a61336cb9ae6a24603440586f2b5a58101c51f22fddbd2bebedf9d26933bc2a4",
+          "sacred_bark": [
+            false,
+            true
+          ]
+        },
         "scope_groups": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:2439"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": []
       },
       {
@@ -11150,6 +11320,8 @@
         "evidence_levels": [
           "SOURCE_MATCHED",
           "NATIVE_METADATA_VERIFIED",
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED",
           "NATIVE_EXECUTED"
         ],
         "game_id": "Fruit Juice",
@@ -11165,7 +11337,14 @@
           "rarity": 2,
           "requires_target": false
         },
-        "original_evidence": null,
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_potion_semantics.json",
+          "audit_sha256": "a61336cb9ae6a24603440586f2b5a58101c51f22fddbd2bebedf9d26933bc2a4",
+          "sacred_bark": [
+            false,
+            true
+          ]
+        },
         "scope_groups": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:2448",
@@ -11173,7 +11352,7 @@
           "cpp/simulator/src/game/GameContext.cpp:2318",
           "cpp/simulator/src/sim/search/GameAction.cpp:268"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": []
       },
       {
@@ -11182,6 +11361,8 @@
         "evidence_levels": [
           "SOURCE_MATCHED",
           "NATIVE_METADATA_VERIFIED",
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED",
           "NATIVE_EXECUTED"
         ],
         "game_id": "GamblersBrew",
@@ -11196,12 +11377,19 @@
           "rarity": 1,
           "requires_target": false
         },
-        "original_evidence": null,
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_potion_semantics.json",
+          "audit_sha256": "a61336cb9ae6a24603440586f2b5a58101c51f22fddbd2bebedf9d26933bc2a4",
+          "sacred_bark": [
+            false,
+            true
+          ]
+        },
         "scope_groups": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:2452"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": []
       },
       {
@@ -11210,6 +11398,8 @@
         "evidence_levels": [
           "SOURCE_MATCHED",
           "NATIVE_METADATA_VERIFIED",
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED",
           "NATIVE_EXECUTED"
         ],
         "game_id": "HeartOfIron",
@@ -11224,12 +11414,19 @@
           "rarity": 2,
           "requires_target": false
         },
-        "original_evidence": null,
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_potion_semantics.json",
+          "audit_sha256": "a61336cb9ae6a24603440586f2b5a58101c51f22fddbd2bebedf9d26933bc2a4",
+          "sacred_bark": [
+            false,
+            true
+          ]
+        },
         "scope_groups": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:2465"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": []
       },
       {
@@ -11238,6 +11435,8 @@
         "evidence_levels": [
           "SOURCE_MATCHED",
           "NATIVE_METADATA_VERIFIED",
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED",
           "NATIVE_EXECUTED"
         ],
         "game_id": "LiquidBronze",
@@ -11252,12 +11451,19 @@
           "rarity": 1,
           "requires_target": false
         },
-        "original_evidence": null,
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_potion_semantics.json",
+          "audit_sha256": "a61336cb9ae6a24603440586f2b5a58101c51f22fddbd2bebedf9d26933bc2a4",
+          "sacred_bark": [
+            false,
+            true
+          ]
+        },
         "scope_groups": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:2469"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": []
       },
       {
@@ -11266,6 +11472,8 @@
         "evidence_levels": [
           "SOURCE_MATCHED",
           "NATIVE_METADATA_VERIFIED",
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED",
           "NATIVE_EXECUTED"
         ],
         "game_id": "LiquidMemories",
@@ -11280,13 +11488,20 @@
           "rarity": 1,
           "requires_target": false
         },
-        "original_evidence": null,
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_potion_semantics.json",
+          "audit_sha256": "a61336cb9ae6a24603440586f2b5a58101c51f22fddbd2bebedf9d26933bc2a4",
+          "sacred_bark": [
+            false,
+            true
+          ]
+        },
         "scope_groups": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:2473",
           "src/sls/backends/original/environment.py:112"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": []
       },
       {
@@ -11295,6 +11510,8 @@
         "evidence_levels": [
           "SOURCE_MATCHED",
           "NATIVE_METADATA_VERIFIED",
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED",
           "NATIVE_EXECUTED"
         ],
         "game_id": "PowerPotion",
@@ -11309,12 +11526,19 @@
           "rarity": 0,
           "requires_target": false
         },
-        "original_evidence": null,
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_potion_semantics.json",
+          "audit_sha256": "a61336cb9ae6a24603440586f2b5a58101c51f22fddbd2bebedf9d26933bc2a4",
+          "sacred_bark": [
+            false,
+            true
+          ]
+        },
         "scope_groups": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:2485"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": []
       },
       {
@@ -11323,6 +11547,8 @@
         "evidence_levels": [
           "SOURCE_MATCHED",
           "NATIVE_METADATA_VERIFIED",
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED",
           "NATIVE_EXECUTED"
         ],
         "game_id": "Regen Potion",
@@ -11337,12 +11563,19 @@
           "rarity": 1,
           "requires_target": false
         },
-        "original_evidence": null,
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_potion_semantics.json",
+          "audit_sha256": "a61336cb9ae6a24603440586f2b5a58101c51f22fddbd2bebedf9d26933bc2a4",
+          "sacred_bark": [
+            false,
+            true
+          ]
+        },
         "scope_groups": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:2490"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": []
       },
       {
@@ -11351,6 +11584,8 @@
         "evidence_levels": [
           "SOURCE_MATCHED",
           "NATIVE_METADATA_VERIFIED",
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED",
           "NATIVE_EXECUTED"
         ],
         "game_id": "SkillPotion",
@@ -11365,12 +11600,19 @@
           "rarity": 0,
           "requires_target": false
         },
-        "original_evidence": null,
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_potion_semantics.json",
+          "audit_sha256": "a61336cb9ae6a24603440586f2b5a58101c51f22fddbd2bebedf9d26933bc2a4",
+          "sacred_bark": [
+            false,
+            true
+          ]
+        },
         "scope_groups": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:2494"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": []
       },
       {
@@ -11379,6 +11621,8 @@
         "evidence_levels": [
           "SOURCE_MATCHED",
           "NATIVE_METADATA_VERIFIED",
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED",
           "NATIVE_EXECUTED"
         ],
         "game_id": "SmokeBomb",
@@ -11392,15 +11636,22 @@
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/potions/SmokeBomb.java",
         "metadata": {
           "rarity": 2,
-          "requires_target": false
+          "requires_target": true
         },
-        "original_evidence": null,
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_potion_semantics.json",
+          "audit_sha256": "a61336cb9ae6a24603440586f2b5a58101c51f22fddbd2bebedf9d26933bc2a4",
+          "sacred_bark": [
+            false
+          ]
+        },
         "scope_groups": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:2498",
-          "cpp/simulator/src/sim/search/Action.cpp:93"
+          "cpp/simulator/src/sim/search/Action.cpp:93",
+          "src/sls/content/semantic_audit.py:103"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": []
       },
       {
@@ -11409,6 +11660,8 @@
         "evidence_levels": [
           "SOURCE_MATCHED",
           "NATIVE_METADATA_VERIFIED",
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED",
           "NATIVE_EXECUTED"
         ],
         "game_id": "SneckoOil",
@@ -11423,12 +11676,19 @@
           "rarity": 2,
           "requires_target": false
         },
-        "original_evidence": null,
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_potion_semantics.json",
+          "audit_sha256": "a61336cb9ae6a24603440586f2b5a58101c51f22fddbd2bebedf9d26933bc2a4",
+          "sacred_bark": [
+            false,
+            true
+          ]
+        },
         "scope_groups": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:2502"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": []
       },
       {
@@ -11437,6 +11697,8 @@
         "evidence_levels": [
           "SOURCE_MATCHED",
           "NATIVE_METADATA_VERIFIED",
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED",
           "NATIVE_EXECUTED"
         ],
         "game_id": "SpeedPotion",
@@ -11451,12 +11713,19 @@
           "rarity": 0,
           "requires_target": false
         },
-        "original_evidence": null,
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_potion_semantics.json",
+          "audit_sha256": "a61336cb9ae6a24603440586f2b5a58101c51f22fddbd2bebedf9d26933bc2a4",
+          "sacred_bark": [
+            false,
+            true
+          ]
+        },
         "scope_groups": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:2507"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": []
       },
       {
@@ -11465,6 +11734,8 @@
         "evidence_levels": [
           "SOURCE_MATCHED",
           "NATIVE_METADATA_VERIFIED",
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED",
           "NATIVE_EXECUTED"
         ],
         "game_id": "Strength Potion",
@@ -11479,12 +11750,19 @@
           "rarity": 0,
           "requires_target": false
         },
-        "original_evidence": null,
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_potion_semantics.json",
+          "audit_sha256": "a61336cb9ae6a24603440586f2b5a58101c51f22fddbd2bebedf9d26933bc2a4",
+          "sacred_bark": [
+            false,
+            true
+          ]
+        },
         "scope_groups": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:2516"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": []
       },
       {
@@ -11493,6 +11771,8 @@
         "evidence_levels": [
           "SOURCE_MATCHED",
           "NATIVE_METADATA_VERIFIED",
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED",
           "NATIVE_EXECUTED"
         ],
         "game_id": "Swift Potion",
@@ -11507,12 +11787,19 @@
           "rarity": 0,
           "requires_target": false
         },
-        "original_evidence": null,
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_potion_semantics.json",
+          "audit_sha256": "a61336cb9ae6a24603440586f2b5a58101c51f22fddbd2bebedf9d26933bc2a4",
+          "sacred_bark": [
+            false,
+            true
+          ]
+        },
         "scope_groups": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:2520"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": []
       },
       {
@@ -11521,6 +11808,8 @@
         "evidence_levels": [
           "SOURCE_MATCHED",
           "NATIVE_METADATA_VERIFIED",
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED",
           "NATIVE_EXECUTED"
         ],
         "game_id": "Weak Potion",
@@ -11535,13 +11824,20 @@
           "rarity": 0,
           "requires_target": true
         },
-        "original_evidence": null,
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_potion_semantics.json",
+          "audit_sha256": "a61336cb9ae6a24603440586f2b5a58101c51f22fddbd2bebedf9d26933bc2a4",
+          "sacred_bark": [
+            false,
+            true
+          ]
+        },
         "scope_groups": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:2524",
           "cpp/simulator/src/sim/search/GameAction.cpp:277"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": []
       }
     ],
@@ -12342,7 +12638,7 @@
         "original_evidence": null,
         "scope_groups": [],
         "simulator_references": [
-          "cpp/simulator/src/combat/Actions.cpp:1378",
+          "cpp/simulator/src/combat/Actions.cpp:1380",
           "cpp/simulator/src/combat/Actions.cpp:688"
         ],
         "status": "BLOCKED",
@@ -15879,12 +16175,12 @@
   "schema": "sls-ironclad-semantic-audit-v1",
   "summary": {
     "act1_pilot_ready": false,
-    "claim": "VERIFIED requires stock-source agreement plus explicit executable evidence; cards additionally require current per-variant Original/native boundary equality; BLOCKED entries are not parity claims.",
+    "claim": "VERIFIED requires stock-source agreement plus explicit executable evidence; cards and potions additionally require current per-variant Original/native effect evidence; BLOCKED entries are not parity claims.",
     "status_counts": {
-      "BLOCKED": 285,
+      "BLOCKED": 253,
       "DIFFERENCE": 0,
       "OUT_OF_SCOPE": 0,
-      "VERIFIED": 133
+      "VERIFIED": 165
     }
   }
 }

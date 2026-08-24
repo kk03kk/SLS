@@ -16,8 +16,9 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from sls.content.scope import ironclad_a0_scope_hash, load_ironclad_a0_scope  # noqa: E402
 from sls.content.semantic_audit import (  # noqa: E402
-    CARD_SEMANTIC_AUDIT_PATH, SEMANTIC_AUDIT_PATH, SEMANTIC_AUDIT_SCHEMA,
-    load_card_semantic_audit,
+    CARD_SEMANTIC_AUDIT_PATH, POTION_SEMANTIC_AUDIT_PATH,
+    SEMANTIC_AUDIT_PATH, SEMANTIC_AUDIT_SCHEMA,
+    load_card_semantic_audit, load_potion_semantic_audit,
 )
 from sls.content.source_audit import (  # noqa: E402
     JavaSource, java_card_metadata, java_potion_metadata, java_relic_metadata,
@@ -109,8 +110,12 @@ def build_audit() -> dict[str, Any]:
     scope = load_ironclad_a0_scope()
     native = _native_metadata()
     card_semantics = load_card_semantic_audit()
+    potion_semantics = load_potion_semantic_audit()
     original_verified_cards = {
         str(item["id"]): item for item in card_semantics["entries"]
+    }
+    original_verified_potions = {
+        str(item["id"]): item for item in potion_semantics["entries"]
     }
     entries: dict[str, list[dict[str, Any]]] = {}
     status_counts = {status: 0 for status in sorted(STATUSES)}
@@ -143,7 +148,10 @@ def build_audit() -> dict[str, Any]:
             dynamic_card_verified = (
                 category == "cards" and identifier in original_verified_cards
             )
-            behavior_verified = bool(tests) or dynamic_card_verified
+            dynamic_potion_verified = (
+                category == "potions" and identifier in original_verified_potions
+            )
+            behavior_verified = bool(tests) or dynamic_card_verified or dynamic_potion_verified
             status = (
                 "DIFFERENCE" if differences else
                 "VERIFIED" if source_matched and behavior_verified else
@@ -157,7 +165,7 @@ def build_audit() -> dict[str, Any]:
                 levels.append("NATIVE_METADATA_VERIFIED")
             if behavior_verified:
                 levels.append("NATIVE_VERIFIED")
-            if dynamic_card_verified:
+            if dynamic_card_verified or dynamic_potion_verified:
                 levels.append("ORIGINAL_VERIFIED")
             if category in {"cards", "potions", "relics"}:
                 levels.append("NATIVE_EXECUTED")
@@ -178,7 +186,13 @@ def build_audit() -> dict[str, Any]:
                         "artifact": CARD_SEMANTIC_AUDIT_PATH.relative_to(ROOT).as_posix(),
                         "audit_sha256": card_semantics["audit_sha256"],
                         "variants": [0, 1],
-                    } if dynamic_card_verified else None
+                    } if dynamic_card_verified else {
+                        "artifact": POTION_SEMANTIC_AUDIT_PATH.relative_to(ROOT).as_posix(),
+                        "audit_sha256": potion_semantics["audit_sha256"],
+                        "sacred_bark": (
+                            [False] if identifier == "SMOKE_BOMB" else [False, True]
+                        ),
+                    } if dynamic_potion_verified else None
                 ),
                 "category_execution_test": (
                     "tests/simulator/test_content_execution.py" if category in {
@@ -298,7 +312,7 @@ def build_audit() -> dict[str, Any]:
             "act1_pilot_ready": status_counts["DIFFERENCE"] == 0 and status_counts["BLOCKED"] == 0,
             "claim": (
                 "VERIFIED requires stock-source agreement plus explicit executable evidence; "
-                "cards additionally require current per-variant Original/native boundary equality; "
+                "cards and potions additionally require current per-variant Original/native effect evidence; "
                 "BLOCKED entries are not parity claims."
             ),
         },

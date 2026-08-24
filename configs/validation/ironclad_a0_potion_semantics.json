@@ -1,0 +1,948 @@
+{
+  "audit_sha256": "a61336cb9ae6a24603440586f2b5a58101c51f22fddbd2bebedf9d26933bc2a4",
+  "entries": [
+    {
+      "game_id": "Ancient Potion",
+      "id": "ANCIENT_POTION",
+      "java_sha256": "ac61335566e2ef23259ff6b7c703c7e3109e9436d2a368a3ce23839ed697f0ce",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/potions/AncientPotion.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "d2b368c8bda88abd01f434eda9b963c543c93cffc68e897cf731bae211789406",
+            "b467b537fb98920d149c401071f0dcba58abd6cf0f40d8ed1c75d67915bc3d6f"
+          ],
+          "effect_sha256": "e75faaed7ca30732cab2013fdc2362ae2979b8a2f3df635a687e8ad8d74125d8",
+          "sacred_bark": false,
+          "setup_digest": "973c60cc0bc52ad4714a2e8455b49d527074494b5de01116e87456d3fb72c74c"
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "9baacdd0fbaa4bd71aa4c697900bd1a630a9991c63c898f3b74d9e582c846905",
+            "77328093fc1e4683acf10142ffeae8a0bff92c5197ac298678fedc225f73a7e4"
+          ],
+          "effect_sha256": "2ff21408e2ccd79d544ecc13c9e35cfd2dd283d4729fd8f2192a69c95a93778b",
+          "sacred_bark": true,
+          "setup_digest": "1915db514e3ea4c5a45bf1a103df8ea7849ba1b16f1df733aa114e2754c0dc12"
+        }
+      ]
+    },
+    {
+      "game_id": "AttackPotion",
+      "id": "ATTACK_POTION",
+      "java_sha256": "55ee269ad56ab04fb2e8629ac262283eab7abf175b7de2a690da3a3c4c1c35b2",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/potions/AttackPotion.java",
+      "variants": [
+        {
+          "boundaries": 3,
+          "boundary_hashes": [
+            "3d727e113bef6e79d8f0f1fab11985406c14c4694f8c7afae19a1f5829b89a0a",
+            "29b89cb1419e17f35a05deff6402eeb17d0f48d4c93b12ad8a64c1d4f1b4ee45",
+            "8956eabfbb068483597b5c981ff59e04f7dfd143d69d35cf37a2f0fc0cde4a8e"
+          ],
+          "effect_sha256": "9865564e40d6d87db94d7b8a5daf22c0c5e81e7d9175dde960dd1c6144b7d2fa",
+          "sacred_bark": false,
+          "setup_digest": "973c60cc0bc52ad4714a2e8455b49d527074494b5de01116e87456d3fb72c74c"
+        },
+        {
+          "boundaries": 3,
+          "boundary_hashes": [
+            "31252ae3afd1200a7ba80c2ee76443701d7a8efeef85dc1aa6c8566ded40894c",
+            "9039d809ba1146b1c61608dc5d2a264d367c8fbe9ea9fb646c5787e8013930aa",
+            "a8c8db3d2a4e68d6a010ba62a9a1a0097e3d1a4d9add6e83ea4eef912eb163f3"
+          ],
+          "effect_sha256": "3e9cad05a98b36e9fbac3b0a45d2bc9265118d1beafd451c98d28dcbb5d0d650",
+          "sacred_bark": true,
+          "setup_digest": "1915db514e3ea4c5a45bf1a103df8ea7849ba1b16f1df733aa114e2754c0dc12"
+        }
+      ]
+    },
+    {
+      "game_id": "BlessingOfTheForge",
+      "id": "BLESSING_OF_THE_FORGE",
+      "java_sha256": "1907bd943b9c2b7abd91e5c8a05956d90bd0bb7b0242908715e9d8e8a043df64",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/potions/BlessingOfTheForge.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "46e308e16c1416f5b55edcf6188cb92bc99fcdc11b31d97824f5799dc8c60a0d",
+            "fac2d8ca3c7c7faf8e24d2a6a2daf578165232d3cd642f51a4dce06499862914"
+          ],
+          "effect_sha256": "1aff505a475529e2ae4d139351dd8e7614e46c5eac2b36cd4b142442f60a2413",
+          "sacred_bark": false,
+          "setup_digest": "973c60cc0bc52ad4714a2e8455b49d527074494b5de01116e87456d3fb72c74c"
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "98f06e37962045a25ffcd74b2559e2460e2a11c34bce61c814fdf8a6f135d270",
+            "cbf2e7c1605bb1db18a00da49e75934eaded0b97b7fe14536bc8a736e1ab9fce"
+          ],
+          "effect_sha256": "ae560fdbb647f2ed210bcb47164ba286eed81b873e4e983ac9c65730d6690615",
+          "sacred_bark": true,
+          "setup_digest": "1915db514e3ea4c5a45bf1a103df8ea7849ba1b16f1df733aa114e2754c0dc12"
+        }
+      ]
+    },
+    {
+      "game_id": "Block Potion",
+      "id": "BLOCK_POTION",
+      "java_sha256": "3eb5510354a134a28bb95d3aa10edb400fe69fefee8f5a3d50bda18c6c497087",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/potions/BlockPotion.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "eccfa74bc84b72d120663b3ba9019032352c7dee21d36265a8c4e810b83f6be7",
+            "c1bf70f0e52bbaf2dcf9c7afe6ce611d8c3327dcc4e93ad3554f4f3712e75988"
+          ],
+          "effect_sha256": "9b00febbbeb68edf982a5abdfa9b7be79d8b7e19be39378ecca101d478e2d675",
+          "sacred_bark": false,
+          "setup_digest": "973c60cc0bc52ad4714a2e8455b49d527074494b5de01116e87456d3fb72c74c"
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "a5279bc7f0d10915011c8c8b907f9dc30a0a808a587c7b498f95620a01f0bfeb",
+            "149bbb561a4fdaff4335c74f3ca4a3ee2d8e81a7ac6d995894d9448fe8d5c778"
+          ],
+          "effect_sha256": "e0bb01a1e6e4a8d9091fc6c900c5f106446b14696f3f73dc3373313e7a374a11",
+          "sacred_bark": true,
+          "setup_digest": "1915db514e3ea4c5a45bf1a103df8ea7849ba1b16f1df733aa114e2754c0dc12"
+        }
+      ]
+    },
+    {
+      "game_id": "BloodPotion",
+      "id": "BLOOD_POTION",
+      "java_sha256": "81d58e17c3b29beabbe5e640506dbee61cec658e8e1e743a64192c8058cbc118",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/potions/BloodPotion.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "11b47ee5bf0452b75136c233d05c1c7c508b7cdc9e483c4b5ca9b3122eaa2f29",
+            "0b04b6f5c118c84e6e53477261522bcfb128aeb4dc18934c6239dc9459e5c319"
+          ],
+          "effect_sha256": "26014e2e7b6d94f3e576a802f26b16b764924f07ee1cc9b693fbbee834d1bebb",
+          "sacred_bark": false,
+          "setup_digest": "973c60cc0bc52ad4714a2e8455b49d527074494b5de01116e87456d3fb72c74c"
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "45ba0d122fc769d2620e0746d54b49d7e5413ca20b48d8f16707720fe1bcd695",
+            "fc249fca077c1e5f10b99e188c0c423a10c2e3d7d3243b0edfe254ce48c0f19e"
+          ],
+          "effect_sha256": "0bf913993aa0e94ab858ee8e4d3ef0a294ccf641d9b78853920644d069028456",
+          "sacred_bark": true,
+          "setup_digest": "1915db514e3ea4c5a45bf1a103df8ea7849ba1b16f1df733aa114e2754c0dc12"
+        }
+      ]
+    },
+    {
+      "game_id": "ColorlessPotion",
+      "id": "COLORLESS_POTION",
+      "java_sha256": "276585fed1a506a8e7fc8b4b2c7ec7ecf43a9cfa8850b380abaa26caf96e2b5c",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/potions/ColorlessPotion.java",
+      "variants": [
+        {
+          "boundaries": 3,
+          "boundary_hashes": [
+            "a5578a2e721b0fbf4ff66f3a971a6c336d64d26d8a138d78f2306ffe5402ab6b",
+            "a266a37d09a9012bbd11541aa35e782885699c4fa0b37be26aa10ee7804dade1",
+            "d8a0b6ff2b910afb1fe19c2b7b4f395322dbea863587446b6ff7539c1bcd053a"
+          ],
+          "effect_sha256": "4ca9c80d2b807b415eb556d13a0204029d75b98cde3cd20f936d507f89a423f4",
+          "sacred_bark": false,
+          "setup_digest": "973c60cc0bc52ad4714a2e8455b49d527074494b5de01116e87456d3fb72c74c"
+        },
+        {
+          "boundaries": 3,
+          "boundary_hashes": [
+            "f21156c3494f8fd00550da0243eb19fd5d578a376461dbedda2d0ac0acec053f",
+            "853859090a7dc56a908fa325a981e5192ea072f792c783b29075e93219197257",
+            "6c790575541e90508f7edbdf6149b11913620b25d309fc322eda9619fd4f97ec"
+          ],
+          "effect_sha256": "1fa1a9c4e02efec3b0d0f0b27f7814da3cb681640757d462afc9066ab117d697",
+          "sacred_bark": true,
+          "setup_digest": "1915db514e3ea4c5a45bf1a103df8ea7849ba1b16f1df733aa114e2754c0dc12"
+        }
+      ]
+    },
+    {
+      "game_id": "CultistPotion",
+      "id": "CULTIST_POTION",
+      "java_sha256": "c1139df5faf65f7f09492cd174bc3b58b6d32c5e8336c16d478aab45abe19706",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/potions/CultistPotion.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "96be60cd6a70fe15657087ef0fe80aa7508b5fd2d0d7af4894cc45f7cebeff37",
+            "3f469534d501efa4c5b4dbeca96ebb26ca5c011e0c11fc4ce689eeba2de38c4b"
+          ],
+          "effect_sha256": "a636f7aa5350303b4ca370fc3131b2d1aef44bf54874e5a4697d4bf405afe487",
+          "sacred_bark": false,
+          "setup_digest": "973c60cc0bc52ad4714a2e8455b49d527074494b5de01116e87456d3fb72c74c"
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "eee406eae198f1d3687d9c683c1728c324aa728a17742ce7cc3e7cb3f8ba5b7e",
+            "af31da3d2bbba3a979dec7708a6b6424e62a63e08141549837dc52c34104ef1f"
+          ],
+          "effect_sha256": "0cca3fae9626c3e951a9288ef3a84d11b011087bc136b9a9ebf437ca68d06b01",
+          "sacred_bark": true,
+          "setup_digest": "1915db514e3ea4c5a45bf1a103df8ea7849ba1b16f1df733aa114e2754c0dc12"
+        }
+      ]
+    },
+    {
+      "game_id": "Dexterity Potion",
+      "id": "DEXTERITY_POTION",
+      "java_sha256": "1625c7f638cd7975a66c184ca422cee0018af37cadd54229b49425adcb49133f",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/potions/DexterityPotion.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "8d409ca229d5c18e392c66da9122f25ab15578cb85b8b7b743efa577b9f8a753",
+            "e2f98d1c8d7ac21ff560ce5eb23ed673232966a153f1df27c9443cd41123345f"
+          ],
+          "effect_sha256": "37ad1a2e7248200c8a393666a1c231bb6c6fa60b9aff6a8f546c9c8bb7ea8c67",
+          "sacred_bark": false,
+          "setup_digest": "973c60cc0bc52ad4714a2e8455b49d527074494b5de01116e87456d3fb72c74c"
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "fd202632681d67505a74bf3782578337ad808136c18e057fd9b38168b773fac4",
+            "0b2bccd9cacabfb1ebed8bd77da0c3552cf0582178f64ae6e33be3f0b2bc4ce3"
+          ],
+          "effect_sha256": "fd07c3456d61e29b2909b09732d5c3cfaba5ab430cdeb5bb417853df91023686",
+          "sacred_bark": true,
+          "setup_digest": "1915db514e3ea4c5a45bf1a103df8ea7849ba1b16f1df733aa114e2754c0dc12"
+        }
+      ]
+    },
+    {
+      "game_id": "DistilledChaos",
+      "id": "DISTILLED_CHAOS",
+      "java_sha256": "698c5c414b7aea6636536ff41ae53fa6cd68250a7dbf90c195e42fadd4ba8c73",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/potions/DistilledChaosPotion.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "10f1d4c1dfb64ce7a68eddab59ec39ad8717f3943ca3294a5877a9111ebb1084",
+            "6e2dce759b80a242672576081cc05af9da6c086ef1454c30c19fa5c1056986ab"
+          ],
+          "effect_sha256": "a6f3201a89a6a6aed17ed3178a858c0edda4bf093cd41abf3929d4c18afe1e06",
+          "sacred_bark": false,
+          "setup_digest": "973c60cc0bc52ad4714a2e8455b49d527074494b5de01116e87456d3fb72c74c"
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "5b38a5aedf43dc6eeff8c7d7619e8828de4712f9545939d6ad940bb7f4760699",
+            "4141f3af01847287f9b4ec98a179d10ede828b5228a874fb0984d98030b50da5"
+          ],
+          "effect_sha256": "c5931c6cfc327de25a5d9705a906ea5378a5c658d534cfbde40b430ca331642c",
+          "sacred_bark": true,
+          "setup_digest": "1915db514e3ea4c5a45bf1a103df8ea7849ba1b16f1df733aa114e2754c0dc12"
+        }
+      ]
+    },
+    {
+      "game_id": "DuplicationPotion",
+      "id": "DUPLICATION_POTION",
+      "java_sha256": "4f3d4a0ad068395fa177e849546c5421e7d04f720b995f21d6e4a182f03f8b3f",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/potions/DuplicationPotion.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "2740366e14ef72bd1b5fe14cee00db296a8d13290a59a7f57ba9b4720cd0f145",
+            "07fce27f4b2cac2424bc30ade91c0b3f4be8cfeb62330c208c8a79306634e8ad"
+          ],
+          "effect_sha256": "e8ff84b3d95abb9b71f382f5098967ee200507bb43e4035e1d01f40373940b52",
+          "sacred_bark": false,
+          "setup_digest": "973c60cc0bc52ad4714a2e8455b49d527074494b5de01116e87456d3fb72c74c"
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "d820f0f41a66d9846c2d265744ed97d921c93c5273d3886c7241dbf2e75a870b",
+            "1157ec63b4cad293b40ccdb0660b32355774ba228a416bbfc284fe7738361e79"
+          ],
+          "effect_sha256": "31cd693c754798d51346972fd237db81c277cb35a001a03617c4a4023bb8dbf9",
+          "sacred_bark": true,
+          "setup_digest": "1915db514e3ea4c5a45bf1a103df8ea7849ba1b16f1df733aa114e2754c0dc12"
+        }
+      ]
+    },
+    {
+      "game_id": "ElixirPotion",
+      "id": "ELIXIR_POTION",
+      "java_sha256": "459ead96512630d4770860e07de4b481fd5fa361db54c8036c410a8c58ad4357",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/potions/Elixir.java",
+      "variants": [
+        {
+          "boundaries": 6,
+          "boundary_hashes": [
+            "f5d90f991f963fc99c3896e17fc3dd393ae6c9d8f0a41e1f4070d1175f639b18",
+            "c6645272af680b9b5bffa93030b4a6084ed0d9a87dd79426f33cb70b00b849b1",
+            "11f31cf5b3fa4653603eea2e01a84445122c92dbec1e4308f27057d13e3b6405",
+            "a6aa36d059a84cdf2fc5dd3cda02546e9585cd4cf9bad8a0f6915ce4a65f747b",
+            "85136459728e21b8020b3a70aae0804ef29e5d528996cd0b18cfc03565c64da1",
+            "c0261e054cdcfc7d17c5945d2f4bbeda48497e3ff743e18358735b2ba68a9cbe"
+          ],
+          "effect_sha256": "76ce93c0f4bab2471945b62f44d406580d7c06c75d464e25da4d6b6f89d6b108",
+          "sacred_bark": false,
+          "setup_digest": "973c60cc0bc52ad4714a2e8455b49d527074494b5de01116e87456d3fb72c74c"
+        },
+        {
+          "boundaries": 6,
+          "boundary_hashes": [
+            "ae688d2156362800a2ddf0758a221d895f31069a6d034563554673cee1be239b",
+            "ebaff4d0f934f5cec1e45a5a6d5d046e777abc6636a1d4a2bf06d16c7b6ce5b7",
+            "3d5327f38e83fbbef65874b6c729684f53ff0df19434aec35bca285eb0bab376",
+            "7a3d3c7e40849c3e7dbeeee01245fee58e3b42d0e50e113968b9ba842da5cd48",
+            "4f4eb2facd1bce4fc2ddf12b8a27a390c269719e1c60d6df2ca9a0d52a2d7585",
+            "0beb76356c4b43f7145334b31500beaa3129c1f729c9ac80c9ac37e2e3b11645"
+          ],
+          "effect_sha256": "c9d227745fcbdfbc1ee0d4701af1bf135a72e0b4efa38e1f29368423ce64163d",
+          "sacred_bark": true,
+          "setup_digest": "1915db514e3ea4c5a45bf1a103df8ea7849ba1b16f1df733aa114e2754c0dc12"
+        }
+      ]
+    },
+    {
+      "game_id": "Energy Potion",
+      "id": "ENERGY_POTION",
+      "java_sha256": "46f504243f603d9ba6d1b8935404da4251fd29e40dbd2befcc0b13ef83bbdc23",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/potions/EnergyPotion.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "6e78567a3e1c8292f8d34e7e1f8078c7732dbc4a413b565bd4438e574f07f5a4",
+            "edb737cc50db9a469e4a2a3a2c6be79147cd9b2fdbc2fe7049a6d0e6078a549b"
+          ],
+          "effect_sha256": "c3960253b667dbeec4c31858167e04796372e7f6d1106a25676cbd051ba2665a",
+          "sacred_bark": false,
+          "setup_digest": "973c60cc0bc52ad4714a2e8455b49d527074494b5de01116e87456d3fb72c74c"
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "5dce3e095efd5b9322f2a85b44f5bbb85c7ceff6c4dfe0b3527211829ea7f4ed",
+            "5e01ed3e654058741d29ae5e7f000c85bc3957134c97e64fe987868eacbcde5f"
+          ],
+          "effect_sha256": "2a1a3de8adf961ca49f5bccdfbf578a0aee2225c482a8bf2ba0db5ae13df185c",
+          "sacred_bark": true,
+          "setup_digest": "1915db514e3ea4c5a45bf1a103df8ea7849ba1b16f1df733aa114e2754c0dc12"
+        }
+      ]
+    },
+    {
+      "game_id": "EntropicBrew",
+      "id": "ENTROPIC_BREW",
+      "java_sha256": "b431897ab14af9bf0326275ec7256046c3717479b16fdaef94c7c2b05bb633b8",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/potions/EntropicBrew.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "2c4d4f3d00501a9a53b567cdfda362bd9e8011b8666ab7641783d911516748e7",
+            "b91f6bd19957018643547419d50fb0a5f8f896157f0c7ad9c33784d53d788dc6"
+          ],
+          "effect_sha256": "84b7ea14913d52a584ab27f1629dbb970d314ec4c05495ae40ae5e9439911aca",
+          "sacred_bark": false,
+          "setup_digest": "973c60cc0bc52ad4714a2e8455b49d527074494b5de01116e87456d3fb72c74c"
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "69eda89d7ebd20bbf28ed4e65840cdb7e5b44a14ffa8a3cbb5091c611a27aab2",
+            "85466598ec6a97e2e98bd6f52c731944499b7f7eecd5c00ebb29252e3ffb3e19"
+          ],
+          "effect_sha256": "80f3d3df9adf8df663ea3a4195859d4c36eb6d3872701a92a0a4103f9f0fd7c4",
+          "sacred_bark": true,
+          "setup_digest": "1915db514e3ea4c5a45bf1a103df8ea7849ba1b16f1df733aa114e2754c0dc12"
+        }
+      ]
+    },
+    {
+      "game_id": "EssenceOfSteel",
+      "id": "ESSENCE_OF_STEEL",
+      "java_sha256": "57bd8128312669d7ebeeb1b35337dcfcbf3641c8c98aab9d594873cdca577614",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/potions/EssenceOfSteel.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "e2c910c81e4451f224f84e9f95a31cb53a46a9d15e448ccafbedf08376f308dd",
+            "b15f26ea4498c60d89d254b815485f3a76591c55a67a4e6d7e4d6084046318e9"
+          ],
+          "effect_sha256": "1e67b4f643f8ac8ac86bf40a0828ea3adb74bdd3e0d19f6abd1c5b3c460ed8eb",
+          "sacred_bark": false,
+          "setup_digest": "973c60cc0bc52ad4714a2e8455b49d527074494b5de01116e87456d3fb72c74c"
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "95384f8dd613728bba9fef75c3dfe35dad7bbccd0489adf886d2f55e2a528c5c",
+            "1d00c013af665240a537ce9c8d88fedc43924137033ceb629a494d0b9f55d25b"
+          ],
+          "effect_sha256": "87823b37972216fb482a8a5bb31b670d4b2e1515e71f94ed5c2a52f878715081",
+          "sacred_bark": true,
+          "setup_digest": "1915db514e3ea4c5a45bf1a103df8ea7849ba1b16f1df733aa114e2754c0dc12"
+        }
+      ]
+    },
+    {
+      "game_id": "Explosive Potion",
+      "id": "EXPLOSIVE_POTION",
+      "java_sha256": "f2d2c01950f79f9aee17742e49103729a2f780ba728c0732d6c53444aefb8eba",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/potions/ExplosivePotion.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "96a17eb437c7ab9ef2bfe2a38b1d287fe8d772dd4db4b3d46b0f324e090259ab",
+            "dfa7d3f490774bfbd91fa2432babb1f6a339d41dc2d6849b20533f9e1b391d10"
+          ],
+          "effect_sha256": "fb7135aefb669b4a03a001928c5031d584d3c094d5525a6f6636a3589c64b69f",
+          "sacred_bark": false,
+          "setup_digest": "973c60cc0bc52ad4714a2e8455b49d527074494b5de01116e87456d3fb72c74c"
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "289857ad4ed97b4f473858a662cf054b44142943eb0ee7cf4d470f615a2784b9",
+            "5c3c6cfdd3b91a650b2c5eccf68854a0fc90867172b3b5a7e4c406ed481ab17a"
+          ],
+          "effect_sha256": "6337ffa3b125cf4551b74bac1315f46c856059e3de8f63e572866f339f8b876c",
+          "sacred_bark": true,
+          "setup_digest": "1915db514e3ea4c5a45bf1a103df8ea7849ba1b16f1df733aa114e2754c0dc12"
+        }
+      ]
+    },
+    {
+      "game_id": "FairyPotion",
+      "id": "FAIRY_POTION",
+      "java_sha256": "bfaa449c19381162b32dc9a96f2a4835696336f4ce4e1aeb4ebe138d41c3fe5e",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/potions/FairyPotion.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "73427c9f67e0161566992e9fc29496708173db64680662a87b3c8778404b275f",
+            "cd3b64ee7a7a506ace9c56beef6b2107881180ebf0bbf083eaec4a8a979ccf2c"
+          ],
+          "effect_sha256": "71f23438f11c3842656c83453fcdca6b585b7890879e71f2c1b8eaea0156ed26",
+          "sacred_bark": false,
+          "setup_digest": "98ce685372c63651d076b9d512af9c53ba3c422492f516b9800f6cf999d07392"
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "cbe1d716c0dc9151577c4c871d9ba786bf0782cb6f7395723f50c44a4ccbdc8f",
+            "5b2646ca5a3b25f0569652ad59aa473479da6693263313d4386e4ff94e76aecc"
+          ],
+          "effect_sha256": "5393f29f07c2d73decbde3936e5299970a95da60c9493680308017a2a41a01b9",
+          "sacred_bark": true,
+          "setup_digest": "dd0405e248f45f8e7bb2e3b4d1ddec3e1ebe7e588b22ab5e1d27b957ae7bb7e5"
+        }
+      ]
+    },
+    {
+      "game_id": "FearPotion",
+      "id": "FEAR_POTION",
+      "java_sha256": "f033cb783fa4a41abade07c797928fc174d4036511a9a98a5787e417eb64705e",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/potions/FearPotion.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "22cf30aa05361f5a3b44f0c6cb7245944b35261573fd395b9dc0d71c4648feb3",
+            "cbb802637fae5969860bdfded73119250374fa16ae109278f587d07d1865aa3a"
+          ],
+          "effect_sha256": "3cf91577d545ea71d264c708b8507075dfcf198b0d0981d2efd538f125ef9623",
+          "sacred_bark": false,
+          "setup_digest": "973c60cc0bc52ad4714a2e8455b49d527074494b5de01116e87456d3fb72c74c"
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "82b8ee46d123d85c4e998c9cd25763ffea4fb930cc997bfc90c3eda04cbc695e",
+            "066f0b6007870df8b15a099519023ffb662e779b7e4f84dd8976d12f3efd5e30"
+          ],
+          "effect_sha256": "6e58c3805b11fb5b01e0086068518127db5750807d0028bd3e6a32e3844b6d10",
+          "sacred_bark": true,
+          "setup_digest": "1915db514e3ea4c5a45bf1a103df8ea7849ba1b16f1df733aa114e2754c0dc12"
+        }
+      ]
+    },
+    {
+      "game_id": "Fire Potion",
+      "id": "FIRE_POTION",
+      "java_sha256": "248ddb37e6a9e7abbc3983232eca2634457a0f1b3c6df09d9639387e3aa23fdf",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/potions/FirePotion.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "8a2f2fd16167e9b46ab0675f706171205faf0db21776689631d5ec920609de5f",
+            "68ca80f47628c14e117f18b189289a79c92a5798225ac4c3a450472dced25cb0"
+          ],
+          "effect_sha256": "c799dc5da709ba4ddec7a9fb467423c2d2f171136f23a93b58d44a9baf2e0642",
+          "sacred_bark": false,
+          "setup_digest": "973c60cc0bc52ad4714a2e8455b49d527074494b5de01116e87456d3fb72c74c"
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "3704ae891971b9c22a52d3e1fce7551c2088bd252773bdb65b2444e4646bb652",
+            "46e94c1ee01be2bfd9c548ffebf19c02488b3544d0ab6a5b3411d59594872634"
+          ],
+          "effect_sha256": "d07e869b733292a3edadbee10c58a1998804a9b48b313d5d6de80a8312a12501",
+          "sacred_bark": true,
+          "setup_digest": "1915db514e3ea4c5a45bf1a103df8ea7849ba1b16f1df733aa114e2754c0dc12"
+        }
+      ]
+    },
+    {
+      "game_id": "SteroidPotion",
+      "id": "FLEX_POTION",
+      "java_sha256": "b08507973f29f39425735b25df72abfd6ce877ef593312372c4006f33fe36bce",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/potions/SteroidPotion.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "43fbaf475558736a6001e8b33f4d729bb479811c065cae3e3e56c2fd749ae2ff",
+            "9c1de793d2e67dc65ee0e65a19a1cb1499eedcd13a97636ba03eb32c61caf773"
+          ],
+          "effect_sha256": "6412e461e77ce58905677ff8d32a2d739ccb60b59d7715764f772fc6ea947377",
+          "sacred_bark": false,
+          "setup_digest": "973c60cc0bc52ad4714a2e8455b49d527074494b5de01116e87456d3fb72c74c"
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "56dd39823ee85a076010ed4fd2cb8a87107b2aa435eb003eccee5e06b1efcedb",
+            "a15169be7ce148a73cf3b9cd8584b4cef464cbbcf17c3c28af4ed1c6fc22069f"
+          ],
+          "effect_sha256": "130c65b251905ac513445ea0631e22cf7d7387cb156b9160e2f5edfaf81c0b4e",
+          "sacred_bark": true,
+          "setup_digest": "1915db514e3ea4c5a45bf1a103df8ea7849ba1b16f1df733aa114e2754c0dc12"
+        }
+      ]
+    },
+    {
+      "game_id": "Fruit Juice",
+      "id": "FRUIT_JUICE",
+      "java_sha256": "9c96b3fb5a18795bab503c69c9ef137e76504a2b56962adadb36cf324900179d",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/potions/FruitJuice.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "3c5e86fe1ecd84d6c757dc48511d5078123f69d2b63e730a4c3dfcf994638943",
+            "fcd9eac703dc812fce43bd4d29c4ff37e9dce94ca4cebf48840b6391b459b814"
+          ],
+          "effect_sha256": "3074442c69e48405c41971cf7e2fe5d394c766b3adae3ede2f9c91e8fe098f4d",
+          "sacred_bark": false,
+          "setup_digest": "973c60cc0bc52ad4714a2e8455b49d527074494b5de01116e87456d3fb72c74c"
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "7a001a148bc20826437e9a62d1fcff301922efa3885846bd1e422c984b9586eb",
+            "9315f3cfbf9be8d9c5081bc4e0a8e05673554efd0a4a19f3c066b6ff7465c407"
+          ],
+          "effect_sha256": "fcccbef78f7059e71158dba8ad0f8ad34f43e6e4f0272d082bfd3df3d24476d0",
+          "sacred_bark": true,
+          "setup_digest": "1915db514e3ea4c5a45bf1a103df8ea7849ba1b16f1df733aa114e2754c0dc12"
+        }
+      ]
+    },
+    {
+      "game_id": "GamblersBrew",
+      "id": "GAMBLERS_BREW",
+      "java_sha256": "1346ba7b128f3bf466458c53f6551683d598d83b5c9db1e5a2211ac163022e76",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/potions/GamblersBrew.java",
+      "variants": [
+        {
+          "boundaries": 6,
+          "boundary_hashes": [
+            "e17bdfe298d0d1e365dd48692d6ded009009509d0e2d1e0ffc176472a6d31ab5",
+            "ad1cc62ac824f814cd9c48dae8c0d8839361b0b433ffeedd7dea73dbef62bcb2",
+            "7eadb2feac58f24d8b122d303b667e59f36c2619f87d65e535d852dca2344683",
+            "3ccab0e68fe4ac90c83366ac7529a203d6db975b0f4811e67fadba797d98e3b0",
+            "dcc16efa952fe0f2453219f226c636e92170ff80906d93452950639a01085e83",
+            "7e6aeeabe0dbc63026b93626879aff5677a6cc33d5a5bce6afbdc65a1e2b6919"
+          ],
+          "effect_sha256": "b2aee9dd061a350a573b5bd99fce6ee193c064d56cd939cc8b4d6a293414e998",
+          "sacred_bark": false,
+          "setup_digest": "973c60cc0bc52ad4714a2e8455b49d527074494b5de01116e87456d3fb72c74c"
+        },
+        {
+          "boundaries": 6,
+          "boundary_hashes": [
+            "ebf4f0796c683ced65e0e3427390fae01960a6e296a861aaf4f9bfe7359b9171",
+            "4a4151636447c9e29ac3112de5001e630af7a119c5314964aaabbcb4b5d4f5bc",
+            "7527cf0040d3f668860ba37c1769910a7295eb143eb833fd7437252fbc5432b6",
+            "cc17428a9d9dd229f7fe8499bcde2964eee38ea5ae5d4233312ce4f85a18fcb6",
+            "ba0bb3e10a50d220298ccfbab4529c79c28db2074045b7ba9561a3d423233a46",
+            "bfbdca4b520226441851e4cee6e9717dff7d9472b199f2769e42de8c992d9c78"
+          ],
+          "effect_sha256": "c04d1bdcc5e2d49b3a4bdda16abdc387000ac72e91b360a2779de54ac0e674a1",
+          "sacred_bark": true,
+          "setup_digest": "1915db514e3ea4c5a45bf1a103df8ea7849ba1b16f1df733aa114e2754c0dc12"
+        }
+      ]
+    },
+    {
+      "game_id": "HeartOfIron",
+      "id": "HEART_OF_IRON",
+      "java_sha256": "f0f794d4cd4c59b9ebab371396e868fc7617d70f52396fb4ebac592fbebd9fb6",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/potions/HeartOfIron.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "aeab58b15007f988fa9b29612838710a3246faa8f84faf1ac65f9571b4d82a1d",
+            "fec7ecc37b26f002d2029d905a92405520222fe5bd011fe018377a68bda5d8f2"
+          ],
+          "effect_sha256": "a2b7efda48a03c5cb97e8773b3ac733d6b2014591d107cfbf9f84680ddc9ee07",
+          "sacred_bark": false,
+          "setup_digest": "973c60cc0bc52ad4714a2e8455b49d527074494b5de01116e87456d3fb72c74c"
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "faa9bff40f723e41c3758a004a28614c7d293e5bbc2d3c13d6a44d48f3a26d81",
+            "b57887838c3af666c02083e495f972c9bdb93f18f0a7ef9aef6ea9811bc63acf"
+          ],
+          "effect_sha256": "3557579de12e6f248679cd812ee19ed06e550f21d6bb136d62eaab4e8b4830b8",
+          "sacred_bark": true,
+          "setup_digest": "1915db514e3ea4c5a45bf1a103df8ea7849ba1b16f1df733aa114e2754c0dc12"
+        }
+      ]
+    },
+    {
+      "game_id": "LiquidBronze",
+      "id": "LIQUID_BRONZE",
+      "java_sha256": "78a180aa547649b895aa87c2315b849267ea2792136676998c1f6f6e0add60f4",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/potions/LiquidBronze.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "9396854e7e5f0f1a3ce785e5395b0b09381c92f2d3eb1301773cc5dc902dd1a3",
+            "4fc5f2885645bf71c855ba2a4cac499ebe93cbdf6008e99e5ecb081805dd20ef"
+          ],
+          "effect_sha256": "99011e08f1f7f834eac2f0533fded0da23d537ab4a14fa7f315b1af6b32bf928",
+          "sacred_bark": false,
+          "setup_digest": "973c60cc0bc52ad4714a2e8455b49d527074494b5de01116e87456d3fb72c74c"
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "e7e363db9f966f7f5b997fed02a4deb667ae0133849f8029f32bee4f0cfc8127",
+            "33949f4997c7a9445f13d8e5fae77bec88b3d06fe4332ba2ff3f681ee68663fd"
+          ],
+          "effect_sha256": "706279f7fed894e37c38b9f739ff453bc8a53d7b901e788ec5e896fe04a38e63",
+          "sacred_bark": true,
+          "setup_digest": "1915db514e3ea4c5a45bf1a103df8ea7849ba1b16f1df733aa114e2754c0dc12"
+        }
+      ]
+    },
+    {
+      "game_id": "LiquidMemories",
+      "id": "LIQUID_MEMORIES",
+      "java_sha256": "1d95e6c2f6cfb2149eab586c22a2e39464b63dd3586a4665b2e02b4adbfb5eb7",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/potions/LiquidMemories.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "100e9e79a42ba9ca43bae28e86c226ad2ac5611a653b3033c69e192ecf2f0321",
+            "36596eb81a240ea8d02967e28321d63079d952e5e4a6b3089450b39fecc5b2cc"
+          ],
+          "effect_sha256": "a62c899ee100c7940fffcc8023b741931f2f1a16e425cf72cd696da967a73e27",
+          "sacred_bark": false,
+          "setup_digest": "973c60cc0bc52ad4714a2e8455b49d527074494b5de01116e87456d3fb72c74c"
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "aa39922f58fdd1790fe86349653a3deedabfe9f9890ba80e576afb5ba4bb081b",
+            "3a1c3a6ef2af148ec4054c731eb1d6c3f46b3685c9b106bd7e6d764628533c60"
+          ],
+          "effect_sha256": "545c73d1f9f3ca6e69ce0a4e7b0f602b967ed2e0c5b83ef1ee45c576f9c0fe2b",
+          "sacred_bark": true,
+          "setup_digest": "1915db514e3ea4c5a45bf1a103df8ea7849ba1b16f1df733aa114e2754c0dc12"
+        }
+      ]
+    },
+    {
+      "game_id": "PowerPotion",
+      "id": "POWER_POTION",
+      "java_sha256": "d8e57c14d65c8543a82533f76bf9008985ebff1f5dc48619de2100b98651f89d",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/potions/PowerPotion.java",
+      "variants": [
+        {
+          "boundaries": 3,
+          "boundary_hashes": [
+            "f97de9b4c04fa0cabe4093ffcda9cbf97676fb450af946f77d5be04a4dda4f9f",
+            "ebcf87d7e04538eb186f304403d69f79f7b7d722047c5337b9588d48b2ab51bc",
+            "ed1f49a9407be3e139e70aa4992e7b2100e93fcec1105d8e221d824e9cae6709"
+          ],
+          "effect_sha256": "bec3c80d4c977ef291da24765b63c4973ad140faba72a5b55e37426b776641e4",
+          "sacred_bark": false,
+          "setup_digest": "973c60cc0bc52ad4714a2e8455b49d527074494b5de01116e87456d3fb72c74c"
+        },
+        {
+          "boundaries": 3,
+          "boundary_hashes": [
+            "37ea3c0df8d2f02d04768603dbed065817f29cd85b8316a6cad55b45219a9564",
+            "d4ee864668aae725958adf7da74c8f5a29ace006dbd22d2a593021e2abfb6d88",
+            "1f70962e9831d13ec3a3a35f2f4c9b9a5b553a00fd1499b0bbccda0545c84b3f"
+          ],
+          "effect_sha256": "0c40b77e8fdb600d6b6f68a40c3fac393c0cef157583e3dc8cfab5fd01e6850e",
+          "sacred_bark": true,
+          "setup_digest": "1915db514e3ea4c5a45bf1a103df8ea7849ba1b16f1df733aa114e2754c0dc12"
+        }
+      ]
+    },
+    {
+      "game_id": "Regen Potion",
+      "id": "REGEN_POTION",
+      "java_sha256": "03a656401965d1fd30f4895001b3d1b5cc8830d0bbe27ecddfa234c8cdfc866e",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/potions/RegenPotion.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "f5d6b52399ec727a66d5473db83ed3b21962d656d5d1f3b40c4cc1470ac62bcf",
+            "156f28221fbe852a183968be173a67a4769138536668e54dc8b05faddbbbf148"
+          ],
+          "effect_sha256": "0ab43af91b795ebc2de73b6ba86cc4fa72cacb521c8c59d7e6f7c103783980f2",
+          "sacred_bark": false,
+          "setup_digest": "973c60cc0bc52ad4714a2e8455b49d527074494b5de01116e87456d3fb72c74c"
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "a9f5d3f1e522e8147a5447eab6bbf4a0a7eea4b893bd0126d2d5e7af0b1f3140",
+            "5488f13d1314ffe483a94d042ab44000bb1e45827f4e7ecff6f0ad357c530cca"
+          ],
+          "effect_sha256": "52be5834d0ea867d8523e4d748dd68d1de2dff581adfcfa85f82e515e1d9fad7",
+          "sacred_bark": true,
+          "setup_digest": "1915db514e3ea4c5a45bf1a103df8ea7849ba1b16f1df733aa114e2754c0dc12"
+        }
+      ]
+    },
+    {
+      "game_id": "SkillPotion",
+      "id": "SKILL_POTION",
+      "java_sha256": "bafe915f1fae6f635826af1ad7012a2f2ed75963f3254b1dda1075aa98266090",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/potions/SkillPotion.java",
+      "variants": [
+        {
+          "boundaries": 3,
+          "boundary_hashes": [
+            "b09895f0b7d0fe482adfd5f2d2a571fde18fb7e64862449bfcab991f06e42dfc",
+            "e135fe6fa2c8974209ca5a284a61de20463e7adf3eecf9b0efccbf1f3ce5de72",
+            "e6d99f52ed852f16efaea8c53777925367c7d7a30ac981dc9751f6b00f518f2f"
+          ],
+          "effect_sha256": "3aeb8bd3599b6d253e5f67a2a7d561fec44a1ce189edf1350e81425b39996822",
+          "sacred_bark": false,
+          "setup_digest": "973c60cc0bc52ad4714a2e8455b49d527074494b5de01116e87456d3fb72c74c"
+        },
+        {
+          "boundaries": 3,
+          "boundary_hashes": [
+            "0340a9806d1969608eef40f2856e36be868df4a01d817c7484e293ff01c70b97",
+            "cdfc2f92eb4df9e9ef1392b7cc88383d9ad94f50a7b25a5372878f20bb6abb49",
+            "eb09b420098d9783f1d6ff80d56e080b87bb5a3bc0906ae9e1ea7cf29ceb2287"
+          ],
+          "effect_sha256": "abb4ff242e4d4f9900e12283181df49437458391707ae3f93724d4fc72df8a3e",
+          "sacred_bark": true,
+          "setup_digest": "1915db514e3ea4c5a45bf1a103df8ea7849ba1b16f1df733aa114e2754c0dc12"
+        }
+      ]
+    },
+    {
+      "game_id": "SmokeBomb",
+      "id": "SMOKE_BOMB",
+      "java_sha256": "fd058ba4e49a96c82bc6323b27fc2d569a3304d00ce1afbb5237c110b9ad9c23",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/potions/SmokeBomb.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "20b6a40792c55069a1948e2b96a4d1a627315801071572a13cff1b959b38f031",
+            "d64e8a372137bb7dc92be5f2f71f42b70080bd2c1e4ce013bc76e3e35a559cfd"
+          ],
+          "effect_sha256": "ee359d87ea7bd5f6475b2f68273efa04b152432fb466e65dcb8702e81f1a1b97",
+          "evidence_mode": "NAMED_SCENARIO_EFFECT",
+          "sacred_bark": false,
+          "setup_digest": "973c60cc0bc52ad4714a2e8455b49d527074494b5de01116e87456d3fb72c74c"
+        }
+      ]
+    },
+    {
+      "game_id": "SneckoOil",
+      "id": "SNECKO_OIL",
+      "java_sha256": "12ec83c0450f54e1f227cc2c2046a263db7d9f26b58db6d6df31c8a7ced123e4",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/potions/SneckoOil.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "f012ebfb09089af95c6bcfe95cfd353bc69a4b58b1c13b536b5454f20b9b5a80",
+            "5d3860b43a1317925ae0a57dc60b9c17d3864ecc1ba9c0f105b12768daa523a7"
+          ],
+          "effect_sha256": "1bb571c27a20fa2da576d458e76af9e3207805b7e8430a70db4d18ba72aaac08",
+          "sacred_bark": false,
+          "setup_digest": "973c60cc0bc52ad4714a2e8455b49d527074494b5de01116e87456d3fb72c74c"
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "5007cba1458db5839af5a5f7d7ff8ae1832a1b0b3c83e4a882e2f41d3e0e8054",
+            "7e8c69c16afd16a936b86db62a0fc931c292e1cfd33ff706e4ea23d9306e0400"
+          ],
+          "effect_sha256": "9cc55b97061ec1176bb2ffd2e3352b9bfc4d068e1d1a252078b79ff4e5b9fa64",
+          "sacred_bark": true,
+          "setup_digest": "1915db514e3ea4c5a45bf1a103df8ea7849ba1b16f1df733aa114e2754c0dc12"
+        }
+      ]
+    },
+    {
+      "game_id": "SpeedPotion",
+      "id": "SPEED_POTION",
+      "java_sha256": "d26b808b3b02f7ca88b07086245c6a4f8b6dab2b902e4c5b95857de49e1884b2",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/potions/SpeedPotion.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "a3b3caecc5ef469f462d9d1d331a3103a08195d24a154f7e11cad9c29fd712bc",
+            "3a00d7bb301a4b41436be4d2dc21e855407e0c6be8ec278b14c6d87efa1f23bb"
+          ],
+          "effect_sha256": "10e184b04315a1a6496e802c0760a0fc9fbf860857c54c224020045715ebfb02",
+          "sacred_bark": false,
+          "setup_digest": "973c60cc0bc52ad4714a2e8455b49d527074494b5de01116e87456d3fb72c74c"
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "94417bc768e1d3af6a146620f63420215da3fdda61b1376fbc67c81664e05c6c",
+            "706f2ecb0c468caa63f7447f38958a511651b5971030520301375dac25a18cc7"
+          ],
+          "effect_sha256": "9c85034b33045e8d68e776be6c95cf15438af470fadcede26496522cdf1f5dcc",
+          "sacred_bark": true,
+          "setup_digest": "1915db514e3ea4c5a45bf1a103df8ea7849ba1b16f1df733aa114e2754c0dc12"
+        }
+      ]
+    },
+    {
+      "game_id": "Strength Potion",
+      "id": "STRENGTH_POTION",
+      "java_sha256": "05e07567281423a85e5ed36829ae7b0b6aa631512172697a0bc61ed2523a6a21",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/potions/StrengthPotion.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "2866e474971d98a4c25889001532696eac466d174213d8a9dc25360c6528bbae",
+            "eb5d37216660f5fdac03836ef4306569476ad4f1f4302df47fc1eda827698546"
+          ],
+          "effect_sha256": "ef8a78b46c8cc1aa264e838603e3c154333e8d23f87956a9435a0cc66eee11a3",
+          "sacred_bark": false,
+          "setup_digest": "973c60cc0bc52ad4714a2e8455b49d527074494b5de01116e87456d3fb72c74c"
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "4bd9e4958d778f7a904f7cdd4e1aab85263803629172443b780821867873c96a",
+            "bc32eb39ae909aad99f7902cca17cae598bde73b90a0f5707e82738edf506d3d"
+          ],
+          "effect_sha256": "2f06cf91b6e2cbbe9cf708dacce1920325988c091f7c491728163ffba2294caf",
+          "sacred_bark": true,
+          "setup_digest": "1915db514e3ea4c5a45bf1a103df8ea7849ba1b16f1df733aa114e2754c0dc12"
+        }
+      ]
+    },
+    {
+      "game_id": "Swift Potion",
+      "id": "SWIFT_POTION",
+      "java_sha256": "70e60bde7ee225adb516b0a662407dab05e007757a93041314376dabe17c13b2",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/potions/SwiftPotion.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "7a40758ae295932bcfb0e133a0476837e3b66e70d900f97616394094357a2342",
+            "80ffb984ac1869a6715017d48d70e8debf559d7115c80e93ed2d6a60d9d05a6f"
+          ],
+          "effect_sha256": "61e5f5bed779411d40362fd8e6abde7b9609184e7f64b3ee08c99150e4048d3c",
+          "sacred_bark": false,
+          "setup_digest": "973c60cc0bc52ad4714a2e8455b49d527074494b5de01116e87456d3fb72c74c"
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "b8f2f0e63aa938b6152eefbe02e5eb03f4f1091f5637d5a86a583f88008a723c",
+            "d8530968f4a75e889e349c3ccd26efc7e4e9293491a8ef2f6c590747ccfd5d86"
+          ],
+          "effect_sha256": "6b18f367e664aa6ffa641db1cf8d53191a8f9b28bd814e01c1a63af040e61326",
+          "sacred_bark": true,
+          "setup_digest": "1915db514e3ea4c5a45bf1a103df8ea7849ba1b16f1df733aa114e2754c0dc12"
+        }
+      ]
+    },
+    {
+      "game_id": "Weak Potion",
+      "id": "WEAK_POTION",
+      "java_sha256": "980057ecbe14cc22502da65e16e4e0ba3935a0bd1589302d36e41cc914da14ab",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/potions/WeakenPotion.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "74a7d8f5ebd438045ec00e0e8b2b22a3f30bfd837f2514d8fbde412103a25d4b",
+            "d1a6633374764bf5419c05eb4b727ba6f860a08b849d045f47d990fb693123a8"
+          ],
+          "effect_sha256": "54144c3ee245b4b9d470def23a8a430bb9549184231f3c666b867881d4314e29",
+          "sacred_bark": false,
+          "setup_digest": "973c60cc0bc52ad4714a2e8455b49d527074494b5de01116e87456d3fb72c74c"
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "329fd66fb167bf2e01059f45acbdb0183b3d9a82b2cf7fc7d0a620d11fa6e5a7",
+            "ea20f2d14f1570cada36059efd92ac275a3d169c3cafe485e083d693381cf269"
+          ],
+          "effect_sha256": "e7cf5abbff2d77a3e198ffa4c12e1001545323b72521fd5bef41f50b1dc84413",
+          "sacred_bark": true,
+          "setup_digest": "1915db514e3ea4c5a45bf1a103df8ea7849ba1b16f1df733aa114e2754c0dc12"
+        }
+      ]
+    }
+  ],
+  "oracle_schema": "spirecomm-parity-v10",
+  "schema": "sls-ironclad-potion-semantics-v1",
+  "scope_sha256": "1e9ba31232cea5813b88cf6d75c7be28deaca4ac84c32079745477866fc0649d",
+  "seed": 0
+}
