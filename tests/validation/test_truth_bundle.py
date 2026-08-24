@@ -290,6 +290,30 @@ def test_runtime_journal_restores_existing_and_removes_created_files(tmp_path: P
     assert existing.read_text(encoding="utf-8") == "user-save"
 
 
+def test_runtime_journal_can_restore_cloud_files_before_process_exit(tmp_path: Path) -> None:
+    preferences = tmp_path / "preferences"
+    preferences.mkdir()
+    slots = preferences / "STSSaveSlots"
+    slots.write_text("user-slots", encoding="utf-8")
+    unrelated = tmp_path / "mods" / "oracle.jar"
+    unrelated.parent.mkdir()
+    unrelated.write_text("user-jar", encoding="utf-8")
+    journal = RuntimeJournal(tmp_path / "journal.json")
+    journal.backup(slots, tmp_path / "backup")
+    journal.backup(unrelated, tmp_path / "backup")
+    journal.mark_active()
+    slots.write_text("validation-slots", encoding="utf-8")
+    unrelated.write_text("validation-jar", encoding="utf-8")
+
+    journal.restore_under((preferences,))
+
+    assert slots.read_text(encoding="utf-8") == "user-slots"
+    assert unrelated.read_text(encoding="utf-8") == "validation-jar"
+    assert RuntimeJournal.open(journal.path).data["status"] == "ACTIVE"
+    journal.recover()
+    assert unrelated.read_text(encoding="utf-8") == "user-jar"
+
+
 def test_runtime_journal_refuses_corrupt_backup(tmp_path: Path) -> None:
     existing = tmp_path / "save.autosave"
     existing.write_text("user-save", encoding="utf-8")

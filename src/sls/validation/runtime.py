@@ -103,28 +103,55 @@ class RuntimeJournal:
     def recover(self) -> None:
         errors: list[str] = []
         for entry in reversed(self.data["entries"]):
-            target, backup = Path(entry["target"]), Path(entry["backup"])
             try:
-                if entry["existed"]:
-                    if not backup.is_file():
-                        raise FileNotFoundError(f"missing backup {backup}")
-                    target.parent.mkdir(parents=True, exist_ok=True)
-                    shutil.copy2(backup, target)
-                    actual = _sha256(target)
-                    if actual != entry["original_sha256"]:
-                        raise OSError(
-                            f"restored hash mismatch: expected {entry['original_sha256']}, got {actual}"
-                        )
-                elif target.exists():
-                    target.unlink()
+                self._restore_entry(entry)
             except OSError as error:
-                errors.append(f"{target}: {error}")
+                errors.append(f"{entry['target']}: {error}")
         self.data["status"] = "RECOVERY_FAILED" if errors else "RECOVERED"
         self.data["recovered_at"] = datetime.now(timezone.utc).isoformat()
         self.data["recovery_errors"] = errors
         self._flush()
         if errors:
             raise RuntimeError("Original runtime recovery failed: " + "; ".join(errors))
+
+    def restore_under(self, roots: Iterable[Path]) -> None:
+        """Restore protected files below roots without finalizing the journal.
+
+        The launcher uses this after its validator has returned the game to the
+        main menu but before Java exits.  Steam AutoCloud scans synchronously on
+        process exit, so restoring only afterwards is too late.
+        """
+
+        resolved_roots = tuple(root.resolve() for root in roots)
+        errors: list[str] = []
+        for entry in reversed(self.data["entries"]):
+            target = Path(entry["target"]).resolve()
+            if not any(target == root or root in target.parents for root in resolved_roots):
+                continue
+            try:
+                self._restore_entry(entry)
+            except OSError as error:
+                errors.append(f"{target}: {error}")
+        if errors:
+            raise RuntimeError(
+                "Original pre-exit user-file recovery failed: " + "; ".join(errors)
+            )
+
+    @staticmethod
+    def _restore_entry(entry: Mapping[str, Any]) -> None:
+        target, backup = Path(entry["target"]), Path(entry["backup"])
+        if entry["existed"]:
+            if not backup.is_file():
+                raise FileNotFoundError(f"missing backup {backup}")
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(backup, target)
+            actual = _sha256(target)
+            if actual != entry["original_sha256"]:
+                raise OSError(
+                    f"restored hash mismatch: expected {entry['original_sha256']}, got {actual}"
+                )
+        elif target.exists():
+            target.unlink()
 
 
 class OriginalRuntimeGuard(AbstractContextManager["OriginalRuntimeGuard"]):
@@ -233,7 +260,20 @@ def prepare_runtime(
     root = repository / "validation-results" / "runtime-journals" / stamp
     backup_root = root / "backups"
     journal = RuntimeJournal(root / "journal.json")
-    targets = [config, mod_list, *save_files, *(mod_dir / name for name in installed)]
+    cloud_user_roots = tuple(
+        game_root / name for name in ("preferences", "betaPreferences", "saves")
+    )
+    cloud_user_files = [
+        path
+        for root in cloud_user_roots
+        if root.is_dir()
+        for path in root.iterdir()
+        if path.is_file()
+    ]
+    targets = [
+        config, mod_list, *save_files, *cloud_user_files,
+        *(mod_dir / name for name in installed),
+    ]
     # Extra jars are disabled only for the authoritative run and restored later.
     extra_mods = [path for path in mod_dir.glob("*.jar") if path.name not in installed]
     targets.extend(extra_mods)

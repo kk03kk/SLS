@@ -159,6 +159,11 @@ def main() -> int:
                 raise TimeoutError(f"Original validation timed out after {args.timeout}s")
     finally:
         if process is not None and process.poll() is None:
+            if marker is not None:
+                journal.restore_under(
+                    args.game_root / name
+                    for name in ("preferences", "betaPreferences", "saves")
+                )
             process.terminate()
             try:
                 process.wait(timeout=15)
