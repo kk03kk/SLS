@@ -45,6 +45,10 @@ def test_committed_ironclad_scope_is_current_and_exactly_scoped() -> None:
     assert len(scope["events"]["act1_base"]) == 11
     assert len(scope["events"]["act1_shrines"]) == 6
     assert len(scope["events"]["a0_one_time_candidates"]) == 14
+    assert len(scope["monsters"]["act1"]) == 25
+    assert {"CULTIST", "GREMLIN_NOB", "HEXAGHOST", "THE_GUARDIAN"} <= set(
+        scope["monsters"]["act1"]
+    )
 
 
 def test_scope_file_digest_is_deterministic() -> None:

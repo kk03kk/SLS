@@ -50,6 +50,63 @@ def _enum_ids(block: str, kind: str) -> set[str]:
     return set(re.findall(rf"{re.escape(kind)}::([A-Z0-9_]+)", block))
 
 
+def _brace_body(source: str, opening_brace: int) -> str:
+    depth = 0
+    for index in range(opening_brace, len(source)):
+        if source[index] == "{":
+            depth += 1
+        elif source[index] == "}":
+            depth -= 1
+            if depth == 0:
+                return source[opening_brace + 1:index]
+    raise RuntimeError("unterminated C++ function body")
+
+
+def _act1_monsters(encounters: set[str]) -> set[str]:
+    source = (ROOT / "cpp" / "simulator" / "src" / "combat" / "MonsterGroup.cpp").read_text(
+        encoding="utf-8"
+    )
+    create_start = source.index("void MonsterGroup::createMonsters")
+    create_body = _brace_body(source, source.index("{", create_start))
+    cases = list(re.finditer(r"case MonsterEncounter::([A-Z0-9_]+)\s*:", create_body))
+    selected = []
+    for index, match in enumerate(cases):
+        if match.group(1) not in encounters:
+            continue
+        end = cases[index + 1].start() if index + 1 < len(cases) else len(create_body)
+        selected.append(create_body[match.end():end])
+
+    function_cache: dict[str, str] = {}
+    def function_body(name: str) -> str | None:
+        if name in function_cache:
+            return function_cache[name]
+        match = re.search(
+            rf"(?:void|MonsterId)\s+MonsterGroup::{re.escape(name)}\s*\([^)]*\)\s*\{{",
+            source,
+        )
+        if match is None:
+            return None
+        body = _brace_body(source, match.end() - 1)
+        function_cache[name] = body
+        return body
+
+    pending = list(selected)
+    visited: set[str] = set()
+    monsters: set[str] = set()
+    while pending:
+        body = pending.pop()
+        monsters |= _enum_ids(body, "MonsterId")
+        for name in re.findall(r"\b([A-Za-z][A-Za-z0-9_]*)\s*\(", body):
+            if name in visited:
+                continue
+            nested = function_body(name)
+            if nested is not None:
+                visited.add(name)
+                pending.append(nested)
+    monsters.discard("INVALID")
+    return monsters
+
+
 def _card_metadata() -> dict[str, dict[str, str]]:
     source = (CONSTANTS / "Cards.h").read_text(encoding="utf-8")
     registry = json.loads(REGISTRY.read_text(encoding="utf-8"))["categories"]["cards"]
@@ -159,11 +216,13 @@ def build_scope() -> dict[str, Any]:
         re.MULTILINE,
     ))
 
+    act1_monsters = _act1_monsters(act1_encounters)
     source_files = (
         CONSTANTS / "Cards.h", CONSTANTS / "CardPools.h",
         CONSTANTS / "Potions.h", CONSTANTS / "Relics.h",
         CONSTANTS / "RelicPools.h", CONSTANTS / "Events.h", REGISTRY,
         CONSTANTS / "MonsterEncounters.h", CONSTANTS / "MonsterIds.h",
+        ROOT / "cpp" / "simulator" / "src" / "combat" / "MonsterGroup.cpp",
     )
     payload: dict[str, Any] = {
         "schema": CONTENT_SCOPE_SCHEMA,
@@ -188,6 +247,7 @@ def build_scope() -> dict[str, Any]:
             "a0_one_time_candidates": sorted(one_time_events),
         },
         "encounters": {"act1": sorted(act1_encounters)},
+        "monsters": {"act1": sorted(act1_monsters)},
         "shared_engine_primitives": ["DAMAGE_PIPELINE", "ORBS", "POWERS", "RNG", "STANCES"],
         "source_sha256": {
             str(path.relative_to(ROOT)).replace("\\", "/"): _sha256(path)

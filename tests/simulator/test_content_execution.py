@@ -107,3 +107,55 @@ def test_every_act1_encounter_initializes_with_a_legal_boundary() -> None:
         battle = native.LightspeedBattle()
         battle.reset(123, encounter_id, 0)
         assert battle.snapshot()["_legal_actions"], encounter_id
+
+
+def test_every_act1_encounter_completes_a_deterministic_turn_lifecycle() -> None:
+    scope = load_ironclad_a0_scope()
+    expected = {
+        "BLUE_SLAVER": (31, "PLAYER_VICTORY"),
+        "CULTIST": (25, "PLAYER_VICTORY"),
+        "EXORDIUM_THUGS": (37, "PLAYER_VICTORY"),
+        "EXORDIUM_WILDLIFE": (34, "PLAYER_VICTORY"),
+        "GREMLIN_GANG": (28, "PLAYER_LOSS"),
+        "GREMLIN_NOB": (24, "PLAYER_LOSS"),
+        "HEXAGHOST": (44, "PLAYER_LOSS"),
+        "JAW_WORM": (39, "PLAYER_VICTORY"),
+        "LAGAVULIN": (56, "PLAYER_LOSS"),
+        "LARGE_SLIME": (58, "PLAYER_VICTORY"),
+        "LOOTER": (20, "PLAYER_VICTORY"),
+        "LOTS_OF_SLIMES": (39, "PLAYER_VICTORY"),
+        "RED_SLAVER": (27, "PLAYER_VICTORY"),
+        "SLIME_BOSS": (36, "PLAYER_LOSS"),
+        "SMALL_SLIMES": (26, "PLAYER_VICTORY"),
+        "THE_GUARDIAN": (36, "PLAYER_LOSS"),
+        "THREE_LOUSE": (34, "PLAYER_VICTORY"),
+        "THREE_SENTRIES": (59, "PLAYER_VICTORY"),
+        "TWO_FUNGI_BEASTS": (31, "PLAYER_VICTORY"),
+        "TWO_LOUSE": (21, "PLAYER_VICTORY"),
+    }
+    assert set(expected) == set(scope["encounters"]["act1"])
+    for encounter_id in sorted(expected):
+        battle = native.LightspeedBattle()
+        battle.reset(
+            123, encounter_id, 0,
+            deck=["Defend_R"] * 5 + ["Strike_R"] * 5,
+        )
+        for step in range(120):
+            snapshot = battle.snapshot()
+            actions = snapshot["_legal_actions"]
+            if not actions:
+                break
+            action = (
+                next((item for item in actions if item["kind"] == "play"), None)
+                or next((item for item in actions if item["kind"] == "end"), None)
+                or actions[0]
+            )
+            arguments = {
+                key: action[key]
+                for key in ("card_index", "potion_index", "target_index", "choice_index")
+                if action.get(key) is not None
+            }
+            battle.step(action["kind"], **arguments)
+        else:
+            pytest.fail(f"Act 1 encounter did not terminate: {encounter_id}")
+        assert (step, snapshot["outcome"]) == expected[encounter_id]

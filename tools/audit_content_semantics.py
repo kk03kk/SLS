@@ -191,18 +191,49 @@ def build_audit() -> dict[str, Any]:
             "id": identifier,
             "act": 1,
             "status": status,
-            "evidence_levels": ["NATIVE_EXECUTED"] if not differences else [],
+            "evidence_levels": (
+                ["NATIVE_EXECUTED", "NATIVE_VERIFIED"] if not differences else []
+            ),
             "java_source": None,
             "java_sha256": None,
             "simulator_references": cpp_refs,
             "test_references": [
                 "tests/simulator/test_content_execution.py:"
                 "test_every_act1_encounter_initializes_with_a_legal_boundary",
+                "tests/simulator/test_content_execution.py:"
+                "test_every_act1_encounter_completes_a_deterministic_turn_lifecycle",
             ],
             "differences": differences,
-            "remaining": ["SOURCE_MATCHED", "NATIVE_VERIFIED", "ORIGINAL_VERIFIED"],
+            "remaining": ["SOURCE_MATCHED", "ORIGINAL_VERIFIED"],
         })
     entries["encounters"] = encounter_values
+
+    monster_values = []
+    for identifier in map(str, scope["monsters"]["act1"]):
+        cpp_refs = _references(identifier, CPP_ROOTS, {".cpp", ".h", ".py"})
+        differences = (
+            {} if cpp_refs else {"simulator_implementation": ["required", None]}
+        )
+        status = "DIFFERENCE" if differences else "BLOCKED"
+        status_counts[status] += 1
+        monster_values.append({
+            "id": identifier,
+            "act": 1,
+            "status": status,
+            "evidence_levels": (
+                ["NATIVE_EXECUTED", "NATIVE_VERIFIED"] if not differences else []
+            ),
+            "java_source": None,
+            "java_sha256": None,
+            "simulator_references": cpp_refs,
+            "test_references": [
+                "tests/simulator/test_content_execution.py:"
+                "test_every_act1_encounter_completes_a_deterministic_turn_lifecycle",
+            ],
+            "differences": differences,
+            "remaining": ["SOURCE_MATCHED", "ORIGINAL_VERIFIED"],
+        })
+    entries["monsters"] = monster_values
 
     mechanisms = [
         {"id": "RNG", "status": "BLOCKED", "evidence_levels": ["NATIVE_VERIFIED"],

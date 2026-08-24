@@ -392,6 +392,35 @@
       "WORLD_OF_GOOP"
     ]
   },
+  "monsters": {
+    "act1": [
+      "ACID_SLIME_L",
+      "ACID_SLIME_M",
+      "ACID_SLIME_S",
+      "BLUE_SLAVER",
+      "CULTIST",
+      "FAT_GREMLIN",
+      "FUNGI_BEAST",
+      "GREEN_LOUSE",
+      "GREMLIN_NOB",
+      "GREMLIN_WIZARD",
+      "HEXAGHOST",
+      "JAW_WORM",
+      "LAGAVULIN",
+      "LOOTER",
+      "MAD_GREMLIN",
+      "RED_LOUSE",
+      "RED_SLAVER",
+      "SENTRY",
+      "SHIELD_GREMLIN",
+      "SLIME_BOSS",
+      "SNEAKY_GREMLIN",
+      "SPIKE_SLIME_L",
+      "SPIKE_SLIME_M",
+      "SPIKE_SLIME_S",
+      "THE_GUARDIAN"
+    ]
+  },
   "policy_excluded_content_ids": [
     "PRISMATIC_SHARD"
   ],
@@ -589,7 +618,7 @@
   },
   "schema": "sls-content-scope-v1",
   "scope_id": "sls-ironclad-a0-content-v1",
-  "scope_sha256": "d488c0e900ce99ad2d856429a3142250933f3f70228d285856b8be7002f19cfe",
+  "scope_sha256": "1e9ba31232cea5813b88cf6d75c7be28deaca4ac84c32079745477866fc0649d",
   "shared_engine_primitives": [
     "DAMAGE_PIPELINE",
     "ORBS",
@@ -606,6 +635,7 @@
     "cpp/simulator/include/constants/Potions.h": "d16d41c0b95028d7338b05f455511c266907e5ec31be711a705ceeb077ea1938",
     "cpp/simulator/include/constants/RelicPools.h": "555ccae8fc645499eeeeb16c38a633677a2227d895de9193752fc4b4fa0f6d04",
     "cpp/simulator/include/constants/Relics.h": "092473d34e953ec4e9328d602250b67cb2d12c6df0be9b7bbaf435de47aa88d0",
+    "cpp/simulator/src/combat/MonsterGroup.cpp": "118c4cd4d49b8c125b8f4923ea0c2028934e1b9d313b09515e0420da3aabf87a",
     "src/sls/content/registry.json": "51fd0227b58f8a296b0427c1b9be2cf6e51d2f55ed07f8d8728498c65d692ef9"
   }
 }
