@@ -179,3 +179,13 @@ def test_card_probe_supports_both_draw_pile_search_types() -> None:
             action.kind.value == "PLAY_CARD" and action.subject_id == "HAND:0"
             for action in decision.actions
         ), card_id
+
+
+def test_the_bomb_exposes_the_stock_countdown_power() -> None:
+    battle = native.LightspeedBattle()
+    battle.reset_card_probe(123, "THE_BOMB", False)
+    battle.step("play", card_index=1, target_index=0)
+    powers = adapt_original(battle.snapshot()).decision.observation.powers
+    assert [
+        (item.content_id, dict(item.properties)["amount"]) for item in powers
+    ] == [("THE_BOMB", 3)]

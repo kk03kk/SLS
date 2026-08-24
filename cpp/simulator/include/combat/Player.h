@@ -94,9 +94,9 @@ namespace sts {
         int16_t lastAttackUnblockedDamage = 0;
         int16_t timesDamagedThisCombat = 0;
 
-        int8_t bomb1 = 0;
-        int8_t bomb2 = 0;
-        int8_t bomb3 = 0;
+        int16_t bomb1 = 0;
+        int16_t bomb2 = 0;
+        int16_t bomb3 = 0;
 
         template <RelicId r> void setHasRelic(bool value);
         template <PlayerStatus> void setHasStatus(bool value);

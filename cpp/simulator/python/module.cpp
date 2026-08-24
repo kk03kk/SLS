@@ -127,6 +127,13 @@ py::list player_powers(const Player &p) {
             playerStatusEnumStrings[static_cast<int>(status)], publicAmount,
             playerStatusStrings[static_cast<int>(status)]));
     }
+    // Stock represents each bomb as TheBombPower with `amount` equal to the
+    // remaining turns.  Native stores the scheduled damage in countdown
+    // buckets, so expose the corresponding public countdown rather than
+    // hiding the mechanism or leaking the damage as `amount`.
+    if (p.bomb1) result.append(power("THE_BOMB", 1, "The Bomb"));
+    if (p.bomb2) result.append(power("THE_BOMB", 2, "The Bomb"));
+    if (p.bomb3) result.append(power("THE_BOMB", 3, "The Bomb"));
     return result;
 }
 

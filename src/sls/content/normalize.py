@@ -82,6 +82,11 @@ def normalize_potion_id(value: object) -> str:
 
 def normalize_power_id(value: object) -> str:
     normalized = normalize_content_id(value)
+    # Each stock TheBombPower instance receives a process-global numeric
+    # suffix (TheBomb0, TheBomb1, ...).  The suffix is identity noise rather
+    # than a distinct mechanism/content token.
+    if re.fullmatch(r"THE_BOMB_?\d+", normalized):
+        return "THE_BOMB"
     return {
         # Stock DexLossPower exposes "DexLoss" while the native simulator
         # models the same end-of-turn marker as LOSE_DEXTERITY.
