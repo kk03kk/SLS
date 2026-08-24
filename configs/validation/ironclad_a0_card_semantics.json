@@ -1,0 +1,3665 @@
+{
+  "audit_sha256": "1754a054f78279db5047223bea75a2bb02f7843b9f2aa04b8e3884316c523dc7",
+  "entries": [
+    {
+      "game_id": "Anger",
+      "id": "ANGER",
+      "java_sha256": "871d757f58d4940cc03a4a5039e7ae35ae8adfc611667ad4d12931fc2b98b406",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/Anger.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "2882e4de660eb9a18900c7ef09660f82b25f04d698869965c2f0571e8020dd42",
+            "78944ba7ddbe09a3e49df24232c5ccb41ff6d090347eef721c8d0c17fc59773c"
+          ],
+          "effect_sha256": "2c9d478dd6b87f5eed04f1ee8cb41cf181a3ae408db4da9613d1289aeed97021",
+          "setup_digest": "c95584c2a2013eed7564b9e3846ddf18a2af1419c7bf6a3fcc19449c6d509bcb",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "204e1565c75e8ffb2d7b78425e6e71931a780a955803473cdf16772adf8b43b7",
+            "c5f642c7a91c3fc44c56401381860ba790e2dd14d7238a4b5fe1c9d5f88cbbf4"
+          ],
+          "effect_sha256": "03ee2fb383b6fcda8646eb2321164399748b13f48674391cd9d33a3c63b454f2",
+          "setup_digest": "a1b40b3b5cc437b47020b4046b35b293dc3dbe65e9bb2a99aa02f74d95dc8e13",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Apotheosis",
+      "id": "APOTHEOSIS",
+      "java_sha256": "05bc6109afdc10807c617bf9469acd981a89f3e20c91d4d219150f6e4f65919a",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/colorless/Apotheosis.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "ad547e0a8a985a8970072e6fe06cd269e689e4811281e9fbe26223da743ff0dd",
+            "c2991fedba84f99d44c0793eba2b307e637926cfdef8819d089709493ddbce99"
+          ],
+          "effect_sha256": "af35336844049201a0027d763cc23588d231f60029df6e5009ef738f76376ff2",
+          "setup_digest": "8bc24ec95c1ff4b723672306767e2fe183e6c2aefd4b62eb27bdda49e84502b4",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "beab54012f2a72c0a0c2522284f37b9dc5d52e7f82eb81513b80482678926b7d",
+            "e93ba49946083e2fb949153d7b666f9baeb2ab1afa3721d9d467da940840dcd5"
+          ],
+          "effect_sha256": "7ff3463316cda3c298610f641d339b8ad25ff7c70bdf6ea6a1db47d1c89286d3",
+          "setup_digest": "a652253e76e0e3667386bffafa51c873d3e667887bda67d4adc50fd5a9085c4b",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Ghostly",
+      "id": "APPARITION",
+      "java_sha256": "0dfed04cd57d22b0c8ef12c82946d7e64112428ff0e4c64314915b064240b297",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/colorless/Apparition.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "ce3db9f29258317dd52d9f3a058b376243470f0575cb97e5f1da11cdab7af4ac",
+            "a7d6cdcd4adfba64018855e292aab98dd9483339668c191d9e46e50e65516417"
+          ],
+          "effect_sha256": "201aefe21ca8e339f303a2cb25ec6ddf2718d27ff8f6813391398b87f2801009",
+          "setup_digest": "ce668910d73ccfd8fe97f042b00c952e71022095ea1a23e5720b287fac2b40de",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "47d19505c054d4316566b641a11100eb688b81e9ae3dda1ed1eb3e5ffbd62178",
+            "a29695b66be2023494e29122d7a1fe344b953fd47e40f918e198cef003144d5f"
+          ],
+          "effect_sha256": "1907f0c0aa356a7591329532eae39c76f15459a109a43368664d6c2ae1704bc7",
+          "setup_digest": "b6ece712ecee5773643770ebcd0283c32a53897ec16d29a03dd8b552aa2ec0ab",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Armaments",
+      "id": "ARMAMENTS",
+      "java_sha256": "5e88135731f9d472132e2951d54c19160a3ec4f83cfab0024feaef8e43c051c2",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/Armaments.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "bd2bc6b64c2df72185c50caa5778b2686291126a23d9b7031660f7e25cfc74a7",
+            "95a3f4bc5f99eb11e18d12ba488e642f10eddee8452b8fcc45dbe416126c7463"
+          ],
+          "effect_sha256": "4ad482ee5b8521f92f48a81fc602adc7df6ae74ba77e528c01c32af763bc88a8",
+          "setup_digest": "4dcbe679765ae94a10edccc20318481a1070a005530fe93f0b5e91adc907d965",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "0d92014ba741b6d33189560049bed23d7ed2203ed18142ce1e8aab5e8f1ebecc",
+            "6c0af8d243664f33929903427a0b6eb6af4a01fceccf40611e5c4c2d8d9f1098"
+          ],
+          "effect_sha256": "1795418e416361451f0e993854b92a25c6d424bd5f12389fcd16be93b6a5a814",
+          "setup_digest": "0f02865b721d24e14ee2799c7efd9ca1c58777fbdebc971e461ade24dbd0e947",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Bandage Up",
+      "id": "BANDAGE_UP",
+      "java_sha256": "aa11d2f0664920bd3dd09b719bbe5e03efbeccb5696e32a101ce7139d43e7719",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/colorless/BandageUp.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "3f288b6170627a09bfd780d4a4788b72910b35a3c695b17e83b54fc5d474659e",
+            "f5cd20d014fb52e2a2079f994f4547bac5122420773e1be6e008ac3922a8b1e5"
+          ],
+          "effect_sha256": "d239e0d64bab6080d7aa4be2087f876e26d9f7424b7853769ec05736e6fcbce7",
+          "setup_digest": "b8e636f84ea16d8aa9df68ca39c50e39e6b7900718905a908a6ea95825b6e490",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "77340ad5ccbbf0fdc3b1883c2903422a2920f483b5ac0217bbbe6bcc9781225a",
+            "9d80e1b8ca72e57d9ae0c8bc0d5a618b74ede9b298b85556ec6d9d22e8b15b32"
+          ],
+          "effect_sha256": "bf368738b641c8b231122fad3b8c9c20c9dfb3a7dda98426be5645b11e938224",
+          "setup_digest": "0bef9f5b816a8cea006f9d7a3f4cddf0bd953ac98daff917441296e1fc935116",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Barricade",
+      "id": "BARRICADE",
+      "java_sha256": "40660e834045a044cc17f39858713d1a727701a16411d91f469f649efcd521bb",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/Barricade.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "d6ff116c6447b8c4647a228d617cd30a54605d0de661e10f971a667d770b7421",
+            "c5f2acb7dc1f92c1250fb0aba1745e59202be8beac9b6dc657965bf214222f94"
+          ],
+          "effect_sha256": "60dd815bcd9cea7288b65c92aca355e8d38f7e933655ea1781a5bef047dc1964",
+          "setup_digest": "df5b2960b8a19f7e9e672c1e52afff1fab27702463cd748e9c8ab2fef48d3447",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "077de2ed53f578ba596fe5143e82592f141faa22122ccc7768201af648c9e146",
+            "89ed01be62700d563e87a8ae8f5604d110b62721d221ebd4608c55cc861db9b2"
+          ],
+          "effect_sha256": "975ca03e2f8a5d9f9ca700dd6ae6bc3e7ada22ee1aee531bbde54a09d7ddfee7",
+          "setup_digest": "b555143dbc685dfd35716b3277de343a3b5e338f9003506866fbf9240900cd3d",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Bash",
+      "id": "BASH",
+      "java_sha256": "c75e689a79272774f609c9452b12a6d07ec857599f4f903f66c8509a5a2dea1c",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/Bash.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "47badcb6e9f1d9f20cbde936def562e40cb234a0982efbc6e1df6c1254226d8f",
+            "fbbbb2a707c28cf1e5c8811a6f360ff59a1a7d42164edef28625b8ace45dc865"
+          ],
+          "effect_sha256": "703957ec2cddaed092c10bea905c6770aa74334e8fd5f68621348be0e8aa6f47",
+          "setup_digest": "23764ce962a55a9b3fed6a34d7b2bf849fbced50ddfd33e5e849c7c2533871c8",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "0a24613585428ed94e65cba1a347e131400ec613c9f37fc8dffef403ce037786",
+            "77552cc2306cdf07abd8ac40e6d3920285fc9fa12f9db452a95281eeaac1f3e7"
+          ],
+          "effect_sha256": "e956534f8c6627b220c80a5556cf91987476b0ecaaaf33d1c6d26dc7eb1a8dca",
+          "setup_digest": "2d9f231311ae7d1508b68a1779f554da6005d841484fa8bc226e713bc0a974bf",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Battle Trance",
+      "id": "BATTLE_TRANCE",
+      "java_sha256": "fd9edbc281001a44f0f868d86353ea873f9498fa3a65fa2f4ae1b81f01797d2e",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/BattleTrance.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "dd9206220ba9256ec03ed09f94ac6254a7f09acb96400f005ab0b47c1f78649f",
+            "b4b2ca71b53029c678197427dcf9e088471d6465ce99e68f48cb128f63c2454c"
+          ],
+          "effect_sha256": "8ed7bd78c3f81002b60e20223b4dcef39f176be3850e4e88d726575edff4ffc1",
+          "setup_digest": "4f3d56e2931c9912ab6f4ea52525d4e8773490de3bfb76bc5f7e41763ceec260",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "0d4aefe9f34d839e9939251820f39c0d81ebca5e6cb91023463390e7ce5638ed",
+            "512694c2a553f9a7256bdbf671c2ad8f559ca8e2be9228afae74a159f32ccdce"
+          ],
+          "effect_sha256": "3c4e9f4f1193795c1050dfe9908a84df15739eebe397bba570514dd6f3c4a653",
+          "setup_digest": "7f82f464be0f798ddd5163a79cd59611a77369c324ab14e7796d575f73374d58",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Berserk",
+      "id": "BERSERK",
+      "java_sha256": "cdcb7cc871a86c18a6c6375043ba04b85f72547339d2f78f53467641a5671ad5",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/Berserk.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "7e7a27552d2bb5a996ce240e2abf2e8cd0bca405bce18aac0c818f5ef91b94b6",
+            "ea3c1331f17bc7cea2ac5b2e168322b64c23c325bd826767cd3f51ec625078ac"
+          ],
+          "effect_sha256": "c87004af81e40d25265973b0c550881a2ed16a49b9a378576b143d6e297b28d8",
+          "setup_digest": "7ab93be9f46e16669a2e7d944db9d409f5aa7404d84b814fd836d9b495d689a5",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "09693f1fce8fda43f79fe3a4df9970d1992f0ce1640ee5ba40531668ef602c2e",
+            "6f3845ec263e2097a3fd48f14d80311c4ed5c0e5e40a1790b5982b0d7fe9c8fd"
+          ],
+          "effect_sha256": "5a51dd0801f908fb362847a62e0cf8242f2553f82c1210f39d9665b8b86b123b",
+          "setup_digest": "f7b25b077b72e7bac067c6ced3bfa652f998c28e22bc793dcb8cd486d1aa2874",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Bite",
+      "id": "BITE",
+      "java_sha256": "aefcc6b3eca0396c053eb86e8f7ad0d700b6c467345fc95f133cd783693cf229",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/colorless/Bite.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "45d2f8fd9f40ae3797aba4089c7db76867961a55f27f4b559fe619cac0798e86",
+            "4b0703f770d9a30ed2d43c76247035773d7b0e7d1c3b8bb4d1044e02130f6bfb"
+          ],
+          "effect_sha256": "8545ea78999fc27a63d8121691436a78c555c09f8a1036e1c09706a5cce4c1b4",
+          "setup_digest": "1e7b6e5441ee8ad3a1f28d16969f006bc230688eb83cab88399a1dbe2e76a4ed",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "fa491074d9259cc88f3f3d1cb6ff2590a8a697f62cb9dee912d5e3d3e213d048",
+            "fd48c409b1b58bbb1f2e90dd3f11456a198ba839b10a31fe5591845ee3a25ee1"
+          ],
+          "effect_sha256": "9632e81b69287a6817b7176301dd9b015ffd40113e74ecce9b8fd86380bd97af",
+          "setup_digest": "f6af237041fc8a5d76528298a0894cb6cd94fa2a91545be6a4499f1e2f4e21da",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Blind",
+      "id": "BLIND",
+      "java_sha256": "e9f5074c81c1cc734a608cd529c2016c2093afc5f761f08c373da2e92b51ef7a",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/colorless/Blind.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "f832437b5729c024f45ff10a7e30ac4a4d31a21e40d8034805e78ac5552846a3",
+            "8f11d972b0eb5a2a704a75f70bffcc1422369f9256788fe0f1d8bbeb3be71b05"
+          ],
+          "effect_sha256": "4e4e0e634451238665888c18430b66609fdc237bf30068b0d050bae0729524c6",
+          "setup_digest": "64cd6f0591e883fe9bf5c75fe4583d2c4ff902032d9e7a9e49a147ab1419732b",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "05f9a36be1be0da7a811904749b76c2ff9f2f1617affa4b40be4d63fad3f3ec1",
+            "d0f352ace15f552e764776e729bb95515766e06608c294f1726da24d00406b97"
+          ],
+          "effect_sha256": "039db491da9af34f5538dfe7371bae94818d2fbc7a9b75ff6ea7b0699fedec59",
+          "setup_digest": "19983d85ef3d80fd96587d6c3b2a36375e845faccb5e7c2e54eac41c4e165bec",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Bloodletting",
+      "id": "BLOODLETTING",
+      "java_sha256": "a2547f592627269412ff3d2d8a0e55edc63031f9328470816cdc7b13c87f4ec5",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/Bloodletting.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "52f829eb96f68d15e88cd51b4107a280f0c8b36355a10a5b587ce3f7fb6030aa",
+            "5a87fc200e0e91db9817265481db2a7f901fdc8a53870c6b9d822d49c815106a"
+          ],
+          "effect_sha256": "b21a138ff8c1b565a7f92b6b30772f2ecc39a332023f3e7de259a612e9c54df9",
+          "setup_digest": "6dd9f096a35139823470580075e28511cb4c4714fa10003da3da974f1ed88065",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "5fb19520dae327fc987a7eef39ba407d477c5ae32fc41b97528bbb687c2d47ac",
+            "d0f8d3673d4e0768ee65616b9d824c868db869c15806faa04afd0f1dc6d8ad11"
+          ],
+          "effect_sha256": "b74b9d2b2ebc906853fe1e07cd55fd83e18c9b22be3af1eb8a218317571313c9",
+          "setup_digest": "e390ecb30ba7f0b2afde344dc9b84a5b0005eae0a3677b4ee0ce1c3b48c8ca31",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Blood for Blood",
+      "id": "BLOOD_FOR_BLOOD",
+      "java_sha256": "f998369a0df46063ace9ca4b775960ddb85f8cdce704218046c0d07070549521",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/BloodForBlood.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "31a3617ca7307fe4eee807182073e1f728d183d183cde32a41b49d351490f520",
+            "98a9d6deeb6974e56cabe45c112c40bbd80ddd88fa74e8dde84125ead50eb906"
+          ],
+          "effect_sha256": "39a23796d79b3c06c2129e75d8b259174b5419bfce1e8c6b7fdb2635d47f141a",
+          "setup_digest": "d8684b6b59a1151cb7c451aea679bfb910a0ae5024a4a6cc8b4f5db50e79ea93",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "81f3509a29ff1dbe32f1f723130b675b5cedf78caa86626338bd47da846d9e9d",
+            "96cf26e2eee5807acc77823f99e779b77f276619be753b5837f854f49317f47c"
+          ],
+          "effect_sha256": "ba555e4a433bf058a35706fcccf21af1c6897a584c1a32ac5d131709c88eeb02",
+          "setup_digest": "acf6f9359f2f68693ce99c054326bc01f633e29809cab4fedaa459a53589c3fb",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Bludgeon",
+      "id": "BLUDGEON",
+      "java_sha256": "62007360d67490a1bb7dc3a60ece470a9c950f0ee98d077d7c5743b366be4d7e",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/Bludgeon.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "6a8910667863572c7f181526741b11c4f894155c7feac9fdcc6016e127553b04",
+            "92b0d247208c9dacb61bf6a9e35f0966f0657c499c866b81bdf418fca7c4eeeb"
+          ],
+          "effect_sha256": "c397b1e08afe6bdb2996df5eed6e65fc9aed99541e9923e5e8be4e35dbb7f111",
+          "setup_digest": "99a86767b78dde658e3859f4006625b0f166dc80fc848bacf3241d0bfc82cc69",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "9ce920b637b7566bc817ec3d06f914863b2c3e6f952e3d6ddeb98f480f0bb66d",
+            "913ccfee5ced6eb0347d19a7aebc4e36c0346b065700515903ad147fc856337d"
+          ],
+          "effect_sha256": "267b194a8c461f48fd67faceae943200b24402ddf43e75ee15d342de4f557ec3",
+          "setup_digest": "23f7cdfd8d607ecb4dbc346cfebf3732505161dd11d212537f0451390d42c2d2",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Body Slam",
+      "id": "BODY_SLAM",
+      "java_sha256": "19b111bc114632bf4bdbd0a2795487a0f8340a3023abdf786c1eb87814a8567c",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/BodySlam.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "6a90410177d29727c17550fdfb6a469d6355fe5107259f4e08e72757acd70e87",
+            "5cb1c6e33260cccc6c9ae2bfe3c16d840ef3f7dccf03079e49aa6d3da5515906"
+          ],
+          "effect_sha256": "e80b27c42f34dd062c96e06c5e8b968c7971aa5365510b2540c01313834a2526",
+          "setup_digest": "d11783ecb5cbdb489194faa4a3df6380ccad7660b9d86afc4877d656ad6463ef",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "bcbe1d27c6762506d7bbd4a48c9e654540e2a62c68c8e5c22291f6b4b925dbcf",
+            "f320f4aa6c99a6919ce3d18bbbd03ca7127619a4c1b1d2eec910c591ec64f362"
+          ],
+          "effect_sha256": "0bf63672b5032e7c1b28ea847dd72bc00754a03a93e9a4e0e2d4d457db8d5a76",
+          "setup_digest": "766768e4f5b556c2610484f6fcc0b46041919d350a7ae409a8e0f08a325c1313",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Brutality",
+      "id": "BRUTALITY",
+      "java_sha256": "8adbe80506a62ce283b3f81a28640eec3830559ad8cd8c0f471e22d703d74960",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/Brutality.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "9735967feff0c8c98df24a6c47e84e922b644bfcf6f3e29f66c8bdac33c7bd18",
+            "c43a5e84bc5ea5be60b84e95069689d81cf79b97dcfe34e93d7bd2128575eb01"
+          ],
+          "effect_sha256": "de5b069501ecc72762cf04cddd40f41eda2b44ef488164ccf8e8cde626c94e92",
+          "setup_digest": "fc8875fba6f1924c4d45bed6c42a4ba41692c1ade08f3de52d985330773631f9",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "9050572778dfcd9182acdc4bf482fe41c9a0cb061c7c78d50ff4b046dfe592c8",
+            "c43a5e84bc5ea5be60b84e95069689d81cf79b97dcfe34e93d7bd2128575eb01"
+          ],
+          "effect_sha256": "bb00ba8e8e8dba58a8c54b3592d23ac8522cc70ef07d636ad83174154b57074f",
+          "setup_digest": "0a4b51d4a2144454e9710a8fe69231046b76e76e15b1f27f76328ca846e3860b",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Burn",
+      "id": "BURN",
+      "java_sha256": "26e4703802ac26262a51017982ecbb4ddd3d8610143cfff5fa688c9e35091ea8",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/status/Burn.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "221ad64116a31761f235a016f227b12bc1d920cb84295517caa6149625e9ff00",
+            "4290f43f24a87f1553d2a0792c638c4827006ab5bc146b58a3aadf37847f22e4"
+          ],
+          "effect_sha256": "81d7ce1eb413752326ccf46edfccc8e7aac96392cae13f188cbfc99d6ace45cf",
+          "setup_digest": "cf74a452caad6c065be1fca3902716fbee8d9fbe7df8f79563d858871b514894",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "24190db588b2276e598498706dfe537c8808dcab8eb904a3ec2d9b3c346cd196",
+            "bc51e92dc7e9cf89fbe1623d7e3c8a765fa15516f8522139a6a51c76776885c7"
+          ],
+          "effect_sha256": "253c7a534517ad0ca6953cd325fe9fdb3a3f71c603d2fccc0b15c2cea315780a",
+          "setup_digest": "9b11e899ea2717a167ccfa6000561e2c5c681b836fe2cb2dbfcccca549a0ecd7",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Burning Pact",
+      "id": "BURNING_PACT",
+      "java_sha256": "eb97ae9b632586228c84a52f78f7fa52648e1841c07cab98102f965b9061704e",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/BurningPact.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "ecc50a262213ec4a9fc05c024276701dda09fa38ad11d33f956ea5dc6cb6076f",
+            "70ed4cd29f34c98b8faa9dc84462f19ff2bcef4be61557452fb121a7a0caabdb"
+          ],
+          "effect_sha256": "a6c4ce25d48358effffe908e4e1c6601f82780d30c2214424e500f65737aa253",
+          "setup_digest": "eeb4ca80227b62f4683ff649b68dd674b40904e5939887b9957418cf0f75ccdb",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "d302e968e7dd48fbf7aad7be689e2beeb043a9d7be9141434328025816530d2a",
+            "afc9ed6ff76d6c9b7a75867fc66756bf9a16a3fd99b5ab8aba1cd944da70a285"
+          ],
+          "effect_sha256": "d99459bd2d663823af8e53d859b18fbaa2fa14460249edb0e8e3f8f3bbb6ba02",
+          "setup_digest": "f6d140d7a4202a5a2281a3bc4e6a7f8629b206d044a1b4aa36ee7e6fbb624d9c",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Carnage",
+      "id": "CARNAGE",
+      "java_sha256": "2b78ae44ba7224b886c0f990071d778464829d2efa57520e6236175a99371579",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/Carnage.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "9c628b7fc3ba9dfbce430a176431f8ee33d3aa47807bfe039116c57123447bcf",
+            "8451006b17f506c0139e6fac89c960d6012c6a1534a1050d9a11301ae6be3917"
+          ],
+          "effect_sha256": "9e3255eb98ab7968b7c181b138367549fa8c777f040f5812708abeab65cf11fd",
+          "setup_digest": "8dbb96c81dd0d95bd1af024721454b44ff82cc2370b5c46d6e8a10198dbc40c1",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "7760af673b068dc6dc9927619674252831ba2a007b4a2b922b4e271db64c0259",
+            "9bbe31927805d47f43ec70f60742c9726926d3f6b2bbe39fe5ab3b6d28afaa6c"
+          ],
+          "effect_sha256": "2ab430c38aadce16de62f05ad7b1d6dc730d27638f7779ea55fba035b17d0e50",
+          "setup_digest": "eda46c5214a3ca522868a52a3d10a204a9c5a8eabf37bf9e5453fa92c5fd815d",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Chrysalis",
+      "id": "CHRYSALIS",
+      "java_sha256": "cc12095b70fb74cefd8b43397788c6f4551aae17042ce9a6d9d66a15d4cd49e5",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/colorless/Chrysalis.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "a717d02b26d778ed8b4a9f2e460d11b89b2d5765bba2c0da8ea183b701f23aba",
+            "79fcd59cd7c2ae44a5b01ba64160b8c5747960e72f76acbc71d34270938b4bb0"
+          ],
+          "effect_sha256": "864be6b2b713db9504651844799462d47641dc965aa74d3d55dbb23071171ec2",
+          "setup_digest": "d3edfcc59199a365556aee832694370224c42d58f8335dcb7766d5f0c7b020b7",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "c2390eb4c01a2e89c58f60fdcbec0d4fc01a8f6e4964ef5a71fc70adb8fda312",
+            "9905b9ce47544250ac2f5a81a2a295b885fd3306f6d3e3be2c87d58e95b784c6"
+          ],
+          "effect_sha256": "787d17b2f207023ef358caf50a839742d80502d0e021862b6d978af5160773fe",
+          "setup_digest": "6848ece8157d2183e89e58d9be2b941b062ada5bea8412779b11d4ec605a3826",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Clash",
+      "id": "CLASH",
+      "java_sha256": "7608f0eb7e5472904419e0cf01887ddaa6c23e04c28a56ff35217e8dd46095e7",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/Clash.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "bc29eea3e95266119d74ac00c74a01dd17f28123570a4d035d2c6da168a2f730",
+            "a974b7ad071c91101043038a02acbe0791fd3f1acf90800da857c3d9d68703a9"
+          ],
+          "effect_sha256": "9f25c1fcbd16d38539307396fe5bd8e74cfa1efccdefae19ec9282f24d370027",
+          "setup_digest": "f9f745d80c820b7aa7f7ef599a7b43f2d68b7999c19c310f5f0c3ce695c6d19a",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "b8308213b00b5226e3163c8934d5ada268636b4ab91172d111db44bbaa54a1f0",
+            "3b0ddce495693d60657ffbdf02a2ee72237d10b0f6faa9f4ff1750509734640a"
+          ],
+          "effect_sha256": "8c95267d775cdf35bbfffba8147b4c294929c09863d029ce3df9cd2c4f0f0dc3",
+          "setup_digest": "c86312d1d756c1c43824eb44f35d3d40ecb89fc8b9b89e7204773add9a566670",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Cleave",
+      "id": "CLEAVE",
+      "java_sha256": "e3b2fe564a2a779bece99c9bc132287bc0753942b1ec5959e677f41f9a567941",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/Cleave.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "7bedbd984262c28dd8c8321d6a4b41609427ef66f26a093181b8a7350079fe92",
+            "b28265bc074520421c45e787ff0db9fa1782eea491a1d0e7b7275d01d48b7da6"
+          ],
+          "effect_sha256": "2c8c61f8b7b0428c12954bf35b8fa7132fed8e479830253a3a7cb3f95cb5c442",
+          "setup_digest": "3e84224eeb0912c0c07ffa6d2d475e99b1558e0f693c1eb1c5e389afff023829",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "c39df81516e72a2017daeb3807fea29a125a3b74cc14fb404dc5efc156333966",
+            "e0ac0ef0feef91f4a63f7547df8b02ce2618893b62eec253e2e11bbac66a47db"
+          ],
+          "effect_sha256": "cddb04edd6f53326796d78bae6b297f8e16926cad05af95cf48d557c97aacdf1",
+          "setup_digest": "d24f5105e19b45a8568fe278bf31eed2518da845e0a904c1eaee69051cd4b275",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Clothesline",
+      "id": "CLOTHESLINE",
+      "java_sha256": "7e27a4165ee0fd125163e10d7fe9b754d7503103452275704e9246ead61399b5",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/Clothesline.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "15ec08be63ab7a8dceba6329156afa86ccff9561d62d4c920fce2436af0408d4",
+            "3e9e2757a4d4f82dcc6d9c785b82cde1fdb8f03a5d66da504abfb3713e68b51e"
+          ],
+          "effect_sha256": "0f48f65f7012ab4f6ceb5e7ae12a5ac82a9388b481f92484f27121f0a9aeac37",
+          "setup_digest": "c937ee3b892a7164d241b8e215a4da6deb05c9518b410624ea20f223a693b443",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "bfd14a802d8c3149bc296a076f6b2e3cad1791557015af95b54f992a4b637400",
+            "c0236e5a71b085591da34867f25017fa5652985d7f8d432e400a6ae0d45de3fb"
+          ],
+          "effect_sha256": "6107dfa670e5962754ce435df0d35bf49181ed5c697a7ae32773dc7a156a0a61",
+          "setup_digest": "dc3fa116ae7ceea78a2ed11c6b062c2e1c6aea2c1b0852b0d0fcc3650689a58c",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Clumsy",
+      "id": "CLUMSY",
+      "java_sha256": "ddf42e5bfd1d7aaa3b9a231ec26d7c0e3357168710efa400d4f50ab15923b75f",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/curses/Clumsy.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "7c5d7da9620f222d13d6e2a588f6033cb4afaa7f37c5533d2ad42dd6cedeb6ae",
+            "806a48c4c29721981d2e7f2faa723025c92e6fd38c3198d58fef07232619f7fc"
+          ],
+          "effect_sha256": "66573b5e377fe85b3502514f5c4ee6a300d72527b274445ce6763a913622e631",
+          "setup_digest": "ee9ae29655539ecd4211fa19673e22604ec581bfb333c2a294d7371bbbdcfdb7",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "7c5d7da9620f222d13d6e2a588f6033cb4afaa7f37c5533d2ad42dd6cedeb6ae",
+            "806a48c4c29721981d2e7f2faa723025c92e6fd38c3198d58fef07232619f7fc"
+          ],
+          "effect_sha256": "66573b5e377fe85b3502514f5c4ee6a300d72527b274445ce6763a913622e631",
+          "setup_digest": "ee9ae29655539ecd4211fa19673e22604ec581bfb333c2a294d7371bbbdcfdb7",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Combust",
+      "id": "COMBUST",
+      "java_sha256": "a6df7d1e9f6960739b444da34b3917893288596d1c5fb0784acda6c8f3149c58",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/Combust.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "8061a5b85396c7eee47e7eeda8db34a3e016f5e13fd03c80f82fb3a56fdadea1",
+            "1846a8514538b1efaad5fb4a3c2a0552958c0b4e2c6d2cdb57f643b0f6bcdc40"
+          ],
+          "effect_sha256": "89a6c73e3178c12e87b12729916fc090e868fc60730ae7a1c805396d1474b463",
+          "setup_digest": "957ca2765ae3f669b10ce45a2ba0667614d4d73b5e58b5950c5c3bd15b3c1b2b",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "a14f37ff2c0ea51b8272490cec86a9cfe879f8c296ea122e5419b016ab79936a",
+            "cb3c3f72fae7fcee42e7855e9f1d1aad2138a2ed3a62952d0932e7106074ca25"
+          ],
+          "effect_sha256": "74126e8e0d26081502ae71bedb7591a0066b60b46550c1f11c5baa8f67fb0f46",
+          "setup_digest": "14d5e2d7f3e8b111971524f09f8e70ec66fde0155562ce7fb083d6e5065f845f",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Corruption",
+      "id": "CORRUPTION",
+      "java_sha256": "819ddb340d493713d931ae84077c62542463f69762ca7f36bab124f2b34cf055",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/Corruption.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "d5376e501c32a6ce2b4c4b6349ee27983cda303f1bda8a9583a469959a5cb386",
+            "ff090c848b8e026d0a6df2aa7062665ff5d6a6f45be2d4f79cb4bcfccdfc3c75"
+          ],
+          "effect_sha256": "fee56dcf769314f116711adc7e423e1f23fc4805506157821b19c326b48c385e",
+          "setup_digest": "1dc92142125aa60b96e6fddae7da626a8aac543843ab6c98cd2c512512a580ed",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "d36a656a957cc91cd5d070882272affa7f394078374d5fe05ab804af0c20732e",
+            "6b69040acae2a97f711cb9444e26fc450ee26c6478646512230657e7ce529f7b"
+          ],
+          "effect_sha256": "8cb7a7e3414f796ac89627e4d0f3342d7b57fef6556e5c3567b5eb9bd61ecd64",
+          "setup_digest": "e6dc09240d7b6137354309df1c525cf54ea5344b3ef04261246de830a5a22a08",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "CurseOfTheBell",
+      "id": "CURSE_OF_THE_BELL",
+      "java_sha256": "fa01f7c14b4e37037f949128859a1cc61a38d0f12c3c04625e88b76ba51cfde7",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/curses/CurseOfTheBell.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "7c4167812610a400e5591db2fc96189d29167b918de07059f5bd6108417453b4",
+            "2c017a5e2c33bda8ac959da07dab524c1ad98c13c7b1ed136bb7fe85e74d20e8"
+          ],
+          "effect_sha256": "095262c0acd44a5ac0b58a72ef41c7068edecb486e3eabeaebb8b4fac199c246",
+          "setup_digest": "b17a97abab568c1378172be15db4a236142656d42822150a9eb01094629939f0",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "7c4167812610a400e5591db2fc96189d29167b918de07059f5bd6108417453b4",
+            "2c017a5e2c33bda8ac959da07dab524c1ad98c13c7b1ed136bb7fe85e74d20e8"
+          ],
+          "effect_sha256": "095262c0acd44a5ac0b58a72ef41c7068edecb486e3eabeaebb8b4fac199c246",
+          "setup_digest": "b17a97abab568c1378172be15db4a236142656d42822150a9eb01094629939f0",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Dark Embrace",
+      "id": "DARK_EMBRACE",
+      "java_sha256": "b451e6013d0cac4360b60245798fc8360f1358e3c5f04cca7e38bf6cdc6697f3",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/DarkEmbrace.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "9ec845a5727a8c77589d84e4c9459b5829026a0346f0cecaba88d568fafc44b7",
+            "f342e5a33666bd82c75bac0550559937bf85a81f4eb31ace5fd9bd74fc8fd3f4"
+          ],
+          "effect_sha256": "41e351a67953d354deb20059233a2a797b0bca43561e99edee589f65636ef1a6",
+          "setup_digest": "ec153afa14ff156a09cec23694aa97788f8b1ddc893693bcb17dd9fe57b69001",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "6a7c8396212eda1c5bdfa1269142426115d54a604f04bc143db20041479e9777",
+            "d6c8c9ee5c38e6f75f81f15a9a047b07b2da4aafa348c895d8e12ce53333cfde"
+          ],
+          "effect_sha256": "2477da0dc4e823b8aa081b676eaa4758fa7e028e831a0c46cd205061c991ff71",
+          "setup_digest": "a4fdd8eb268ff148d8b361e2ffa364f5398f1b8ff5c89efc3ad52b29d14e8889",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Dark Shackles",
+      "id": "DARK_SHACKLES",
+      "java_sha256": "4bfcce0c1c8ec53c1b5baa4bcc447e31fdd8091f5c24bc1d2d4644a302882b19",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/colorless/DarkShackles.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "bca40a4db1f3aa3351a46688a5474efe1ca948bd79cf67c8fdf90f3830cdd40b",
+            "276846d155f7be5c17f8e64935366a30fcb3f1e34c9572845012dcf7a3d00098"
+          ],
+          "effect_sha256": "69d20e3d36c4730bbe4aaf1e19c9920604d7e4c51ce5d1dfeb629153cf0d4eb0",
+          "setup_digest": "d4182f02494b5c390d48e286688d6c519d9a6c7f7f37227639770ab3058c858b",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "ed7b7ab5e8e1a365997a77f411cb6a4c613a3779f34c523759e32254059c3f6c",
+            "06e38dc18b104f5a3369c9ff8bba6ecdf5cf5841b384b287f0bd5e431cef5479"
+          ],
+          "effect_sha256": "930822d9484582b4316750081288c121315c1cc0907d1c4b34a39e9d87cdcdc8",
+          "setup_digest": "0d5bf5bb1a7df2313d5cc664d17b6dbe5fe5e863b62939354f10995038f32940",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Dazed",
+      "id": "DAZED",
+      "java_sha256": "6a1bdd119b59acfd1a21cea1c6794c5318c1b4c8e08fc79a339e0cbc21b237f6",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/status/Dazed.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "d06c20c0f5235e393b5c144025895ed03aeeea274135368aeae34e30b86357b5",
+            "832539fc6067cff80f6ff14d292b8506b1c308bcb7276f97770e8fb16769e5c9"
+          ],
+          "effect_sha256": "cca44aa8a04258baa03ade1c12ef405a5ac3588a494c6948b1bc2908457e8d7a",
+          "setup_digest": "6cb44de9bb84069dc12c9fb6f52e0cc62e9deb3e54361bdb693786c82579e0ff",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "d06c20c0f5235e393b5c144025895ed03aeeea274135368aeae34e30b86357b5",
+            "832539fc6067cff80f6ff14d292b8506b1c308bcb7276f97770e8fb16769e5c9"
+          ],
+          "effect_sha256": "cca44aa8a04258baa03ade1c12ef405a5ac3588a494c6948b1bc2908457e8d7a",
+          "setup_digest": "6cb44de9bb84069dc12c9fb6f52e0cc62e9deb3e54361bdb693786c82579e0ff",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Decay",
+      "id": "DECAY",
+      "java_sha256": "84b0e2280305874bd8678e46cd5e4a82809fc0b6b5088102c92660704d473542",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/curses/Decay.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "da6f88457804f2f1541a89f9f20a2807b4698aecdf8e740cb2874612c3532180",
+            "256b84b6a9d4241441c3d11be88c59faed7398e6451bdf8e7a63066cd82e7d89"
+          ],
+          "effect_sha256": "93a02a98e4de8a19f36ee9f18188fe157fd23b2f8c01d1c68795738a13288cc7",
+          "setup_digest": "ec71c005d507ef2d75e6d5674183ffb3b86008d8159b1904e5ab01478072522e",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "da6f88457804f2f1541a89f9f20a2807b4698aecdf8e740cb2874612c3532180",
+            "256b84b6a9d4241441c3d11be88c59faed7398e6451bdf8e7a63066cd82e7d89"
+          ],
+          "effect_sha256": "93a02a98e4de8a19f36ee9f18188fe157fd23b2f8c01d1c68795738a13288cc7",
+          "setup_digest": "ec71c005d507ef2d75e6d5674183ffb3b86008d8159b1904e5ab01478072522e",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Deep Breath",
+      "id": "DEEP_BREATH",
+      "java_sha256": "16e511bf957f78f261ab4bd6b0d6511ebf8682d25b871e9edf39cf105ae38012",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/colorless/DeepBreath.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "b4b5f545d69f339110b011386baf7b8bac7ecec796a18309310412e02b04ec83",
+            "9f9239d99c819222c021013aeb52f36d6f98a3866b6d36f3cae90151ec393bc5"
+          ],
+          "effect_sha256": "59a1b74f8fe1ec0f0ef2377f7344fe3988f5563f50e992aff80d1f76ff97f4cc",
+          "setup_digest": "c874c51f558d4d9d4dcbb3b8776cebceb283118940fee97d8977778d511df5a2",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "549b7946b1a0a0a41fdf84d5cf59306acce819d7eb9d35b58554cbdbe7989933",
+            "fc0baee240c800dc772895eebcbcebd3df8cd8b9b858908070b2b4b1c907225c"
+          ],
+          "effect_sha256": "58a3da12f0cb63cc1a7b019c0347810e7f0b5376711f5e62151828e3d8e82901",
+          "setup_digest": "d9fc5a673d54e341764a5685cfd68e9f06796d505f2c4a2382fd23fd4f34a34f",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Defend_R",
+      "id": "DEFEND_RED",
+      "java_sha256": "b9c86f817a4c382222a578309dbed75496f732af4b981922098d502c01105e9c",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/Defend_Red.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "255bbc43f105cbafffff6c56ccf5e54eedf491adf8597275eb40d4346c5ae6ae",
+            "d7f2878cfa207a683eaf1dea98709e5714292eaaec2f3efad50716307a28e179"
+          ],
+          "effect_sha256": "f03392a1cad5637e8bf9a4a410d83a716463c55dda0f3b701f83f74cc403fec5",
+          "setup_digest": "cf671852fff8897b39d36ac9e2d7ccdd88e13d895f3aeb4e0baad17ec5a0520b",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "075754366d9a94c5c3d8ddc0b5b28e6e6a099a42536b21657de6c0c3b681f873",
+            "1a406593fb910c7081f241bd8c72755d93564b0eae661603a28d32c62f632dff"
+          ],
+          "effect_sha256": "7a5c402845c750a36d04d7669e89bc9addefa15757d3a20cc5ee438dc054f3a5",
+          "setup_digest": "13b52a4d2f5b016fb3a4b05a035e38147162b3333540d97c7a7b9ebddf99042e",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Demon Form",
+      "id": "DEMON_FORM",
+      "java_sha256": "0fa3b8f1f0805b9a6b1efb080b43082e38d40b48c664b7a1ec436eefe200c0e9",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/DemonForm.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "1b77b36649c10ada61a93b9920cc5bf50fa6b43be5a71cf8c2691b44e8af5a03",
+            "fcf000e804af71c347a35afec26e5866c249dc8005c7cc4701d047666512ba16"
+          ],
+          "effect_sha256": "ba2b38da79d7ab4b172d231979b01f8e4ff43dc834856a8b23509efb0354f012",
+          "setup_digest": "0beb3684e80601eaad523c253ae7e450211f686a8173839fab388f5244aaf774",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "0b2a41101016f799807c28a6f954d49a7d7517d0b5a2cab1db0e4e663055c1aa",
+            "770b9cd30deb6539e2d2c91003f635f06234282101099080b7026cbce6814ff8"
+          ],
+          "effect_sha256": "790a1999ffd2dba55bf18c08321ef1ab3ff3b36c5a57c2a9f8687d65ce0d4fea",
+          "setup_digest": "3b382ebb9804471734f3cb73c3c34626914f0c66c3e5d3081a66489b2b8b2000",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Disarm",
+      "id": "DISARM",
+      "java_sha256": "3a6e233679cc7b293b667bf0a1a1de982bbba14aaa5327f375557f0df9ccac46",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/Disarm.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "663bb4d86fe2cd89ddf542a98ae716d478e3826ebbf28c0c959325f8e8750c99",
+            "630feaeb29fe7e4a348e0c2b7f801a8eea8105654b313653a44645c282317130"
+          ],
+          "effect_sha256": "0e93bbabd83da0102744ebe4eeb9a5f948c937845131d81770370ddddbc01a9c",
+          "setup_digest": "b3d3a36a2e1864f8b03fac7f5f2297db2c40c1ac46812a0bec14ca37762d5d8f",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "68b71cc91c370214678ca51bb2053255c0f11f7638649772a600211755d8058b",
+            "0dbb73894c068544fbb4aeda6a09beb68f0a73ba854db60d3b0b297f34528db4"
+          ],
+          "effect_sha256": "c679864b907011c432eacc06353e943d9243efdaaa4f0cfb5781dcc1c158bc55",
+          "setup_digest": "718f583e3ba45877448b4c622a8d8d92e2e0c6376b6a94f2efdeabed0e98a9d7",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Discovery",
+      "id": "DISCOVERY",
+      "java_sha256": "81c71237c0f3502beec25926cecdb6af5b2003cb9785c5fd5bcebecd46cbd6c2",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/colorless/Discovery.java",
+      "variants": [
+        {
+          "boundaries": 3,
+          "boundary_hashes": [
+            "b34e6b3959d26fe28c1d74016a534046e45bfb7db3588a8199a7dc9bb6ce855e",
+            "f8fd27c10caa330ede71b1328bec5513556f4f86272cba978b96c8130bbd23bb",
+            "13ef03da86f3bbfcacb9723e9256243ab49e12e05b1f7d19f4fa5f52a6c0dc55"
+          ],
+          "effect_sha256": "a62cf6dfd3ff41a9b2ec198f257220d6e2fabb6eb91e02447656c9ebbc861782",
+          "setup_digest": "f7ca4fa2d868811edaeb4562cd0d41b929325c27f064c2ab271cded0decc5b3d",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 3,
+          "boundary_hashes": [
+            "2555750aa16193f59eddb5aa0ebd8d9a166372dda03e373f77cc7580af7a25d7",
+            "0020a187cef5de7b30c2fb0434e311fbf30cd30dbaa12bc6e21526ffa5fff740",
+            "eeff91e0397f68b69903e15871e7e41697bc393e87566179c1bb9ca0dc8c70b2"
+          ],
+          "effect_sha256": "c0862bd61943e40fb4ca8a6595e35c262b026ea8649db32457b04d63efd0748c",
+          "setup_digest": "e823dbd2293ab032cf5c43d927f2a56b45e34733855b499cfe2ca7aaa995cff3",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Double Tap",
+      "id": "DOUBLE_TAP",
+      "java_sha256": "c014c349937844756a53408451faf597304f35a4a38f543a957e65f5e4411bb4",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/DoubleTap.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "8cd3179c935afa943e562be435dc5037aea840f984bab5cd46376931c004c3dd",
+            "707afb2d98d4a2cf2fcd942252414c8525775660643ad0f196d8d4e424de7dba"
+          ],
+          "effect_sha256": "5546451a41ca26d13688c47123db35194470d639c60d245f22ff23abc8b21c01",
+          "setup_digest": "a535c3b335bb266e6426e9a55e5c88e955c79b7968f3a9d5a79080330b20da00",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "759d76f6a358bbc8f76ce7895d4f19b305ae5dfb81a7ed70ded5f3d9aeef2d2d",
+            "79d36fb97ecf631dd90f7aa38703d361884ae2412771bf53bb87211cee4101c0"
+          ],
+          "effect_sha256": "c4b140636ef8e9daea3c2fb1b2350f8f2342a23e9d23765cc003acaaec93f125",
+          "setup_digest": "9cb819c9ba180bb32d50b63dd5ce48e411ca1fb33a7a732149906d0349d4d8ca",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Doubt",
+      "id": "DOUBT",
+      "java_sha256": "637de54544225005174e462dcea49665d7f0592e8aae3e304f1622b4b20d1919",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/curses/Doubt.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "69c978494dae1c9933571ba704f632367e42731d8d8d22e6fcb686095196e328",
+            "88cbf960025778d2c1b8a060eff5b3571e0c930a8fa18c0f9d4103af56ed7385"
+          ],
+          "effect_sha256": "523a8927d9f6d9a177d8c45acafafdd8723f05415ba1ee6edd2de446a1bc1ddd",
+          "setup_digest": "07daaa92980fffb3914ba04b111f78868b69044764696501898f2db50efe30b0",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "69c978494dae1c9933571ba704f632367e42731d8d8d22e6fcb686095196e328",
+            "88cbf960025778d2c1b8a060eff5b3571e0c930a8fa18c0f9d4103af56ed7385"
+          ],
+          "effect_sha256": "523a8927d9f6d9a177d8c45acafafdd8723f05415ba1ee6edd2de446a1bc1ddd",
+          "setup_digest": "07daaa92980fffb3914ba04b111f78868b69044764696501898f2db50efe30b0",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Dramatic Entrance",
+      "id": "DRAMATIC_ENTRANCE",
+      "java_sha256": "84aefd087af5c90aed2773edd2b8cab328c0bee67b5fc76edab5b498a419c519",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/colorless/DramaticEntrance.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "5f6b9fa63d9348c5ab4e7f96eed8db744c7017f57d942e3225aaec867110fcf4",
+            "a4485afa8b077e1b98535ece023f32f93b13e7a5505c2d2a14f6261e4900b4bf"
+          ],
+          "effect_sha256": "2650110509705d0b07e184432a8d9fd1657a294f8c3ff46dd27c26e96d057c11",
+          "setup_digest": "c51bff32c89a8be95a6b523966251d5d4229f87811845a7ae557ba274f7dbc50",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "9b7f235c4aba91286a16363fdb119c6160b04a0da0c2336490b03c11d91b4059",
+            "b652dc2ec67565f5449c518af8815e738863edd7aac61bd2f86415c579c6fe3f"
+          ],
+          "effect_sha256": "3df417fc321347d8a443f0f9fa56048fb20bf82e8e76a6538fcbaf5fbb21d2ee",
+          "setup_digest": "d5bd9730f3681b0599f110bbbcd7eb239a87b9c663388e2a64085e90af84482b",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Dropkick",
+      "id": "DROPKICK",
+      "java_sha256": "bcaa77a1f19c85e046bff092a54127d8345ff1630f554eca89db4a03c94bf9f6",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/Dropkick.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "6557da54a3bd5f8d15f3e83cf0ef8023d5e333bc5a4d4118bd8cb96f9c134630",
+            "e99663a073aa46893672f771a8116b615845d17ed0fce16df62b7070175639b9"
+          ],
+          "effect_sha256": "2dca65b6919381f95ca203b698ffe903e3a2b11885eea03222f316280f554257",
+          "setup_digest": "640bf4091d8d2bb4b24105a85ff59361c40bd3c5e337d1bae9907d451b67bf46",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "5343e23b880a0f53c0e6f6095e9a5afb3dc5301a0e90834bb9ac11fb8cabacfc",
+            "e42f69d085b4182ab3bd38a201d0ef0192f866c402b109e3831bbd5b91483e49"
+          ],
+          "effect_sha256": "db509dfa5935fbfbe6db85f4e439c4c8180d38ce0f950413caba47e09a2e8064",
+          "setup_digest": "13ff53e05a13a225d626bbd7c8495c0b1bfd0952ada5d67c9c4124598d65ab34",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Dual Wield",
+      "id": "DUAL_WIELD",
+      "java_sha256": "a5871808a83d903fe88ff67d7af2c32271fd8af67530efda3f199a6369cbcb4a",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/DualWield.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "f9cd2a49d8f5cf1af9305d7bf990b3cfa938fe5f218f23766df54623ab57f192",
+            "55a8ff9399d6a6b4cbc71e5f86dbab1fd2440bdd04c61bcdfd36395087df10f7"
+          ],
+          "effect_sha256": "05532aaca329b5cac83012cc0f15e545599a2a6a688bde3c57a6b021ed5543f1",
+          "setup_digest": "dbcb70258ac044e6010418f290abc43674e0f530dacb8ee52abc3b218f8a12d4",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "70bc28da4b301496544ca0992eb14db5fb1ecd9cb3c87105b01450734cb6e08b",
+            "62134ed8637366772af3db3e435d18aa4ac94de1475a157b0d6f8da0fc5e6536"
+          ],
+          "effect_sha256": "56845982b9ada5682f2f9be4beb974e45a60121c745d20e38c4a0b60246867a7",
+          "setup_digest": "356bcf6937c1cf0c0211e09920c3296cb7714c5c40058570032e8d6f7e722c8b",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Enlightenment",
+      "id": "ENLIGHTENMENT",
+      "java_sha256": "6b87da20920bbd47ac2a9e9edcc82a99125decae484824e6fa0a7b3b1cb37698",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/colorless/Enlightenment.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "467433855202a72010b788de31072cfa6a62af8ba411d5715dd01714de9fb9bf",
+            "96242c3496c1e671caf66add3b6a9d230b547e81b430d208346d11267778b9c0"
+          ],
+          "effect_sha256": "e00f8fdfe530f8ba84e75fee6fd242cd9681499c95130a07f7af44592fc886f9",
+          "setup_digest": "aecd2a312a56aefc54ed17ebe1df1173ceb197b30775884ebd43ae697eecb7ee",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "fb7aa396327479cc74f944b46ac1ac7d4ed1aaf6439fe072760d4a32a1306be4",
+            "1523995942e58c76734ccae2b717d927b28de65f4d2345d09b3ded83ec56dfda"
+          ],
+          "effect_sha256": "3e8cfdfcd34ea154ddcd265f27a557a9c5d7d67253a8ef09f5e5e333dba5aea1",
+          "setup_digest": "038ed1c2cc65a269a4e787b889a162ab23bba20d7b257342b859a655590395f5",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Entrench",
+      "id": "ENTRENCH",
+      "java_sha256": "12c89d780a634595a79ec82cd6b6f4bf11799f9bd1623c4ce1aa09436b8715f6",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/Entrench.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "8282e29e9ef72abd82052f8ad99725f012a37782d270ad4a47458befcfca835d",
+            "14ace13cbd1ca013c5da39fa38fab5a48f73425e4a92e022b17055f9d954f1e6"
+          ],
+          "effect_sha256": "86764e5b6583989496a545291fa019e1fbcf0e0f7849f9b551474f710777255b",
+          "setup_digest": "67453354429d4b60e3de3b3ccba84f77ce3ae39eab99899db535664c1ed12395",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "c445f29ba9f9ca3e28d9b5f5cd27eff15e7c7c7d0735305861fd690982005e00",
+            "66adf25cda60692f8fffdcb1c5e4be2e9693dd67d990e53fdcca84a467552c15"
+          ],
+          "effect_sha256": "d9e7ced6242f93f127a7dda834acd0525fd2a50ae81aa83c44e37bacbd4d1793",
+          "setup_digest": "e4b6275aae6e97ab2b5c8ad920f4b1db7af716356d6e28e281d593cb44971b55",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Evolve",
+      "id": "EVOLVE",
+      "java_sha256": "c340f42aa0add3b2724dace4a774408077121a52e31f9003962c50009b1ca18c",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/Evolve.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "b45dd29db9e5670fa3b008a1e5b9f381204b4b21c89b38a7b4769129cfc77ecd",
+            "cfcc69a62390098d4b9c1324f2b7df4cc1c1a4a2236c85d905296aeae5ee4339"
+          ],
+          "effect_sha256": "9669080930a8198a920a444a2225aac34c19e15f5251d5ea40700431ac61aad3",
+          "setup_digest": "5472287a5712acbb1c0d1aca634f2341c946fb11dc40f77a2d0452eceef4497d",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "446aad6b4e9493ebf094567badb2fee65c5380eb1d0013f5e6c0db2180d717d0",
+            "0cbdfc965c13444eb83b2af72e585da89c3b7c24f92ea9b7b9050019468e1493"
+          ],
+          "effect_sha256": "bb02ac948fb708c1c29716999c1537f7b8c0cdc6833745a1ddd08f25cfbeeee0",
+          "setup_digest": "83c53b19e702c71f25e04c6c81ed319f92c1648cae9f197600e0879e41b4a214",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Exhume",
+      "id": "EXHUME",
+      "java_sha256": "1595b2e6c563bbf7f78aa9f77acf31fbaa6447ef3921365b5d7c921dbd833561",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/Exhume.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "c828d9eb96dcf5802b17529bb3d094f2580321648dfc150652e6d66418332a2a",
+            "1577e8124a589e1fe1fd2712e9828cc99a06a33d7e4edc208a068bed99e4efb8"
+          ],
+          "effect_sha256": "df149de0c6b9ed819147806d9fd388dfb4e9331f86a83d40577abc6446c29393",
+          "setup_digest": "faa5751ae8183868a2007d52f9fe057d57b43dea2baf71328abfc31b1ee8b42a",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "9eda25bb68ee1e91732230646e0fd755c8a6ad23c0defa2d1a6cdabff0024dc4",
+            "59b55395014a3a8cab6be78fdf4dd7d85e2da7a867519c8342139e250ff7b974"
+          ],
+          "effect_sha256": "b6edd5d35d89a745a9218fc2a485037f05b898933c659240bb69becf135f3d14",
+          "setup_digest": "b51985c43d4bd624c0c68711b65061be4fd65523ab7b15ffcb7bcfd1ad1b7eed",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Feed",
+      "id": "FEED",
+      "java_sha256": "d59a7ec568e17bbf297c5ae89e1bf618ce64568fbe20014e9ad348d02808d008",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/Feed.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "1990ef0e2b8096602dd2858ea5991c5865b246fb411f3df9ba61264194aadb25",
+            "d2a642e67a4acce72b16cad2e23fb1a46442e7ed908095d37dad1d276731a72b"
+          ],
+          "effect_sha256": "72706292ebbfc06637c55ed28a8c3807b0e585758532472798aeaf7de43cf07a",
+          "setup_digest": "9f253d18f4289b5a967fd2643a5029fe2c6b8b54fe4d26fe041c977f9704c283",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "00130d4cb43538f33807fecbd71e3dfcb27d6812b5ac2a62f447a5c776a3ed84",
+            "8e7c8a917e6d89825994afca00ef83c1a6113e73c11e6bccadd7fa326d35ac17"
+          ],
+          "effect_sha256": "a1d017f52e944fbb7be487dade8c620ede8f5b28aa3a4551f23f333f734b11e8",
+          "setup_digest": "576d0bb59baf2d3db27260c3bea7bcdee4f3071b8f95d623a98ef1d0543ef7c3",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Feel No Pain",
+      "id": "FEEL_NO_PAIN",
+      "java_sha256": "b1c61d8655d2f6e705f10ea6e871c9efdca2b3c787b66d6971b29e17a4943776",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/FeelNoPain.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "3af503826ea13e031960abbe24b8be1fc396294860acbb1313385c6e890c2b0c",
+            "41729de85ed264628527309e0e20ef6404f5145fdb03330467c1dd3fe961ce04"
+          ],
+          "effect_sha256": "7431276d50a4e91215aea7ba6857665d3c2d31e027dd54a9923d00607f2f07f2",
+          "setup_digest": "a6a0e52120cde497180ea30007d43359b889c48df03b43a0d379737b9a45cd1d",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "c9fd72b32caa73437fab778528142aa4215fd28b68dc463e7227fa4f7eaf5d46",
+            "d8a58afc7e0d57490ecd7e8330c1493a8a8544eac538f1cbcfcb8acf2d98e5f1"
+          ],
+          "effect_sha256": "9554c47660b19fa9540b0aab9de6df0cdfb6d64605614c45d0f6962acf89eddf",
+          "setup_digest": "ed35dd7a701009fed9d2b22b316e6976a212c06385e161d6a22c13274da710dd",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Fiend Fire",
+      "id": "FIEND_FIRE",
+      "java_sha256": "8a855526ce27e329aa55d2f415e90bb170d3b698a92d80fa7e2315c4ead4a8d9",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/FiendFire.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "0a353f6745e9216c9b875de1e388bdd32a235efb424f4908136b77ea6a70e7f0",
+            "f7e80a442f03dc4ab45d15659db11f2ad33fbb0b491ad05d25775891163553f0"
+          ],
+          "effect_sha256": "5ff39c13a3935bb7121debb6c9817fce7b14033ca96faf387e396c92617c50d5",
+          "setup_digest": "e447d2cfc85fc8b33bb368df734eca68bd8684dd2a6e6282fd79abea4b7a125b",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "3dc1d0c60ee15c7a977367574e3cc96e7599569c3d08a84b2b73e2893229d751",
+            "a23a8d5f9a2b777ef9c24ea11408d2c7159d40abf02cb9a0a7cc9832b9ebbaf9"
+          ],
+          "effect_sha256": "bedd9f4f8e4e012cb167cd7f2fa5f655294c1b6f26fc2ceae3b5a8d1869dd44d",
+          "setup_digest": "cd14aa17703907bb3cb8a41342f043f1c636d47ed1531412bf134b318976ccfd",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Finesse",
+      "id": "FINESSE",
+      "java_sha256": "3112614c283f3858089c9e5cc59b05cba2fa291921f1dbc900b71e32baa700d0",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/colorless/Finesse.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "fc0eb688735cd1d954002465e97237593fc40e41a65d1343530eec93c952ef52",
+            "f4eb40a4f81f355e0e976670f84cf58c13f884284712c05225e77103050397da"
+          ],
+          "effect_sha256": "0123a75a9a66011128ffbfd90a18e730a3c351a370caa40ba9a88155160ba314",
+          "setup_digest": "f112e9c37422d4040f6a77f496feff979add1c4381e907ae175dfaa8cef78f7a",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "b22178c8784f8bb157493b1c859db08dc6b6ba8b8d5d2ab9b433278b2fada0c4",
+            "caea3f277cd91034810e73129b42943bcd3aec6ef9d78739516abc7c677aa18e"
+          ],
+          "effect_sha256": "7bd3e6476eebd5b43a9e48c2af406a449fa7e46c4a9f4693f7f262c9a18a49ba",
+          "setup_digest": "d38e8a3cf14b8d0c117c9248d65e0d6178126709d984460bd9aea17fd9023062",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Fire Breathing",
+      "id": "FIRE_BREATHING",
+      "java_sha256": "5993d64f7292b33b0277e0b8b2e4b2bc86e85e390a209cae9fbc645e4e452f06",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/FireBreathing.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "54319ea7c444ee2da08ff4f873a05b249e978c1573960a2518cc5d618592f19b",
+            "d990769069d3e015313a58d5975b38e803ff37213936896876a239de3a3e7724"
+          ],
+          "effect_sha256": "5feabd8c8c256d2db986d55b1ab4896caf0797e3df7d30f87ff0340dd11efccd",
+          "setup_digest": "bb3b2aa260748bb8566557d7f18612bdf9fcca9fb6a9d7f891c90fe9ed5ed360",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "9e92ef2f97d32f485fac9680cfec5a75d27590aeed94533fae9e79fe01355ba3",
+            "29a3e68f9fce462d01a065a4fde5f8262a784ad79845a2541dd5fa0142bea412"
+          ],
+          "effect_sha256": "dde04fa01daa4183548a1770de137260e983cf244861bb61e98391e0c275b3e2",
+          "setup_digest": "c1fd77eb752ffdd47899d1ef507aac1f930637581f3fa69681d626c08878167d",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Flame Barrier",
+      "id": "FLAME_BARRIER",
+      "java_sha256": "f4740dd77c14b2e05e39df8e2b18d7752a0968c533df41cc4b9b7bed62e6a841",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/FlameBarrier.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "b719c840e49446a59b36ba54401ef8bb98ddba46e8c918e19262f66bb2e925ab",
+            "6adb9f4537603e83aaf6e1d5a373504d8c3da498e9691961fe9819a14e8f8c33"
+          ],
+          "effect_sha256": "77c92360380a0d6f4d75736578d42f68ddf0fe9eda9204af338d2e3259950e62",
+          "setup_digest": "336b727b105de80e056994d038c34fa10a5369db53a439e7c80fd84a473067a3",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "fc70cfdef8128a08daf3fb377f1694dece00c7947998a492eb7d103cbc5e307b",
+            "8addd7178853c7b6cb4021f31e469424d0a26613b139f40b488b2458874cf71e"
+          ],
+          "effect_sha256": "4e98c5d0732d6b47d5a103609e622ab018be5bd7352669066a1e555903df1385",
+          "setup_digest": "4b23d1f8d7a640d98e326d6803e80a6de79153bca8ba3d531990b23cb70941ae",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Flash of Steel",
+      "id": "FLASH_OF_STEEL",
+      "java_sha256": "935060d343e98418eee4fbfbaefc4a6dd1b0f05eb0ebfe19a607f7c25d4ea5b7",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/colorless/FlashOfSteel.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "ae3719dc4b624bf4a2e7643a9168aa451cf29cfa124c7103fcdfa99d18d3c653",
+            "76c5c6aaff25e856de81d9a8a157402af6c4d975811af4fc619de3efc7044f4f"
+          ],
+          "effect_sha256": "c33dcf27edc22369f0630c88ca7fb45459e2707a6f70cd47591c17ab8fe9676b",
+          "setup_digest": "9cd3485ae31b3ec1dcdc9a50c42523f848ac4b5a0023c54d888b68956c4436a6",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "7b03f001ac3f202487aaa458b33342fd75f0c2d24277babbfcf20ac3d39416a1",
+            "08a0e126b71a9f2ad7db16c2dfcbdf8a1d54722fce22a2806e8623b280b02e1e"
+          ],
+          "effect_sha256": "68573f2bb051eccef0defccf5a8c06f3a389dacd8cd1c29a8c9fdbc2d8e51949",
+          "setup_digest": "45f524d4addab9563c226c80edb9370989f60aad6e80159572ac66ceee2a8b47",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Flex",
+      "id": "FLEX",
+      "java_sha256": "a0929d2d38caf0f76004fda5ff474790eff701f60b9ab4f123d3b3cab0719e66",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/Flex.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "359295e415cc2a558cf025d0e4f618633b68c510659e7c52d9268bf2948c6bb5",
+            "8a77d842913fab4ee63354e88476ed6c4f49e94961d8e26b8d15f9388d895d5c"
+          ],
+          "effect_sha256": "3f349f1c3c586cc23fce1be23d6a468ed0c318d76588d56ab8eedcfd8aa7fa8c",
+          "setup_digest": "ee53737664eb7313bb8aeceb435953791489c7a13c5eec95d5e1aac7c5ca5079",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "69d930d5af3ec6ae4be83969fa8fabe0c42e0d5f108347a320400e6e96040288",
+            "f8f5203a86e56b5fc610ffd86cc3bd77e6ed14d7e59ff8eb56b93e07c7763a7c"
+          ],
+          "effect_sha256": "9f743c47880e3352dfc5a3f16cf26af205ee59020bdd73c7bd3d91f10ada6020",
+          "setup_digest": "420391f08fbfc81838646205359864f2cd187c7ce940108014a821748bf76996",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Forethought",
+      "id": "FORETHOUGHT",
+      "java_sha256": "a78aee84bc4a3ab1dc4eb36a26a8f78de2c1dcd48f50029475f377acb67f84f7",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/colorless/Forethought.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "96e33e82e766b4ba5787b346f06b88cf4a9e660cede47623bf44d65d2ecebe76",
+            "2ba8e2a4c16f95bc2e71b1a4d2da4c17c96841325225d03f7019eb64e5812864"
+          ],
+          "effect_sha256": "371b186659e082b80d11ce55afdbded35f7ec4d589622f3e9dd304a3a4323f84",
+          "setup_digest": "661641465d081bf497a4205bd6378fddca488295c71dd262633173520d77c8a3",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 4,
+          "boundary_hashes": [
+            "ccb7138801a3cee59d32fd306d60bfa2afd381656d60a674c87e7393c062b0b9",
+            "7e94bedecef8b1aa2d3c78f04f82767522e53c2b2adcc45d4a20114e999e286f",
+            "b7892cf85dbe51d1d7c39fca56251c7ea205ebe47a85dec8e08f4606e588d12d",
+            "f5c419a543fb154748a8d27d49a5bb64798e3806509ae74763ba0f3924978d8e"
+          ],
+          "effect_sha256": "86db4e756286eccdc63cb14a6d98059acf163db628c6769304b05850ed2d8c2a",
+          "setup_digest": "7e99b275c1307988ae55aebeccc07fd4bb6e96f1e588c04e59882d1e26060628",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Ghostly Armor",
+      "id": "GHOSTLY_ARMOR",
+      "java_sha256": "6800357982a569f155e63cbb81153b5380dff8beaa9aaaee6f0d6987ad7c3888",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/GhostlyArmor.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "9bf2d1396035bdef22ab0819c507b9866ab15a99ce3cab0379f316e2397cd137",
+            "a1bfb2138212d79b0d5401f72d5df918671172982ab8c7d429157416de741654"
+          ],
+          "effect_sha256": "0148f210323dc3853a5582ac10caf74748c6d8a42560702f92b0953c2b827cbf",
+          "setup_digest": "b81dcbbc864939690478560ce72f49ad9d1573a12e51470d7ae2a1f83e7f198f",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "fa8a3b8bf097d4696ed9ac68a2a550f77543c779bc8054b4d5d2e370e0618841",
+            "6ddc7feaa4c2eea29b74fd70d7a9afabe62d005f3b246e33cbb5ee8a8425c3f1"
+          ],
+          "effect_sha256": "048aac1544018af270333f3e8925ba5abb2b72e359f18e7ca872624e3a8f7e52",
+          "setup_digest": "c0e65a7117bae7cb275856c3a02365fcc7bfef40fa6bf04e202135483db5eccb",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Good Instincts",
+      "id": "GOOD_INSTINCTS",
+      "java_sha256": "e964c6afdde04f38151637880188a703050f732868a38bccb9d2bd46d1f813fd",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/colorless/GoodInstincts.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "7fe7ca456eed98fb4fba1a681803986353642bad004dcec50145b1b3f690a6db",
+            "12910ca5937d3a47f18227da0d0a5e772028102c540a5908acfbe3e9fdb155e1"
+          ],
+          "effect_sha256": "5f6135121d67616c83a88c5a58d80753a13ae20600013aeab2f325d0354552c5",
+          "setup_digest": "8e53f36a1b12b49f01adaf3fbba1edf64aecb27e260e16131abf655877fcfc62",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "295254340bf5d1bf92dcf764f009dc065d70e378e75efd9ddbbb9314030610ed",
+            "4c57100a61b690e43b4943c0d9cdc07b7e517a46df88295f151aa716363fc66d"
+          ],
+          "effect_sha256": "b0d238b70026a81f8bb716bb1c1964d21302b41d3345ea8f0d0a6094ac077d87",
+          "setup_digest": "1009d2da803a28bb844125e32a900d757ac7dcd94d36bd0ff88f3c0d921cedb4",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "HandOfGreed",
+      "id": "HAND_OF_GREED",
+      "java_sha256": "5abac8a27daaa2103d25d4cb03349ceb5e9a38a0019f42d5e9af98d02d03c9f4",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/colorless/HandOfGreed.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "34879c4005536e1c0db32aab2e0e15749a7a70dee4b0d0b2911e5c5eca648d98",
+            "d87ea683d33aaa108371a6e2d3c3fa13483ba17848d2a61303842fe53e51e004"
+          ],
+          "effect_sha256": "83448a46781f3b47ab27d353d689c8a5d6064c26886f14d81c1d230950cb33fc",
+          "setup_digest": "0640930a077815d17bdec823b8bba9bb98817ad8b35d674d33dc9bafb9fd45e0",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "1ab1d2922c23ff4e3ae79fc711d5266e6f9d9d9c887529a16d22b561ecf356bd",
+            "998c1fd72033456120a6a49d411ee6b90be2d56de37fed969b9288e30eba67e5"
+          ],
+          "effect_sha256": "244f614644c6782d9f397683b64d9c1b86eec6bbe47e9277294061382cbfc2c3",
+          "setup_digest": "19c1003318f7d2853ba77a9c12f8ed58f4137ec134797cbe43df28e578969bc4",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Havoc",
+      "id": "HAVOC",
+      "java_sha256": "c563eb8935fc08aa679f96c8a81f24cb9546736f83d860f1920fe38bf809cc05",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/Havoc.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "e7b8e460acea490a4b0ce3ef84d807724c309170bf09492ebf1907bb68380d58",
+            "acc6812d9a7e596551695cd1c177e863bb93258be4c8a0f9d26c1da56156c5fe"
+          ],
+          "effect_sha256": "c07616ea9fca88f775fcaef408fa9152b632e21dde389ba46be77fa7b1b14c4d",
+          "setup_digest": "83d79da8b0daf7442848912cbc058a6fe2381deb821ba685fef753a622af38ad",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "7e8135be5424c7ed05819f998c8c6d17dd0a6d87a38c58f42691684c8410575c",
+            "358aee63427f4e0462331b57178865eff41fd555a13d465e35c7358ceb26f625"
+          ],
+          "effect_sha256": "5d5212edceb032abfed679a45e1f6aa952433fef2695695774cdc16118f93853",
+          "setup_digest": "14a92a82168fdf56a151a281b01157c36d8ce195786590a012ee9ba65ea5b6e7",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Headbutt",
+      "id": "HEADBUTT",
+      "java_sha256": "8c5e2f2d8992cba964e4958fd6151191ec6652ed050eaea28e05e9fb1dc1c30f",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/Headbutt.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "808637687c028ad01b4ceba087e0c28a1a3e715188a2b639dd920069751f4e37",
+            "daf8a0e790f87fbd0a55d5303f36ba165b6191fb0959a3956c90882075375e58"
+          ],
+          "effect_sha256": "10878a2f38d4ae72a4f1694ee3d8871e6abb690066faadb5e9effee5a282b9a3",
+          "setup_digest": "92087ad9fd84a4f19a8453128e0a6fdfb95e16f42ded04c3975ce0372bb2aecc",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "8a75fde95a1b014acf5318b0845ff4846a2348c02fe966f1f7ff096f53bb766d",
+            "eeac12f597782d59e642c87c9eb483f1e6356ac64da11fbe5f560ab49dd22aeb"
+          ],
+          "effect_sha256": "fab72893283c9583a0f2c6e9792a4137d944c30151addae57d785a54002d6aec",
+          "setup_digest": "55b8a4c02209fb7ac887018e13c3c89772581f32be34773dc1acfd5a86819f21",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Heavy Blade",
+      "id": "HEAVY_BLADE",
+      "java_sha256": "5100bf096b27dfc16dbf4fca4cba586a8874418c0db8cbb8f2bee89537398261",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/HeavyBlade.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "125b0abbcc9a014d461d0f9df6920b6c2878dcecdab601e572fa13c4cc655f6e",
+            "f08b0d7c73f3c49cbe45e4ac399577fd1eba6e39c6e15a74f82b7ccd0436076b"
+          ],
+          "effect_sha256": "adba5397afefb2b7c9f58c9a7ce89fdeafa8f9e84b5ce6f4600237ea463427d0",
+          "setup_digest": "4cfe06bc12965c4fda1e000f8e1414c7eba89f28579b43ffbb305f07316a6d7b",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "daa221790f5a64d08d0bf95b355fc35287939ec67e3f8e37769408eb50bfd6c3",
+            "edc0680b3f113af477c9dae656f629654d77f8f2056ce8c6b20b6e5a90e3dd32"
+          ],
+          "effect_sha256": "d8ab3121e77358a499df710dfc64e1fc32e064c3a99fc201dbb56e908dbf4d12",
+          "setup_digest": "af1580090d29c73cdffffbd01c8c54446a59cabf929fb2de088a6dae20a5efd1",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Hemokinesis",
+      "id": "HEMOKINESIS",
+      "java_sha256": "d8f472a77dae79ee4443f07e7a738f7e758022f1e026ac7d68c9432da5b617cb",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/Hemokinesis.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "7986f1cc224d8fa96ccf6ee1c4804b38689f97acab3a1d9734f0495295a2ca7a",
+            "9995f6b7510d57ca305f8badb91f5c7ef33df77b01cae709d9fcff32eacfe361"
+          ],
+          "effect_sha256": "2f974e3ce4bc27a4d7b8be80e47e23d3c5b5547c97a37e27851a6c263ced1f15",
+          "setup_digest": "142af2b0adfae65616dd1b469fe424f0547778d646a691a4edc8cdff9f9b7cc5",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "0ca0175fca07963cacd89cf142e0b2173eec8b08baef82e718a42028ad3c723d",
+            "3bc52a1b4f482fccc87671af6952346dc8199bea77cd73fafcd7385a08fdf383"
+          ],
+          "effect_sha256": "dd691cdd2b1310fe7a433512e877c07898cda166bd7768cee12f2be652e39e58",
+          "setup_digest": "1f4c9663360a61bbecfff205d73634ed7d1acf38d6240401b08b8d1a661f84a2",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Immolate",
+      "id": "IMMOLATE",
+      "java_sha256": "9067bf48c3cda2b7331a87a57b3bf4dc84c07017641bfec30eef325106417be7",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/Immolate.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "c4b9d00525624c7d502a8e747fcc9c0cc1157935d1682095ecd8250ff036675a",
+            "7ab9fc747d04ec5de650525f2b04295fa08ae7e2294c4498205cf11a4986cf32"
+          ],
+          "effect_sha256": "5e31d2b908dc00158c689fce07a079694f47e8b4dbe90bba66d7b5320d551d36",
+          "setup_digest": "3daf0007a9a8a68c55ba44a8acfc5f8a41afa5b6459c24b5cf90d40366e72bf1",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "f9e1b91a90bc6ad992cdc6d61e9b831ae48dd61181acbb4d01e2483fb466fdf5",
+            "4d1e48cb3134e00312ce12ef6853063225300b4ccc42bfd26ddbfcefc60925fe"
+          ],
+          "effect_sha256": "e16155e8a4ad84a1e73d990e05f45251db23238878deb35491b93c1817e832f3",
+          "setup_digest": "b623b483c4a6a49a892eccbde263d24a8e424423d31eafc83e5f77310c12c4f9",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Impatience",
+      "id": "IMPATIENCE",
+      "java_sha256": "64b685e204cbb5988078fd8311527d4c908bcc72e24a370976cb5be80111404c",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/colorless/Impatience.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "493d050cc1283501231f305a0c4db8e59ab8fbf7cc4c03107c9b37cd58615fdb",
+            "2528b3cfa26dbf5ab6c75f24db0f56ce3b3a25598d229b5f1904765950ef2594"
+          ],
+          "effect_sha256": "dc4d6422ca0b42a140a7fd075965f9df9d87564b11cd802fa6ffda8251a2f43d",
+          "setup_digest": "a896d2812066b30365c71381ae7b1cea431b0be147719035c41c3e4f65334d16",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "026ff47baaa5eb4229b1b943d41eab78fa476f780c651cbf8cc17ea284c35bf2",
+            "78246a04866aabdf202ad363d53e7b16ec876523be19e7634481635d4036b564"
+          ],
+          "effect_sha256": "d863e7bdfe8a9bc1e760e54840c2cbf2c5244650a5909b56e567b274efd95fad",
+          "setup_digest": "d76e24897a7429a986cc61b7796ca58254a6830bc0492564b2a01bff6f94335d",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Impervious",
+      "id": "IMPERVIOUS",
+      "java_sha256": "3f56959f71c9e61efc371650dfcddcc903f27538d63f882c8addf3cee54447cd",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/Impervious.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "0fe3e350412c35f63236be40a3656e40c125218641a3a86f183be299f5ef4bda",
+            "1e0d399fcfc55003c9e90f827f37866cf2556c6ecf8875273418049163602890"
+          ],
+          "effect_sha256": "ede364d465c3cfc99f451f9a076557000aa6a865862358df6a2acaf64aa1b4d1",
+          "setup_digest": "9e95396a9df6d25f93db9ce6aaef3b657d34fac7061d1a1e5825a5af873cb13d",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "707f75681cb3f01e3605c3d484b0d6f73aff926cc7f7d723d969c8b7947370aa",
+            "18d1b493c4d6e6784ccb35ffe40f8d220465a8f5666d5cf4c71c251fc9cb233a"
+          ],
+          "effect_sha256": "5e4c1636e37640108f60d128287553e5dee108ec681d7d48ce16db98151cf9ae",
+          "setup_digest": "7522ee7cdca5c0b7be1b2356a2d60e22c449794a776d97781e0333497a206324",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Infernal Blade",
+      "id": "INFERNAL_BLADE",
+      "java_sha256": "251a87a03ccd18e0b50eb13c09f9459a89b9add54cb648765c05445bf20b379e",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/InfernalBlade.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "5fd12fa220f07d8c75ef05144d5466b022d0763c98625be64675776d73c975e3",
+            "3c35537a8767e9651d18c99d520a5f89cfa64e73e5e8047d2c28df1eaa369929"
+          ],
+          "effect_sha256": "8bd958cdc06cedfd55809a1db3d19103075a41dc594975f0df61e937b34b6a05",
+          "setup_digest": "7e1df249cd7778358c39d8b43f5944ef97029b5c3f5ed1dad4fe8144a4b875ce",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "9df6b65aea3103343fa7127dd1448bfacf325d7df115636cd1db3d5b7e932d6e",
+            "80d8d918ce93587b3e973309e52c4f98cc31ac65996dd6dd0ac2c60de33d2a21"
+          ],
+          "effect_sha256": "8289ecea0a466364780d2096f2c63d6a19c8af23979e6979d551d5bdd303997e",
+          "setup_digest": "c13616eba2d9f3e1d7ada2b3cc1e30a7ed6889fcb65662cd508beb4cd776c4f9",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Inflame",
+      "id": "INFLAME",
+      "java_sha256": "3e07f6facf03083659090dd1c016dd7262ee4ab07f5d594b55a63c0c0eebb378",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/Inflame.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "fa59615635bfd161ccfbc5ce2066227d4c2cfc73446c9eafb3bbb69a1cb550be",
+            "616919ea0c9125fd0d0b284682f4bce8dd68867cca5930cd01ee3ff18eda7806"
+          ],
+          "effect_sha256": "8bc5fad21d616b59f764c5527ddff1ee28938f39c815c7e260d52231ad1d7839",
+          "setup_digest": "c6df73b59848c5e1c0188f40abc29226c2393f26ec825eb098ba814e947551ba",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "982c5ec8f691cfebcfe75f54f0073e7d5b8f9c46cbac586e8facce33917c4bb7",
+            "a814b853dc5e7f691430e3d3353824e3c35f2f82359d7dcd4d8f2be1d9c9d5e9"
+          ],
+          "effect_sha256": "2dede9a2e0ca70bb8cd83c508cd5442df592eff879dc7aa251aff68be12a0be7",
+          "setup_digest": "28dac0153e9a1425a081183a52ddb42cf6f5e96bfa8d0723ace06544bebac274",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Injury",
+      "id": "INJURY",
+      "java_sha256": "1a137c7472655d3e3247c5d9f1228480edfd92a06aaf76c28ced349c56231c10",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/curses/Injury.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "a6a5560b753fecc2b1556f569779758ab0c2962360f73f56821760185080bad1",
+            "ea43b680efc9255f41975264961483c2c4e94a66248ee4cb52ca84aadbd01c98"
+          ],
+          "effect_sha256": "626c53eb88fa16518f022fc60831aa8b3ccd289be0d6643c3ec28766441d96d6",
+          "setup_digest": "9bcf6394c9ee82124171d919862ea0be49ada6231cfc339ff79f725b07352a73",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "a6a5560b753fecc2b1556f569779758ab0c2962360f73f56821760185080bad1",
+            "ea43b680efc9255f41975264961483c2c4e94a66248ee4cb52ca84aadbd01c98"
+          ],
+          "effect_sha256": "626c53eb88fa16518f022fc60831aa8b3ccd289be0d6643c3ec28766441d96d6",
+          "setup_digest": "9bcf6394c9ee82124171d919862ea0be49ada6231cfc339ff79f725b07352a73",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Intimidate",
+      "id": "INTIMIDATE",
+      "java_sha256": "c7c8e4c54974059f207016f59dc883aa67eb1613031e6c492d5e6f2ec7cc8658",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/Intimidate.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "b8e4d25c639d2f0948f06ed80015d39e003807697ddfd1fea204362c3c67631a",
+            "8cfc2d1e25d2c403360dcc24d3c49cb99dce595ed063cbaf651e6c8bb486c430"
+          ],
+          "effect_sha256": "183d39c8bf0c2384920c5e711d4abeb10d00ac3dbc7840741fd3aeec0dea73bf",
+          "setup_digest": "20e417cf8fd8f6929e328e4518757271da77a82c38602c58bbcc7891b5d0cf10",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "508d593c60a46ed24a0c530e6eb6ce7cdfd88a6e1b45056f4d4226d0d016669e",
+            "807b19ab2083897210ba354429bdf62d3eb0fe56f38cd933962fe664fae74c05"
+          ],
+          "effect_sha256": "70ca37edfb8942956b7477180ea934c5e919a2bfe3bffee643891b6b155e6bf2",
+          "setup_digest": "230f8095afd272a723a67b18eaa682fdd7a0ea57b78e9e319aab8a1da7ec5c0c",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Iron Wave",
+      "id": "IRON_WAVE",
+      "java_sha256": "8b0b63b55d6ad06981fdbd722bd808ced240eb8c3e2321c5829e2ed9faad27c4",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/IronWave.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "5c6e36289cf21d0b7166785d4fc7ad237a83f334392f3b8689ae7ae779ec4a8b",
+            "0d606ea97da75818178b60eb0707b38f5ffdda450ace6a85ab267453ffbdbfde"
+          ],
+          "effect_sha256": "2ac82f735821b7263e1908d6ca14cbd072db792fbdac400bf899465583bbf5e8",
+          "setup_digest": "9d919421380818fd8a37bc687f9410000cbbadbd0539814c7d9d2eb9ff61773b",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "7fbe9461463bac3f23b3988cfbb4964b5e96ac4855d68b5eb0583e1a3ea36bed",
+            "a64ee81d081b379161146313c8e2e14ef88d5ec829d1ce41983913d9b3dee329"
+          ],
+          "effect_sha256": "4980d7da330ed95c6aa58b7c9b5c246e1433421167e59a432cdd2d94b7b75bcb",
+          "setup_digest": "02f5f41cabae5a8d53c1cc0df12f3322cd11bc7d72483e17a28e4311201523ef",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Jack Of All Trades",
+      "id": "JACK_OF_ALL_TRADES",
+      "java_sha256": "92ddfb87d0660ab54808f60cad9d7c6c2b96231f0ac860e08aedf0a9953fd2e9",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/colorless/JackOfAllTrades.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "493ec4a69a89338f26bc979445024cc07474761552a447c49ba89510cf92d4c8",
+            "b52fdb44df7f31414755b91aa5165708b4680742f3b8ab9f90c83dae6896d172"
+          ],
+          "effect_sha256": "1989294826567a4e751e1f906edc9d61c85deaaabd7d280d8d5d95fc57f7c8b6",
+          "setup_digest": "7bd9bf507f546e4e1d52af525365f93d95c302be43ec20a7e6c34a7e5f3c4a69",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "6161e93614a7b547acb7f6dc814964232fc150e31aa00e5f6179dfe8dc86da10",
+            "4cf8321d73b101b32c2147f9c0fc15da1115b6f485ee66d5914c6ed9ff5aa037"
+          ],
+          "effect_sha256": "51bfe7360d170e2ca06a26d17141e375a237fbfce2121ba3d21e6b2122da354e",
+          "setup_digest": "939127e572609d5512f834bc26223b89aa3f40f90f0c4e093df3749f56ddc4b9",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "J.A.X.",
+      "id": "JAX",
+      "java_sha256": "625ed9ec61031d9a8b427f0bbfb2c3088631a436958eda38225093159e34fa67",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/colorless/JAX.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "b5f23ddfcebea82d66a649289c1e9f04df22d940cb864ebd691ee91fa27a28dd",
+            "e8a0000aa5c723f9eac904e5144725d9b778756b3a2a6b0380c5d8448d11a869"
+          ],
+          "effect_sha256": "05a4a95706932b00ddd5aae605b09c4eb3ef69460f4c38c1cee7036313fe80bc",
+          "setup_digest": "0efd732d3ed16b7e7d8e5ac8b5bd0efd4709ee3136c94aa772f02ef219541790",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "19e51eabd5b2dd346c03b1031f74eee8cfa18b6cf95319d7fd562039419684b4",
+            "d83199930acb70cad0d8674ac2faacbdd3748204190deb8b90e1b68d31995346"
+          ],
+          "effect_sha256": "4be880a932410145bb8f098e83a2b75825a80e07bed0a5c29a6d965f5ede0c87",
+          "setup_digest": "e1939892e7937ca6715b46d3dc0443ecac009b038a0d928a4ce313d350898917",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Juggernaut",
+      "id": "JUGGERNAUT",
+      "java_sha256": "54f9a55d0c508ea9158720cd89ac2ef9faa399a111c1e9291f4353bf002419eb",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/Juggernaut.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "54f8ca034e7931248ed1d9b9938c38d25cd02e52b452905dc3f1f76d32cad88d",
+            "b24ce4c3822a41e8ef0c4902f1292776f555e50b5f160d70023c32ba4aaa1a73"
+          ],
+          "effect_sha256": "80acabcbb8a589b90a5a76ee40ab72b2c14d2d68af922182e2a04f4594950523",
+          "setup_digest": "afa80bf8edb46f551e6d163a1112a5cbe48c11559735a31c9af2607b5d488674",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "c7f3601013c9bec026b419c390b99ab0c6cff3cb0c003e7df8ac7f7dfdb0383c",
+            "0167dbb51bf571e1c642853c5452c37c00727e27242e7dc403d627f68e106a8f"
+          ],
+          "effect_sha256": "6d4d70b9cb3a236715d6a1bd0a8eab27b259e521674aea451b7eeca7894f8f07",
+          "setup_digest": "26476064f0b475a1259987e290eafcff9e790aced441eef44c06263e315414b6",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Limit Break",
+      "id": "LIMIT_BREAK",
+      "java_sha256": "8f6ea6f7df2b33bcb50ead0c649a4432ee43748cf9d3332aa984446340617842",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/LimitBreak.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "54e0d7d4a34b4cb945d81de2fdb8b8539ff6cc24407d6e6e57ad29b7c40970b2",
+            "111b581ca1641b2c872f1e79055760349adecd885e9ff13f4ddb2ebd3518705c"
+          ],
+          "effect_sha256": "20072dd54714bc40d7b7a0a1a9da7740eeb0b1876512ea8b665f3ad82b56c80c",
+          "setup_digest": "6d5a7907803f5d03fdc796124a875407b06749672571a1323609e00e31823975",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "26dba6a9b9ed83fb93488936b506fab587d99d26f62142dc00d8454680b87057",
+            "74fd2f067950c9adf89f9fc1c3e652a6486732eb3dd7846ee728fd1473962a4a"
+          ],
+          "effect_sha256": "d19fa0e886a8cf4e88b4ae1219148e2cf35c1e294d5d94579c493d2eb46516bd",
+          "setup_digest": "5c0be71a78a6f9cdfebc4d4d489b72d7cdab8392f3548528eddd6d4c4dd63519",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Madness",
+      "id": "MADNESS",
+      "java_sha256": "3b460a349c36ddf8c1e1908cb29f65bcc66343bdb9f6fc6a172e6d8c5f03de2c",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/colorless/Madness.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "6b9b27a0b8a02440046c3bcb1718ea861114cc0c5154b2b5e6b0ed49ec5dbb54",
+            "456204440b5802be54f073b72c79506abb72a971b93ebbcf14221e36d703fdfc"
+          ],
+          "effect_sha256": "a128bb135bc272552535e460d78e4f8a72efa0fe75e3a81cbeed4a917cab6408",
+          "setup_digest": "d19cec4c7e0480d595b3436b75b04d89260a0d246976c5ce86d95580fc006836",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "c0ded5d0001791231aba81967532b7f870afac0d17bac6a2155fde251125a71a",
+            "7047f69a250d29f3238ded25d5b2813a8fd370d821432567e60635848130be04"
+          ],
+          "effect_sha256": "93557972e36a3ee05da1ba794fa9ed054cba4f8a89544f4f4880b90846a56664",
+          "setup_digest": "4f219319765456bbadd98ed32fa01aa9e60e376d89682d58d860d0bc9644ed0e",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Magnetism",
+      "id": "MAGNETISM",
+      "java_sha256": "f1c67648a544e6c2e8cedc6555af2b09ade2fcd2bb2c21f268ee6898263b59f0",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/colorless/Magnetism.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "6962c9770f117ad4f45d8e2d3eb25850f6ad12519965da4b9b35643916e76eae",
+            "e2bd2488ea47037ff81bafb7c6e22d2c7bbf71ca6a3db1f1940b3131812346dd"
+          ],
+          "effect_sha256": "74923ecbd934ceae854bc7babb0a3c1f147434b83b8db6a1af24a016b49f0efc",
+          "setup_digest": "5fab7b527a14522391efad580bca7cefb6eefacd57be668ce5f0c1cf876bcb0d",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "83c669ef756c55729b50ef846fdd708386e27029c3ee2ab8c5d7f4a5beba731c",
+            "a536254702a5a6321e68e6d9a05dd29550a58ce7d562a3db484c1f3c6e153029"
+          ],
+          "effect_sha256": "b531deef694b0de43017099007fbbdcd367da3335553e6f3f700ec5ba1311245",
+          "setup_digest": "50514e34211aff19e2f1466313c8ff0ded18102b98f5af3f085d3ee6f32df3bc",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Master of Strategy",
+      "id": "MASTER_OF_STRATEGY",
+      "java_sha256": "760e5a1eef483b6563121dbb522993411c04c513b5f06582ee87644a4b220908",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/colorless/MasterOfStrategy.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "e875463b4251af925952234d853e513d92fa73700faaf5f2dff836dbdac5a082",
+            "055e01507bdfa8ead1bcd8da30d38a87f74d87029fc7bb587876d764abcdf58a"
+          ],
+          "effect_sha256": "5492ad3eb969ae701de501155e8711ba8086d0ad899850503b321cbee2dd22cf",
+          "setup_digest": "4b342e1370248d15dd70f0cf93424c632f5002ffe9ec2d01fd0f8b12f82df44a",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "7388acf8d5ec97b31bf6d71226af71e330549d0e4b07edc90dc1578e0fb41790",
+            "ae40058697acf29551254e4c7505687cd6a163fd0596ad97c8c72c4891d6edee"
+          ],
+          "effect_sha256": "e0dbb8c0708799fe118618fef5b139e9056d3d94577310a1882959462a2a9b7a",
+          "setup_digest": "e542914822549a14b8ff97abaea58a38218a5db3a2047865b5b349112f022b07",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Mayhem",
+      "id": "MAYHEM",
+      "java_sha256": "fe3bdf4dc2b9e382ed31fd691246d8fd0a4f5213dc39f80fc26f37736218ded0",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/colorless/Mayhem.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "e55eb96b5aa019fd3d2ce727e79607e9b4bb5878ac362ad0c07a7d77f855f567",
+            "a6b3df3605ea436b94f9ee133e11ce32f7d30f59b6e90580ffe27e135ff971f6"
+          ],
+          "effect_sha256": "74f700dd64ca2b13e34ade8afaf7cd67d9ace01b5afdcef62614908893f045c6",
+          "setup_digest": "f4b9c238597d4a9d242c122ae07af7ae7758cf674e0b97545fbd14e73df9b494",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "345398f54245814b3ca6b8733a0c8bdb7af7dff0f6edcd69152385b23ecadb9b",
+            "de0a9c421f91d1e9a95fba5cb6056933e045ce77ad90bfeb59b313f60e5cab7f"
+          ],
+          "effect_sha256": "205d3e24f1c4b6f6871d6842dcc58cff1b10e76ab47a2fbcfad3f3c49e5110d5",
+          "setup_digest": "ad0be93a6ae1a8ef76da08449bc289bcf5c2e69660e1bf2d635e8aad5e06e932",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Metallicize",
+      "id": "METALLICIZE",
+      "java_sha256": "c2f52bfde013f46dac889f1f21d36714b448114e1a44c2b6e215cc9518ae25dd",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/Metallicize.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "a60fa5c808db5fd0537845c8685a756967bc5c1dc4e01309f2dc55373c33c6a4",
+            "24784bbdd68ed3091c387d7db9c3a105067faf5d9d7484ba9c91abf89e072d1a"
+          ],
+          "effect_sha256": "3c91cce96d0831d01ec091b1360c84f8be8c78ea50cac0303f699871f8e838bc",
+          "setup_digest": "2b9c18e44cd54abcb523a0e4f1c10c0456f808fa4f58e81e111b5b47cb62e70f",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "47a8b78b36c91560a7ff0e35ed5431eb8eb38d5669a0aa3689824b4741007a2f",
+            "6a52d3bb4a1bf1c7be7ee947e5c803462419603396e1a215b6dc74a559044321"
+          ],
+          "effect_sha256": "27ae745a5a36881a0ca5de1f2096ff3d47e4d96cc027bbb34edc9b42a29e7196",
+          "setup_digest": "29f5fb51a2be77eca26df2e70cc31eb2b89a07a521bb93257fcd66d887808a3c",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Metamorphosis",
+      "id": "METAMORPHOSIS",
+      "java_sha256": "9e37f78f0359cf7a4ce492c68ca88d5a7de6ca6a4a49f90044cd7e744c5d50c8",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/colorless/Metamorphosis.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "692889b0f71141244f9e3a6cb5a380f379b93fa68d48b569ed0159ed949ea1f0",
+            "35f576b200cdb4209ae65fb9b69075a9f67bccaf6a8804a99a9085635df3e668"
+          ],
+          "effect_sha256": "9407f35e224c2186da1569b2f73ba5e09f212f7a6d94f97681604f24a450b343",
+          "setup_digest": "d20a6ef0160889de71d612ccca273989280dfaf2e7918cb8384464247c499566",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "ec1402e737b468a989689c220b2e518b61dd2f03da93af6f43c87c763a0eaf10",
+            "1ec6841d660bf696e87bfbd343140c2ec8257b7d881ea9badfd1f0c42121b687"
+          ],
+          "effect_sha256": "2e253e16089f331a1e76c85e83fc6edca29d8eabd8d16b8f35b5efa579b039e5",
+          "setup_digest": "40cdc2bca0456015cd2b8ecc912ce73b41f078ac88bcc00d9e859d4b311dc9db",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Mind Blast",
+      "id": "MIND_BLAST",
+      "java_sha256": "a6cb1afe5300eb14801cf5f32cfb5618973f546efb9185452d1d52e601c3166e",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/colorless/MindBlast.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "1b0393d3c3a7234f759b30c26700e78f13d8b5869af070c9220b928fda09af4b",
+            "cba4340f1f8cb2da4c11a14dfff32f9b66e602db448fed76ba5f9a7e0faa12e1"
+          ],
+          "effect_sha256": "afa7761275516944470260090732d6e2bf2ce8a4aeab53213bddced23c2719cf",
+          "setup_digest": "22c091ed65be428164298771b86232ae23da2839b613394b533cc515f23ecde2",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "c272ed580aa402ace5f6c0117d4788d5b9124cfe2affc509314642f5e2dcffb9",
+            "cdfcb2cfd0e222490250379ad82ae1e21b5ddb1af49028910fb6d2f437c9aa0d"
+          ],
+          "effect_sha256": "cbd5bf674cad9a38e6caa63d6d57c52f138350947945c5a2289f90d3eb1d5949",
+          "setup_digest": "02e63bb3b04508e70689fc2025dbb6b84802b0c48e6c411d457153428de02f54",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Necronomicurse",
+      "id": "NECRONOMICURSE",
+      "java_sha256": "7efaee2be4c4ee1cf2e31daa3f8fbe234a026b60a1bd7fd0b3b98aa451f99154",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/curses/Necronomicurse.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "cf430a9542afc3892e8dfb5a23ce57bdcbd792a43f0b800caa17ac60e776c7dd",
+            "d5c2dddc7f208d04027443c7141d15417aadd485c06f7d30af25aa2f899f7c7e"
+          ],
+          "effect_sha256": "a19823e09ba9dd3acf25c4d5a10bf3d7577225f5722fa30b55e23dcbc83f1d41",
+          "setup_digest": "f1df31aa890ee50b4e0276eca39dbab76544c99f538b6130e57988c40a6f9003",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "cf430a9542afc3892e8dfb5a23ce57bdcbd792a43f0b800caa17ac60e776c7dd",
+            "d5c2dddc7f208d04027443c7141d15417aadd485c06f7d30af25aa2f899f7c7e"
+          ],
+          "effect_sha256": "a19823e09ba9dd3acf25c4d5a10bf3d7577225f5722fa30b55e23dcbc83f1d41",
+          "setup_digest": "f1df31aa890ee50b4e0276eca39dbab76544c99f538b6130e57988c40a6f9003",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Normality",
+      "id": "NORMALITY",
+      "java_sha256": "b62a420eb2f8d5988128daa3a7cfaebda4c4374dbc5530f8b4478211e575c477",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/curses/Normality.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "cd72e2819f7d291dde9f41387f4c50ece72de53153f77a8d4fee7ca236467658",
+            "4e96fdefbb971161ce3ab6da1efa28eb5b09cb27ce6e4f823e7b9423f7cf4697"
+          ],
+          "effect_sha256": "7d17e7bc0fdedf2cbe4ce20705661bfd22d684ef8d72b780641ba54b1789f085",
+          "setup_digest": "ce6e612614cadc57331bfc49ae948138e5c88909c3ecfd338757542dd189edc0",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "cd72e2819f7d291dde9f41387f4c50ece72de53153f77a8d4fee7ca236467658",
+            "4e96fdefbb971161ce3ab6da1efa28eb5b09cb27ce6e4f823e7b9423f7cf4697"
+          ],
+          "effect_sha256": "7d17e7bc0fdedf2cbe4ce20705661bfd22d684ef8d72b780641ba54b1789f085",
+          "setup_digest": "ce6e612614cadc57331bfc49ae948138e5c88909c3ecfd338757542dd189edc0",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Offering",
+      "id": "OFFERING",
+      "java_sha256": "bcbd1fee9153caa0265490193ee74eab70caacfd4e7ab8f86642b136154d9690",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/Offering.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "f74a1d3c0d7d13e413d91a22591ca4fc561bdd3f034125be5d0aaf8ff34e8f2c",
+            "152697ff8e663e93210f9e748b164f490f3547ac987ddc32be2f00eab87ac058"
+          ],
+          "effect_sha256": "841463f28030bbbbf4a016b68ec28a86364256a227642ae353dadcd2eb59ac4b",
+          "setup_digest": "5d682bebae3b360705863dc9b8c072509ea1399330d74e615a0c11f96f7ea935",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "812fce5f001a1404989b9a4383464a6330a3ae76ab9ccc63758bacb4392b36ab",
+            "2e1639c577eaf3dcc5f2e0fd26b6a7454352ce16ae732f2f823272bbfdd0e7d4"
+          ],
+          "effect_sha256": "2f9f8c70622f12f6aa880ef8652e8f52dd555404bae36d01fa2b4fe97f5c17ee",
+          "setup_digest": "43f06a982f2c91b3863ecfad24732825fb018b88f0f1e9211a4af510ab1ac556",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Pain",
+      "id": "PAIN",
+      "java_sha256": "d3ae5d2a9dc91ca6d695c3d00cc983cd5274dcc0359ea33ce7dcfe38b2c05aef",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/curses/Pain.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "c6fb53bb5d80b2826852b10b28163fb46c47d13476c067b6757eb149ea7d7543",
+            "cbdd923f0246e5ad4809817d7ba5578ae72bb34fc97146c6878398ae1f6257e0"
+          ],
+          "effect_sha256": "94c5ed79a089412e4f2d59b3bddffbdc174281fec61606ef692bd8621182d83f",
+          "setup_digest": "dad904007aa8e1e45a92b475ec84b8f734dd67278a2e75c41544f3eaa80b87d7",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "c6fb53bb5d80b2826852b10b28163fb46c47d13476c067b6757eb149ea7d7543",
+            "cbdd923f0246e5ad4809817d7ba5578ae72bb34fc97146c6878398ae1f6257e0"
+          ],
+          "effect_sha256": "94c5ed79a089412e4f2d59b3bddffbdc174281fec61606ef692bd8621182d83f",
+          "setup_digest": "dad904007aa8e1e45a92b475ec84b8f734dd67278a2e75c41544f3eaa80b87d7",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Panacea",
+      "id": "PANACEA",
+      "java_sha256": "d77f438f942209821c4185e241f9cd3d670a4ebb2d3ca09a9cb16fc076f22e83",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/colorless/Panacea.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "73b172201c3feb791fc6bbcd06479887a1f79792d61c49c18de029f6f3b3b06b",
+            "34375fd41cb55c4a8cf7f2a892922a7a522770cbc4952afb6c79a5f4e5974a42"
+          ],
+          "effect_sha256": "c6a81244e90de06cdf05081470a9bf082be297933fec7d1a33d79920852e21a0",
+          "setup_digest": "1b364f1655191ed2a5c899c76dbd68bf56ec21bb3d4179e8679b47b2eae0489b",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "cb17644919466a4021f5f24a38208ddf8b91ca149baf6030be12ad51d00f71af",
+            "f58df4b85da5ea868dd15b2934a837fd82d78d346c4812799bb70785bb1d6543"
+          ],
+          "effect_sha256": "b59801d63fab1ac135bee8d2cc40e9bdca044d55d8b8d46177574e9c76ccb229",
+          "setup_digest": "c791819215c8981c6a06d06b05e5d55c322c37bbc0ca0675282b6a1727c132cd",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Panache",
+      "id": "PANACHE",
+      "java_sha256": "b482bd3324e481217e0aaf13dada2c41543a409c3148f892d347ab57d2258707",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/colorless/Panache.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "550638155e8f3a7ca5d0089a1bb46fc83fea5f8fb9a2581c0637e8bd6397f19f",
+            "f86665ca2a551179f0c0a40f6a2b6cfb7c0385a78b2789e635c491d03b51a3a4"
+          ],
+          "effect_sha256": "7964df6edc44985ba0414457175eb72b5164ceb3b60cc880fae845beb9f44cb7",
+          "setup_digest": "01f450ee4126ed7002403d8c84e2247f75a0e6bf66d28f1a25bdcb732eeca954",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "1cbf05583341e837cbf5b6ee43639b80ba227e793b756460d7fcb70bf825f1d4",
+            "f86665ca2a551179f0c0a40f6a2b6cfb7c0385a78b2789e635c491d03b51a3a4"
+          ],
+          "effect_sha256": "05a1ca0f355151d06f4d4bb2bfc4243505720e8d889ad9faa625bb0ebd3466e8",
+          "setup_digest": "0725298151aed784c5180cadd63d973fe871139cd6dd160602a4b734eafac620",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "PanicButton",
+      "id": "PANIC_BUTTON",
+      "java_sha256": "3db49f5275abc68d991534ef5b123ca8e5278d7192bad0409163c0d143bf47e7",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/colorless/PanicButton.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "58a3e3e0a7ff01f952f4528b4f7a2c5dd32fb2369e3475e2931087652de817db",
+            "53ab333bc497fc95f6946d2e44854aee8d5f8330678611f670df7a5fb765d0c9"
+          ],
+          "effect_sha256": "05909ef6e4368275d8266ed767e5befd5aed7b1b632bd98fa7c2de4c5cbf62ec",
+          "setup_digest": "c245f0310c1ef4f7184b22d70eb2d27c8d128a91193d7304ea67300b6e3a7833",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "0d0018789d73dbf20237676fe14812bc1969a1bd32f9c882abcbbd9ac4d14b15",
+            "b7d1b07f31344b09d9a023b4158eb3533cfd98c46e5ed86fb467095a9ec580cb"
+          ],
+          "effect_sha256": "90da395e808ac4739b06619ca60df3a305f9519a3f02ab3308567d7b1384603c",
+          "setup_digest": "fff780a2bd522c633ae878e584e5ffaf3b3a538335b3f13c11a0164ecde28c26",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Parasite",
+      "id": "PARASITE",
+      "java_sha256": "d1c962f42ede06922fbf62e7e53240bb8e9a7c35fe8c469eb4fb95352e36da0d",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/curses/Parasite.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "5888401da7c34dbd1189898fa37b63298d6414ca201f29281414c05795ee4f75",
+            "aaa98d8ead637e99afe3dbecbf13e55b0ddde5ab7f17dc256120d4798ea4bee8"
+          ],
+          "effect_sha256": "f44d953d28038cade9358ee5a6fa3eb807c2e7e3450380e8fe3a818f424a584e",
+          "setup_digest": "f84e15353ea1fa3113861c93e7e7109f7b8444e083634fee297a714df951d87a",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "5888401da7c34dbd1189898fa37b63298d6414ca201f29281414c05795ee4f75",
+            "aaa98d8ead637e99afe3dbecbf13e55b0ddde5ab7f17dc256120d4798ea4bee8"
+          ],
+          "effect_sha256": "f44d953d28038cade9358ee5a6fa3eb807c2e7e3450380e8fe3a818f424a584e",
+          "setup_digest": "f84e15353ea1fa3113861c93e7e7109f7b8444e083634fee297a714df951d87a",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Perfected Strike",
+      "id": "PERFECTED_STRIKE",
+      "java_sha256": "927611977c7848c7dd0035ac3443686dc4bc06bcc75a3c1aa3d374979bf29bc0",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/PerfectedStrike.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "864cabc272fc2886a42b47bec0c0c84c9ad6148eb44a50841ca893e61e46cc31",
+            "45a8d056233be8fc404fbe8bd6dfe1bdab3154364dfcd316493a2c4e1b74b27b"
+          ],
+          "effect_sha256": "6803c97e953aea7c2aac0d1e9ca0a84c239be757aed1c8e4056d77cd06f6f624",
+          "setup_digest": "60b858c33eb468b6e746d7cade02d28172cc062f095bba76ccd80330b9400624",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "aca853ec8e91a63c5e499f2d199b8f1d4b08696e7daa3af9616bdbb95e87e0ef",
+            "e183becfb54b055ac306d2d36f5695f8b93fbc887722e0ee6abcfae00d8d71fc"
+          ],
+          "effect_sha256": "c9074b384887c105889d1b25aa4c4ec65812ea5748f97ac1afa8a328257af49b",
+          "setup_digest": "a46d0d20cab3c3314d43073cabfcf42af437c03e9828ed66d172f3c91d05a496",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Pommel Strike",
+      "id": "POMMEL_STRIKE",
+      "java_sha256": "c7db63f306433c90d5c8baa984c6c7fffbaececbe38f2df2132f86c5197d0114",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/PommelStrike.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "79bd2a78242bc58a0af1ae956b71156f3ae95f3e80148062ee226ed42102371e",
+            "e61fcd84ce3e0172d49718eb2aa589dfbd76f5eec32216f83aecdb12ef6a0dab"
+          ],
+          "effect_sha256": "c88cd6f99cbeab44324ebaed50f4c9664dc21971644f7430fe3adeaa08410958",
+          "setup_digest": "15624e43dbe995794a9ec4ece3b9dadde60460b93fb491ec79c6bd8e440b1e56",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "4c081c55e3ee04a831602624144866d7f8dec88d27f97bd50eb9e88795122d48",
+            "ca7889aaf65b5757aded29ae48d97497fb44a3dea499a99120a81204d6d5c7ec"
+          ],
+          "effect_sha256": "b436ddabc450a809c0810778504b294ef3b7a50a9dea9a4d34259ee08765857a",
+          "setup_digest": "915a2abee4a5d4cb721c3113082b2da464705849636e33979c7bd65f8e529300",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Power Through",
+      "id": "POWER_THROUGH",
+      "java_sha256": "8fa37c69872e06235240729cb3edb724ba998cc3dd7b5eb6fa1a70614cad0f35",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/PowerThrough.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "66ea2a652b948642601d018996c80d8da575ab6476f6f97a5c8fc51753de88d4",
+            "3e6a4e950b7b7653cfb783366ab6bb0a0dcd99475b60369f80fbb9985ea99878"
+          ],
+          "effect_sha256": "aa2a5178bb147b5e2ad62ee8f301fdf43e877c1419466b44e8112975fed91d04",
+          "setup_digest": "25818e10c1d52ca482647121ad28458df47d893c612eea5da3ce600824bda226",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "7a4339d7a330eeb5f7d526dbb13a4f47886f4ed63b87675e4b722e23e0ea4c42",
+            "374fdf7ef2e677b12b1ee7f90ee68e1148b310821c5bcd25717434eeb4a6c245"
+          ],
+          "effect_sha256": "3c83dd7859d8e866d3299031ffc21fad12b128f61cc5fcc06f471ee745c294a2",
+          "setup_digest": "78649c296bc7758655f614e069e2ce4f49f0563381a5634603018b31784b3b87",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Pummel",
+      "id": "PUMMEL",
+      "java_sha256": "c3ac51c836e9006b424a9746ccf176511985959f2e2e234ca1741a70d0da122f",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/Pummel.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "aaaf1e452e59a0671015d0aeb75d529acfd42b7265e47329f0b3a020904bcd3e",
+            "787ecea287ecbc74da22adf86ca6e99e33a494a004026345e6f9d3faf9ae7d1d"
+          ],
+          "effect_sha256": "152a479f8ff79d71de5d4687e921fc5cb000478de4924f82f2598bdad7c67887",
+          "setup_digest": "064c6f220227a20109dbeed5d2a14ec58bcbb92d71dcd553486fa6e3b2c9ad53",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "3c95ab297a423adf4febffdd37c76b7f2f4cc17bb794e17d11306602601904c4",
+            "855fd636d9b9fd276017b8848d0e4b0f200c6641bed224a1e15fbefadfd7cd8e"
+          ],
+          "effect_sha256": "a3c01273bca487cd6773182ad0172e135bd238da119d7178959764eee8526f0d",
+          "setup_digest": "9d5245032dd352ed0a173275572460563ff1c0dfe2f81bd36cdfab169027b6ee",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Purity",
+      "id": "PURITY",
+      "java_sha256": "47237721ade8b69ed8f34cea49c0828e255f6423142b083aba03f37abb7020b3",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/colorless/Purity.java",
+      "variants": [
+        {
+          "boundaries": 4,
+          "boundary_hashes": [
+            "8df0d4f4c7be983a75a68a35f34a01d4b9288260f610a8d916cc842b1a1296dc",
+            "077a9e9088300a759380ad68b23c94963085e1604515e851055b24b6ce7e977a",
+            "a5aa01d740a1da3880cd8179e6e1c293b06ea754dbb89fc8de9daa80520d1864",
+            "97a8b6d856bb56983baf5e9fbf976e548302d654ffd990bf7d74a7ee0d267b31"
+          ],
+          "effect_sha256": "d3f83b11a699f9662203c1da709acc20a6da4580a3efef02eb65dad429d852e5",
+          "setup_digest": "b09d454cc5c1e2de46e1fa5df5481aff69bb01ab15e93ed6b74c22e196ba5193",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 4,
+          "boundary_hashes": [
+            "bec111c0c3db6f7e603b30ea1a4ddb48428292f131916bb2ab818696d1a1f2f2",
+            "077a9e9088300a759380ad68b23c94963085e1604515e851055b24b6ce7e977a",
+            "a5aa01d740a1da3880cd8179e6e1c293b06ea754dbb89fc8de9daa80520d1864",
+            "32cc44eff39a0a0dd4a46cafde04f6d25e51d950dfc086a55b22a19ceb23f6b5"
+          ],
+          "effect_sha256": "f065f752b1d52266e263df136455778310f2ead469ab8ca67cd5be1264996360",
+          "setup_digest": "bbe7eb72ceec4fe1f49b6c97d4cde5ee6432c7fdeb1979bf338b3eed94cab13d",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Rage",
+      "id": "RAGE",
+      "java_sha256": "21489f08098ea69906f334c1844af221f3ca3504e2dfe392aaa4adbd7fe86a99",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/Rage.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "cf643a104663fb1fb5ac37591b22c38fa06d6f3cf3ceb619197b7971c63d56b7",
+            "aa5a6de8e67ac4bbed8ec0697f30ae66caa61831609cd383ae5fb7c2d8b4d21a"
+          ],
+          "effect_sha256": "f370d57650378de460fe184169fc9846d8e3183d220b0cebcd51c9cd9d62651e",
+          "setup_digest": "6b25032eae50735d5c43fe7405c8d45a5c31d2275f5e51eab11aa321fb864a36",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "5ea180d720a00e1e181f931db4711c125946e71b4d44d41e224faf97138b99a6",
+            "a5da737b7e72fecf41b1633eaeb00dff640d3229b98f14466066cf1364721704"
+          ],
+          "effect_sha256": "cc4b65c0be4e7303e15b50bb101543c63ad86dce96696bf137f70321674ab94b",
+          "setup_digest": "f83225f72bb27048cf00c51bb562b29cbc809fe4a6c056f827407e334a5b87ce",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Rampage",
+      "id": "RAMPAGE",
+      "java_sha256": "59b440ace33abd3c0d8ea96c3f15841f180743bde367dc5ec66527394cd819b9",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/Rampage.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "212dc6002b3a2951600914efbdb646159c2fb385d258ec4c2dcbc64e742e4e4e",
+            "1f4c67e866805138662cbb28f9c664ddbd1747b6c52fd2e508a734993fd707bd"
+          ],
+          "effect_sha256": "25bd0867b95c76e6271c1ebaa805d461344d4ece2a2d419430045576bd716c34",
+          "setup_digest": "e6d9f6e40bd4089928614d8deabd67c62dc9bc71f07821e95705181fb149c2e9",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "1ba991552689b50c5470a30f3b0e3e594b7f269a1435b230771eb52ebb4bcd1d",
+            "9915c353273933a47379828c8c0790054b3841230faa10ca11183dae8e38580d"
+          ],
+          "effect_sha256": "25de72eb77277df9d82367f68ae8d9cf25156b6289b02a8b29df2897a541aecc",
+          "setup_digest": "663cdb17f07db1b47db2ba9466524f3f73fb221e7ec67a54fe9cecf10d16d6eb",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Reaper",
+      "id": "REAPER",
+      "java_sha256": "6cfb72e00f2bb09119991dd309256b4647983cc58ccf0398d58de26e4c264101",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/Reaper.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "07aeafde3cd296e3790421d889fe79422e74ae8dcaa384df41869d1db7aab3fd",
+            "3ff52a2833e4700ace95ec8663ed8ace7662bdd824e18aa5cfa3ce074d4696ef"
+          ],
+          "effect_sha256": "6d42bf5c9de7bbd74154de925fe3a74724817b2ed2a3e36aac15c61e9e698489",
+          "setup_digest": "800465eee4af87671fe131b60327847122a31b6ffea3425858641cb4f6fd56eb",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "f423e8b459c63f493502f560c6f918b35808a0e65d58b4142a1aad4a4289bb4c",
+            "a583a135b41f33e5611edc6d0e7942aefc1b6e88921a146f962074988b6f0233"
+          ],
+          "effect_sha256": "6ff7d82c491979535ee4be13c1d17da1998f34c46219c3f893b1a1c7e6cfd44a",
+          "setup_digest": "03b029182508a0c2bd942c1b51583e07ff307c59b71bb1f781156cdf31d6538e",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Reckless Charge",
+      "id": "RECKLESS_CHARGE",
+      "java_sha256": "b73dda3e6168585867c13da1fc06db710c77ad7fa25cd054346644cd7cf16246",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/RecklessCharge.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "7d1f29797a4e6a041af367b3ea80822494e2aa83d6c20ff201a93e23f0aee880",
+            "0c86a39208d8d44c7202711fb20d5ad65b9d1dd33a94521ed17985e6133771dd"
+          ],
+          "effect_sha256": "9b54dbaa3dcbd3e6bf7ff6934e894384d86ed70885cffd4add42bfa03f2150cc",
+          "setup_digest": "1b9f695253346455b5f9cf0cfc8b30d05aba12bc69dab6fd8ef66d740145aee5",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "a41d44c56d7b3261f93117a1592c9b0130a940651033d27d338c8fa9131ab284",
+            "fa65852b7410665af35d2ed43763100dcea8cdb60fb325f239175b0bfd2e8a97"
+          ],
+          "effect_sha256": "b8fcb318ef0d2a173a9f4e59d1c9ba59525837410a10512df3d471a8ee077ead",
+          "setup_digest": "a05ea128a8606ab44eb3cf12f6154327f939343b0afd54c8f3788b11268da364",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Regret",
+      "id": "REGRET",
+      "java_sha256": "3c880eae6923f97887c241552aaaa2bb88dadab00077f6d6c0df1b4316dc7576",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/curses/Regret.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "e9151ec4f4305f58027145645a87b25b0a24c031ab94fbfb883fdc81176ff4aa",
+            "a22f65134e6fd49ecf979cd6e4f8e2ca59e7bcd100a2c411afe84434247cb0a7"
+          ],
+          "effect_sha256": "80cee7973cc9188a9d90ab88ccfd279da8f3c1823689fff80e8207e0431b5df2",
+          "setup_digest": "c9d3529c4c39d647484a171e0a3eddb8811aec86dea2bf0ff9c7683b2abe3707",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "e9151ec4f4305f58027145645a87b25b0a24c031ab94fbfb883fdc81176ff4aa",
+            "a22f65134e6fd49ecf979cd6e4f8e2ca59e7bcd100a2c411afe84434247cb0a7"
+          ],
+          "effect_sha256": "80cee7973cc9188a9d90ab88ccfd279da8f3c1823689fff80e8207e0431b5df2",
+          "setup_digest": "c9d3529c4c39d647484a171e0a3eddb8811aec86dea2bf0ff9c7683b2abe3707",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "RitualDagger",
+      "id": "RITUAL_DAGGER",
+      "java_sha256": "43eb64834f6d544ebe1db2d1f503a864dae2c717656bd813465d06ca3e888bfd",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/colorless/RitualDagger.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "c640b71c11d53ac54cef7e924938baf1216bd083ba016c7237ceff889437a42e",
+            "7952020faf3c49ff2ddb35f4e5b8934163605f448ba5d52d3f37c6024c5eeafc"
+          ],
+          "effect_sha256": "84e1026cb36e6a11fcba48d31185e7e2c425cc32ddab33b17c327b7eaf488973",
+          "setup_digest": "2ba71daae6d78f9de98f9b3357acfcaaf344365ed1df401e7ab45f11c3a7e237",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "2a50fbc0dc60fa98a47fa8d622a35df9058a3629a70666e58e6ef173fb4d9ebe",
+            "16e476e28d3fb7592fcc79612aac867962e4b08df098156b46060e5da41d35f5"
+          ],
+          "effect_sha256": "86bd8637ff7dbcb2904aed7411c88c1f17576582f733df2e99c8a3bb44f2bc17",
+          "setup_digest": "e1918c0d043a7b93d47ccee1216ce0465b34e70906665ace302534cea9f0e56f",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Rupture",
+      "id": "RUPTURE",
+      "java_sha256": "f9defd43b3fb93fbdccb537bba0d6c71d5458e8118aee12c4cec0b7f0fd3add9",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/Rupture.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "eff726302b65e4ce5d26345aca942ed05516a7884dc72155440803f86004ea11",
+            "d2e3b09fffdc7f84f1d5076f886a09f8b50afcc7e5fc7a056d0aa8d6b8cac4ed"
+          ],
+          "effect_sha256": "9211e9ec166cf47920af757240a7c043a832f1dbad471db4d64d90c385f27c4a",
+          "setup_digest": "d8317eb5c5a0ba9233f8ca17ee6d05441b3d11e80e3676b4d5185e4c2769406a",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "3f031d24a1a24164e2d22aaa4fcb1ae8d1b2732dfb83e776731115deca822949",
+            "57dc1d6add9a32826ec129ea48cfb8802cf33c66bcd7fb78eb98f8caaebd9497"
+          ],
+          "effect_sha256": "c8381e21323fed68fa99475ed405815fb25ea08778435e33755a84025b1d96dc",
+          "setup_digest": "af4d96f666d7d5ad02da4e87baafd219a661ee951c3ffbd86d1c8ceaf707636e",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Sadistic Nature",
+      "id": "SADISTIC_NATURE",
+      "java_sha256": "9ab0423d05e64e9719b075d7ac6119a6570d98b23bf0404f6ec935b304a6df3b",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/colorless/SadisticNature.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "76fc7070df602c7c1f6949d0de4ba481a5d798fd415e9dbfff4db22677cdc4f1",
+            "86d0fc274d7c802eb2e34d45b18523489ad0f52d98444a58415709331b40053f"
+          ],
+          "effect_sha256": "2c6b3f5cb027f1172b8c3bcb67419442088b00d76fcead3f7e539be5dcb95624",
+          "setup_digest": "80bf17bccd8f18622b4fbca1b74549b04b6a17cada03c1090f822ff9a66ea7f9",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "9dc21e274154d59022c4c4e1430937e105ec9177f3d9dd3acf0b51c06ce5bbd5",
+            "23a41190812637cbbc28d6fbd16f36730000a13cfcbfd55f4b77797100eaf922"
+          ],
+          "effect_sha256": "51d21a117401325f8412135214cdf85d1e00b8fe7df4c5d29b049787f07bf2ba",
+          "setup_digest": "7fba1f5e5c59b8c20d3957a6b8174c384bbb69f7c37f2b474e0d2346781c8d51",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Searing Blow",
+      "id": "SEARING_BLOW",
+      "java_sha256": "588af1c4bfab21f5d05ad431c815b96e66743b9b601c89e810191d1674be1caa",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/SearingBlow.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "305c34dbb628854b1292ba695371d82e011cf093a9b2ea0e7e623beab0f0149a",
+            "505e15e23e6a0613473581bd408eba01ddda3303b693ee5a1bbbf7b1270f6458"
+          ],
+          "effect_sha256": "728b5957de0aac5def7058e1dbc0fc11120c33e74c31d043da0e93fb76ac5a67",
+          "setup_digest": "c5f3aac98a20a796483827f919a9e947dcd20807b84e658c4be650cdc85515fe",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "edb7d4d572cdf32a9f069de51480a8a7e70188a5143875ca51178fa4108c13ca",
+            "9ee43a961156e1ff2fc3097dfe667ad003a135a5d7b6583a0312ac6e926bdf92"
+          ],
+          "effect_sha256": "6697109a8d433462ebe268d2025a7b64dd8feb55005a0e6ffda9d5afba2a9e96",
+          "setup_digest": "cde483cbc07fca42b776a23917b96064e6ea5957a4d0209853bf80773bf027d1",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Second Wind",
+      "id": "SECOND_WIND",
+      "java_sha256": "ad92a987c947089fa896b087f467ca6a8e1d1088ce244d70501b84cb1f14418a",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/SecondWind.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "b21f356092e49514177b23c6ad5029aa1b9b61809f7b2915f400b7ac273e902d",
+            "93f6b226a5367cd58ec66abcfb5a47a6ef2616a241c4de2d2ad160bdd152ab7a"
+          ],
+          "effect_sha256": "8b2113c92f09fc64ab04edf4624c4c95c107f308041724cc36ad286acf7cf1f7",
+          "setup_digest": "6b54856fa868727003fbb63e11540988933046c06d952fe42cff4a8488a5ec2a",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "6882f4e3c6128df49b936679d2ae8a906bb25a9aa2db348b0042164d74b5e292",
+            "4419a1ba6433445c53c6047787ab6327e0d4a4b0ec1993cb2d68438ff5f58b35"
+          ],
+          "effect_sha256": "d4e279c1b34c7660c57d8235774678a16c9aa2ea6da7d50c5d405bb553db0e97",
+          "setup_digest": "94ddfec642bd574a1b76bd5a32cb87f411e664541baedf3b9daa7c87cc54911c",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Secret Technique",
+      "id": "SECRET_TECHNIQUE",
+      "java_sha256": "3ceccfd1fd8ed2b04a515e0278863805f3153d3032360f4bc9db34d2ae40b596",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/colorless/SecretTechnique.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "ec667b99eee25676fee178a463ca03e5f8a2be8f316081c1021490972196edbe",
+            "e7cf731378b230e6b8d32a45c14dbbbc7ba09bf26e3536429ef8cd7eb2842d49"
+          ],
+          "effect_sha256": "4b23a0ebebaf030a0d89e3ddb5ebf47d7a38ebd6941a54c0cf8570d77bca266c",
+          "setup_digest": "866a392f4d301b1e61faeb52765a5efd265b259828a8b3f7e2fc134a370e11a6",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "12bc1500600ae672094f66a087e935220f6de2f4dcac65a49391befcd3dffd9c",
+            "8a0e0b7fb4eddf82a927eb5f78db7532041adea7c3cd449cbabb675c515f8259"
+          ],
+          "effect_sha256": "24d556236a7bfd2328e9ed04da4f5661e41be9fc7319514cf8754ca1b25e365c",
+          "setup_digest": "d36999951c45f2aca2691ddb10f8403fcbf8720584755d868b39309ee50ff568",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Secret Weapon",
+      "id": "SECRET_WEAPON",
+      "java_sha256": "b8d03cd86777f1e966899dbaa0984455996097ec4f810388dae7c8538ed6204d",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/colorless/SecretWeapon.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "13ebc1469a86379c9cef6676e80a9c754b34b4c41979662dcd83ff81e5ccaf06",
+            "a75521191598247e2253afd173b83181546233d412b6c0b7056bec1217e3e789"
+          ],
+          "effect_sha256": "35b55458f70f33eeba41e4f219b626f3bdd6b7ddb855244fe28efa8f58d98bfb",
+          "setup_digest": "d007314d512270e7975d0539e4f569faca70c7584b1ac8479d25082908a2ecd8",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "11b29162fba824301d5be95ea45327e19d287830faeee6e16c9117f50adcd931",
+            "092072d6659f1323931803717b57f42fd5d08a65095140bf92ca680c84907104"
+          ],
+          "effect_sha256": "91ced6ed183ef9d3392db2798d6c8f353fefc3062685b9e4c5762e256afd2999",
+          "setup_digest": "a58222430f114a68c7a3eef2312d3bb55bb5f0efc1064b44a3c9a3426f99ff53",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Seeing Red",
+      "id": "SEEING_RED",
+      "java_sha256": "8730bda68c1dbd439954444e161140466efd8cbc965ec0347c0f23298d462c4a",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/SeeingRed.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "30d1cfa20be6be6c8ef4a35414c8958ef89fb67106c4fd95ade2ce6cae31a447",
+            "aab4cd0f5aee16efb7bc26b75c3362c98c748695ff7149c8e4fbb893fe5ebe60"
+          ],
+          "effect_sha256": "9b92626538b0cce146fe44245c855ac12b0db09f609b21db25c12de9a74709f1",
+          "setup_digest": "f53e555369b86bab2d017124c15c6b566050c018d9c67adc27346976279e5eed",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "4b848b61af097f75e6ac26b5fe93c0de4cee65499a6385c78b7de1a70e949bb4",
+            "ccfa7ad09d671e7f3cb64a905eca8910d8898865d6354ec46d4106b45557ad71"
+          ],
+          "effect_sha256": "a6ea37970b2095f43c7f1ebf0594b417d2af87df9a1614f5a4911db4544e6995",
+          "setup_digest": "6621af969b93b1d204a2b18ff17875a52d8d542d342bf52b9dccdb212fbdc16c",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Sentinel",
+      "id": "SENTINEL",
+      "java_sha256": "bc2bc2f43493c0efa55000414eb9c70383cdf8d11bbefa6095c7ef60f265dd4c",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/Sentinel.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "affa999165f65aff8bfcac9351508ac77315f52b51b86dcd2a7bfaebe4ba37c0",
+            "7ff70a6a8576d42a603f940a757c3c0c14228cd85dc5bbdeb7768647e65d9687"
+          ],
+          "effect_sha256": "1600523b3fc129f9a12da037e9b7dabbcc18399686f1aab334c5f84edf5c02e9",
+          "setup_digest": "bd3b8ef66f6898a12d382dcbd5d9028c279e242e74e81e185a2a9fc79f920d92",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "fa89965eda80af50c15d8108ff4e92b1d2b1bae8e0e1fb1e4b40714c0c7b8a5f",
+            "f43141fd203c1b032d2e74d32cffa6064d7107ab44ef2c6a71449bf66623dd27"
+          ],
+          "effect_sha256": "228a42a97f2e4e0ff28e24594de2a38a4576b8eeb267bfbd87f649aa624a1907",
+          "setup_digest": "1c9fb3bec4030ee87d2748f480e4bf248f9e37e4b56b4eed7e34b8e0ed283d70",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Sever Soul",
+      "id": "SEVER_SOUL",
+      "java_sha256": "4db699439fcbf534dc64f12e47909b8b9e81f0a9d9f2c053d9895b0317e0a351",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/SeverSoul.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "bdd1fdf38cde2133f406d002e185a52aa0c7105976ea3d4e4af864f919311ca3",
+            "d6db057e59d6357d27ffa1b1f3a21b6898381854c7188af286c71259a38eea49"
+          ],
+          "effect_sha256": "e213b8473dd99de850cb0131e16c288f773a8390b5994647b82c731f9b527b94",
+          "setup_digest": "4baf71966d1d8e9df84690c8f10c1f2fc1f6a1ffe7279282aa5dc08db611b532",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "3456cb787840afa5a0af947a850502952a050e685d1bf7c37aeceefd566ad27e",
+            "426d73854fef5170ffd250a0ba2088cca85d380102d8f5c5ba6e63d839379cba"
+          ],
+          "effect_sha256": "be84164e03fce562b78d860f6132a75348cb77181c34ee903bb627dcf6c1887c",
+          "setup_digest": "da1268b8b9b273ca6d411c956bfb43e651e6f2ec5adc1579bf67b15c7d352b5d",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Shame",
+      "id": "SHAME",
+      "java_sha256": "321930ac2a0cb752f9134eb08bbcad3048b3337538c609592fe249408d44de79",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/curses/Shame.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "1a9a16cb7cdc514faa80a57de2cbf4b2d8fa8bc744d8363e2d53405084f3fd8b",
+            "e9cbeff2f81fed5efb10d9ee1f8d2be253200ee01a68602fa389b768f4795de4"
+          ],
+          "effect_sha256": "2e74f7fe5e213214f981cd7eabac7762074143338e17ddcbc06a6333fdb72d16",
+          "setup_digest": "d4e955b2ed68e0c664b89751bbd797fbe59a44110612a1aa80c0c24887e25f6c",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "1a9a16cb7cdc514faa80a57de2cbf4b2d8fa8bc744d8363e2d53405084f3fd8b",
+            "e9cbeff2f81fed5efb10d9ee1f8d2be253200ee01a68602fa389b768f4795de4"
+          ],
+          "effect_sha256": "2e74f7fe5e213214f981cd7eabac7762074143338e17ddcbc06a6333fdb72d16",
+          "setup_digest": "d4e955b2ed68e0c664b89751bbd797fbe59a44110612a1aa80c0c24887e25f6c",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Shockwave",
+      "id": "SHOCKWAVE",
+      "java_sha256": "c7a318583ccd6a74a5f5f03e9876087699458142b29abd3343260fb161b82076",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/Shockwave.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "a71d0eb00eb4b54f47f8a02c49d3433116c03f18e9d6136915b93d6f795d0f5e",
+            "5846d8638f1ca1c1bdec58ba9f933864ee016654976f1cf4d4a0d394036b9b39"
+          ],
+          "effect_sha256": "67f3bb58726c09a98deb5a135918f5bee2152e76621dda695a165ccd4e128bff",
+          "setup_digest": "ecbe829c8227db4aa6a17eb68717ff4b1af9c711115a633d934d972e36cbccaf",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "3701507ee6750d4c22d0abc59fc4e51595e0a5e05630667704ee5f6ff2728017",
+            "8177db56c0a63e5753dddb00fc65ebe0ca166860a1e0dce5b086503ad5acfc17"
+          ],
+          "effect_sha256": "25acc2d24391d35f83314b4eae715964cb3f184868b4233fcd3277c1ad51513d",
+          "setup_digest": "1d6cd64b658cd044f9557e31de60c5575fd2e4643b5b46791375be43311a34b6",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Shrug It Off",
+      "id": "SHRUG_IT_OFF",
+      "java_sha256": "b63143fcd53cc7ddfb21730b45d36285f24aa2dede2dee439255fda216a480a6",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/ShrugItOff.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "be10474eee6a8b23ce4a83ef9be36dde2871be0a411ce90f1cff330e826cbd94",
+            "92c8b61f45107d52b55d1051e87ec911b9ed4e3255565c6df231d2b4d8df413c"
+          ],
+          "effect_sha256": "fc6e0bd928ab7eed93e52c484b3a9b87f2a318cfa91e0ff093be18f1aeed0d88",
+          "setup_digest": "4751841d609879f29f00e9ff531cdf797763be690d4c5750bc81e646ed995d96",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "0ee0b4b9978ba83774c526e8f054185c4791ad7fc3ce5027b7e5c5662e8f8446",
+            "6d81707796153e9d293d3fda9c647d649de47f6915b07614a5cb305c739ee353"
+          ],
+          "effect_sha256": "894ee36ebd9048547a4069467ae52056eacc6aacd36b1e583840fcb125ed742e",
+          "setup_digest": "89d196075959ecdd5f81b2a39c05c3526173aed7e473a5a441bc63d98a825fb5",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Slimed",
+      "id": "SLIMED",
+      "java_sha256": "186472baf573928a882d629d136184bca37816fbf372c1a3e2addcd61efc33ff",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/status/Slimed.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "4fdf94790094ed974f7d7ba1b9cfb78406331398373775ba92eafcbab594e492",
+            "019032e9b638ec89546f41bbeef04a6b64424239fb191fcab07c67709909cbed"
+          ],
+          "effect_sha256": "0d65e9966c47013ace250609cd196df5f57bd795c7f84e258af8afbc4e4df3ab",
+          "setup_digest": "c8525a8dd816263f164a16c22d722ce638f37198e9863a3e9c6691413582b180",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "4fdf94790094ed974f7d7ba1b9cfb78406331398373775ba92eafcbab594e492",
+            "019032e9b638ec89546f41bbeef04a6b64424239fb191fcab07c67709909cbed"
+          ],
+          "effect_sha256": "0d65e9966c47013ace250609cd196df5f57bd795c7f84e258af8afbc4e4df3ab",
+          "setup_digest": "c8525a8dd816263f164a16c22d722ce638f37198e9863a3e9c6691413582b180",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Spot Weakness",
+      "id": "SPOT_WEAKNESS",
+      "java_sha256": "de4f055725f60da44293e6e4aff3338f7bf1948703853143348e2ed534817c55",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/SpotWeakness.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "5c18f8cbe771df3af01e825888d120696c3e877ffa860b3aec550eadf4b922c3",
+            "1732238e122dd3dcc03c8615997d74a7189448966002c0441af20bc1c4dc6915"
+          ],
+          "effect_sha256": "d0aca69144d8b7f7dc2e1137e35b93cd76c4f074cbb3ab81dfaf863f80504e48",
+          "setup_digest": "f7e471eac6f931f03e159aecd21bf3fba2d48dcef059f1170387634365b81390",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "59e009c63dfd01e885b6d96f0d309702b9d48abb59caa95b5e9a4438b3a15e9e",
+            "79cadab6800b0d6bcba798d8a0d5142aec391ebbd2adc12221210963bf2a1081"
+          ],
+          "effect_sha256": "702702d980d6cb9562fd3dc8261e4d7c6682f2b31339ade1cb6ce00758538318",
+          "setup_digest": "80dbbd8475c76c41a3d38aba2b71414fba7f33bd89a6ae56eaec4bf39d5a5df0",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Strike_R",
+      "id": "STRIKE_RED",
+      "java_sha256": "50ea88fc3f5cad27cb13fc06aa50c9a5b5fc42c0e45b86fda09384f048bd5adb",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/Strike_Red.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "783df6697a0e0a02f6926c0c4ae94f38cdb2a374b0ac45821c237ef4d46d87be",
+            "4c1eb80fe8873056bda8f73fa15b0a4c00a5a2d7265e19754c6de20e603e8d6d"
+          ],
+          "effect_sha256": "037e5526f1aa935ea92c648ef23fefb36e018443c452c6eb608aaf181741bdeb",
+          "setup_digest": "6a0c8be334472f38a90f1a7c543f3dd0165220510709f8dbb8a5fed1871b73a1",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "0e47222be9f4c19d66b577f273ff4acdc470f25fb44ed3a5b4471e4ad0882078",
+            "91592802e48a8f9d6ce33c11983018d9f5ac99a9d7dfee4694d1f8debcd8f519"
+          ],
+          "effect_sha256": "2dc015de61f6a4f61cb045ab67c706eca33766776b0df4a747798eb110042af1",
+          "setup_digest": "05075f0ee85b083bdbc614e9d82a07546bf855d1a7620be876473e210a660433",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Swift Strike",
+      "id": "SWIFT_STRIKE",
+      "java_sha256": "113533c592bf0f14f4bccdbf8e549966323539e7205ccc7e096132cb7c4be01b",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/colorless/SwiftStrike.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "608ae762d9d11e069b541927a91e84775adc29991aaf7e741aeb7d2e9d005a91",
+            "c2f1fe4719ffd617b052a07ce8af726c840598e02ae569bc3f7522e58352262e"
+          ],
+          "effect_sha256": "45555d744310c5f8191a0d5f14d14151fddf7741ed81b84ebf0470aa0e13bc2b",
+          "setup_digest": "306282ef6af9d00ff06f7a6a7d834fdf14630a2e3bb54220b311c3059245d88d",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "2c0d0d9c99e1485e93d3cc45e6bad1028db6f5bef33d7a3409a25edbe14051bc",
+            "d7a399b2abc72705677fa7c40eeecda7ca87ecb0c407ad4512a46177d7644a46"
+          ],
+          "effect_sha256": "012b1cb88b73d216ad64668ec4c2e9dcaa55d201394ebe39e260ad07a14c7815",
+          "setup_digest": "f6bcbff6692e6e6fff6d4ab7f35e1a348a8e28d370aef98df5886cb0a07f4823",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Sword Boomerang",
+      "id": "SWORD_BOOMERANG",
+      "java_sha256": "fbe17822218734c567e78a5212c872bc8fdefcc4fd9cf49b4a6be9c1248e4364",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/SwordBoomerang.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "9306c2027b9f27ea96c0a293339c81a47da28be6d502896c9cca1d200a13cc72",
+            "1aa4f805ddf2d2a584321757ba04bb1d225ef0f1fd4f3e67ce067a43cc2d454e"
+          ],
+          "effect_sha256": "fe0a9c1454c65d03b62dd5e2ccd651d33ebc0a32994eebe3cc424ecfabcf23b0",
+          "setup_digest": "9489ba635d15c06d739a64c569753595e0a6f8f4b8d61efec1241c379a4c7d01",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "b4652924e8345171c778ff823e4276122390316b087999340da7f98ace66f310",
+            "caf3b96b34f63e58e840ff7afa85094c9c000cd8f62289cdcbcb3af6cf3adc23"
+          ],
+          "effect_sha256": "d9ac51f16f526788134d1577ad2937fecd0761020a7f15cc35aa4fa4b2931128",
+          "setup_digest": "e70b43663acdc225dbf8ebb973e95f6ba296d4b3deeb11a31712e99afe0caaec",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "The Bomb",
+      "id": "THE_BOMB",
+      "java_sha256": "434d4958bc32dc2b953c086b66ca895fde4ec43fc33cef95e02bf024d443d293",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/colorless/TheBomb.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "577106cfae8785f08bdd1d9165350440e403586eea151bb72887e36775cfaefb",
+            "4a499eee3493277c6143453e9a46860cc41932a88dfb59183282c3ea0e710d8e"
+          ],
+          "effect_sha256": "4068ea997961ea3e2dc04937f11b184df5adb64b6522e36fb053798f9cd94fd8",
+          "setup_digest": "e2897743c680ad3c2a4d3e99c5034548bc18163d4ac093093583bbeac3c8fd62",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "5c5a695a19b5f3c27d008fd948b56fcdd54e85b393eb8332d6effc90dc0e408d",
+            "3b1aadea9db01407fb74b5707998f495fbd002955baac97311310d6de772fdab"
+          ],
+          "effect_sha256": "9c4f54cf59b6a791123ed979bd6a0ba8287bb3084e8351a08fea446e9f3249d2",
+          "setup_digest": "1446c4e987de8bc42390df23cfa7a10797dd1be525a06a96178030967eaaa61f",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Thinking Ahead",
+      "id": "THINKING_AHEAD",
+      "java_sha256": "12e9fea6c8277f40923e3e13861ff33b3b6f7dec887709b6a3813c86cd0c9474",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/colorless/ThinkingAhead.java",
+      "variants": [
+        {
+          "boundaries": 4,
+          "boundary_hashes": [
+            "cb9204be1a6c1001ddd170765e105d73c696be7ea0afb1d47c1d7f42cf0524d2",
+            "a9885fdf0c49ce1f4eaf407e66d7fb8aadc180766601daf9c8a17cc24210d85c",
+            "da6657850a6493f7d5e8c42a7ba53d925370aef3649c02eab20a44c74df2c6c6",
+            "598ecc70e8c910b8d6562519b8a128cb13d3d7ae8ab7a29da1439614e0b5931b"
+          ],
+          "effect_sha256": "5511626b3d128544d57b921bf5f2ae57d2672247167c64420345a8c1c5f86c0e",
+          "setup_digest": "5595b2476b3c1ffe0d6efd17727243ccc53313358593969d06a36269ee178849",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 4,
+          "boundary_hashes": [
+            "321dcfb8d7098ee623b6b692f0cc30df13446464d47a5d4222581625b38dbc28",
+            "a9885fdf0c49ce1f4eaf407e66d7fb8aadc180766601daf9c8a17cc24210d85c",
+            "da6657850a6493f7d5e8c42a7ba53d925370aef3649c02eab20a44c74df2c6c6",
+            "367f482224b79d7360b4839bbbeac1df8d32251c5c5ea3af3156f3505fc0f737"
+          ],
+          "effect_sha256": "ea16bcf54ec89b5bb4300230c19bbad135da7019c8f72624104600f2d4d6498c",
+          "setup_digest": "224c5d15ae89cb09fb2a94aa6c5b904bb3231b7604b1e5b5f21ea1206445729b",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Thunderclap",
+      "id": "THUNDERCLAP",
+      "java_sha256": "1e4c821b9749abbd09a378db46693fb05e9c183eadae4fb23a99309975c8f382",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/ThunderClap.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "b43c6263c2ba1989c119f384cf16fcadf0e82ae53c1d904ecf88fff576bc361f",
+            "69a6157b0051193286b20d1005f3a85c83271b0033f1f79fdf1553bcf5959195"
+          ],
+          "effect_sha256": "4d7e786df200e270ec4d246e428db34d38d7baa9bf1a8d8c09e3e8e85adfa609",
+          "setup_digest": "518d98eb453fd24936a63d345a6344fd0814b241694ffa82c44df3c4e9856496",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "e5f14b803fd5af68dc79c2c352e783ec63e7a9809ecdfd881b6e78651a8c0c08",
+            "ad7280bf42dce4f8ac926ff4cbe881e926ef18fcf876c6f08859152bc89e9312"
+          ],
+          "effect_sha256": "10aa26c710f6661ddea22085024c1ca9e2f851e5448a650b0b348b4bd72c4f31",
+          "setup_digest": "8e8000864777f9cd43ca80b3a3fbb984e9bb7ffe4ed60c88e45705809618518c",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Transmutation",
+      "id": "TRANSMUTATION",
+      "java_sha256": "249ddf53408be87ebe027f95493cd35a53b9362113ad8e9894e1546db14c7030",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/colorless/Transmutation.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "7370dc0ceae506304bfdc1faf89635d8b3804a1012ef8770d9a14a6b34085cd2",
+            "a3974b8aadae1cba46e22dd222e64c3c2dff06ea9faf9ed3f5d4152121af3692"
+          ],
+          "effect_sha256": "615eb82d206b09eaabc443da00e070984c1ca0bac00976f27d2e025522916d45",
+          "setup_digest": "fba3c2eb9a471709605ea81a9cbf04ef642c1bf548db78aded679bc88ebd22c8",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "d2c011cb9435e7a133bdfd8a66e47a260ae269ae24cb75069c73ff77e5066d4c",
+            "5433bc1b8a598ea68aea0f2e6b5a309cf29bd9f7af11be42a58e5fe3220dfcf9"
+          ],
+          "effect_sha256": "378656235e9e390d98f21dd88994af2464545e8d1d62c3acf1a05223cefc0156",
+          "setup_digest": "25197628dc9afd0841c576390992e8a5c00d0312b18cf41953d26ea4e76ea95b",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Trip",
+      "id": "TRIP",
+      "java_sha256": "317d17f6faf4ff0f648b20f08729d97107cec2de352f121cab175aadbbdbba4c",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/colorless/Trip.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "70cf53abec10603eaa0a8b7a6e34a5c3387c624b1dd96bf17c9cc5d1ccdb2326",
+            "054fcd211a723e3e217218f58664e2b3a683a52bfa602388c7fe6473fa1e6130"
+          ],
+          "effect_sha256": "b3359e2ad3df5ea09f2cec9cf87509fe65a16f90e0e30d6aea36fa08d137370f",
+          "setup_digest": "3c32d5efd1c3d639e082661c4d4942855060221d682bdee6714390d1b971cbc3",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "c14f091b14cfdec207ddec6dc5ee1fa90fca490a964751dfc153536ec6492327",
+            "7881df7621e16807cf0933a0516fcfddebd644bd0f3c03aed200ec69f3d42bc7"
+          ],
+          "effect_sha256": "8e8c51a3f52cd8e28a3bc30737d458a267abdbbd90506232fad92c99c93bbcf4",
+          "setup_digest": "b7365e389d00b046741d5334cfb537f37ef43024e25f532505bb6bf8f219668c",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "True Grit",
+      "id": "TRUE_GRIT",
+      "java_sha256": "9df7261441be3424efdbfeb8fca597540e45741d10a0b2ba4b4e3073f8c99d7a",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/TrueGrit.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "50d439fbbc5d7eab92ef69422159f5c48db6dc668b25f2ca4f9812498d8e36d1",
+            "d8ad96536111d5eda8d60ae77a47a8bdade0dd33ebf43591039eb481b804c946"
+          ],
+          "effect_sha256": "8478b84c5ed061514e388a8302d2929e6bded658a9d574825f3539b4c513f383",
+          "setup_digest": "4851150e32f9913a878b04212c42247560946460d15a8a1bc793aa1df0016d39",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "e2e926560ebe7f1d433f3cfd1518d91c2ea7f4ea69cf8bb1b6d9419a70ded90d",
+            "760607f3694c39acd419b1e9585415fa93d047a09f864d1451c679cd42b4b7a5"
+          ],
+          "effect_sha256": "eb5cc76031b3123ae1a111f24cd6c89d80f26014ea8fec23976e05b7f3f9d64c",
+          "setup_digest": "a5b9306024a1e7437d94740c2a408edd983298c4bd42aaeeb1a82e2e809f4cad",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Twin Strike",
+      "id": "TWIN_STRIKE",
+      "java_sha256": "6576f99d5a5cbaa813c6b91b5b6ffbf5a21fb6c75429643448d01f98b8bdf3a9",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/TwinStrike.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "2f1f7e82b882e861aa994f37dbf9ace2363024fc1637b5a66dfe6af7c4a05218",
+            "90c6295177dfe94c807148b519a5f527af0fdadffbf9deeb49c8e03b0b41d8a1"
+          ],
+          "effect_sha256": "1fc1091556656d26fa8fe669b494a98d2f1ba678e6e11af5b5563199c5bbbd0f",
+          "setup_digest": "6df8eb29ad0b04730a396d5d8ada2cfcafeeeaac7d8f1e98e425f9e46b0e2d3c",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "fb408e19687736111a41153efbacef5496e074498d68e254806dac9b72a1998c",
+            "15b9547b5ba6c2d9be516d0cce2229db6d7e5a6ebc560af208ef8a83c1ece457"
+          ],
+          "effect_sha256": "5a41a8165ef2708abe789cffa537e7f9d7467062dc98d2ad5421e114f700718c",
+          "setup_digest": "46028d27b15bf7757f264ee1215c613f702f0f244afb6b7b0cbf3164d5b58698",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Uppercut",
+      "id": "UPPERCUT",
+      "java_sha256": "7d9a580e15a113c6cf0652ff7cf0ca16960a41de43e53fb7a8773de24d921f15",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/Uppercut.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "dc559993c19168515b53d0c6388eac9e5f3f9eb5fd09ee5e7959c9774db3bc17",
+            "06f3bda0f62502ad67fc9c1ba9bcf490e0171ab8117c0fe0690a84dbac5ea5e9"
+          ],
+          "effect_sha256": "afac0f9e3f39f92ea4f3346fdbcd4ed3f9be93cd3c95bdfdf8c7df2fb9b6e4f8",
+          "setup_digest": "5b0686482417fc1ccbc03d3ec852066cc22b95303dd2dfc5fbb16702062a1d57",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "08ddd6d7861b05f8f7d173f84dadd380ac5718c21fdf2637d2634a31dbbbdc63",
+            "fd901ba83ba48c8ca3ef9a97286a3036e3733dbf020e82a4e010a136020ffba7"
+          ],
+          "effect_sha256": "239c3e68d96dfe7f9453b4cdd548c7690d2909ab472cf3070c4cec1fc5655e28",
+          "setup_digest": "8b4e56b47f5b9ae87ae9efcd8ccfaf4b99361ffe8c8e8ef4b28b18b64fc36961",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Violence",
+      "id": "VIOLENCE",
+      "java_sha256": "14b1107a6892d4e87c3882943ecc92628ccd54ffc7c2ef76870fba813ad463c9",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/colorless/Violence.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "8f79414c05605c37a4e32cdfb25b81e974dd862d4024e3a697d7db7de82cfd23",
+            "1815487adfa23a49be8ab9ca1f246248fe45f4bc32b822abd9dc633979937d02"
+          ],
+          "effect_sha256": "ddd0628df71280a2a114fe30fecd93b42aea9c5ca686eba8b5d847df9ee77358",
+          "setup_digest": "8143fd5416f9c0aa06e9e8fc2d63a1f1c38219f5aa516b44258a5be85f8041e1",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "961118ac654bead3960baa885fe486b7989b512311422b5f0ecee1e63805cf41",
+            "16a752f67393f724285ce1e8dd1c25f09f79da5dd81bd5f9228c1d1bdc95c9d1"
+          ],
+          "effect_sha256": "0574399c258444788c2ab93d4914dd32b7fec858b575b76f6072f23e31aa016f",
+          "setup_digest": "3c5f63c71cc75143f54f35efac243dbf45a5844e10ab8626c624f7c900db01c7",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Warcry",
+      "id": "WARCRY",
+      "java_sha256": "564cc4d71e664b1b211194dbf4801e6698d79692630f2c7ddb025407f9ff543b",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/Warcry.java",
+      "variants": [
+        {
+          "boundaries": 4,
+          "boundary_hashes": [
+            "67721bff32e609d0132a8a490eec07014fadf5d546968060316b4b1cbb37bca4",
+            "2ceaa978876d2093046a6ac4b7cddd6cab9e6fc6ff4cf697f5fde57d6848940e",
+            "c55d8bdeba5f43053617daa413b48bb6f6d42edb49b0ff657d1dd39494a55292",
+            "418f331c757b2777c6fffafac5d76c6d3b8394ad421014236ea9599c10f575f4"
+          ],
+          "effect_sha256": "837fcab732f358cb9142916cdc04fce5cd8d6f4fed2b8552f15e1b9346201e61",
+          "setup_digest": "85793370e5a29864f78a6990f708f4322611682b203dbca5ee5e8f60d5505e8e",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 4,
+          "boundary_hashes": [
+            "f8606c8d38c955db65a10886da9c4b871bc5d5d199fe2e231aa67e02191bab06",
+            "8474b8c39c3fcfa790334aacb9ac22ad3939412be2e6e38a7e2989511c48e849",
+            "cd6c1ce86a1c07fa6d2b8319139230dcc294604dbe1caad404f8f13a4066fb75",
+            "53b637fbfb247b287d3c6bb963862aa88b0193556f1f09db4091d6ff8df2904d"
+          ],
+          "effect_sha256": "90831c2b15e93e122e9c29e188644850253e5e3a18ced6ad927940c8968b41fe",
+          "setup_digest": "ff223a0a82ca3c372fbe5ed19a6ceeab6eef112afdbe9d22b39a31b7792808eb",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Whirlwind",
+      "id": "WHIRLWIND",
+      "java_sha256": "4b74801ef4135e150594102e1a9b7e3b1349242325f01b30fc580c84204d9df4",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/Whirlwind.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "b0a5a26469c22522500dff885f3d7e2be038a1874b7620fcb9c5ee076183ccb7",
+            "c92f2432a25c4bb0c642a29cbb4435a5065837674a3843aedc9a7b71be5a3055"
+          ],
+          "effect_sha256": "e8320dbb6e70d8c9c089ad43f4ce9b2deb0514f1fb94f79e746ea7da9bf2b0d8",
+          "setup_digest": "8b937e7c1870aa94d40160d9620103c182350d8f5aae0cce4b0e3ad26f390240",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "232b203221313014c86c9512e1308215d42dbbcba28ae31fa5273a0747dabb26",
+            "ca2546ff1b9b68fa2bd336d42f29f035858b650547276cb98d641386c04ad80e"
+          ],
+          "effect_sha256": "1f7040abc22489c3c156c846ece2f4b358c787ecbea602d80a34bca61315e73b",
+          "setup_digest": "6200d78208abc4cec3d6e7429a2128baf0bc9aff5cf5447293ec48574badc60f",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Wild Strike",
+      "id": "WILD_STRIKE",
+      "java_sha256": "dc255fb89e6586f77c8ec07d00f4ba813d0e35dc0f2242bb2cb214159fa10a4e",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/red/WildStrike.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "40c81896acf226d41112520e410fec23a50b3382f2165f88e1582aa8eb19ccb6",
+            "7b2df10c6c2561e3348c426ea08eb49843abc02fc561d3c93b0023a5b7c02f2b"
+          ],
+          "effect_sha256": "9cc45d98e5a20df36f0a7b5d9d6a8a4ba9a8f69abef9d93b08ce00fe5ab37f61",
+          "setup_digest": "17a34d9685f41fdd9043e1b9ea7b10f24041764b9b460ecc571577a2e387a384",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "9bd02363fbaa51eae8792f68453e3f583517b033d8769308eae1b5f05e4994b6",
+            "b3d7b2de66912af512cc85697cc979ab6f4a32f66d5633e9d62f26a602a623f6"
+          ],
+          "effect_sha256": "50d9c74212e0c8b70e1f5527250c60565ea7d41129d719f83c35ff74122db678",
+          "setup_digest": "611286d4fd8b7c1a34e2a2c820fe127f37647e70b4984a3ab509f545871b1f86",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Wound",
+      "id": "WOUND",
+      "java_sha256": "59646f5cf93b62edc771934d0cc16880b5fc3c9f48c0abeae1bd1250b4b38fc7",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/status/Wound.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "97a15759f005bb248447555a82cfa65196974ef42b364af0885ffad0a9435d0f",
+            "9419795f6809a5571ba35c9a074a3ed3360d3edeed81b655b08eb66ba43fe9bf"
+          ],
+          "effect_sha256": "a51c3f7987054f8115a309e8b7231cd15580f9f8e63489a5028f0c1316bb26b2",
+          "setup_digest": "6d4b3022a9b6251d0d5776ea2bda88cb6c6015d323cea90bc16d0738573d6adf",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "97a15759f005bb248447555a82cfa65196974ef42b364af0885ffad0a9435d0f",
+            "9419795f6809a5571ba35c9a074a3ed3360d3edeed81b655b08eb66ba43fe9bf"
+          ],
+          "effect_sha256": "a51c3f7987054f8115a309e8b7231cd15580f9f8e63489a5028f0c1316bb26b2",
+          "setup_digest": "6d4b3022a9b6251d0d5776ea2bda88cb6c6015d323cea90bc16d0738573d6adf",
+          "upgrades": 1
+        }
+      ]
+    },
+    {
+      "game_id": "Writhe",
+      "id": "WRITHE",
+      "java_sha256": "da085aa98b9fdcb0d58be91f62abf8c3c982e0f8ec28ebe74fadf24f48cbc1d2",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/cards/curses/Writhe.java",
+      "variants": [
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "c672077262d5cb75451225d4aca0af058a8f085447dc1db877f0c19930bedd97",
+            "e375a399a3cde808ed1f4232edf73281bfde79324c45f0c0647000684487e524"
+          ],
+          "effect_sha256": "3bd4cebef97e4aee1a3d85cf170dc442f5c1ab7dc8b68526bf2bfc1d6f621a71",
+          "setup_digest": "32b980164330a418eb9ac3cfd56f553e20c5c77364232fd3f266a131027a2789",
+          "upgrades": 0
+        },
+        {
+          "boundaries": 2,
+          "boundary_hashes": [
+            "c672077262d5cb75451225d4aca0af058a8f085447dc1db877f0c19930bedd97",
+            "e375a399a3cde808ed1f4232edf73281bfde79324c45f0c0647000684487e524"
+          ],
+          "effect_sha256": "3bd4cebef97e4aee1a3d85cf170dc442f5c1ab7dc8b68526bf2bfc1d6f621a71",
+          "setup_digest": "32b980164330a418eb9ac3cfd56f553e20c5c77364232fd3f266a131027a2789",
+          "upgrades": 1
+        }
+      ]
+    }
+  ],
+  "oracle_schema": "spirecomm-parity-v10",
+  "schema": "sls-ironclad-card-semantics-v1",
+  "scope_sha256": "1e9ba31232cea5813b88cf6d75c7be28deaca4ac84c32079745477866fc0649d",
+  "seed": 0
+}
