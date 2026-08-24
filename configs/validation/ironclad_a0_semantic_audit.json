@@ -1,5 +1,5 @@
 {
-  "audit_sha256": "24ef3cfa8f539f0603eefb9591f7c8aad89c23283265f5c43f0557cfee603371",
+  "audit_sha256": "2bdd0e6eee997f08dbbdfbcf18562d430bd3924f2cbf6b94839c1b6a01f260ca",
   "content_scope_sha256": "1e9ba31232cea5813b88cf6d75c7be28deaca4ac84c32079745477866fc0649d",
   "entries": {
     "cards": [
@@ -1304,7 +1304,7 @@
           "cpp/simulator/src/combat/BattleContext.cpp:3196",
           "cpp/simulator/src/combat/BattleContext.cpp:925",
           "cpp/simulator/src/combat/BattleContext.cpp:950",
-          "cpp/simulator/src/combat/CardManager.cpp:426",
+          "cpp/simulator/src/combat/CardManager.cpp:433",
           "cpp/simulator/src/combat/Player.cpp:1017",
           "cpp/simulator/src/sim/search/ExpertKnowledge.cpp:24",
           "cpp/simulator/src/sim/search/ExpertKnowledge.cpp:251",
@@ -2237,7 +2237,7 @@
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:1616",
           "cpp/simulator/src/combat/BattleContext.cpp:1617",
-          "cpp/simulator/src/combat/CardManager.cpp:441",
+          "cpp/simulator/src/combat/CardManager.cpp:448",
           "cpp/simulator/src/sim/search/ExpertKnowledge.cpp:308",
           "cpp/simulator/src/sim/search/ExpertKnowledge.cpp:43",
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:1019",
@@ -2542,8 +2542,8 @@
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:1624",
           "cpp/simulator/src/combat/BattleContext.cpp:1625",
-          "cpp/simulator/src/combat/CardManager.cpp:443",
-          "cpp/simulator/src/combat/CardManager.cpp:449",
+          "cpp/simulator/src/combat/CardManager.cpp:450",
+          "cpp/simulator/src/combat/CardManager.cpp:456",
           "cpp/simulator/src/sim/search/ExpertKnowledge.cpp:333",
           "cpp/simulator/src/sim/search/ExpertKnowledge.cpp:46",
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:1073",
