@@ -21,6 +21,16 @@ def _load_build_oracle():
     return module
 
 
+def _load_card_audit():
+    spec = importlib.util.spec_from_file_location(
+        "audit_card_semantics", ROOT / "tools" / "audit_card_semantics.py"
+    )
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
 def test_oracle_card_allowlist_is_exactly_the_scoped_card_closure() -> None:
     module = _load_build_oracle()
     rows = module.scenario_card_allowlist().decode("utf-8").splitlines()
@@ -57,3 +67,17 @@ def test_native_card_probe_has_the_stable_audit_baseline(
         action.kind.value == "PLAY_CARD" and action.subject_id == "HAND:0"
         for action in decision.actions
     )
+
+
+def test_card_audit_reads_the_snapshot_after_a_native_step() -> None:
+    module = _load_card_audit()
+    battle = native.LightspeedBattle()
+    battle.reset_card_probe(123, "ANGER", False)
+    adapted = adapt_original(battle.snapshot())
+    action = next(
+        item for item in adapted.decision.actions
+        if item.kind.value == "PLAY_CARD" and item.subject_id == "HAND:0"
+    )
+    payload = module._execute_native(battle, adapted, action)
+    assert isinstance(payload, dict)
+    assert adapt_original(payload).decision.observation.hand[0].card_id == "STRIKE_RED"

@@ -103,18 +103,19 @@ def _execute_native(
         if kind in {"wait", "state"}:
             continue
         if kind == "play":
-            payload = battle.step(
+            battle.step(
                 "play", card_index=int(parts[1]),
                 target_index=int(parts[2]) if len(parts) > 2 else 0,
             )
         elif kind == "choose":
-            payload = battle.step("choose", choice_index=int(parts[1]))
+            battle.step("choose", choice_index=int(parts[1]))
         elif kind in {"confirm", "proceed"}:
-            payload = battle.step("proceed")
+            battle.step("proceed")
         elif kind in {"end", "end_turn"}:
-            payload = battle.step("end_turn")
+            battle.step("end_turn")
         else:
             raise RuntimeError(f"unsupported native card-probe command: {command}")
+        payload = battle.snapshot()
     return payload
 
 
