@@ -731,7 +731,10 @@ Action Actions::ViolenceAction(int count) { // todo a faster algorithm for inser
         int i = 0;
         for (; i < count; ++i) {
             if (attackIdxList.size()-i <= 0) {
-                return;
+                // The selected cards still have to be removed from the draw
+                // pile when fewer attacks exist than the requested amount.
+                // Returning here duplicated every card already moved to hand.
+                break;
             }
 
             java::Collections::shuffle(attackIdxList.begin()+i, attackIdxList.end(), java::Random(bc.shuffleRng.randomLong()));

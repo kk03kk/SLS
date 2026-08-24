@@ -207,3 +207,12 @@ def test_thinking_ahead_waits_for_stock_selection_confirmation() -> None:
     settled = adapt_original(battle.snapshot()).decision.observation
     assert settled.screen.value == "COMBAT"
     assert len(settled.draw_pile) == 1
+
+
+def test_violence_does_not_duplicate_a_short_attack_pool() -> None:
+    battle = native.LightspeedBattle()
+    battle.reset_card_probe(123, "VIOLENCE", False)
+    battle.step("play", card_index=1, target_index=0)
+    observation = adapt_original(battle.snapshot()).decision.observation
+    assert [card.card_id for card in observation.hand] == ["STRIKE_RED", "STRIKE_RED"]
+    assert [card.card_id for card in observation.draw_pile] == ["DEFEND_RED"]
