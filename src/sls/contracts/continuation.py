@@ -146,10 +146,14 @@ def continuation_simulator(state: Mapping[str, Any]) -> dict[str, Any]:
         and len(screen.get("card_rewards") or ()) == 1
         and not any(screen.get(key) for key in ("gold", "relics", "potions"))
     )
-    action_queue_types = list(checkpoint.get("action_queue_types") or ())
+    action_queue_types = list(
+        state.get("_validation_action_queue_types")
+        or checkpoint.get("action_queue_types") or ()
+    )
+    choice_origin = state.get("_validation_choice_origin")
     if choice.get("task") in {
         "HEADBUTT", "ARMAMENTS", "EXHAUST_MANY", "WARCRY",
-    } and not action_queue_types:
+    } and choice_origin != "ELIXIR_POTION" and not action_queue_types:
         # The native input state is suspended inside the played Headbutt.  The
         # Original exposes that suspension as its pending UseCardAction.
         action_queue_types = ["com.megacrit.cardcrawl.actions.utility.UseCardAction"]
@@ -164,11 +168,11 @@ def continuation_simulator(state: Mapping[str, Any]) -> dict[str, Any]:
         ),
         "card_selection_task": choice.get("task") or info.get("type") or screen.get("select_type"),
         "card_selection_count": int(
-            (
+            (99 if choice_origin == "ELIXIR_POTION" else (
                 (((state.get("combat_checkpoint") or {}).get("game_state") or {})
                  .get("combat_state") or {}).get("_internal", {}).get("choice", {})
                 .get("pick_count", 1 if choice else 0)
-            )
+            ))
             or info.get("select_count", info.get("count", screen.get("select_count", 0))) or 0
         ),
         "post_combat": bool(

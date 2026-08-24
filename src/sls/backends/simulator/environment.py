@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from typing import Any, Mapping
 
 from sls.contracts import (
@@ -47,6 +48,8 @@ class SimulatorBackend:
         self._candidate_bits: dict[str, int] = {}
         self._last_raw: dict[str, Any] | None = None
         self._multi_selected: set[int] = set()
+        self._validation_action_queue_types: list[str] = []
+        self._validation_choice_origin: str | None = None
 
     @property
     def raw_state(self) -> dict[str, Any]:
@@ -56,6 +59,8 @@ class SimulatorBackend:
 
     def reset(self, seed: int) -> Decision:
         self._multi_selected.clear()
+        self._validation_action_queue_types.clear()
+        self._validation_choice_origin = None
         self._native.reset(int(seed), self.profile.ascension)
         return self._adapt(self._native.snapshot())
 
@@ -80,12 +85,35 @@ class SimulatorBackend:
             bits = self._candidate_bits[candidate_id]
         except KeyError as error:
             raise ValueError("action is not legal at the current decision boundary") from error
+        previous_choice = str(
+            ((self._last_raw or {}).get("public_combat") or {}).get("choice", {}).get("task") or ""
+        )
+        semantic_action = (
+            Action.from_dict(json.loads(action)) if isinstance(action, str) else action
+        )
+        queued_type = _queued_potion_action_type(self._last_raw or {}, semantic_action)
+        pending_queue = tuple(self._validation_action_queue_types)
         if bits < 0:
             self._multi_selected.add(-bits - 1)
             raw = self._native.snapshot()
         else:
             raw = self._native.step(bits)
             self._multi_selected.clear()
+        current_choice = str(
+            (raw.get("public_combat") or {}).get("choice", {}).get("task") or ""
+        )
+        if previous_choice and current_choice == previous_choice and queued_type:
+            self._validation_action_queue_types.append(queued_type)
+        elif current_choice != previous_choice:
+            self._validation_action_queue_types.clear()
+        if (
+            current_choice == "EXHAUST_MANY"
+            and current_choice != previous_choice
+            and "com.megacrit.cardcrawl.actions.common.ExhaustAction" in pending_queue
+        ):
+            self._validation_choice_origin = "ELIXIR_POTION"
+        elif current_choice != previous_choice:
+            self._validation_choice_origin = None
         if _is_completed_neow_reward(raw):
             # Stock closes the terminal Neow CardRewardScreen before exposing
             # the map.  The native engine represents that UI-only close as its
@@ -136,6 +164,12 @@ class SimulatorBackend:
         checkpoint = self._native.snapshot()
         if self._multi_selected:
             checkpoint["_policy_multi_selection"] = sorted(self._multi_selected)
+        if self._validation_action_queue_types:
+            checkpoint["_validation_action_queue_types"] = list(
+                self._validation_action_queue_types
+            )
+        if self._validation_choice_origin:
+            checkpoint["_validation_choice_origin"] = self._validation_choice_origin
         return checkpoint
 
     def load_checkpoint(self, state: Mapping[str, Any]) -> Decision:
@@ -143,6 +177,12 @@ class SimulatorBackend:
         self._multi_selected = {
             int(value) for value in checkpoint.pop("_policy_multi_selection", ())
         }
+        self._validation_action_queue_types = list(
+            checkpoint.pop("_validation_action_queue_types", ())
+        )
+        self._validation_choice_origin = checkpoint.pop(
+            "_validation_choice_origin", None
+        )
         self._native.load_state(checkpoint)
         return self._adapt(self._native.snapshot())
 
@@ -151,6 +191,12 @@ class SimulatorBackend:
         raw["legal_actions"] = _effective_combat_actions(raw, self._multi_selected)
         if self._multi_selected:
             raw["_policy_multi_selection"] = sorted(self._multi_selected)
+        if self._validation_action_queue_types:
+            raw["_validation_action_queue_types"] = list(
+                self._validation_action_queue_types
+            )
+        if self._validation_choice_origin:
+            raw["_validation_choice_origin"] = self._validation_choice_origin
         self._last_raw = raw
         public_run = raw["public_run"]
         player_state = raw["player_state"]
@@ -769,3 +815,18 @@ def _effective_combat_actions(
             "selected_indices": sorted(selected),
         })
     return result
+
+
+def _queued_potion_action_type(raw: Mapping[str, Any], action: Action) -> str | None:
+    if action.kind is not ActionKind.USE_POTION:
+        return None
+    if not (raw.get("public_combat") or {}).get("choice"):
+        return None
+    try:
+        slot = int(str(action.subject_id).split(":", 1)[1])
+        potion = (raw.get("public_inventory") or {}).get("potions", ())[slot]
+    except (IndexError, TypeError, ValueError):
+        return None
+    return {
+        "ELIXIR_POTION": "com.megacrit.cardcrawl.actions.common.ExhaustAction",
+    }.get(str(potion.get("content_id") or potion.get("id") or ""))

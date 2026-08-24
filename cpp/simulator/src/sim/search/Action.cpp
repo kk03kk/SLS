@@ -64,7 +64,10 @@ fixed_list<int, 10> search::Action::getSelectedIdxs() const {
 }
 
 bool isValidPotionAction(const BattleContext &bc, const search::Action &a) {
-    if (bc.inputState != InputState::PLAYER_NORMAL) {
+    // Stock keeps the potion command available while a combat card-selection
+    // screen is open (for example Colorless Potion's Discovery screen).
+    if (bc.inputState != InputState::PLAYER_NORMAL &&
+            bc.inputState != InputState::CARD_SELECT) {
         return false;
     }
 
@@ -466,6 +469,10 @@ void search::Action::execute(BattleContext &bc) const {
     }
 #endif
 
+    const bool resumeCardSelection =
+        getActionType() == ActionType::POTION && bc.inputState == InputState::CARD_SELECT;
+    const auto suspendedSelection = bc.cardSelectInfo;
+
     switch (getActionType()) {
         case ActionType::CARD: {
             const CardQueueItem item(bc.cards.hand[getSourceIdx()], getTargetIdx(), bc.player.energy);
@@ -498,6 +505,15 @@ void search::Action::execute(BattleContext &bc) const {
             break;
     }
 
+    if (resumeCardSelection) {
+        // Stock consumes the potion and queues its effect behind the current
+        // card-selection screen. Even a potion whose effect opens another
+        // selection (such as Elixir) must not replace the suspended Discovery
+        // screen; its queued action runs after that choice resolves.
+        bc.cardSelectInfo = suspendedSelection;
+        bc.inputState = InputState::CARD_SELECT;
+        return;
+    }
     bc.inputState = InputState::EXECUTING_ACTIONS;
     bc.executeActions();
 }

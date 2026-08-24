@@ -49,3 +49,28 @@ def test_optional_multi_select_checkpoint_preserves_pending_cards() -> None:
     assert restored_decision == decision
     confirm = next(action for action in decision.actions if action.kind is ActionKind.CONFIRM)
     assert restored.step(confirm).decision == simulator.step(confirm).decision
+
+
+def test_discard_potion_preserves_suspended_card_choice() -> None:
+    pytest.importorskip("sls.backends.simulator.native", exc_type=ImportError)
+    from sls.backends.simulator import IRONCLAD_A0_HEART, SimulatorBackend
+
+    path = Path(__file__).resolve().parents[2] / "tests" / "fixtures" / "regressions" / (
+        "potion-during-card-choice.json.gz"
+    )
+    with gzip.open(path, "rt", encoding="utf-8") as stream:
+        fixture = json.load(stream)
+    simulator = SimulatorBackend(IRONCLAD_A0_HEART)
+    decision = simulator.load_checkpoint(fixture["simulator_checkpoint"])
+    for index, action in enumerate(fixture.get("action_suffix", ())):
+        decision = simulator.step(
+            Action.from_dict(action),
+            validation_evidence=(fixture.get("action_evidence_suffix") or [])[index],
+        ).decision
+    discard = next(
+        action for action in decision.actions if action.kind is ActionKind.DISCARD_POTION
+    )
+    decision = simulator.step(discard).decision
+    assert decision.observation.choice_options
+    assert any(action.kind is ActionKind.SELECT_CARD for action in decision.actions)
+    assert not decision.observation.potions

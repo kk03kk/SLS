@@ -685,6 +685,10 @@ int relic_counter(const RelicInstance &relic, const BattleContext &battle) {
         case RelicId::HAPPY_FLOWER: return player.happyFlowerCounter;
         case RelicId::INCENSE_BURNER: return player.incenseBurnerCounter;
         case RelicId::INK_BOTTLE: return player.inkBottleCounter;
+        case RelicId::KUNAI:
+        case RelicId::ORNAMENTAL_FAN:
+        case RelicId::SHURIKEN:
+            return player.attacksPlayedThisTurn % 3;
         case RelicId::LETTER_OPENER: return player.skillsPlayedThisTurn % 3;
         // Stock decrements Neow's Lament as the battle begins, before the
         // first policy-visible combat boundary. GameContext keeps the
@@ -1486,6 +1490,27 @@ py::list combat_legal_actions(const BattleContext &battle) {
     if (battle.inputState == InputState::CARD_SELECT) {
         for (const auto &action : search::Action::enumerateCardSelectActions(battle)) {
             if (action.isValidAction(battle)) result.append(combat_action_state(action, &battle));
+        }
+        for (int source = 0; source < battle.potionCapacity; ++source) {
+            const auto potion = battle.potions[source];
+            if (potion == Potion::INVALID || potion == Potion::EMPTY_POTION_SLOT) continue;
+            if (potionRequiresTarget(potion)) {
+                for (int target = 0; target < battle.monsters.monsterCount; ++target) {
+                    const search::Action action(search::ActionType::POTION, source, target);
+                    if (action.isValidAction(battle)) {
+                        result.append(combat_action_state(action, &battle));
+                    }
+                }
+            } else {
+                const search::Action action(search::ActionType::POTION, source, 0);
+                if (action.isValidAction(battle)) {
+                    result.append(combat_action_state(action, &battle));
+                }
+            }
+            const search::Action discard(search::ActionType::POTION, source, 6);
+            if (discard.isValidAction(battle)) {
+                result.append(combat_action_state(discard, &battle));
+            }
         }
         return result;
     }
