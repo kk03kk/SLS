@@ -15,6 +15,7 @@ import com.megacrit.cardcrawl.powers.IntangiblePlayerPower;
 import com.megacrit.cardcrawl.powers.WeakPower;
 import com.megacrit.cardcrawl.powers.watcher.EstablishmentPower;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
+import com.megacrit.cardcrawl.ui.panels.EnergyPanel;
 import com.megacrit.cardcrawl.helpers.RelicLibrary;
 import communicationmod.CommandExecutor;
 import communicationmod.CommunicationMod;
@@ -153,7 +154,8 @@ public final class OracleScenarioPatch {
         monster.powers.clear();
         monster.isDying = false;
         monster.isEscaping = false;
-        monster.intent = AbstractMonster.Intent.ATTACK;
+        monster.setMove((byte)1, AbstractMonster.Intent.ATTACK, 6);
+        monster.createIntent();
     }
 
     private static void apply(String id) {
@@ -219,11 +221,12 @@ public final class OracleScenarioPatch {
         player.maxHealth = 80;
         normalizeProbeTarget();
         // Four energy covers Blood for Blood while retaining a deterministic
-        // baseline for X-cost cards.  The support cards make hand/discard/
+        // baseline for X-cost cards. The support cards make hand/discard/
         // exhaust selection effects observable without changing card identity.
         player.energy.energy = 4;
-        player.hand.addToBottom(probe);
+        EnergyPanel.setEnergy(4);
         player.hand.addToBottom(card("Strike_R"));
+        player.hand.addToBottom(probe);
         player.drawPile.addToBottom(card("Defend_R"));
         player.discardPile.addToBottom(card("Defend_R"));
         player.exhaustPile.addToBottom(card("Defend_R"));
