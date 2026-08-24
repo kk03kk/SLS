@@ -189,3 +189,21 @@ def test_the_bomb_exposes_the_stock_countdown_power() -> None:
     assert [
         (item.content_id, dict(item.properties)["amount"]) for item in powers
     ] == [("THE_BOMB", 3)]
+
+
+def test_thinking_ahead_waits_for_stock_selection_confirmation() -> None:
+    module = _load_card_audit()
+    battle = native.LightspeedBattle()
+    battle.reset_card_probe(123, "THINKING_AHEAD", False)
+    battle.step("play", card_index=1, target_index=0)
+    before = module._adapt_probe_payload(battle.snapshot()).decision
+    selected = next(action for action in before.actions if action.kind.value == "SELECT_CARD")
+    battle.step("choose", choice_index=int(selected.subject_id.split(":", 1)[1]))
+    pending = module._adapt_probe_payload(battle.snapshot()).decision
+    assert [action.kind.value for action in pending.actions] == ["CONFIRM"]
+    assert len(pending.observation.hand) == 2
+    assert len(pending.observation.choice_options) == 2
+    battle.step("proceed")
+    settled = adapt_original(battle.snapshot()).decision.observation
+    assert settled.screen.value == "COMBAT"
+    assert len(settled.draw_pile) == 1

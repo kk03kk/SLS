@@ -1995,6 +1995,7 @@ public:
         const bool multi_select = bc_->inputState == InputState::CARD_SELECT &&
             (task == CardSelectTask::EXHAUST_MANY || task == CardSelectTask::GAMBLE ||
              task == CardSelectTask::RETAIN_CARDS ||
+             task == CardSelectTask::WARCRY ||
              (task == CardSelectTask::LIQUID_MEMORIES_POTION &&
               bc_->cardSelectInfo.pickCount > 1) ||
              (task == CardSelectTask::FORETHOUGHT && bc_->cardSelectInfo.canPickAnyNumber));
@@ -2050,6 +2051,14 @@ public:
                 target_index < 0 ? 0 : target_index);
         } else if (kind == "discard_potion") {
             action = search::Action(search::ActionType::POTION, potion_index, 6);
+        } else if (kind == "proceed" && multi_select &&
+                task == CardSelectTask::WARCRY) {
+            if (selected_count() != 1) {
+                throw std::invalid_argument("Put On Deck requires one selected card");
+            }
+            int selected = 0;
+            while (!is_selected(selected)) ++selected;
+            action = search::Action(search::ActionType::SINGLE_CARD_SELECT, selected);
         } else if (kind == "proceed" && multi_select &&
                 task == CardSelectTask::LIQUID_MEMORIES_POTION) {
             if (selected_count() != bc_->cardSelectInfo.pickCount) {
@@ -2185,7 +2194,8 @@ public:
                 const auto task = bc_->cardSelectInfo.cardSelectTask;
                 if (task == CardSelectTask::EXHAUST_MANY ||
                     task == CardSelectTask::GAMBLE ||
-                    task == CardSelectTask::RETAIN_CARDS) {
+                    task == CardSelectTask::RETAIN_CARDS ||
+                    task == CardSelectTask::WARCRY) {
                     commands.append("proceed");
                 }
                 enumerate_choice_actions(actions);
@@ -2902,6 +2912,7 @@ private:
         const auto task = bc_->cardSelectInfo.cardSelectTask;
         if (task == CardSelectTask::EXHAUST_MANY || task == CardSelectTask::GAMBLE ||
                 task == CardSelectTask::RETAIN_CARDS ||
+                task == CardSelectTask::WARCRY ||
                 (task == CardSelectTask::LIQUID_MEMORIES_POTION &&
                  bc_->cardSelectInfo.pickCount > 1) ||
                 (task == CardSelectTask::FORETHOUGHT &&
@@ -2919,7 +2930,8 @@ private:
                     }
                 }
             }
-            if (task != CardSelectTask::LIQUID_MEMORIES_POTION ||
+            if ((task != CardSelectTask::LIQUID_MEMORIES_POTION &&
+                    task != CardSelectTask::WARCRY) ||
                     selected_count() == bc_->cardSelectInfo.pickCount) {
                 result.append(action_dict("proceed"));
             }
