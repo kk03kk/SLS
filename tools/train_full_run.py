@@ -22,6 +22,9 @@ sys.path.insert(0, str(ROOT / "src"))
 
 import torch
 
+from sls.content.scope import IRONCLAD_A0_SCOPE_ID, ironclad_a0_scope_hash
+from sls.content.semantic_audit import semantic_audit_hash
+
 from sls.curriculum import (
     IRONCLAD_A0_ACT1,
     IRONCLAD_A0_ACT2,
@@ -182,6 +185,9 @@ def main() -> int:
         "encoding_schema": ENCODING_SCHEMA,
         "vocabulary_sha256": vocabulary_hash(),
         "readiness_lock_sha256": readiness_digest,
+        "content_scope_id": IRONCLAD_A0_SCOPE_ID,
+        "content_scope_sha256": ironclad_a0_scope_hash(),
+        "semantic_audit_sha256": semantic_audit_hash(),
         "readiness_level": str(run.get("readiness_level", "ENGINEERING_READY")),
         "native_source_sha256": source_digest,
         "native_artifact": native_artifact(),

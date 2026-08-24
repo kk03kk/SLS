@@ -8,6 +8,8 @@ from pathlib import Path
 from typing import Any, Callable, Mapping
 
 from sls.model.encoding import ENCODING_SCHEMA, vocabulary_hash
+from sls.content.scope import IRONCLAD_A0_SCOPE_ID, ironclad_a0_scope_hash
+from sls.content.semantic_audit import semantic_audit_hash, verify_semantic_audit
 from sls.rl.checkpoint import CHECKPOINT_SCHEMA
 from sls.rl.training_contract import (
     ROOT, canonical_digest, git_index_digest, git_state, native_source_digest, sha256_file,
@@ -28,6 +30,9 @@ def _contract() -> dict[str, str]:
         "encoding_schema": ENCODING_SCHEMA,
         "vocabulary_sha256": vocabulary_hash(),
         "checkpoint_schema": CHECKPOINT_SCHEMA,
+        "content_scope_id": IRONCLAD_A0_SCOPE_ID,
+        "content_scope_sha256": ironclad_a0_scope_hash(),
+        "semantic_audit_sha256": semantic_audit_hash(),
         "native_source_sha256": native_source_digest(),
         "adapter_sha256": git_index_digest((
             "src/sls/backends/original/adapter.py", "src/sls/content/normalize.py",
@@ -98,6 +103,7 @@ def build_readiness_lock(
     bundle_ids = sorted({bundle for route in selected for bundle in route["chain"]})
     expansion = None
     if level == TRAINING_READY:
+        verify_semantic_audit(require_pilot_ready=True)
         expansion = _validate_expansion(
             records, selected, requirements, expansion_report,
             replay_validator=replay_validator,

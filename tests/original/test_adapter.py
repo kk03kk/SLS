@@ -40,6 +40,69 @@ def test_map_choices_become_semantic_actions() -> None:
     assert adapted.commands[adapted.decision.actions[0].candidate_id] == ("choose 0",)
 
 
+def test_prismatic_shard_is_policy_hidden_without_shifting_shop_commands() -> None:
+    payload = {
+        "in_game": True,
+        "ready_for_command": True,
+        "available_commands": ["choose", "leave"],
+        "game_state": base_game(
+            gold=500,
+            screen_type="SHOP_SCREEN",
+            screen_state={
+                "purge_available": False,
+                "cards": [],
+                "relics": [
+                    {"id": "PrismaticShard", "price": 150, "sold": False},
+                    {"id": "Akabeko", "price": 151, "sold": False},
+                ],
+                "potions": [],
+            },
+        ),
+    }
+
+    adapted = adapt_original(payload)
+    assert [item.content_id for item in adapted.decision.observation.shop_items] == [
+        "AKABEKO",
+    ]
+    purchases = [
+        action for action in adapted.decision.actions
+        if action.kind is ActionKind.BUY_RELIC
+    ]
+    assert len(purchases) == 1
+    assert purchases[0].subject_id == "shop-relic:1"
+    assert adapted.commands[purchases[0].candidate_id] == ("choose 1",)
+
+
+def test_stock_out_of_combat_potions_remain_policy_actions() -> None:
+    payload = {
+        "in_game": True,
+        "ready_for_command": True,
+        "available_commands": ["choose", "potion"],
+        "game_state": base_game(
+            screen_type="MAP",
+            potions=[
+                {"id": "Fruit Juice", "can_use": True, "requires_target": False},
+                {"id": "BloodPotion", "can_use": True, "requires_target": False},
+                {"id": "Strength Potion", "can_use": False, "requires_target": False},
+            ],
+            screen_state={"next_nodes": [{"x": 1, "y": 2}]},
+        ),
+    }
+
+    adapted = adapt_original(payload)
+    uses = [action for action in adapted.decision.actions if action.kind is ActionKind.USE_POTION]
+    discards = [
+        action for action in adapted.decision.actions
+        if action.kind is ActionKind.DISCARD_POTION
+    ]
+    assert [action.subject_id for action in uses] == ["POTION:0", "POTION:1"]
+    assert [action.subject_id for action in discards] == [
+        "POTION:0", "POTION:1", "POTION:2",
+    ]
+    assert adapted.commands[uses[0].candidate_id] == ("potion use 0",)
+    assert any(action.kind is ActionKind.CHOOSE_MAP_NODE for action in adapted.decision.actions)
+
+
 def test_combat_card_targets_use_decision_scoped_ids() -> None:
     payload = {
         "in_game": True,

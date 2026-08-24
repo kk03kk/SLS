@@ -13,6 +13,9 @@ sys.path.insert(0, str(ROOT / "src"))
 
 import torch
 
+from sls.content.scope import IRONCLAD_A0_SCOPE_ID, ironclad_a0_scope_hash
+from sls.content.semantic_audit import semantic_audit_hash
+
 from sls.curriculum import IRONCLAD_A0_ACT1
 from sls.model import ModelConfig, Policy
 from sls.rl import PPOConfig, PPOTrainer, WorkerPool
@@ -54,6 +57,9 @@ def main() -> int:
         "schema": "sls-worker-benchmark-v1", "selected_workers": selected,
         "selection_threshold": 0.95, "results": rows, "git": git_state(),
         "readiness_lock_sha256": readiness["lock_sha256"],
+        "content_scope_id": IRONCLAD_A0_SCOPE_ID,
+        "content_scope_sha256": ironclad_a0_scope_hash(),
+        "semantic_audit_sha256": semantic_audit_hash(),
         "native_source_sha256": native_source_digest(), "native_artifact": native_artifact(),
         "torch": torch.__version__, "cuda": torch.version.cuda, "gpu": torch.cuda.get_device_name(0),
     }

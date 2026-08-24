@@ -438,6 +438,7 @@ void search::GameAction::execute(GameContext &gc) const {
         } else {
             gc.drinkPotionAtIdx(getIdx1());
         }
+        return;
     }
 
     switch (gc.screenState) {
@@ -656,16 +657,32 @@ std::vector<search::GameAction> getAllMapActions(const sts::GameContext &gc) {
     return actions;
 }
 
+void appendPotionActions(
+        const sts::GameContext &gc,
+        std::vector<search::GameAction> &actions) {
+    for (int i = 0; i < gc.potionCapacity; ++i) {
+        const search::GameAction use(0x80000000U | static_cast<std::uint32_t>(i));
+        if (use.isValidAction(gc)) {
+            actions.push_back(use);
+        }
+
+        const search::GameAction discard(0xC0000000U | static_cast<std::uint32_t>(i));
+        if (discard.isValidAction(gc)) {
+            actions.push_back(discard);
+        }
+    }
+}
+
 std::vector<search::GameAction> search::GameAction::getAllActionsInState(const sts::GameContext &gc) {
     if (gc.outcome != GameOutcome::UNDECIDED) {
         return {};
     }
 
+    std::vector<search::GameAction> actions;
     switch (gc.screenState) {
 
         case ScreenState::EVENT_SCREEN:
             if (gc.curEvent == Event::MATCH_AND_KEEP) {
-                std::vector<search::GameAction> actions;
                 for (int first = 0; first < gc.info.toSelectCards.size(); ++first) {
                     if (gc.info.toSelectCards[first].deckIdx == 0) continue;
                     for (int second = first + 1; second < gc.info.toSelectCards.size(); ++second) {
@@ -674,43 +691,52 @@ std::vector<search::GameAction> search::GameAction::getAllActionsInState(const s
                         }
                     }
                 }
-                return actions;
+                break;
             } else {
-                return getAllActionsInEventState(gc);
+                actions = getAllActionsInEventState(gc);
+                break;
             }
 
         case ScreenState::REWARDS:
-            return getAllRewardActions(gc);
+            actions = getAllRewardActions(gc);
+            break;
 
         case ScreenState::BOSS_RELIC_REWARDS:
-            return {0,1,2};
+            actions = {0,1,2};
+            break;
 
         case ScreenState::CARD_SELECT: {
-            std::vector<search::GameAction> actions;
             actions.reserve(gc.info.toSelectCards.size());
             for (int i = 0; i < gc.info.toSelectCards.size(); ++i) {
                 actions.emplace_back(i);
             }
-            return actions;
+            break;
         }
 
         case ScreenState::MAP_SCREEN:
-            return getAllMapActions(gc);
+            actions = getAllMapActions(gc);
+            break;
 
         case ScreenState::TREASURE_ROOM:
-            return {0,1};
+            actions = {0,1};
+            break;
 
         case ScreenState::REST_ROOM:
-            return getAllRestActions(gc);
+            actions = getAllRestActions(gc);
+            break;
 
         case ScreenState::SHOP_ROOM:
-            return getAllShopActions(gc);
+            actions = getAllShopActions(gc);
+            break;
 
         case ScreenState::BATTLE:
         case ScreenState::INVALID:
         default:
             return {};
     }
+
+    appendPotionActions(gc, actions);
+    return actions;
 }
 
 int search::GameAction::getValidEventSelectBits(const GameContext &gc) {

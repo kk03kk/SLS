@@ -9,6 +9,8 @@ from typing import Any, Mapping
 
 import torch
 
+from sls.content.scope import IRONCLAD_A0_SCOPE_ID, ironclad_a0_scope_hash
+from sls.content.semantic_audit import semantic_audit_hash
 from sls.model.encoding import ENCODING_SCHEMA, vocabulary_hash
 from sls.rl.ppo import PPOTrainer
 from sls.rl.training_contract import runtime_contract
@@ -26,6 +28,9 @@ def _contract(trainer: PPOTrainer) -> dict[str, Any]:
         "workers": trainer.workers.size,
         "encoding_schema": ENCODING_SCHEMA,
         "vocabulary_sha256": vocabulary_hash(),
+        "content_scope_id": IRONCLAD_A0_SCOPE_ID,
+        "content_scope_sha256": ironclad_a0_scope_hash(),
+        "semantic_audit_sha256": semantic_audit_hash(),
         "readiness_lock_sha256": trainer.readiness_lock_digest,
         "native_source_sha256": trainer.native_contract_digest,
         "runtime": runtime_contract(torch),

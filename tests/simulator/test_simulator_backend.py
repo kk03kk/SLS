@@ -20,6 +20,62 @@ def test_native_full_run_reaches_a_canonical_decision() -> None:
     assert decision.observation.run.act == 1
 
 
+def test_noncombat_potion_actions_preserve_the_current_screen() -> None:
+    pytest.importorskip("sls.backends.simulator.native", exc_type=ImportError)
+    from sls.backends.simulator import IRONCLAD_A0_HEART, SimulatorBackend
+
+    simulator = SimulatorBackend(IRONCLAD_A0_HEART)
+    decision = simulator.reset(0)
+    while decision.observation.screen.value != "MAP":
+        decision = simulator.step(decision.actions[0]).decision
+
+    checkpoint = simulator.checkpoint()
+    checkpoint["player_state"]["potion_count"] = 3
+    checkpoint["player_state"]["potions"] = [26, 7, 41]  # Fruit, Blood, Strength.
+    decision = simulator.load_checkpoint(checkpoint)
+
+    uses = {
+        action.subject_id for action in decision.actions
+        if action.kind is ActionKind.USE_POTION
+    }
+    discards = {
+        action.subject_id for action in decision.actions
+        if action.kind is ActionKind.DISCARD_POTION
+    }
+    assert uses == {"POTION:0", "POTION:1"}
+    assert discards == {"POTION:0", "POTION:1", "POTION:2"}
+
+    use_fruit = next(
+        action for action in decision.actions
+        if action.kind is ActionKind.USE_POTION and action.subject_id == "POTION:0"
+    )
+    decision = simulator.step(use_fruit).decision
+    assert decision.observation.screen.value == "MAP"
+    assert decision.observation.player.max_hp == 85
+    assert any(action.kind is ActionKind.CHOOSE_MAP_NODE for action in decision.actions)
+    assert [potion.instance_id for potion in decision.observation.potions] == [
+        "POTION:1", "POTION:2",
+    ]
+
+
+def test_checkpoint_restore_rederives_legal_actions() -> None:
+    pytest.importorskip("sls.backends.simulator.native", exc_type=ImportError)
+    from sls.backends.simulator import IRONCLAD_A0_HEART, SimulatorBackend
+
+    simulator = SimulatorBackend(IRONCLAD_A0_HEART)
+    decision = simulator.reset(0)
+    decision = simulator.step(decision.actions[0]).decision
+    checkpoint = simulator.checkpoint()
+    assert checkpoint["replay_actions"]
+    expected_actions = decision.actions
+
+    checkpoint["legal_actions"] = []
+    restored = SimulatorBackend(IRONCLAD_A0_HEART)
+    restored_decision = restored.load_checkpoint(checkpoint)
+
+    assert restored_decision.actions == expected_actions
+
+
 def test_optional_multi_select_checkpoint_preserves_pending_cards() -> None:
     pytest.importorskip("sls.backends.simulator.native", exc_type=ImportError)
     from sls.backends.simulator import IRONCLAD_A0_HEART, SimulatorBackend

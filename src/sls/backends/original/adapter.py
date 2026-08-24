@@ -9,6 +9,7 @@ from sls.content.normalize import (
     normalize_card_id, normalize_content_id, normalize_event_id, normalize_potion_id,
     normalize_power_id,
 )
+from sls.content.scope import filter_policy_shop
 from sls.contracts import (
     Action,
     ActionKind,
@@ -95,6 +96,11 @@ def adapt_original(payload: Mapping[str, Any]) -> AdaptedOriginalDecision:
 
     actions, commands = _actions(payload, game, combat, screen_state, screen, hand)
     options = _screen_entities(payload, game, combat, screen_state, screen)
+    if screen is ScreenType.SHOP:
+        shop, actions, commands = filter_policy_shop(
+            options["shop"], actions, commands,
+        )
+        options["shop"] = shop
     outcome = str(game.get("screen_type") or "").upper()
     terminal = screen is ScreenType.GAME_OVER or outcome in {"DEATH", "VICTORY"}
     if terminal:
@@ -179,6 +185,35 @@ def _actions(
         result.append(action)
         commands[action.candidate_id] = tuple(wire)
 
+    def add_potion_actions(monsters: tuple[Mapping[str, Any], ...] = ()) -> None:
+        if "potion" not in available:
+            return
+        for slot, potion in enumerate(_mappings(game.get("potions"))):
+            if normalize_potion_id(potion.get("id")) == "EMPTY_POTION_SLOT":
+                continue
+            if bool(potion.get("can_use", True)):
+                if bool(potion.get("requires_target", False)):
+                    for target, monster in enumerate(monsters):
+                        if _integer(monster.get("current_hp")) > 0 and not monster.get("is_gone"):
+                            add(
+                                Action(
+                                    ActionKind.USE_POTION,
+                                    subject_id=f"POTION:{slot}",
+                                    target_id=f"MONSTER:{target}",
+                                ),
+                                f"potion use {slot} {target}",
+                            )
+                else:
+                    add(
+                        Action(ActionKind.USE_POTION, subject_id=f"POTION:{slot}"),
+                        f"potion use {slot}",
+                    )
+            if bool(potion.get("can_discard", True)):
+                add(
+                    Action(ActionKind.DISCARD_POTION, subject_id=f"POTION:{slot}"),
+                    f"potion discard {slot}",
+                )
+
     if combat:
         monsters = _mappings(combat.get("monsters"))
         if "play" in available:
@@ -223,31 +258,7 @@ def _actions(
                 add(Action(ActionKind.SELECT_CARD, subject_id=f"CHOICE:{index}"), f"choose {index}")
         if "confirm" in available:
             add(Action(ActionKind.CONFIRM, option_id="combat-selection"), "confirm")
-        if "potion" in available:
-            for slot, potion in enumerate(_mappings(game.get("potions"))):
-                if normalize_potion_id(potion.get("id")) == "EMPTY_POTION_SLOT":
-                    continue
-                if bool(potion.get("can_use", True)):
-                    if bool(potion.get("requires_target", False)):
-                        for target, monster in enumerate(monsters):
-                            if _integer(monster.get("current_hp")) > 0 and not monster.get("is_gone"):
-                                add(
-                                    Action(
-                                        ActionKind.USE_POTION,
-                                        subject_id=f"POTION:{slot}",
-                                        target_id=f"MONSTER:{target}",
-                                    ),
-                                    f"potion use {slot} {target}",
-                                )
-                    else:
-                        add(
-                            Action(ActionKind.USE_POTION, subject_id=f"POTION:{slot}"),
-                            f"potion use {slot}",
-                        )
-                add(
-                    Action(ActionKind.DISCARD_POTION, subject_id=f"POTION:{slot}"),
-                    f"potion discard {slot}",
-                )
+        add_potion_actions(monsters)
         if "end" in available:
             add(Action(ActionKind.END_TURN), "end")
         return tuple(result), commands
@@ -388,6 +399,11 @@ def _actions(
             add(Action(ActionKind.PROCEED), "proceed")
     elif "proceed" in available:
         add(Action(ActionKind.PROCEED), "proceed")
+    # Stock permits Blood Potion, Fruit Juice and Entropic Brew outside combat.
+    # CommunicationMod advertises the same generic potion command and marks
+    # each slot's authoritative can_use flag.  Preserve the current screen
+    # actions and add these inventory actions instead of silently dropping them.
+    add_potion_actions()
     return tuple(result), commands
 
 

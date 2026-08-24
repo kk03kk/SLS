@@ -29,6 +29,7 @@ from sls.curriculum import (
 )
 from sls.contracts.continuation import continuation_simulator
 from sls.content.normalize import normalize_content_id, normalize_power_id
+from sls.content.scope import filter_policy_shop
 
 
 class SimulatorBackend:
@@ -248,8 +249,13 @@ class SimulatorBackend:
                 powers += _powers(monster.get("powers", ()), f"MONSTER:{index}:POWER")
 
         actions, candidate_bits = _semantic_actions(raw, card_zones["HAND"])
-        self._candidate_bits = candidate_bits
         options = _screen_entities(raw)
+        if screen is ScreenType.SHOP:
+            shop, actions, candidate_bits = filter_policy_shop(
+                options["shop"], actions, candidate_bits,
+            )
+            options["shop"] = shop
+        self._candidate_bits = candidate_bits
         map_nodes = tuple(
             MapNode(
                 str(node["node_id"]), int(node["x"]), int(node["y"]),
@@ -538,6 +544,12 @@ def _run_action(
 ) -> Action:
     idx1, idx2 = int(native["idx1"]), int(native["idx2"])
     reward_type = int(native["reward_type"])
+    if native.get("potion"):
+        return Action(
+            ActionKind.DISCARD_POTION
+            if native.get("potion_discard") else ActionKind.USE_POTION,
+            subject_id=f"POTION:{idx1}",
+        )
     if screen in {ScreenType.NEOW, ScreenType.EVENT}:
         if raw["public_run"]["current_event_id"] == "Match and Keep":
             return Action(
@@ -656,13 +668,13 @@ def _screen_entities(raw: Mapping[str, Any]) -> dict[str, tuple[Any, ...]]:
         else:
             result["event"] = tuple(
                 _entity(f"event-option:{int(action['idx1'])}", f"{event_id}:OPTION:{int(action['idx1'])}")
-                for action in actions
+                for action in actions if not action.get("potion")
             )
     elif screen is ScreenType.REST:
         names = {0: "REST", 1: "SMITH", 2: "RECALL", 3: "LIFT", 4: "TOKE", 5: "DIG", 6: "PROCEED"}
         result["rest"] = tuple(
             _entity(f"rest-option:{int(action['idx1'])}", names[int(action["idx1"])])
-            for action in actions
+            for action in actions if not action.get("potion")
         )
     elif screen is ScreenType.BOSS_REWARD:
         result["boss"] = tuple(

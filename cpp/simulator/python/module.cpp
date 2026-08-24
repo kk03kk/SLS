@@ -3055,6 +3055,13 @@ public:
                 json.attr("dumps")(replayed, py::arg("sort_keys") = true));
             const auto normalized_requested = json.attr("loads")(
                 json.attr("dumps")(state, py::arg("sort_keys") = true));
+            // Legal actions are derived from the restored native state.  They
+            // are deliberately not part of checkpoint identity: fixing action
+            // enumeration must not make an otherwise exact historical state
+            // unloadable.  The replay layer compares the freshly derived
+            // canonical candidates at the restored boundary.
+            normalized_replayed.attr("pop")("legal_actions", py::none());
+            normalized_requested.attr("pop")("legal_actions", py::none());
             if (!normalized_replayed.equal(normalized_requested)) {
                 throw std::invalid_argument(
                     "Deterministic replay does not reproduce the requested checkpoint");
@@ -3473,9 +3480,51 @@ py::list card_metadata_probe() {
         card["rarity"] = cardRarityStrings[static_cast<int>(getCardRarity(id))];
         card["cost"] = getEnergyCost(id, false);
         card["upgraded_cost"] = getEnergyCost(id, true);
+        card["base_damage"] = getBaseDamage(id, false);
+        card["upgraded_base_damage"] = getBaseDamage(id, true);
         card["targets_enemy"] = cardTargetsEnemy(id, false);
         card["upgraded_targets_enemy"] = cardTargetsEnemy(id, true);
+        card["ethereal"] = isCardEthereal(id, false);
+        card["upgraded_ethereal"] = isCardEthereal(id, true);
+        card["innate"] = isCardInnate(id, false);
+        card["upgraded_innate"] = isCardInnate(id, true);
+        card["exhaust"] = doesCardExhaust(id, false);
+        card["upgraded_exhaust"] = doesCardExhaust(id, true);
+        card["self_retain"] = doesCardSelfRetain(id, false);
+        card["upgraded_self_retain"] = doesCardSelfRetain(id, true);
+        card["x_cost"] = isXCost(id);
         result.append(card);
+    }
+    return result;
+}
+
+py::list potion_metadata_probe() {
+    py::list result;
+    for (int ordinal = static_cast<int>(Potion::EMPTY_POTION_SLOT) + 1;
+         ordinal <= static_cast<int>(Potion::WEAK_POTION);
+         ++ordinal) {
+        const auto id = static_cast<Potion>(ordinal);
+        py::dict potion;
+        potion["enum_id"] = potionEnumNames[ordinal];
+        potion["string_id"] = potionIds[ordinal];
+        potion["rarity"] = static_cast<int>(getPotionRarity(id));
+        potion["requires_target"] = potionRequiresTarget(id);
+        result.append(potion);
+    }
+    return result;
+}
+
+py::list relic_metadata_probe() {
+    py::list result;
+    for (int ordinal = static_cast<int>(RelicId::AKABEKO);
+         ordinal < static_cast<int>(RelicId::INVALID);
+         ++ordinal) {
+        const auto id = static_cast<RelicId>(ordinal);
+        py::dict relic;
+        relic["enum_id"] = relicEnumNames[ordinal];
+        relic["string_id"] = relicIds[ordinal];
+        relic["tier"] = relicTierStrings[static_cast<int>(getRelicTier(id))];
+        result.append(relic);
     }
     return result;
 }
@@ -4265,6 +4314,8 @@ PYBIND11_MODULE(_lightspeed, module) {
     module.def("action_queue_probe", &action_queue_probe);
     module.def("card_color_probe", &card_color_probe);
     module.def("card_metadata_probe", &card_metadata_probe);
+    module.def("potion_metadata_probe", &potion_metadata_probe);
+    module.def("relic_metadata_probe", &relic_metadata_probe);
     module.def("run_fairy_potion_probe", &run_fairy_potion_probe);
     module.def("smoke_bomb_core_probe", &smoke_bomb_core_probe);
     module.def("stance_mechanics_probe", &stance_mechanics_probe);
