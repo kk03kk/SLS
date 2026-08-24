@@ -18,6 +18,7 @@ import com.megacrit.cardcrawl.powers.watcher.EstablishmentPower;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.ui.panels.EnergyPanel;
 import com.megacrit.cardcrawl.helpers.RelicLibrary;
+import com.megacrit.cardcrawl.relics.AbstractRelic;
 import com.megacrit.cardcrawl.helpers.PotionHelper;
 import com.megacrit.cardcrawl.potions.AbstractPotion;
 import com.megacrit.cardcrawl.potions.PotionSlot;
@@ -45,6 +46,7 @@ public final class OracleScenarioPatch {
     public static final String COMMAND = "parity_scenario";
     public static final String CARD_PROBE_COMMAND = "parity_card";
     public static final String POTION_PROBE_COMMAND = "parity_potion";
+    public static final String RELIC_PROBE_COMMAND = "parity_relic";
     private static final Set<String> SCENARIOS = new HashSet<String>(Arrays.asList(
         "damage_buffer_intangible",
         "duration_weak",
@@ -53,6 +55,9 @@ public final class OracleScenarioPatch {
     private static final Map<String, String> CARD_ALLOWLIST = loadCardAllowlist();
     private static final Map<String, String> POTION_ALLOWLIST = loadAllowlist(
         "/spirecomm/parity/scenario-potion-allowlist.tsv"
+    );
+    private static final Map<String, String> RELIC_ALLOWLIST = loadAllowlist(
+        "/spirecomm/parity/scenario-relic-allowlist.tsv"
     );
     public static Map<String, String> activeScenario = null;
 
@@ -302,6 +307,51 @@ public final class OracleScenarioPatch {
         GameStateListener.registerStateChange();
     }
 
+    /** Controlled first-turn lifecycle probe for a packaged reachable relic. */
+    private static void applyRelicProbe(String relicId) {
+        String gameId = RELIC_ALLOWLIST.get(relicId.toUpperCase(Locale.ROOT));
+        if (gameId == null) {
+            throw new IllegalArgumentException("parity_relic is not in the packaged Ironclad allowlist");
+        }
+        AbstractRelic prototype = RelicLibrary.getRelic(gameId);
+        if (prototype == null) {
+            throw new IllegalArgumentException("parity_relic requires a packaged relic id");
+        }
+        AbstractPlayer player = AbstractDungeon.player;
+        clearCombatState(player);
+        EnergyPanel.setEnergy(3);
+        player.currentHealth = 80;
+        player.maxHealth = 80;
+        normalizeProbeTarget();
+        player.relics.clear();
+        AbstractRelic relic = prototype.makeCopy();
+        player.relics.add(relic);
+        relic.onEquip();
+        relic.atPreBattle();
+        relic.atBattleStartPreDraw();
+        relic.atBattleStart();
+        relic.atTurnStart();
+        relic.atTurnStartPostDraw();
+        // Stabilize the actionable cards after lifecycle hooks. Generated-card
+        // and extra-draw relics receive dedicated trigger scenarios later.
+        player.hand.clear();
+        player.drawPile.clear();
+        player.discardPile.clear();
+        player.exhaustPile.clear();
+        player.hand.addToBottom(card("Inflame"));
+        player.hand.addToBottom(card("Defend_R"));
+        player.hand.addToBottom(card("Strike_R"));
+        player.drawPile.addToBottom(card("Defend_R"));
+        player.drawPile.addToTop(card("Strike_R"));
+        player.discardPile.addToBottom(card("Defend_R"));
+        player.exhaustPile.addToBottom(card("Defend_R"));
+        player.hand.applyPowers();
+        activate("relic_probe:" + relicId.toUpperCase(Locale.ROOT) + ":FIRST_TURN",
+            "RULE_TEST:IRONCLAD_RELIC_ALLOWLIST", player);
+        CommunicationMod.mustSendGameState = true;
+        GameStateListener.registerStateChange();
+    }
+
     @SpirePatch(clz = CommandExecutor.class, method = "getAvailableCommands")
     public static class Advertise {
         @SpirePostfixPatch
@@ -310,6 +360,7 @@ public final class OracleScenarioPatch {
                 if (!commands.contains(COMMAND)) commands.add(COMMAND);
                 if (!commands.contains(CARD_PROBE_COMMAND)) commands.add(CARD_PROBE_COMMAND);
                 if (!commands.contains(POTION_PROBE_COMMAND)) commands.add(POTION_PROBE_COMMAND);
+                if (!commands.contains(RELIC_PROBE_COMMAND)) commands.add(RELIC_PROBE_COMMAND);
             }
             return commands;
         }
@@ -325,6 +376,14 @@ public final class OracleScenarioPatch {
                 return SpireReturn.Continue();
             }
             if (!normalized.startsWith(COMMAND + " ")) {
+                if (normalized.startsWith(RELIC_PROBE_COMMAND + " ")) {
+                    String[] relicParts = command.trim().split("\\s+");
+                    if (relicParts.length != 2) {
+                        throw new IllegalArgumentException("parity_relic requires RELIC_ID");
+                    }
+                    applyRelicProbe(relicParts[1]);
+                    return SpireReturn.Return(Boolean.TRUE);
+                }
                 if (normalized.startsWith(POTION_PROBE_COMMAND + " ")) {
                     String[] potionParts = command.trim().split("\\s+");
                     if (potionParts.length != 3) {

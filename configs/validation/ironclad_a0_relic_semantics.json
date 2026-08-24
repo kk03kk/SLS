@@ -1,0 +1,154 @@
+{
+  "audit_sha256": "60ad6e8a8e37cea0713608950884bb7961cb909bb2e40c4a6833f2ef0ad9bd39",
+  "entries": [
+    {
+      "covered_callbacks": [
+        "atBattleStart"
+      ],
+      "effect_sha256": "a870c99aff4a75423bf242b00be28961437416f21215f24b70e6723d2d177f06",
+      "game_id": "Akabeko",
+      "id": "AKABEKO",
+      "java_sha256": "4aed4c1c7f3254d64bd4e3f67ebebac3756fbb28d9e7ac1e420c89f81f2e1a7e",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Akabeko.java",
+      "scenario": "FIRST_TURN",
+      "setup_digest": "76dd2befa7749b12935566d817a9b57cfa7b0305d93512c0eb009b8ad59b88eb"
+    },
+    {
+      "covered_callbacks": [
+        "atBattleStart"
+      ],
+      "effect_sha256": "3ed573054e48c2c8fe2dcec3f7f55e833c75b8c546358f00981aed0f2952ad4c",
+      "game_id": "Bag of Marbles",
+      "id": "BAG_OF_MARBLES",
+      "java_sha256": "9d3d7da96321072d6cf6d4f529f82b78af6cdb0464932d1a02bb254811b04617",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/BagOfMarbles.java",
+      "scenario": "FIRST_TURN",
+      "setup_digest": "876e84a79a39bb5dc561dec7d05ce070461b0f31cbaa522fbf93d1fb57d25dea"
+    },
+    {
+      "covered_callbacks": [
+        "atTurnStart"
+      ],
+      "effect_sha256": "db356038259a7cb4ae0d86219fbe98a26c61d715c5b2328ff558ddf5fde4f8c6",
+      "game_id": "Brimstone",
+      "id": "BRIMSTONE",
+      "java_sha256": "e511b5cea32aa78894fbce836a9348e682c30f167e9f5260af36f68ec0e0eac6",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Brimstone.java",
+      "scenario": "FIRST_TURN",
+      "setup_digest": "50ead9d3ac9b9fb5b006b005320014fd354ba409351fef9aca35a164f290e320"
+    },
+    {
+      "covered_callbacks": [
+        "atBattleStart"
+      ],
+      "effect_sha256": "d760e48f83d323ec02baad216e4da6a218b402d1674adfffaf8764fd09536095",
+      "game_id": "Bronze Scales",
+      "id": "BRONZE_SCALES",
+      "java_sha256": "4ed22be77a5ecf9d35b9dd621b06316bd814921c098a3b0857eb78d8b5710605",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/BronzeScales.java",
+      "scenario": "FIRST_TURN",
+      "setup_digest": "fbf37dd620b5525f72974ec3b63f48dadc672449f02c582ed429cd4af79a45f1"
+    },
+    {
+      "covered_callbacks": [
+        "atBattleStart"
+      ],
+      "effect_sha256": "2056f51816bde1439ff7f069fdd89285fe62925aff6885871329b28ef3b3a69d",
+      "game_id": "ClockworkSouvenir",
+      "id": "CLOCKWORK_SOUVENIR",
+      "java_sha256": "af7229eaf0c1bf8ce80db36a2adcf155de5079c6032a5731cd1b71746c45447c",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/ClockworkSouvenir.java",
+      "scenario": "FIRST_TURN",
+      "setup_digest": "0b772f186fd721bfaf974f4372a7e2ec5c5bb371667b5df294485117a79ab605"
+    },
+    {
+      "covered_callbacks": [
+        "atBattleStart"
+      ],
+      "effect_sha256": "2443bc529e7f2c555fbc33e21ab002dc8beec84e4b51af06a8f6ca9eda2f91b5",
+      "game_id": "GremlinMask",
+      "id": "GREMLIN_VISAGE",
+      "java_sha256": "9a68829a71c1b365e2650f9cdb18fba50c947cb69bde03ffbc3a3b76f4abea88",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/GremlinMask.java",
+      "scenario": "FIRST_TURN",
+      "setup_digest": "ab2a1e69b445a1de981171693761d53c7639a800cee962dbda845b65fca9a29b"
+    },
+    {
+      "covered_callbacks": [
+        "atPreBattle",
+        "atTurnStart"
+      ],
+      "effect_sha256": "0b2b65a28628d8a0ef157142914eae78c7b3b4a67c11160c8a78978bf90f4e7b",
+      "game_id": "Lantern",
+      "id": "LANTERN",
+      "java_sha256": "d52e36cfc5a52b43f8636f8a18745c2c67cf11cc8c82273a5053eb35f359671a",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Lantern.java",
+      "scenario": "FIRST_TURN",
+      "setup_digest": "c892593841a8d583a5c4254cd81276528f06b7e77fb8aeb8c6de27a2283cf613"
+    },
+    {
+      "covered_callbacks": [
+        "atBattleStart"
+      ],
+      "effect_sha256": "c1a46670072ed56b2363f6a030fcf3818d962bdc3cf0b9dc28a7afb026d600a3",
+      "game_id": "MutagenicStrength",
+      "id": "MUTAGENIC_STRENGTH",
+      "java_sha256": "34a6def5d5f3de349888df98029ab915875bfe1b13b97f5318e8f37584613ab9",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/MutagenicStrength.java",
+      "scenario": "FIRST_TURN",
+      "setup_digest": "1e5893cd52457b732c2173cdc3684dc07d6bde37d786b7ce256740428ddcfeca"
+    },
+    {
+      "covered_callbacks": [
+        "atBattleStart"
+      ],
+      "effect_sha256": "4bbdc4f68988736eeb027ad2a8c6bfabc58c6098aa5dfea090a3c81aa95a4814",
+      "game_id": "Oddly Smooth Stone",
+      "id": "ODDLY_SMOOTH_STONE",
+      "java_sha256": "5c2812b3e71e57cb505b20562b0dd097a7be2146c6754283fe42dcaa072c9a5f",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/OddlySmoothStone.java",
+      "scenario": "FIRST_TURN",
+      "setup_digest": "6070ccdd213118e0a2c2a9f3f5abc3e8ec59deaa6582187c05f20fa3deded8d7"
+    },
+    {
+      "covered_callbacks": [
+        "atBattleStart"
+      ],
+      "effect_sha256": "5276a3d5abd9bd42f7e7f41fcdda159c4cf19dbd84b9298c00144b9d13ea3269",
+      "game_id": "Red Mask",
+      "id": "RED_MASK",
+      "java_sha256": "018000a3cc4c1a54e91b83c4030caefe2a5357da870cfc1b8754161949fe1cff",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/RedMask.java",
+      "scenario": "FIRST_TURN",
+      "setup_digest": "0aa0a1750b7c0f41db3c31bbe6e48fd62563ebac69d618dfdeff3f2f7f113102"
+    },
+    {
+      "covered_callbacks": [
+        "atBattleStart"
+      ],
+      "effect_sha256": "94aa36e907643613d031ff43bf548ff1570d2121b0eacd44668ee08b59d17afc",
+      "game_id": "Thread and Needle",
+      "id": "THREAD_AND_NEEDLE",
+      "java_sha256": "0c83e581b00687e5aa387937e79d9dfeab517a57f784e29c58e027e2631d1b54",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/ThreadAndNeedle.java",
+      "scenario": "FIRST_TURN",
+      "setup_digest": "5f12dbf09eea941d0173907f0411e7e04fe84f9c866395a6b4ffee276040ca87"
+    },
+    {
+      "covered_callbacks": [
+        "atBattleStart"
+      ],
+      "effect_sha256": "95dcfa06b384130ec30560c677eff4a1566af343a2ad114e1be50d2f311105e2",
+      "game_id": "Vajra",
+      "id": "VAJRA",
+      "java_sha256": "a6b09d9f435119cc1f1207733af80f3ea2988c2e4e4db887f20f5ec155b4d86f",
+      "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Vajra.java",
+      "scenario": "FIRST_TURN",
+      "setup_digest": "e1d90d208a173935e932965b4e0af68748470b361a3952d4df9d5d5eee392d5b"
+    }
+  ],
+  "oracle_schema": "spirecomm-parity-v10",
+  "schema": "sls-ironclad-relic-semantics-v1",
+  "scope_sha256": "1e9ba31232cea5813b88cf6d75c7be28deaca4ac84c32079745477866fc0649d",
+  "seed": 0
+}

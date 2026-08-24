@@ -21,6 +21,16 @@ POTION_SEMANTIC_AUDIT_SCHEMA = "sls-ironclad-potion-semantics-v1"
 POTION_SEMANTIC_AUDIT_PATH = (
     ROOT / "configs" / "validation" / "ironclad_a0_potion_semantics.json"
 )
+RELIC_SEMANTIC_AUDIT_SCHEMA = "sls-ironclad-relic-semantics-v1"
+RELIC_SEMANTIC_AUDIT_PATH = (
+    ROOT / "configs" / "validation" / "ironclad_a0_relic_semantics.json"
+)
+FIRST_TURN_RELIC_EVIDENCE = (
+    "AKABEKO", "BAG_OF_MARBLES", "BRIMSTONE", "BRONZE_SCALES",
+    "CLOCKWORK_SOUVENIR", "GREMLIN_VISAGE", "LANTERN",
+    "MUTAGENIC_STRENGTH", "ODDLY_SMOOTH_STONE", "RED_MASK",
+    "THREAD_AND_NEEDLE", "VAJRA",
+)
 
 
 def load_card_semantic_audit() -> dict[str, Any]:
@@ -110,6 +120,39 @@ def load_potion_semantic_audit() -> dict[str, Any]:
                 raise ValueError(f"potion semantic effect evidence is invalid: {identifier}")
             if not str(variant.get("setup_digest") or ""):
                 raise ValueError(f"potion semantic setup digest is missing: {identifier}")
+    return payload
+
+
+def load_relic_semantic_audit() -> dict[str, Any]:
+    """Validate committed callback-complete relic scenario evidence."""
+
+    from sls.content.source_audit import java_relic_callbacks, java_sources, registry_game_ids
+    from sls.rl.training_contract import canonical_digest, sha256_file
+
+    payload = json.loads(RELIC_SEMANTIC_AUDIT_PATH.read_text(encoding="utf-8"))
+    supplied = payload.get("audit_sha256")
+    unsigned = dict(payload)
+    unsigned.pop("audit_sha256", None)
+    if payload.get("schema") != RELIC_SEMANTIC_AUDIT_SCHEMA or supplied != canonical_digest(unsigned):
+        raise ValueError("invalid Ironclad relic semantic audit")
+    if payload.get("scope_sha256") != ironclad_a0_scope_hash():
+        raise ValueError("Ironclad relic semantic audit is stale for the content scope")
+    entries = list(payload.get("entries") or ())
+    if [entry.get("id") for entry in entries] != list(FIRST_TURN_RELIC_EVIDENCE):
+        raise ValueError("Ironclad relic first-turn evidence set is incomplete")
+    scope = json.loads((ROOT / "configs" / "validation" / "ironclad_a0_content_scope.json").read_text(encoding="utf-8"))
+    game_ids = registry_game_ids("relics", scope["relics"]["ids"])
+    sources = java_sources("relics")
+    for entry in entries:
+        identifier = str(entry["id"])
+        source = sources[game_ids[identifier]]
+        callbacks = java_relic_callbacks(source)
+        if entry.get("scenario") != "FIRST_TURN" or entry.get("covered_callbacks") != callbacks:
+            raise ValueError(f"relic callback evidence is incomplete: {identifier}")
+        if entry.get("game_id") != game_ids[identifier] or entry.get("java_sha256") != sha256_file(source.path):
+            raise ValueError(f"relic semantic source evidence is stale: {identifier}")
+        if not entry.get("setup_digest") or not entry.get("effect_sha256"):
+            raise ValueError(f"relic semantic effect evidence is missing: {identifier}")
     return payload
 
 

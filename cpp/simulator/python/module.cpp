@@ -1728,6 +1728,30 @@ public:
         bc_->inputState = InputState::PLAYER_NORMAL;
     }
 
+    void reset_relic_probe(
+        std::uint64_t seed,
+        const std::string &relic_id) {
+        reset(seed, "CULTIST", 0, {}, {relic_id}, true);
+        // Match the named Original scenario's stable post-lifecycle card
+        // layout without erasing powers, block, energy, counters, or enemy
+        // debuffs produced by the relic itself.
+        set_card_piles(
+            {"Strike_R", "Defend_R", "Inflame"},
+            {"Defend_R", "Strike_R"}, {"Defend_R"}, {"Defend_R"});
+
+        auto &monster = bc_->monsters.arr[0];
+        monster.curHp = 999;
+        monster.maxHp = 999;
+        monster.block = 0;
+        monster.halfDead = false;
+        monster.isEscapingB = false;
+        monster.escapeNext = false;
+        monster.setMove(MonsterMoveId::CULTIST_DARK_STRIKE);
+        bc_->actionQueue.clear();
+        bc_->cardQueue.clear();
+        bc_->inputState = InputState::PLAYER_NORMAL;
+    }
+
     void apply_scenario(const std::string &scenario) {
         require_reset();
         auto &player = bc_->player;
@@ -4461,6 +4485,8 @@ PYBIND11_MODULE(_lightspeed, module) {
              py::arg("seed"), py::arg("card_id"), py::arg("upgraded"))
         .def("reset_potion_probe", &LightspeedBattle::reset_potion_probe,
              py::arg("seed"), py::arg("potion_id"), py::arg("sacred_bark"))
+        .def("reset_relic_probe", &LightspeedBattle::reset_relic_probe,
+             py::arg("seed"), py::arg("relic_id"))
         .def("set_player_health", &LightspeedBattle::set_player_health,
              py::arg("current_hp"), py::arg("max_hp"))
         .def("apply_scenario", &LightspeedBattle::apply_scenario,

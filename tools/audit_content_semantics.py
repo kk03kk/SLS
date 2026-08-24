@@ -16,9 +16,9 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from sls.content.scope import ironclad_a0_scope_hash, load_ironclad_a0_scope  # noqa: E402
 from sls.content.semantic_audit import (  # noqa: E402
-    CARD_SEMANTIC_AUDIT_PATH, POTION_SEMANTIC_AUDIT_PATH,
+    CARD_SEMANTIC_AUDIT_PATH, POTION_SEMANTIC_AUDIT_PATH, RELIC_SEMANTIC_AUDIT_PATH,
     SEMANTIC_AUDIT_PATH, SEMANTIC_AUDIT_SCHEMA,
-    load_card_semantic_audit, load_potion_semantic_audit,
+    load_card_semantic_audit, load_potion_semantic_audit, load_relic_semantic_audit,
 )
 from sls.content.source_audit import (  # noqa: E402
     JavaSource, java_card_metadata, java_potion_metadata, java_relic_callbacks,
@@ -109,11 +109,15 @@ def build_audit() -> dict[str, Any]:
     native = _native_metadata()
     card_semantics = load_card_semantic_audit()
     potion_semantics = load_potion_semantic_audit()
+    relic_semantics = load_relic_semantic_audit()
     original_verified_cards = {
         str(item["id"]): item for item in card_semantics["entries"]
     }
     original_verified_potions = {
         str(item["id"]): item for item in potion_semantics["entries"]
+    }
+    original_verified_relics = {
+        str(item["id"]): item for item in relic_semantics["entries"]
     }
     entries: dict[str, list[dict[str, Any]]] = {}
     status_counts = {status: 0 for status in sorted(STATUSES)}
@@ -149,12 +153,15 @@ def build_audit() -> dict[str, Any]:
             dynamic_potion_verified = (
                 category == "potions" and identifier in original_verified_potions
             )
+            dynamic_relic_verified = (
+                category == "relics" and identifier in original_verified_relics
+            )
             # Textual references are useful navigation evidence, but do not
             # establish semantic behavior. Cards/potions have dedicated,
             # validated Original/native artifacts; later categories remain
             # blocked until their equivalent artifact is present.
             behavior_verified = (
-                dynamic_card_verified or dynamic_potion_verified
+                dynamic_card_verified or dynamic_potion_verified or dynamic_relic_verified
                 or (category == "events" and bool(tests))
             )
             status = (
@@ -170,7 +177,7 @@ def build_audit() -> dict[str, Any]:
                 levels.append("NATIVE_METADATA_VERIFIED")
             if behavior_verified:
                 levels.append("NATIVE_VERIFIED")
-            if dynamic_card_verified or dynamic_potion_verified:
+            if dynamic_card_verified or dynamic_potion_verified or dynamic_relic_verified:
                 levels.append("ORIGINAL_VERIFIED")
             if category in {"cards", "potions", "relics"}:
                 levels.append("NATIVE_EXECUTED")
@@ -197,7 +204,11 @@ def build_audit() -> dict[str, Any]:
                         "sacred_bark": (
                             [False] if identifier == "SMOKE_BOMB" else [False, True]
                         ),
-                    } if dynamic_potion_verified else None
+                    } if dynamic_potion_verified else {
+                        "artifact": RELIC_SEMANTIC_AUDIT_PATH.relative_to(ROOT).as_posix(),
+                        "audit_sha256": relic_semantics["audit_sha256"],
+                        "scenario": "FIRST_TURN",
+                    } if dynamic_relic_verified else None
                 ),
                 "category_execution_test": (
                     "tests/simulator/test_content_execution.py" if category in {
@@ -317,7 +328,7 @@ def build_audit() -> dict[str, Any]:
             "act1_pilot_ready": status_counts["DIFFERENCE"] == 0 and status_counts["BLOCKED"] == 0,
             "claim": (
                 "VERIFIED requires stock-source agreement plus explicit executable evidence; "
-                "cards and potions additionally require current per-variant Original/native effect evidence; "
+                "cards, potions, and verified relic batches require current Original/native effect evidence; "
                 "BLOCKED entries are not parity claims."
             ),
         },

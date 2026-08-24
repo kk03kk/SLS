@@ -1,5 +1,5 @@
 {
-  "audit_sha256": "f70812cef3817576efb0b3110364460a3e62be7394b5f06d0d98bbf68ed45fed",
+  "audit_sha256": "2638acd89107ea2350a0e9706aac07d99facb1cf51d3d87bb37b2333cb664c6c",
   "content_scope_sha256": "1e9ba31232cea5813b88cf6d75c7be28deaca4ac84c32079745477866fc0649d",
   "entries": {
     "cards": [
@@ -11649,7 +11649,7 @@
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:2498",
           "cpp/simulator/src/sim/search/Action.cpp:93",
-          "src/sls/content/semantic_audit.py:103"
+          "src/sls/content/semantic_audit.py:113"
         ],
         "status": "VERIFIED",
         "test_references": []
@@ -11848,6 +11848,8 @@
         "evidence_levels": [
           "SOURCE_MATCHED",
           "NATIVE_METADATA_VERIFIED",
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED",
           "NATIVE_EXECUTED"
         ],
         "game_id": "Akabeko",
@@ -11860,13 +11862,18 @@
         "metadata": {
           "tier": "COMMON"
         },
-        "original_evidence": null,
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_relic_semantics.json",
+          "audit_sha256": "60ad6e8a8e37cea0713608950884bb7961cb909bb2e40c4a6833f2ef0ad9bd39",
+          "scenario": "FIRST_TURN"
+        },
         "scope_groups": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:135",
-          "cpp/simulator/src/combat/Player.cpp:964"
+          "cpp/simulator/src/combat/Player.cpp:964",
+          "src/sls/content/semantic_audit.py:29"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": [
           "tests/original/test_adapter.py:65"
         ]
@@ -11992,6 +11999,8 @@
         "evidence_levels": [
           "SOURCE_MATCHED",
           "NATIVE_METADATA_VERIFIED",
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED",
           "NATIVE_EXECUTED"
         ],
         "game_id": "Bag of Marbles",
@@ -12004,13 +12013,18 @@
         "metadata": {
           "tier": "COMMON"
         },
-        "original_evidence": null,
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_relic_semantics.json",
+          "audit_sha256": "60ad6e8a8e37cea0713608950884bb7961cb909bb2e40c4a6833f2ef0ad9bd39",
+          "scenario": "FIRST_TURN"
+        },
         "scope_groups": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:115",
-          "cpp/simulator/src/combat/BattleContext.cpp:408"
+          "cpp/simulator/src/combat/BattleContext.cpp:408",
+          "src/sls/content/semantic_audit.py:29"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": []
       },
       {
@@ -12312,6 +12326,8 @@
         "evidence_levels": [
           "SOURCE_MATCHED",
           "NATIVE_METADATA_VERIFIED",
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED",
           "NATIVE_EXECUTED"
         ],
         "game_id": "Brimstone",
@@ -12324,13 +12340,18 @@
         "metadata": {
           "tier": "SHOP"
         },
-        "original_evidence": null,
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_relic_semantics.json",
+          "audit_sha256": "60ad6e8a8e37cea0713608950884bb7961cb909bb2e40c4a6833f2ef0ad9bd39",
+          "scenario": "FIRST_TURN"
+        },
         "scope_groups": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:139",
-          "cpp/simulator/src/combat/Player.cpp:646"
+          "cpp/simulator/src/combat/Player.cpp:646",
+          "src/sls/content/semantic_audit.py:29"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": []
       },
       {
@@ -12339,6 +12360,8 @@
         "evidence_levels": [
           "SOURCE_MATCHED",
           "NATIVE_METADATA_VERIFIED",
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED",
           "NATIVE_EXECUTED"
         ],
         "game_id": "Bronze Scales",
@@ -12351,12 +12374,17 @@
         "metadata": {
           "tier": "COMMON"
         },
-        "original_evidence": null,
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_relic_semantics.json",
+          "audit_sha256": "60ad6e8a8e37cea0713608950884bb7961cb909bb2e40c4a6833f2ef0ad9bd39",
+          "scenario": "FIRST_TURN"
+        },
         "scope_groups": [],
         "simulator_references": [
-          "cpp/simulator/src/combat/BattleContext.cpp:253"
+          "cpp/simulator/src/combat/BattleContext.cpp:253",
+          "src/sls/content/semantic_audit.py:29"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": []
       },
       {
@@ -12704,6 +12732,8 @@
         "evidence_levels": [
           "SOURCE_MATCHED",
           "NATIVE_METADATA_VERIFIED",
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED",
           "NATIVE_EXECUTED"
         ],
         "game_id": "ClockworkSouvenir",
@@ -12716,13 +12746,18 @@
         "metadata": {
           "tier": "SHOP"
         },
-        "original_evidence": null,
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_relic_semantics.json",
+          "audit_sha256": "60ad6e8a8e37cea0713608950884bb7961cb909bb2e40c4a6833f2ef0ad9bd39",
+          "scenario": "FIRST_TURN"
+        },
         "scope_groups": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:117",
-          "cpp/simulator/src/combat/BattleContext.cpp:416"
+          "cpp/simulator/src/combat/BattleContext.cpp:416",
+          "src/sls/content/semantic_audit.py:30"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": []
       },
       {
@@ -13385,6 +13420,8 @@
         "evidence_levels": [
           "SOURCE_MATCHED",
           "NATIVE_METADATA_VERIFIED",
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED",
           "NATIVE_EXECUTED"
         ],
         "game_id": "GremlinMask",
@@ -13397,15 +13434,20 @@
         "metadata": {
           "tier": "SPECIAL"
         },
-        "original_evidence": null,
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_relic_semantics.json",
+          "audit_sha256": "60ad6e8a8e37cea0713608950884bb7961cb909bb2e40c4a6833f2ef0ad9bd39",
+          "scenario": "FIRST_TURN"
+        },
         "scope_groups": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:118",
           "cpp/simulator/src/combat/BattleContext.cpp:420",
           "cpp/simulator/src/game/Game.cpp:332",
-          "cpp/simulator/src/game/Game.cpp:333"
+          "cpp/simulator/src/game/Game.cpp:333",
+          "src/sls/content/semantic_audit.py:30"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": []
       },
       {
@@ -13639,6 +13681,8 @@
         "evidence_levels": [
           "SOURCE_MATCHED",
           "NATIVE_METADATA_VERIFIED",
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED",
           "NATIVE_EXECUTED"
         ],
         "game_id": "Lantern",
@@ -13652,12 +13696,17 @@
         "metadata": {
           "tier": "COMMON"
         },
-        "original_evidence": null,
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_relic_semantics.json",
+          "audit_sha256": "60ad6e8a8e37cea0713608950884bb7961cb909bb2e40c4a6833f2ef0ad9bd39",
+          "scenario": "FIRST_TURN"
+        },
         "scope_groups": [],
         "simulator_references": [
-          "cpp/simulator/src/combat/BattleContext.cpp:297"
+          "cpp/simulator/src/combat/BattleContext.cpp:297",
+          "src/sls/content/semantic_audit.py:30"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": []
       },
       {
@@ -14134,6 +14183,8 @@
         "evidence_levels": [
           "SOURCE_MATCHED",
           "NATIVE_METADATA_VERIFIED",
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED",
           "NATIVE_EXECUTED"
         ],
         "game_id": "MutagenicStrength",
@@ -14146,13 +14197,18 @@
         "metadata": {
           "tier": "SPECIAL"
         },
-        "original_evidence": null,
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_relic_semantics.json",
+          "audit_sha256": "60ad6e8a8e37cea0713608950884bb7961cb909bb2e40c4a6833f2ef0ad9bd39",
+          "scenario": "FIRST_TURN"
+        },
         "scope_groups": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:301",
-          "cpp/simulator/src/game/GameContext.cpp:2866"
+          "cpp/simulator/src/game/GameContext.cpp:2866",
+          "src/sls/content/semantic_audit.py:31"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": []
       },
       {
@@ -14344,6 +14400,8 @@
         "evidence_levels": [
           "SOURCE_MATCHED",
           "NATIVE_METADATA_VERIFIED",
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED",
           "NATIVE_EXECUTED"
         ],
         "game_id": "Oddly Smooth Stone",
@@ -14356,12 +14414,17 @@
         "metadata": {
           "tier": "COMMON"
         },
-        "original_evidence": null,
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_relic_semantics.json",
+          "audit_sha256": "60ad6e8a8e37cea0713608950884bb7961cb909bb2e40c4a6833f2ef0ad9bd39",
+          "scenario": "FIRST_TURN"
+        },
         "scope_groups": [],
         "simulator_references": [
-          "cpp/simulator/src/combat/BattleContext.cpp:319"
+          "cpp/simulator/src/combat/BattleContext.cpp:319",
+          "src/sls/content/semantic_audit.py:31"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": []
       },
       {
@@ -14980,6 +15043,8 @@
         "evidence_levels": [
           "SOURCE_MATCHED",
           "NATIVE_METADATA_VERIFIED",
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED",
           "NATIVE_EXECUTED"
         ],
         "game_id": "Red Mask",
@@ -14992,7 +15057,11 @@
         "metadata": {
           "tier": "SPECIAL"
         },
-        "original_evidence": null,
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_relic_semantics.json",
+          "audit_sha256": "60ad6e8a8e37cea0713608950884bb7961cb909bb2e40c4a6833f2ef0ad9bd39",
+          "scenario": "FIRST_TURN"
+        },
         "scope_groups": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:119",
@@ -15001,9 +15070,10 @@
           "cpp/simulator/src/game/GameContext.cpp:3150",
           "cpp/simulator/src/game/GameContext.cpp:3594",
           "cpp/simulator/src/sim/ConsoleSimulator.cpp:1045",
-          "cpp/simulator/src/sim/search/GameAction.cpp:933"
+          "cpp/simulator/src/sim/search/GameAction.cpp:933",
+          "src/sls/content/semantic_audit.py:31"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": []
       },
       {
@@ -15724,6 +15794,8 @@
         "evidence_levels": [
           "SOURCE_MATCHED",
           "NATIVE_METADATA_VERIFIED",
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED",
           "NATIVE_EXECUTED"
         ],
         "game_id": "Thread and Needle",
@@ -15736,12 +15808,17 @@
         "metadata": {
           "tier": "RARE"
         },
-        "original_evidence": null,
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_relic_semantics.json",
+          "audit_sha256": "60ad6e8a8e37cea0713608950884bb7961cb909bb2e40c4a6833f2ef0ad9bd39",
+          "scenario": "FIRST_TURN"
+        },
         "scope_groups": [],
         "simulator_references": [
-          "cpp/simulator/src/combat/BattleContext.cpp:367"
+          "cpp/simulator/src/combat/BattleContext.cpp:367",
+          "src/sls/content/semantic_audit.py:32"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": []
       },
       {
@@ -16001,6 +16078,8 @@
         "evidence_levels": [
           "SOURCE_MATCHED",
           "NATIVE_METADATA_VERIFIED",
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED",
           "NATIVE_EXECUTED"
         ],
         "game_id": "Vajra",
@@ -16013,12 +16092,17 @@
         "metadata": {
           "tier": "COMMON"
         },
-        "original_evidence": null,
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_relic_semantics.json",
+          "audit_sha256": "60ad6e8a8e37cea0713608950884bb7961cb909bb2e40c4a6833f2ef0ad9bd39",
+          "scenario": "FIRST_TURN"
+        },
         "scope_groups": [],
         "simulator_references": [
-          "cpp/simulator/src/combat/BattleContext.cpp:371"
+          "cpp/simulator/src/combat/BattleContext.cpp:371",
+          "src/sls/content/semantic_audit.py:32"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": []
       },
       {
@@ -16306,12 +16390,12 @@
   "schema": "sls-ironclad-semantic-audit-v1",
   "summary": {
     "act1_pilot_ready": false,
-    "claim": "VERIFIED requires stock-source agreement plus explicit executable evidence; cards and potions additionally require current per-variant Original/native effect evidence; BLOCKED entries are not parity claims.",
+    "claim": "VERIFIED requires stock-source agreement plus explicit executable evidence; cards, potions, and verified relic batches require current Original/native effect evidence; BLOCKED entries are not parity claims.",
     "status_counts": {
-      "BLOCKED": 254,
+      "BLOCKED": 242,
       "DIFFERENCE": 0,
       "OUT_OF_SCOPE": 0,
-      "VERIFIED": 164
+      "VERIFIED": 176
     }
   }
 }

@@ -57,6 +57,10 @@ def scenario_potion_allowlist() -> bytes:
     return scenario_content_allowlist("potions")
 
 
+def scenario_relic_allowlist() -> bytes:
+    return scenario_content_allowlist("relics")
+
+
 def main() -> int:
     missing = [str(path) for path in DEPENDENCIES if not path.is_file()]
     if missing:
@@ -92,6 +96,7 @@ def main() -> int:
         add(archive, ORACLE / "ModTheSpire.json", "ModTheSpire.json")
         add_bytes(archive, scenario_card_allowlist(), "spirecomm/parity/scenario-card-allowlist.tsv")
         add_bytes(archive, scenario_potion_allowlist(), "spirecomm/parity/scenario-potion-allowlist.tsv")
+        add_bytes(archive, scenario_relic_allowlist(), "spirecomm/parity/scenario-relic-allowlist.tsv")
         for path in sorted(CLASSES.rglob("*.class")):
             add(archive, path, path.relative_to(CLASSES).as_posix())
     print(f"{OUTPUT}\nsha256={hashlib.sha256(OUTPUT.read_bytes()).hexdigest()}")
