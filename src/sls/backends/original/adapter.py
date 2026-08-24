@@ -294,6 +294,7 @@ def _actions(
                         option_id=f"match-pair:{left_slot}:{right_slot}",
                     ),
                     f"click left {_integer(left.get('click_x'))} {_integer(left.get('click_y'))}",
+                    "wait 1",
                     f"click left {_integer(right.get('click_x'))} {_integer(right.get('click_y'))}",
                     "wait 120",
                 )

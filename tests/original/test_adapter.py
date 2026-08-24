@@ -289,7 +289,7 @@ def test_match_and_keep_exposes_pair_actions_with_stable_click_commands() -> Non
     first = adapted.decision.actions[0]
     assert first.option_id == "match-pair:0:1"
     assert adapted.commands[first.candidate_id] == (
-        "click left 640 330", "click left 850 560", "wait 120",
+        "click left 640 330", "wait 1", "click left 850 560", "wait 120",
     )
     assert len(adapted.decision.observation.event_options) == 12
     assert adapted.decision.observation.event_options[0].content_id == "HIDDEN_CARD"
