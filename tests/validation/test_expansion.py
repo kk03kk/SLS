@@ -18,9 +18,12 @@ def _selection(seed: int, variant: int) -> dict:
     return result
 
 
-def _record(seed: int, variant: int, *, count: int = 50, status: str = "MATCH") -> BundleRecord:
+def _record(
+    seed: int, variant: int, *, count: int = 50, status: str = "MATCH",
+    leaf: str | None = None,
+) -> BundleRecord:
     return BundleRecord(
-        Path(f"leaf-{seed}"),
+        Path(leaf or f"leaf-{seed}"),
         {
             "seed": seed, "profile_id": "IRONCLAD_A0_ACT1",
             "evidence_class": "LIVE_FULLRUN", "capture_mode": "PAIRED",
@@ -67,8 +70,11 @@ def test_expansion_round_rejects_difference_and_tampered_selection(monkeypatch) 
 
 def test_expansion_round_prefers_latest_equally_strong_recapture(monkeypatch) -> None:
     records = {
-        "20260824T100000Z-seed-10": _record(10, 2),
-        "20260824T110000Z-seed-10": _record(10, 2),
+        leaf: _record(10, 2, leaf=leaf)
+        for leaf in (
+            "20260824T100000Z-seed-10",
+            "20260824T110000Z-seed-10",
+        )
     }
     monkeypatch.setattr(
         "sls.validation.expansion.load_records", lambda _root: (records, []),
