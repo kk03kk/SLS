@@ -681,12 +681,15 @@
     }
   ],
   "contract": {
-    "adapter_sha256": "0940da792fe3ee61e1ee88d7dd0d3ab2265f4c49c32944b15051477bc1efb9ab",
+    "adapter_sha256": "87fd13cf84ee83519d7ce0e6992753d8c842bab82606c8e467d295e2781d0ce4",
     "canonicalizer_sha256": "11ba1887f1a5f25ed8003e078be65400cad92fc4907cff069fde885985b68450",
     "checkpoint_schema": "sls-full-run-ppo-v3",
+    "content_scope_id": "sls-ironclad-a0-content-v1",
+    "content_scope_sha256": "d488c0e900ce99ad2d856429a3142250933f3f70228d285856b8be7002f19cfe",
     "encoding_schema": "sls-policy-input-v2",
-    "native_source_sha256": "29e693af0277ed0db24f2c541653a42b7fa6afab9b57021928ccc3327dec4ace",
+    "native_source_sha256": "ac36a4b93f49019851dbade8a447b47bbf967aada9fc74e4cd951743ae0e2d27",
     "policy_contract_sha256": "46cfe626ae4258ae2582e5bfe5d8476eafdceaf88f10c6c44fec4ab8c9a5579c",
+    "semantic_audit_sha256": "9bd4680340460716c3fa5195b5a5cf2487593b9077eb891fd5204425589ed266",
     "vocabulary_sha256": "98e69b9733abfa4662ead56c0d02fb604b67575a2ba4c1785ba3fe736e7f01b6"
   },
   "coverage": {
@@ -742,7 +745,7 @@
     ]
   },
   "level": "ENGINEERING_READY",
-  "lock_sha256": "768872e2958afab612449ff99f9425e266ccd3c310d28c4e1166ae3351f3e6cd",
+  "lock_sha256": "865aa50cabc34fd42067249c99753d7bdde45420e90db296314d2f4de04de3cc",
   "profile": "IRONCLAD_A0_ACT1",
   "requirements": {
     "bosses": [
