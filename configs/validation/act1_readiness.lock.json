@@ -681,7 +681,7 @@
     }
   ],
   "contract": {
-    "adapter_sha256": "c9da150098b373a727f211d7f41f7a2bab1a0e105e0b0864430faa399d4a7f37",
+    "adapter_sha256": "44f87a6bea7216cc14bc2f2da883028faea15f1e7c39f9a7061c30e7887fab6a",
     "canonicalizer_sha256": "11ba1887f1a5f25ed8003e078be65400cad92fc4907cff069fde885985b68450",
     "checkpoint_schema": "sls-full-run-ppo-v3",
     "content_scope_id": "sls-ironclad-a0-content-v1",
@@ -745,7 +745,7 @@
     ]
   },
   "level": "ENGINEERING_READY",
-  "lock_sha256": "e5f8ee75f6f6881b05b7cd818921aed39f4c8d1336b8a7812b15c8d4a1a04aa6",
+  "lock_sha256": "2814cb63b05f0c45b9f48f046e926bf3f6a6f3ddc306376fd6b9f7c2c5d5021f",
   "profile": "IRONCLAD_A0_ACT1",
   "requirements": {
     "bosses": [
