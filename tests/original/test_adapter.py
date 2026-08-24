@@ -275,7 +275,9 @@ def test_match_and_keep_exposes_pair_actions_with_stable_click_commands() -> Non
     payload = {
         "in_game": True,
         "ready_for_command": True,
-        "available_commands": ["parity_match"],
+        # Legacy truth payloads predate the white-listed bridge.  Immutable
+        # raw evidence must still re-canonicalize to the same semantic pairs.
+        "available_commands": ["click"],
         "_match_slots": slots,
         "_continuation": {"event_id": "Match and Keep!"},
         "game_state": base_game(
