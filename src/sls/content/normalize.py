@@ -100,6 +100,7 @@ def normalize_power_id(value: object) -> str:
         "WEAKENED": "WEAK",
         # Stock's RegenPower public ID is "Regenerate".
         "REGENERATE": "REGEN",
+        "REGENERATION": "REGEN",
         # DuplicationPotion applies DuplicationPower, whose stock public ID
         # includes the implementation suffix omitted by the native enum.
         "DUPLICATION_POWER": "DUPLICATION",

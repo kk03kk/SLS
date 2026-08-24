@@ -38,6 +38,8 @@ def test_stock_dex_loss_power_uses_native_canonical_id() -> None:
     assert normalize_power_id("TheBomb0") == "THE_BOMB"
     assert normalize_power_id("TheBomb127") == "THE_BOMB"
     assert normalize_power_id("THE_BOMB") == "THE_BOMB"
+    assert normalize_power_id("Regeneration") == "REGEN"
+    assert normalize_power_id("REGEN") == "REGEN"
 
 
 def test_stock_duplication_power_uses_native_canonical_id() -> None:
