@@ -76,8 +76,14 @@ public final class CommunicationStatePatch {
             value.put("content_id", knownMatchCards.get(uuid));
             value.put("known", knownMatchCards.containsKey(uuid));
             value.put("removed", !current.containsKey(uuid));
-            value.put("click_x", 640 + index % 4 * 210);
-            value.put("click_y", 1080 - (750 - index % 3 * 230));
+            AbstractCard currentCard = current.get(uuid);
+            if (currentCard != null) {
+                value.put("click_x", Math.round(currentCard.hb.cX / Settings.xScale));
+                value.put(
+                    "click_y",
+                    Math.round((Settings.HEIGHT - currentCard.hb.cY) / Settings.yScale)
+                );
+            }
             result.add(value);
         }
         return result;
