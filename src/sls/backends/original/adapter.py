@@ -46,6 +46,16 @@ def _event_option_indices(
     phase = str(continuation.get("event_phase") or "")
     if event_id == "GOLDEN_IDOL" and phase == "1":
         return tuple(range(2, 2 + count))
+    # CommunicationMod's choice_list removes disabled dialog rows, while the
+    # native simulator retains stock's physical event option index.  Oracle's
+    # screen_state preserves the full rows, so recover the physical indices
+    # without changing the wire ordinal used by ``choose``.
+    rows = _mappings(state.get("options"))
+    enabled = tuple(
+        index for index, row in enumerate(rows) if not bool(row.get("disabled"))
+    )
+    if rows and len(enabled) == count:
+        return enabled
     return tuple(range(count))
 
 

@@ -231,3 +231,33 @@ def test_golden_idol_second_phase_uses_stable_semantic_option_ids() -> None:
     assert [item.instance_id for item in adapted.decision.observation.event_options] == [
         "event-option:2", "event-option:3", "event-option:4",
     ]
+
+
+def test_disabled_event_row_preserves_physical_semantic_option_ids() -> None:
+    payload = {
+        "in_game": True,
+        "ready_for_command": True,
+        "available_commands": ["choose"],
+        "game_state": base_game(
+            screen_type="EVENT",
+            choice_list=["Pray", "Leave"],
+            screen_state={
+                "event_id": "Golden Wing",
+                "options": [
+                    {"choice_index": 0, "disabled": False},
+                    {"disabled": True},
+                    {"choice_index": 1, "disabled": False},
+                ],
+            },
+        ),
+    }
+
+    adapted = adapt_original(payload)
+
+    assert [action.option_id for action in adapted.decision.actions] == [
+        "event-option:0", "event-option:2",
+    ]
+    assert list(adapted.commands.values()) == [("choose 0",), ("choose 1",)]
+    assert [item.instance_id for item in adapted.decision.observation.event_options] == [
+        "event-option:0", "event-option:2",
+    ]
