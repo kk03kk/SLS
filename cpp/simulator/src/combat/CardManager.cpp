@@ -403,6 +403,13 @@ void CardManager::resetAttributesAtEndOfTurn() {
     for (auto &c : drawPile) {
         c.setCostForTurn(c.cost);
     }
+
+    // Stock's asynchronous ExhaustCardEffect resets the exhausted card after
+    // its move animation.  At policy boundaries this remains observable for
+    // the rest of the current turn, but has settled by the next turn.
+    for (auto &c : exhaustPile) {
+        c.setCostForTurn(c.cost);
+    }
 }
 
 // **************** BEGIN SPECIAL HELPERS ****************
