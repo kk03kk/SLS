@@ -144,3 +144,13 @@ def test_fiend_fire_randomly_exhausts_even_the_last_hand_card() -> None:
     battle.step("play", card_index=1, target_index=0)
     after = battle.snapshot()["_rng"]["card_random"]["counter"]
     assert after - before == 1
+
+
+def test_card_audit_preserves_hand_selection_source_and_confirm() -> None:
+    module = _load_card_audit()
+    battle = native.LightspeedBattle()
+    battle.reset_card_probe(123, "FORETHOUGHT", True)
+    battle.step("play", card_index=1, target_index=0)
+    decision = module._adapt_probe_payload(battle.snapshot()).decision
+    assert dict(decision.observation.choice_options[0].properties)["source"] == "HAND"
+    assert {action.kind.value for action in decision.actions} == {"SELECT_CARD", "CONFIRM"}

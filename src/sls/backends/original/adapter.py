@@ -612,10 +612,13 @@ def _screen_entities(
                 "BetterDiscardPileToHandAction"
             )
         )
+        native_selection_source = str(
+            _mapping(combat.get("card_select")).get("source") or ""
+        ).upper()
         choice_source = (
-            "DISCARD"
-            if discard_selection
-            else "GENERATED"
+            native_selection_source
+            if native_selection_source in {"HAND", "DISCARD", "GENERATED"}
+            else "DISCARD" if discard_selection else "GENERATED"
         )
         result["choice"] = tuple(
             PublicEntity(

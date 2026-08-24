@@ -69,11 +69,19 @@ def _adapt_probe_payload(payload: Mapping[str, Any]) -> AdaptedOriginalDecision:
     choice = dict(combat.get("choice") or {})
     if choice.get("options") and not combat.get("card_select"):
         options = list(choice["options"])
-        combat["card_select"] = {"cards": options}
+        combat["card_select"] = {
+            "cards": options,
+            "source": str(choice.get("source") or "GENERATED"),
+        }
         game["combat_state"] = combat
         game["choice_list"] = [str(item.get("id") or "") for item in options]
         game["screen_state"] = {"cards": options}
         value["game_state"] = game
+        if any(str(item.get("kind")) == "proceed" for item in value.get("_legal_actions") or ()):
+            available = list(value.get("available_commands") or ())
+            if "confirm" not in available:
+                available.append("confirm")
+            value["available_commands"] = available
     return adapt_original(value)
 
 
