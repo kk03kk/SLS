@@ -7,6 +7,7 @@ from sls.content.source_audit import (
     java_card_metadata,
     java_potion_metadata,
     java_relic_metadata,
+    java_relic_callbacks,
     java_sources,
     registry_game_ids,
 )
@@ -82,3 +83,18 @@ def test_all_scoped_relic_tiers_match_stock_java() -> None:
         if str(actual[relic_id].get("tier")).upper() != metadata["tier"]
     }
     assert not mismatches
+
+
+def test_all_scoped_relic_callbacks_are_extracted_deterministically() -> None:
+    callbacks = {
+        relic_id: java_relic_callbacks(source)
+        for relic_id, source in _scoped_sources("relics").items()
+    }
+    assert len(callbacks) == 151
+    assert callbacks["AKABEKO"] == ["atBattleStart"]
+    assert callbacks["BLOODY_IDOL"] == ["onGainGold"]
+    assert callbacks["TUNGSTEN_ROD"] == ["onLoseHpLast"]
+    # White Beast has no callback of its own; the stock reward system checks
+    # for the marker relic globally. Empty is therefore meaningful evidence.
+    assert callbacks["WHITE_BEAST_STATUE"] == []
+    assert all(values == list(dict.fromkeys(values)) for values in callbacks.values())

@@ -21,7 +21,8 @@ from sls.content.semantic_audit import (  # noqa: E402
     load_card_semantic_audit, load_potion_semantic_audit,
 )
 from sls.content.source_audit import (  # noqa: E402
-    JavaSource, java_card_metadata, java_potion_metadata, java_relic_metadata,
+    JavaSource, java_card_metadata, java_potion_metadata, java_relic_callbacks,
+    java_relic_metadata,
     java_sources, registry_game_ids,
 )
 from sls.rl.training_contract import canonical_digest  # noqa: E402
@@ -64,14 +65,11 @@ def _references(identifier: str, roots: tuple[Path, ...], suffixes: set[str]) ->
 
 
 def _callbacks(source: JavaSource, category: str) -> list[str]:
+    if category == "relics":
+        return java_relic_callbacks(source)
     names = {
         "cards": ("use", "upgrade", "canUse", "triggerWhenDrawn", "triggerOnEndOfTurnForPlayingCard"),
         "potions": ("use", "canUse", "getPotency"),
-        "relics": (
-            "onEquip", "onUnequip", "atBattleStart", "atTurnStart", "atTurnStartPostDraw",
-            "onPlayerEndTurn", "onUseCard", "onPlayCard", "onAttack", "onAttacked",
-            "onLoseHp", "onVictory", "onEnterRoom", "onChestOpen", "onObtainCard",
-        ),
         "events": ("buttonEffect", "onEnterRoom", "update"),
     }[category]
     return sorted({
@@ -151,7 +149,14 @@ def build_audit() -> dict[str, Any]:
             dynamic_potion_verified = (
                 category == "potions" and identifier in original_verified_potions
             )
-            behavior_verified = bool(tests) or dynamic_card_verified or dynamic_potion_verified
+            # Textual references are useful navigation evidence, but do not
+            # establish semantic behavior. Cards/potions have dedicated,
+            # validated Original/native artifacts; later categories remain
+            # blocked until their equivalent artifact is present.
+            behavior_verified = (
+                dynamic_card_verified or dynamic_potion_verified
+                or (category == "events" and bool(tests))
+            )
             status = (
                 "DIFFERENCE" if differences else
                 "VERIFIED" if source_matched and behavior_verified else

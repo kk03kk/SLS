@@ -235,6 +235,40 @@ def java_relic_metadata(source: JavaSource) -> dict[str, object]:
     return {"tier": tier.group(1)}
 
 
+# Stock relic hooks which can affect policy-visible state or future execution.
+# Keep this list explicit: constructor/helper/render methods are deliberately
+# excluded, while less common hooks must not disappear from the audit merely
+# because most relics do not override them.
+RELIC_SEMANTIC_CALLBACKS = (
+    "onEquip", "onUnequip", "atPreBattle", "atBattleStart",
+    "atBattleStartPreDraw", "atTurnStart", "atTurnStartPostDraw",
+    "onPlayerEndTurn", "onUseCard", "onPlayCard", "canPlay",
+    "onAttack", "onAttackToChangeDamage", "atDamageModify", "onAttacked",
+    "onLoseHp", "onLoseHpLast", "wasHPLost", "onPlayerGainedBlock",
+    "onPlayerHeal", "onBloodied", "onNotBloodied", "onExhaust",
+    "onShuffle", "onMonsterDeath", "onSpawnMonster", "onBlockBroken",
+    "onVictory", "onEnterRoom", "justEnteredRoom", "onEnterRestRoom",
+    "onChestOpen", "onChestOpenAfter", "onObtainCard",
+    "onPreviewObtainCard", "onMasterDeckChange", "onGainGold",
+    "onSpendGold", "onUsePotion", "onRefreshHand", "beforeEnergyPrep",
+    "changeNumberOfCardsInReward", "changeRareCardRewardChance",
+    "addCampfireOption", "canUseCampfireOption", "canSpawn",
+    "checkTrigger", "onTrigger", "setCounter",
+)
+
+
+def java_relic_callbacks(source: JavaSource) -> list[str]:
+    """Return the exact semantic hooks overridden by a stock relic."""
+
+    return [
+        name for name in RELIC_SEMANTIC_CALLBACKS
+        if re.search(
+            rf"\b(?:public|protected)\s+[\w<>\[\]]+\s+{re.escape(name)}\s*\(",
+            source.text,
+        )
+    ]
+
+
 def registry_game_ids(category: str, ids: Iterable[str]) -> dict[str, str]:
     wanted = set(ids)
     entries = load_content_registry().categories[category]

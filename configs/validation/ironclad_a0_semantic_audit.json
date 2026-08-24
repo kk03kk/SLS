@@ -1,5 +1,5 @@
 {
-  "audit_sha256": "be73d25024105479c499b9f80ae0be22ee562e2bd33b7e6963c5a8e0d15e030c",
+  "audit_sha256": "f70812cef3817576efb0b3110364460a3e62be7394b5f06d0d98bbf68ed45fed",
   "content_scope_sha256": "1e9ba31232cea5813b88cf6d75c7be28deaca4ac84c32079745477866fc0649d",
   "entries": {
     "cards": [
@@ -11848,7 +11848,6 @@
         "evidence_levels": [
           "SOURCE_MATCHED",
           "NATIVE_METADATA_VERIFIED",
-          "NATIVE_VERIFIED",
           "NATIVE_EXECUTED"
         ],
         "game_id": "Akabeko",
@@ -11867,7 +11866,7 @@
           "cpp/simulator/src/combat/BattleContext.cpp:135",
           "cpp/simulator/src/combat/Player.cpp:964"
         ],
-        "status": "VERIFIED",
+        "status": "BLOCKED",
         "test_references": [
           "tests/original/test_adapter.py:65"
         ]
@@ -11883,7 +11882,8 @@
         "game_id": "Anchor",
         "id": "ANCHOR",
         "java_callbacks": [
-          "atBattleStart"
+          "atBattleStart",
+          "justEnteredRoom"
         ],
         "java_sha256": "4b472e78448dd055cc8d4f60223bf840b6471b796dc50844aa39bb537be74eb4",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Anchor.java",
@@ -11909,7 +11909,11 @@
         "game_id": "Ancient Tea Set",
         "id": "ANCIENT_TEA_SET",
         "java_callbacks": [
-          "atTurnStart"
+          "atPreBattle",
+          "atTurnStart",
+          "onEnterRestRoom",
+          "canSpawn",
+          "setCounter"
         ],
         "java_sha256": "70c669291620f2b0429a919ab2e8238ce6c8754b3cf95efee1dff8a95e30c868",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/AncientTeaSet.java",
@@ -11936,6 +11940,7 @@
         "game_id": "Art of War",
         "id": "ART_OF_WAR",
         "java_callbacks": [
+          "atPreBattle",
           "atTurnStart",
           "onUseCard",
           "onVictory"
@@ -12072,7 +12077,8 @@
         "game_id": "Black Blood",
         "id": "BLACK_BLOOD",
         "java_callbacks": [
-          "onVictory"
+          "onVictory",
+          "canSpawn"
         ],
         "java_sha256": "4260e893f30c5ebbf36b30974851b732c0b333a961d169133a5a80cc029953d4",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/BlackBlood.java",
@@ -12102,8 +12108,8 @@
         "game_id": "Black Star",
         "id": "BLACK_STAR",
         "java_callbacks": [
-          "onEnterRoom",
-          "onVictory"
+          "onVictory",
+          "onEnterRoom"
         ],
         "java_sha256": "b666ed2ab53876d261450634047e0b41dfda18e8808049b553dcde9d747c0b5a",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/BlackStar.java",
@@ -12130,7 +12136,9 @@
         ],
         "game_id": "Bloody Idol",
         "id": "BLOODY_IDOL",
-        "java_callbacks": [],
+        "java_callbacks": [
+          "onGainGold"
+        ],
         "java_sha256": "1e54833617e3466882509d1d7b42febb833de1a5b8242e8fba1a25825bd6afb9",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/BloodyIdol.java",
         "metadata": {
@@ -12213,9 +12221,10 @@
         "game_id": "Bottled Flame",
         "id": "BOTTLED_FLAME",
         "java_callbacks": [
-          "atBattleStart",
           "onEquip",
-          "onUnequip"
+          "onUnequip",
+          "atBattleStart",
+          "canSpawn"
         ],
         "java_sha256": "71fda7631fe308f157330fc63300a0860593c39586ca03d5cd4a99da7140488c",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/BottledFlame.java",
@@ -12244,9 +12253,10 @@
         "game_id": "Bottled Lightning",
         "id": "BOTTLED_LIGHTNING",
         "java_callbacks": [
-          "atBattleStart",
           "onEquip",
-          "onUnequip"
+          "onUnequip",
+          "atBattleStart",
+          "canSpawn"
         ],
         "java_sha256": "82c20ba5828c2703841035d271563d48d3459c7aa27664b58abf19342f642f3f",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/BottledLightning.java",
@@ -12275,9 +12285,10 @@
         "game_id": "Bottled Tornado",
         "id": "BOTTLED_TORNADO",
         "java_callbacks": [
-          "atBattleStart",
           "onEquip",
-          "onUnequip"
+          "onUnequip",
+          "atBattleStart",
+          "canSpawn"
         ],
         "java_sha256": "3f3a58c53f52db8e821ef45593788a1a870347fdbc3d46c6b4ace0b9a94ce6c7",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/BottledTornado.java",
@@ -12392,7 +12403,8 @@
         "id": "BUSTED_CROWN",
         "java_callbacks": [
           "onEquip",
-          "onUnequip"
+          "onUnequip",
+          "changeNumberOfCardsInReward"
         ],
         "java_sha256": "64d4a3a36133790f095670fb1b05820f6ab3e40f2b6609747dabccbaac063bea",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/BustedCrown.java",
@@ -12528,7 +12540,10 @@
         "game_id": "Centennial Puzzle",
         "id": "CENTENNIAL_PUZZLE",
         "java_callbacks": [
-          "onVictory"
+          "atPreBattle",
+          "wasHPLost",
+          "onVictory",
+          "justEnteredRoom"
         ],
         "java_sha256": "902032ea49e99f140ea0e52c755a9436b80b4d922fbd191d89561f6613068e3d",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/CentennialPuzzle.java",
@@ -12555,7 +12570,8 @@
         "game_id": "CeramicFish",
         "id": "CERAMIC_FISH",
         "java_callbacks": [
-          "onObtainCard"
+          "onObtainCard",
+          "canSpawn"
         ],
         "java_sha256": "12f8396fa18df4574befcb6b1816a6664d8ef017a244e81d93166eb25407a2af",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/CeramicFish.java",
@@ -12581,7 +12597,9 @@
         ],
         "game_id": "Champion Belt",
         "id": "CHAMPION_BELT",
-        "java_callbacks": [],
+        "java_callbacks": [
+          "onTrigger"
+        ],
         "java_sha256": "703ec0e701b2f00b99f8b6274f7e5a89f9f7a2d53ca0bfcf67701f1bc08ab727",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/ChampionsBelt.java",
         "metadata": {
@@ -12605,7 +12623,9 @@
         ],
         "game_id": "Charon's Ashes",
         "id": "CHARONS_ASHES",
-        "java_callbacks": [],
+        "java_callbacks": [
+          "onExhaust"
+        ],
         "java_sha256": "b7e973fa506120ba738a49b193493c918715f76c76bc48e2da672dce344558e0",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/CharonsAshes.java",
         "metadata": {
@@ -12717,7 +12737,8 @@
         "id": "COFFEE_DRIPPER",
         "java_callbacks": [
           "onEquip",
-          "onUnequip"
+          "onUnequip",
+          "canUseCampfireOption"
         ],
         "java_sha256": "c7a782e57d7d1a15c9db63697d4c27c30bb8b596b4a95331c24393ddb93eeb0b",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/CoffeeDripper.java",
@@ -12777,9 +12798,10 @@
         "game_id": "Cursed Key",
         "id": "CURSED_KEY",
         "java_callbacks": [
-          "onChestOpen",
           "onEquip",
-          "onUnequip"
+          "onUnequip",
+          "justEnteredRoom",
+          "onChestOpen"
         ],
         "java_sha256": "0f83b1060d1fd8a9f94f4d5dbae737e9621aec9e1517ef9b6b5168d393b201bb",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/CursedKey.java",
@@ -12809,7 +12831,8 @@
         "game_id": "Darkstone Periapt",
         "id": "DARKSTONE_PERIAPT",
         "java_callbacks": [
-          "onObtainCard"
+          "onObtainCard",
+          "canSpawn"
         ],
         "java_sha256": "f7982e409c8d349875b37520cb9a8bec5d9a1c6140ec62a516295548f5dfa642",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/DarkstonePeriapt.java",
@@ -12836,7 +12859,9 @@
         ],
         "game_id": "Dead Branch",
         "id": "DEAD_BRANCH",
-        "java_callbacks": [],
+        "java_callbacks": [
+          "onExhaust"
+        ],
         "java_sha256": "b973599335c7e30092ab317ee4fb29e85be5d642b4ee7e94001882abe30b7f9a",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/DeadBranch.java",
         "metadata": {
@@ -12886,7 +12911,9 @@
         ],
         "game_id": "Dream Catcher",
         "id": "DREAM_CATCHER",
-        "java_callbacks": [],
+        "java_callbacks": [
+          "canSpawn"
+        ],
         "java_sha256": "e5fd4e05cf7aa0bc13c222c7077461516e103f417b54bf779fdd50787bf71fa0",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/DreamCatcher.java",
         "metadata": {
@@ -12912,8 +12939,10 @@
         "game_id": "Du-Vu Doll",
         "id": "DU_VU_DOLL",
         "java_callbacks": [
+          "onEquip",
           "atBattleStart",
-          "onEquip"
+          "onMasterDeckChange",
+          "setCounter"
         ],
         "java_sha256": "ad1376ad3b60fba5c7db218ac73341406e8b736e047499362b7dc735042db6d1",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/DuVuDoll.java",
@@ -12945,7 +12974,8 @@
         "id": "ECTOPLASM",
         "java_callbacks": [
           "onEquip",
-          "onUnequip"
+          "onUnequip",
+          "canSpawn"
         ],
         "java_sha256": "5b6592919e12d0713c1ec307b2604713fa7911772648d4b447a3cc32c80f13c8",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Ectoplasm.java",
@@ -13001,7 +13031,9 @@
         ],
         "game_id": "Enchiridion",
         "id": "ENCHIRIDION",
-        "java_callbacks": [],
+        "java_callbacks": [
+          "atPreBattle"
+        ],
         "java_sha256": "346b6797fa0fc01830b7b452dcbd1277b01c7e8e6be626a4b4f89161e2273f3b",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Enchiridion.java",
         "metadata": {
@@ -13083,7 +13115,8 @@
         "game_id": "FossilizedHelix",
         "id": "FOSSILIZED_HELIX",
         "java_callbacks": [
-          "atBattleStart"
+          "atBattleStart",
+          "justEnteredRoom"
         ],
         "java_sha256": "55415b18fb091c07dd318c7132d5a373550732751d5c4a42f341ed2f5cb12c0b",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/FossilizedHelix.java",
@@ -13110,7 +13143,9 @@
         "id": "FROZEN_EGG",
         "java_callbacks": [
           "onEquip",
-          "onObtainCard"
+          "onObtainCard",
+          "onPreviewObtainCard",
+          "canSpawn"
         ],
         "java_sha256": "3a89b7cc1e09b7d33ded90db029efef596f0a9264816874c5c50cd6695a10437",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/FrozenEgg2.java",
@@ -13165,7 +13200,8 @@
         "id": "FUSION_HAMMER",
         "java_callbacks": [
           "onEquip",
-          "onUnequip"
+          "onUnequip",
+          "canUseCampfireOption"
         ],
         "java_sha256": "8e1d0d7e0c652e1345b873d5da07c98948555b47a47d45ed0e679026368c8f5b",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/FusionHammer.java",
@@ -13198,6 +13234,7 @@
         "game_id": "Gambling Chip",
         "id": "GAMBLING_CHIP",
         "java_callbacks": [
+          "atBattleStartPreDraw",
           "atTurnStartPostDraw"
         ],
         "java_sha256": "3977d04c253544247ae89b8ddf07de5b508bece7b4951b0068df5f0f8add4d81",
@@ -13249,7 +13286,9 @@
         "game_id": "Girya",
         "id": "GIRYA",
         "java_callbacks": [
-          "atBattleStart"
+          "atBattleStart",
+          "addCampfireOption",
+          "canSpawn"
         ],
         "java_sha256": "f2f849c77bffff6a9d284b7a40f9588c7d344536209e7e64f5b7370e8eb35a19",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Girya.java",
@@ -13324,7 +13363,9 @@
         ],
         "game_id": "Gremlin Horn",
         "id": "GREMLIN_HORN",
-        "java_callbacks": [],
+        "java_callbacks": [
+          "onMonsterDeath"
+        ],
         "java_sha256": "27cac9afc8ddb77fbb1f9a4660c21a6ba04e3f85f5801ec66705193627a19234",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/GremlinHorn.java",
         "metadata": {
@@ -13377,7 +13418,9 @@
         ],
         "game_id": "HandDrill",
         "id": "HAND_DRILL",
-        "java_callbacks": [],
+        "java_callbacks": [
+          "onBlockBroken"
+        ],
         "java_sha256": "57fd951a0a4be23466b874b67ee424c8bed0cecc0b961dcf53eee9be5c56721b",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/HandDrill.java",
         "metadata": {
@@ -13403,8 +13446,8 @@
         "game_id": "Happy Flower",
         "id": "HAPPY_FLOWER",
         "java_callbacks": [
-          "atTurnStart",
-          "onEquip"
+          "onEquip",
+          "atTurnStart"
         ],
         "java_sha256": "ff677758a15dd3616ddc6c314ef3c096ea8b9cb03258fcbd491f0a653b1e915a",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/HappyFlower.java",
@@ -13484,8 +13527,8 @@
         "game_id": "Incense Burner",
         "id": "INCENSE_BURNER",
         "java_callbacks": [
-          "atTurnStart",
-          "onEquip"
+          "onEquip",
+          "atTurnStart"
         ],
         "java_sha256": "d6898d4c88c2900b26f46ee20067506888406f3f21e211ac0aa14d0bb4cb3e62",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/IncenseBurner.java",
@@ -13545,7 +13588,9 @@
         ],
         "game_id": "Juzu Bracelet",
         "id": "JUZU_BRACELET",
-        "java_callbacks": [],
+        "java_callbacks": [
+          "canSpawn"
+        ],
         "java_sha256": "2590776a47ac8f82640575dffeb7a8e71b4a99aa219fca946b9f6bf49d51feaa",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/JuzuBracelet.java",
         "metadata": {
@@ -13599,6 +13644,7 @@
         "game_id": "Lantern",
         "id": "LANTERN",
         "java_callbacks": [
+          "atPreBattle",
           "atTurnStart"
         ],
         "java_sha256": "d52e36cfc5a52b43f8636f8a18745c2c67cf11cc8c82273a5053eb35f359671a",
@@ -13679,7 +13725,10 @@
         ],
         "game_id": "Lizard Tail",
         "id": "LIZARD_TAIL",
-        "java_callbacks": [],
+        "java_callbacks": [
+          "onTrigger",
+          "setCounter"
+        ],
         "java_sha256": "21646336acfda780f39f029cf59fe02e44fd041fe78f488bc3e29dd5b4ab62ab",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/LizardTail.java",
         "metadata": {
@@ -13711,7 +13760,9 @@
         ],
         "game_id": "Magic Flower",
         "id": "MAGIC_FLOWER",
-        "java_callbacks": [],
+        "java_callbacks": [
+          "onPlayerHeal"
+        ],
         "java_sha256": "e48b76228a664c7cfbe69de0090678c04564a84e8221a7c6cc9a9c520acf5b6b",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/MagicFlower.java",
         "metadata": {
@@ -13762,9 +13813,9 @@
         "game_id": "Mark of Pain",
         "id": "MARK_OF_PAIN",
         "java_callbacks": [
-          "atBattleStart",
           "onEquip",
-          "onUnequip"
+          "onUnequip",
+          "atBattleStart"
         ],
         "java_sha256": "d7bb8e1bdcb601ccd2c4e3ab557da64ff0e54a02592a1a729f5940c226d2fb2a",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/MarkOfPain.java",
@@ -13792,7 +13843,9 @@
         ],
         "game_id": "Mark of the Bloom",
         "id": "MARK_OF_THE_BLOOM",
-        "java_callbacks": [],
+        "java_callbacks": [
+          "onPlayerHeal"
+        ],
         "java_sha256": "4535edf13b4ab2382690d78b6d848a78d71083891c0313f1226ff37de61ba0e9",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/MarkOfTheBloom.java",
         "metadata": {
@@ -13822,7 +13875,9 @@
         "game_id": "Matryoshka",
         "id": "MATRYOSHKA",
         "java_callbacks": [
-          "onChestOpen"
+          "onChestOpen",
+          "canSpawn",
+          "setCounter"
         ],
         "java_sha256": "c7b38a7a983ee88f9fc4ecde331def2d3a08ab7b102f4a6ac1619562b28ea859",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Matryoshka.java",
@@ -13850,7 +13905,10 @@
         "game_id": "MawBank",
         "id": "MAW_BANK",
         "java_callbacks": [
-          "onEnterRoom"
+          "onEnterRoom",
+          "onSpendGold",
+          "canSpawn",
+          "setCounter"
         ],
         "java_sha256": "29846299eee845586906ddb4de76fa046e9f9f522c2ee6f60ca413f4badb2210",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/MawBank.java",
@@ -13879,7 +13937,10 @@
         ],
         "game_id": "MealTicket",
         "id": "MEAL_TICKET",
-        "java_callbacks": [],
+        "java_callbacks": [
+          "justEnteredRoom",
+          "canSpawn"
+        ],
         "java_sha256": "b0343c3367005b11fbf163bf7f13cab075c633e8590f04939bbb4fc27e975a5b",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/MealTicket.java",
         "metadata": {
@@ -13904,7 +13965,12 @@
         ],
         "game_id": "Meat on the Bone",
         "id": "MEAT_ON_THE_BONE",
-        "java_callbacks": [],
+        "java_callbacks": [
+          "onBloodied",
+          "onNotBloodied",
+          "canSpawn",
+          "onTrigger"
+        ],
         "java_sha256": "f0dd52ccbfd3273f27e82c9499d979a187a4b1b6a2be4cb5c0a65bdc55b1484f",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/MeatOnTheBone.java",
         "metadata": {
@@ -14016,7 +14082,9 @@
         "id": "MOLTEN_EGG",
         "java_callbacks": [
           "onEquip",
-          "onObtainCard"
+          "onObtainCard",
+          "onPreviewObtainCard",
+          "canSpawn"
         ],
         "java_sha256": "ecd04c375bff25b9faa96f3b8f9310e0433042dad568aa8140eaf2397b9aaedf",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/MoltenEgg2.java",
@@ -14098,10 +14166,11 @@
         "game_id": "Necronomicon",
         "id": "NECRONOMICON",
         "java_callbacks": [
-          "atTurnStart",
           "onEquip",
           "onUnequip",
-          "onUseCard"
+          "atTurnStart",
+          "onUseCard",
+          "checkTrigger"
         ],
         "java_sha256": "a19dd38884f98e4d3c0726e5ce1bb26fa7f35d9095256fd86e320720f6916c5a",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Necronomicon.java",
@@ -14132,7 +14201,8 @@
         "game_id": "NeowsBlessing",
         "id": "NEOWS_LAMENT",
         "java_callbacks": [
-          "atBattleStart"
+          "atBattleStart",
+          "setCounter"
         ],
         "java_sha256": "c2b974164e8c42b9d4d5a0fa94834fdf0c5819c44a50c76412b40818705bbb64",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/NeowsLament.java",
@@ -14189,7 +14259,9 @@
         ],
         "game_id": "Nloth's Gift",
         "id": "NLOTHS_GIFT",
-        "java_callbacks": [],
+        "java_callbacks": [
+          "changeRareCardRewardChance"
+        ],
         "java_sha256": "01d308561cf73aafb5c6f70849164474c78761614a53057ecf015449a6608cb1",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/NlothsGift.java",
         "metadata": {
@@ -14217,7 +14289,10 @@
         ],
         "game_id": "NlothsMask",
         "id": "NLOTHS_HUNGRY_FACE",
-        "java_callbacks": [],
+        "java_callbacks": [
+          "onChestOpenAfter",
+          "setCounter"
+        ],
         "java_sha256": "602dcfad73ffbc27e0d14d40f31f1485750d71c3ffc3f344a4c3b753a25ff4c1",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/NlothsMask.java",
         "metadata": {
@@ -14326,7 +14401,8 @@
         "game_id": "Old Coin",
         "id": "OLD_COIN",
         "java_callbacks": [
-          "onEquip"
+          "onEquip",
+          "canSpawn"
         ],
         "java_sha256": "6a758b68b896bdd7394293a83e29c47a696b256abd3ce48312557d8bbc412380",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/OldCoin.java",
@@ -14352,7 +14428,10 @@
         ],
         "game_id": "Omamori",
         "id": "OMAMORI",
-        "java_callbacks": [],
+        "java_callbacks": [
+          "canSpawn",
+          "setCounter"
+        ],
         "java_sha256": "3ec7b76b84637e0b11ee24aabfaf055173efcde9d51ff513c52a317d5d7c675c",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Omamori.java",
         "metadata": {
@@ -14417,6 +14496,7 @@
         "java_callbacks": [
           "atTurnStart",
           "onPlayerEndTurn",
+          "onPlayerGainedBlock",
           "onVictory"
         ],
         "java_sha256": "d22bd748201726c196d4838e37e6b289d29e560eb517618f7492a7c086584065",
@@ -14575,7 +14655,10 @@
         ],
         "game_id": "Peace Pipe",
         "id": "PEACE_PIPE",
-        "java_callbacks": [],
+        "java_callbacks": [
+          "addCampfireOption",
+          "canSpawn"
+        ],
         "java_sha256": "39a95ae5ecdb0940445997ddc81225cea8c82c7f957f76d769eb189647d41d15",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/PeacePipe.java",
         "metadata": {
@@ -14669,9 +14752,10 @@
         "game_id": "Philosopher's Stone",
         "id": "PHILOSOPHERS_STONE",
         "java_callbacks": [
-          "atBattleStart",
           "onEquip",
-          "onUnequip"
+          "onUnequip",
+          "atBattleStart",
+          "onSpawnMonster"
         ],
         "java_sha256": "1753c4012a6bc841a9281ceefd3109352ba6549d6ffca915a82f94780725fa29",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/PhilosopherStone.java",
@@ -14735,7 +14819,8 @@
         "game_id": "Potion Belt",
         "id": "POTION_BELT",
         "java_callbacks": [
-          "onEquip"
+          "onEquip",
+          "canSpawn"
         ],
         "java_sha256": "70d019ab2e961c21620d98e62a2e6ce1a160c8a94a1d374157ee70db27df7c83",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/PotionBelt.java",
@@ -14762,7 +14847,9 @@
         ],
         "game_id": "Prayer Wheel",
         "id": "PRAYER_WHEEL",
-        "java_callbacks": [],
+        "java_callbacks": [
+          "canSpawn"
+        ],
         "java_sha256": "eed203639536edc24a857baf744af4fa72a58de6bcd0a09497c7dbf2e59d1674",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/PrayerWheel.java",
         "metadata": {
@@ -14788,7 +14875,8 @@
         "game_id": "PreservedInsect",
         "id": "PRESERVED_INSECT",
         "java_callbacks": [
-          "atBattleStart"
+          "atBattleStart",
+          "canSpawn"
         ],
         "java_sha256": "27381f3ba3fa822fdfb978b3f26fd271a871a37cf000eb9c0367ac106c4cb425",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/PreservedInsect.java",
@@ -14842,7 +14930,10 @@
         ],
         "game_id": "Question Card",
         "id": "QUESTION_CARD",
-        "java_callbacks": [],
+        "java_callbacks": [
+          "changeNumberOfCardsInReward",
+          "canSpawn"
+        ],
         "java_sha256": "7a88f462d4dc2b111e484941bf42bf4a26ccd743eeb6d46f91a4b01a2d66d908",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/QuestionCard.java",
         "metadata": {
@@ -14927,6 +15018,8 @@
         "id": "RED_SKULL",
         "java_callbacks": [
           "atBattleStart",
+          "onBloodied",
+          "onNotBloodied",
           "onVictory"
         ],
         "java_sha256": "45e62672eb728c68225c57f5db592e340b5af3b9a5039fb442f32e6eebbfe6d4",
@@ -14954,7 +15047,9 @@
         ],
         "game_id": "Regal Pillow",
         "id": "REGAL_PILLOW",
-        "java_callbacks": [],
+        "java_callbacks": [
+          "canSpawn"
+        ],
         "java_sha256": "e0a7a0c23dd10b0187613168d2bb67f146d5f5a5a8ab2c0d55f10bc591fde19b",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/RegalPillow.java",
         "metadata": {
@@ -14979,7 +15074,9 @@
         ],
         "game_id": "Runic Cube",
         "id": "RUNIC_CUBE",
-        "java_callbacks": [],
+        "java_callbacks": [
+          "wasHPLost"
+        ],
         "java_sha256": "36cbf9bc602d0cfa1623561df25965079ac147c41ac621bb1be68ff22ff98f9c",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/RunicCube.java",
         "metadata": {
@@ -15093,7 +15190,9 @@
         ],
         "game_id": "Self Forming Clay",
         "id": "SELF_FORMING_CLAY",
-        "java_callbacks": [],
+        "java_callbacks": [
+          "wasHPLost"
+        ],
         "java_sha256": "96e4c6afcb7a1a4466984f58168cb6086a3638dd25f2f926c9dfa921300b3c8f",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/SelfFormingClay.java",
         "metadata": {
@@ -15117,7 +15216,10 @@
         ],
         "game_id": "Shovel",
         "id": "SHOVEL",
-        "java_callbacks": [],
+        "java_callbacks": [
+          "addCampfireOption",
+          "canSpawn"
+        ],
         "java_sha256": "fff21360138e860b4956c07495c5c1b9240d7cf371e83a8677c37f0586217478",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Shovel.java",
         "metadata": {
@@ -15175,7 +15277,9 @@
         ],
         "game_id": "Singing Bowl",
         "id": "SINGING_BOWL",
-        "java_callbacks": [],
+        "java_callbacks": [
+          "canSpawn"
+        ],
         "java_sha256": "951f239206090684738d745c47722388395bab06d4ca089f0b0871af1cc3f60c",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/SingingBowl.java",
         "metadata": {
@@ -15204,7 +15308,8 @@
         "game_id": "SlaversCollar",
         "id": "SLAVERS_COLLAR",
         "java_callbacks": [
-          "onVictory"
+          "onVictory",
+          "beforeEnergyPrep"
         ],
         "java_sha256": "759f164af963a2ccb608f5b54e077c995de000d5d4b42648168ff1318319b33f",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/SlaversCollar.java",
@@ -15257,7 +15362,8 @@
         "game_id": "Smiling Mask",
         "id": "SMILING_MASK",
         "java_callbacks": [
-          "onEnterRoom"
+          "onEnterRoom",
+          "canSpawn"
         ],
         "java_sha256": "f75c5f08febf7d5613216a654b2d666a35cfbe1f88ae6050f779bc9aaf881ecf",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/SmilingMask.java",
@@ -15285,7 +15391,8 @@
         "id": "SNECKO_EYE",
         "java_callbacks": [
           "onEquip",
-          "onUnequip"
+          "onUnequip",
+          "atPreBattle"
         ],
         "java_sha256": "1c146c5a47845b4e2573308f181c52e7c19484e6886572ca8238695c34fc386b",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/SneckoEye.java",
@@ -15401,7 +15508,8 @@
           "atBattleStart",
           "atTurnStart",
           "onPlayerEndTurn",
-          "onVictory"
+          "onVictory",
+          "justEnteredRoom"
         ],
         "java_sha256": "50b0e85dc46ca96adb63ad3ecf3752e52b8bc4596becf04f210524d37f277f91",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/StoneCalendar.java",
@@ -15478,7 +15586,9 @@
         ],
         "game_id": "StrikeDummy",
         "id": "STRIKE_DUMMY",
-        "java_callbacks": [],
+        "java_callbacks": [
+          "atDamageModify"
+        ],
         "java_sha256": "85b27d19c4d185bbe45000aada393ac1c8caa5fdd6d3fdec12bcb0cb34cd51a6",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/StrikeDummy.java",
         "metadata": {
@@ -15503,7 +15613,8 @@
         "game_id": "Sundial",
         "id": "SUNDIAL",
         "java_callbacks": [
-          "onEquip"
+          "onEquip",
+          "onShuffle"
         ],
         "java_sha256": "7207f2ba9bfcc06ac45c93902b6f3374133ac919036e3432273334cded0ebf8d",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Sundial.java",
@@ -15530,7 +15641,9 @@
         ],
         "game_id": "TheAbacus",
         "id": "THE_ABACUS",
-        "java_callbacks": [],
+        "java_callbacks": [
+          "onShuffle"
+        ],
         "java_sha256": "2091bcbb8046f64350881502e0d31b30d1ba10e14ba3efec11fde7321e54ab69",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Abacus.java",
         "metadata": {
@@ -15554,7 +15667,9 @@
         ],
         "game_id": "Boot",
         "id": "THE_BOOT",
-        "java_callbacks": [],
+        "java_callbacks": [
+          "onAttackToChangeDamage"
+        ],
         "java_sha256": "decb0dd288ff0e0dd2113fcd23343e9ccf27e4dc644ccc59f71d79c30416a761",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Boot.java",
         "metadata": {
@@ -15579,7 +15694,8 @@
         "game_id": "The Courier",
         "id": "THE_COURIER",
         "java_callbacks": [
-          "onEnterRoom"
+          "onEnterRoom",
+          "canSpawn"
         ],
         "java_sha256": "632b901e6fe82ca0ec63d6356bf91df1a306e3c8ba04805a65c8c517f365e1e6",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Courier.java",
@@ -15639,7 +15755,8 @@
         "game_id": "Tiny Chest",
         "id": "TINY_CHEST",
         "java_callbacks": [
-          "onEquip"
+          "onEquip",
+          "canSpawn"
         ],
         "java_sha256": "faf8f8104e64b656e97122db1d426c8daa50fc3d427828bcca2eb6b1ecdb4908",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/TinyChest.java",
@@ -15694,7 +15811,9 @@
         ],
         "game_id": "Toolbox",
         "id": "TOOLBOX",
-        "java_callbacks": [],
+        "java_callbacks": [
+          "atBattleStartPreDraw"
+        ],
         "java_sha256": "155b2c81e40f0a0db6a21baf3303875fa9c5fe75e4acda292c2c674491ea9c8d",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Toolbox.java",
         "metadata": {
@@ -15748,7 +15867,9 @@
         "id": "TOXIC_EGG",
         "java_callbacks": [
           "onEquip",
-          "onObtainCard"
+          "onObtainCard",
+          "onPreviewObtainCard",
+          "canSpawn"
         ],
         "java_sha256": "e213521eb94a8d57d1aa2f9739d6469376c3d9242643ffef1201db9249620032",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/ToxicEgg2.java",
@@ -15776,7 +15897,9 @@
         ],
         "game_id": "Toy Ornithopter",
         "id": "TOY_ORNITHOPTER",
-        "java_callbacks": [],
+        "java_callbacks": [
+          "onUsePotion"
+        ],
         "java_sha256": "4baa1067a58afbd493ed9c04a88f9e347bddbc77875fea8cc519d8af71d189f8",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/ToyOrnithopter.java",
         "metadata": {
@@ -15801,7 +15924,9 @@
         ],
         "game_id": "TungstenRod",
         "id": "TUNGSTEN_ROD",
-        "java_callbacks": [],
+        "java_callbacks": [
+          "onLoseHpLast"
+        ],
         "java_sha256": "696f29d6743444b7a81d5f4c9bc4282eaa8e3f9399cba7fbb104cafafef2c5de",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/TungstenRod.java",
         "metadata": {
@@ -15853,7 +15978,9 @@
         "game_id": "Unceasing Top",
         "id": "UNCEASING_TOP",
         "java_callbacks": [
-          "atTurnStart"
+          "atPreBattle",
+          "atTurnStart",
+          "onRefreshHand"
         ],
         "java_sha256": "608c4b0785df096799be7aadb7ecc3de877dbef356c769c83a6f1edca2f76a2b",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/UnceasingTop.java",
@@ -15905,11 +16032,12 @@
         "game_id": "Velvet Choker",
         "id": "VELVET_CHOKER",
         "java_callbacks": [
+          "onEquip",
+          "onUnequip",
           "atBattleStart",
           "atTurnStart",
-          "onEquip",
           "onPlayCard",
-          "onUnequip",
+          "canPlay",
           "onVictory"
         ],
         "java_sha256": "673ea56694feae34da4dd1af9ed7d72456befa3f96b1ae2cb7346e45e85a76b6",
@@ -16045,7 +16173,10 @@
         ],
         "game_id": "WingedGreaves",
         "id": "WING_BOOTS",
-        "java_callbacks": [],
+        "java_callbacks": [
+          "canSpawn",
+          "setCounter"
+        ],
         "java_sha256": "51df406dec04f8aa5d04518cbf42462d1ae2c87f06387f05831d60ccc4018fad",
         "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/WingBoots.java",
         "metadata": {
@@ -16177,10 +16308,10 @@
     "act1_pilot_ready": false,
     "claim": "VERIFIED requires stock-source agreement plus explicit executable evidence; cards and potions additionally require current per-variant Original/native effect evidence; BLOCKED entries are not parity claims.",
     "status_counts": {
-      "BLOCKED": 253,
+      "BLOCKED": 254,
       "DIFFERENCE": 0,
       "OUT_OF_SCOPE": 0,
-      "VERIFIED": 165
+      "VERIFIED": 164
     }
   }
 }
