@@ -63,3 +63,17 @@ def test_expansion_round_rejects_difference_and_tampered_selection(monkeypatch) 
     selection["selections"][0]["seed"] = 11
     with pytest.raises(ValueError, match="digest mismatch"):
         assemble_expansion_round(Path("truth"), selection, round_number=1)
+
+
+def test_expansion_round_prefers_latest_equally_strong_recapture(monkeypatch) -> None:
+    records = {
+        "20260824T100000Z-seed-10": _record(10, 2),
+        "20260824T110000Z-seed-10": _record(10, 2),
+    }
+    monkeypatch.setattr(
+        "sls.validation.expansion.load_records", lambda _root: (records, []),
+    )
+
+    result = assemble_expansion_round(Path("truth"), _selection(10, 2), round_number=1)
+
+    assert result["rounds"][0]["evidence"][0]["leaf"] == "20260824T110000Z-seed-10"

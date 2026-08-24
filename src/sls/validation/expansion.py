@@ -98,13 +98,15 @@ def assemble_expansion_round(
             if floor < min_floor and not terminal:
                 continue
             candidates.append((
-                -int(route["used_boundaries"]), -floor, str(leaf), route,
+                int(route["used_boundaries"]), floor, str(leaf), route,
             ))
         if not candidates:
             raise ValueError(
                 f"no clean current-schema evidence for selected seed {seed} variant {variant}"
             )
-        route = sorted(candidates)[0][3]
+        # Run IDs are UTC timestamp-prefixed, so the final key selects the
+        # newest equally strong recapture after a contract-changing repair.
+        route = max(candidates, key=lambda item: item[:3])[3]
         evidence.append({"seed": seed, "variant": variant, "leaf": route["leaf"]})
 
     rounds.append({
