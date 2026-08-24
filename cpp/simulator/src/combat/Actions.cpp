@@ -434,11 +434,12 @@ Action Actions::DamageRandomEnemy(int damage) {
     }};
 }
 
-Action Actions::ExhaustRandomCardInHand(int count) {
+Action Actions::ExhaustRandomCardInHand(int count, bool anyNumber) {
     return {[=] (BattleContext &bc) {
         // Stock ExhaustAction takes this branch before checking isRandom.
-        // Exhausting the entire hand therefore consumes no cardRandomRng.
-        if (bc.cards.cardsInHand <= count) {
+        // Exhausting the entire hand therefore consumes no cardRandomRng,
+        // except for Fiend Fire's anyNumber=true one-card actions.
+        if (!anyNumber && bc.cards.cardsInHand <= count) {
             while (bc.cards.cardsInHand > 0) {
                 bc.exhaustTopCardInHand();
             }
@@ -1211,7 +1212,7 @@ Action Actions::FiendFireAction(int targetIdx, int calculatedDamage) {
         }
 
         for (int i = 0; i < bc.cards.cardsInHand; ++i) {
-            bc.addToTop( Actions::ExhaustRandomCardInHand(1) );
+            bc.addToTop( Actions::ExhaustRandomCardInHand(1, true) );
         }
     }};
 }

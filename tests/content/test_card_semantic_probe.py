@@ -135,3 +135,12 @@ def test_card_probe_accepts_original_discovery_retrieval_timing() -> None:
     battle.set_discovery_retrieval_updates(14)
     battle.step("choose", choice_index=0)
     assert adapt_original(battle.snapshot()).decision.observation.screen.value == "COMBAT"
+
+
+def test_fiend_fire_randomly_exhausts_even_the_last_hand_card() -> None:
+    battle = native.LightspeedBattle()
+    battle.reset_card_probe(123, "FIEND_FIRE", False)
+    before = battle.snapshot()["_rng"]["card_random"]["counter"]
+    battle.step("play", card_index=1, target_index=0)
+    after = battle.snapshot()["_rng"]["card_random"]["counter"]
+    assert after - before == 1

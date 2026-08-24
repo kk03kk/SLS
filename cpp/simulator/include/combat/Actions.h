@@ -122,7 +122,7 @@ namespace sts {
         static Action SpawnTorchHeads();
         static Action SpireShieldDebuff(); // only called if player has orb slots
 
-        static Action ExhaustRandomCardInHand(int count);
+        static Action ExhaustRandomCardInHand(int count, bool anyNumber=false);
         static Action MadnessAction();
         static Action RandomizeHandCost();
         static Action UpgradeRandomCardAction(); // Warped Tongs Relic
