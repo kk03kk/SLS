@@ -681,12 +681,12 @@
     }
   ],
   "contract": {
-    "adapter_sha256": "2bd2aada01d6ba48ea7e502bc9e0b95fe85a53547c17ecd71eab73c46f000f7b",
+    "adapter_sha256": "0940da792fe3ee61e1ee88d7dd0d3ab2265f4c49c32944b15051477bc1efb9ab",
     "canonicalizer_sha256": "11ba1887f1a5f25ed8003e078be65400cad92fc4907cff069fde885985b68450",
     "checkpoint_schema": "sls-full-run-ppo-v3",
     "encoding_schema": "sls-policy-input-v2",
-    "native_source_sha256": "74a31b113ed81266b83596eddf211849d9740a14e7c4fe96e1773e73e48c3667",
-    "policy_contract_sha256": "a7f0e8eeaa2479c286002679d352adc9765b829aa5225429fe7cc79e9e6333c8",
+    "native_source_sha256": "ac68f5ae1b9604924dd16c6ed76646d5889458aba65c641eb3084e086c9d0233",
+    "policy_contract_sha256": "c937fed7c7d0c591a860ccf83a3ce93c202276097e6566235554cddb2917c562",
     "vocabulary_sha256": "98e69b9733abfa4662ead56c0d02fb604b67575a2ba4c1785ba3fe736e7f01b6"
   },
   "coverage": {
@@ -742,7 +742,7 @@
     ]
   },
   "level": "ENGINEERING_READY",
-  "lock_sha256": "cdb0a83c7e806c19465cf244d8d7cc617839d7ea646d16cafd8bad906e1573e3",
+  "lock_sha256": "9232d1f5f25a8c1c160ec97c7a868e5fff8249d9e17e9d9cd34032fb9cc571b8",
   "profile": "IRONCLAD_A0_ACT1",
   "requirements": {
     "bosses": [
