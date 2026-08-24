@@ -98,6 +98,9 @@ def normalize_power_id(value: object) -> str:
         # DuplicationPotion applies DuplicationPower, whose stock public ID
         # includes the implementation suffix omitted by the native enum.
         "DUPLICATION_POWER": "DUPLICATION",
+        # The player variant exposes IntangiblePlayer while the native
+        # PlayerStatus enum uses the shared public mechanism name.
+        "INTANGIBLE_PLAYER": "INTANGIBLE",
         # Swivel's ForcefieldPower exposes the stock ID "Nullify Attack";
         # native names the same one-attack marker FREE_ATTACK_POWER.
         "NULLIFY_ATTACK": "FREE_ATTACK_POWER",

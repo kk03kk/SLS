@@ -29,6 +29,9 @@ def test_stock_dex_loss_power_uses_native_canonical_id() -> None:
     assert normalize_power_id("DexLoss") == "LOSE_DEXTERITY"
     assert normalize_power_id("DEX_LOSS") == "LOSE_DEXTERITY"
     assert normalize_power_id("LOSE_DEXTERITY") == "LOSE_DEXTERITY"
+    assert normalize_power_id("IntangiblePlayer") == "INTANGIBLE"
+    assert normalize_power_id("INTANGIBLE_PLAYER") == "INTANGIBLE"
+    assert normalize_power_id("INTANGIBLE") == "INTANGIBLE"
 
 
 def test_stock_duplication_power_uses_native_canonical_id() -> None:
