@@ -57,8 +57,8 @@ int CardInstance::getUpgradeCount() const {
 
 bool CardInstance::canUpgrade() const {
     return (!upgraded || id == CardId::SEARING_BLOW) &&
-        getType() != CardType::CURSE &&
-        getType() != CardType::STATUS;
+        (id == CardId::BURN ||
+         (getType() != CardType::CURSE && getType() != CardType::STATUS));
 }
 
 bool CardInstance::isEthereal() const {

@@ -105,3 +105,11 @@ def test_card_probe_does_not_force_an_upgrade_onto_stock_unupgradable_cards() ->
     card = adapt_original(battle.snapshot()).decision.observation.hand[0]
     assert card.card_id == "CLUMSY"
     assert card.upgrades == 0
+
+
+def test_burn_is_the_stock_upgradeable_status_exception() -> None:
+    battle = native.LightspeedBattle()
+    battle.reset_card_probe(123, "BURN", True)
+    card = adapt_original(battle.snapshot()).decision.observation.hand[0]
+    assert card.card_id == "BURN"
+    assert card.upgrades == 1
