@@ -1006,10 +1006,10 @@ void GameContext::setupEvent() { // todo necronomicon event
             info.toSelectCards.resize(12);
             for (int i = 0; i < 12; ++i) {
                 int cardIdx = indices[i];
-                int gridX = i%4;
-                int gridY = i%3;
-                int selectIdx = gridY*4 + gridX;
-                info.toSelectCards[selectIdx] = {cards[cardIdx], -1};
+                // GremlinMatchGame retains CardGroup order after shuffle and
+                // derives each hitbox from that same index.  Reordering into
+                // row-major grid coordinates changes semantic slot identity.
+                info.toSelectCards[i] = {cards[cardIdx], -1};
             }
 
             info.eventData = 5; // attempts remaining
