@@ -262,6 +262,10 @@ namespace sts {
 
     static constexpr bool potionRequiresTarget(Potion p) {
         switch (p) {
+            // Stock's potion UI/CommunicationMod treats every thrown potion
+            // as targeted, even Explosive Potion whose effect damages all
+            // enemies and ignores the chosen target.
+            case Potion::EXPLOSIVE_POTION:
             case Potion::FEAR_POTION:
             case Potion::FIRE_POTION:
             case Potion::POISON_POTION:

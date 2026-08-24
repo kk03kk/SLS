@@ -90,3 +90,13 @@ def test_potion_audit_maps_filtered_multi_select_indices_back_to_native_hand() -
     second = module._adapt_probe_payload(battle.snapshot())
     action = next(item for item in second.decision.actions if item.kind.value == "SELECT_CARD")
     module._execute_native(battle, second, action)
+
+
+def test_explosive_potion_preserves_stock_thrown_target_identity() -> None:
+    battle = native.LightspeedBattle()
+    battle.reset_potion_probe(123, "EXPLOSIVE_POTION", False)
+    uses = [
+        action for action in adapt_original(battle.snapshot()).decision.actions
+        if action.kind.value == "USE_POTION"
+    ]
+    assert [action.target_id for action in uses] == ["MONSTER:0"]
