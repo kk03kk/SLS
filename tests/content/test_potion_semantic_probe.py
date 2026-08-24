@@ -92,9 +92,12 @@ def test_potion_audit_maps_filtered_multi_select_indices_back_to_native_hand() -
     module._execute_native(battle, second, action)
 
 
-def test_explosive_potion_preserves_stock_thrown_target_identity() -> None:
+@pytest.mark.parametrize("potion_id", ["EXPLOSIVE_POTION", "SMOKE_BOMB"])
+def test_nontarget_effect_potions_preserve_stock_thrown_target_identity(
+    potion_id: str,
+) -> None:
     battle = native.LightspeedBattle()
-    battle.reset_potion_probe(123, "EXPLOSIVE_POTION", False)
+    battle.reset_potion_probe(123, potion_id, False)
     uses = [
         action for action in adapt_original(battle.snapshot()).decision.actions
         if action.kind.value == "USE_POTION"

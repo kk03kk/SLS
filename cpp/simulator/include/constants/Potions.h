@@ -266,6 +266,7 @@ namespace sts {
             // as targeted, even Explosive Potion whose effect damages all
             // enemies and ignores the chosen target.
             case Potion::EXPLOSIVE_POTION:
+            case Potion::SMOKE_BOMB:
             case Potion::FEAR_POTION:
             case Potion::FIRE_POTION:
             case Potion::POISON_POTION:
