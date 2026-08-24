@@ -452,12 +452,18 @@ def _cards(
 
 
 def _powers(values: Any, prefix: str) -> tuple[PublicEntity, ...]:
+    visible = sorted(
+        _mappings(values),
+        key=lambda value: (
+            normalize_power_id(value.get("id")), _integer(value.get("amount")),
+        ),
+    )
     return tuple(
         PublicEntity(
             f"{prefix}:{index}", normalize_power_id(value.get("id")),
             (("amount", _integer(value.get("amount"))),),
         )
-        for index, value in enumerate(_mappings(values))
+        for index, value in enumerate(visible)
     )
 
 

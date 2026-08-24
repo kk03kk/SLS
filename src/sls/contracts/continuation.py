@@ -27,6 +27,11 @@ def continuation_original(payload: Mapping[str, Any]) -> dict[str, Any]:
         result["event_phase"] = result.get("event_phase") or screen_state.get("phase")
         result["action_phase"] = result.get("action_phase") or game.get("action_phase")
         raw_screen = str(game.get("screen_type") or "").upper()
+        if raw_screen == "EVENT" and screen_state.get("event_id"):
+            # CommunicationMod's public event ID is the same save/game ID the
+            # native run exposes.  Prefer it over the Oracle Java class name,
+            # whose spelling is often unrelated (GoopPuddle/World of Goop).
+            result["event_id"] = screen_state["event_id"]
         if raw_screen == "GRID":
             combat = game.get("combat_state") or {}
             card_in_play = combat.get("card_in_play") or {}
@@ -56,10 +61,12 @@ def continuation_original(payload: Mapping[str, Any]) -> dict[str, Any]:
             card_in_play = combat.get("card_in_play") or {}
             from sls.content.normalize import normalize_card_id
             result["card_selection_source"] = "HAND"
-            result["card_selection_task"] = (
-                result.get("card_selection_task")
-                or normalize_card_id(card_in_play.get("id"))
-            )
+            task = normalize_card_id(card_in_play.get("id"))
+            if bool(screen_state.get("can_pick_zero")) and int(
+                screen_state.get("max_cards", 0) or 0
+            ) > 1:
+                task = "EXHAUST_MANY"
+            result["card_selection_task"] = result.get("card_selection_task") or task
             result["card_selection_count"] = int(
                 result.get("card_selection_count")
                 or screen_state.get("max_cards") or 0
@@ -140,7 +147,7 @@ def continuation_simulator(state: Mapping[str, Any]) -> dict[str, Any]:
         and not any(screen.get(key) for key in ("gold", "relics", "potions"))
     )
     action_queue_types = list(checkpoint.get("action_queue_types") or ())
-    if choice.get("task") in {"HEADBUTT", "ARMAMENTS"} and not action_queue_types:
+    if choice.get("task") in {"HEADBUTT", "ARMAMENTS", "EXHAUST_MANY"} and not action_queue_types:
         # The native input state is suspended inside the played Headbutt.  The
         # Original exposes that suspension as its pending UseCardAction.
         action_queue_types = ["com.megacrit.cardcrawl.actions.utility.UseCardAction"]
@@ -155,7 +162,11 @@ def continuation_simulator(state: Mapping[str, Any]) -> dict[str, Any]:
         ),
         "card_selection_task": choice.get("task") or info.get("type") or screen.get("select_type"),
         "card_selection_count": int(
-            (1 if choice else 0)
+            (
+                (((state.get("combat_checkpoint") or {}).get("game_state") or {})
+                 .get("combat_state") or {}).get("_internal", {}).get("choice", {})
+                .get("pick_count", 1 if choice else 0)
+            )
             or info.get("select_count", info.get("count", screen.get("select_count", 0))) or 0
         ),
         "post_combat": bool(

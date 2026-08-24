@@ -32,6 +32,23 @@ public final class CommunicationStatePatch {
     public static final String INSTRUMENTATION_SCHEMA = "spirecomm-parity-v10";
     private static final Method CALCULATE_DAMAGE = privateCalculateDamage();
 
+    private static String eventId(AbstractEvent event) {
+        if (event == null) {
+            return null;
+        }
+        try {
+            Field field = event.getClass().getField("ID");
+            Object value = field.get(null);
+            if (value instanceof String) {
+                return (String) value;
+            }
+        } catch (Exception ignored) {
+            // A modded event without a public stock-style ID remains
+            // diagnosable by class name instead of breaking capture.
+        }
+        return event.getClass().getName();
+    }
+
     private static Method privateCalculateDamage() {
         try {
             Method method = AbstractMonster.class.getDeclaredMethod("calculateDamage", int.class);
@@ -159,7 +176,7 @@ public final class CommunicationStatePatch {
         continuation.put("screen", AbstractDungeon.screen == null ? null : AbstractDungeon.screen.name());
         continuation.put("event_id", AbstractDungeon.getCurrRoom() == null
             || AbstractDungeon.getCurrRoom().event == null ? null
-            : AbstractDungeon.getCurrRoom().event.getClass().getName());
+            : eventId(AbstractDungeon.getCurrRoom().event));
         continuation.put("event_phase", AbstractDungeon.getCurrRoom() == null
             ? null : eventPhase(AbstractDungeon.getCurrRoom().event));
         continuation.put("action_phase", AbstractDungeon.actionManager == null ? null

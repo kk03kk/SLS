@@ -46,6 +46,7 @@ class SimulatorBackend:
         self._native = LightspeedRunState()
         self._candidate_bits: dict[str, int] = {}
         self._last_raw: dict[str, Any] | None = None
+        self._multi_selected: set[int] = set()
 
     @property
     def raw_state(self) -> dict[str, Any]:
@@ -54,6 +55,7 @@ class SimulatorBackend:
         return self._last_raw
 
     def reset(self, seed: int) -> Decision:
+        self._multi_selected.clear()
         self._native.reset(int(seed), self.profile.ascension)
         return self._adapt(self._native.snapshot())
 
@@ -78,7 +80,12 @@ class SimulatorBackend:
             bits = self._candidate_bits[candidate_id]
         except KeyError as error:
             raise ValueError("action is not legal at the current decision boundary") from error
-        raw = self._native.step(bits)
+        if bits < 0:
+            self._multi_selected.add(-bits - 1)
+            raw = self._native.snapshot()
+        else:
+            raw = self._native.step(bits)
+            self._multi_selected.clear()
         if _is_completed_neow_reward(raw):
             # Stock closes the terminal Neow CardRewardScreen before exposing
             # the map.  The native engine represents that UI-only close as its
@@ -126,14 +133,25 @@ class SimulatorBackend:
 
         if self._last_raw is None:
             raise RuntimeError("reset must be called before checkpoint")
-        return self._native.snapshot()
+        checkpoint = self._native.snapshot()
+        if self._multi_selected:
+            checkpoint["_policy_multi_selection"] = sorted(self._multi_selected)
+        return checkpoint
 
     def load_checkpoint(self, state: Mapping[str, Any]) -> Decision:
-        self._native.load_state(dict(state))
+        checkpoint = dict(state)
+        self._multi_selected = {
+            int(value) for value in checkpoint.pop("_policy_multi_selection", ())
+        }
+        self._native.load_state(checkpoint)
         return self._adapt(self._native.snapshot())
 
     def _adapt(self, raw: Mapping[str, Any]) -> Decision:
-        self._last_raw = dict(raw)
+        raw = dict(raw)
+        raw["legal_actions"] = _effective_combat_actions(raw, self._multi_selected)
+        if self._multi_selected:
+            raw["_policy_multi_selection"] = sorted(self._multi_selected)
+        self._last_raw = raw
         public_run = raw["public_run"]
         player_state = raw["player_state"]
         inventory = raw["public_inventory"]
@@ -163,7 +181,7 @@ class SimulatorBackend:
             )
         }
         hand_choice_sources = _hand_choice_sources(raw)
-        if combat and hand_choice_sources:
+        if combat and (hand_choice_sources or _is_incremental_hand_selection(raw)):
             card_zones["HAND"] = _combat_cards(
                 [combat.get("hand", ())[index] for index in hand_choice_sources], "HAND",
             )
@@ -321,10 +339,12 @@ def _combat_cards(
 
 
 def _powers(values: Any, prefix: str) -> tuple[PublicEntity, ...]:
-    visible = [
+    visible = sorted([
         value for value in values
         if normalize_power_id(value["id"]) not in {"ASLEEP"}
-    ]
+    ], key=lambda value: (
+        normalize_power_id(value["id"]), int(value["amount"]),
+    ))
     return tuple(
         _entity(
             f"{prefix}:{index}", normalize_power_id(value["id"]),
@@ -433,12 +453,7 @@ def _semantic_actions(
                     subject_id=f"CHOICE:{hand_choice_index.get(source, source)}",
                 )
             elif action_type == 3:
-                options = raw["public_combat"]["choice"]["options"]
-                selected = ",".join(
-                    f"CHOICE:{hand_choice_index.get(int(value), int(value))}"
-                    for value in native.get("selected_indices", ())
-                )
-                action = Action(ActionKind.CONFIRM, option_id=f"combat-selection:{selected}")
+                action = Action(ActionKind.CONFIRM, option_id="combat-selection")
             else:
                 action = Action(ActionKind.END_TURN)
         else:
@@ -573,7 +588,7 @@ def _screen_entities(raw: Mapping[str, Any]) -> dict[str, tuple[Any, ...]]:
     if screen is ScreenType.COMBAT and "choice" in public_combat:
         choice_options = public_combat["choice"]["options"]
         hand_choice_sources = _hand_choice_sources(raw)
-        if hand_choice_sources:
+        if hand_choice_sources or _is_incremental_hand_selection(raw):
             choice_options = [choice_options[index] for index in hand_choice_sources]
         result["choice"] = tuple(
             _entity(
@@ -690,3 +705,67 @@ def _hand_choice_sources(raw: Mapping[str, Any]) -> tuple[int, ...]:
         if action.get("domain") == "COMBAT"
         and int(action.get("action_type", -1)) == 2
     }))
+
+
+def _is_incremental_hand_selection(raw: Mapping[str, Any]) -> bool:
+    choice = (raw.get("public_combat") or {}).get("choice") or {}
+    return str(choice.get("task") or "").upper() in {
+        "EXHAUST_MANY", "GAMBLE", "RETAIN_CARDS",
+    }
+
+
+def _effective_combat_actions(
+    raw: Mapping[str, Any], selected: set[int],
+) -> list[dict[str, Any]]:
+    """Expose stock-like incremental candidates for optional hand selection.
+
+    The native search action is an atomic bitset.  Policy/Original boundaries
+    select one card at a time and then confirm, so negative private candidate
+    codes accumulate the bitset in :class:`SimulatorBackend` without changing
+    native combat state.  The final confirm executes the native atomic action.
+    """
+
+    legal = [dict(value) for value in raw.get("legal_actions") or ()]
+    combat = raw.get("public_combat") or {}
+    choice = combat.get("choice") or {}
+    task = str(choice.get("task") or "").upper()
+    if task not in {"EXHAUST_MANY", "GAMBLE", "RETAIN_CARDS"}:
+        return legal
+    checkpoint = raw.get("combat_checkpoint") or {}
+    game = checkpoint.get("game_state") or {}
+    internal = ((game.get("combat_state") or {}).get("_internal") or {}).get("choice") or {}
+    limit = int(internal.get("pick_count", len(choice.get("options") or ())) or 0)
+    option_count = len(choice.get("options") or ())
+    if any(index < 0 or index >= option_count for index in selected):
+        raise ValueError("checkpoint contains an invalid pending multi-selection")
+    base = next(
+        (
+            int(value["bits"]) for value in legal
+            if value.get("domain") == "COMBAT" and int(value.get("action_type", -1)) == 3
+        ),
+        3 << 29,
+    )
+    result = []
+    if len(selected) < limit:
+        for index in range(option_count):
+            if index in selected:
+                continue
+            result.append({
+                "bits": -(index + 1), "action_type": 2,
+                "source_index": index, "target_index": 0,
+                "domain": "COMBAT", "requires_target": False,
+            })
+    can_confirm = (
+        task in {"EXHAUST_MANY", "GAMBLE"}
+        or bool(internal.get("can_pick_zero") or internal.get("can_pick_any_number"))
+        or len(selected) >= limit
+    )
+    if can_confirm:
+        bits = base | sum(1 << index for index in selected)
+        result.append({
+            "bits": bits, "action_type": 3,
+            "source_index": 0, "target_index": 0,
+            "domain": "COMBAT", "requires_target": False,
+            "selected_indices": sorted(selected),
+        })
+    return result

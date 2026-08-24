@@ -137,7 +137,10 @@ def _simulator_combat(state: Mapping[str, Any]) -> dict[str, Any] | None:
             if action.get("domain") == "COMBAT"
             and int(action.get("action_type", -1)) == 2
         })
-        if sources:
+        incremental = str(choice.get("task") or "").upper() in {
+            "EXHAUST_MANY", "GAMBLE", "RETAIN_CARDS",
+        }
+        if sources or incremental:
             hand = [hand[index] for index in sources]
     return {
         "turn": int(combat.get("turn", 0)),

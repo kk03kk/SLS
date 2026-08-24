@@ -111,6 +111,9 @@ def _event_aliases() -> dict[str, str]:
                     aliases[_compact(without_article)] = canonical
                     aliases[_compact(without_article + "Event")] = canonical
     aliases[_compact("GremlinWheelGame")] = "WHEEL_OF_CHANGE"
+    # The stock class name is unrelated to its save/game ID "Liars Game".
+    aliases[_compact("Sssserpent")] = "THE_SSSSSERPENT"
+    aliases[_compact("GoopPuddle")] = "WORLD_OF_GOOP"
     return aliases
 
 

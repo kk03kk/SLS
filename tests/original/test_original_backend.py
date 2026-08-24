@@ -98,8 +98,13 @@ def test_power_entities_have_backend_independent_semantic_order() -> None:
         {"id": "Split", "amount": -1},
     ], "MONSTER:0:POWER")
     assert [(item.content_id, dict(item.properties)["amount"]) for item in powers] == [
-        ("VULNERABLE", 2), ("SPLIT", -1),
+        ("SPLIT", -1), ("VULNERABLE", 2),
     ]
+    reversed_powers = _powers([
+        {"id": "Split", "amount": -1},
+        {"id": "Vulnerable", "amount": 2},
+    ], "MONSTER:0:POWER")
+    assert reversed_powers == powers
 
 
 def test_boss_chest_is_folded_into_the_boss_relic_decision() -> None:
@@ -423,6 +428,19 @@ def test_completed_hand_selection_folds_protocol_only_confirm() -> None:
     executed: list[str] = []
     assert backend._wait_for_selection_completion(selected, executed) is done
     assert executed == ["confirm"]
+
+
+def test_continuation_prefers_public_event_id_over_java_class_name() -> None:
+    payload = game_payload([])
+    payload["game_state"].update({
+        "screen_type": "EVENT",
+        "screen_state": {"event_id": "World of Goop", "options": []},
+    })
+    payload["_continuation"] = {
+        "event_id": "com.megacrit.cardcrawl.events.exordium.GoopPuddle",
+        "screen": "EVENT",
+    }
+    assert continuation_original(payload)["event_id"] == "World of Goop"
 
 
 def test_combat_boundary_waits_until_stock_intent_is_materialized() -> None:

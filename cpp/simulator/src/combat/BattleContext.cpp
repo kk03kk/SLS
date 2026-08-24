@@ -3284,13 +3284,23 @@ void BattleContext::chooseExhaustCards(const fixed_list<int, 10> &idxs) {
     if (idxs.empty()) {
         return;
     }
-    auto listCopy = idxs;
-    std::sort(listCopy.begin(), listCopy.end(), [](auto a, auto b) { return b < a; });
-
-    // assume idxs is sorted in descending order
-    for (const auto handIdx : listCopy) {
-        auto c = cards.hand[handIdx];
+    // Java's HandCardSelectScreen retains the selected-card group order and
+    // ExhaustSpecificCardAction appends cards to the exhaust pile in that
+    // order.  Native indices still have to be removed from the hand in
+    // descending order, so capture the public ascending order first instead
+    // of letting removal order leak into the exhaust pile.
+    auto ascending = idxs;
+    std::sort(ascending.begin(), ascending.end());
+    fixed_list<CardInstance, 10> selectedCards;
+    for (const auto handIdx : ascending) {
+        selectedCards.push_back(cards.hand[handIdx]);
+    }
+    auto descending = ascending;
+    std::sort(descending.begin(), descending.end(), [](auto a, auto b) { return b < a; });
+    for (const auto handIdx : descending) {
         cards.removeFromHandAtIdx(handIdx);
+    }
+    for (const auto &c : selectedCards) {
         triggerAndMoveToExhaustPile(c);
     }
 }
