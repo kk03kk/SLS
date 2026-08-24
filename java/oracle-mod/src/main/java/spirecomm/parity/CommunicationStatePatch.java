@@ -89,11 +89,27 @@ public final class CommunicationStatePatch {
         return result;
     }
 
-    private static String matchPhase(GremlinMatchGame event) {
+    static String matchPhase(GremlinMatchGame event) {
         Object phase = ReflectionHacks.getPrivate(
             event, GremlinMatchGame.class, "screen"
         );
         return String.valueOf(phase);
+    }
+
+    static AbstractCard matchCardForSlot(GremlinMatchGame event, int slot) {
+        if (event != matchEvent || slot < 0 || slot >= matchOrder.size()) {
+            return null;
+        }
+        String uuid = matchOrder.get(slot);
+        CardGroup cards = ReflectionHacks.getPrivate(
+            event, GremlinMatchGame.class, "cards"
+        );
+        for (AbstractCard card : cards.group) {
+            if (uuid.equals(card.uuid.toString())) {
+                return card;
+            }
+        }
+        return null;
     }
 
     private static String eventId(AbstractEvent event) {

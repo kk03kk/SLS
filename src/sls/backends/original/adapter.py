@@ -283,8 +283,8 @@ def _actions(
         available_slots = [
             slot for slot in match_slots if not bool(slot.get("removed"))
         ]
-        if "click" not in available:
-            raise ValueError("Match and Keep slots require CommunicationMod click support")
+        if "parity_match" not in available:
+            raise ValueError("Match and Keep slots require the parity_match input bridge")
         for left_index, left in enumerate(available_slots):
             for right in available_slots[left_index + 1:]:
                 left_slot, right_slot = _integer(left.get("slot")), _integer(right.get("slot"))
@@ -293,9 +293,7 @@ def _actions(
                         ActionKind.CHOOSE_EVENT_OPTION,
                         option_id=f"match-pair:{left_slot}:{right_slot}",
                     ),
-                    f"click left {_integer(left.get('click_x'))} {_integer(left.get('click_y'))}",
-                    "wait 30",
-                    f"click left {_integer(right.get('click_x'))} {_integer(right.get('click_y'))}",
+                    f"parity_match {left_slot} {right_slot}",
                     "wait 120",
                 )
     elif screen in {ScreenType.NEOW, ScreenType.EVENT} and "choose" in available:

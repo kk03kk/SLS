@@ -275,7 +275,7 @@ def test_match_and_keep_exposes_pair_actions_with_stable_click_commands() -> Non
     payload = {
         "in_game": True,
         "ready_for_command": True,
-        "available_commands": ["click"],
+        "available_commands": ["parity_match"],
         "_match_slots": slots,
         "_continuation": {"event_id": "Match and Keep!"},
         "game_state": base_game(
@@ -289,7 +289,7 @@ def test_match_and_keep_exposes_pair_actions_with_stable_click_commands() -> Non
     first = adapted.decision.actions[0]
     assert first.option_id == "match-pair:0:1"
     assert adapted.commands[first.candidate_id] == (
-        "click left 640 330", "wait 30", "click left 850 560", "wait 120",
+        "parity_match 0 1", "wait 120",
     )
     assert len(adapted.decision.observation.event_options) == 12
     assert adapted.decision.observation.event_options[0].content_id == "HIDDEN_CARD"

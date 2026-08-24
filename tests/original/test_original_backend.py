@@ -665,7 +665,7 @@ def test_map_action_folds_match_and_keep_intro_and_rules() -> None:
         "screen_state": {"event_id": "Match and Keep!"},
     })
     play["_continuation"] = {"event_id": "Match and Keep!"}
-    play["available_commands"] = ["click", "wait"]
+    play["available_commands"] = ["parity_match", "wait"]
     play["_match_slots"] = [
         {
             "slot": index, "content_id": None, "known": False,
