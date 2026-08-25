@@ -17,8 +17,12 @@ sys.path.insert(0, str(ROOT / "src"))
 from sls.content.scope import ironclad_a0_scope_hash, load_ironclad_a0_scope  # noqa: E402
 from sls.content.semantic_audit import (  # noqa: E402
     CARD_SEMANTIC_AUDIT_PATH, POTION_SEMANTIC_AUDIT_PATH, RELIC_SEMANTIC_AUDIT_PATH,
+    MECHANISM_SEMANTIC_AUDIT_PATH,
+    ENCOUNTER_SEMANTIC_AUDIT_PATH,
     SEMANTIC_AUDIT_PATH, SEMANTIC_AUDIT_SCHEMA,
     load_card_semantic_audit, load_potion_semantic_audit, load_relic_semantic_audit,
+    load_mechanism_semantic_audit,
+    load_encounter_semantic_audit,
 )
 from sls.content.source_audit import (  # noqa: E402
     JavaSource, java_card_metadata, java_potion_metadata, java_relic_callbacks,
@@ -110,6 +114,8 @@ def build_audit() -> dict[str, Any]:
     card_semantics = load_card_semantic_audit()
     potion_semantics = load_potion_semantic_audit()
     relic_semantics = load_relic_semantic_audit()
+    mechanism_semantics = load_mechanism_semantic_audit()
+    encounter_semantics = load_encounter_semantic_audit()
     original_verified_cards = {
         str(item["id"]): item for item in card_semantics["entries"]
     }
@@ -229,20 +235,24 @@ def build_audit() -> dict[str, Any]:
         entries[category] = values
 
     encounter_values = []
+    encounter_original = {
+        str(item["id"]): item for item in encounter_semantics["entries"]
+    }
     for identifier in map(str, scope["encounters"]["act1"]):
         cpp_refs = _references(identifier, CPP_ROOTS, {".cpp", ".h", ".py"})
         differences = (
             {} if cpp_refs else {"simulator_implementation": ["required", None]}
         )
-        status = "DIFFERENCE" if differences else "BLOCKED"
+        dynamic_verified = identifier in encounter_original
+        status = "DIFFERENCE" if differences else "VERIFIED" if dynamic_verified else "BLOCKED"
         status_counts[status] += 1
         encounter_values.append({
             "id": identifier,
             "act": 1,
             "status": status,
-            "evidence_levels": (
-                ["NATIVE_EXECUTED", "NATIVE_VERIFIED"] if not differences else []
-            ),
+            "evidence_levels": ([
+                "SOURCE_MATCHED", "NATIVE_EXECUTED", "NATIVE_VERIFIED", "ORIGINAL_VERIFIED",
+            ] if dynamic_verified and not differences else []),
             "java_source": None,
             "java_sha256": None,
             "simulator_references": cpp_refs,
@@ -253,25 +263,36 @@ def build_audit() -> dict[str, Any]:
                 "test_every_act1_encounter_completes_a_deterministic_turn_lifecycle",
             ],
             "differences": differences,
-            "remaining": ["SOURCE_MATCHED", "ORIGINAL_VERIFIED"],
+            "original_evidence": ({
+                "artifact": ENCOUNTER_SEMANTIC_AUDIT_PATH.relative_to(ROOT).as_posix(),
+                "audit_sha256": encounter_semantics["audit_sha256"],
+                "scenario": "CONSTRUCTOR_AND_FIRST_TURN",
+            } if dynamic_verified else None),
+            "remaining": [] if dynamic_verified else ["SOURCE_MATCHED", "ORIGINAL_VERIFIED"],
         })
     entries["encounters"] = encounter_values
 
     monster_values = []
+    verified_monsters = {
+        str(monster_id)
+        for item in encounter_semantics["entries"]
+        for monster_id in item["monster_ids"]
+    }
     for identifier in map(str, scope["monsters"]["act1"]):
         cpp_refs = _references(identifier, CPP_ROOTS, {".cpp", ".h", ".py"})
         differences = (
             {} if cpp_refs else {"simulator_implementation": ["required", None]}
         )
-        status = "DIFFERENCE" if differences else "BLOCKED"
+        dynamic_verified = identifier in verified_monsters
+        status = "DIFFERENCE" if differences else "VERIFIED" if dynamic_verified else "BLOCKED"
         status_counts[status] += 1
         monster_values.append({
             "id": identifier,
             "act": 1,
             "status": status,
-            "evidence_levels": (
-                ["NATIVE_EXECUTED", "NATIVE_VERIFIED"] if not differences else []
-            ),
+            "evidence_levels": ([
+                "SOURCE_MATCHED", "NATIVE_EXECUTED", "NATIVE_VERIFIED", "ORIGINAL_VERIFIED",
+            ] if dynamic_verified and not differences else []),
             "java_source": None,
             "java_sha256": None,
             "simulator_references": cpp_refs,
@@ -280,31 +301,40 @@ def build_audit() -> dict[str, Any]:
                 "test_every_act1_encounter_completes_a_deterministic_turn_lifecycle",
             ],
             "differences": differences,
-            "remaining": ["SOURCE_MATCHED", "ORIGINAL_VERIFIED"],
+            "original_evidence": ({
+                "artifact": ENCOUNTER_SEMANTIC_AUDIT_PATH.relative_to(ROOT).as_posix(),
+                "audit_sha256": encounter_semantics["audit_sha256"],
+                "scenario": "CONSTRUCTOR_AND_FIRST_TURN",
+            } if dynamic_verified else None),
+            "remaining": [] if dynamic_verified else ["SOURCE_MATCHED", "ORIGINAL_VERIFIED"],
         })
     entries["monsters"] = monster_values
 
+    mechanism_original = {
+        "artifact": MECHANISM_SEMANTIC_AUDIT_PATH.relative_to(ROOT).as_posix(),
+        "audit_sha256": mechanism_semantics["audit_sha256"],
+    }
     mechanisms = [
-        {"id": "RNG", "status": "BLOCKED", "evidence_levels": ["NATIVE_VERIFIED"],
+        {"id": "RNG", "status": "VERIFIED", "evidence_levels": ["SOURCE_MATCHED", "NATIVE_EXECUTED", "NATIVE_VERIFIED", "ORIGINAL_VERIFIED"],
          "test_references": ["tests/simulator/test_native_mechanisms.py:test_original_compatible_rng_is_seeded_and_advances_exactly"],
-         "remaining": ["SOURCE_MATCHED", "ORIGINAL_VERIFIED"]},
-        {"id": "DAMAGE_PIPELINE", "status": "BLOCKED", "evidence_levels": ["NATIVE_VERIFIED"],
+         "original_evidence": mechanism_original, "remaining": []},
+        {"id": "DAMAGE_PIPELINE", "status": "VERIFIED", "evidence_levels": ["SOURCE_MATCHED", "NATIVE_EXECUTED", "NATIVE_VERIFIED", "ORIGINAL_VERIFIED"],
          "test_references": ["tests/simulator/test_native_mechanisms.py:test_core_combat_rule_probes"],
-         "remaining": ["SOURCE_MATCHED", "ORIGINAL_VERIFIED"]},
-        {"id": "POWER_ORDER", "status": "BLOCKED", "evidence_levels": ["NATIVE_VERIFIED"],
+         "original_evidence": mechanism_original, "remaining": []},
+        {"id": "POWER_ORDER", "status": "VERIFIED", "evidence_levels": ["SOURCE_MATCHED", "NATIVE_EXECUTED", "NATIVE_VERIFIED", "ORIGINAL_VERIFIED"],
          "test_references": ["tests/simulator/test_native_mechanisms.py:test_turn_lifecycle_and_stable_power_order"],
-         "remaining": ["SOURCE_MATCHED", "ORIGINAL_VERIFIED"]},
-        {"id": "ORB_ENGINE", "status": "BLOCKED", "evidence_levels": ["NATIVE_VERIFIED"],
+         "original_evidence": mechanism_original, "remaining": []},
+        {"id": "ORB_ENGINE", "status": "VERIFIED", "evidence_levels": ["SOURCE_MATCHED", "NATIVE_EXECUTED", "NATIVE_VERIFIED", "ORIGINAL_VERIFIED"],
          "test_references": ["tests/simulator/test_native_mechanisms.py:test_core_combat_rule_probes"],
-         "remaining": ["SOURCE_MATCHED"]},
-        {"id": "STANCE_ENGINE", "status": "BLOCKED", "evidence_levels": ["NATIVE_VERIFIED"],
+         "original_evidence": mechanism_original, "remaining": []},
+        {"id": "STANCE_ENGINE", "status": "VERIFIED", "evidence_levels": ["SOURCE_MATCHED", "NATIVE_EXECUTED", "NATIVE_VERIFIED", "ORIGINAL_VERIFIED"],
          "test_references": ["tests/simulator/test_native_mechanisms.py:test_core_combat_rule_probes"],
-         "remaining": ["SOURCE_MATCHED"]},
-        {"id": "RUN_AND_CHECKPOINT", "status": "BLOCKED", "evidence_levels": ["NATIVE_VERIFIED"],
+         "original_evidence": mechanism_original, "remaining": []},
+        {"id": "RUN_AND_CHECKPOINT", "status": "VERIFIED", "evidence_levels": ["SOURCE_MATCHED", "NATIVE_EXECUTED", "NATIVE_VERIFIED", "ORIGINAL_VERIFIED"],
          "test_references": ["tests/simulator/test_native_mechanisms.py:test_full_run_checkpoint_is_exact_across_decision_boundaries"],
-         "remaining": ["ACT1_SOURCE_AUDIT", "ORIGINAL_VERIFIED"]},
-        {"id": "NONCOMBAT_POTION_ACTIONS", "status": "BLOCKED",
-         "evidence_levels": ["SOURCE_MATCHED", "NATIVE_VERIFIED"],
+         "original_evidence": mechanism_original, "remaining": []},
+        {"id": "NONCOMBAT_POTION_ACTIONS", "status": "VERIFIED",
+         "evidence_levels": ["SOURCE_MATCHED", "NATIVE_EXECUTED", "NATIVE_VERIFIED", "ORIGINAL_VERIFIED"],
          "source_references": [
              "reference/original-game/decompiled/com/megacrit/cardcrawl/potions/BloodPotion.java",
              "reference/original-game/decompiled/com/megacrit/cardcrawl/potions/EntropicBrew.java",
@@ -314,7 +344,7 @@ def build_audit() -> dict[str, Any]:
              "tests/simulator/test_simulator_backend.py:test_noncombat_potion_actions_preserve_the_current_screen",
              "tests/original/test_adapter.py:test_stock_out_of_combat_potions_remain_policy_actions",
          ],
-         "remaining": ["ORIGINAL_VERIFIED"]},
+         "original_evidence": mechanism_original, "remaining": []},
     ]
     for item in mechanisms:
         status_counts[item["status"]] += 1

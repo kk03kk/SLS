@@ -104,6 +104,9 @@ def normalize_power_id(value: object) -> str:
         # DuplicationPotion applies DuplicationPower, whose stock public ID
         # includes the implementation suffix omitted by the native enum.
         "DUPLICATION_POWER": "DUPLICATION",
+        # EstablishmentPower follows the same stock implementation-suffix
+        # convention; native exposes the public power name.
+        "ESTABLISHMENT_POWER": "ESTABLISHMENT",
         # The player variant exposes IntangiblePlayer while the native
         # PlayerStatus enum uses the shared public mechanism name.
         "INTANGIBLE_PLAYER": "INTANGIBLE",

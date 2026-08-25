@@ -8,7 +8,9 @@ import pytest
 
 from sls.content.semantic_audit import (
     load_card_semantic_audit, load_potion_semantic_audit,
-    load_relic_semantic_audit, load_semantic_audit, verify_semantic_audit,
+    load_relic_semantic_audit, load_mechanism_semantic_audit,
+    load_encounter_semantic_audit,
+    load_semantic_audit, verify_semantic_audit,
 )
 
 
@@ -34,6 +36,27 @@ def test_committed_relic_semantic_audit_covers_first_turn_batch() -> None:
     payload = load_relic_semantic_audit()
     assert len(payload["entries"]) == 12
     assert all(entry["covered_callbacks"] for entry in payload["entries"])
+
+
+def test_committed_mechanism_audit_has_two_boundary_original_native_traces() -> None:
+    payload = load_mechanism_semantic_audit()
+    assert {entry["id"] for entry in payload["entries"]} == {
+        "damage_buffer_intangible", "duration_weak", "retain_ethereal",
+        "engine_orb", "engine_stance", "noncombat_potion_actions",
+        "run_and_checkpoint",
+    }
+    assert all(entry["boundary_hashes"] for entry in payload["entries"])
+
+
+def test_committed_encounter_audit_covers_exact_act1_encounters_and_monsters() -> None:
+    payload = load_encounter_semantic_audit()
+    assert len(payload["entries"]) == 20
+    assert len({
+        monster_id
+        for entry in payload["entries"]
+        for monster_id in entry["monster_ids"]
+    }) == 25
+    assert all(len(entry["boundary_hashes"]) == 2 for entry in payload["entries"])
 
 
 def test_committed_semantic_audit_is_current_and_has_no_known_difference() -> None:

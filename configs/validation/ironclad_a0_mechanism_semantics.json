@@ -1,0 +1,134 @@
+{
+  "audit_sha256": "86ea269b8e98fec3985947156c964cfb1126b0c2cd4dfec4e522e2bd6c341950",
+  "entries": [
+    {
+      "actions": [
+        "END_TURN"
+      ],
+      "boundary_hashes": [
+        "012c95ed2de8be096f7f67613984ccc61614ae3791deac3d3b1e2d1109de31ac",
+        "c6e36fd7318c5962c19a3da1a81c0cbc8f5fa880cf608f171e18977269d15fd9"
+      ],
+      "effect_sha256": "13b03ab5fc42fafb4fbaa4a11ce775ceceb525ff8c30fa2f0d514248138f3865",
+      "id": "damage_buffer_intangible",
+      "mechanism": "DAMAGE_PIPELINE",
+      "setup_digest": "4381d9b224131b1520aff50646f4861471b0ae077837cd142870c9985f542cae"
+    },
+    {
+      "actions": [
+        "END_TURN"
+      ],
+      "boundary_hashes": [
+        "4f97391948961a49fc7f4739cd0248e196b425229b947c65c5e40e027e57ece2",
+        "faaa21938f5887980bce84efb7483e6d04b24448be681bfb3389c15f880bd2f2"
+      ],
+      "effect_sha256": "5fdeffa8285d22e10b4485f59bb4d9973b47b80aafc7e885382e6ca75b25cc3d",
+      "id": "duration_weak",
+      "mechanism": "POWER_ORDER",
+      "setup_digest": "d316ceb1575156e96dc27009d91c6fd77150771ac682e791fc5299870ee08005"
+    },
+    {
+      "actions": [
+        "END_TURN"
+      ],
+      "boundary_hashes": [
+        "9891841699876efac295062030fa5bc0a10d95c0bf67b8918dc42daa1f3e5aed",
+        "3334c002a8d9d99297fbb42ac04f5615f3282227e6775492db0ee618b33059d0"
+      ],
+      "effect_sha256": "1ee76486b98753454b678b330456f77279d28b8e737f2f2660e420a33cd21fc3",
+      "id": "retain_ethereal",
+      "mechanism": "POWER_ORDER",
+      "setup_digest": "645a2f54155fa5aa4063217c6a264e4bdde5839b71f240ac39ae278bcd403a36"
+    },
+    {
+      "actions": [],
+      "boundary_hashes": [
+        "481e713f235f6b6d5f0351a67c660ba1ffd44de6c4332e18957d35c4bbd57ed5"
+      ],
+      "effect_sha256": "4bdf5f095afa2a7ea398baa985c1af16395ff409154910ab4725cd240c97c4dd",
+      "id": "engine_stance",
+      "mechanism": "STANCE_ENGINE",
+      "setup_digest": "83eeada706235cbb729dc00326636863aa97b60fd13d6bfdb3f99ede2b147e24"
+    },
+    {
+      "actions": [],
+      "boundary_hashes": [
+        "5d5410a8d24ef7cc157cc4ee249a13da51528e34c7e3932fd8e4c783e265243b"
+      ],
+      "effect_sha256": "adf0b544df27aeed32f20fec16e49ae27dd4bb9782c50834fb9522267966da85",
+      "id": "engine_orb",
+      "mechanism": "ORB_ENGINE",
+      "setup_digest": "83eeada706235cbb729dc00326636863aa97b60fd13d6bfdb3f99ede2b147e24"
+    },
+    {
+      "actions": [],
+      "boundary_hashes": [
+        "0a525de74292c4431ae33be86f05992765f75ed97b4b74605ebe3f5062465fba"
+      ],
+      "effect_sha256": "c72c27d3b014f442aa5b81012f346930d688ff7cec05e7f12633197ab35c9d41",
+      "id": "run_and_checkpoint",
+      "mechanism": "RUN_AND_CHECKPOINT",
+      "setup_digest": "59079c58924906c6ecfa826d277175318d17fad2d315e1bb1c0c49e6aa3aeb21",
+      "truth_leaves": [
+        "20260823T173826.122943Z-seed-318",
+        "20260824T091044.951087Z-seed-344",
+        "20260824T092822.029561Z-seed-997",
+        "20260824T094336.368363Z-seed-247",
+        "20260824T110230.267264Z-seed-28",
+        "20260824T110815.690526Z-seed-277",
+        "20260824T111157.957785Z-seed-983",
+        "20260824T111541.455255Z-seed-137"
+      ]
+    },
+    {
+      "actions": [
+        "USE_POTION",
+        "DISCARD_POTION"
+      ],
+      "boundary_hashes": [
+        "67e1e7b2cb6043cb63583f3735cd76c16bf6a72dd1ccd1cad6c1bba23698faf8"
+      ],
+      "effect_sha256": "f3874f4be6d6958743052abe106bd2300cfa9e13113a3fce1ade19c4ccd745d0",
+      "id": "noncombat_potion_actions",
+      "mechanism": "NONCOMBAT_POTION_ACTIONS",
+      "setup_digest": "67e1e7b2cb6043cb63583f3735cd76c16bf6a72dd1ccd1cad6c1bba23698faf8",
+      "truth_evidence": {
+        "leaf": "20260824T110815.690526Z-seed-277",
+        "original_boundary_hash": "cca7665045faaae34791641fce0caa69c3e45b6e330c6b43c52abac98829ef77",
+        "screen": "COMBAT_REWARD",
+        "sequence": 5,
+        "simulator_boundary_hash": "6dd7b400d8ee0a7bcc196c2a90f469034d2865601e785101f70276ca1985d04b"
+      }
+    }
+  ],
+  "oracle_schema": "spirecomm-parity-v10",
+  "schema": "sls-ironclad-mechanism-semantics-v1",
+  "scope_sha256": "fb9c464dda321dfdb3e237ddef1fcd8427b037c9a39e92510aea183b1d9cfdb8",
+  "seed": 0,
+  "source_files": {
+    "cpp/simulator/python/module.cpp": "5c563c14427a186188b27d45e3ed59860aba66a7c5c62e23fa5e4d7188dafb30",
+    "java/oracle-mod/src/main/java/spirecomm/parity/OracleScenarioPatch.java": "775123d83c21c9630bf9bf1539f796963395a69fe3a8f43584f82824611684b7",
+    "reference/original-game/decompiled/com/megacrit/cardcrawl/orbs/Frost.java": "f538c37c2ecf6461f217940ff80bb6fcf4b9ab883fb05a98e966444f78dc6f6b",
+    "reference/original-game/decompiled/com/megacrit/cardcrawl/orbs/Plasma.java": "b796bea33bd9d34c0f3b7257fc8fe0eeb76543b720db2129ddbfb42c003ed364",
+    "reference/original-game/decompiled/com/megacrit/cardcrawl/potions/BloodPotion.java": "81d58e17c3b29beabbe5e640506dbee61cec658e8e1e743a64192c8058cbc118",
+    "reference/original-game/decompiled/com/megacrit/cardcrawl/potions/EntropicBrew.java": "b431897ab14af9bf0326275ec7256046c3717479b16fdaef94c7c2b05bb633b8",
+    "reference/original-game/decompiled/com/megacrit/cardcrawl/potions/FruitJuice.java": "9c96b3fb5a18795bab503c69c9ef137e76504a2b56962adadb36cf324900179d",
+    "reference/original-game/decompiled/com/megacrit/cardcrawl/powers/BufferPower.java": "8699cc1d61045ad602dc30db9472793cfb3c1f633bae34e65cef4dad56053a22",
+    "reference/original-game/decompiled/com/megacrit/cardcrawl/powers/EquilibriumPower.java": "bcd2336ae4839eef25f5e59cbd55fb4ebb347bd51cd95e7329a829a4d13cd5e9",
+    "reference/original-game/decompiled/com/megacrit/cardcrawl/powers/IntangiblePlayerPower.java": "5118f231e82fd0e430ed004e55d57c5fb1bb0bcec1bb6b75b63d35f57a861d66",
+    "reference/original-game/decompiled/com/megacrit/cardcrawl/powers/WeakPower.java": "0b97d4db63af942b498328e1b8b94030d968e7e1d0bf3ce34a9a475d4ed57b53",
+    "reference/original-game/decompiled/com/megacrit/cardcrawl/powers/watcher/EstablishmentPower.java": "ba684245e9779a4694956420c3130c53acf0f5c30c2a001a1dc31654a62308c8",
+    "reference/original-game/decompiled/com/megacrit/cardcrawl/random/Random.java": "a81492ef7ef9902da620fcb9c04d98d689b552ed41f98d731a25038f3c825e68",
+    "reference/original-game/decompiled/com/megacrit/cardcrawl/stances/CalmStance.java": "c458986670db70cf479a4e5e270a39e35aadbea33de7bc3420b2ef5b9ebbd35e",
+    "reference/original-game/decompiled/com/megacrit/cardcrawl/stances/DivinityStance.java": "94b93cf2224748d8da119f820eb7fb85e77db24a0c377ad8b9b29f291986678e",
+    "validation-results/act1-validation-expansion.json": "023fd0d694c64582e17f7a06c18b9d8152f32afef16a4ed1a2f5be0f4c4449f6",
+    "validation-results/truth/20260823T173826.122943Z-seed-318/manifest.json": "23e9f1eaecb30d4755a2df2214e4992c02c168103406f187bc2dc8e32c3cc413",
+    "validation-results/truth/20260824T091044.951087Z-seed-344/manifest.json": "a8f3e0c7198a63cb9e9c2cc3a12eb19d2ab3024ebafde525cc20b22e4ceb1f44",
+    "validation-results/truth/20260824T092822.029561Z-seed-997/manifest.json": "bbd90ebf77b621b230f25d1799e2fffd7137333871811fae6fc7a7d94be42f10",
+    "validation-results/truth/20260824T094336.368363Z-seed-247/manifest.json": "f1bf0a2c59cd9d9fc57a83c203b08d3688df76bd259059e3caae283aff787daa",
+    "validation-results/truth/20260824T110230.267264Z-seed-28/manifest.json": "1befd54b1c4babd1265cf5931ae2824cd9eac313b87059e2cce47193d3f31cf3",
+    "validation-results/truth/20260824T110815.690526Z-seed-277/manifest.json": "676a706bb35e404f409c7ae6a2f0d6dc0039ffa37e0ad673919c342f3791537c",
+    "validation-results/truth/20260824T111157.957785Z-seed-983/manifest.json": "65187064961223e49018fc0aab631cf31fa2a4dadc0c7c6cc34eafd314cb4352",
+    "validation-results/truth/20260824T111541.455255Z-seed-137/manifest.json": "9d02c79388d2f5df99caee4746c2847bc35b18c48553decb4880fd3940c2ca11"
+  }
+}

@@ -14,12 +14,20 @@ import com.megacrit.cardcrawl.powers.BufferPower;
 import com.megacrit.cardcrawl.powers.EquilibriumPower;
 import com.megacrit.cardcrawl.powers.IntangiblePlayerPower;
 import com.megacrit.cardcrawl.powers.WeakPower;
+import com.megacrit.cardcrawl.powers.FocusPower;
 import com.megacrit.cardcrawl.powers.watcher.EstablishmentPower;
+import com.megacrit.cardcrawl.stances.CalmStance;
+import com.megacrit.cardcrawl.stances.NeutralStance;
+import com.megacrit.cardcrawl.actions.watcher.ChangeStanceAction;
+import com.megacrit.cardcrawl.orbs.Frost;
+import com.megacrit.cardcrawl.orbs.Plasma;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.ui.panels.EnergyPanel;
 import com.megacrit.cardcrawl.helpers.RelicLibrary;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 import com.megacrit.cardcrawl.helpers.PotionHelper;
+import com.megacrit.cardcrawl.helpers.MonsterHelper;
+import com.megacrit.cardcrawl.monsters.MonsterGroup;
 import com.megacrit.cardcrawl.potions.AbstractPotion;
 import com.megacrit.cardcrawl.potions.PotionSlot;
 import com.megacrit.cardcrawl.potions.SmokeBomb;
@@ -47,6 +55,8 @@ public final class OracleScenarioPatch {
     public static final String CARD_PROBE_COMMAND = "parity_card";
     public static final String POTION_PROBE_COMMAND = "parity_potion";
     public static final String RELIC_PROBE_COMMAND = "parity_relic";
+    public static final String ENCOUNTER_PROBE_COMMAND = "parity_encounter";
+    public static final String ENGINE_PROBE_COMMAND = "parity_engine";
     private static final Set<String> SCENARIOS = new HashSet<String>(Arrays.asList(
         "damage_buffer_intangible",
         "duration_weak",
@@ -58,6 +68,9 @@ public final class OracleScenarioPatch {
     );
     private static final Map<String, String> RELIC_ALLOWLIST = loadAllowlist(
         "/spirecomm/parity/scenario-relic-allowlist.tsv"
+    );
+    private static final Map<String, String> ENCOUNTER_ALLOWLIST = loadAllowlist(
+        "/spirecomm/parity/scenario-encounter-allowlist.tsv"
     );
     public static Map<String, String> activeScenario = null;
 
@@ -186,6 +199,13 @@ public final class OracleScenarioPatch {
     private static void apply(String id) {
         AbstractPlayer player = AbstractDungeon.player;
         clearCombatState(player);
+        // Each scenario is an independent experiment.  A preceding rule probe
+        // may have installed relics or advanced the dummy monster's move; do
+        // not let that state contaminate the next setup in the same JVM.
+        installProbeRelics(player, CardType.SKILL);
+        normalizeProbeTarget();
+        player.currentHealth = 80;
+        player.maxHealth = 80;
 
         if ("retain_ethereal".equals(id)) {
             AbstractCard retainedStrike = card("Strike_R");
@@ -210,7 +230,7 @@ public final class OracleScenarioPatch {
         } else {
             throw new IllegalArgumentException("Unknown oracle scenario: " + id);
         }
-        activate(id, "RULE_TEST", player);
+        activate(id, "RULE_TEST:ISOLATED_V2", player);
         CommunicationMod.mustSendGameState = true;
         GameStateListener.registerStateChange();
     }
@@ -352,6 +372,101 @@ public final class OracleScenarioPatch {
         GameStateListener.registerStateChange();
     }
 
+    /** Construct a stock encounter using the live stock RNG streams. */
+    private static void applyEncounterProbe(String encounterId) {
+        String gameId = ENCOUNTER_ALLOWLIST.get(encounterId.toUpperCase(Locale.ROOT));
+        if (gameId == null) {
+            throw new IllegalArgumentException("parity_encounter is not in the Act 1 allowlist");
+        }
+        AbstractPlayer player = AbstractDungeon.player;
+        clearCombatState(player);
+        installProbeRelics(player, CardType.SKILL);
+        player.currentHealth = 80;
+        player.maxHealth = 80;
+        player.hand.addToBottom(card("Defend_R"));
+        player.hand.addToBottom(card("Strike_R"));
+        player.drawPile.addToBottom(card("Defend_R"));
+        player.drawPile.addToTop(card("Strike_R"));
+        MonsterGroup monsters = MonsterHelper.getEncounter(gameId);
+        AbstractDungeon.getCurrRoom().monsters = monsters;
+        monsters.init();
+        monsters.usePreBattleAction();
+        monsters.showIntent();
+        activate("encounter_probe:" + encounterId.toUpperCase(Locale.ROOT),
+            "STOCK_MONSTER_HELPER:ACT1_ALLOWLIST", player);
+        CommunicationMod.mustSendGameState = true;
+        GameStateListener.registerStateChange();
+    }
+
+    private static void drainActions() {
+        for (int update = 0; update < 128; ++update) {
+            AbstractDungeon.actionManager.update();
+            if (AbstractDungeon.actionManager.actions.isEmpty()
+                    && AbstractDungeon.actionManager.currentAction == null) return;
+        }
+        throw new IllegalStateException("engine probe actions did not drain");
+    }
+
+    /** Execute stock stance/orb primitives without requiring character cards. */
+    private static void applyEngineProbe(String engineId) {
+        AbstractPlayer player = AbstractDungeon.player;
+        clearCombatState(player);
+        installProbeRelics(player, CardType.SKILL);
+        normalizeProbeTarget();
+        player.currentHealth = 80;
+        player.maxHealth = 80;
+        activate("engine_probe:" + engineId.toUpperCase(Locale.ROOT),
+            "STOCK_SHARED_ENGINE", player);
+        if ("stance".equalsIgnoreCase(engineId)) {
+            player.energy.energy = 0;
+            EnergyPanel.setEnergy(0);
+            player.stance = new CalmStance();
+            AbstractDungeon.actionManager.addToBottom(new ChangeStanceAction("Wrath"));
+            drainActions();
+            activeScenario.put("calm_exit_energy", Integer.toString(EnergyPanel.totalCount));
+            activeScenario.put("calm_exit_stance", player.stance.ID.toUpperCase(Locale.ROOT));
+
+            clearCombatState(player);
+            player.energy.energy = 2;
+            EnergyPanel.setEnergy(2);
+            player.stance = new NeutralStance();
+            AbstractDungeon.actionManager.addToBottom(new ChangeStanceAction("Divinity"));
+            drainActions();
+            activeScenario.put("divinity_entry_energy", Integer.toString(EnergyPanel.totalCount));
+            activeScenario.put("divinity_entry_stance", player.stance.ID.toUpperCase(Locale.ROOT));
+        } else if ("orb".equalsIgnoreCase(engineId)) {
+            player.orbs.clear();
+            player.maxOrbs = 0;
+            player.increaseMaxOrbSlots(1, false);
+            player.energy.energy = 0;
+            EnergyPanel.setEnergy(0);
+            player.channelOrb(new Plasma());
+            player.evokeOrb();
+            drainActions();
+            activeScenario.put("plasma_evoke_energy", Integer.toString(EnergyPanel.totalCount));
+
+            player.orbs.clear();
+            player.maxOrbs = 0;
+            player.powers.clear();
+            player.currentBlock = 0;
+            player.increaseMaxOrbSlots(1, false);
+            player.powers.add(new FocusPower(player, 2));
+            player.channelOrb(new Frost());
+            player.evokeOrb();
+            drainActions();
+            activeScenario.put("frost_evoke_block", Integer.toString(player.currentBlock));
+
+            player.orbs.clear();
+            player.maxOrbs = 0;
+            for (int slot = 0; slot < 12; ++slot) player.increaseMaxOrbSlots(1, false);
+            activeScenario.put("slot_cap", Integer.toString(player.maxOrbs));
+        } else {
+            throw new IllegalArgumentException("parity_engine requires STANCE or ORB");
+        }
+        CommunicationMod.mustSendGameState = true;
+        GameStateListener.registerStateChange();
+    }
+
     @SpirePatch(clz = CommandExecutor.class, method = "getAvailableCommands")
     public static class Advertise {
         @SpirePostfixPatch
@@ -361,6 +476,8 @@ public final class OracleScenarioPatch {
                 if (!commands.contains(CARD_PROBE_COMMAND)) commands.add(CARD_PROBE_COMMAND);
                 if (!commands.contains(POTION_PROBE_COMMAND)) commands.add(POTION_PROBE_COMMAND);
                 if (!commands.contains(RELIC_PROBE_COMMAND)) commands.add(RELIC_PROBE_COMMAND);
+                if (!commands.contains(ENCOUNTER_PROBE_COMMAND)) commands.add(ENCOUNTER_PROBE_COMMAND);
+                if (!commands.contains(ENGINE_PROBE_COMMAND)) commands.add(ENGINE_PROBE_COMMAND);
             }
             return commands;
         }
@@ -376,6 +493,22 @@ public final class OracleScenarioPatch {
                 return SpireReturn.Continue();
             }
             if (!normalized.startsWith(COMMAND + " ")) {
+                if (normalized.startsWith(ENGINE_PROBE_COMMAND + " ")) {
+                    String[] engineParts = command.trim().split("\\s+");
+                    if (engineParts.length != 2) {
+                        throw new IllegalArgumentException("parity_engine requires ENGINE_ID");
+                    }
+                    applyEngineProbe(engineParts[1]);
+                    return SpireReturn.Return(Boolean.TRUE);
+                }
+                if (normalized.startsWith(ENCOUNTER_PROBE_COMMAND + " ")) {
+                    String[] encounterParts = command.trim().split("\\s+");
+                    if (encounterParts.length != 2) {
+                        throw new IllegalArgumentException("parity_encounter requires ENCOUNTER_ID");
+                    }
+                    applyEncounterProbe(encounterParts[1]);
+                    return SpireReturn.Return(Boolean.TRUE);
+                }
                 if (normalized.startsWith(RELIC_PROBE_COMMAND + " ")) {
                     String[] relicParts = command.trim().split("\\s+");
                     if (relicParts.length != 2) {

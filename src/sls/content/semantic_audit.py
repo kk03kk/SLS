@@ -25,6 +25,14 @@ RELIC_SEMANTIC_AUDIT_SCHEMA = "sls-ironclad-relic-semantics-v1"
 RELIC_SEMANTIC_AUDIT_PATH = (
     ROOT / "configs" / "validation" / "ironclad_a0_relic_semantics.json"
 )
+MECHANISM_SEMANTIC_AUDIT_SCHEMA = "sls-ironclad-mechanism-semantics-v1"
+MECHANISM_SEMANTIC_AUDIT_PATH = (
+    ROOT / "configs" / "validation" / "ironclad_a0_mechanism_semantics.json"
+)
+ENCOUNTER_SEMANTIC_AUDIT_SCHEMA = "sls-ironclad-encounter-semantics-v1"
+ENCOUNTER_SEMANTIC_AUDIT_PATH = (
+    ROOT / "configs" / "validation" / "ironclad_a0_encounter_semantics.json"
+)
 FIRST_TURN_RELIC_EVIDENCE = (
     "AKABEKO", "BAG_OF_MARBLES", "BRIMSTONE", "BRONZE_SCALES",
     "CLOCKWORK_SOUVENIR", "GREMLIN_VISAGE", "LANTERN",
@@ -153,6 +161,97 @@ def load_relic_semantic_audit() -> dict[str, Any]:
             raise ValueError(f"relic semantic source evidence is stale: {identifier}")
         if not entry.get("setup_digest") or not entry.get("effect_sha256"):
             raise ValueError(f"relic semantic effect evidence is missing: {identifier}")
+    return payload
+
+
+def load_mechanism_semantic_audit() -> dict[str, Any]:
+    """Validate committed controlled Original/native rule trajectories."""
+
+    from sls.rl.training_contract import canonical_digest, sha256_file
+
+    payload = json.loads(MECHANISM_SEMANTIC_AUDIT_PATH.read_text(encoding="utf-8"))
+    supplied = payload.get("audit_sha256")
+    unsigned = dict(payload)
+    unsigned.pop("audit_sha256", None)
+    if payload.get("schema") != MECHANISM_SEMANTIC_AUDIT_SCHEMA or \
+            supplied != canonical_digest(unsigned):
+        raise ValueError("invalid Ironclad mechanism semantic audit")
+    if payload.get("scope_sha256") != ironclad_a0_scope_hash():
+        raise ValueError("Ironclad mechanism semantic audit is stale for the content scope")
+    expected = {
+        "damage_buffer_intangible": "DAMAGE_PIPELINE",
+        "duration_weak": "POWER_ORDER",
+        "retain_ethereal": "POWER_ORDER",
+        "engine_orb": "ORB_ENGINE",
+        "engine_stance": "STANCE_ENGINE",
+        "noncombat_potion_actions": "NONCOMBAT_POTION_ACTIONS",
+        "run_and_checkpoint": "RUN_AND_CHECKPOINT",
+    }
+    entries = list(payload.get("entries") or ())
+    if {str(item.get("id")): str(item.get("mechanism")) for item in entries} != expected:
+        raise ValueError("Ironclad mechanism scenarios are incomplete")
+    for item in entries:
+        hashes = list(item.get("boundary_hashes") or ())
+        expected_boundaries = (
+            2 if str(item.get("id")) in {
+                "damage_buffer_intangible", "duration_weak", "retain_ethereal",
+            } else 1
+        )
+        if len(hashes) != expected_boundaries or item.get("effect_sha256") != canonical_digest(hashes):
+            raise ValueError(f"mechanism trajectory evidence is invalid: {item.get('id')}")
+        if not str(item.get("setup_digest") or ""):
+            raise ValueError(f"mechanism setup digest is missing: {item.get('id')}")
+    for relative, digest in dict(payload.get("source_files") or {}).items():
+        path = ROOT / str(relative)
+        if not path.is_file() or sha256_file(path) != digest:
+            raise ValueError(f"mechanism source evidence is stale: {relative}")
+    return payload
+
+
+def load_encounter_semantic_audit() -> dict[str, Any]:
+    """Validate exact Act 1 encounter and monster constructor/turn traces."""
+
+    from sls.rl.training_contract import canonical_digest, sha256_file
+
+    payload = json.loads(ENCOUNTER_SEMANTIC_AUDIT_PATH.read_text(encoding="utf-8"))
+    supplied = payload.get("audit_sha256")
+    unsigned = dict(payload)
+    unsigned.pop("audit_sha256", None)
+    if payload.get("schema") != ENCOUNTER_SEMANTIC_AUDIT_SCHEMA or \
+            supplied != canonical_digest(unsigned):
+        raise ValueError("invalid Ironclad encounter semantic audit")
+    if payload.get("scope_sha256") != ironclad_a0_scope_hash():
+        raise ValueError("Ironclad encounter semantic audit is stale for the content scope")
+    scope = json.loads(
+        (ROOT / "configs" / "validation" / "ironclad_a0_content_scope.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    expected_encounters = list(map(str, scope["encounters"]["act1"]))
+    expected_monsters = set(map(str, scope["monsters"]["act1"]))
+    entries = list(payload.get("entries") or ())
+    if [str(item.get("id")) for item in entries] != expected_encounters:
+        raise ValueError("Ironclad encounter evidence does not cover the exact scope")
+    covered_monsters: set[str] = set()
+    for item in entries:
+        hashes = list(item.get("boundary_hashes") or ())
+        if item.get("scenario") != "CONSTRUCTOR_AND_FIRST_TURN" or \
+                len(hashes) != 2 or item.get("effect_sha256") != canonical_digest(hashes):
+            raise ValueError(f"encounter trajectory evidence is invalid: {item.get('id')}")
+        if not str(item.get("setup_digest") or ""):
+            raise ValueError(f"encounter setup evidence is missing: {item.get('id')}")
+        covered_monsters.update(map(str, item.get("monster_ids") or ()))
+        for variant in item.get("coverage_variants") or ():
+            variant_hashes = list(variant.get("boundary_hashes") or ())
+            if len(variant_hashes) != 2 or \
+                    variant.get("effect_sha256") != canonical_digest(variant_hashes):
+                raise ValueError(f"encounter coverage variant is invalid: {item.get('id')}")
+    if covered_monsters != expected_monsters:
+        raise ValueError("Ironclad encounter evidence does not cover the exact monster scope")
+    for relative, digest in dict(payload.get("source_files") or {}).items():
+        path = ROOT / str(relative)
+        if not path.is_file() or sha256_file(path) != digest:
+            raise ValueError(f"encounter source evidence is stale: {relative}")
     return payload
 
 

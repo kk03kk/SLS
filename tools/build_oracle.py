@@ -61,6 +61,42 @@ def scenario_relic_allowlist() -> bytes:
     return scenario_content_allowlist("relics")
 
 
+def scenario_encounter_allowlist() -> bytes:
+    scope = json.loads(
+        (ROOT / "configs" / "validation" / "ironclad_a0_content_scope.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    ids = set(map(str, scope["encounters"]["act1"]))
+    registry = json.loads(
+        (ROOT / "src" / "sls" / "content" / "registry.json").read_text(encoding="utf-8")
+    )
+    mapping = {
+        item["id"]: item["game_id"]
+        for item in registry["categories"]["encounters"]
+        if item.get("game_id")
+    }
+    missing = sorted(ids - mapping.keys())
+    if missing:
+        raise RuntimeError(f"encounter scenario IDs are missing from registry: {missing}")
+    # Save/public names in the native registry spell out quantities, while
+    # MonsterHelper's case-sensitive constructor keys use digits (and a
+    # lower-case "of" for Lots of Slimes). Keep this protocol-only mapping
+    # explicit so a display-name cleanup cannot redirect an Oracle probe to
+    # MonsterHelper's ApologySlime fallback.
+    stock_constructor_keys = {
+        "TWO_LOUSE": "2 Louse",
+        "LOTS_OF_SLIMES": "Lots of Slimes",
+        "THREE_LOUSE": "3 Louse",
+        "TWO_FUNGI_BEASTS": "2 Fungi Beasts",
+        "THREE_SENTRIES": "3 Sentries",
+    }
+    return "".join(
+        f"{identifier}\t{stock_constructor_keys.get(identifier, mapping[identifier])}\n"
+        for identifier in sorted(ids)
+    ).encode("utf-8")
+
+
 def main() -> int:
     missing = [str(path) for path in DEPENDENCIES if not path.is_file()]
     if missing:
@@ -97,6 +133,7 @@ def main() -> int:
         add_bytes(archive, scenario_card_allowlist(), "spirecomm/parity/scenario-card-allowlist.tsv")
         add_bytes(archive, scenario_potion_allowlist(), "spirecomm/parity/scenario-potion-allowlist.tsv")
         add_bytes(archive, scenario_relic_allowlist(), "spirecomm/parity/scenario-relic-allowlist.tsv")
+        add_bytes(archive, scenario_encounter_allowlist(), "spirecomm/parity/scenario-encounter-allowlist.tsv")
         for path in sorted(CLASSES.rglob("*.class")):
             add(archive, path, path.relative_to(CLASSES).as_posix())
     print(f"{OUTPUT}\nsha256={hashlib.sha256(OUTPUT.read_bytes()).hexdigest()}")

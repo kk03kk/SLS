@@ -1752,6 +1752,41 @@ public:
         bc_->inputState = InputState::PLAYER_NORMAL;
     }
 
+    void reset_encounter_probe(
+        std::uint64_t seed,
+        const std::string &encounter_id,
+        const py::dict &rng) {
+        // Build once to establish the canonical Ironclad run container, then
+        // rewind every stock-compatible stream to the Original pre-constructor
+        // boundary and construct the requested encounter from that boundary.
+        reset(seed, "CULTIST", 0, {}, {}, false);
+        restore_full_run_rng(*gc_, rng);
+        bc_ = std::make_unique<BattleContext>();
+        bc_->init(*gc_, MonsterEncounter::CULTIST);
+        // BattleContext normally derives its combat-local streams from
+        // seed+floor.  A targeted Original probe begins at an already-live
+        // boundary, so restore those exact streams before constructing the
+        // requested group, and discard the bootstrap Cultist completely.
+        set_rng_state(rng);
+        bc_->actionQueue.clear();
+        bc_->cardQueue.clear();
+        bc_->monsters = MonsterGroup();
+        bc_->monsters.init(*bc_, parse_encounter(encounter_id));
+        set_card_piles(
+            {"Strike_R", "Defend_R"}, {"Defend_R", "Strike_R"}, {}, {});
+        bc_->player.curHp = 80;
+        bc_->player.maxHp = 80;
+        bc_->player.block = 0;
+        bc_->player.energy = 3;
+        gc_->curHp = 80;
+        gc_->maxHp = 80;
+        finalized_ = false;
+        escaped_ = false;
+        multi_select_bits_ = 0;
+        multi_select_indices_.clear();
+        has_pre_step_moves_ = false;
+    }
+
     void apply_scenario(const std::string &scenario) {
         require_reset();
         auto &player = bc_->player;
@@ -1762,6 +1797,18 @@ public:
         player.statusBits1 = 0;
         player.statusMap.clear();
         player.powerOrder.clear();
+        if (bc_->monsters.monsterCount != 1) {
+            throw std::invalid_argument("Rule scenario requires one probe monster");
+        }
+        auto &monster = bc_->monsters.arr[0];
+        monster.curHp = 999;
+        monster.maxHp = 999;
+        monster.block = 0;
+        monster.resetAllStatusEffects();
+        monster.halfDead = false;
+        monster.isEscapingB = false;
+        monster.escapeNext = false;
+        monster.setMove(MonsterMoveId::CULTIST_DARK_STRIKE);
 
         if (scenario == "retain_ethereal") {
             set_card_piles(
@@ -4518,6 +4565,8 @@ PYBIND11_MODULE(_lightspeed, module) {
              py::arg("seed"), py::arg("potion_id"), py::arg("sacred_bark"))
         .def("reset_relic_probe", &LightspeedBattle::reset_relic_probe,
              py::arg("seed"), py::arg("relic_id"))
+        .def("reset_encounter_probe", &LightspeedBattle::reset_encounter_probe,
+             py::arg("seed"), py::arg("encounter_id"), py::arg("rng"))
         .def("set_player_health", &LightspeedBattle::set_player_health,
              py::arg("current_hp"), py::arg("max_hp"))
         .def("_set_duplication_power_for_testing",

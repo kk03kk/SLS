@@ -1,5 +1,5 @@
 {
-  "audit_sha256": "7a2fd774185594b651a31407c343f689b8efc48fabeb720ab413ef257b3886a7",
+  "audit_sha256": "e14729f7d7c4d0524c554939dd0c927776fdb73540693ab342f412baeaa63df5",
   "content_scope_sha256": "fb9c464dda321dfdb3e237ddef1fcd8427b037c9a39e92510aea183b1d9cfdb8",
   "entries": {
     "cards": [
@@ -369,7 +369,7 @@
           "cpp/simulator/src/sim/search/ExpertKnowledge.cpp:38",
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:1063",
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:927",
-          "src/sls/content/normalize.py:119",
+          "src/sls/content/normalize.py:122",
           "src/sls/model/encoding.py:43",
           "src/sls/model/encoding.py:59"
         ],
@@ -1565,7 +1565,7 @@
           "cpp/simulator/src/sim/search/ExpertKnowledge.cpp:251",
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:1036",
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:899",
-          "src/sls/content/normalize.py:119",
+          "src/sls/content/normalize.py:122",
           "src/sls/model/encoding.py:43"
         ],
         "status": "VERIFIED",
@@ -7870,16 +7870,20 @@
         "act": 1,
         "differences": {},
         "evidence_levels": [
+          "SOURCE_MATCHED",
           "NATIVE_EXECUTED",
-          "NATIVE_VERIFIED"
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED"
         ],
         "id": "BLUE_SLAVER",
         "java_sha256": null,
         "java_source": null,
-        "remaining": [
-          "SOURCE_MATCHED",
-          "ORIGINAL_VERIFIED"
-        ],
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_encounter_semantics.json",
+          "audit_sha256": "260b0b5a2d27265442ddd49cc8886013b7a336aa7a3fe15fa539bc59e64f8c11",
+          "scenario": "CONSTRUCTOR_AND_FIRST_TURN"
+        },
+        "remaining": [],
         "simulator_references": [
           "cpp/simulator/src/combat/MonsterGroup.cpp:189",
           "cpp/simulator/src/combat/MonsterGroup.cpp:190",
@@ -7890,7 +7894,7 @@
           "cpp/simulator/src/combat/MonsterSpecific.cpp:41",
           "src/sls/content/normalize.py:49"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": [
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_initializes_with_a_legal_boundary",
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_completes_a_deterministic_turn_lifecycle"
@@ -7900,16 +7904,20 @@
         "act": 1,
         "differences": {},
         "evidence_levels": [
+          "SOURCE_MATCHED",
           "NATIVE_EXECUTED",
-          "NATIVE_VERIFIED"
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED"
         ],
         "id": "CULTIST",
         "java_sha256": null,
         "java_source": null,
-        "remaining": [
-          "SOURCE_MATCHED",
-          "ORIGINAL_VERIFIED"
-        ],
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_encounter_semantics.json",
+          "audit_sha256": "260b0b5a2d27265442ddd49cc8886013b7a336aa7a3fe15fa539bc59e64f8c11",
+          "scenario": "CONSTRUCTOR_AND_FIRST_TURN"
+        },
+        "remaining": [],
         "simulator_references": [
           "cpp/simulator/src/combat/MonsterGroup.cpp:180",
           "cpp/simulator/src/combat/MonsterGroup.cpp:181",
@@ -7924,7 +7932,7 @@
           "cpp/simulator/src/combat/MonsterSpecific.cpp:45",
           "src/sls/backends/original/adapter.py:520"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": [
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_initializes_with_a_legal_boundary",
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_completes_a_deterministic_turn_lifecycle"
@@ -7934,20 +7942,24 @@
         "act": 1,
         "differences": {},
         "evidence_levels": [
+          "SOURCE_MATCHED",
           "NATIVE_EXECUTED",
-          "NATIVE_VERIFIED"
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED"
         ],
         "id": "EXORDIUM_THUGS",
         "java_sha256": null,
         "java_source": null,
-        "remaining": [
-          "SOURCE_MATCHED",
-          "ORIGINAL_VERIFIED"
-        ],
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_encounter_semantics.json",
+          "audit_sha256": "260b0b5a2d27265442ddd49cc8886013b7a336aa7a3fe15fa539bc59e64f8c11",
+          "scenario": "CONSTRUCTOR_AND_FIRST_TURN"
+        },
+        "remaining": [],
         "simulator_references": [
           "cpp/simulator/src/combat/MonsterGroup.cpp:163"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": [
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_initializes_with_a_legal_boundary",
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_completes_a_deterministic_turn_lifecycle"
@@ -7957,20 +7969,24 @@
         "act": 1,
         "differences": {},
         "evidence_levels": [
+          "SOURCE_MATCHED",
           "NATIVE_EXECUTED",
-          "NATIVE_VERIFIED"
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED"
         ],
         "id": "EXORDIUM_WILDLIFE",
         "java_sha256": null,
         "java_source": null,
-        "remaining": [
-          "SOURCE_MATCHED",
-          "ORIGINAL_VERIFIED"
-        ],
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_encounter_semantics.json",
+          "audit_sha256": "260b0b5a2d27265442ddd49cc8886013b7a336aa7a3fe15fa539bc59e64f8c11",
+          "scenario": "CONSTRUCTOR_AND_FIRST_TURN"
+        },
+        "remaining": [],
         "simulator_references": [
           "cpp/simulator/src/combat/MonsterGroup.cpp:168"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": [
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_initializes_with_a_legal_boundary",
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_completes_a_deterministic_turn_lifecycle"
@@ -7980,20 +7996,24 @@
         "act": 1,
         "differences": {},
         "evidence_levels": [
+          "SOURCE_MATCHED",
           "NATIVE_EXECUTED",
-          "NATIVE_VERIFIED"
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED"
         ],
         "id": "GREMLIN_GANG",
         "java_sha256": null,
         "java_source": null,
-        "remaining": [
-          "SOURCE_MATCHED",
-          "ORIGINAL_VERIFIED"
-        ],
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_encounter_semantics.json",
+          "audit_sha256": "260b0b5a2d27265442ddd49cc8886013b7a336aa7a3fe15fa539bc59e64f8c11",
+          "scenario": "CONSTRUCTOR_AND_FIRST_TURN"
+        },
+        "remaining": [],
         "simulator_references": [
           "cpp/simulator/src/combat/MonsterGroup.cpp:100"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": [
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_initializes_with_a_legal_boundary",
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_completes_a_deterministic_turn_lifecycle"
@@ -8003,16 +8023,20 @@
         "act": 1,
         "differences": {},
         "evidence_levels": [
+          "SOURCE_MATCHED",
           "NATIVE_EXECUTED",
-          "NATIVE_VERIFIED"
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED"
         ],
         "id": "GREMLIN_NOB",
         "java_sha256": null,
         "java_source": null,
-        "remaining": [
-          "SOURCE_MATCHED",
-          "ORIGINAL_VERIFIED"
-        ],
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_encounter_semantics.json",
+          "audit_sha256": "260b0b5a2d27265442ddd49cc8886013b7a336aa7a3fe15fa539bc59e64f8c11",
+          "scenario": "CONSTRUCTOR_AND_FIRST_TURN"
+        },
+        "remaining": [],
         "simulator_references": [
           "cpp/simulator/src/combat/MonsterGroup.cpp:205",
           "cpp/simulator/src/combat/MonsterGroup.cpp:261",
@@ -8021,7 +8045,7 @@
           "cpp/simulator/src/combat/MonsterSpecific.cpp:95",
           "cpp/simulator/src/game/GameContext.cpp:886"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": [
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_initializes_with_a_legal_boundary",
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_completes_a_deterministic_turn_lifecycle"
@@ -8031,16 +8055,20 @@
         "act": 1,
         "differences": {},
         "evidence_levels": [
+          "SOURCE_MATCHED",
           "NATIVE_EXECUTED",
-          "NATIVE_VERIFIED"
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED"
         ],
         "id": "HEXAGHOST",
         "java_sha256": null,
         "java_source": null,
-        "remaining": [
-          "SOURCE_MATCHED",
-          "ORIGINAL_VERIFIED"
-        ],
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_encounter_semantics.json",
+          "audit_sha256": "260b0b5a2d27265442ddd49cc8886013b7a336aa7a3fe15fa539bc59e64f8c11",
+          "scenario": "CONSTRUCTOR_AND_FIRST_TURN"
+        },
+        "remaining": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:2330",
           "cpp/simulator/src/combat/MonsterGroup.cpp:265",
@@ -8051,7 +8079,7 @@
           "cpp/simulator/src/game/GameContext.cpp:3178",
           "cpp/simulator/src/game/GameContext.cpp:593"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": [
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_initializes_with_a_legal_boundary",
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_completes_a_deterministic_turn_lifecycle"
@@ -8061,16 +8089,20 @@
         "act": 1,
         "differences": {},
         "evidence_levels": [
+          "SOURCE_MATCHED",
           "NATIVE_EXECUTED",
-          "NATIVE_VERIFIED"
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED"
         ],
         "id": "JAW_WORM",
         "java_sha256": null,
         "java_source": null,
-        "remaining": [
-          "SOURCE_MATCHED",
-          "ORIGINAL_VERIFIED"
-        ],
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_encounter_semantics.json",
+          "audit_sha256": "260b0b5a2d27265442ddd49cc8886013b7a336aa7a3fe15fa539bc59e64f8c11",
+          "scenario": "CONSTRUCTOR_AND_FIRST_TURN"
+        },
+        "remaining": [],
         "simulator_references": [
           "cpp/simulator/src/combat/MonsterGroup.cpp:269",
           "cpp/simulator/src/combat/MonsterGroup.cpp:270",
@@ -8082,7 +8114,7 @@
           "cpp/simulator/src/combat/MonsterSpecific.cpp:285",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:52"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": [
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_initializes_with_a_legal_boundary",
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_completes_a_deterministic_turn_lifecycle"
@@ -8092,16 +8124,20 @@
         "act": 1,
         "differences": {},
         "evidence_levels": [
+          "SOURCE_MATCHED",
           "NATIVE_EXECUTED",
-          "NATIVE_VERIFIED"
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED"
         ],
         "id": "LAGAVULIN",
         "java_sha256": null,
         "java_source": null,
-        "remaining": [
-          "SOURCE_MATCHED",
-          "ORIGINAL_VERIFIED"
-        ],
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_encounter_semantics.json",
+          "audit_sha256": "260b0b5a2d27265442ddd49cc8886013b7a336aa7a3fe15fa539bc59e64f8c11",
+          "scenario": "CONSTRUCTOR_AND_FIRST_TURN"
+        },
+        "remaining": [],
         "simulator_references": [
           "cpp/simulator/src/combat/MonsterGroup.cpp:296",
           "cpp/simulator/src/combat/MonsterGroup.cpp:297",
@@ -8111,7 +8147,7 @@
           "cpp/simulator/src/combat/MonsterSpecific.cpp:879",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:96"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": [
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_initializes_with_a_legal_boundary",
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_completes_a_deterministic_turn_lifecycle"
@@ -8121,22 +8157,26 @@
         "act": 1,
         "differences": {},
         "evidence_levels": [
+          "SOURCE_MATCHED",
           "NATIVE_EXECUTED",
-          "NATIVE_VERIFIED"
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED"
         ],
         "id": "LARGE_SLIME",
         "java_sha256": null,
         "java_source": null,
-        "remaining": [
-          "SOURCE_MATCHED",
-          "ORIGINAL_VERIFIED"
-        ],
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_encounter_semantics.json",
+          "audit_sha256": "260b0b5a2d27265442ddd49cc8886013b7a336aa7a3fe15fa539bc59e64f8c11",
+          "scenario": "CONSTRUCTOR_AND_FIRST_TURN"
+        },
+        "remaining": [],
         "simulator_references": [
           "cpp/simulator/src/combat/MonsterGroup.cpp:157",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:3408",
           "cpp/simulator/src/game/GameContext.cpp:650"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": [
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_initializes_with_a_legal_boundary",
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_completes_a_deterministic_turn_lifecycle"
@@ -8146,16 +8186,20 @@
         "act": 1,
         "differences": {},
         "evidence_levels": [
+          "SOURCE_MATCHED",
           "NATIVE_EXECUTED",
-          "NATIVE_VERIFIED"
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED"
         ],
         "id": "LOOTER",
         "java_sha256": null,
         "java_source": null,
-        "remaining": [
-          "SOURCE_MATCHED",
-          "ORIGINAL_VERIFIED"
-        ],
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_encounter_semantics.json",
+          "audit_sha256": "260b0b5a2d27265442ddd49cc8886013b7a336aa7a3fe15fa539bc59e64f8c11",
+          "scenario": "CONSTRUCTOR_AND_FIRST_TURN"
+        },
+        "remaining": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:514",
           "cpp/simulator/src/combat/MonsterGroup.cpp:305",
@@ -8167,7 +8211,7 @@
           "cpp/simulator/src/combat/MonsterSpecific.cpp:53",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:911"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": [
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_initializes_with_a_legal_boundary",
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_completes_a_deterministic_turn_lifecycle"
@@ -8177,21 +8221,25 @@
         "act": 1,
         "differences": {},
         "evidence_levels": [
+          "SOURCE_MATCHED",
           "NATIVE_EXECUTED",
-          "NATIVE_VERIFIED"
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED"
         ],
         "id": "LOTS_OF_SLIMES",
         "java_sha256": null,
         "java_source": null,
-        "remaining": [
-          "SOURCE_MATCHED",
-          "ORIGINAL_VERIFIED"
-        ],
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_encounter_semantics.json",
+          "audit_sha256": "260b0b5a2d27265442ddd49cc8886013b7a336aa7a3fe15fa539bc59e64f8c11",
+          "scenario": "CONSTRUCTOR_AND_FIRST_TURN"
+        },
+        "remaining": [],
         "simulator_references": [
           "cpp/simulator/src/combat/MonsterGroup.cpp:137",
           "cpp/simulator/src/game/GameContext.cpp:651"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": [
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_initializes_with_a_legal_boundary",
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_completes_a_deterministic_turn_lifecycle"
@@ -8201,16 +8249,20 @@
         "act": 1,
         "differences": {},
         "evidence_levels": [
+          "SOURCE_MATCHED",
           "NATIVE_EXECUTED",
-          "NATIVE_VERIFIED"
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED"
         ],
         "id": "RED_SLAVER",
         "java_sha256": null,
         "java_source": null,
-        "remaining": [
-          "SOURCE_MATCHED",
-          "ORIGINAL_VERIFIED"
-        ],
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_encounter_semantics.json",
+          "audit_sha256": "260b0b5a2d27265442ddd49cc8886013b7a336aa7a3fe15fa539bc59e64f8c11",
+          "scenario": "CONSTRUCTOR_AND_FIRST_TURN"
+        },
+        "remaining": [],
         "simulator_references": [
           "cpp/simulator/src/combat/MonsterGroup.cpp:210",
           "cpp/simulator/src/combat/MonsterGroup.cpp:338",
@@ -8221,7 +8273,7 @@
           "cpp/simulator/src/combat/MonsterSpecific.cpp:59",
           "src/sls/content/normalize.py:50"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": [
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_initializes_with_a_legal_boundary",
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_completes_a_deterministic_turn_lifecycle"
@@ -8231,16 +8283,20 @@
         "act": 1,
         "differences": {},
         "evidence_levels": [
+          "SOURCE_MATCHED",
           "NATIVE_EXECUTED",
-          "NATIVE_VERIFIED"
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED"
         ],
         "id": "SLIME_BOSS",
         "java_sha256": null,
         "java_source": null,
-        "remaining": [
-          "SOURCE_MATCHED",
-          "ORIGINAL_VERIFIED"
-        ],
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_encounter_semantics.json",
+          "audit_sha256": "260b0b5a2d27265442ddd49cc8886013b7a336aa7a3fe15fa539bc59e64f8c11",
+          "scenario": "CONSTRUCTOR_AND_FIRST_TURN"
+        },
+        "remaining": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:2328",
           "cpp/simulator/src/combat/Monster.cpp:566",
@@ -8252,7 +8308,7 @@
           "cpp/simulator/src/game/GameContext.cpp:3179",
           "cpp/simulator/src/game/GameContext.cpp:593"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": [
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_initializes_with_a_legal_boundary",
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_completes_a_deterministic_turn_lifecycle"
@@ -8262,21 +8318,25 @@
         "act": 1,
         "differences": {},
         "evidence_levels": [
+          "SOURCE_MATCHED",
           "NATIVE_EXECUTED",
-          "NATIVE_VERIFIED"
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED"
         ],
         "id": "SMALL_SLIMES",
         "java_sha256": null,
         "java_source": null,
-        "remaining": [
-          "SOURCE_MATCHED",
-          "ORIGINAL_VERIFIED"
-        ],
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_encounter_semantics.json",
+          "audit_sha256": "260b0b5a2d27265442ddd49cc8886013b7a336aa7a3fe15fa539bc59e64f8c11",
+          "scenario": "CONSTRUCTOR_AND_FIRST_TURN"
+        },
+        "remaining": [],
         "simulator_references": [
           "cpp/simulator/src/combat/MonsterGroup.cpp:126",
           "cpp/simulator/src/game/GameContext.cpp:652"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": [
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_initializes_with_a_legal_boundary",
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_completes_a_deterministic_turn_lifecycle"
@@ -8286,16 +8346,20 @@
         "act": 1,
         "differences": {},
         "evidence_levels": [
+          "SOURCE_MATCHED",
           "NATIVE_EXECUTED",
-          "NATIVE_VERIFIED"
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED"
         ],
         "id": "THE_GUARDIAN",
         "java_sha256": null,
         "java_source": null,
-        "remaining": [
-          "SOURCE_MATCHED",
-          "ORIGINAL_VERIFIED"
-        ],
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_encounter_semantics.json",
+          "audit_sha256": "260b0b5a2d27265442ddd49cc8886013b7a336aa7a3fe15fa539bc59e64f8c11",
+          "scenario": "CONSTRUCTOR_AND_FIRST_TURN"
+        },
+        "remaining": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:2329",
           "cpp/simulator/src/combat/Monster.cpp:578",
@@ -8307,7 +8371,7 @@
           "cpp/simulator/src/game/GameContext.cpp:3177",
           "cpp/simulator/src/game/GameContext.cpp:593"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": [
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_initializes_with_a_legal_boundary",
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_completes_a_deterministic_turn_lifecycle"
@@ -8317,21 +8381,25 @@
         "act": 1,
         "differences": {},
         "evidence_levels": [
+          "SOURCE_MATCHED",
           "NATIVE_EXECUTED",
-          "NATIVE_VERIFIED"
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED"
         ],
         "id": "THREE_LOUSE",
         "java_sha256": null,
         "java_source": null,
-        "remaining": [
-          "SOURCE_MATCHED",
-          "ORIGINAL_VERIFIED"
-        ],
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_encounter_semantics.json",
+          "audit_sha256": "260b0b5a2d27265442ddd49cc8886013b7a336aa7a3fe15fa539bc59e64f8c11",
+          "scenario": "CONSTRUCTOR_AND_FIRST_TURN"
+        },
+        "remaining": [],
         "simulator_references": [
           "cpp/simulator/src/combat/MonsterGroup.cpp:427",
           "cpp/simulator/src/game/GameContext.cpp:657"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": [
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_initializes_with_a_legal_boundary",
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_completes_a_deterministic_turn_lifecycle"
@@ -8341,21 +8409,25 @@
         "act": 1,
         "differences": {},
         "evidence_levels": [
+          "SOURCE_MATCHED",
           "NATIVE_EXECUTED",
-          "NATIVE_VERIFIED"
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED"
         ],
         "id": "THREE_SENTRIES",
         "java_sha256": null,
         "java_source": null,
-        "remaining": [
-          "SOURCE_MATCHED",
-          "ORIGINAL_VERIFIED"
-        ],
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_encounter_semantics.json",
+          "audit_sha256": "260b0b5a2d27265442ddd49cc8886013b7a336aa7a3fe15fa539bc59e64f8c11",
+          "scenario": "CONSTRUCTOR_AND_FIRST_TURN"
+        },
+        "remaining": [],
         "simulator_references": [
           "cpp/simulator/src/combat/MonsterGroup.cpp:434",
           "cpp/simulator/src/game/GameContext.cpp:886"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": [
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_initializes_with_a_legal_boundary",
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_completes_a_deterministic_turn_lifecycle"
@@ -8365,20 +8437,24 @@
         "act": 1,
         "differences": {},
         "evidence_levels": [
+          "SOURCE_MATCHED",
           "NATIVE_EXECUTED",
-          "NATIVE_VERIFIED"
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED"
         ],
         "id": "TWO_FUNGI_BEASTS",
         "java_sha256": null,
         "java_source": null,
-        "remaining": [
-          "SOURCE_MATCHED",
-          "ORIGINAL_VERIFIED"
-        ],
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_encounter_semantics.json",
+          "audit_sha256": "260b0b5a2d27265442ddd49cc8886013b7a336aa7a3fe15fa539bc59e64f8c11",
+          "scenario": "CONSTRUCTOR_AND_FIRST_TURN"
+        },
+        "remaining": [],
         "simulator_references": [
           "cpp/simulator/src/combat/MonsterGroup.cpp:452"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": [
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_initializes_with_a_legal_boundary",
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_completes_a_deterministic_turn_lifecycle"
@@ -8388,21 +8464,25 @@
         "act": 1,
         "differences": {},
         "evidence_levels": [
+          "SOURCE_MATCHED",
           "NATIVE_EXECUTED",
-          "NATIVE_VERIFIED"
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED"
         ],
         "id": "TWO_LOUSE",
         "java_sha256": null,
         "java_source": null,
-        "remaining": [
-          "SOURCE_MATCHED",
-          "ORIGINAL_VERIFIED"
-        ],
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_encounter_semantics.json",
+          "audit_sha256": "260b0b5a2d27265442ddd49cc8886013b7a336aa7a3fe15fa539bc59e64f8c11",
+          "scenario": "CONSTRUCTOR_AND_FIRST_TURN"
+        },
+        "remaining": [],
         "simulator_references": [
           "cpp/simulator/src/combat/MonsterGroup.cpp:457",
           "cpp/simulator/src/game/GameContext.cpp:658"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": [
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_initializes_with_a_legal_boundary",
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_completes_a_deterministic_turn_lifecycle"
@@ -9608,7 +9688,7 @@
           "cpp/simulator/src/sim/ConsoleSimulator.cpp:880",
           "cpp/simulator/src/sim/search/GameAction.cpp:758",
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:656",
-          "src/sls/content/normalize.py:150"
+          "src/sls/content/normalize.py:153"
         ],
         "status": "BLOCKED",
         "test_references": []
@@ -9800,7 +9880,7 @@
           "cpp/simulator/src/game/GameContext.cpp:3691",
           "cpp/simulator/src/sim/ConsoleSimulator.cpp:1091",
           "cpp/simulator/src/sim/search/GameAction.cpp:749",
-          "src/sls/content/normalize.py:148"
+          "src/sls/content/normalize.py:151"
         ],
         "status": "BLOCKED",
         "test_references": []
@@ -9882,7 +9962,7 @@
           "cpp/simulator/src/game/GameContext.cpp:3757",
           "cpp/simulator/src/sim/ConsoleSimulator.cpp:1103",
           "cpp/simulator/src/sim/search/GameAction.cpp:770",
-          "src/sls/content/normalize.py:151"
+          "src/sls/content/normalize.py:154"
         ],
         "status": "BLOCKED",
         "test_references": []
@@ -9893,16 +9973,20 @@
         "act": 1,
         "differences": {},
         "evidence_levels": [
+          "SOURCE_MATCHED",
           "NATIVE_EXECUTED",
-          "NATIVE_VERIFIED"
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED"
         ],
         "id": "ACID_SLIME_L",
         "java_sha256": null,
         "java_source": null,
-        "remaining": [
-          "SOURCE_MATCHED",
-          "ORIGINAL_VERIFIED"
-        ],
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_encounter_semantics.json",
+          "audit_sha256": "260b0b5a2d27265442ddd49cc8886013b7a336aa7a3fe15fa539bc59e64f8c11",
+          "scenario": "CONSTRUCTOR_AND_FIRST_TURN"
+        },
+        "remaining": [],
         "simulator_references": [
           "cpp/simulator/src/combat/Monster.cpp:560",
           "cpp/simulator/src/combat/MonsterGroup.cpp:158",
@@ -9911,7 +9995,7 @@
           "cpp/simulator/src/combat/MonsterSpecific.cpp:358",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:37"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": [
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_completes_a_deterministic_turn_lifecycle"
         ]
@@ -9920,16 +10004,20 @@
         "act": 1,
         "differences": {},
         "evidence_levels": [
+          "SOURCE_MATCHED",
           "NATIVE_EXECUTED",
-          "NATIVE_VERIFIED"
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED"
         ],
         "id": "ACID_SLIME_M",
         "java_sha256": null,
         "java_source": null,
-        "remaining": [
-          "SOURCE_MATCHED",
-          "ORIGINAL_VERIFIED"
-        ],
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_encounter_semantics.json",
+          "audit_sha256": "260b0b5a2d27265442ddd49cc8886013b7a336aa7a3fe15fa539bc59e64f8c11",
+          "scenario": "CONSTRUCTOR_AND_FIRST_TURN"
+        },
+        "remaining": [],
         "simulator_references": [
           "cpp/simulator/src/combat/MonsterGroup.cpp:129",
           "cpp/simulator/src/combat/MonsterGroup.cpp:504",
@@ -9938,7 +10026,7 @@
           "cpp/simulator/src/combat/MonsterSpecific.cpp:38",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:386"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": [
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_completes_a_deterministic_turn_lifecycle"
         ]
@@ -9947,16 +10035,20 @@
         "act": 1,
         "differences": {},
         "evidence_levels": [
+          "SOURCE_MATCHED",
           "NATIVE_EXECUTED",
-          "NATIVE_VERIFIED"
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED"
         ],
         "id": "ACID_SLIME_S",
         "java_sha256": null,
         "java_source": null,
-        "remaining": [
-          "SOURCE_MATCHED",
-          "ORIGINAL_VERIFIED"
-        ],
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_encounter_semantics.json",
+          "audit_sha256": "260b0b5a2d27265442ddd49cc8886013b7a336aa7a3fe15fa539bc59e64f8c11",
+          "scenario": "CONSTRUCTOR_AND_FIRST_TURN"
+        },
+        "remaining": [],
         "simulator_references": [
           "cpp/simulator/src/combat/MonsterGroup.cpp:131",
           "cpp/simulator/src/combat/MonsterGroup.cpp:142",
@@ -9965,7 +10057,7 @@
           "cpp/simulator/src/combat/MonsterSpecific.cpp:39",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:398"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": [
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_completes_a_deterministic_turn_lifecycle"
         ]
@@ -9974,16 +10066,20 @@
         "act": 1,
         "differences": {},
         "evidence_levels": [
+          "SOURCE_MATCHED",
           "NATIVE_EXECUTED",
-          "NATIVE_VERIFIED"
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED"
         ],
         "id": "BLUE_SLAVER",
         "java_sha256": null,
         "java_source": null,
-        "remaining": [
-          "SOURCE_MATCHED",
-          "ORIGINAL_VERIFIED"
-        ],
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_encounter_semantics.json",
+          "audit_sha256": "260b0b5a2d27265442ddd49cc8886013b7a336aa7a3fe15fa539bc59e64f8c11",
+          "scenario": "CONSTRUCTOR_AND_FIRST_TURN"
+        },
+        "remaining": [],
         "simulator_references": [
           "cpp/simulator/src/combat/MonsterGroup.cpp:189",
           "cpp/simulator/src/combat/MonsterGroup.cpp:190",
@@ -9994,7 +10090,7 @@
           "cpp/simulator/src/combat/MonsterSpecific.cpp:41",
           "src/sls/content/normalize.py:49"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": [
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_completes_a_deterministic_turn_lifecycle"
         ]
@@ -10003,16 +10099,20 @@
         "act": 1,
         "differences": {},
         "evidence_levels": [
+          "SOURCE_MATCHED",
           "NATIVE_EXECUTED",
-          "NATIVE_VERIFIED"
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED"
         ],
         "id": "CULTIST",
         "java_sha256": null,
         "java_source": null,
-        "remaining": [
-          "SOURCE_MATCHED",
-          "ORIGINAL_VERIFIED"
-        ],
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_encounter_semantics.json",
+          "audit_sha256": "260b0b5a2d27265442ddd49cc8886013b7a336aa7a3fe15fa539bc59e64f8c11",
+          "scenario": "CONSTRUCTOR_AND_FIRST_TURN"
+        },
+        "remaining": [],
         "simulator_references": [
           "cpp/simulator/src/combat/MonsterGroup.cpp:180",
           "cpp/simulator/src/combat/MonsterGroup.cpp:181",
@@ -10027,7 +10127,7 @@
           "cpp/simulator/src/combat/MonsterSpecific.cpp:45",
           "src/sls/backends/original/adapter.py:520"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": [
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_completes_a_deterministic_turn_lifecycle"
         ]
@@ -10036,16 +10136,20 @@
         "act": 1,
         "differences": {},
         "evidence_levels": [
+          "SOURCE_MATCHED",
           "NATIVE_EXECUTED",
-          "NATIVE_VERIFIED"
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED"
         ],
         "id": "FAT_GREMLIN",
         "java_sha256": null,
         "java_source": null,
-        "remaining": [
-          "SOURCE_MATCHED",
-          "ORIGINAL_VERIFIED"
-        ],
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_encounter_semantics.json",
+          "audit_sha256": "260b0b5a2d27265442ddd49cc8886013b7a336aa7a3fe15fa539bc59e64f8c11",
+          "scenario": "CONSTRUCTOR_AND_FIRST_TURN"
+        },
+        "remaining": [],
         "simulator_references": [
           "cpp/simulator/src/combat/MonsterGroup.cpp:106",
           "cpp/simulator/src/combat/MonsterGroup.cpp:107",
@@ -10055,7 +10159,7 @@
           "cpp/simulator/src/combat/MonsterSpecific.cpp:48",
           "src/sls/content/normalize.py:53"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": [
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_completes_a_deterministic_turn_lifecycle"
         ]
@@ -10064,16 +10168,20 @@
         "act": 1,
         "differences": {},
         "evidence_levels": [
+          "SOURCE_MATCHED",
           "NATIVE_EXECUTED",
-          "NATIVE_VERIFIED"
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED"
         ],
         "id": "FUNGI_BEAST",
         "java_sha256": null,
         "java_source": null,
-        "remaining": [
-          "SOURCE_MATCHED",
-          "ORIGINAL_VERIFIED"
-        ],
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_encounter_semantics.json",
+          "audit_sha256": "260b0b5a2d27265442ddd49cc8886013b7a336aa7a3fe15fa539bc59e64f8c11",
+          "scenario": "CONSTRUCTOR_AND_FIRST_TURN"
+        },
+        "remaining": [],
         "simulator_references": [
           "cpp/simulator/src/combat/MonsterGroup.cpp:320",
           "cpp/simulator/src/combat/MonsterGroup.cpp:321",
@@ -10086,7 +10194,7 @@
           "cpp/simulator/src/combat/MonsterSpecific.cpp:2324",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:49"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": [
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_completes_a_deterministic_turn_lifecycle"
         ]
@@ -10095,16 +10203,20 @@
         "act": 1,
         "differences": {},
         "evidence_levels": [
+          "SOURCE_MATCHED",
           "NATIVE_EXECUTED",
-          "NATIVE_VERIFIED"
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED"
         ],
         "id": "GREEN_LOUSE",
         "java_sha256": null,
         "java_source": null,
-        "remaining": [
-          "SOURCE_MATCHED",
-          "ORIGINAL_VERIFIED"
-        ],
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_encounter_semantics.json",
+          "audit_sha256": "260b0b5a2d27265442ddd49cc8886013b7a336aa7a3fe15fa539bc59e64f8c11",
+          "scenario": "CONSTRUCTOR_AND_FIRST_TURN"
+        },
+        "remaining": [],
         "simulator_references": [
           "cpp/simulator/src/combat/Monster.cpp:138",
           "cpp/simulator/src/combat/MonsterGroup.cpp:562",
@@ -10113,7 +10225,7 @@
           "cpp/simulator/src/combat/MonsterSpecific.cpp:50",
           "src/sls/content/normalize.py:48"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": [
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_completes_a_deterministic_turn_lifecycle"
         ]
@@ -10122,16 +10234,20 @@
         "act": 1,
         "differences": {},
         "evidence_levels": [
+          "SOURCE_MATCHED",
           "NATIVE_EXECUTED",
-          "NATIVE_VERIFIED"
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED"
         ],
         "id": "GREMLIN_NOB",
         "java_sha256": null,
         "java_source": null,
-        "remaining": [
-          "SOURCE_MATCHED",
-          "ORIGINAL_VERIFIED"
-        ],
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_encounter_semantics.json",
+          "audit_sha256": "260b0b5a2d27265442ddd49cc8886013b7a336aa7a3fe15fa539bc59e64f8c11",
+          "scenario": "CONSTRUCTOR_AND_FIRST_TURN"
+        },
+        "remaining": [],
         "simulator_references": [
           "cpp/simulator/src/combat/MonsterGroup.cpp:205",
           "cpp/simulator/src/combat/MonsterGroup.cpp:261",
@@ -10140,7 +10256,7 @@
           "cpp/simulator/src/combat/MonsterSpecific.cpp:95",
           "cpp/simulator/src/game/GameContext.cpp:886"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": [
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_completes_a_deterministic_turn_lifecycle"
         ]
@@ -10149,23 +10265,27 @@
         "act": 1,
         "differences": {},
         "evidence_levels": [
+          "SOURCE_MATCHED",
           "NATIVE_EXECUTED",
-          "NATIVE_VERIFIED"
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED"
         ],
         "id": "GREMLIN_WIZARD",
         "java_sha256": null,
         "java_source": null,
-        "remaining": [
-          "SOURCE_MATCHED",
-          "ORIGINAL_VERIFIED"
-        ],
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_encounter_semantics.json",
+          "audit_sha256": "260b0b5a2d27265442ddd49cc8886013b7a336aa7a3fe15fa539bc59e64f8c11",
+          "scenario": "CONSTRUCTOR_AND_FIRST_TURN"
+        },
+        "remaining": [],
         "simulator_references": [
           "cpp/simulator/src/combat/MonsterGroup.cpp:109",
           "cpp/simulator/src/combat/MonsterGroup.cpp:553",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:2466",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:51"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": [
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_completes_a_deterministic_turn_lifecycle"
         ]
@@ -10174,16 +10294,20 @@
         "act": 1,
         "differences": {},
         "evidence_levels": [
+          "SOURCE_MATCHED",
           "NATIVE_EXECUTED",
-          "NATIVE_VERIFIED"
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED"
         ],
         "id": "HEXAGHOST",
         "java_sha256": null,
         "java_source": null,
-        "remaining": [
-          "SOURCE_MATCHED",
-          "ORIGINAL_VERIFIED"
-        ],
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_encounter_semantics.json",
+          "audit_sha256": "260b0b5a2d27265442ddd49cc8886013b7a336aa7a3fe15fa539bc59e64f8c11",
+          "scenario": "CONSTRUCTOR_AND_FIRST_TURN"
+        },
+        "remaining": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:2330",
           "cpp/simulator/src/combat/MonsterGroup.cpp:265",
@@ -10194,7 +10318,7 @@
           "cpp/simulator/src/game/GameContext.cpp:3178",
           "cpp/simulator/src/game/GameContext.cpp:593"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": [
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_completes_a_deterministic_turn_lifecycle"
         ]
@@ -10203,16 +10327,20 @@
         "act": 1,
         "differences": {},
         "evidence_levels": [
+          "SOURCE_MATCHED",
           "NATIVE_EXECUTED",
-          "NATIVE_VERIFIED"
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED"
         ],
         "id": "JAW_WORM",
         "java_sha256": null,
         "java_source": null,
-        "remaining": [
-          "SOURCE_MATCHED",
-          "ORIGINAL_VERIFIED"
-        ],
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_encounter_semantics.json",
+          "audit_sha256": "260b0b5a2d27265442ddd49cc8886013b7a336aa7a3fe15fa539bc59e64f8c11",
+          "scenario": "CONSTRUCTOR_AND_FIRST_TURN"
+        },
+        "remaining": [],
         "simulator_references": [
           "cpp/simulator/src/combat/MonsterGroup.cpp:269",
           "cpp/simulator/src/combat/MonsterGroup.cpp:270",
@@ -10224,7 +10352,7 @@
           "cpp/simulator/src/combat/MonsterSpecific.cpp:285",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:52"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": [
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_completes_a_deterministic_turn_lifecycle"
         ]
@@ -10233,16 +10361,20 @@
         "act": 1,
         "differences": {},
         "evidence_levels": [
+          "SOURCE_MATCHED",
           "NATIVE_EXECUTED",
-          "NATIVE_VERIFIED"
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED"
         ],
         "id": "LAGAVULIN",
         "java_sha256": null,
         "java_source": null,
-        "remaining": [
-          "SOURCE_MATCHED",
-          "ORIGINAL_VERIFIED"
-        ],
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_encounter_semantics.json",
+          "audit_sha256": "260b0b5a2d27265442ddd49cc8886013b7a336aa7a3fe15fa539bc59e64f8c11",
+          "scenario": "CONSTRUCTOR_AND_FIRST_TURN"
+        },
+        "remaining": [],
         "simulator_references": [
           "cpp/simulator/src/combat/MonsterGroup.cpp:296",
           "cpp/simulator/src/combat/MonsterGroup.cpp:297",
@@ -10252,7 +10384,7 @@
           "cpp/simulator/src/combat/MonsterSpecific.cpp:879",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:96"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": [
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_completes_a_deterministic_turn_lifecycle"
         ]
@@ -10261,16 +10393,20 @@
         "act": 1,
         "differences": {},
         "evidence_levels": [
+          "SOURCE_MATCHED",
           "NATIVE_EXECUTED",
-          "NATIVE_VERIFIED"
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED"
         ],
         "id": "LOOTER",
         "java_sha256": null,
         "java_source": null,
-        "remaining": [
-          "SOURCE_MATCHED",
-          "ORIGINAL_VERIFIED"
-        ],
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_encounter_semantics.json",
+          "audit_sha256": "260b0b5a2d27265442ddd49cc8886013b7a336aa7a3fe15fa539bc59e64f8c11",
+          "scenario": "CONSTRUCTOR_AND_FIRST_TURN"
+        },
+        "remaining": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:514",
           "cpp/simulator/src/combat/MonsterGroup.cpp:305",
@@ -10282,7 +10418,7 @@
           "cpp/simulator/src/combat/MonsterSpecific.cpp:53",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:911"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": [
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_completes_a_deterministic_turn_lifecycle"
         ]
@@ -10291,16 +10427,20 @@
         "act": 1,
         "differences": {},
         "evidence_levels": [
+          "SOURCE_MATCHED",
           "NATIVE_EXECUTED",
-          "NATIVE_VERIFIED"
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED"
         ],
         "id": "MAD_GREMLIN",
         "java_sha256": null,
         "java_source": null,
-        "remaining": [
-          "SOURCE_MATCHED",
-          "ORIGINAL_VERIFIED"
-        ],
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_encounter_semantics.json",
+          "audit_sha256": "260b0b5a2d27265442ddd49cc8886013b7a336aa7a3fe15fa539bc59e64f8c11",
+          "scenario": "CONSTRUCTOR_AND_FIRST_TURN"
+        },
+        "remaining": [],
         "simulator_references": [
           "cpp/simulator/src/combat/MonsterGroup.cpp:102",
           "cpp/simulator/src/combat/MonsterGroup.cpp:103",
@@ -10311,7 +10451,7 @@
           "cpp/simulator/src/combat/MonsterSpecific.cpp:54",
           "src/sls/content/normalize.py:57"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": [
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_completes_a_deterministic_turn_lifecycle"
         ]
@@ -10320,16 +10460,20 @@
         "act": 1,
         "differences": {},
         "evidence_levels": [
+          "SOURCE_MATCHED",
           "NATIVE_EXECUTED",
-          "NATIVE_VERIFIED"
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED"
         ],
         "id": "RED_LOUSE",
         "java_sha256": null,
         "java_source": null,
-        "remaining": [
-          "SOURCE_MATCHED",
-          "ORIGINAL_VERIFIED"
-        ],
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_encounter_semantics.json",
+          "audit_sha256": "260b0b5a2d27265442ddd49cc8886013b7a336aa7a3fe15fa539bc59e64f8c11",
+          "scenario": "CONSTRUCTOR_AND_FIRST_TURN"
+        },
+        "remaining": [],
         "simulator_references": [
           "cpp/simulator/src/combat/Monster.cpp:139",
           "cpp/simulator/src/combat/MonsterGroup.cpp:560",
@@ -10338,7 +10482,7 @@
           "cpp/simulator/src/combat/MonsterSpecific.cpp:58",
           "src/sls/content/normalize.py:47"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": [
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_completes_a_deterministic_turn_lifecycle"
         ]
@@ -10347,16 +10491,20 @@
         "act": 1,
         "differences": {},
         "evidence_levels": [
+          "SOURCE_MATCHED",
           "NATIVE_EXECUTED",
-          "NATIVE_VERIFIED"
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED"
         ],
         "id": "RED_SLAVER",
         "java_sha256": null,
         "java_source": null,
-        "remaining": [
-          "SOURCE_MATCHED",
-          "ORIGINAL_VERIFIED"
-        ],
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_encounter_semantics.json",
+          "audit_sha256": "260b0b5a2d27265442ddd49cc8886013b7a336aa7a3fe15fa539bc59e64f8c11",
+          "scenario": "CONSTRUCTOR_AND_FIRST_TURN"
+        },
+        "remaining": [],
         "simulator_references": [
           "cpp/simulator/src/combat/MonsterGroup.cpp:210",
           "cpp/simulator/src/combat/MonsterGroup.cpp:338",
@@ -10367,7 +10515,7 @@
           "cpp/simulator/src/combat/MonsterSpecific.cpp:59",
           "src/sls/content/normalize.py:50"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": [
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_completes_a_deterministic_turn_lifecycle"
         ]
@@ -10376,16 +10524,20 @@
         "act": 1,
         "differences": {},
         "evidence_levels": [
+          "SOURCE_MATCHED",
           "NATIVE_EXECUTED",
-          "NATIVE_VERIFIED"
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED"
         ],
         "id": "SENTRY",
         "java_sha256": null,
         "java_source": null,
-        "remaining": [
-          "SOURCE_MATCHED",
-          "ORIGINAL_VERIFIED"
-        ],
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_encounter_semantics.json",
+          "audit_sha256": "260b0b5a2d27265442ddd49cc8886013b7a336aa7a3fe15fa539bc59e64f8c11",
+          "scenario": "CONSTRUCTOR_AND_FIRST_TURN"
+        },
+        "remaining": [],
         "simulator_references": [
           "cpp/simulator/src/combat/MonsterGroup.cpp:351",
           "cpp/simulator/src/combat/MonsterGroup.cpp:435",
@@ -10396,7 +10548,7 @@
           "cpp/simulator/src/combat/MonsterSpecific.cpp:318",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:98"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": [
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_completes_a_deterministic_turn_lifecycle"
         ]
@@ -10405,16 +10557,20 @@
         "act": 1,
         "differences": {},
         "evidence_levels": [
+          "SOURCE_MATCHED",
           "NATIVE_EXECUTED",
-          "NATIVE_VERIFIED"
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED"
         ],
         "id": "SHIELD_GREMLIN",
         "java_sha256": null,
         "java_source": null,
-        "remaining": [
-          "SOURCE_MATCHED",
-          "ORIGINAL_VERIFIED"
-        ],
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_encounter_semantics.json",
+          "audit_sha256": "260b0b5a2d27265442ddd49cc8886013b7a336aa7a3fe15fa539bc59e64f8c11",
+          "scenario": "CONSTRUCTOR_AND_FIRST_TURN"
+        },
+        "remaining": [],
         "simulator_references": [
           "cpp/simulator/src/combat/MonsterGroup.cpp:108",
           "cpp/simulator/src/combat/MonsterGroup.cpp:552",
@@ -10422,7 +10578,7 @@
           "cpp/simulator/src/combat/MonsterSpecific.cpp:63",
           "src/sls/content/normalize.py:58"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": [
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_completes_a_deterministic_turn_lifecycle"
         ]
@@ -10431,16 +10587,20 @@
         "act": 1,
         "differences": {},
         "evidence_levels": [
+          "SOURCE_MATCHED",
           "NATIVE_EXECUTED",
-          "NATIVE_VERIFIED"
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED"
         ],
         "id": "SLIME_BOSS",
         "java_sha256": null,
         "java_source": null,
-        "remaining": [
-          "SOURCE_MATCHED",
-          "ORIGINAL_VERIFIED"
-        ],
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_encounter_semantics.json",
+          "audit_sha256": "260b0b5a2d27265442ddd49cc8886013b7a336aa7a3fe15fa539bc59e64f8c11",
+          "scenario": "CONSTRUCTOR_AND_FIRST_TURN"
+        },
+        "remaining": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:2328",
           "cpp/simulator/src/combat/Monster.cpp:566",
@@ -10452,7 +10612,7 @@
           "cpp/simulator/src/game/GameContext.cpp:3179",
           "cpp/simulator/src/game/GameContext.cpp:593"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": [
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_completes_a_deterministic_turn_lifecycle"
         ]
@@ -10461,16 +10621,20 @@
         "act": 1,
         "differences": {},
         "evidence_levels": [
+          "SOURCE_MATCHED",
           "NATIVE_EXECUTED",
-          "NATIVE_VERIFIED"
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED"
         ],
         "id": "SNEAKY_GREMLIN",
         "java_sha256": null,
         "java_source": null,
-        "remaining": [
-          "SOURCE_MATCHED",
-          "ORIGINAL_VERIFIED"
-        ],
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_encounter_semantics.json",
+          "audit_sha256": "260b0b5a2d27265442ddd49cc8886013b7a336aa7a3fe15fa539bc59e64f8c11",
+          "scenario": "CONSTRUCTOR_AND_FIRST_TURN"
+        },
+        "remaining": [],
         "simulator_references": [
           "cpp/simulator/src/combat/MonsterGroup.cpp:104",
           "cpp/simulator/src/combat/MonsterGroup.cpp:105",
@@ -10480,7 +10644,7 @@
           "cpp/simulator/src/combat/MonsterSpecific.cpp:65",
           "src/sls/content/normalize.py:54"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": [
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_completes_a_deterministic_turn_lifecycle"
         ]
@@ -10489,16 +10653,20 @@
         "act": 1,
         "differences": {},
         "evidence_levels": [
+          "SOURCE_MATCHED",
           "NATIVE_EXECUTED",
-          "NATIVE_VERIFIED"
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED"
         ],
         "id": "SPIKE_SLIME_L",
         "java_sha256": null,
         "java_source": null,
-        "remaining": [
-          "SOURCE_MATCHED",
-          "ORIGINAL_VERIFIED"
-        ],
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_encounter_semantics.json",
+          "audit_sha256": "260b0b5a2d27265442ddd49cc8886013b7a336aa7a3fe15fa539bc59e64f8c11",
+          "scenario": "CONSTRUCTOR_AND_FIRST_TURN"
+        },
+        "remaining": [],
         "simulator_references": [
           "cpp/simulator/src/combat/Monster.cpp:572",
           "cpp/simulator/src/combat/MonsterGroup.cpp:158",
@@ -10506,7 +10674,7 @@
           "cpp/simulator/src/combat/MonsterSpecific.cpp:3443",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:68"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": [
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_completes_a_deterministic_turn_lifecycle"
         ]
@@ -10515,16 +10683,20 @@
         "act": 1,
         "differences": {},
         "evidence_levels": [
+          "SOURCE_MATCHED",
           "NATIVE_EXECUTED",
-          "NATIVE_VERIFIED"
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED"
         ],
         "id": "SPIKE_SLIME_M",
         "java_sha256": null,
         "java_source": null,
-        "remaining": [
-          "SOURCE_MATCHED",
-          "ORIGINAL_VERIFIED"
-        ],
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_encounter_semantics.json",
+          "audit_sha256": "260b0b5a2d27265442ddd49cc8886013b7a336aa7a3fe15fa539bc59e64f8c11",
+          "scenario": "CONSTRUCTOR_AND_FIRST_TURN"
+        },
+        "remaining": [],
         "simulator_references": [
           "cpp/simulator/src/combat/MonsterGroup.cpp:132",
           "cpp/simulator/src/combat/MonsterGroup.cpp:503",
@@ -10534,7 +10706,7 @@
           "cpp/simulator/src/combat/MonsterSpecific.cpp:3416",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:69"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": [
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_completes_a_deterministic_turn_lifecycle"
         ]
@@ -10543,16 +10715,20 @@
         "act": 1,
         "differences": {},
         "evidence_levels": [
+          "SOURCE_MATCHED",
           "NATIVE_EXECUTED",
-          "NATIVE_VERIFIED"
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED"
         ],
         "id": "SPIKE_SLIME_S",
         "java_sha256": null,
         "java_source": null,
-        "remaining": [
-          "SOURCE_MATCHED",
-          "ORIGINAL_VERIFIED"
-        ],
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_encounter_semantics.json",
+          "audit_sha256": "260b0b5a2d27265442ddd49cc8886013b7a336aa7a3fe15fa539bc59e64f8c11",
+          "scenario": "CONSTRUCTOR_AND_FIRST_TURN"
+        },
+        "remaining": [],
         "simulator_references": [
           "cpp/simulator/src/combat/MonsterGroup.cpp:128",
           "cpp/simulator/src/combat/MonsterGroup.cpp:139",
@@ -10561,7 +10737,7 @@
           "cpp/simulator/src/combat/MonsterSpecific.cpp:2803",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:70"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": [
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_completes_a_deterministic_turn_lifecycle"
         ]
@@ -10570,16 +10746,20 @@
         "act": 1,
         "differences": {},
         "evidence_levels": [
+          "SOURCE_MATCHED",
           "NATIVE_EXECUTED",
-          "NATIVE_VERIFIED"
+          "NATIVE_VERIFIED",
+          "ORIGINAL_VERIFIED"
         ],
         "id": "THE_GUARDIAN",
         "java_sha256": null,
         "java_source": null,
-        "remaining": [
-          "SOURCE_MATCHED",
-          "ORIGINAL_VERIFIED"
-        ],
+        "original_evidence": {
+          "artifact": "configs/validation/ironclad_a0_encounter_semantics.json",
+          "audit_sha256": "260b0b5a2d27265442ddd49cc8886013b7a336aa7a3fe15fa539bc59e64f8c11",
+          "scenario": "CONSTRUCTOR_AND_FIRST_TURN"
+        },
+        "remaining": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:2329",
           "cpp/simulator/src/combat/Monster.cpp:578",
@@ -10591,7 +10771,7 @@
           "cpp/simulator/src/game/GameContext.cpp:3177",
           "cpp/simulator/src/game/GameContext.cpp:593"
         ],
-        "status": "BLOCKED",
+        "status": "VERIFIED",
         "test_references": [
           "tests/simulator/test_content_execution.py:test_every_act1_encounter_completes_a_deterministic_turn_lifecycle"
         ]
@@ -11655,7 +11835,7 @@
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:2510",
           "cpp/simulator/src/sim/search/Action.cpp:93",
-          "src/sls/content/semantic_audit.py:113"
+          "src/sls/content/semantic_audit.py:121"
         ],
         "status": "VERIFIED",
         "test_references": []
@@ -11877,7 +12057,7 @@
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:135",
           "cpp/simulator/src/combat/Player.cpp:964",
-          "src/sls/content/semantic_audit.py:29"
+          "src/sls/content/semantic_audit.py:37"
         ],
         "status": "VERIFIED",
         "test_references": [
@@ -12028,7 +12208,7 @@
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:115",
           "cpp/simulator/src/combat/BattleContext.cpp:408",
-          "src/sls/content/semantic_audit.py:29"
+          "src/sls/content/semantic_audit.py:37"
         ],
         "status": "VERIFIED",
         "test_references": []
@@ -12355,7 +12535,7 @@
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:139",
           "cpp/simulator/src/combat/Player.cpp:646",
-          "src/sls/content/semantic_audit.py:29"
+          "src/sls/content/semantic_audit.py:37"
         ],
         "status": "VERIFIED",
         "test_references": []
@@ -12388,7 +12568,7 @@
         "scope_groups": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:253",
-          "src/sls/content/semantic_audit.py:29"
+          "src/sls/content/semantic_audit.py:37"
         ],
         "status": "VERIFIED",
         "test_references": []
@@ -12761,7 +12941,7 @@
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:117",
           "cpp/simulator/src/combat/BattleContext.cpp:416",
-          "src/sls/content/semantic_audit.py:30"
+          "src/sls/content/semantic_audit.py:38"
         ],
         "status": "VERIFIED",
         "test_references": []
@@ -13451,7 +13631,7 @@
           "cpp/simulator/src/combat/BattleContext.cpp:420",
           "cpp/simulator/src/game/Game.cpp:332",
           "cpp/simulator/src/game/Game.cpp:333",
-          "src/sls/content/semantic_audit.py:30"
+          "src/sls/content/semantic_audit.py:38"
         ],
         "status": "VERIFIED",
         "test_references": []
@@ -13710,7 +13890,7 @@
         "scope_groups": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:297",
-          "src/sls/content/semantic_audit.py:30"
+          "src/sls/content/semantic_audit.py:38"
         ],
         "status": "VERIFIED",
         "test_references": []
@@ -14212,7 +14392,7 @@
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:301",
           "cpp/simulator/src/game/GameContext.cpp:2866",
-          "src/sls/content/semantic_audit.py:31"
+          "src/sls/content/semantic_audit.py:39"
         ],
         "status": "VERIFIED",
         "test_references": []
@@ -14428,7 +14608,7 @@
         "scope_groups": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:319",
-          "src/sls/content/semantic_audit.py:31"
+          "src/sls/content/semantic_audit.py:39"
         ],
         "status": "VERIFIED",
         "test_references": []
@@ -15077,7 +15257,7 @@
           "cpp/simulator/src/game/GameContext.cpp:3594",
           "cpp/simulator/src/sim/ConsoleSimulator.cpp:1045",
           "cpp/simulator/src/sim/search/GameAction.cpp:933",
-          "src/sls/content/semantic_audit.py:31"
+          "src/sls/content/semantic_audit.py:39"
         ],
         "status": "VERIFIED",
         "test_references": []
@@ -15822,7 +16002,7 @@
         "scope_groups": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:367",
-          "src/sls/content/semantic_audit.py:32"
+          "src/sls/content/semantic_audit.py:40"
         ],
         "status": "VERIFIED",
         "test_references": []
@@ -16106,7 +16286,7 @@
         "scope_groups": [],
         "simulator_references": [
           "cpp/simulator/src/combat/BattleContext.cpp:371",
-          "src/sls/content/semantic_audit.py:32"
+          "src/sls/content/semantic_audit.py:40"
         ],
         "status": "VERIFIED",
         "test_references": []
@@ -16292,82 +16472,108 @@
   "mechanisms": [
     {
       "evidence_levels": [
-        "NATIVE_VERIFIED"
-      ],
-      "id": "RNG",
-      "remaining": [
         "SOURCE_MATCHED",
+        "NATIVE_EXECUTED",
+        "NATIVE_VERIFIED",
         "ORIGINAL_VERIFIED"
       ],
-      "status": "BLOCKED",
+      "id": "RNG",
+      "original_evidence": {
+        "artifact": "configs/validation/ironclad_a0_mechanism_semantics.json",
+        "audit_sha256": "86ea269b8e98fec3985947156c964cfb1126b0c2cd4dfec4e522e2bd6c341950"
+      },
+      "remaining": [],
+      "status": "VERIFIED",
       "test_references": [
         "tests/simulator/test_native_mechanisms.py:test_original_compatible_rng_is_seeded_and_advances_exactly"
       ]
     },
     {
       "evidence_levels": [
-        "NATIVE_VERIFIED"
-      ],
-      "id": "DAMAGE_PIPELINE",
-      "remaining": [
         "SOURCE_MATCHED",
+        "NATIVE_EXECUTED",
+        "NATIVE_VERIFIED",
         "ORIGINAL_VERIFIED"
       ],
-      "status": "BLOCKED",
+      "id": "DAMAGE_PIPELINE",
+      "original_evidence": {
+        "artifact": "configs/validation/ironclad_a0_mechanism_semantics.json",
+        "audit_sha256": "86ea269b8e98fec3985947156c964cfb1126b0c2cd4dfec4e522e2bd6c341950"
+      },
+      "remaining": [],
+      "status": "VERIFIED",
       "test_references": [
         "tests/simulator/test_native_mechanisms.py:test_core_combat_rule_probes"
       ]
     },
     {
       "evidence_levels": [
-        "NATIVE_VERIFIED"
-      ],
-      "id": "POWER_ORDER",
-      "remaining": [
         "SOURCE_MATCHED",
+        "NATIVE_EXECUTED",
+        "NATIVE_VERIFIED",
         "ORIGINAL_VERIFIED"
       ],
-      "status": "BLOCKED",
+      "id": "POWER_ORDER",
+      "original_evidence": {
+        "artifact": "configs/validation/ironclad_a0_mechanism_semantics.json",
+        "audit_sha256": "86ea269b8e98fec3985947156c964cfb1126b0c2cd4dfec4e522e2bd6c341950"
+      },
+      "remaining": [],
+      "status": "VERIFIED",
       "test_references": [
         "tests/simulator/test_native_mechanisms.py:test_turn_lifecycle_and_stable_power_order"
       ]
     },
     {
       "evidence_levels": [
-        "NATIVE_VERIFIED"
-      ],
-      "id": "ORB_ENGINE",
-      "remaining": [
-        "SOURCE_MATCHED"
-      ],
-      "status": "BLOCKED",
-      "test_references": [
-        "tests/simulator/test_native_mechanisms.py:test_core_combat_rule_probes"
-      ]
-    },
-    {
-      "evidence_levels": [
-        "NATIVE_VERIFIED"
-      ],
-      "id": "STANCE_ENGINE",
-      "remaining": [
-        "SOURCE_MATCHED"
-      ],
-      "status": "BLOCKED",
-      "test_references": [
-        "tests/simulator/test_native_mechanisms.py:test_core_combat_rule_probes"
-      ]
-    },
-    {
-      "evidence_levels": [
-        "NATIVE_VERIFIED"
-      ],
-      "id": "RUN_AND_CHECKPOINT",
-      "remaining": [
-        "ACT1_SOURCE_AUDIT",
+        "SOURCE_MATCHED",
+        "NATIVE_EXECUTED",
+        "NATIVE_VERIFIED",
         "ORIGINAL_VERIFIED"
       ],
-      "status": "BLOCKED",
+      "id": "ORB_ENGINE",
+      "original_evidence": {
+        "artifact": "configs/validation/ironclad_a0_mechanism_semantics.json",
+        "audit_sha256": "86ea269b8e98fec3985947156c964cfb1126b0c2cd4dfec4e522e2bd6c341950"
+      },
+      "remaining": [],
+      "status": "VERIFIED",
+      "test_references": [
+        "tests/simulator/test_native_mechanisms.py:test_core_combat_rule_probes"
+      ]
+    },
+    {
+      "evidence_levels": [
+        "SOURCE_MATCHED",
+        "NATIVE_EXECUTED",
+        "NATIVE_VERIFIED",
+        "ORIGINAL_VERIFIED"
+      ],
+      "id": "STANCE_ENGINE",
+      "original_evidence": {
+        "artifact": "configs/validation/ironclad_a0_mechanism_semantics.json",
+        "audit_sha256": "86ea269b8e98fec3985947156c964cfb1126b0c2cd4dfec4e522e2bd6c341950"
+      },
+      "remaining": [],
+      "status": "VERIFIED",
+      "test_references": [
+        "tests/simulator/test_native_mechanisms.py:test_core_combat_rule_probes"
+      ]
+    },
+    {
+      "evidence_levels": [
+        "SOURCE_MATCHED",
+        "NATIVE_EXECUTED",
+        "NATIVE_VERIFIED",
+        "ORIGINAL_VERIFIED"
+      ],
+      "id": "RUN_AND_CHECKPOINT",
+      "original_evidence": {
+        "artifact": "configs/validation/ironclad_a0_mechanism_semantics.json",
+        "audit_sha256": "86ea269b8e98fec3985947156c964cfb1126b0c2cd4dfec4e522e2bd6c341950"
+      },
+      "remaining": [],
+      "status": "VERIFIED",
       "test_references": [
         "tests/simulator/test_native_mechanisms.py:test_full_run_checkpoint_is_exact_across_decision_boundaries"
       ]
@@ -16375,18 +16581,22 @@
     {
       "evidence_levels": [
         "SOURCE_MATCHED",
-        "NATIVE_VERIFIED"
-      ],
-      "id": "NONCOMBAT_POTION_ACTIONS",
-      "remaining": [
+        "NATIVE_EXECUTED",
+        "NATIVE_VERIFIED",
         "ORIGINAL_VERIFIED"
       ],
+      "id": "NONCOMBAT_POTION_ACTIONS",
+      "original_evidence": {
+        "artifact": "configs/validation/ironclad_a0_mechanism_semantics.json",
+        "audit_sha256": "86ea269b8e98fec3985947156c964cfb1126b0c2cd4dfec4e522e2bd6c341950"
+      },
+      "remaining": [],
       "source_references": [
         "reference/original-game/decompiled/com/megacrit/cardcrawl/potions/BloodPotion.java",
         "reference/original-game/decompiled/com/megacrit/cardcrawl/potions/EntropicBrew.java",
         "reference/original-game/decompiled/com/megacrit/cardcrawl/potions/FruitJuice.java"
       ],
-      "status": "BLOCKED",
+      "status": "VERIFIED",
       "test_references": [
         "tests/simulator/test_simulator_backend.py:test_noncombat_potion_actions_preserve_the_current_screen",
         "tests/original/test_adapter.py:test_stock_out_of_combat_potions_remain_policy_actions"
@@ -16398,10 +16608,10 @@
     "act1_pilot_ready": false,
     "claim": "VERIFIED requires stock-source agreement plus explicit executable evidence; cards, potions, and verified relic batches require current Original/native effect evidence; BLOCKED entries are not parity claims.",
     "status_counts": {
-      "BLOCKED": 242,
+      "BLOCKED": 190,
       "DIFFERENCE": 0,
       "OUT_OF_SCOPE": 0,
-      "VERIFIED": 176
+      "VERIFIED": 228
     }
   }
 }
