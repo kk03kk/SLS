@@ -1,5 +1,5 @@
 {
-  "audit_sha256": "a61336cb9ae6a24603440586f2b5a58101c51f22fddbd2bebedf9d26933bc2a4",
+  "audit_sha256": "67ac50e8f9a5d411b50e1480ace5318b3fe9af41c74b26264c77e233be4c1e1a",
   "entries": [
     {
       "game_id": "Ancient Potion",
@@ -40,20 +40,20 @@
           "boundary_hashes": [
             "3d727e113bef6e79d8f0f1fab11985406c14c4694f8c7afae19a1f5829b89a0a",
             "29b89cb1419e17f35a05deff6402eeb17d0f48d4c93b12ad8a64c1d4f1b4ee45",
-            "8956eabfbb068483597b5c981ff59e04f7dfd143d69d35cf37a2f0fc0cde4a8e"
+            "7c24042ef24ce813b6f352e6eae770b9c0364b6d48fd9548cf84b7a47903d69d"
           ],
-          "effect_sha256": "9865564e40d6d87db94d7b8a5daf22c0c5e81e7d9175dde960dd1c6144b7d2fa",
+          "effect_sha256": "cf6b55efb70c8626db8d5f2e2a44a48b3acea5f669dbfa53f318c73c7dab7a25",
           "sacred_bark": false,
           "setup_digest": "973c60cc0bc52ad4714a2e8455b49d527074494b5de01116e87456d3fb72c74c"
         },
         {
           "boundaries": 3,
           "boundary_hashes": [
-            "31252ae3afd1200a7ba80c2ee76443701d7a8efeef85dc1aa6c8566ded40894c",
-            "9039d809ba1146b1c61608dc5d2a264d367c8fbe9ea9fb646c5787e8013930aa",
-            "a8c8db3d2a4e68d6a010ba62a9a1a0097e3d1a4d9add6e83ea4eef912eb163f3"
+            "57a9f38a77df5e593e689a54199fb88edff2e2997ce2210573dfa12f0a205b18",
+            "e853eef545fb35047fd3ed124c5b2c28c9ec2dd72740588e37fcb7d3df2715d5",
+            "32a07f19e310b1d8298cf1c5815d7430e3326bc4aac276308562872f782bc711"
           ],
-          "effect_sha256": "3e9cad05a98b36e9fbac3b0a45d2bc9265118d1beafd451c98d28dcbb5d0d650",
+          "effect_sha256": "bc5d96b710fa5c707d5521b0f4410b32cf9cbd1d4386f1b3f45ffbcabb3d9d70",
           "sacred_bark": true,
           "setup_digest": "1915db514e3ea4c5a45bf1a103df8ea7849ba1b16f1df733aa114e2754c0dc12"
         }
@@ -68,20 +68,20 @@
         {
           "boundaries": 2,
           "boundary_hashes": [
-            "46e308e16c1416f5b55edcf6188cb92bc99fcdc11b31d97824f5799dc8c60a0d",
-            "fac2d8ca3c7c7faf8e24d2a6a2daf578165232d3cd642f51a4dce06499862914"
+            "6ee29a2b1ba55a0b3324866ea17292fbccbb3995015c265971e04e039005c7e4",
+            "628121ab004eb12bf950fd1ba22c2105c10d8bbf9f798c37fc84f02b3617e63a"
           ],
-          "effect_sha256": "1aff505a475529e2ae4d139351dd8e7614e46c5eac2b36cd4b142442f60a2413",
+          "effect_sha256": "7ae237db981eaef6957b43ac515e2634175d133f3742610799672ce2004a53bb",
           "sacred_bark": false,
           "setup_digest": "973c60cc0bc52ad4714a2e8455b49d527074494b5de01116e87456d3fb72c74c"
         },
         {
           "boundaries": 2,
           "boundary_hashes": [
-            "98f06e37962045a25ffcd74b2559e2460e2a11c34bce61c814fdf8a6f135d270",
-            "cbf2e7c1605bb1db18a00da49e75934eaded0b97b7fe14536bc8a736e1ab9fce"
+            "e19193cfb3c2997d8a24e8ad13568f1dd0cc16d20d000499f559b907c149a6bf",
+            "b47b5c09dc24e24eacce81e36b730602f9a358714657d7446a1dddf408721482"
           ],
-          "effect_sha256": "ae560fdbb647f2ed210bcb47164ba286eed81b873e4e983ac9c65730d6690615",
+          "effect_sha256": "5c8ef1e7d32d3246367dcad0c7a61b2bdb1edee5db24839db731da9990179c36",
           "sacred_bark": true,
           "setup_digest": "1915db514e3ea4c5a45bf1a103df8ea7849ba1b16f1df733aa114e2754c0dc12"
         }
@@ -96,20 +96,20 @@
         {
           "boundaries": 2,
           "boundary_hashes": [
-            "eccfa74bc84b72d120663b3ba9019032352c7dee21d36265a8c4e810b83f6be7",
-            "c1bf70f0e52bbaf2dcf9c7afe6ce611d8c3327dcc4e93ad3554f4f3712e75988"
+            "baf374b1d9f22ded897472c45eb8967d2232ac39097fca0b1a73fcb91fe770f0",
+            "4bd8e37c4edb3c30427f42fa9445fec3f7bb01e288dc8b19bfeb26cef69f4cd3"
           ],
-          "effect_sha256": "9b00febbbeb68edf982a5abdfa9b7be79d8b7e19be39378ecca101d478e2d675",
+          "effect_sha256": "9cf901590f2f8ea947b304d3e763220cbc8d6dfb67472bd0454bbd07a3548396",
           "sacred_bark": false,
           "setup_digest": "973c60cc0bc52ad4714a2e8455b49d527074494b5de01116e87456d3fb72c74c"
         },
         {
           "boundaries": 2,
           "boundary_hashes": [
-            "a5279bc7f0d10915011c8c8b907f9dc30a0a808a587c7b498f95620a01f0bfeb",
-            "149bbb561a4fdaff4335c74f3ca4a3ee2d8e81a7ac6d995894d9448fe8d5c778"
+            "e2f8952cca776d7325ae16aadb1595299b2c2636e5013f2744cf04d1ff9e1d34",
+            "65881c1c36bdf96fea6961fecf4b7628ffcf12e34555b054062e79041177607a"
           ],
-          "effect_sha256": "e0bb01a1e6e4a8d9091fc6c900c5f106446b14696f3f73dc3373313e7a374a11",
+          "effect_sha256": "afb77d691a7c39d7b6775d1cc4a5cad5d54b2f05f3a8457acf62b5dd3c7a37e9",
           "sacred_bark": true,
           "setup_digest": "1915db514e3ea4c5a45bf1a103df8ea7849ba1b16f1df733aa114e2754c0dc12"
         }
@@ -124,20 +124,20 @@
         {
           "boundaries": 2,
           "boundary_hashes": [
-            "11b47ee5bf0452b75136c233d05c1c7c508b7cdc9e483c4b5ca9b3122eaa2f29",
-            "0b04b6f5c118c84e6e53477261522bcfb128aeb4dc18934c6239dc9459e5c319"
+            "bfeb9b399fa6c8251c743022c541e95513ed70ca508f41c5044ab0b45beac806",
+            "8ab30dd0f5577c72c8242e5c43868dfe9bcdf33a0b253c896da599f101327ee9"
           ],
-          "effect_sha256": "26014e2e7b6d94f3e576a802f26b16b764924f07ee1cc9b693fbbee834d1bebb",
+          "effect_sha256": "ab137c070b27468cb783a64f0fb635c8c67c43ebc20690aacb71f706387b8a4a",
           "sacred_bark": false,
           "setup_digest": "973c60cc0bc52ad4714a2e8455b49d527074494b5de01116e87456d3fb72c74c"
         },
         {
           "boundaries": 2,
           "boundary_hashes": [
-            "45ba0d122fc769d2620e0746d54b49d7e5413ca20b48d8f16707720fe1bcd695",
-            "fc249fca077c1e5f10b99e188c0c423a10c2e3d7d3243b0edfe254ce48c0f19e"
+            "ab08fc9d5a449cb2f997d8d3100b812ca41c86d4fdd3138c7357a44315c48112",
+            "bde88b193bbada30caf495ddbf8abf5970504862f453c35f8034071515a0dc27"
           ],
-          "effect_sha256": "0bf913993aa0e94ab858ee8e4d3ef0a294ccf641d9b78853920644d069028456",
+          "effect_sha256": "d8a96841805e27b3c0366b28844184ef0e7db7ad29926847a426a7b7c2267d85",
           "sacred_bark": true,
           "setup_digest": "1915db514e3ea4c5a45bf1a103df8ea7849ba1b16f1df733aa114e2754c0dc12"
         }
@@ -152,22 +152,22 @@
         {
           "boundaries": 3,
           "boundary_hashes": [
-            "a5578a2e721b0fbf4ff66f3a971a6c336d64d26d8a138d78f2306ffe5402ab6b",
-            "a266a37d09a9012bbd11541aa35e782885699c4fa0b37be26aa10ee7804dade1",
-            "d8a0b6ff2b910afb1fe19c2b7b4f395322dbea863587446b6ff7539c1bcd053a"
+            "afbc525b0ae8e91356e8d49bed0757c1f29bb1a7ff727a84ed6b50f7cdc08182",
+            "2bf0f718a3fed1b9799a6a15623d3c4825f597a3351aa6239eb12b665f002b4b",
+            "b3cb38db60ab9b79e900324f28dda647c51cc5be5e56c88572ea786386d7c9ff"
           ],
-          "effect_sha256": "4ca9c80d2b807b415eb556d13a0204029d75b98cde3cd20f936d507f89a423f4",
+          "effect_sha256": "cd201f339eca40c0436bcd5bf6e64c49747ec0677d6c116ba5146ea83516ec8a",
           "sacred_bark": false,
           "setup_digest": "973c60cc0bc52ad4714a2e8455b49d527074494b5de01116e87456d3fb72c74c"
         },
         {
           "boundaries": 3,
           "boundary_hashes": [
-            "f21156c3494f8fd00550da0243eb19fd5d578a376461dbedda2d0ac0acec053f",
-            "853859090a7dc56a908fa325a981e5192ea072f792c783b29075e93219197257",
-            "6c790575541e90508f7edbdf6149b11913620b25d309fc322eda9619fd4f97ec"
+            "ad22ff269099d9716f530f18cbb11c5af004c4843c1895b35c178b7f9fd1461f",
+            "3d4f652be48e886a79305fa384d81890b13f68ffdbcc7a54177b1ee8c66ca810",
+            "95daf2dfcaf1a3d3a07d3c11311c8f2fda4f2a4149f116402063ec79e917ed36"
           ],
-          "effect_sha256": "1fa1a9c4e02efec3b0d0f0b27f7814da3cb681640757d462afc9066ab117d697",
+          "effect_sha256": "7eaa2891aef27c05b8ed662f394f7a5bc48434b8df7e4bfceb9dc4b40efbebb6",
           "sacred_bark": true,
           "setup_digest": "1915db514e3ea4c5a45bf1a103df8ea7849ba1b16f1df733aa114e2754c0dc12"
         }
@@ -715,9 +715,9 @@
           "boundary_hashes": [
             "37ea3c0df8d2f02d04768603dbed065817f29cd85b8316a6cad55b45219a9564",
             "d4ee864668aae725958adf7da74c8f5a29ace006dbd22d2a593021e2abfb6d88",
-            "1f70962e9831d13ec3a3a35f2f4c9b9a5b553a00fd1499b0bbccda0545c84b3f"
+            "9c16a635bd44596300f20987da82ab7953eaa819fa15f1548ca7f2b19c2fce98"
           ],
-          "effect_sha256": "0c40b77e8fdb600d6b6f68a40c3fac393c0cef157583e3dc8cfab5fd01e6850e",
+          "effect_sha256": "07fdd095185d0a7b4a5a08c7d50ded89adb3efacf61fe4c557254a5266e00dae",
           "sacred_bark": true,
           "setup_digest": "1915db514e3ea4c5a45bf1a103df8ea7849ba1b16f1df733aa114e2754c0dc12"
         }
@@ -732,20 +732,20 @@
         {
           "boundaries": 2,
           "boundary_hashes": [
-            "f5d6b52399ec727a66d5473db83ed3b21962d656d5d1f3b40c4cc1470ac62bcf",
-            "156f28221fbe852a183968be173a67a4769138536668e54dc8b05faddbbbf148"
+            "528fde2133bba99c6da21dbb57d35a210a05eb5b9ca7d4281f09b047347b16dc",
+            "27df3879f299a7861f23cf2abeaca5b5cf53f62cf6ca4f1c6e8cfeadc309722c"
           ],
-          "effect_sha256": "0ab43af91b795ebc2de73b6ba86cc4fa72cacb521c8c59d7e6f7c103783980f2",
+          "effect_sha256": "fac171f6f1c7da754d249f3c9278ffb6914ccfe979ae7df913e74e84164b2677",
           "sacred_bark": false,
           "setup_digest": "973c60cc0bc52ad4714a2e8455b49d527074494b5de01116e87456d3fb72c74c"
         },
         {
           "boundaries": 2,
           "boundary_hashes": [
-            "a9f5d3f1e522e8147a5447eab6bbf4a0a7eea4b893bd0126d2d5e7af0b1f3140",
-            "5488f13d1314ffe483a94d042ab44000bb1e45827f4e7ecff6f0ad357c530cca"
+            "ffa9dc806fa4cf71714b6abcb92e3dbc08c0930437c52efe1b67ab42110ee1ec",
+            "9603da6af4e018b22e8e44d50155f77ebf950a79ff13aecadf5707dff30f2cee"
           ],
-          "effect_sha256": "52be5834d0ea867d8523e4d748dd68d1de2dff581adfcfa85f82e515e1d9fad7",
+          "effect_sha256": "1fd8cb763b8fadf34cf3bb3a696eceedc8091141fce8e41e74f6ccc205a0e36c",
           "sacred_bark": true,
           "setup_digest": "1915db514e3ea4c5a45bf1a103df8ea7849ba1b16f1df733aa114e2754c0dc12"
         }
@@ -760,11 +760,11 @@
         {
           "boundaries": 3,
           "boundary_hashes": [
-            "b09895f0b7d0fe482adfd5f2d2a571fde18fb7e64862449bfcab991f06e42dfc",
-            "e135fe6fa2c8974209ca5a284a61de20463e7adf3eecf9b0efccbf1f3ce5de72",
-            "e6d99f52ed852f16efaea8c53777925367c7d7a30ac981dc9751f6b00f518f2f"
+            "7467b36d141605afe226caf9cf2868e2d43b1311fa49b5948c5dd2dc4b1a8d89",
+            "50a6a926d3b31225b2103591e706f439aa3fead9fa89e234b47bff3e4d37cead",
+            "afd8546d151f3d28500252e5a3c90464d7d4fd948f2b23a9208521d3185cd930"
           ],
-          "effect_sha256": "3aeb8bd3599b6d253e5f67a2a7d561fec44a1ce189edf1350e81425b39996822",
+          "effect_sha256": "8220f1eb91cd1fcbd845ebbd84dac38a01d00bbc5f48dbc232a6487f37d1ee70",
           "sacred_bark": false,
           "setup_digest": "973c60cc0bc52ad4714a2e8455b49d527074494b5de01116e87456d3fb72c74c"
         },
@@ -943,6 +943,6 @@
   ],
   "oracle_schema": "spirecomm-parity-v10",
   "schema": "sls-ironclad-potion-semantics-v1",
-  "scope_sha256": "1e9ba31232cea5813b88cf6d75c7be28deaca4ac84c32079745477866fc0649d",
+  "scope_sha256": "fb9c464dda321dfdb3e237ddef1fcd8427b037c9a39e92510aea183b1d9cfdb8",
   "seed": 0
 }

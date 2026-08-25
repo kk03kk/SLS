@@ -1186,6 +1186,18 @@ void BattleContext::useAttackCard() {
                 cards.findAndUpgradeSpecialData(c.uniqueId, up ? 8 : 5);
             }
             c.specialData += up ? 8 : 5;
+            // Double Tap, Duplication and Echo Form enqueue a stat-equivalent
+            // copy before the first Rampage mutates its misc value.  Original's
+            // ModifyDamageAction updates every card with the same UUID, including
+            // the queued copy, so keep the native queue in sync as well.
+            int queueIndex = cardQueue.frontIdx;
+            for (int index = 0; index < cardQueue.size; ++index) {
+                auto &queued = cardQueue.arr[queueIndex].card;
+                if (queued.uniqueId == c.uniqueId) {
+                    queued.specialData += up ? 8 : 5;
+                }
+                queueIndex = (queueIndex + 1) % CardQueue::capacity;
+            }
 
             break;
         }

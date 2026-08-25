@@ -1802,6 +1802,23 @@ public:
         gc_->maxHp = max_hp;
     }
 
+    void set_duplication_power_for_testing(const std::string &power, int amount) {
+        require_reset();
+        if (amount <= 0) {
+            throw std::invalid_argument("Duplication power amount must be positive");
+        }
+        const auto id = normalized(power);
+        if (id == "DOUBLETAP") {
+            bc_->player.buff<PS::DOUBLE_TAP>(amount);
+        } else if (id == "DUPLICATION") {
+            bc_->player.buff<PS::DUPLICATION>(amount);
+        } else if (id == "ECHOFORM") {
+            bc_->player.buff<PS::ECHO_FORM>(amount);
+        } else {
+            throw std::invalid_argument("Unsupported duplication power probe");
+        }
+    }
+
     void set_potions(const std::vector<std::string> &potions) {
         require_reset();
         if (potions.size() > bc_->potions.size()) {
@@ -1975,7 +1992,15 @@ public:
             combat_internal["monster_skip_turn_bits"].cast<std::uint32_t>();
         bc_->potionCount = combat_internal["potion_count"].cast<int>();
         bc_->potionCapacity = combat_internal["potion_capacity"].cast<int>();
+        if (bc_->potionCapacity < 0 ||
+                bc_->potionCapacity > static_cast<int>(bc_->potions.size()) ||
+                bc_->potionCount < 0 || bc_->potionCount > bc_->potionCapacity) {
+            throw std::invalid_argument("Combat checkpoint potion counts are invalid");
+        }
         const auto potion_ids = combat_internal["potion_ids"].cast<py::list>();
+        if (potion_ids.size() != bc_->potions.size()) {
+            throw std::invalid_argument("Combat checkpoint potion array has invalid length");
+        }
         for (int index = 0; index < 5; ++index) {
             bc_->potions[index] = static_cast<Potion>(potion_ids[index].cast<int>());
         }
@@ -2419,6 +2444,9 @@ private:
         p.gold = internal["gold"].cast<int>();
         p.stance = static_cast<Stance>(internal["stance"].cast<int>());
         p.orbSlots = internal["orb_slots"].cast<int>();
+        if (p.orbSlots < 0 || p.orbSlots > Player::MAX_ORB_SLOTS) {
+            throw std::invalid_argument("Combat checkpoint orb slot count is invalid");
+        }
         if (internal.contains("orbs")) {
             const auto orbs = internal["orbs"].cast<py::list>();
             const auto evoke = internal["orb_evoke_amounts"].cast<py::list>();
@@ -2488,6 +2516,9 @@ private:
     void restore_monsters(const py::dict &combat) {
         bc_->monsters = MonsterGroup();
         const auto values = combat["monsters"].cast<py::list>();
+        if (values.size() > bc_->monsters.arr.size()) {
+            throw std::invalid_argument("Combat checkpoint has too many monsters");
+        }
         bc_->monsters.monsterCount = static_cast<int>(values.size());
         for (int index = 0; index < bc_->monsters.monsterCount; ++index) {
             const auto value = values[index].cast<py::dict>();
@@ -4489,6 +4520,9 @@ PYBIND11_MODULE(_lightspeed, module) {
              py::arg("seed"), py::arg("relic_id"))
         .def("set_player_health", &LightspeedBattle::set_player_health,
              py::arg("current_hp"), py::arg("max_hp"))
+        .def("_set_duplication_power_for_testing",
+             &LightspeedBattle::set_duplication_power_for_testing,
+             py::arg("power"), py::arg("amount") = 1)
         .def("apply_scenario", &LightspeedBattle::apply_scenario,
              py::arg("scenario"))
         .def("set_potions", &LightspeedBattle::set_potions, py::arg("potions"))

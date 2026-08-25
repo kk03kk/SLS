@@ -13,10 +13,10 @@ from sls.content.scope import IRONCLAD_A0_SCOPE_ID, ironclad_a0_scope_hash
 from sls.content.semantic_audit import semantic_audit_hash
 from sls.model.encoding import ENCODING_SCHEMA, vocabulary_hash
 from sls.rl.ppo import PPOTrainer
-from sls.rl.training_contract import runtime_contract
+from sls.rl.training_contract import TRAINING_CHECKPOINT_SCHEMA, runtime_contract
 
 
-CHECKPOINT_SCHEMA = "sls-full-run-ppo-v3"
+CHECKPOINT_SCHEMA = TRAINING_CHECKPOINT_SCHEMA
 
 
 def _contract(trainer: PPOTrainer) -> dict[str, Any]:

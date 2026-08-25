@@ -10,9 +10,9 @@ from typing import Any, Callable, Mapping
 from sls.model.encoding import ENCODING_SCHEMA, vocabulary_hash
 from sls.content.scope import IRONCLAD_A0_SCOPE_ID, ironclad_a0_scope_hash
 from sls.content.semantic_audit import semantic_audit_hash, verify_semantic_audit
-from sls.rl.checkpoint import CHECKPOINT_SCHEMA
 from sls.rl.training_contract import (
-    ROOT, canonical_digest, git_index_digest, git_state, native_source_digest, sha256_file,
+    ROOT, TRAINING_CHECKPOINT_SCHEMA, canonical_digest, git_index_digest, git_state,
+    native_source_digest, sha256_file,
 )
 from sls.validation.readiness import evaluate_route, load_records, readiness_report
 from sls.validation.truth import value_hash
@@ -29,7 +29,7 @@ def _contract() -> dict[str, str]:
     return {
         "encoding_schema": ENCODING_SCHEMA,
         "vocabulary_sha256": vocabulary_hash(),
-        "checkpoint_schema": CHECKPOINT_SCHEMA,
+        "checkpoint_schema": TRAINING_CHECKPOINT_SCHEMA,
         "content_scope_id": IRONCLAD_A0_SCOPE_ID,
         "content_scope_sha256": ironclad_a0_scope_hash(),
         "semantic_audit_sha256": semantic_audit_hash(),
@@ -226,7 +226,8 @@ def _validate_expansion(
         if selection.get("schema") != "sls-act1-validation-selection-v1":
             raise ValueError("validation round has an unsupported selection report")
         supplied = selection.get("selection_sha256")
-        unsigned = dict(selection); unsigned.pop("selection_sha256", None)
+        unsigned = dict(selection)
+        unsigned.pop("selection_sha256", None)
         if supplied != value_hash(unsigned):
             raise ValueError("validation seed selection digest mismatch")
         selected_items = list(selection.get("selections") or ())

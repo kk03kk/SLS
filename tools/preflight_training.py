@@ -22,6 +22,14 @@ def main() -> int:
     parser.add_argument("--skip-build", action="store_true")
     parser.add_argument("--allow-dirty", action="store_true", help="development/test only")
     parser.add_argument("--jobs", type=int, default=min(os.cpu_count() or 4, 16))
+    parser.add_argument(
+        "--readiness-lock", type=Path,
+        default=ROOT / "configs" / "validation" / "act1_training_readiness.lock.json",
+    )
+    parser.add_argument(
+        "--readiness-level", choices=("ENGINEERING_READY", "TRAINING_READY"),
+        default="TRAINING_READY",
+    )
     args = parser.parse_args()
     checks: dict[str, object] = {}
     try:
@@ -47,7 +55,11 @@ def main() -> int:
         from sls.rl.training_contract import git_state, native_artifact, native_source_digest
         from sls.validation.readiness_lock import verify_readiness_lock
 
-        readiness = verify_readiness_lock(require_clean=not args.allow_dirty)
+        readiness = verify_readiness_lock(
+            args.readiness_lock,
+            require_clean=not args.allow_dirty,
+            expected_level=args.readiness_level,
+        )
         if not args.allow_cpu and not torch.cuda.is_available():
             raise RuntimeError("CUDA GPU is not visible to PyTorch")
         device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -75,6 +87,7 @@ def main() -> int:
             "python": sys.version, "executable": sys.executable,
             "platform": platform.platform(), "git": git_state(),
             "readiness_lock_sha256": readiness["lock_sha256"],
+            "readiness_level": readiness["level"],
             "content_scope_id": IRONCLAD_A0_SCOPE_ID,
             "content_scope_sha256": ironclad_a0_scope_hash(),
             "semantic_audit_sha256": semantic_audit_hash(),

@@ -1,5 +1,5 @@
 {
-  "audit_sha256": "1754a054f78279db5047223bea75a2bb02f7843b9f2aa04b8e3884316c523dc7",
+  "audit_sha256": "4d97a665a8730479a254a6862546b578c7a23ccc7e81ff9f7c4951de847602bd",
   "entries": [
     {
       "game_id": "Anger",
@@ -3660,6 +3660,6 @@
   ],
   "oracle_schema": "spirecomm-parity-v10",
   "schema": "sls-ironclad-card-semantics-v1",
-  "scope_sha256": "1e9ba31232cea5813b88cf6d75c7be28deaca4ac84c32079745477866fc0649d",
+  "scope_sha256": "fb9c464dda321dfdb3e237ddef1fcd8427b037c9a39e92510aea183b1d9cfdb8",
   "seed": 0
 }

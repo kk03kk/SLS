@@ -5,6 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 import multiprocessing as mp
 from multiprocessing.connection import Connection
+import time
 from typing import Any, Mapping, Sequence
 
 from sls.contracts import Decision, Transition
@@ -44,12 +45,15 @@ def _worker(connection: Connection, profile: CurriculumProfile) -> None:
 class WorkerPool:
     profile: CurriculumProfile
     size: int
+    response_timeout_seconds: float = 120.0
     _connections: list[Connection] = field(init=False, repr=False)
     _processes: list[mp.Process] = field(init=False, repr=False)
 
     def __post_init__(self) -> None:
         if self.size <= 0:
             raise ValueError("worker count must be positive")
+        if self.response_timeout_seconds <= 0:
+            raise ValueError("worker response timeout must be positive")
         context = mp.get_context("spawn")
         self._connections: list[Connection] = []
         self._processes: list[mp.Process] = []
@@ -67,8 +71,26 @@ class WorkerPool:
 
     def _collect(self, indices: Sequence[int]) -> list[Any]:
         values = []
+        deadline = time.monotonic() + self.response_timeout_seconds
         for index in indices:
-            value = self._connections[index].recv()
+            connection = self._connections[index]
+            remaining = deadline - time.monotonic()
+            if remaining <= 0 or not connection.poll(remaining):
+                process = self._processes[index]
+                state = (
+                    f"exited with code {process.exitcode}"
+                    if not process.is_alive()
+                    else f"did not respond within {self.response_timeout_seconds:g}s"
+                )
+                raise TimeoutError(f"environment worker {index} {state}")
+            try:
+                value = connection.recv()
+            except EOFError as error:
+                process = self._processes[index]
+                raise RuntimeError(
+                    f"environment worker {index} closed its pipe "
+                    f"(exit code {process.exitcode})"
+                ) from error
             if isinstance(value, BaseException):
                 raise RuntimeError(f"environment worker {index} failed") from value
             values.append(value)

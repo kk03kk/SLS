@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import json
 
+import pytest
+
 from sls.backends.original import OriginalBackend, OriginalSession
 from sls.backends.original.adapter import adapt_original
 from sls.contracts import ActionKind, ScreenType
@@ -63,7 +65,10 @@ def test_reset_folds_the_original_only_neow_dialog() -> None:
     assert all(action.kind is ActionKind.CHOOSE_NEOW_OPTION for action in decision.actions)
 
 
-def test_step_folds_grid_confirmation_and_single_neow_leave_boundary() -> None:
+@pytest.mark.parametrize("use_candidate_id", [False, True])
+def test_step_folds_grid_confirmation_and_single_neow_leave_boundary(
+    use_candidate_id: bool,
+) -> None:
     menu = {"in_game": False, "ready_for_command": True, "available_commands": ["start"]}
     grid = game_payload([])
     grid["available_commands"] = ["confirm"]
@@ -83,7 +88,8 @@ def test_step_folds_grid_confirmation_and_single_neow_leave_boundary() -> None:
     ])
     backend = OriginalBackend(OriginalSession(transport), IRONCLAD_A0_ACT1)
     decision = backend.reset(0)
-    transition = backend.step(decision.actions[0])
+    action = decision.actions[0]
+    transition = backend.step(action.candidate_id if use_candidate_id else action)
     assert transition.decision.observation.screen is ScreenType.MAP
     assert backend.last_executed_commands == ("choose 0", "confirm", "choose 0", "wait 30")
     backend.return_to_menu()

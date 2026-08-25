@@ -8,6 +8,7 @@ are present at the current decision boundary.
 from __future__ import annotations
 
 import json
+import math
 from dataclasses import dataclass
 from enum import Enum
 from typing import Any, Mapping
@@ -96,8 +97,15 @@ class Action:
             if not getattr(self, field_name):
                 raise ValueError(f"{self.kind.value} requires {field_name}")
         keys = [key for key, _ in self.metadata]
+        if any(not isinstance(key, str) for key in keys):
+            raise ValueError("action metadata keys must be strings")
         if keys != sorted(keys) or len(keys) != len(set(keys)):
             raise ValueError("action metadata must have unique, sorted keys")
+        for key, value in self.metadata:
+            if not isinstance(value, (int, float, bool, str)):
+                raise ValueError(f"action metadata value must be scalar: {key}")
+            if isinstance(value, float) and not math.isfinite(value):
+                raise ValueError(f"action metadata value must be finite: {key}")
         _reject_private_keys(dict(self.metadata))
 
     @property

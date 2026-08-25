@@ -36,6 +36,40 @@ def test_core_combat_rule_probes() -> None:
     assert damage["buffer_multi_hit"] == {"buffer": 0, "damage": 7}
 
 
+@pytest.mark.parametrize("power", ["DOUBLE_TAP", "DUPLICATION", "ECHO_FORM"])
+@pytest.mark.parametrize("upgraded,expected_damage", [(False, 21), (True, 24)])
+def test_duplicated_rampage_uses_the_mutated_damage(
+    power: str, upgraded: bool, expected_damage: int,
+) -> None:
+    battle = native.LightspeedBattle()
+    battle.reset_card_probe(123, "RAMPAGE", upgraded)
+    battle._set_duplication_power_for_testing(power)
+    before = battle.snapshot()["game_state"]["combat_state"]["monsters"][0]["current_hp"]
+    battle.step("play", card_index=1, target_index=0)
+    after = battle.snapshot()["game_state"]["combat_state"]["monsters"][0]["current_hp"]
+    assert before - after == expected_damage
+
+
+@pytest.mark.parametrize("field", ["potion_ids", "potion_capacity", "orb_slots", "monsters"])
+def test_combat_checkpoint_rejects_oversized_fixed_arrays(field: str) -> None:
+    battle = native.LightspeedBattle()
+    battle.reset_card_probe(123, "STRIKE_RED", False)
+    checkpoint = battle.snapshot()
+    combat = checkpoint["game_state"]["combat_state"]
+    if field == "potion_ids":
+        combat["_internal"][field].append(0)
+    elif field == "potion_capacity":
+        combat["_internal"][field] = 6
+    elif field == "orb_slots":
+        combat["player"]["_internal"][field] = 99
+    else:
+        combat[field].extend([combat[field][0]] * 7)
+
+    restored = native.LightspeedBattle()
+    with pytest.raises(ValueError, match="potion array|potion counts|orb slot|too many monsters"):
+        restored.load_checkpoint(checkpoint)
+
+
 def test_turn_lifecycle_and_stable_power_order() -> None:
     lifecycle = native.card_turn_lifecycle_probe()
     assert lifecycle["pride"]["copy_has_new_identity"] is True

@@ -1,5 +1,5 @@
 {
-  "audit_sha256": "60ad6e8a8e37cea0713608950884bb7961cb909bb2e40c4a6833f2ef0ad9bd39",
+  "audit_sha256": "e9a0626078c37482a24aebb48c97db5e2f1c322ad3ad5fa2f97889d9543dd1cf",
   "entries": [
     {
       "covered_callbacks": [
@@ -149,6 +149,6 @@
   ],
   "oracle_schema": "spirecomm-parity-v10",
   "schema": "sls-ironclad-relic-semantics-v1",
-  "scope_sha256": "1e9ba31232cea5813b88cf6d75c7be28deaca4ac84c32079745477866fc0649d",
+  "scope_sha256": "fb9c464dda321dfdb3e237ddef1fcd8427b037c9a39e92510aea183b1d9cfdb8",
   "seed": 0
 }

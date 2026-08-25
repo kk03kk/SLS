@@ -15,3 +15,13 @@ def test_candidate_identity_is_semantic_and_stable() -> None:
 def test_backend_metadata_cannot_enter_an_action() -> None:
     with pytest.raises(ValueError, match="private action metadata"):
         Action(ActionKind.END_TURN, metadata=(("bits", 7),))
+
+
+@pytest.mark.parametrize("value", ({"nested": "value"}, [1], None, float("nan")))
+def test_action_metadata_values_must_be_finite_scalars(value: object) -> None:
+    with pytest.raises(ValueError, match="metadata value"):
+        Action.from_dict({
+            "schema_version": 1,
+            "kind": "END_TURN",
+            "metadata": {"public": value},
+        })

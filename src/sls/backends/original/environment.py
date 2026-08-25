@@ -103,12 +103,16 @@ class OriginalBackend:
             commands = self._adapted.commands[candidate_id]
         except KeyError as error:
             raise ValueError("action is not legal at the current Original decision") from error
+        resolved_action = next(
+            candidate for candidate in self._adapted.decision.actions
+            if candidate.candidate_id == candidate_id
+        )
         payload = self.raw_payload
         pending_discard_souls: set[str] = set()
         liquid_memories = False
-        if not isinstance(action, str) and action.kind is ActionKind.USE_POTION:
+        if resolved_action.kind is ActionKind.USE_POTION:
             liquid_memories = any(
-                potion.instance_id == action.subject_id
+                potion.instance_id == resolved_action.subject_id
                 and potion.content_id == "LIQUID_MEMORIES"
                 for potion in self._adapted.decision.observation.potions
             )
@@ -131,36 +135,34 @@ class OriginalBackend:
             executed.append(command)
             if index + 1 < len(commands):
                 payload = self._settle_reward_intermediate(payload, executed)
-        if not isinstance(action, str) and action.kind in {
+        if resolved_action.kind in {
             ActionKind.CHOOSE_CARD_REWARD,
             ActionKind.SKIP_CARD_REWARD,
             ActionKind.TAKE_SINGING_BOWL,
         }:
             payload = self._settle_reward_completion(payload, executed)
-        if not isinstance(action, str) and action.kind is ActionKind.CHOOSE_CARD_REWARD:
+        if resolved_action.kind is ActionKind.CHOOSE_CARD_REWARD:
             payload = self._wait_for_deck_growth(
                 payload, starting_size=starting_deck_size, executed=executed,
             )
-        if not isinstance(action, str):
-            expected_key = (
-                "emerald_key" if action.kind is ActionKind.TAKE_REWARD
-                and action.reward_id == "reward-key:emerald"
-                else "sapphire_key" if action.kind is ActionKind.TAKE_BLUE_KEY
-                else "ruby_key" if action.kind is ActionKind.RECALL
-                else None
+        expected_key = (
+            "emerald_key" if resolved_action.kind is ActionKind.TAKE_REWARD
+            and resolved_action.reward_id == "reward-key:emerald"
+            else "sapphire_key" if resolved_action.kind is ActionKind.TAKE_BLUE_KEY
+            else "ruby_key" if resolved_action.kind is ActionKind.RECALL
+            else None
+        )
+        if expected_key is not None:
+            payload = self._wait_for_key_acquisition(
+                payload, key=expected_key, executed=executed,
             )
-            if expected_key is not None:
-                payload = self._wait_for_key_acquisition(
-                    payload, key=expected_key, executed=executed,
-                )
         fold_single_event = (
-            not isinstance(action, str)
-            and action.kind in {ActionKind.CHOOSE_EVENT_OPTION, ActionKind.CHOOSE_NEOW_OPTION}
+            resolved_action.kind in {ActionKind.CHOOSE_EVENT_OPTION, ActionKind.CHOOSE_NEOW_OPTION}
         )
         payload = self._fold_protocol_only_boundaries(
             payload, executed, fold_single_event=fold_single_event,
             leaving_shop=(
-                not isinstance(action, str) and action.kind is ActionKind.LEAVE_SHOP
+                resolved_action.kind is ActionKind.LEAVE_SHOP
             ),
         )
         payload = self._settle_combat_terminal(payload, executed)
@@ -168,9 +170,8 @@ class OriginalBackend:
         payload = self._settle_debug_intents(payload, executed)
         payload = self._settle_command_boundary(payload, executed)
         if (
-            not isinstance(action, str)
-            and action.kind is ActionKind.CHOOSE_EVENT_OPTION
-            and str(action.option_id or "").startswith("match-pair:")
+            resolved_action.kind is ActionKind.CHOOSE_EVENT_OPTION
+            and str(resolved_action.option_id or "").startswith("match-pair:")
         ):
             payload = self._settle_match_completion(payload, executed)
         # Some events (notably Match and Keep) materialize their initial
@@ -181,7 +182,7 @@ class OriginalBackend:
             payload, executed, fold_single_event=fold_single_event,
         )
         payload = self._settle_command_boundary(payload, executed)
-        if not isinstance(action, str) and action.kind in {
+        if resolved_action.kind in {
             ActionKind.UPGRADE_CARD, ActionKind.REMOVE_CARD, ActionKind.SELECT_CARD,
         }:
             payload = self._wait_for_selection_completion(

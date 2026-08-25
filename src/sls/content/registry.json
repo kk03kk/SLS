@@ -3924,7 +3924,7 @@
       "Events.h": "d558be77e7f187784a7eb66c21a537b458304d7dcbc934c6498d635a74cb97f1",
       "MonsterEncounters.h": "5363596ba4d216bf635c1f8d6066e180712c590529210d6264746b877e27bcce",
       "MonsterIds.h": "913c21a6b69d22cbe0ff99d99e46b75a6cea83462f519d1150b7fc9360f2e792",
-      "Potions.h": "d16d41c0b95028d7338b05f455511c266907e5ec31be711a705ceeb077ea1938",
+      "Potions.h": "88b8675f0278b64931d6f7b0ed203b4bf72ed9df01adb698465cd7837b6b59a9",
       "Relics.h": "092473d34e953ec4e9328d602250b67cb2d12c6df0be9b7bbaf435de47aa88d0"
     },
     "simulator_manifest": "cpp/simulator/SLS_VENDOR.json"
