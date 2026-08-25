@@ -1,5 +1,5 @@
 {
-  "audit_sha256": "0b1aa274f330f53f509dd08d5abeac16a8289de53cb19790c46d62ad9c6a7c35",
+  "audit_sha256": "d13d2b458984ca47597790b2177ffffc1e61842f2435775a3c0466822036f02c",
   "content_scope_sha256": "fb9c464dda321dfdb3e237ddef1fcd8427b037c9a39e92510aea183b1d9cfdb8",
   "entries": {
     "cards": [
@@ -9355,7 +9355,7 @@
         "metadata": {},
         "original_evidence": {
           "artifact": "configs/validation/ironclad_a0_mechanism_semantics.json",
-          "audit_sha256": "0561f2cf883b344a55a608e377d8d7e8cf055871f6e6f542f32988c7b54ca8cb",
+          "audit_sha256": "d0f271d3a66dae170e0df89e1b6b2fdaee8a708f26781a5dbcbcade50ff1254a",
           "scenario": "RUN_AND_CHECKPOINT"
         },
         "scope_groups": [],
@@ -17735,7 +17735,7 @@
       "id": "RNG",
       "original_evidence": {
         "artifact": "configs/validation/ironclad_a0_mechanism_semantics.json",
-        "audit_sha256": "0561f2cf883b344a55a608e377d8d7e8cf055871f6e6f542f32988c7b54ca8cb"
+        "audit_sha256": "d0f271d3a66dae170e0df89e1b6b2fdaee8a708f26781a5dbcbcade50ff1254a"
       },
       "remaining": [],
       "status": "VERIFIED",
@@ -17753,7 +17753,7 @@
       "id": "DAMAGE_PIPELINE",
       "original_evidence": {
         "artifact": "configs/validation/ironclad_a0_mechanism_semantics.json",
-        "audit_sha256": "0561f2cf883b344a55a608e377d8d7e8cf055871f6e6f542f32988c7b54ca8cb"
+        "audit_sha256": "d0f271d3a66dae170e0df89e1b6b2fdaee8a708f26781a5dbcbcade50ff1254a"
       },
       "remaining": [],
       "status": "VERIFIED",
@@ -17771,7 +17771,7 @@
       "id": "POWER_ORDER",
       "original_evidence": {
         "artifact": "configs/validation/ironclad_a0_mechanism_semantics.json",
-        "audit_sha256": "0561f2cf883b344a55a608e377d8d7e8cf055871f6e6f542f32988c7b54ca8cb"
+        "audit_sha256": "d0f271d3a66dae170e0df89e1b6b2fdaee8a708f26781a5dbcbcade50ff1254a"
       },
       "remaining": [],
       "status": "VERIFIED",
@@ -17789,7 +17789,7 @@
       "id": "ORB_ENGINE",
       "original_evidence": {
         "artifact": "configs/validation/ironclad_a0_mechanism_semantics.json",
-        "audit_sha256": "0561f2cf883b344a55a608e377d8d7e8cf055871f6e6f542f32988c7b54ca8cb"
+        "audit_sha256": "d0f271d3a66dae170e0df89e1b6b2fdaee8a708f26781a5dbcbcade50ff1254a"
       },
       "remaining": [],
       "status": "VERIFIED",
@@ -17807,7 +17807,7 @@
       "id": "STANCE_ENGINE",
       "original_evidence": {
         "artifact": "configs/validation/ironclad_a0_mechanism_semantics.json",
-        "audit_sha256": "0561f2cf883b344a55a608e377d8d7e8cf055871f6e6f542f32988c7b54ca8cb"
+        "audit_sha256": "d0f271d3a66dae170e0df89e1b6b2fdaee8a708f26781a5dbcbcade50ff1254a"
       },
       "remaining": [],
       "status": "VERIFIED",
@@ -17825,7 +17825,7 @@
       "id": "RUN_AND_CHECKPOINT",
       "original_evidence": {
         "artifact": "configs/validation/ironclad_a0_mechanism_semantics.json",
-        "audit_sha256": "0561f2cf883b344a55a608e377d8d7e8cf055871f6e6f542f32988c7b54ca8cb"
+        "audit_sha256": "d0f271d3a66dae170e0df89e1b6b2fdaee8a708f26781a5dbcbcade50ff1254a"
       },
       "remaining": [],
       "status": "VERIFIED",
@@ -17843,7 +17843,7 @@
       "id": "NONCOMBAT_POTION_ACTIONS",
       "original_evidence": {
         "artifact": "configs/validation/ironclad_a0_mechanism_semantics.json",
-        "audit_sha256": "0561f2cf883b344a55a608e377d8d7e8cf055871f6e6f542f32988c7b54ca8cb"
+        "audit_sha256": "d0f271d3a66dae170e0df89e1b6b2fdaee8a708f26781a5dbcbcade50ff1254a"
       },
       "remaining": [],
       "source_references": [

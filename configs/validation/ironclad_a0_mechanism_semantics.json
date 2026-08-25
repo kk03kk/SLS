@@ -1,5 +1,5 @@
 {
-  "audit_sha256": "0561f2cf883b344a55a608e377d8d7e8cf055871f6e6f542f32988c7b54ca8cb",
+  "audit_sha256": "d0f271d3a66dae170e0df89e1b6b2fdaee8a708f26781a5dbcbcade50ff1254a",
   "entries": [
     {
       "actions": [
@@ -106,7 +106,7 @@
   "scope_sha256": "fb9c464dda321dfdb3e237ddef1fcd8427b037c9a39e92510aea183b1d9cfdb8",
   "seed": 0,
   "source_files": {
-    "cpp/simulator/python/module.cpp": "5d7735f32d044c0cf6c9318aa14e02cd86644f74400d6ad45cbcee515946f960",
+    "cpp/simulator/python/module.cpp": "acf66773fcb1f82c80fa826cc844a3a2087fbfd66c4678604f08d4584e58f7a4",
     "java/oracle-mod/src/main/java/spirecomm/parity/OracleScenarioPatch.java": "04134614ff311c020894f3c266ca992177a7a9adcc36ef4f43d369c99b98f837",
     "reference/original-game/decompiled/com/megacrit/cardcrawl/orbs/Frost.java": "f538c37c2ecf6461f217940ff80bb6fcf4b9ab883fb05a98e966444f78dc6f6b",
     "reference/original-game/decompiled/com/megacrit/cardcrawl/orbs/Plasma.java": "b796bea33bd9d34c0f3b7257fc8fe0eeb76543b720db2129ddbfb42c003ed364",

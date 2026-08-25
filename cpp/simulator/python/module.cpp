@@ -976,7 +976,9 @@ void restore_run_progress_state(GameContext &gc, const py::dict &state) {
     const bool registeredLegacyEvent =
         state["screen_state"].cast<int>() == static_cast<int>(ScreenState::EVENT_SCREEN) &&
         (state["current_event"].cast<int>() == static_cast<int>(Event::GOLDEN_IDOL) ||
-         state["current_event"].cast<int>() == static_cast<int>(Event::THE_CLERIC));
+         state["current_event"].cast<int>() == static_cast<int>(Event::THE_CLERIC) ||
+         state["current_event"].cast<int>() == static_cast<int>(Event::BIG_FISH) ||
+         state["current_event"].cast<int>() == static_cast<int>(Event::UPGRADE_SHRINE));
     if (state.contains("screen_continuation_serialized") &&
             !state["screen_continuation_serialized"].cast<bool>() &&
             !registeredLegacyEvent) {
@@ -1247,6 +1249,11 @@ py::dict screen_info_state(const GameContext &gc) {
             } else if (gc.curEvent == Event::THE_CLERIC || gc.curEvent == Event::BIG_FISH) {
                 result["hp_amount_0"] = gc.info.hpAmount0;
                 result["continuation"] = "map";
+            } else if (gc.curEvent == Event::UPGRADE_SHRINE) {
+                // The shrine has no hidden phase data at its initial dialog:
+                // choosing upgrade opens a freshly derived deck-selection
+                // screen, while leaving returns directly to the map.
+                result["continuation"] = "map";
             } else {
                 // Each event owns additional phase fields. Their exhaustive
                 // schema belongs to the run-content step, so reject exact
@@ -1331,7 +1338,7 @@ void restore_screen_info(GameContext &gc, const py::dict &state) {
     const bool registeredLegacyEvent =
         gc.screenState == ScreenState::EVENT_SCREEN &&
         (gc.curEvent == Event::GOLDEN_IDOL || gc.curEvent == Event::THE_CLERIC ||
-         gc.curEvent == Event::BIG_FISH);
+         gc.curEvent == Event::BIG_FISH || gc.curEvent == Event::UPGRADE_SHRINE);
     if (!state["complete"].cast<bool>() && !registeredLegacyEvent) {
         throw std::invalid_argument("Checkpoint contains an unsupported event continuation");
     }
@@ -1374,6 +1381,11 @@ void restore_screen_info(GameContext &gc, const py::dict &state) {
                 gc.info.hpAmount0 = state.contains("hp_amount_0")
                     ? state["hp_amount_0"].cast<int>()
                     : gc.fractionMaxHp(1 / 3.0f, HpType::FLOOR);
+                gc.regainControlAction = [](GameContext &context) {
+                    context.screenState = ScreenState::MAP_SCREEN;
+                    context.regainControlAction = nullptr;
+                };
+            } else if (gc.curEvent == Event::UPGRADE_SHRINE) {
                 gc.regainControlAction = [](GameContext &context) {
                     context.screenState = ScreenState::MAP_SCREEN;
                     context.regainControlAction = nullptr;
@@ -4220,7 +4232,8 @@ public:
             !progress.empty() &&
             (progress["current_event"].cast<int>() == static_cast<int>(Event::GOLDEN_IDOL) ||
              progress["current_event"].cast<int>() == static_cast<int>(Event::THE_CLERIC) ||
-             progress["current_event"].cast<int>() == static_cast<int>(Event::BIG_FISH));
+             progress["current_event"].cast<int>() == static_cast<int>(Event::BIG_FISH) ||
+             progress["current_event"].cast<int>() == static_cast<int>(Event::UPGRADE_SHRINE));
         if ((state.contains("screen_info") &&
                 !screen["complete"].cast<bool>() && !registeredLegacyEvent) ||
                 replay_required) {

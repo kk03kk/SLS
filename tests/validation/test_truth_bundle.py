@@ -11,7 +11,7 @@ import pytest
 import sls.validation.runtime as runtime_module
 
 from sls.backends.original.adapter import adapt_original
-from sls.backends.simulator import IRONCLAD_A0_HEART, SimulatorBackend
+from sls.backends.simulator import IRONCLAD_A0_ACT1, IRONCLAD_A0_HEART, SimulatorBackend
 from sls.contracts.continuation import continuation_simulator
 from sls.validation.runtime import RuntimeJournal
 from sls.validation.evidence import original_evidence_gaps
@@ -740,6 +740,45 @@ def test_legacy_golden_idol_checkpoint_migrates_to_exact_continuation() -> None:
     restored = SimulatorBackend(IRONCLAD_A0_HEART)
     assert restored.load_checkpoint(migrated) == decision
     assert restored.raw_state == simulator.raw_state
+
+
+def test_upgrade_shrine_checkpoint_migrates_to_exact_continuation() -> None:
+    from sls.contracts import ActionKind
+
+    simulator = SimulatorBackend(IRONCLAD_A0_ACT1)
+    simulator.reset(3)
+    simulator._native.reset_event_probe(3, "Upgrade Shrine", simulator.raw_state["rng"])
+    decision = simulator._adapt(simulator._native.snapshot())
+    checkpoint = json.loads(json.dumps(simulator.checkpoint()))
+    assert checkpoint["screen_info"] == {
+        "complete": True,
+        "continuation": "map",
+        "event_data": 0,
+        "screen_state": 1,
+    }
+
+    # Historical checkpoints marked this deterministic event dialog as an
+    # incomplete continuation and attempted to reconstruct it from the entire
+    # seed-local action history.  It is now restored from its exact state.
+    legacy = json.loads(json.dumps(checkpoint))
+    legacy["screen_info"] = {
+        "complete": False, "event_data": 0, "screen_state": 1,
+    }
+    legacy["progress_state"]["screen_continuation_serialized"] = False
+    restored = SimulatorBackend(IRONCLAD_A0_ACT1)
+    assert restored.load_checkpoint(legacy) == decision
+    migrated = json.loads(json.dumps(restored.checkpoint()))
+    assert migrated["screen_info"] == checkpoint["screen_info"]
+
+    choose_upgrade = next(
+        action for action in decision.actions
+        if action.kind == ActionKind.CHOOSE_EVENT_OPTION and action.option_id == "event-option:0"
+    )
+    selection = restored.step(choose_upgrade).decision
+    assert selection.actions
+    assert all(action.kind == ActionKind.UPGRADE_CARD for action in selection.actions)
+    final = restored.step(selection.actions[0]).decision
+    assert final.observation.screen.value == "MAP"
 
 
 def test_discovery_timing_evidence_replays_the_observed_fifteen_update_variant() -> None:
