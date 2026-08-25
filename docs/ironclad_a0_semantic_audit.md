@@ -38,7 +38,10 @@
 
 ## 训练门槛
 
-当前 ledger 仍明确给出 `act1_pilot_ready=false`。这不是工具故障，而是因为大量卡牌、药水、遗物、事件和怪物目前只有源码定位、metadata 或执行入口证据，尚未具备逐效果断言。工程 smoke 可以继续使用工程 readiness lock；200-update pilot 仍被严格门槛阻止。
+当前 ledger 已闭环为 `418 VERIFIED / 0 DIFFERENCE / 0 BLOCKED`，并明确给出
+`act1_pilot_ready=true`。三条 Boss 完整路线及两轮、每轮四个独立 seed 的扩展证据
+已逐段离线重放，结果固化在 `act1_training_readiness.lock.json`；200-update pilot
+和正式训练仍必须通过服务器端 Linux/CUDA preflight，不能只凭该汇总数字启动。
 
 生成和检查命令：
 
@@ -46,6 +49,7 @@
 python tools/generate_content_scope.py --check
 python tools/audit_content_semantics.py --check
 python tools/audit_content_semantics.py --require-pilot-ready
+python tools/verify_readiness_lock.py configs/validation/act1_training_readiness.lock.json
 ```
 
-最后一条在审计未闭环时必须以非零状态退出。
+以上检查在干净、与锁定源码合同一致的 checkout 中都必须成功。

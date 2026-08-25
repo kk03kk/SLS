@@ -191,7 +191,7 @@ mechanisms; they are not a second environment or training contract.
 - `validation/act1_training.toml`: three-route `ENGINEERING_READY` requirements.
 - `validation/act1_training_ready.toml`: strict two-round expansion requirements for pilot/training.
 - `validation/act1_readiness.lock.json`: committed engineering-only evidence and cross-platform source-contract attestation.
-- `validation/act1_training_readiness.lock.json`: generated only after two real clean expansion rounds; intentionally absent before then.
+- `validation/act1_training_readiness.lock.json`: committed `TRAINING_READY` attestation backed by two real clean four-seed expansion rounds.
 - `model/policy_vocabulary_v2.json`: exact generated policy tokens and vocabulary hash.
 - `train/full_run.toml`: profile, worker, model, PPO, checkpoint, and evaluation settings.
 - `train/act1_smoke.toml`, `train/act1_pilot.toml`: guarded 20/200-update GPU stages.
