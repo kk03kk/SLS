@@ -1,6 +1,8 @@
 package spirecomm.parity;
 
 import com.megacrit.cardcrawl.core.Settings;
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
+import com.megacrit.cardcrawl.neow.NeowEvent;
 import com.megacrit.cardcrawl.random.Random;
 import java.math.BigInteger;
 import java.util.LinkedHashMap;
@@ -9,6 +11,24 @@ import java.util.Map;
 public final class ParityRng {
     public static Random mathRng;
     public static long mathSeed;
+    private static RngSnapshot[] relicProbeBaseline;
+
+    private static final class RngSnapshot {
+        private final long seed0;
+        private final long seed1;
+        private final int counter;
+
+        private RngSnapshot(Random rng) {
+            this.seed0 = rng.random.getState(0);
+            this.seed1 = rng.random.getState(1);
+            this.counter = rng.counter;
+        }
+
+        private void restore(Random rng) {
+            rng.random.setState(this.seed0, this.seed1);
+            rng.counter = this.counter;
+        }
+    }
 
     private ParityRng() {}
 
@@ -27,6 +47,36 @@ public final class ParityRng {
     public static Random requireMathRng() {
         if (mathRng == null) reset();
         return mathRng;
+    }
+
+    /** Restore every relic probe to the first live-combat RNG boundary. */
+    public static void resetRelicProbeStreams() {
+        Random[] streams = new Random[] {
+            AbstractDungeon.aiRng,
+            AbstractDungeon.cardRandomRng,
+            AbstractDungeon.cardRng,
+            AbstractDungeon.eventRng,
+            requireMathRng(),
+            AbstractDungeon.merchantRng,
+            AbstractDungeon.miscRng,
+            AbstractDungeon.monsterHpRng,
+            AbstractDungeon.monsterRng,
+            NeowEvent.rng,
+            AbstractDungeon.potionRng,
+            AbstractDungeon.relicRng,
+            AbstractDungeon.shuffleRng,
+            AbstractDungeon.treasureRng
+        };
+        if (relicProbeBaseline == null) {
+            relicProbeBaseline = new RngSnapshot[streams.length];
+            for (int index = 0; index < streams.length; ++index) {
+                relicProbeBaseline[index] = new RngSnapshot(streams[index]);
+            }
+            return;
+        }
+        for (int index = 0; index < streams.length; ++index) {
+            relicProbeBaseline[index].restore(streams[index]);
+        }
     }
 
     public static BigInteger unsigned(long value) {

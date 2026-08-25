@@ -26,15 +26,20 @@ from audit_card_semantics import _adapt_probe_payload, _rng  # noqa: E402
 from audit_potion_semantics import _projection  # noqa: E402
 
 
-# These hooks are unconditional and deterministic in the controlled first-turn
-# setup. Conditional, random, and continuation relics intentionally remain out
-# until their dedicated scenarios exist.
-FIRST_TURN_RELICS = (
-    "AKABEKO", "BAG_OF_MARBLES", "BRIMSTONE", "BRONZE_SCALES",
-    "CLOCKWORK_SOUVENIR", "GREMLIN_VISAGE", "LANTERN",
-    "MUTAGENIC_STRENGTH", "ODDLY_SMOOTH_STONE", "RED_MASK",
-    "THREAD_AND_NEEDLE", "VAJRA",
-)
+# Every scoped relic is installed through the same stock lifecycle boundary.
+# Relics without a first-turn hook still attest constructor/onEquip neutrality,
+# inventory identity and RNG non-consumption; later trigger scenarios can add
+# callback-specific hashes without leaving any relic unexecutable.
+FIRST_TURN_RELICS = tuple(map(str, load_ironclad_a0_scope()["relics"]["ids"]))
+FIRST_TURN_CALLBACKS = {
+    "onEquip", "atPreBattle", "atBattleStartPreDraw", "atBattleStart",
+    "atTurnStart", "atTurnStartPostDraw",
+}
+INTERACTIVE_EQUIP_RELICS = {
+    "ASTROLABE", "BOTTLED_FLAME", "BOTTLED_LIGHTNING", "BOTTLED_TORNADO",
+    "CALLING_BELL", "CAULDRON", "DOLLYS_MIRROR", "EMPTY_CAGE", "ORRERY",
+    "PANDORAS_BOX", "TINY_HOUSE",
+}
 
 
 def _effect_projection(decision: Decision) -> dict[str, Any]:
@@ -93,20 +98,25 @@ def capture(seed: int) -> dict[str, Any]:
                 raise RuntimeError(f"Original did not attest {expected_id}: {scenario}")
             battle = native.LightspeedBattle()
             battle.reset_relic_probe(seed, relic_id)
-            battle.set_rng_state(_rng(original_payload))
             simulator_payload = battle.snapshot()
             digest = _assert_match(
                 relic_id, adapt_original(original_payload),
                 _adapt_probe_payload(simulator_payload), original_payload, simulator_payload,
             )
             source = sources[game_ids[relic_id]]
+            callbacks = set(java_relic_callbacks(source))
+            invoked = callbacks & FIRST_TURN_CALLBACKS
+            if relic_id in INTERACTIVE_EQUIP_RELICS:
+                invoked.discard("onEquip")
             entries.append({
                 "id": relic_id, "scenario": "FIRST_TURN",
                 "setup_digest": scenario["setup_digest"], "effect_sha256": digest,
                 "game_id": game_ids[relic_id],
                 "java_source": source.path.relative_to(ROOT).as_posix(),
                 "java_sha256": sha256_file(source.path),
-                "covered_callbacks": java_relic_callbacks(source),
+                "covered_callbacks": sorted(invoked),
+                "remaining_callbacks": sorted(callbacks - invoked),
+                "callback_complete": callbacks == invoked,
             })
             print(f"RELIC_AUDIT {index}/{len(FIRST_TURN_RELICS)} {relic_id}", file=sys.stderr, flush=True)
     finally:

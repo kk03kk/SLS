@@ -62,6 +62,11 @@ def _entry(mode: str, args: argparse.Namespace) -> tuple[Path, list[str]]:
             "--seed", str(args.seed),
             "--output", args.relic_audit_output.resolve().as_posix(),
         ]
+    if mode == "relic-spawn-audit":
+        return ROOT / "tools" / "audit_relic_spawn_semantics.py", [
+            "--seed", str(args.seed),
+            "--artifact", args.relic_audit_output.resolve().as_posix(),
+        ]
     if mode == "mechanism-audit":
         return ROOT / "tools" / "audit_mechanism_semantics.py", [
             "--seed", str(args.seed),
@@ -71,6 +76,11 @@ def _entry(mode: str, args: argparse.Namespace) -> tuple[Path, list[str]]:
         return ROOT / "tools" / "audit_encounter_semantics.py", [
             "--seed", str(args.seed),
             "--output", args.encounter_audit_output.resolve().as_posix(),
+        ]
+    if mode == "event-audit":
+        return ROOT / "tools" / "audit_event_semantics.py", [
+            "--seed", str(args.seed),
+            "--output", args.event_audit_output.resolve().as_posix(),
         ]
     if mode == "capture":
         values = [
@@ -107,7 +117,7 @@ def _entry(mode: str, args: argparse.Namespace) -> tuple[Path, list[str]]:
 def main() -> int:
     local = Path.home() / "AppData" / "Local" / "ModTheSpire"
     parser = argparse.ArgumentParser()
-    parser.add_argument("mode", choices=("capture", "resume", "survey", "card-audit", "potion-audit", "relic-audit", "mechanism-audit", "encounter-audit"))
+    parser.add_argument("mode", choices=("capture", "resume", "survey", "card-audit", "potion-audit", "relic-audit", "relic-spawn-audit", "mechanism-audit", "encounter-audit", "event-audit"))
     parser.add_argument("--game-root", type=Path, default=Path(r"D:\Steam\steamapps\common\SlayTheSpire"))
     parser.add_argument("--python", type=Path, default=Path(r"D:\Anaconda\envs\DL\python.exe"))
     parser.add_argument("--config", type=Path, default=local / "CommunicationMod" / "config.properties")
@@ -143,6 +153,10 @@ def main() -> int:
     parser.add_argument(
         "--encounter-audit-output", type=Path,
         default=ROOT / "configs" / "validation" / "ironclad_a0_encounter_semantics.json",
+    )
+    parser.add_argument(
+        "--event-audit-output", type=Path,
+        default=ROOT / "configs" / "validation" / "ironclad_a0_event_semantics.json",
     )
     parser.add_argument("--skip-intro", action=argparse.BooleanOptionalAction, default=True)
     args = parser.parse_args()

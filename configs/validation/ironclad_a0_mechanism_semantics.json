@@ -1,5 +1,5 @@
 {
-  "audit_sha256": "86ea269b8e98fec3985947156c964cfb1126b0c2cd4dfec4e522e2bd6c341950",
+  "audit_sha256": "0561f2cf883b344a55a608e377d8d7e8cf055871f6e6f542f32988c7b54ca8cb",
   "entries": [
     {
       "actions": [
@@ -63,9 +63,9 @@
     {
       "actions": [],
       "boundary_hashes": [
-        "0a525de74292c4431ae33be86f05992765f75ed97b4b74605ebe3f5062465fba"
+        "6cbbd5b683b3648ff8098a24148bee66c04fc529745b366abb9926a697d51a75"
       ],
-      "effect_sha256": "c72c27d3b014f442aa5b81012f346930d688ff7cec05e7f12633197ab35c9d41",
+      "effect_sha256": "729ebf1bfbec4d9ccfd11e8aa3964d471863e2ce1e8276b6c70f77daa2078941",
       "id": "run_and_checkpoint",
       "mechanism": "RUN_AND_CHECKPOINT",
       "setup_digest": "59079c58924906c6ecfa826d277175318d17fad2d315e1bb1c0c49e6aa3aeb21",
@@ -106,8 +106,8 @@
   "scope_sha256": "fb9c464dda321dfdb3e237ddef1fcd8427b037c9a39e92510aea183b1d9cfdb8",
   "seed": 0,
   "source_files": {
-    "cpp/simulator/python/module.cpp": "5c563c14427a186188b27d45e3ed59860aba66a7c5c62e23fa5e4d7188dafb30",
-    "java/oracle-mod/src/main/java/spirecomm/parity/OracleScenarioPatch.java": "775123d83c21c9630bf9bf1539f796963395a69fe3a8f43584f82824611684b7",
+    "cpp/simulator/python/module.cpp": "5d7735f32d044c0cf6c9318aa14e02cd86644f74400d6ad45cbcee515946f960",
+    "java/oracle-mod/src/main/java/spirecomm/parity/OracleScenarioPatch.java": "04134614ff311c020894f3c266ca992177a7a9adcc36ef4f43d369c99b98f837",
     "reference/original-game/decompiled/com/megacrit/cardcrawl/orbs/Frost.java": "f538c37c2ecf6461f217940ff80bb6fcf4b9ab883fb05a98e966444f78dc6f6b",
     "reference/original-game/decompiled/com/megacrit/cardcrawl/orbs/Plasma.java": "b796bea33bd9d34c0f3b7257fc8fe0eeb76543b720db2129ddbfb42c003ed364",
     "reference/original-game/decompiled/com/megacrit/cardcrawl/potions/BloodPotion.java": "81d58e17c3b29beabbe5e640506dbee61cec658e8e1e743a64192c8058cbc118",

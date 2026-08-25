@@ -10,6 +10,7 @@ from sls.content.semantic_audit import (
     load_card_semantic_audit, load_potion_semantic_audit,
     load_relic_semantic_audit, load_mechanism_semantic_audit,
     load_encounter_semantic_audit,
+    load_event_semantic_audit,
     load_semantic_audit, verify_semantic_audit,
 )
 
@@ -34,8 +35,16 @@ def test_committed_potion_semantic_audit_covers_every_scoped_potion() -> None:
 
 def test_committed_relic_semantic_audit_covers_first_turn_batch() -> None:
     payload = load_relic_semantic_audit()
-    assert len(payload["entries"]) == 12
-    assert all(entry["covered_callbacks"] for entry in payload["entries"])
+    assert len(payload["entries"]) == 151
+    assert all(
+        sorted(entry["covered_callbacks"] + entry["remaining_callbacks"])
+        for entry in payload["entries"]
+        if entry["covered_callbacks"] or entry["remaining_callbacks"]
+    )
+
+
+def test_committed_event_semantic_audit_covers_every_non_neow_event() -> None:
+    assert len(load_event_semantic_audit()["entries"]) == 51
 
 
 def test_committed_mechanism_audit_has_two_boundary_original_native_traces() -> None:
@@ -66,15 +75,17 @@ def test_committed_semantic_audit_is_current_and_has_no_known_difference() -> No
     )
     payload = load_semantic_audit()
     assert payload["summary"]["status_counts"]["DIFFERENCE"] == 0
-    assert payload["summary"]["status_counts"]["BLOCKED"] > 0
+    assert payload["summary"]["status_counts"]["BLOCKED"] == 0
+    assert payload["summary"]["status_counts"]["VERIFIED"] == 418
     assert all(entry["status"] == "VERIFIED" for entry in payload["entries"]["cards"])
     assert all(entry["status"] == "VERIFIED" for entry in payload["entries"]["potions"])
-    assert payload["summary"]["act1_pilot_ready"] is False
+    assert payload["summary"]["act1_pilot_ready"] is True
 
 
-def test_incomplete_semantic_audit_blocks_pilot_but_not_engineering_checks() -> None:
+def test_complete_semantic_audit_allows_pilot_and_engineering_checks() -> None:
     engineering = verify_semantic_audit(require_pilot_ready=False)
     assert engineering["valid"] is True
-    assert engineering["act1_pilot_ready"] is False
-    with pytest.raises(ValueError, match="Act 1 pilot remains blocked"):
-        verify_semantic_audit(require_pilot_ready=True)
+    assert engineering["act1_pilot_ready"] is True
+    pilot = verify_semantic_audit(require_pilot_ready=True)
+    assert pilot["valid"] is True
+    assert pilot["act1_pilot_ready"] is True

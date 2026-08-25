@@ -246,7 +246,11 @@ namespace sts {
                 return strength;
             default:
                 if (hasStatus<s>()) {
-                    return statusMap.at(s);
+                    // Boolean powers such as Pen Nib live only in the status
+                    // bitset. Match getStatusRuntime(): an active bit without
+                    // a map entry has semantic amount one.
+                    const auto found = statusMap.find(s);
+                    return found == statusMap.end() ? 1 : found->second;
                 } else {
                     return 0;
                 }

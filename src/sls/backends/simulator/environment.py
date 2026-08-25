@@ -608,6 +608,10 @@ def _run_action(
         kind = {
             "UPGRADE": ActionKind.UPGRADE_CARD,
             "REMOVE": ActionKind.REMOVE_CARD,
+            # Stock Bonfire's grid selection immediately purges the offered
+            # card; expose the semantic operation, not the generic native
+            # card-selection container.
+            "BONFIRE_SPIRITS": ActionKind.REMOVE_CARD,
         }.get(select_type, ActionKind.SELECT_CARD)
         return Action(kind, subject_id=f"select-card:{idx1}")
     if screen is ScreenType.TREASURE:

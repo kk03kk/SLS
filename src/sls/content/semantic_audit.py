@@ -33,6 +33,10 @@ ENCOUNTER_SEMANTIC_AUDIT_SCHEMA = "sls-ironclad-encounter-semantics-v1"
 ENCOUNTER_SEMANTIC_AUDIT_PATH = (
     ROOT / "configs" / "validation" / "ironclad_a0_encounter_semantics.json"
 )
+EVENT_SEMANTIC_AUDIT_SCHEMA = "sls-ironclad-event-semantics-v1"
+EVENT_SEMANTIC_AUDIT_PATH = (
+    ROOT / "configs" / "validation" / "ironclad_a0_event_semantics.json"
+)
 FIRST_TURN_RELIC_EVIDENCE = (
     "AKABEKO", "BAG_OF_MARBLES", "BRIMSTONE", "BRONZE_SCALES",
     "CLOCKWORK_SOUVENIR", "GREMLIN_VISAGE", "LANTERN",
@@ -146,21 +150,68 @@ def load_relic_semantic_audit() -> dict[str, Any]:
     if payload.get("scope_sha256") != ironclad_a0_scope_hash():
         raise ValueError("Ironclad relic semantic audit is stale for the content scope")
     entries = list(payload.get("entries") or ())
-    if [entry.get("id") for entry in entries] != list(FIRST_TURN_RELIC_EVIDENCE):
-        raise ValueError("Ironclad relic first-turn evidence set is incomplete")
     scope = json.loads((ROOT / "configs" / "validation" / "ironclad_a0_content_scope.json").read_text(encoding="utf-8"))
+    expected_ids = sorted(map(str, scope["relics"]["ids"]))
+    if [str(entry.get("id")) for entry in entries] != expected_ids:
+        raise ValueError("Ironclad relic evidence does not cover the exact scoped set")
     game_ids = registry_game_ids("relics", scope["relics"]["ids"])
     sources = java_sources("relics")
     for entry in entries:
         identifier = str(entry["id"])
         source = sources[game_ids[identifier]]
-        callbacks = java_relic_callbacks(source)
-        if entry.get("scenario") != "FIRST_TURN" or entry.get("covered_callbacks") != callbacks:
-            raise ValueError(f"relic callback evidence is incomplete: {identifier}")
+        callbacks = sorted(java_relic_callbacks(source))
+        covered = list(entry.get("covered_callbacks") or ())
+        remaining = list(entry.get("remaining_callbacks") or ())
+        if entry.get("scenario") != "FIRST_TURN" or \
+                sorted(covered + remaining) != callbacks or \
+                bool(entry.get("callback_complete")) != (not remaining):
+            raise ValueError(f"relic callback accounting is invalid: {identifier}")
         if entry.get("game_id") != game_ids[identifier] or entry.get("java_sha256") != sha256_file(source.path):
             raise ValueError(f"relic semantic source evidence is stale: {identifier}")
         if not entry.get("setup_digest") or not entry.get("effect_sha256"):
             raise ValueError(f"relic semantic effect evidence is missing: {identifier}")
+    return payload
+
+
+def load_event_semantic_audit() -> dict[str, Any]:
+    """Validate exact scoped stock-event constructor evidence."""
+
+    from sls.content.source_audit import java_sources, registry_game_ids
+    from sls.rl.training_contract import canonical_digest, sha256_file
+
+    payload = json.loads(EVENT_SEMANTIC_AUDIT_PATH.read_text(encoding="utf-8"))
+    supplied = payload.get("audit_sha256")
+    unsigned = dict(payload)
+    unsigned.pop("audit_sha256", None)
+    if payload.get("schema") != EVENT_SEMANTIC_AUDIT_SCHEMA or \
+            supplied != canonical_digest(unsigned):
+        raise ValueError("invalid Ironclad event semantic audit")
+    if payload.get("scope_sha256") != ironclad_a0_scope_hash():
+        raise ValueError("Ironclad event semantic audit is stale for the content scope")
+    scope = json.loads(
+        (ROOT / "configs" / "validation" / "ironclad_a0_content_scope.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    expected_ids = sorted(set(map(str, scope["events"]["ids"])) - {"NEOW"})
+    entries = list(payload.get("entries") or ())
+    if [str(item.get("id")) for item in entries] != expected_ids:
+        raise ValueError("Ironclad event evidence does not cover the exact non-Neow scope")
+    game_ids = registry_game_ids("events", scope["events"]["ids"])
+    sources = java_sources("events")
+    for item in entries:
+        identifier = str(item["id"])
+        source = sources[game_ids[identifier]]
+        hashes = list(item.get("boundary_hashes") or ())
+        if item.get("scenario") != "CONSTRUCTOR" or len(hashes) != 1 or \
+                item.get("effect_sha256") != canonical_digest(hashes):
+            raise ValueError(f"event constructor evidence is invalid: {identifier}")
+        if item.get("game_id") != game_ids[identifier] or \
+                item.get("java_source") != source.path.relative_to(ROOT).as_posix() or \
+                item.get("java_sha256") != sha256_file(source.path):
+            raise ValueError(f"event semantic source evidence is stale: {identifier}")
+        if not str(item.get("setup_digest") or ""):
+            raise ValueError(f"event setup evidence is missing: {identifier}")
     return payload
 
 

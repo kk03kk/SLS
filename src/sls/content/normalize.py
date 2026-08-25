@@ -107,6 +107,9 @@ def normalize_power_id(value: object) -> str:
         # EstablishmentPower follows the same stock implementation-suffix
         # convention; native exposes the public power name.
         "ESTABLISHMENT_POWER": "ESTABLISHMENT",
+        # Snecko Eye's stock ConfusionPower and native status use different
+        # public spellings for the same amountless cost-randomization marker.
+        "CONFUSION": "CONFUSED",
         # The player variant exposes IntangiblePlayer while the native
         # PlayerStatus enum uses the shared public mechanism name.
         "INTANGIBLE_PLAYER": "INTANGIBLE",
@@ -120,7 +123,7 @@ def normalize_power_id(value: object) -> str:
 
 AMOUNTLESS_POWER_IDS = frozenset({
     "BACK_ATTACK", "BARRICADE", "CORRUPTION", "END_TURN_DEATH",
-    "FREE_ATTACK_POWER", "NO_DRAW", "PAINFUL_STABS", "SPLIT", "STASIS",
+    "CONFUSED", "FREE_ATTACK_POWER", "NO_DRAW", "PAINFUL_STABS", "SPLIT", "STASIS",
     "SURROUNDED", "UNAWAKENED",
 })
 

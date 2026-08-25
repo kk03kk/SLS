@@ -54,3 +54,26 @@ def test_first_turn_relic_probe_applies_representative_stock_effects() -> None:
         normalize_content_id(power["id"]) == "VULNERABLE" and power["amount"] == 1
         for power in marbles.snapshot()["game_state"]["combat_state"]["monsters"][0]["powers"]
     )
+
+
+def test_pen_nib_boolean_power_has_a_readable_semantic_amount() -> None:
+    battle = native.LightspeedBattle()
+    result = dict(battle.relic_card_use_probe(0, "PEN_NIB"))
+    assert result["counter"] == 9
+    assert result["pen_nib"] == 1
+    powers = battle.snapshot()["game_state"]["combat_state"]["player"]["powers"]
+    assert any(
+        normalize_content_id(power["id"]) == "PEN_NIB" and power["amount"] == 1
+        for power in powers
+    )
+
+
+def test_red_skull_strength_is_removed_after_crossing_above_half_health() -> None:
+    result = dict(native.LightspeedBattle().relic_trigger_probe(0, "RED_SKULL"))
+    assert result["strength_on"] == 3
+    assert result["strength_after"] == 0
+
+
+def test_orrery_folded_reward_boundary_contains_five_card_rewards() -> None:
+    result = dict(native.LightspeedBattle().relic_equip_probe(0, "ORRERY"))
+    assert result["card_rewards"] == 5

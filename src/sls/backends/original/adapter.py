@@ -50,9 +50,11 @@ def _event_option_indices(
     # native simulator retains stock's physical event option index.  Oracle's
     # screen_state preserves the full rows, so recover the physical indices
     # without changing the wire ordinal used by ``choose``.
-    rows = _mappings(state.get("options"))
+    semantic_rows = _mappings(payload.get("_event_option_rows"))
+    rows = semantic_rows or _mappings(state.get("options"))
     enabled = tuple(
-        index for index, row in enumerate(rows) if not bool(row.get("disabled"))
+        _integer(row.get("choice_index", index)) if semantic_rows else index
+        for index, row in enumerate(rows) if not bool(row.get("disabled"))
     )
     if rows and len(enabled) == count:
         return enabled
@@ -274,6 +276,11 @@ def _actions(
         return tuple(result), commands
 
     choices = _sequence(game.get("choice_list"))
+    if not choices and screen in {ScreenType.NEOW, ScreenType.EVENT}:
+        choices = tuple(
+            option.get("text") if isinstance(option, Mapping) else option
+            for option in _sequence(state.get("options"))
+        )
     match_slots = _mappings(payload.get("_match_slots"))
     continuation = _mapping(payload.get("_continuation") or game.get("_continuation"))
     event_id = normalize_event_id(
@@ -594,6 +601,14 @@ def _screen_entities(
         "choice": (), "reward": (), "shop": (), "event": (), "rest": (), "boss": (),
     }
     choices = _sequence(game.get("choice_list"))
+    if not choices and screen in {ScreenType.NEOW, ScreenType.EVENT}:
+        # CommunicationMod omits the legacy RoomEventDialog choice_list after
+        # a targeted room replacement, while its canonical screen_state still
+        # contains the complete indexed option records.
+        choices = tuple(
+            option.get("text") if isinstance(option, Mapping) else option
+            for option in _sequence(state.get("options"))
+        )
     raw_screen = str(game.get("screen_type") or "").upper()
     if combat and raw_screen == "HAND_SELECT":
         result["choice"] = tuple(

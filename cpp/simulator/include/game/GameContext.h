@@ -271,6 +271,7 @@ namespace sts {
         void transitionToAct(int act);
         void transitionToMapNode(int mapNodeX);
         void setupEvent();
+        void setupShopRoom();
         void setupTreasureRoom();
         void enterBossTreasureRoom();
         void enterAct3VictoryRoom();
@@ -293,6 +294,8 @@ namespace sts {
         void relicsOnEnterRoom(Room room);
 
         CardRarity rollCardRarity(Room room);
+        [[nodiscard]] int relicModifiedCardRewardCount(int count) const;
+        [[nodiscard]] int relicModifiedRareCardChance(int chance, Room room) const;
         CardId returnTrulyRandomCardFromAvailable(Random &rng, CardId exclude);
 
         Card getTransformedCard(Random &rng, CardId exclude, bool autoUpgrade= false);

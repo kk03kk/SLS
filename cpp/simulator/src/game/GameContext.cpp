@@ -345,7 +345,11 @@ bool GameContext::relicCanSpawn(RelicId relic, bool shopRoom) const {
         case RelicId::MAW_BANK:
         case RelicId::OLD_COIN:
         case RelicId::SMILING_MASK:
+        case RelicId::THE_COURIER:
             return floorNum <= 48 && !shopRoom;
+
+        case RelicId::ECTOPLASM:
+            return act <= 1;
 
         case RelicId::ANCIENT_TEA_SET:
         case RelicId::CERAMIC_FISH:
@@ -362,7 +366,6 @@ bool GameContext::relicCanSpawn(RelicId relic, bool shopRoom) const {
         case RelicId::QUESTION_CARD:
         case RelicId::REGAL_PILLOW:
         case RelicId::SINGING_BOWL:
-        case RelicId::THE_COURIER:
         case RelicId::TOXIC_EGG:
             return floorNum <= 48;
 
@@ -842,11 +845,7 @@ void GameContext::transitionToMapNode(int mapNodeX) {
         }
 
         case Room::SHOP: {
-            if (hasRelic(RelicId::MEAL_TICKET)) {
-                playerHeal(15);
-            }
-            screenState = ScreenState::SHOP_ROOM;
-            info.shop.setup(*this);
+            setupShopRoom();
             break;
         }
 
@@ -1079,6 +1078,14 @@ void GameContext::setupEvent() { // todo necronomicon event
         default:
             break;
     }
+}
+
+void GameContext::setupShopRoom() {
+    if (hasRelic(RelicId::MEAL_TICKET)) {
+        playerHeal(15);
+    }
+    screenState = ScreenState::SHOP_ROOM;
+    info.shop.setup(*this);
 }
 
 void GameContext::setupTreasureRoom() {
@@ -1347,7 +1354,9 @@ bool GameContext::obtainRelic(RelicId r) {
 
     relics.setHasRelic(r, true);
 
-    int relicData = 0;
+    // Stock Circlet constructors begin at one; additional copies increment
+    // from that visible count. Starting at zero made the first copy diverge.
+    int relicData = r == RelicId::CIRCLET ? 1 : 0;
     bool opensScreen = false;
 
     switch (r) {
@@ -1438,6 +1447,11 @@ bool GameContext::obtainRelic(RelicId r) {
             break;
         }
 
+        case RelicId::NLOTHS_HUNGRY_FACE: {
+            relicData = 1;
+            break;
+        }
+
         case RelicId::NECRONOMICON: {
             deck.obtain(*this, CardId::NECRONOMICURSE);
             break;
@@ -1445,6 +1459,11 @@ bool GameContext::obtainRelic(RelicId r) {
 
         case RelicId::MANGO: {
             playerIncreaseMaxHp(14);
+            break;
+        }
+
+        case RelicId::MATRYOSHKA: {
+            relicData = 2;
             break;
         }
 
@@ -1465,7 +1484,11 @@ bool GameContext::obtainRelic(RelicId r) {
 
         case RelicId::ORRERY: {
             Rewards reward;
-            for (int i = 0; i < 4; ++i) {
+            // Stock Orrery adds four explicit card rewards, then
+            // CombatRewardScreen.setupItemReward contributes the room's
+            // ordinary card reward.  The folded native boundary therefore
+            // exposes five independent card choices.
+            for (int i = 0; i < 5; ++i) {
                 reward.addCardReward(createCardReward(curRoom));
             }
             openCombatRewardScreen(reward);
@@ -1725,12 +1748,10 @@ CardRarity GameContext::rollCardRarity(Room room) {
         return CardRarity::RARE;
     }
 
-    int rareChance = (room == Room::ELITE ? 10 : 3);
+    int rareChance = relicModifiedRareCardChance(
+        room == Room::ELITE ? 10 : 3, room
+    );
     const int uncommonChance = (room == Room::ELITE ? 40 : 37);
-
-    if (room != Room::REST && hasRelic(RelicId::NLOTHS_GIFT)) {
-        rareChance = rareChance * 3;
-    }
 
     if (roll < rareChance) {
         return CardRarity::RARE;
@@ -1741,6 +1762,17 @@ CardRarity GameContext::rollCardRarity(Room room) {
     } else {
         return CardRarity::COMMON;
     }
+}
+
+int GameContext::relicModifiedCardRewardCount(int count) const {
+    if (relics.has(RelicId::QUESTION_CARD)) ++count;
+    if (relics.has(RelicId::BUSTED_CROWN)) count -= 2;
+    return count;
+}
+
+int GameContext::relicModifiedRareCardChance(int chance, Room room) const {
+    return room != Room::REST && hasRelic(RelicId::NLOTHS_GIFT)
+        ? chance * 3 : chance;
 }
 
 CardId GameContext::returnTrulyRandomCardFromAvailable(Random &rng, CardId exclude) {
@@ -1896,13 +1928,7 @@ void GameContext::addGoldReward(Rewards &r, int amount) const {
 }
 
 CardReward GameContext::createCardReward(Room room) {
-    int numCards = 3;
-    if (relics.has(RelicId::QUESTION_CARD)) {
-        numCards += 1;
-    }
-    if (relics.has(RelicId::BUSTED_CROWN)) {
-        numCards -= 2;
-    }
+    const int numCards = relicModifiedCardRewardCount(3);
 
     CardId cards[4];
     CardRarity rewardRarities[4];
@@ -1959,13 +1985,7 @@ CardReward GameContext::createCardReward(Room room) {
 }
 
 CardReward GameContext::createColorlessCardReward() {
-    int numCards = 3;
-    if (hasRelic(RelicId::QUESTION_CARD)) {
-        numCards += 1;
-    }
-    if (hasRelic(RelicId::BUSTED_CROWN)) {
-        numCards -= 2;
-    }
+    const int numCards = relicModifiedCardRewardCount(3);
 
     CardReward reward;
     reward.resize(numCards);

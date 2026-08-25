@@ -97,6 +97,24 @@ def scenario_encounter_allowlist() -> bytes:
     ).encode("utf-8")
 
 
+def scenario_event_allowlist() -> bytes:
+    raw = scenario_content_allowlist("events").decode("utf-8")
+    constructor_keys = {
+        "FACE_TRADER": "FaceTrader",
+        "MATCH_AND_KEEP": "Match and Keep!",
+        "MINDBLOOM": "MindBloom",
+        "NLOTH": "N'loth",
+        "NOTE_FOR_YOURSELF": "NoteForYourself",
+        "SECRET_PORTAL": "SecretPortal",
+        "SENSORY_STONE": "SensoryStone",
+    }
+    rows = []
+    for line in raw.splitlines():
+        identifier, game_id = line.split("\t", 1)
+        rows.append(f"{identifier}\t{constructor_keys.get(identifier, game_id)}\n")
+    return "".join(rows).encode("utf-8")
+
+
 def main() -> int:
     missing = [str(path) for path in DEPENDENCIES if not path.is_file()]
     if missing:
@@ -134,6 +152,7 @@ def main() -> int:
         add_bytes(archive, scenario_potion_allowlist(), "spirecomm/parity/scenario-potion-allowlist.tsv")
         add_bytes(archive, scenario_relic_allowlist(), "spirecomm/parity/scenario-relic-allowlist.tsv")
         add_bytes(archive, scenario_encounter_allowlist(), "spirecomm/parity/scenario-encounter-allowlist.tsv")
+        add_bytes(archive, scenario_event_allowlist(), "spirecomm/parity/scenario-event-allowlist.tsv")
         for path in sorted(CLASSES.rglob("*.class")):
             add(archive, path, path.relative_to(CLASSES).as_posix())
     print(f"{OUTPUT}\nsha256={hashlib.sha256(OUTPUT.read_bytes()).hexdigest()}")

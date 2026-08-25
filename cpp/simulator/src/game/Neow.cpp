@@ -70,6 +70,11 @@ std::array<Neow::Option, 4> Neow::getOptions(Random &r) {
     rewards[3].r = Bonus::BOSS_RELIC;
     rewards[3].d = Drawback::LOSE_STARTER_RELIC;
     r.random(0, 0);
+    // Stock's full four-option blessing construction advances NeowEvent.rng
+    // once more after materialising the fixed boss-relic option.  Preserve
+    // that otherwise-observable draw so exact combat checkpoints carry the
+    // same continuation RNG state as the Original runtime.
+    r.random(0, 0);
 
     return rewards;
 }

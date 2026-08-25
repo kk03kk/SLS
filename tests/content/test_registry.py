@@ -74,7 +74,9 @@ def test_amountless_power_set_matches_decompiled_stock_sources() -> None:
             identifier = re.search(r'public static final String ID\s*=\s*"([^"]+)"', text)
         assert identifier is not None, path
         actual.add(normalize_power_id(identifier.group(1)))
-    assert actual == set(AMOUNTLESS_POWER_IDS)
+    # Confusion inherits AbstractPower's default -1 amount without assigning
+    # it in its constructor; all other amountless powers assign -1 explicitly.
+    assert actual | {"CONFUSED"} == set(AMOUNTLESS_POWER_IDS)
 
 
 def test_stock_sssserpent_class_alias_matches_liars_game() -> None:

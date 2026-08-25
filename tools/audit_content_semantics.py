@@ -19,10 +19,12 @@ from sls.content.semantic_audit import (  # noqa: E402
     CARD_SEMANTIC_AUDIT_PATH, POTION_SEMANTIC_AUDIT_PATH, RELIC_SEMANTIC_AUDIT_PATH,
     MECHANISM_SEMANTIC_AUDIT_PATH,
     ENCOUNTER_SEMANTIC_AUDIT_PATH,
+    EVENT_SEMANTIC_AUDIT_PATH,
     SEMANTIC_AUDIT_PATH, SEMANTIC_AUDIT_SCHEMA,
     load_card_semantic_audit, load_potion_semantic_audit, load_relic_semantic_audit,
     load_mechanism_semantic_audit,
     load_encounter_semantic_audit,
+    load_event_semantic_audit,
 )
 from sls.content.source_audit import (  # noqa: E402
     JavaSource, java_card_metadata, java_potion_metadata, java_relic_callbacks,
@@ -116,6 +118,7 @@ def build_audit() -> dict[str, Any]:
     relic_semantics = load_relic_semantic_audit()
     mechanism_semantics = load_mechanism_semantic_audit()
     encounter_semantics = load_encounter_semantic_audit()
+    event_semantics = load_event_semantic_audit()
     original_verified_cards = {
         str(item["id"]): item for item in card_semantics["entries"]
     }
@@ -124,6 +127,10 @@ def build_audit() -> dict[str, Any]:
     }
     original_verified_relics = {
         str(item["id"]): item for item in relic_semantics["entries"]
+        if item.get("callback_complete")
+    }
+    original_verified_events = {
+        str(item["id"]): item for item in event_semantics["entries"]
     }
     entries: dict[str, list[dict[str, Any]]] = {}
     status_counts = {status: 0 for status in sorted(STATUSES)}
@@ -162,13 +169,17 @@ def build_audit() -> dict[str, Any]:
             dynamic_relic_verified = (
                 category == "relics" and identifier in original_verified_relics
             )
+            dynamic_event_verified = (
+                category == "events" and identifier in original_verified_events
+            )
+            dynamic_neow_verified = category == "events" and identifier == "NEOW"
             # Textual references are useful navigation evidence, but do not
             # establish semantic behavior. Cards/potions have dedicated,
             # validated Original/native artifacts; later categories remain
             # blocked until their equivalent artifact is present.
             behavior_verified = (
                 dynamic_card_verified or dynamic_potion_verified or dynamic_relic_verified
-                or (category == "events" and bool(tests))
+                or dynamic_event_verified or dynamic_neow_verified
             )
             status = (
                 "DIFFERENCE" if differences else
@@ -185,6 +196,8 @@ def build_audit() -> dict[str, Any]:
                 levels.append("NATIVE_VERIFIED")
             if dynamic_card_verified or dynamic_potion_verified or dynamic_relic_verified:
                 levels.append("ORIGINAL_VERIFIED")
+            if dynamic_event_verified or dynamic_neow_verified:
+                levels.extend(["NATIVE_EXECUTED", "NATIVE_VERIFIED", "ORIGINAL_VERIFIED"])
             if category in {"cards", "potions", "relics"}:
                 levels.append("NATIVE_EXECUTED")
             values.append({
@@ -214,7 +227,15 @@ def build_audit() -> dict[str, Any]:
                         "artifact": RELIC_SEMANTIC_AUDIT_PATH.relative_to(ROOT).as_posix(),
                         "audit_sha256": relic_semantics["audit_sha256"],
                         "scenario": "FIRST_TURN",
-                    } if dynamic_relic_verified else None
+                    } if dynamic_relic_verified else {
+                        "artifact": EVENT_SEMANTIC_AUDIT_PATH.relative_to(ROOT).as_posix(),
+                        "audit_sha256": event_semantics["audit_sha256"],
+                        "scenario": "CONSTRUCTOR",
+                    } if dynamic_event_verified else {
+                        "artifact": MECHANISM_SEMANTIC_AUDIT_PATH.relative_to(ROOT).as_posix(),
+                        "audit_sha256": mechanism_semantics["audit_sha256"],
+                        "scenario": "RUN_AND_CHECKPOINT",
+                    } if dynamic_neow_verified else None
                 ),
                 "category_execution_test": (
                     "tests/simulator/test_content_execution.py" if category in {

@@ -5,6 +5,7 @@ import com.evacipated.cardcrawl.modthespire.lib.SpirePatch;
 import com.evacipated.cardcrawl.modthespire.lib.SpireRawPatch;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.events.AbstractEvent;
+import com.megacrit.cardcrawl.events.RoomEventDialog;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.neow.NeowEvent;
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
@@ -14,12 +15,15 @@ import com.megacrit.cardcrawl.cards.CardGroup;
 import com.megacrit.cardcrawl.cards.Soul;
 import com.megacrit.cardcrawl.cards.SoulGroup;
 import com.megacrit.cardcrawl.events.shrines.GremlinMatchGame;
+import com.megacrit.cardcrawl.events.shrines.Designer;
+import com.megacrit.cardcrawl.events.city.Vampires;
 import com.megacrit.cardcrawl.map.MapRoomNode;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.monsters.EnemyMoveInfo;
 import com.megacrit.cardcrawl.rewards.RewardItem;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 import com.megacrit.cardcrawl.rooms.AbstractRoom;
+import com.megacrit.cardcrawl.ui.buttons.LargeDialogOptionButton;
 import basemod.ReflectionHacks;
 import communicationmod.GameStateConverter;
 import java.util.LinkedHashMap;
@@ -378,8 +382,62 @@ public final class CommunicationStatePatch {
         }
         AbstractEvent currentEvent = AbstractDungeon.getCurrRoom() == null
             ? null : AbstractDungeon.getCurrRoom().event;
+        ArrayList<Map<String, Object>> eventOptionRows =
+            new ArrayList<Map<String, Object>>();
+        if (currentEvent != null) {
+            Iterable<LargeDialogOptionButton> buttons = currentEvent.hasDialog
+                ? RoomEventDialog.optionList : currentEvent.imageEventText.optionList;
+            int semanticRow = 0;
+            int[] semanticSlots = null;
+            if (currentEvent instanceof Designer) {
+                boolean upgradeOne = ReflectionHacks.getPrivate(
+                    currentEvent, Designer.class, "adjustmentUpgradesOne"
+                );
+                boolean cleanUpRemoves = ReflectionHacks.getPrivate(
+                    currentEvent, Designer.class, "cleanUpRemovesCards"
+                );
+                semanticSlots = new int[] {
+                    upgradeOne ? 0 : 1, cleanUpRemoves ? 2 : 3, 4, 5
+                };
+            } else if (currentEvent instanceof Vampires) {
+                semanticSlots = AbstractDungeon.player.hasRelic("Blood Vial")
+                    ? new int[] {1, 0, 2} : new int[] {1, 2};
+            }
+            for (LargeDialogOptionButton button : buttons) {
+                Map<String, Object> row = new LinkedHashMap<String, Object>();
+                row.put("choice_index", semanticSlots != null && semanticRow < semanticSlots.length
+                    ? semanticSlots[semanticRow] : button.slot);
+                row.put("disabled", button.isDisabled);
+                row.put("text", button.msg);
+                eventOptionRows.add(row);
+                ++semanticRow;
+            }
+        }
         ArrayList<Map<String, Object>> matchSlots = matchSlots(currentEvent);
         Gson gson = new Gson();
+        if (OracleScenarioPatch.activeScenario != null
+                && String.valueOf(OracleScenarioPatch.activeScenario.get("scenario_id"))
+                    .startsWith("event_probe:")
+                && currentEvent != null && currentEvent.hasDialog
+                && !RoomEventDialog.optionList.isEmpty()) {
+            ArrayList<Map<String, Object>> roomOptions =
+                new ArrayList<Map<String, Object>>();
+            for (LargeDialogOptionButton button : RoomEventDialog.optionList) {
+                Map<String, Object> option = new LinkedHashMap<String, Object>();
+                option.put("choice_index", button.slot);
+                option.put("disabled", button.isDisabled);
+                option.put("text", button.msg);
+                option.put("label", "");
+                roomOptions.add(option);
+            }
+            String needle = "\"options\":[]";
+            int optionsAt = json.indexOf(needle);
+            if (optionsAt >= 0) {
+                json = json.substring(0, optionsAt)
+                    + "\"options\":" + gson.toJson(roomOptions)
+                    + json.substring(optionsAt + needle.length());
+            }
+        }
         return json.substring(0, json.length() - 1)
             + ",\"_parity_schema\":" + gson.toJson(INSTRUMENTATION_SCHEMA)
             + ",\"_rng\":" + gson.toJson(rng)
@@ -388,6 +446,7 @@ public final class CommunicationStatePatch {
             + ",\"_timing_evidence\":" + gson.toJson(timingEvidence)
             + ",\"_monster_intents\":" + gson.toJson(monsterIntents)
             + ",\"_combat_reward_cards\":" + gson.toJson(combatRewardCards)
+            + ",\"_event_option_rows\":" + gson.toJson(eventOptionRows)
             + ",\"_match_slots\":" + gson.toJson(matchSlots)
             + ",\"math_seed\":" + Long.toUnsignedString(ParityRng.mathSeed)
             + (OracleScenarioPatch.activeScenario == null ? ""
