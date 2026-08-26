@@ -835,9 +835,9 @@
     "content_scope_id": "sls-ironclad-a0-content-v1",
     "content_scope_sha256": "fb9c464dda321dfdb3e237ddef1fcd8427b037c9a39e92510aea183b1d9cfdb8",
     "encoding_schema": "sls-policy-input-v2",
-    "native_source_sha256": "e5f4461fea14dd8b7ba530889eed5a8c135f717db531a0e711f0152f2aa93cbb",
+    "native_source_sha256": "68658553437292d3efe980410ba3fa52c6dda2bfe812f749e9ae3a45e6ad6e3a",
     "policy_contract_sha256": "4e355790fae8dbd2c0bc3fdb856789e2eca4b09b480f680241b7f09bfc4d3598",
-    "semantic_audit_sha256": "d13d2b458984ca47597790b2177ffffc1e61842f2435775a3c0466822036f02c",
+    "semantic_audit_sha256": "b6286e8a5d5dafb8c9d680f330f9afc9d5e8dc0ee67fe84c13da0cd296139408",
     "vocabulary_sha256": "98e69b9733abfa4662ead56c0d02fb604b67575a2ba4c1785ba3fe736e7f01b6"
   },
   "coverage": {
@@ -893,7 +893,13 @@
     ]
   },
   "expansion": {
-    "requirements": {},
+    "requirements": {
+      "min_boundaries": 50,
+      "min_floor": 8,
+      "oracle_schema": "spirecomm-parity-v10",
+      "rounds": 2,
+      "seeds_per_round": 4
+    },
     "rounds": [
       {
         "evidence": [
@@ -1064,7 +1070,7 @@
     "unique_seed_count": 11
   },
   "level": "TRAINING_READY",
-  "lock_sha256": "5fdd0d405f3132743bbc1e837f97ca5a2b401774b422d630d414ccd86c7090a7",
+  "lock_sha256": "5c185f7907dde7dca10b3785835c8b8eb6ece2b767ce4bcf7d9923a0878da46a",
   "profile": "IRONCLAD_A0_ACT1",
   "requirements": {
     "bosses": [
@@ -1072,6 +1078,13 @@
       "THE_GUARDIAN",
       "HEXAGHOST"
     ],
+    "expansion": {
+      "min_boundaries": 50,
+      "min_floor": 8,
+      "oracle_schema": "spirecomm-parity-v10",
+      "rounds": 2,
+      "seeds_per_round": 4
+    },
     "profile": "IRONCLAD_A0_ACT1",
     "room_suffixes": [
       "MonsterRoom",
@@ -1111,7 +1124,7 @@
       "CHOOSE_BOSS_RELIC"
     ]
   },
-  "requirements_sha256": "c20368413cd6aa020c4908d7a13d6da40d5d2bc3ff3bdc24491db2cc87b59531",
+  "requirements_sha256": "d069b94c08112e54d864611c9205a573c7056834aa12cb7c62348d5a3d7d9691",
   "routes": [
     {
       "boss": "SLIME_BOSS",
