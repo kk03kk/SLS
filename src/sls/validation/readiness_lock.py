@@ -26,6 +26,9 @@ DEFAULT_LOCK = TRAINING_READY_LOCK
 ENGINEERING_READY = "ENGINEERING_READY"
 TRAINING_READY = ACT1_PRODUCTION_READINESS_LEVEL
 READINESS_LEVELS = {ENGINEERING_READY, TRAINING_READY}
+EXPANSION_REQUIREMENT_FIELDS = {
+    "rounds", "seeds_per_round", "min_floor", "min_boundaries", "oracle_schema",
+}
 
 
 def _contract() -> dict[str, str]:
@@ -42,7 +45,22 @@ def _contract() -> dict[str, str]:
         )),
         "canonicalizer_sha256": git_index_digest(("src/sls/validation/compare.py",)),
         "policy_contract_sha256": git_index_digest(("src/sls/contracts", "src/sls/model")),
+        "readiness_contract_sha256": git_index_digest((
+            "src/sls/validation/readiness.py",
+            "src/sls/validation/readiness_lock.py",
+            "tools/replay_truth.py",
+        )),
     }
+
+
+def _training_expansion_requirements(requirements: Mapping[str, Any]) -> Mapping[str, Any]:
+    expansion = requirements.get("expansion")
+    if not isinstance(expansion, Mapping) or not EXPANSION_REQUIREMENT_FIELDS <= set(expansion):
+        raise ValueError(
+            "training readiness requires explicit expansion requirements: "
+            + ", ".join(sorted(EXPANSION_REQUIREMENT_FIELDS))
+        )
+    return expansion
 
 
 def _coverage_score(routes: tuple[Mapping[str, Any], ...], requirements: Mapping[str, Any]) -> tuple[int, int, str]:
@@ -106,6 +124,7 @@ def build_readiness_lock(
     bundle_ids = sorted({bundle for route in selected for bundle in route["chain"]})
     expansion = None
     if level == TRAINING_READY:
+        _training_expansion_requirements(requirements)
         verify_semantic_audit(require_pilot_ready=True)
         expansion = _validate_expansion(
             records, selected, requirements, expansion_report,
@@ -180,10 +199,10 @@ def verify_readiness_lock(
     if route_bosses != required_bosses or len(route_seeds) != len(required_bosses):
         raise ValueError("Act 1 readiness lock does not contain unique routes for all bosses")
     if level == TRAINING_READY:
+        expansion_requirements = _training_expansion_requirements(lock["requirements"])
         expansion = lock.get("expansion") or {}
-        expansion_requirements = lock["requirements"].get("expansion") or {}
-        expected_rounds = int(expansion_requirements.get("rounds", 2))
-        seeds_per_round = int(expansion_requirements.get("seeds_per_round", 4))
+        expected_rounds = int(expansion_requirements["rounds"])
+        seeds_per_round = int(expansion_requirements["seeds_per_round"])
         rounds = expansion.get("rounds") or ()
         if (
             expansion.get("schema") != "sls-act1-training-expansion-lock-v1"
@@ -209,12 +228,12 @@ def _validate_expansion(
 ) -> dict[str, Any]:
     if report is None or report.get("schema") != "sls-act1-validation-expansion-v1":
         raise ValueError("training readiness requires a validation expansion report")
-    expansion_requirements = requirements.get("expansion") or {}
-    required_rounds = int(expansion_requirements.get("rounds", 2))
-    per_round = int(expansion_requirements.get("seeds_per_round", 4))
-    min_floor = int(expansion_requirements.get("min_floor", 8))
-    min_boundaries = int(expansion_requirements.get("min_boundaries", 50))
-    oracle_schema = str(expansion_requirements.get("oracle_schema", "spirecomm-parity-v10"))
+    expansion_requirements = _training_expansion_requirements(requirements)
+    required_rounds = int(expansion_requirements["rounds"])
+    per_round = int(expansion_requirements["seeds_per_round"])
+    min_floor = int(expansion_requirements["min_floor"])
+    min_boundaries = int(expansion_requirements["min_boundaries"])
+    oracle_schema = str(expansion_requirements["oracle_schema"])
     rounds = list(report.get("rounds") or ())
     if len(rounds) != required_rounds:
         raise ValueError(f"training readiness requires exactly {required_rounds} validation rounds")

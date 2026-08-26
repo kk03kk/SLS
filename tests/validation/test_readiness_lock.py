@@ -57,7 +57,8 @@ def test_lock_verifier_rejects_tampering(tmp_path: Path) -> None:
 
 def test_training_level_cannot_masquerade_without_expansion(tmp_path: Path) -> None:
     requirements = {"bosses": ["A"], "routes": 1, "expansion": {
-        "rounds": 2, "seeds_per_round": 4,
+        "rounds": 2, "seeds_per_round": 4, "min_floor": 8,
+        "min_boundaries": 50, "oracle_schema": "spirecomm-parity-v10",
     }}
     lock = {
         "schema": READINESS_LOCK_SCHEMA, "level": TRAINING_READY, "profile": "P",
@@ -69,6 +70,21 @@ def test_training_level_cannot_masquerade_without_expansion(tmp_path: Path) -> N
     path = tmp_path / "lock.json"
     path.write_text(json.dumps(lock), encoding="utf-8")
     with pytest.raises(ValueError, match="incomplete expansion"):
+        verify_readiness_lock(path, require_clean=False, expected_level=TRAINING_READY)
+
+
+def test_training_level_requires_explicit_expansion_contract(tmp_path: Path) -> None:
+    requirements = {"bosses": ["A"], "routes": 1}
+    lock = {
+        "schema": READINESS_LOCK_SCHEMA, "level": TRAINING_READY, "profile": "P",
+        "requirements": requirements, "requirements_sha256": canonical_digest(requirements),
+        "contract": _contract(), "routes": [{"boss": "A", "seed": 0}],
+        "bundles": [], "coverage": {}, "expansion": {},
+    }
+    lock["lock_sha256"] = canonical_digest(lock)
+    path = tmp_path / "lock.json"
+    path.write_text(json.dumps(lock), encoding="utf-8")
+    with pytest.raises(ValueError, match="explicit expansion requirements"):
         verify_readiness_lock(path, require_clean=False, expected_level=TRAINING_READY)
 
 

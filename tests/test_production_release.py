@@ -47,6 +47,15 @@ def test_all_nus_training_stages_share_one_strict_production_contract() -> None:
     assert TRAINING_CHECKPOINT_SCHEMA == "sls-full-run-ppo-v3"
 
 
+def test_strict_readiness_config_binds_the_full_expansion_contract() -> None:
+    path = ROOT / "configs" / "validation" / "act1_training_ready.toml"
+    with path.open("rb") as stream:
+        requirements = tomllib.load(stream)["requirements"]
+    assert set(requirements["expansion"]) >= {
+        "rounds", "seeds_per_round", "min_floor", "min_boundaries", "oracle_schema",
+    }
+
+
 def test_preflight_and_benchmark_share_the_production_readiness_defaults() -> None:
     assert DEFAULT_LOCK == ACT1_PRODUCTION_READINESS_LOCK
     for args in (
