@@ -837,6 +837,7 @@
     "encoding_schema": "sls-policy-input-v2",
     "native_source_sha256": "68658553437292d3efe980410ba3fa52c6dda2bfe812f749e9ae3a45e6ad6e3a",
     "policy_contract_sha256": "4e355790fae8dbd2c0bc3fdb856789e2eca4b09b480f680241b7f09bfc4d3598",
+    "readiness_contract_sha256": "e94c4226399687b4510feb9594796a561e629a012e80ba86c819aef64696d31d",
     "semantic_audit_sha256": "b6286e8a5d5dafb8c9d680f330f9afc9d5e8dc0ee67fe84c13da0cd296139408",
     "vocabulary_sha256": "98e69b9733abfa4662ead56c0d02fb604b67575a2ba4c1785ba3fe736e7f01b6"
   },
@@ -1070,7 +1071,7 @@
     "unique_seed_count": 11
   },
   "level": "TRAINING_READY",
-  "lock_sha256": "5c185f7907dde7dca10b3785835c8b8eb6ece2b767ce4bcf7d9923a0878da46a",
+  "lock_sha256": "903039a890de1d225d28d5f2ef16ed304fdb53fc1d6b48847edd25ef32ca6078",
   "profile": "IRONCLAD_A0_ACT1",
   "requirements": {
     "bosses": [
