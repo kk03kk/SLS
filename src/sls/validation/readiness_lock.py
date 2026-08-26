@@ -20,6 +20,7 @@ from sls.validation.truth import value_hash
 
 READINESS_LOCK_SCHEMA = "sls-act1-readiness-lock-v1"
 DEFAULT_LOCK = ROOT / "configs" / "validation" / "act1_readiness.lock.json"
+TRAINING_READY_LOCK = ROOT / "configs" / "validation" / "act1_training_readiness.lock.json"
 ENGINEERING_READY = "ENGINEERING_READY"
 TRAINING_READY = "TRAINING_READY"
 READINESS_LEVELS = {ENGINEERING_READY, TRAINING_READY}

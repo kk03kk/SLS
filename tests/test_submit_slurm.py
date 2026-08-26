@@ -109,3 +109,14 @@ def test_train_keeps_long_partition_and_default_config(tmp_path: Path) -> None:
     assert "--partition=gpu-long" in command
     assert "--time=3-00:00:00" in command
     assert wrapped[3] == str((tmp_path / "repo" / "configs" / "train" / "full_run.toml").resolve())
+
+
+def test_benchmark_submission_uses_the_guarded_benchmark_entrypoint(tmp_path: Path) -> None:
+    python = tmp_path / "venv" / "bin" / "python"
+    args = _parser().parse_args(["benchmark", "--python", str(python)])
+    wrapped = _wrapped(build_sbatch_command(args, root=tmp_path / "repo"))
+
+    assert wrapped == [
+        os.path.abspath(str(python)),
+        str(tmp_path / "repo" / "tools" / "benchmark_workers.py"),
+    ]

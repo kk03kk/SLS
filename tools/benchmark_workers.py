@@ -20,20 +20,38 @@ from sls.curriculum import IRONCLAD_A0_ACT1
 from sls.model import ModelConfig, Policy
 from sls.rl import PPOConfig, PPOTrainer, WorkerPool
 from sls.rl.training_contract import git_state, native_artifact, native_source_digest
-from sls.validation.readiness_lock import verify_readiness_lock
+from sls.validation.readiness_lock import (
+    READINESS_LEVELS, TRAINING_READY, TRAINING_READY_LOCK, verify_readiness_lock,
+)
 
 
-def main() -> int:
+def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser()
     parser.add_argument("--workers", type=int, nargs="+", default=(8, 16, 24, 32))
     parser.add_argument("--rounds", type=int, default=3)
     parser.add_argument("--rollout-steps", type=int, default=64)
     parser.add_argument("--output", type=Path, default=ROOT / "runs" / "worker-benchmark.json")
+    parser.add_argument("--readiness-lock", type=Path, default=TRAINING_READY_LOCK)
+    parser.add_argument(
+        "--readiness-level", choices=sorted(READINESS_LEVELS), default=TRAINING_READY,
+    )
     parser.add_argument("--allow-dirty", action="store_true", help="development/test only")
-    args = parser.parse_args()
+    return parser
+
+
+def _verify_benchmark_readiness(args: argparse.Namespace) -> dict[str, object]:
+    return verify_readiness_lock(
+        args.readiness_lock,
+        require_clean=not args.allow_dirty,
+        expected_level=args.readiness_level,
+    )
+
+
+def main() -> int:
+    args = _parser().parse_args()
     if not torch.cuda.is_available():
         raise SystemExit("worker benchmark requires one CUDA GPU")
-    readiness = verify_readiness_lock(require_clean=not args.allow_dirty)
+    readiness = _verify_benchmark_readiness(args)
     rows = []
     for count in sorted(set(args.workers)):
         model = Policy(ModelConfig()).to("cuda")
@@ -57,6 +75,7 @@ def main() -> int:
         "schema": "sls-worker-benchmark-v1", "selected_workers": selected,
         "selection_threshold": 0.95, "results": rows, "git": git_state(),
         "readiness_lock_sha256": readiness["lock_sha256"],
+        "readiness_level": readiness["level"],
         "content_scope_id": IRONCLAD_A0_SCOPE_ID,
         "content_scope_sha256": ironclad_a0_scope_hash(),
         "semantic_audit_sha256": semantic_audit_hash(),
