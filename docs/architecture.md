@@ -85,6 +85,13 @@ Linux training host verifies the lock against Git blob-based adapter,
 canonicalizer, policy, vocabulary, checkpoint, and native-source contracts;
 it never needs the game or truth bundles.
 
+All default NUS stages share one production readiness contract:
+`configs/validation/act1_training_readiness.lock.json` at `TRAINING_READY`.
+Readiness-required TOML files must state both fields explicitly; the training
+entrypoint does not fall back to the legacy engineering lock. Source-evidence
+hashes canonicalize CRLF to LF so the same committed audit verifies on Windows
+and Linux checkouts.
+
 ## Reproducibility profiles
 
 Simulator profile:

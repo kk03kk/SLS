@@ -19,7 +19,7 @@ from sls.backends.simulator import IRONCLAD_A0_ACT1, native  # noqa: E402
 from sls.content.scope import ironclad_a0_scope_hash, load_ironclad_a0_scope  # noqa: E402
 from sls.content.source_audit import java_sources, registry_game_ids  # noqa: E402
 from sls.contracts import Action, ActionKind, Decision, ScreenType  # noqa: E402
-from sls.rl.training_contract import canonical_digest, sha256_file  # noqa: E402
+from sls.rl.training_contract import canonical_digest, source_sha256  # noqa: E402
 from sls.validation.policies import PRIORITY, deterministic_action  # noqa: E402
 
 from audit_card_semantics import _adapt_probe_payload, _rng  # noqa: E402
@@ -241,7 +241,7 @@ def capture(seed: int) -> dict[str, Any]:
                 "id": potion_id,
                 "game_id": game_ids[potion_id],
                 "java_source": source.path.relative_to(ROOT).as_posix(),
-                "java_sha256": sha256_file(source.path),
+                "java_sha256": source_sha256(source.path),
                 "variants": variants,
             })
             print(f"POTION_AUDIT {index}/{len(ids)} {potion_id}", file=sys.stderr, flush=True)

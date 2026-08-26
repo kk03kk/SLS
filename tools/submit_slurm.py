@@ -50,6 +50,19 @@ def build_sbatch_command(args: argparse.Namespace, *, root: Path = ROOT) -> list
 
     if args.cpus <= 0:
         raise ValueError("--cpus must be positive")
+    if args.task in {"preflight", "benchmark"}:
+        unsupported = [
+            name for name, value in (
+                ("--config", args.config), ("--resume", args.resume),
+                ("--workers", args.workers),
+            )
+            if value not in (None, False)
+        ]
+        if unsupported:
+            raise ValueError(
+                f"{args.task} does not accept training option(s): "
+                + ", ".join(unsupported)
+            )
     python = _absolute_without_symlink_resolution(args.python)
     if args.task == "train":
         partition, walltime = "gpu-long", "3-00:00:00"
@@ -75,7 +88,9 @@ def build_sbatch_command(args: argparse.Namespace, *, root: Path = ROOT) -> list
         f"--mem={args.memory}", f"--time={walltime}", "--signal=B:TERM@300",
         f"--job-name=sls-{args.task}", f"--chdir={root}",
         f"--output={logs / '%x-%j.out'}", f"--error={logs / '%x-%j.err'}",
-        "--wrap", shlex.join(command),
+        # Replace the batch shell with Python so Slurm's B:TERM signal reaches
+        # StopController instead of stopping at an intermediate shell process.
+        "--wrap", "exec " + shlex.join(command),
     ]
 
 

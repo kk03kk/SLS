@@ -71,15 +71,16 @@ gate before a large run:
 python tools/bootstrap.py --with-model
 python tools/generate_policy_vocabulary.py --check
 python tools/validate_training_readiness.py
-python tools/generate_readiness_lock.py
-python tools/verify_readiness_lock.py
+python tools/verify_readiness_lock.py configs/validation/act1_training_readiness.lock.json
 python tools/benchmark_act1.py
 python tools/train_full_run.py --config configs/train/full_run.toml
 ```
 
 The Act 1 gate is separate from final 10-seed Heart FullRun acceptance. It
 requires three hash-continuous Original routes covering Slime Boss, Guardian,
-and Hexaghost. The 20-update and 200-update guarded configurations are
+and Hexaghost plus the committed strict expansion evidence. The default
+preflight, worker benchmark, 20-update smoke, 200-update pilot, and long Act 1
+training all require the same `TRAINING_READY` lock. The guarded configurations are
 `configs/train/act1_smoke.toml` and `configs/train/act1_pilot.toml`. A one-update
 ungated developer integration check remains in `configs/train/smoke.toml` and
 does not constitute a training run or parity evidence.

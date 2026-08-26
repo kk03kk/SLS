@@ -1,7 +1,7 @@
 [run]
 profile = "IRONCLAD_A0_ACT1"
 seed = 0
-device = "auto"
+device = "cuda"
 workers = 8
 updates = 200
 save_interval = 10

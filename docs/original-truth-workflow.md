@@ -33,11 +33,12 @@ The round recorder never attests parity by itself: it selects a clean,
 current-Oracle provenance leaf for each reported pair. Strict lock generation
 then independently validates the chain and offline-replays every segment.
 
-The committed three-route lock is `ENGINEERING_READY` and permits only
-preflight/benchmark/smoke. Pilot and long training use the committed
-`TRAINING_READY` lock backed by two clean four-seed expansion rounds. A missing
-or invalid strict lock is a deliberate training stop, never a reason to create
-a placeholder or weaken verification.
+The committed three-route `ENGINEERING_READY` lock remains a local evidence-
+engineering artifact. Every default NUS production stage—including preflight,
+benchmark, smoke, pilot, and long training—uses the committed `TRAINING_READY`
+lock backed by two clean four-seed expansion rounds. A missing or invalid strict
+lock is a deliberate training stop, never a reason to create a placeholder or
+weaken verification.
 
 The coordinator creates a write-ahead journal, protects the user's Ironclad
 saves and ModTheSpire configuration, installs the current Oracle, writes the

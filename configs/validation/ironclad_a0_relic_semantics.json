@@ -1,5 +1,5 @@
 {
-  "audit_sha256": "0242f3ba578e4d79419743bdc66950371e02453b3ef90d59b96eb99624271d60",
+  "audit_sha256": "1c066762037a22cc9bbbcbca28420b0e1288011e70bc0652c0584b1937a823b0",
   "entries": [
     {
       "callback_complete": true,
@@ -9,7 +9,7 @@
       "effect_sha256": "a870c99aff4a75423bf242b00be28961437416f21215f24b70e6723d2d177f06",
       "game_id": "Akabeko",
       "id": "AKABEKO",
-      "java_sha256": "4aed4c1c7f3254d64bd4e3f67ebebac3756fbb28d9e7ac1e420c89f81f2e1a7e",
+      "java_sha256": "a7cc0b9c09e60cc6c612568e756285dae521271784b4d8a2b2dfcf43dedd2149",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Akabeko.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -20,12 +20,12 @@
       "callback_scenarios": [
         {
           "callback": "justEnteredRoom",
-          "effect_sha256": "8c346e2b919cb3aa310c4383c06e19c2c79fbe6c3f7c26588180bc5c10159eb7",
+          "effect_sha256": "34de6abf3be03e0f684e1daf7bd39e920dee6c9cfa97bcc1ef61845102c33507",
           "result": {
             "policy_state_unchanged": true
           },
           "scope": "POLICY_OBSERVABLE_STATE",
-          "setup_digest": "beee0fa346cab2d4efe7797215b1978f52f66ed3475fdc93093da77b8bac1f56"
+          "setup_digest": "d6f3779b599deac8b467f9458db2ad38a94c1445f3366beeecf99d2b3b53b8dd"
         }
       ],
       "covered_callbacks": [
@@ -35,7 +35,7 @@
       "effect_sha256": "c5ed56e9f6f13f2e8267250372b327c603efd3146d5ca87301e2059e2d56db7a",
       "game_id": "Anchor",
       "id": "ANCHOR",
-      "java_sha256": "4b472e78448dd055cc8d4f60223bf840b6471b796dc50844aa39bb537be74eb4",
+      "java_sha256": "4986383e75f8cf68f7f8abe5fbc49fcb335bb647cb460bf4590ca22c28b0b358",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Anchor.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -83,12 +83,12 @@
           "callbacks": [
             "onEnterRestRoom"
           ],
-          "effect_sha256": "42092d02806b90747fa93aa4fa183725aeca0cec9c9d26e215daa7cf531a3827",
+          "effect_sha256": "8234ef875e90ddda243851ededcc70ef93cbf32e23d35b4bcb7f6434d6698d17",
           "result": {
             "energy_delta": 2
           },
           "scope": "FOCUSED_TURN_LIFECYCLE",
-          "setup_digest": "7dd8d70ec7053d0f17c67fc58c3e5bd2438dbd5cc7320df84f1f61d85daed04a"
+          "setup_digest": "bfe3e56c65d9d4138b6ca0374b2bf5857f8b50d06864b5f14fcb6738deaf8955"
         }
       ],
       "covered_callbacks": [
@@ -101,7 +101,7 @@
       "effect_sha256": "4bb81a04d28d1e94f7e9c800f438e5f02736169062bd6da035d4acbb919f6f74",
       "game_id": "Ancient Tea Set",
       "id": "ANCIENT_TEA_SET",
-      "java_sha256": "70c669291620f2b0429a919ab2e8238ce6c8754b3cf95efee1dff8a95e30c868",
+      "java_sha256": "f531d420b0d2cc6f5c4e96ef73eb225c52e45f28be532442ae4f0de11b42e5ae",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/AncientTeaSet.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -115,13 +115,13 @@
             "onUseCard",
             "onVictory"
           ],
-          "effect_sha256": "76a3d5126a3bf7b73cbba62a584c6133d95567b882a8d64c89f4ed758853e152",
+          "effect_sha256": "d168e79cf0ecd0e8eafa6ad28e819d6b10fd53f9f5a8eb5f14d6e6760f433110",
           "result": {
             "attack_bonus": 0,
             "skill_bonus": 1
           },
           "scope": "FOCUSED_TURN_LIFECYCLE",
-          "setup_digest": "717fd7f1cc4aa8968e91163561e13e9585a28145a8841e4f474d81f8bf9768c5"
+          "setup_digest": "07826f4f6d4e98df3f8c3c2d075552a00eff21fa34797f37215a8f1abcb3fb65"
         }
       ],
       "covered_callbacks": [
@@ -133,7 +133,7 @@
       "effect_sha256": "021a7e9c8cc2ef02db2b1fafd46de8e270f00e3b9b75c815a151ef10d646a2c2",
       "game_id": "Art of War",
       "id": "ART_OF_WAR",
-      "java_sha256": "56c527b95ee83bff5af19a0fc4111b3b6a4ac87575f8baa53ed93c7df3789a18",
+      "java_sha256": "3e161957d440222c1ef779c4636ed903ab1dc9668362df4fecb3bffdcaaf40c8",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/ArtOfWar.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -146,13 +146,13 @@
           "callbacks": [
             "onEquip"
           ],
-          "effect_sha256": "df6460a3959dcba0073cf71e1eef748cd9f4ddf5f88e2172eac22c7e29fa1ea0",
+          "effect_sha256": "bb40a5f72d76f0fa0d111b2c2fb9f161cfcf1715933010d9744f11b6834d5a43",
           "result": {
             "affected": 3,
             "option_count": 10
           },
           "scope": "FULL_EQUIP_UI_LIFECYCLE",
-          "setup_digest": "4661a3dfae4b3e633654c47c02ccf06a6820d6c916a38a9aa3a1fc584aa8f74a"
+          "setup_digest": "cefcf6c805239fcae13acb66bcfead1f5605862378821b6a2488f712be06fb6a"
         }
       ],
       "covered_callbacks": [
@@ -161,7 +161,7 @@
       "effect_sha256": "fb41dc59c6deac947d83b0fc5d5ae8fbd314237145138e77dbd9bb83d68bf69a",
       "game_id": "Astrolabe",
       "id": "ASTROLABE",
-      "java_sha256": "45c39ea07fae3d3c1d0a2096d0b87a2c20371ba57a109c0015114bdad7255de4",
+      "java_sha256": "245a8ffc9cae98ebda447c6534c1b76c7762e529099175c10433457b901d3dfb",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Astrolabe.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -175,7 +175,7 @@
       "effect_sha256": "3ed573054e48c2c8fe2dcec3f7f55e833c75b8c546358f00981aed0f2952ad4c",
       "game_id": "Bag of Marbles",
       "id": "BAG_OF_MARBLES",
-      "java_sha256": "9d3d7da96321072d6cf6d4f529f82b78af6cdb0464932d1a02bb254811b04617",
+      "java_sha256": "fde07b2c796ae5110779eebb974217d5d4468cadacdf5155f87ae9856c3b7172",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/BagOfMarbles.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -189,7 +189,7 @@
       "effect_sha256": "303249e54662bd935e2baa2414799a5f6c52e9e06b9558ba7e565364526ee029",
       "game_id": "Bag of Preparation",
       "id": "BAG_OF_PREPARATION",
-      "java_sha256": "bf87e698a5ae6b62d1b3160b7faf743a62132342cfea6919f4f88d9421eeabd9",
+      "java_sha256": "58e487c9e94fc83e97372cf2686500f901b405c72385666196c66d1c245b8df0",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/BagOfPreparation.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -214,7 +214,7 @@
       "effect_sha256": "a5f62cc561d44f16ea3f36458b9e07a1301372935bc35c3daec6bf711329a578",
       "game_id": "Bird Faced Urn",
       "id": "BIRD_FACED_URN",
-      "java_sha256": "c24b234ae8a31ecc616821fba09af8c387cc4218bb3693462a42a0737250f545",
+      "java_sha256": "1dfed44bacc34ddc626f11e50a50253afa7100b45d89a6643b691e8532ac535a",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/BirdFacedUrn.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -250,13 +250,13 @@
           "callbacks": [
             "onVictory"
           ],
-          "effect_sha256": "b8d373f42ce2a772a391c4a6a538c49c7b3a56e4432fbc2035f8670d62892f69",
+          "effect_sha256": "3c5794f5e14ee25d159ef3942382b730d741014558fb532fd2875fc86557c02e",
           "result": {
             "hp_delta": 12,
             "max_hp_delta": 0
           },
           "scope": "FOCUSED_COMBAT_VICTORY",
-          "setup_digest": "8e3c43fd58d4d2e949dd52c2a9d2de8ceb6144d2b8c441d57bdeaeae332797ba"
+          "setup_digest": "b51e7c967785d4969acf30095894c84f26584d6065eb6ee6d100b93f57c41617"
         }
       ],
       "covered_callbacks": [
@@ -266,7 +266,7 @@
       "effect_sha256": "40a5e8537d613d4eb5d26cbf3d9cb1572eaaf6ce3aa8795089f51a9ec682c1b7",
       "game_id": "Black Blood",
       "id": "BLACK_BLOOD",
-      "java_sha256": "4260e893f30c5ebbf36b30974851b732c0b333a961d169133a5a80cc029953d4",
+      "java_sha256": "4edfd4e0939b94846c7705c07e38b18d3be2d8a3be07caea71bb1a36725a213f",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/BlackBlood.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -277,21 +277,21 @@
       "callback_scenarios": [
         {
           "callback": "onEnterRoom",
-          "effect_sha256": "271809cbcecc91901374753a397bf526117d548931af215496d29bc970fdf8a3",
+          "effect_sha256": "fd682b62adc14136539cd8989ba5f6c80c88a2763778ad99da84e8351da43a21",
           "result": {
             "policy_state_unchanged": true
           },
           "scope": "POLICY_OBSERVABLE_STATE",
-          "setup_digest": "6aa3d80dd090e5632acd0300d48a61dffa212aca5e6a3a3f4c9a130ee38a7913"
+          "setup_digest": "2fbc46980ca46a6e24dd0de8d11264e1a77719bab165053298a43fb8e080b301"
         },
         {
           "callback": "onVictory",
-          "effect_sha256": "bb34fc03a86b9ced8fca0731e58d356dfc4f252d1e76d0226b5514e4d3179bd5",
+          "effect_sha256": "9340ceff3389712b6e856b10f8c047be3b27cba3e0301f7ab9e655b73d0430d9",
           "result": {
             "policy_state_unchanged": true
           },
           "scope": "POLICY_OBSERVABLE_STATE",
-          "setup_digest": "6aa3d80dd090e5632acd0300d48a61dffa212aca5e6a3a3f4c9a130ee38a7913"
+          "setup_digest": "2fbc46980ca46a6e24dd0de8d11264e1a77719bab165053298a43fb8e080b301"
         }
       ],
       "covered_callbacks": [
@@ -301,7 +301,7 @@
       "effect_sha256": "dd766760ce901733abd8f2c4f9135c99fe30ccd50e5f0298366addfa3c833a9b",
       "game_id": "Black Star",
       "id": "BLACK_STAR",
-      "java_sha256": "b666ed2ab53876d261450634047e0b41dfda18e8808049b553dcde9d747c0b5a",
+      "java_sha256": "74308ad3606083cb7055b0b508fadd523e77934a7a9824342a473371ce233f0e",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/BlackStar.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -312,13 +312,13 @@
       "callback_scenarios": [
         {
           "callback": "onGainGold",
-          "effect_sha256": "801e5f60e3caaf04c2a822b3888ccd3009d598ec6da85cba8192f3197690a2e0",
+          "effect_sha256": "4f0e2d3984af469efbc900d35995b5a99a078e0bb500f036a550ed7d98fac365",
           "result": {
             "gold_delta": 10,
             "hp_delta": 5
           },
           "scope": "ACT1_RESOURCE_TRANSITION",
-          "setup_digest": "b1e27773d3e3e41ede61aeab68ba240509e43a6337ac40df13fd800009240d75"
+          "setup_digest": "4f59f65bb6f463f8f0f29edff4b103dda609687ad5d159a96654742c00352588"
         }
       ],
       "covered_callbacks": [
@@ -327,7 +327,7 @@
       "effect_sha256": "77b0ead9d096cf7172cab9232bc2a6b18580943b6578643fdad2eb769f12ec66",
       "game_id": "Bloody Idol",
       "id": "BLOODY_IDOL",
-      "java_sha256": "1e54833617e3466882509d1d7b42febb833de1a5b8242e8fba1a25825bd6afb9",
+      "java_sha256": "a0e2df9fb4df47adbdecfa6f85450f20a16673cb2f1d8ff6c54857267fd44743",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/BloodyIdol.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -341,7 +341,7 @@
       "effect_sha256": "2a032f5440d1456057590b0f394edb4a3fe0c163db48b63599b433a5833e1401",
       "game_id": "Blood Vial",
       "id": "BLOOD_VIAL",
-      "java_sha256": "620fcba228cbd0bdd94eafd5f50a097ba4ceb1fa877d74e015fee842b24e2b5e",
+      "java_sha256": "f442eb8c42dbfbc22c8fcf77bdcccf7c638500a91d8a4e043db187bb51ed95b4",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/BloodVial.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -367,7 +367,7 @@
       "effect_sha256": "a8d089ee22e7c63b3f50b6d7c3343fc8faaabdb1d51be0ab95aba681688827ab",
       "game_id": "Blue Candle",
       "id": "BLUE_CANDLE",
-      "java_sha256": "e62d6e1c191f48c56cc39d0da18d47934aa907256810bc05ed2be6be64b97203",
+      "java_sha256": "3f4745b871f7fe98057c782362f8ff6b64f898561b6e3388c25997054632f01a",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/BlueCandle.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -404,7 +404,7 @@
             "onEquip",
             "onUnequip"
           ],
-          "effect_sha256": "cd79bb73cfd180b7d562195f059147248d577eae7b818f4b625f2b036d58236b",
+          "effect_sha256": "99a3379fc9df184e49e6bac8d95169619e0175867add87036e5529a0fb7213e6",
           "result": {
             "affected": 1,
             "marked": 1,
@@ -412,7 +412,7 @@
             "unmarked": 1
           },
           "scope": "FULL_EQUIP_UI_LIFECYCLE",
-          "setup_digest": "483517ff4baf8e25f497948879984c07be09844f67e26ff45f6cfed6083867bc"
+          "setup_digest": "f72644ccdbfd6fa4bccc0ea9075de06179cc7e5f416f7365a044c7604c04b17c"
         }
       ],
       "covered_callbacks": [
@@ -424,7 +424,7 @@
       "effect_sha256": "e5fb657e36cc721d9683d9a0787cb903e17176a124abf4553b344b4f2a64ff37",
       "game_id": "Bottled Flame",
       "id": "BOTTLED_FLAME",
-      "java_sha256": "71fda7631fe308f157330fc63300a0860593c39586ca03d5cd4a99da7140488c",
+      "java_sha256": "fc553fe0e7dee00231eaa39fe31d0c90d7f27a9ca2874795e9625c2152954d11",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/BottledFlame.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -461,7 +461,7 @@
             "onEquip",
             "onUnequip"
           ],
-          "effect_sha256": "b26ad08fcc52b65f6140b8abb3d213c9e942ab2fbe1fce029069beb6c6d2e2cc",
+          "effect_sha256": "9e0173993e0bef12ae878ddc1cfa26f1d2bdafc1f95edd2716e439f1e3c57fa8",
           "result": {
             "affected": 1,
             "marked": 1,
@@ -469,7 +469,7 @@
             "unmarked": 1
           },
           "scope": "FULL_EQUIP_UI_LIFECYCLE",
-          "setup_digest": "f27091c21c6508c59845b985b61aeab765de368d742cf6bc8ee08021289e00c8"
+          "setup_digest": "81c037809fa69f17fc87b36cabe70275e3f9d766e7f51ca7a079ae802b70b0e6"
         }
       ],
       "covered_callbacks": [
@@ -481,7 +481,7 @@
       "effect_sha256": "7042e0411e1ee77b1b2e7121749611153b10f668726083f6d98f6c44c0105bb6",
       "game_id": "Bottled Lightning",
       "id": "BOTTLED_LIGHTNING",
-      "java_sha256": "82c20ba5828c2703841035d271563d48d3459c7aa27664b58abf19342f642f3f",
+      "java_sha256": "8bbb65a76267bee3c035b952057597cb165a5ef8151d49a2e44eec61f98be6b0",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/BottledLightning.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -518,7 +518,7 @@
             "onEquip",
             "onUnequip"
           ],
-          "effect_sha256": "ee73b6f74aed0baef9506fb9cf7f3cd5441c2a85942e45f10d6c650c9cfd366d",
+          "effect_sha256": "2025d4dc57c3caabf9828df9cb01dfb478ee0c8dfc606f8014e978563e66f4f4",
           "result": {
             "affected": 1,
             "marked": 1,
@@ -526,7 +526,7 @@
             "unmarked": 1
           },
           "scope": "FULL_EQUIP_UI_LIFECYCLE",
-          "setup_digest": "e03acf98c8ea0d7b345a56b9c26fdc844d144761048ec38238dffdddf2c902ec"
+          "setup_digest": "4db7a2b427418c06dd1f7473d78811b4743e8daa5766e1b3aa51128506dc6b37"
         }
       ],
       "covered_callbacks": [
@@ -538,7 +538,7 @@
       "effect_sha256": "d2841317c7dbfb080a1f859f82e7a7fe43ca6fc8c545d2d21fc442c36a0332e8",
       "game_id": "Bottled Tornado",
       "id": "BOTTLED_TORNADO",
-      "java_sha256": "3f3a58c53f52db8e821ef45593788a1a870347fdbc3d46c6b4ace0b9a94ce6c7",
+      "java_sha256": "3f7c8f3387abbc119bb8a80936ce6a99c53f301d3777f48f677e9bcdcea0855e",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/BottledTornado.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -552,7 +552,7 @@
       "effect_sha256": "db356038259a7cb4ae0d86219fbe98a26c61d715c5b2328ff558ddf5fde4f8c6",
       "game_id": "Brimstone",
       "id": "BRIMSTONE",
-      "java_sha256": "e511b5cea32aa78894fbce836a9348e682c30f167e9f5260af36f68ec0e0eac6",
+      "java_sha256": "c2b96bf11e3531a4e22776c257cff87078952611d2afa52d5fa374418d6845c2",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Brimstone.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -566,7 +566,7 @@
       "effect_sha256": "d760e48f83d323ec02baad216e4da6a218b402d1674adfffaf8764fd09536095",
       "game_id": "Bronze Scales",
       "id": "BRONZE_SCALES",
-      "java_sha256": "4ed22be77a5ecf9d35b9dd621b06316bd814921c098a3b0857eb78d8b5710605",
+      "java_sha256": "4d1bee3e37f208a5bfd50842cd9ede9097b9ee6c59e6e5b07bb6946032da7ac7",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/BronzeScales.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -579,13 +579,13 @@
           "callbacks": [
             "onVictory"
           ],
-          "effect_sha256": "4423b8da30f9e28da94ed3ebc1a2182e0fa478a1cde4d41c6ca94c07c8a091dc",
+          "effect_sha256": "1d39ed55d7ee6a3e2bf9192e8ab288aa6c3f0599965e1039d14fd00e5b4d79d9",
           "result": {
             "hp_delta": 6,
             "max_hp_delta": 0
           },
           "scope": "FOCUSED_COMBAT_VICTORY",
-          "setup_digest": "d4c3e4d9d4bbe493cc4a72ab8743dd3beabac90ba6c5bc07d60220066137204a"
+          "setup_digest": "1ae2d08604fa344d2167a6d5abb61bfd62c3d925cd363e4bd8da0b14eea10127"
         }
       ],
       "covered_callbacks": [
@@ -594,7 +594,7 @@
       "effect_sha256": "f4593eafc07381aed667b8477ba364c989ff964f11c342d92a4b212584084b69",
       "game_id": "Burning Blood",
       "id": "BURNING_BLOOD",
-      "java_sha256": "264d2c086e4474858b8bded896cecbdab64eeb0b7f8c8b6287aa710c14dae5ab",
+      "java_sha256": "8217a4a05a80474158ade3f7d77e51f802c9701512bbf1ab90321d7f74d5d65d",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/BurningBlood.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -605,22 +605,22 @@
       "callback_scenarios": [
         {
           "callback": "onUnequip",
-          "effect_sha256": "6d717d882be9f2cd25a0e48b47ab57327186de4d07e4050d48b0546ad5f33ff8",
+          "effect_sha256": "f2cf28cd864f9047a8fa376de9990e0e03f9cedc26922b31b1bb472129e6cc9b",
           "result": {
             "energy_delta": -1,
             "hand_delta": 0,
             "necronomicurse_count": 1
           },
           "scope": "PERSISTENT_NEXT_COMBAT",
-          "setup_digest": "93394a1517edc035427831eb070e81ef7bd4dbda39a060c71e697116ee1284fd"
+          "setup_digest": "2e30a8318219ee78373fb06b44cef763c37e89059a02d6a065554a029c7131f2"
         },
         {
           "callback": "changeNumberOfCardsInReward",
-          "effect_sha256": "1e8ec5e2c95a6f89e1b132b7e53596a6b26ced01e2840e54e0f3e39dc60bfbbd",
+          "effect_sha256": "1ae12723b4dd79f6d3448538e930ccb60238d1d64aca3bec61d2b17d74db0704",
           "input": 3,
           "result": 1,
           "scope": "ACT1_CARD_REWARD",
-          "setup_digest": "1c448e552cb01b60f37978d2c951bd767bee2b9ed682a1dcf583751d8baa6221"
+          "setup_digest": "2e30a8318219ee78373fb06b44cef763c37e89059a02d6a065554a029c7131f2"
         }
       ],
       "covered_callbacks": [
@@ -631,7 +631,7 @@
       "effect_sha256": "bdfb01a4a943bcaaa01177e89f08026854532fec8d10e141703dac7c4a8fcb40",
       "game_id": "Busted Crown",
       "id": "BUSTED_CROWN",
-      "java_sha256": "64d4a3a36133790f095670fb1b05820f6ab3e40f2b6609747dabccbaac063bea",
+      "java_sha256": "d5898ec2c64b3d3ec0d0c3e7f244e41ec1b77aeba3b69ff4c8da991859fb9d5d",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/BustedCrown.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -643,7 +643,7 @@
       "effect_sha256": "d4589b9a60127da65a7acd39faa623a7c38aff0df197d580733cac7990af34bf",
       "game_id": "Calipers",
       "id": "CALIPERS",
-      "java_sha256": "e0cfcfda414e31e04b0bfe24ebe8652d3031b48566eeb358838aa3120fa41bba",
+      "java_sha256": "828d5ecc097cb7f28405611262dbaa72752022f4c9f6382a1875981d9da7eeb1",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Calipers.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -656,13 +656,13 @@
           "callbacks": [
             "onEquip"
           ],
-          "effect_sha256": "33492cb89b1220657b99fdaaa120bc711e2b7526e4cb5bd51253560cebcd4fc0",
+          "effect_sha256": "e11ffc93e37620c22fe9b9dca25b05adc8eb4caba8e6d69474bea20fc841decd",
           "result": {
             "affected": 1,
             "relic_rewards": 3
           },
           "scope": "FULL_EQUIP_UI_LIFECYCLE",
-          "setup_digest": "e593cf64d7bf649580cfb2820088ef8489ec8f54b94834f727e2db51bbd26d10"
+          "setup_digest": "2f2e214d707558ebf594853649a0ac78b96b63823c90bd083ec88f630294187b"
         }
       ],
       "covered_callbacks": [
@@ -671,7 +671,7 @@
       "effect_sha256": "dcd19aa10d41fba278a5643526d861417b7399b9e3d2da1f923b158d3196fed6",
       "game_id": "Calling Bell",
       "id": "CALLING_BELL",
-      "java_sha256": "302233cef6310c47d07c79cf835a87bda3c54d6c0ee0907bae6be0cf42727172",
+      "java_sha256": "8ce46d4d2051de0c6693e6f343787a58dce3713f581e7546ef92272e765ca4f4",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/CallingBell.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -683,10 +683,10 @@
         {
           "callback": "onVictory",
           "counter": -1,
-          "effect_sha256": "5e98f62abbc3de2439a181188741904f31709391fcce7fe283f9e9f3b970fbd7",
+          "effect_sha256": "e35889724bfb3319323b764eca46d64ddfb582cd73ecfb9b1800906875909f30",
           "initial_counter": 2,
           "scope": "COMBAT_VICTORY_RESET",
-          "setup_digest": "1c448e552cb01b60f37978d2c951bd767bee2b9ed682a1dcf583751d8baa6221"
+          "setup_digest": "d7ac85b19aaf6829e4c8fd4044ec5347bd43928fbb1f760dbd464c7a7463f40e"
         }
       ],
       "covered_callbacks": [
@@ -697,7 +697,7 @@
       "effect_sha256": "0523b15bd4561036ac42cc00148c415c5b057db95573da3beea5ecfeb40926b4",
       "game_id": "CaptainsWheel",
       "id": "CAPTAINS_WHEEL",
-      "java_sha256": "6991152687a43484f700898599392177afeaddddeaba3cd2b3592703e8a56701",
+      "java_sha256": "855d616e28d280084fe0da4680c14af97dd2f7945300a3b13db2b4dc04341aa9",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/CaptainsWheel.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -710,12 +710,12 @@
           "callbacks": [
             "onEquip"
           ],
-          "effect_sha256": "08c7c74fdde0e6ac01d5f22653332a8b0790b354194ddf36b2b3740bc1da6332",
+          "effect_sha256": "040d3c7defbd401d5cb819987952571bb00d5a7b65db7b0c29bb5fb4905d9ad7",
           "result": {
             "potion_rewards": 5
           },
           "scope": "FULL_EQUIP_UI_LIFECYCLE",
-          "setup_digest": "78765f44e603ef91da6bed2250fc55c2ee7e482dfb63d897ed18af4bd60afada"
+          "setup_digest": "8002cc2f8d4f351be48f99db366072cc0f5a69223e8f489f7249e84d054dcca0"
         }
       ],
       "covered_callbacks": [
@@ -724,7 +724,7 @@
       "effect_sha256": "7b539a06fa6b136f5f020956fceba5742cb752bd7bf52457269fe90a471b79eb",
       "game_id": "Cauldron",
       "id": "CAULDRON",
-      "java_sha256": "589ee8afe719d5deee2b5d9405a4d2905e38ded78567b238a7a58b746056bef4",
+      "java_sha256": "123d3e9e9e8ed54763caa3641bff1b30fb774c449dd538abcfe088873bb00709",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Cauldron.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -735,32 +735,32 @@
       "callback_scenarios": [
         {
           "callback": "justEnteredRoom",
-          "effect_sha256": "882f023dfcec4360201d9feb878adcd155a161a4bcf06c360c69b1249a17cb95",
+          "effect_sha256": "02cc21ff3b930d7001e6a1fcff18ad3d8adb7de0b4e12591527972ebe25d67b9",
           "result": {
             "policy_state_unchanged": true
           },
           "scope": "POLICY_OBSERVABLE_STATE",
-          "setup_digest": "7f953a2e2e0efb1154b730d669699b4927d8cd501c5e6563d4d1dcb5a40989e4"
+          "setup_digest": "55c8651cc1b4dff0f9e3242a32226e09a4e0a58c142cb3a977226c65edf8af5f"
         },
         {
           "callback": "onVictory",
-          "effect_sha256": "3d0e32e0ebfcf071eb8d075c4e0d3de8406c7f0aea2672e8cd831f66519bc2be",
+          "effect_sha256": "00d3b57904bfcf8413bc53e2ae388b4de395fd560b255c6691b57dba4ddcec4f",
           "result": {
             "policy_state_unchanged": true
           },
           "scope": "POLICY_OBSERVABLE_STATE",
-          "setup_digest": "7f953a2e2e0efb1154b730d669699b4927d8cd501c5e6563d4d1dcb5a40989e4"
+          "setup_digest": "55c8651cc1b4dff0f9e3242a32226e09a4e0a58c142cb3a977226c65edf8af5f"
         },
         {
           "callback": "wasHPLost",
-          "effect_sha256": "85d0de9e00f77c333c9e34925a02e885afefb3a812bc400fc67b0ece9291b52c",
+          "effect_sha256": "a3d658d084793f5dfc9ecfc3de7f1dd9d27a30f8293c76078ab29372fe5321f2",
           "result": {
             "drawn": 3,
             "hp_delta": -5,
             "next_turn_block": 0
           },
           "scope": "FOCUSED_COMBAT_HP_LOSS",
-          "setup_digest": "8b25b1d3a6aa64d3070221d6f9b3b00a3986cdfd125e6a3ce848e334cc469660"
+          "setup_digest": "571619f59ad590dfce44663e4a302fca64a5ea50e1a7e17d945a064d6e499525"
         }
       ],
       "covered_callbacks": [
@@ -772,7 +772,7 @@
       "effect_sha256": "730fd8b97d90a6906f425de02f9bd0f0b85a828ef707ea5a2b15b64f92b9ea8e",
       "game_id": "Centennial Puzzle",
       "id": "CENTENNIAL_PUZZLE",
-      "java_sha256": "902032ea49e99f140ea0e52c755a9436b80b4d922fbd191d89561f6613068e3d",
+      "java_sha256": "b1069310819ff2fdd812467a1d0f461d9d40cea376e244268dfdc270217dd56e",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/CentennialPuzzle.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -808,7 +808,7 @@
           "callbacks": [
             "onObtainCard"
           ],
-          "effect_sha256": "a42daa7b817a6c87ee2cf11817eb1388be1fee3a2549d284cbbaabe93bfcfd74",
+          "effect_sha256": "bea525dc8107dad1b78bf7b8628ac4d436abeeff822beb9c7168b5dd93582b7f",
           "result": {
             "gold_delta": 9,
             "hp_delta": 0,
@@ -817,7 +817,7 @@
             "preview_upgrades": 0
           },
           "scope": "FOCUSED_CARD_ACQUISITION",
-          "setup_digest": "60fe15ced4e78e0d58cd114475456b17f2122e52999dbf2d7d21ab6da904d9db"
+          "setup_digest": "fc8327a1138dc24a1f4c6f048850266980a60a26ae499d03dd520dabcae33ab1"
         }
       ],
       "covered_callbacks": [
@@ -827,7 +827,7 @@
       "effect_sha256": "d10c38240a769723c47c82e670807b273bfc4ab9e7a215ad64b87ea581a94e17",
       "game_id": "CeramicFish",
       "id": "CERAMIC_FISH",
-      "java_sha256": "12f8396fa18df4574befcb6b1816a6664d8ef017a244e81d93166eb25407a2af",
+      "java_sha256": "bf8a18d2488d17304a0c9bd153c42898065aa00cbecb424cd1e59e66b2d6fa1c",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/CeramicFish.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -840,12 +840,12 @@
           "callbacks": [
             "onTrigger"
           ],
-          "effect_sha256": "5571b18f8aa15478c8f6e776db31a7d0c06ea98695eef3ebc674cafe538ea833",
+          "effect_sha256": "5f9a4ec79960d2f7a9d43cb70ac0233e6000ca593f1d8421cbb3012e2da71523",
           "result": {
             "weak": 1
           },
           "scope": "FOCUSED_TRIGGER_LIFECYCLE",
-          "setup_digest": "dbab14d98eee85b9992a06003e3d5cc92b851cd945e444b35a20adda5d117f93"
+          "setup_digest": "fd56c14b92ee76dcb59b18becdb7cd97539485f63e26f4c22827d8b521ac8097"
         }
       ],
       "covered_callbacks": [
@@ -854,7 +854,7 @@
       "effect_sha256": "f7421dca6be8076231694a499e0dc5656ee1eb34874ad996ed0476722a63b096",
       "game_id": "Champion Belt",
       "id": "CHAMPION_BELT",
-      "java_sha256": "703ec0e701b2f00b99f8b6274f7e5a89f9f7a2d53ca0bfcf67701f1bc08ab727",
+      "java_sha256": "9389e841ad6c9c84de6f9054b3681f562f784a85bd675138c30c03054f3352a8",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/ChampionsBelt.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -867,12 +867,12 @@
           "callbacks": [
             "onExhaust"
           ],
-          "effect_sha256": "2d676f26f252d64d0f302ea27993cf122bab4c2d4d0ed69bcf4c44b988b76696",
+          "effect_sha256": "4aca86ddd9d87db446686fd1589fd451774c4fa895db1355685416d60295a642",
           "result": {
             "monster_hp_delta": -3
           },
           "scope": "FOCUSED_TRIGGER_LIFECYCLE",
-          "setup_digest": "5a4dc1d71339dcb60f86d8fa07ca2f4661c4ce77a8f17472467ae1dbdf5f16d6"
+          "setup_digest": "426c5348a90ab88851f830aa079333076bcc2f0616fe7db6fce23b55333f70e2"
         }
       ],
       "covered_callbacks": [
@@ -881,7 +881,7 @@
       "effect_sha256": "9f0f5a92b9edc3224df0f25186278c08990e2657f90d864494182bb9bc522aa0",
       "game_id": "Charon's Ashes",
       "id": "CHARONS_ASHES",
-      "java_sha256": "b7e973fa506120ba738a49b193493c918715f76c76bc48e2da672dce344558e0",
+      "java_sha256": "0cafa20d8db7b9b786dd7bddf0dc8611bb39829a19aaaebf4bc8412c318b4135",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/CharonsAshes.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -893,7 +893,7 @@
       "effect_sha256": "44cf76eba5cad26c63d4c9ec8fb2746b103954b46b919a38fa6d7142980b5d86",
       "game_id": "Chemical X",
       "id": "CHEMICAL_X",
-      "java_sha256": "7f05c703bf9298d682413c3aa5e93283cf680548ca085ebd8be2289ed3c4fd3a",
+      "java_sha256": "531c458f7a88debb7abba11d6a713e30964627f97ff89381f3b9a50f8498543a",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/ChemicalX.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -904,14 +904,14 @@
       "callback_scenarios": [
         {
           "callback": "onUnequip",
-          "effect_sha256": "f667c38bbbb7d53c8b681ed8d7f5551508d730c8bc138a6f9c8a9ccf6d6ac115",
+          "effect_sha256": "8ed485d51ed91b233bbd63655b0669f1f9d58a563860eddc01e0b76d77f76cfa",
           "result": {
             "energy_delta": 0,
             "hand_delta": 0,
             "necronomicurse_count": 1
           },
           "scope": "PERSISTENT_NEXT_COMBAT",
-          "setup_digest": "93394a1517edc035427831eb070e81ef7bd4dbda39a060c71e697116ee1284fd"
+          "setup_digest": "2e30a8318219ee78373fb06b44cef763c37e89059a02d6a065554a029c7131f2"
         }
       ],
       "covered_callbacks": [
@@ -921,7 +921,7 @@
       "effect_sha256": "da044df003e68e41a1afea3a63ee3ec82815c037c82540d8f374e8a20aee5d10",
       "game_id": "Circlet",
       "id": "CIRCLET",
-      "java_sha256": "ead3ef1f78f2ec9f150c6f0ad376d1faa6d039e61e15f4233a5235e113805a71",
+      "java_sha256": "b8038556fcc22e49a8f3489b0f2e79ad69fae10c50500b4863d94e131387652c",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Circlet.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -935,7 +935,7 @@
       "effect_sha256": "2056f51816bde1439ff7f069fdd89285fe62925aff6885871329b28ef3b3a69d",
       "game_id": "ClockworkSouvenir",
       "id": "CLOCKWORK_SOUVENIR",
-      "java_sha256": "af7229eaf0c1bf8ce80db36a2adcf155de5079c6032a5731cd1b71746c45447c",
+      "java_sha256": "b0d5eaeeea47a5d23a5301805266a1b605b37c5893311dcd95fa157d1f30ce44",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/ClockworkSouvenir.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -946,14 +946,14 @@
       "callback_scenarios": [
         {
           "callback": "onUnequip",
-          "effect_sha256": "6d717d882be9f2cd25a0e48b47ab57327186de4d07e4050d48b0546ad5f33ff8",
+          "effect_sha256": "f2cf28cd864f9047a8fa376de9990e0e03f9cedc26922b31b1bb472129e6cc9b",
           "result": {
             "energy_delta": -1,
             "hand_delta": 0,
             "necronomicurse_count": 1
           },
           "scope": "PERSISTENT_NEXT_COMBAT",
-          "setup_digest": "93394a1517edc035427831eb070e81ef7bd4dbda39a060c71e697116ee1284fd"
+          "setup_digest": "2e30a8318219ee78373fb06b44cef763c37e89059a02d6a065554a029c7131f2"
         },
         {
           "callback": "canUseCampfireOption",
@@ -985,7 +985,7 @@
       "effect_sha256": "0fbaa3df39a70e335be02ef6011db7335810d8a9270afd20a6868d089b3297b5",
       "game_id": "Coffee Dripper",
       "id": "COFFEE_DRIPPER",
-      "java_sha256": "c7a782e57d7d1a15c9db63697d4c27c30bb8b596b4a95331c24393ddb93eeb0b",
+      "java_sha256": "555a94cf161d24a196a01aa27ed2e99746eb07e1aec86a8797e4a34a1dd0b3ad",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/CoffeeDripper.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -999,7 +999,7 @@
       "effect_sha256": "274e5e0d327de626a7805f0e8acba59e1ddbe3d0cc82555e60843fda0cc190ad",
       "game_id": "CultistMask",
       "id": "CULTIST_HEADPIECE",
-      "java_sha256": "738500ead1b2a9d29fc54132472e70359151c559dfd2004d7db2a310ee4d8af2",
+      "java_sha256": "06e998d57429f765f0ad8111afb4fa87027d06c3d7dfd6fd88824b8f3abfdfee",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/CultistMask.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -1010,34 +1010,34 @@
       "callback_scenarios": [
         {
           "callback": "onUnequip",
-          "effect_sha256": "6d717d882be9f2cd25a0e48b47ab57327186de4d07e4050d48b0546ad5f33ff8",
+          "effect_sha256": "f2cf28cd864f9047a8fa376de9990e0e03f9cedc26922b31b1bb472129e6cc9b",
           "result": {
             "energy_delta": -1,
             "hand_delta": 0,
             "necronomicurse_count": 1
           },
           "scope": "PERSISTENT_NEXT_COMBAT",
-          "setup_digest": "93394a1517edc035427831eb070e81ef7bd4dbda39a060c71e697116ee1284fd"
+          "setup_digest": "2e30a8318219ee78373fb06b44cef763c37e89059a02d6a065554a029c7131f2"
         },
         {
           "callback": "justEnteredRoom",
-          "effect_sha256": "ecf2faecb5193f71573bcc5aadf32ac8a3faf45633d206b0747d83a71167c6ba",
+          "effect_sha256": "b93fef652dee3c030ae42dd3e4668de0489f908a625a576977fc10e2a3ae7c23",
           "result": {
             "policy_state_unchanged": true
           },
           "scope": "POLICY_OBSERVABLE_STATE",
-          "setup_digest": "07b3cda10434e0a6ff693a8eec994d7954dc3a9da216a8c07f49697bd086f5ed"
+          "setup_digest": "b592d96f09cc98d2a5ec09ce8a81cd6bc620f1e7dc937be94566a33149923bcc"
         },
         {
           "callbacks": [
             "onChestOpen"
           ],
-          "effect_sha256": "8a83259e22d610198827fc4be1625023ff290b47db80cb67bedc0e67a9f963d2",
+          "effect_sha256": "c545470d4ecec7cc5e16082f6753a4051b1efd8827365fec9f5c1085905f9b43",
           "result": {
             "delta": 1
           },
           "scope": "FOCUSED_WORLD_LIFECYCLE",
-          "setup_digest": "de8674f70918e111513d051d6f3c95572968ff03b956862a750df667ccb3c363"
+          "setup_digest": "b3b7991ff255d5f7bf4e120d8850dfde25d534a2295220275797ddf3696749e5"
         }
       ],
       "covered_callbacks": [
@@ -1049,7 +1049,7 @@
       "effect_sha256": "a6562b78d8875c1d0f88c96c5d47435c3387ea752396884a1613056b952d9d72",
       "game_id": "Cursed Key",
       "id": "CURSED_KEY",
-      "java_sha256": "0f83b1060d1fd8a9f94f4d5dbae737e9621aec9e1517ef9b6b5168d393b201bb",
+      "java_sha256": "193182ca300dccea9aef8487a2cd9204eee4bdcb9da3d4ba344fb095915768a0",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/CursedKey.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -1085,7 +1085,7 @@
           "callbacks": [
             "onObtainCard"
           ],
-          "effect_sha256": "8a295b4d8df5817a7250b6bc249925357c1fecf0b05bd613b838d1c51e84536e",
+          "effect_sha256": "ff42e99ba3f4a472e64fd77c5c13e7fd5e4b01d66afc1833b9da3ad9660b3022",
           "result": {
             "gold_delta": 0,
             "hp_delta": 6,
@@ -1094,7 +1094,7 @@
             "preview_upgrades": 0
           },
           "scope": "FOCUSED_CARD_ACQUISITION",
-          "setup_digest": "6daa3558554df3b3a40bcfcc554184b2641f474a644500fb3a5e987e27480e70"
+          "setup_digest": "bc4fc3c2bd51c1c27f904a48c539161b748dce259c233d46a807a1214d19f77a"
         }
       ],
       "covered_callbacks": [
@@ -1104,7 +1104,7 @@
       "effect_sha256": "ef8d18124b63660fb3781b28d21103d214a962231bfdf6048c4e2fbcd342d9bd",
       "game_id": "Darkstone Periapt",
       "id": "DARKSTONE_PERIAPT",
-      "java_sha256": "f7982e409c8d349875b37520cb9a8bec5d9a1c6140ec62a516295548f5dfa642",
+      "java_sha256": "629f1f8d4bd033da581468b7f4a9a7c63051d3cec6cb8f6d6c0b2e3d3736efde",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/DarkstonePeriapt.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -1117,12 +1117,12 @@
           "callbacks": [
             "onExhaust"
           ],
-          "effect_sha256": "6276ff0d4d5d874f56a4ec28ea1e7d70ecd5930b4157cf15d8f6b1c77d7cf0e7",
+          "effect_sha256": "c3f59a3f8a453f3831d09ec14f1e803b81b0f15f84f7ade3670595a12075c72e",
           "result": {
             "hand_delta": 1
           },
           "scope": "FOCUSED_TRIGGER_LIFECYCLE",
-          "setup_digest": "5a875cbec49432b3c6c571f029c71a61c5bbccafc6e43b5157808ee6aa90af2c"
+          "setup_digest": "71b7fb1aa4b6fd252215cd55f9735a6fbd8955e0a7aba18a3e77b6d1e844a47b"
         }
       ],
       "covered_callbacks": [
@@ -1131,7 +1131,7 @@
       "effect_sha256": "a005f0460ba15b05390b86fe4b5dd8f3f328ec78d8e20292e11a562af9bc1808",
       "game_id": "Dead Branch",
       "id": "DEAD_BRANCH",
-      "java_sha256": "b973599335c7e30092ab317ee4fb29e85be5d642b4ee7e94001882abe30b7f9a",
+      "java_sha256": "dbace8181345b67bb9c704b83dea61c9754c3268fc5d93c192f1bd47908c2d6f",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/DeadBranch.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -1144,13 +1144,13 @@
           "callbacks": [
             "onEquip"
           ],
-          "effect_sha256": "66b5a2218e9d8e5ca073c631269414e5be1a7f7d3c8f576ee1f727bc58f6c519",
+          "effect_sha256": "28c99aeb776f7e2438376752cef813d19b5df463d3ffc6355199a92c49e26f17",
           "result": {
             "affected": 1,
             "option_count": 10
           },
           "scope": "FULL_EQUIP_UI_LIFECYCLE",
-          "setup_digest": "fc68305cc349c4d04e5fcfaf7339c882827a1512479cc184c23beeb72e8a103f"
+          "setup_digest": "2f1562a94e194a866818ac8bf58aeef6155217cd3b314f8afb8b6d6e1f263f10"
         }
       ],
       "covered_callbacks": [
@@ -1159,7 +1159,7 @@
       "effect_sha256": "4545d7f49ed9ccd6e26b877c096348588e5aa87b91628d63d1ba1941e31b86d5",
       "game_id": "DollysMirror",
       "id": "DOLLYS_MIRROR",
-      "java_sha256": "7de88dbbf585003620807b6032911a24600d10d43d5ed44c538174108c6a41a7",
+      "java_sha256": "217331b13ed72139028ef90da67da1ee5153b6ebc29358c743abc14115deed00",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/DollysMirror.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -1180,15 +1180,15 @@
               "shop_room": false
             },
             {
-              "effect_sha256": "9d0ee921e1fc0f8547dd2d938800d7535f7c3cf60bba0eca8dae7354155abea0",
+              "effect_sha256": "f9299305316879fcb4c220d228f19453493b5ac7150c6e651102f31cdde2ba54",
               "floor": 17,
               "preset": "NONE",
               "result": true,
-              "setup_digest": "2e30a8318219ee78373fb06b44cef763c37e89059a02d6a065554a029c7131f2",
+              "setup_digest": "93394a1517edc035427831eb070e81ef7bd4dbda39a060c71e697116ee1284fd",
               "shop_room": false
             }
           ],
-          "effect_sha256": "602480ffabf48de000662343d14e2289f2c3c22d8b2897f406fcc30da0f35be9",
+          "effect_sha256": "7e66fae202a436595c9a5d275d1b3d49cd7b597b6c67ee9910ae45e85882f64c",
           "scope": "ACT1"
         }
       ],
@@ -1198,7 +1198,7 @@
       "effect_sha256": "f4b2013c7dfc7a7c711cab92424263d31212d5553337fddfd902e3c5b60f7ef2",
       "game_id": "Dream Catcher",
       "id": "DREAM_CATCHER",
-      "java_sha256": "e5fd4e05cf7aa0bc13c222c7077461516e103f417b54bf779fdd50787bf71fa0",
+      "java_sha256": "9200ea143475b2abbc3fee50462fe2e12cfc9bcc7f13b92d91d48ba94062a528",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/DreamCatcher.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -1228,12 +1228,12 @@
           "callbacks": [
             "onMasterDeckChange"
           ],
-          "effect_sha256": "0e9a31669c6c4a10887933c8196a2ec1b5867718c22395cd9c5d6379f774c38e",
+          "effect_sha256": "637c782a24553feade992c07a01a60f6c195319dd38105a0444499afd97becf5",
           "result": {
             "value": 1
           },
           "scope": "FOCUSED_WORLD_LIFECYCLE",
-          "setup_digest": "8665b6c3cba24e1d8e3eabbb6229fd3217eb04b0e71ff33e9db50bd06b2222d1"
+          "setup_digest": "2b16e1212ef55e040ec08be7ad766b7101c4e0406520800d4e3c49d3cff14cd9"
         }
       ],
       "covered_callbacks": [
@@ -1245,7 +1245,7 @@
       "effect_sha256": "02e1f012257baaaca8574ad5cebbd9d7f9c3267bafd85dc1cbcbbbd52c4f984d",
       "game_id": "Du-Vu Doll",
       "id": "DU_VU_DOLL",
-      "java_sha256": "ad1376ad3b60fba5c7db218ac73341406e8b736e047499362b7dc735042db6d1",
+      "java_sha256": "ee65de1fbb3148200fef2aaff6b65937ee5c131174bccc7a744a31cac9714ff5",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/DuVuDoll.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -1258,27 +1258,27 @@
           "callback": "canSpawn",
           "cases": [
             {
-              "effect_sha256": "d1274c79bfbbb7d429046748ee6a8b08bfb456cb3698e2d14e8518ccbf56e1e6",
+              "effect_sha256": "57e0c20f6204f2c89d3fb7c6276547c8f5ed3affbb72d4dbd7bd290553e21394",
               "floor": 1,
               "preset": "NONE",
               "result": true,
-              "setup_digest": "2e30a8318219ee78373fb06b44cef763c37e89059a02d6a065554a029c7131f2",
+              "setup_digest": "93394a1517edc035427831eb070e81ef7bd4dbda39a060c71e697116ee1284fd",
               "shop_room": false
             }
           ],
-          "effect_sha256": "00a2bd4636d25d292ae112d7dd500753e585c8bfb10b30ce227b795a821e4810",
+          "effect_sha256": "90e473c6026f645c1ca2ca60a08b317f6172755d586edab41d94bab75952f6e8",
           "scope": "ACT1"
         },
         {
           "callback": "onUnequip",
-          "effect_sha256": "6d717d882be9f2cd25a0e48b47ab57327186de4d07e4050d48b0546ad5f33ff8",
+          "effect_sha256": "f2cf28cd864f9047a8fa376de9990e0e03f9cedc26922b31b1bb472129e6cc9b",
           "result": {
             "energy_delta": -1,
             "hand_delta": 0,
             "necronomicurse_count": 1
           },
           "scope": "PERSISTENT_NEXT_COMBAT",
-          "setup_digest": "93394a1517edc035427831eb070e81ef7bd4dbda39a060c71e697116ee1284fd"
+          "setup_digest": "2e30a8318219ee78373fb06b44cef763c37e89059a02d6a065554a029c7131f2"
         }
       ],
       "covered_callbacks": [
@@ -1289,7 +1289,7 @@
       "effect_sha256": "f2c83c92806bb640dc60919edcbdd91f8dd0efcb6a209b801e846d1546680974",
       "game_id": "Ectoplasm",
       "id": "ECTOPLASM",
-      "java_sha256": "5b6592919e12d0713c1ec307b2604713fa7911772648d4b447a3cc32c80f13c8",
+      "java_sha256": "717861865521c87b8b3dfbfd94a33a336ee968ce728a1f011f87dafb9471a7d7",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Ectoplasm.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -1302,13 +1302,13 @@
           "callbacks": [
             "onEquip"
           ],
-          "effect_sha256": "893e9a2c284fd47de5468a3ea508a8bf13e42e954b8bc7c37be2ac1ab4d8137d",
+          "effect_sha256": "60421d936000fe227d98bfa07c499571ce837ca4f0402fb054d56dea2bb92106",
           "result": {
             "affected": 2,
             "option_count": 10
           },
           "scope": "FULL_EQUIP_UI_LIFECYCLE",
-          "setup_digest": "cfc29a1fe987751e0bea211fea32ffa44a268088a48427607c148a86e3adb422"
+          "setup_digest": "0d4cb9c882e76a156a0a9991cb478aa83ac2be73f2962629e233abd7f21b6f18"
         }
       ],
       "covered_callbacks": [
@@ -1317,7 +1317,7 @@
       "effect_sha256": "6036044e20ac2ee392c89074390533c998915eac540c645e6f86833c62f4e1df",
       "game_id": "Empty Cage",
       "id": "EMPTY_CAGE",
-      "java_sha256": "5e29abd61b0749cb48b37e214b5d7a04c35bdbfc449974d23038e61d56ceb0e8",
+      "java_sha256": "8367783324c879841e59d1d4c8021381dc4111db629f08599447bd06e459fbab",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/EmptyCage.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -1331,7 +1331,7 @@
       "effect_sha256": "d627b9dce338f72a53756746bf54ca3017b875fa944c77b60f2e2c34b6778102",
       "game_id": "Enchiridion",
       "id": "ENCHIRIDION",
-      "java_sha256": "346b6797fa0fc01830b7b452dcbd1277b01c7e8e6be626a4b4f89161e2273f3b",
+      "java_sha256": "1d3ced35ff60c63d6b532e21acdbcf396a96577c2b57c80a6059c73c2784e6f2",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Enchiridion.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -1342,13 +1342,13 @@
       "callback_scenarios": [
         {
           "callback": "onEnterRoom",
-          "effect_sha256": "b48a88bceb045bb2673c82cf87133cef902262c18e76595867045f695795afa4",
+          "effect_sha256": "cfc957be9f4dbabeadc9a171cb2969287102dfaae8d8f991b2bbc9b0c17dedea",
           "result": {
             "gold_delta": 0,
             "hp_delta": 6
           },
           "scope": "ACT1_RESOURCE_TRANSITION",
-          "setup_digest": "221b357463883918985b162de418b39586dc403b50dcbe11b1ef1afd7d34767e"
+          "setup_digest": "f4394405b5fde0a7c17c46549bb423bb66085c1d83ab0691f85dec22ef80aa45"
         }
       ],
       "covered_callbacks": [
@@ -1357,7 +1357,7 @@
       "effect_sha256": "057f4946e13bd7b38f15632ad348cd372f46814d3a2695bbab99336a7d9b74a0",
       "game_id": "Eternal Feather",
       "id": "ETERNAL_FEATHER",
-      "java_sha256": "22c3251d6a17a78f4cba742d47a9204c9419d545774e1ea9b83cc7b0fea2cb10",
+      "java_sha256": "5873f80f388a6dc2832852a763497e9c6d54d42901d34e541cb8bbec5f0eef53",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/EternalFeather.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -1370,13 +1370,13 @@
           "callbacks": [
             "onVictory"
           ],
-          "effect_sha256": "3b2a14dceac116753a73e6f4f59bf5d94079c826d2f67d22cf38a9372a9e8d8a",
+          "effect_sha256": "28512f13fa0b3565eeee32cae27e2bcc10c030c9b3bdb5d7f1bbe194c4559a56",
           "result": {
             "hp_delta": 1,
             "max_hp_delta": 1
           },
           "scope": "FOCUSED_COMBAT_VICTORY",
-          "setup_digest": "ffec4cf1fbfd73cca2480aa75fb35f7449697c5873f33b1ec14ad0972b38f162"
+          "setup_digest": "7e2914eedb0000e66541bc1a36d2adf07cce9912b869078323fa05318544ed97"
         }
       ],
       "covered_callbacks": [
@@ -1385,7 +1385,7 @@
       "effect_sha256": "65eb3f1dd5211cdd36701db5cd3ca4f799137c5fe94c5a91f8c0c6fba5bcb47b",
       "game_id": "FaceOfCleric",
       "id": "FACE_OF_CLERIC",
-      "java_sha256": "9ff2fa4bfb1a8796bac1413decfe089b8a8b436a5f5573100bbc692803de1672",
+      "java_sha256": "a9b6ad33e655ec200adc897ce8cd2186fe1c9bfeccadbadf2fc8aefbca0c454e",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/FaceOfCleric.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -1396,12 +1396,12 @@
       "callback_scenarios": [
         {
           "callback": "justEnteredRoom",
-          "effect_sha256": "897423a65a76db79ac4eff665aae74504238477d414f47e613f5ab2668ebe408",
+          "effect_sha256": "b4addba91b9a8daae91f164ef3a677b006d2d87858b53036dbad615c401da5c6",
           "result": {
             "policy_state_unchanged": true
           },
           "scope": "POLICY_OBSERVABLE_STATE",
-          "setup_digest": "e32e0596cd23d887b54385793578b45a313d1771cc75c80931229e30f7172f89"
+          "setup_digest": "199bd9b953dff6df0ecb03d4de4d00ff3b597b9c816660adf7f3ade34b148567"
         }
       ],
       "covered_callbacks": [
@@ -1411,7 +1411,7 @@
       "effect_sha256": "c83d9d5569e5dba0c6c60f244528908645c09311cf332896f245229c27c39b38",
       "game_id": "FossilizedHelix",
       "id": "FOSSILIZED_HELIX",
-      "java_sha256": "55415b18fb091c07dd318c7132d5a373550732751d5c4a42f341ed2f5cb12c0b",
+      "java_sha256": "38abbfbf2078e8beb032963b01f574dec99a36c3a33c28a06e2564661596bffa",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/FossilizedHelix.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -1424,23 +1424,23 @@
           "callback": "canSpawn",
           "cases": [
             {
-              "effect_sha256": "d1274c79bfbbb7d429046748ee6a8b08bfb456cb3698e2d14e8518ccbf56e1e6",
+              "effect_sha256": "57e0c20f6204f2c89d3fb7c6276547c8f5ed3affbb72d4dbd7bd290553e21394",
               "floor": 1,
               "preset": "NONE",
               "result": true,
-              "setup_digest": "2e30a8318219ee78373fb06b44cef763c37e89059a02d6a065554a029c7131f2",
+              "setup_digest": "93394a1517edc035427831eb070e81ef7bd4dbda39a060c71e697116ee1284fd",
               "shop_room": false
             },
             {
-              "effect_sha256": "9d0ee921e1fc0f8547dd2d938800d7535f7c3cf60bba0eca8dae7354155abea0",
+              "effect_sha256": "f9299305316879fcb4c220d228f19453493b5ac7150c6e651102f31cdde2ba54",
               "floor": 17,
               "preset": "NONE",
               "result": true,
-              "setup_digest": "2e30a8318219ee78373fb06b44cef763c37e89059a02d6a065554a029c7131f2",
+              "setup_digest": "93394a1517edc035427831eb070e81ef7bd4dbda39a060c71e697116ee1284fd",
               "shop_room": false
             }
           ],
-          "effect_sha256": "f398b14c4ca1468c0ac9ba2388dce66b9217c1fe9e8d324652eb0f83e495e779",
+          "effect_sha256": "7e66fae202a436595c9a5d275d1b3d49cd7b597b6c67ee9910ae45e85882f64c",
           "scope": "ACT1"
         },
         {
@@ -1448,7 +1448,7 @@
             "onObtainCard",
             "onPreviewObtainCard"
           ],
-          "effect_sha256": "7baba39294c999b15d220f4360f96617f036d64737cd296447606d8ad8d2bfc7",
+          "effect_sha256": "3ab25bab958ff0ca6b6b95f49620ff30826087f4f5438a90830f8f910e1d2f09",
           "result": {
             "gold_delta": 0,
             "hp_delta": 0,
@@ -1457,7 +1457,7 @@
             "preview_upgrades": 1
           },
           "scope": "FOCUSED_CARD_ACQUISITION",
-          "setup_digest": "aa80aababc6aba9d950df53b8505f3f79a553d957539b423fad89ad1cf4c6ee5"
+          "setup_digest": "4948d0b1b357befcb67bfda70af99cf594af9e594e5adc97c137b732b21b0a24"
         }
       ],
       "covered_callbacks": [
@@ -1469,7 +1469,7 @@
       "effect_sha256": "d49ce48b34b8f8e2c7ee12f7a00c448d3e0a2df3b5fdb427efa377f000017c74",
       "game_id": "Frozen Egg 2",
       "id": "FROZEN_EGG",
-      "java_sha256": "3a89b7cc1e09b7d33ded90db029efef596f0a9264816874c5c50cd6695a10437",
+      "java_sha256": "0f6c1e60f11ff22d6fa343128d1740947a6a53efb2042f76782a2d1dbf6b8c2e",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/FrozenEgg2.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -1481,7 +1481,7 @@
       "effect_sha256": "e8ce0175162ac8bd847f5cd580994dbda1f30c44a2231319b256a2a6b2bfab23",
       "game_id": "Frozen Eye",
       "id": "FROZEN_EYE",
-      "java_sha256": "6def36710b44bdbf632678e01c0ac2381e9b8c753e2631cdf4cf5ca0382f9eb6",
+      "java_sha256": "82896453f8e5a96a919d97db0fd006c269503338b191bb3b04199dc5da3b5900",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/FrozenEye.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -1492,14 +1492,14 @@
       "callback_scenarios": [
         {
           "callback": "onUnequip",
-          "effect_sha256": "6d717d882be9f2cd25a0e48b47ab57327186de4d07e4050d48b0546ad5f33ff8",
+          "effect_sha256": "f2cf28cd864f9047a8fa376de9990e0e03f9cedc26922b31b1bb472129e6cc9b",
           "result": {
             "energy_delta": -1,
             "hand_delta": 0,
             "necronomicurse_count": 1
           },
           "scope": "PERSISTENT_NEXT_COMBAT",
-          "setup_digest": "93394a1517edc035427831eb070e81ef7bd4dbda39a060c71e697116ee1284fd"
+          "setup_digest": "2e30a8318219ee78373fb06b44cef763c37e89059a02d6a065554a029c7131f2"
         },
         {
           "callback": "canUseCampfireOption",
@@ -1531,7 +1531,7 @@
       "effect_sha256": "16db9d5a7a0c424465f9c73adf2e54e89fdc46f54fd0f6993079b632a630b844",
       "game_id": "Fusion Hammer",
       "id": "FUSION_HAMMER",
-      "java_sha256": "8e1d0d7e0c652e1345b873d5da07c98948555b47a47d45ed0e679026368c8f5b",
+      "java_sha256": "bf2f5ad2864cb9188d27f5a17bb7788becefb6e6410ae2b66ad1affb85b84623",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/FusionHammer.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -1546,7 +1546,7 @@
       "effect_sha256": "f32044b312a7ed4f3f5ed613f5689ba82502cd39036b30e944ea5dd9c1c96c5e",
       "game_id": "Gambling Chip",
       "id": "GAMBLING_CHIP",
-      "java_sha256": "3977d04c253544247ae89b8ddf07de5b508bece7b4951b0068df5f0f8add4d81",
+      "java_sha256": "04a624dc2e08c2e8ce6ef39e17b0159717be9e102f8e850dbf873792600fab1c",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/GamblingChip.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -1558,7 +1558,7 @@
       "effect_sha256": "34b722f98d81ad1ed5594642a9241ed35e7af310b3be8d47c394506a34966fb5",
       "game_id": "Ginger",
       "id": "GINGER",
-      "java_sha256": "2669f9a70817503e3dc871a6ab55d5272d9ecf8748aa3d4ef22e176f9a1a44b8",
+      "java_sha256": "9f3b296e068c8a696990640096c01ad38f68ec66b28d110da8a5150dbd61cc44",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Ginger.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -1620,7 +1620,7 @@
       "effect_sha256": "0a17796235d14be6f3d3d9528be3090e7e4045cd0d383b51bb297b08cc1e1481",
       "game_id": "Girya",
       "id": "GIRYA",
-      "java_sha256": "f2f849c77bffff6a9d284b7a40f9588c7d344536209e7e64f5b7370e8eb35a19",
+      "java_sha256": "43fc9e0284c22024a9bbfc572ba6145cbc685a3cec516ffe15f1aa5868dcc920",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Girya.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -1632,7 +1632,7 @@
       "effect_sha256": "4573c128fb9f59427f2ae376d3bae2ad3e258656bef13c8673c73c7853af0e86",
       "game_id": "Golden Idol",
       "id": "GOLDEN_IDOL",
-      "java_sha256": "49ca0b9ea9786756d76b39bf53583604e0c4b228c09130c8aa34dd64bc63fe7c",
+      "java_sha256": "063065e1da41f27eb786b89935bd0ec32be4c7e93b59fa693eb2c92a3bb16dd4",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/GoldenIdol.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -1645,13 +1645,13 @@
           "callbacks": [
             "onMonsterDeath"
           ],
-          "effect_sha256": "bb6923cf4dd060e91f5d12eccadc94a8f0ee6535e618d1799b035737c473032a",
+          "effect_sha256": "3dda86994a8c34fe68606947000e39dd94043e14c6b686eabb4bc41e6a3fb390",
           "result": {
             "energy_delta": 1,
             "hand_delta": 1
           },
           "scope": "FOCUSED_TRIGGER_LIFECYCLE",
-          "setup_digest": "9617b005830413408f3ad704b994f73ff2320bf87c1a847b9d180e3be9b552fc"
+          "setup_digest": "7c9adea12fb818aac6eb5fa63bfaa3fcc5806db2da92d30f4abfe9ddf46455f6"
         }
       ],
       "covered_callbacks": [
@@ -1660,7 +1660,7 @@
       "effect_sha256": "f35ecc6a6e37768c7b86dcedbff0fea24d72ce131b682da2455760c48487b114",
       "game_id": "Gremlin Horn",
       "id": "GREMLIN_HORN",
-      "java_sha256": "27cac9afc8ddb77fbb1f9a4660c21a6ba04e3f85f5801ec66705193627a19234",
+      "java_sha256": "61354492b5a2db332925153d70afa0995af4c9a5563242ebed5afb403b7e6b17",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/GremlinHorn.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -1674,7 +1674,7 @@
       "effect_sha256": "2443bc529e7f2c555fbc33e21ab002dc8beec84e4b51af06a8f6ca9eda2f91b5",
       "game_id": "GremlinMask",
       "id": "GREMLIN_VISAGE",
-      "java_sha256": "9a68829a71c1b365e2650f9cdb18fba50c947cb69bde03ffbc3a3b76f4abea88",
+      "java_sha256": "774416b12f4ee6572ef15f1716549f9f47c17dc4d9287369f2ef459d92cae4f3",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/GremlinMask.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -1687,12 +1687,12 @@
           "callbacks": [
             "onBlockBroken"
           ],
-          "effect_sha256": "9d664253a4d66c485712d4a626fe7777d40328b8db2b82458f1aff692d7a215d",
+          "effect_sha256": "1c0261b03c8d91a146b0163c48f04f6e4c2b1577460aa69e45d1cbc693f0edf6",
           "result": {
             "vulnerable": 2
           },
           "scope": "FOCUSED_TRIGGER_LIFECYCLE",
-          "setup_digest": "7c8dbada35068813212fdc399bf15fcabcb9a806d64c40bcbfab1a20f5217bbe"
+          "setup_digest": "95c44573bfd65545308b05765f62eae302fddce7a6837c34410f329b96092c29"
         }
       ],
       "covered_callbacks": [
@@ -1701,7 +1701,7 @@
       "effect_sha256": "fc52f7444915b355d27ed1a587630b74c2a71a9767a9bf3d13e7d625a81933c2",
       "game_id": "HandDrill",
       "id": "HAND_DRILL",
-      "java_sha256": "57fd951a0a4be23466b874b67ee424c8bed0cecc0b961dcf53eee9be5c56721b",
+      "java_sha256": "ad963a8a161f0e956d56853895d85759eade8639bd3c8c9d27f3f4c5e1af93d5",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/HandDrill.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -1716,7 +1716,7 @@
       "effect_sha256": "fad31d231ce395d016ab0b00bb81a30189b1be6365ab4960a1ad2c96e377d647",
       "game_id": "Happy Flower",
       "id": "HAPPY_FLOWER",
-      "java_sha256": "ff677758a15dd3616ddc6c314ef3c096ea8b9cb03258fcbd491f0a653b1e915a",
+      "java_sha256": "5429390e02823690905578f63e5fd22c0578886b6220fc84b8b4fa1a60d79e2d",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/HappyFlower.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -1728,10 +1728,10 @@
         {
           "callback": "onVictory",
           "counter": -1,
-          "effect_sha256": "5e98f62abbc3de2439a181188741904f31709391fcce7fe283f9e9f3b970fbd7",
+          "effect_sha256": "e35889724bfb3319323b764eca46d64ddfb582cd73ecfb9b1800906875909f30",
           "initial_counter": 2,
           "scope": "COMBAT_VICTORY_RESET",
-          "setup_digest": "1c448e552cb01b60f37978d2c951bd767bee2b9ed682a1dcf583751d8baa6221"
+          "setup_digest": "d7ac85b19aaf6829e4c8fd4044ec5347bd43928fbb1f760dbd464c7a7463f40e"
         }
       ],
       "covered_callbacks": [
@@ -1742,7 +1742,7 @@
       "effect_sha256": "33d0e97ca3db84c2af56110593a9cbb9dab5e09ece039e4a637ad953f825c2ee",
       "game_id": "HornCleat",
       "id": "HORN_CLEAT",
-      "java_sha256": "4441976656ec776df4ecf354e54e598e14fa51b7fbcd21de0e3d3b5250422484",
+      "java_sha256": "dd1d8c0d3ef2ece2e4165f6a78b2e88517e9bc6d7f87578e0a3a5033080452d0",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/HornCleat.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -1754,7 +1754,7 @@
       "effect_sha256": "95d5b045f64544f8bf4a3ac5f2f8863b88aa2e64552d627136284da5020996bc",
       "game_id": "Ice Cream",
       "id": "ICE_CREAM",
-      "java_sha256": "bf51c66866e6504b36fccc7274920e91628c06f4fc3d793ac33c9d945e080af6",
+      "java_sha256": "579ed7713500763feb5a9d651a585c34e91c3d33bb544252c582a4b906cd716f",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/IceCream.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -1769,7 +1769,7 @@
       "effect_sha256": "c63dac520d13cc9512084aead03db0a8b07212ba864417b637377e8acb3f87e5",
       "game_id": "Incense Burner",
       "id": "INCENSE_BURNER",
-      "java_sha256": "d6898d4c88c2900b26f46ee20067506888406f3f21e211ac0aa14d0bb4cb3e62",
+      "java_sha256": "b06bcba92f86d7f5130e0f48071fb1ac5033834295cd894170d1311ab786fbe2",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/IncenseBurner.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -1796,7 +1796,7 @@
       "effect_sha256": "6c6b696231de1a5442719d648f43a07560e53acce4a981d0e801c370b50f19f4",
       "game_id": "InkBottle",
       "id": "INK_BOTTLE",
-      "java_sha256": "a5138ab900c3a7c34075c788aa2088de188d8a6da8936041b58a95260a0cb57b",
+      "java_sha256": "a65bdae94d227d95c66eec058b70ee3d596ce01a97851fe82c56338a09732be2",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/InkBottle.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -1835,7 +1835,7 @@
       "effect_sha256": "a95511d8f777a060122f4013804b196e2df10fa9c71210bce27ad560a617763d",
       "game_id": "Juzu Bracelet",
       "id": "JUZU_BRACELET",
-      "java_sha256": "2590776a47ac8f82640575dffeb7a8e71b4a99aa219fca946b9f6bf49d51feaa",
+      "java_sha256": "27a57f3303212ce7216c66ab7672286436cab8e396b31b64451171ad5179dd97",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/JuzuBracelet.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -1847,10 +1847,10 @@
         {
           "callback": "onVictory",
           "counter": -1,
-          "effect_sha256": "5e98f62abbc3de2439a181188741904f31709391fcce7fe283f9e9f3b970fbd7",
+          "effect_sha256": "e35889724bfb3319323b764eca46d64ddfb582cd73ecfb9b1800906875909f30",
           "initial_counter": 2,
           "scope": "COMBAT_VICTORY_RESET",
-          "setup_digest": "1c448e552cb01b60f37978d2c951bd767bee2b9ed682a1dcf583751d8baa6221"
+          "setup_digest": "d7ac85b19aaf6829e4c8fd4044ec5347bd43928fbb1f760dbd464c7a7463f40e"
         },
         {
           "callback": "onUseCard",
@@ -1871,7 +1871,7 @@
       "effect_sha256": "9e8712294af0c123cfe6c6a906528ec8e4c1263cbd758f810500656b835e04b5",
       "game_id": "Kunai",
       "id": "KUNAI",
-      "java_sha256": "be226151049f4dc66c695804f5d81ea085c6e2ec1615043f1d9bb2416af2d705",
+      "java_sha256": "342a886bb5af0e8b80ba692306b12b161a229566bf395ed7b960cd11616412a2",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Kunai.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -1886,7 +1886,7 @@
       "effect_sha256": "0b2b65a28628d8a0ef157142914eae78c7b3b4a67c11160c8a78978bf90f4e7b",
       "game_id": "Lantern",
       "id": "LANTERN",
-      "java_sha256": "d52e36cfc5a52b43f8636f8a18745c2c67cf11cc8c82273a5053eb35f359671a",
+      "java_sha256": "9769d3b271374e6035793319ca783613b4c5067885c9307fc7d3ac4e8fcdb40e",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Lantern.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -1900,7 +1900,7 @@
       "effect_sha256": "cb0f5c00401575845efd00d9b39c5a08cac2a59e2b027e92c87efdf21943a6f9",
       "game_id": "Lee's Waffle",
       "id": "LEES_WAFFLE",
-      "java_sha256": "7a4d4a487496a915b4ab788425a7aa650e895735bec9584e9d62f02c20fca503",
+      "java_sha256": "f19081fb6511225cafc834932b1dd3a39262ee58ab3e3657e563abb056743d94",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Waffle.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -1912,10 +1912,10 @@
         {
           "callback": "onVictory",
           "counter": -1,
-          "effect_sha256": "5e98f62abbc3de2439a181188741904f31709391fcce7fe283f9e9f3b970fbd7",
+          "effect_sha256": "e35889724bfb3319323b764eca46d64ddfb582cd73ecfb9b1800906875909f30",
           "initial_counter": 2,
           "scope": "COMBAT_VICTORY_RESET",
-          "setup_digest": "1c448e552cb01b60f37978d2c951bd767bee2b9ed682a1dcf583751d8baa6221"
+          "setup_digest": "d7ac85b19aaf6829e4c8fd4044ec5347bd43928fbb1f760dbd464c7a7463f40e"
         },
         {
           "callback": "onUseCard",
@@ -1936,7 +1936,7 @@
       "effect_sha256": "5996a378a6798f8c511f12f4c28c8397a91ca6c959071ebc27a2bffc2e47767a",
       "game_id": "Letter Opener",
       "id": "LETTER_OPENER",
-      "java_sha256": "1967f3aae38fbec8ba9d90d88ad19c8620ff16539bc24a6c56f1372941c25b6a",
+      "java_sha256": "bd0b62e40b2064af6f7415be77c575990b608a2d3ebbf4f2ae2fdf794bdceba6",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/LetterOpener.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -1977,7 +1977,7 @@
       "effect_sha256": "e708cc5677c2eccdcf336d1b44c0dfe926a670ac4ab9e3b50981d651d3e86773",
       "game_id": "Lizard Tail",
       "id": "LIZARD_TAIL",
-      "java_sha256": "21646336acfda780f39f029cf59fe02e44fd041fe78f488bc3e29dd5b4ab62ab",
+      "java_sha256": "9ee5bd6aad4aa34a4d79cdd69f97160913b71d0f9e727f9ae8d7b26e2f281b90",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/LizardTail.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -1988,11 +1988,11 @@
       "callback_scenarios": [
         {
           "callback": "onPlayerHeal",
-          "effect_sha256": "382e538f026f86d66f7845940737f24365a5b7e1df4403452eb7f52e30beca03",
+          "effect_sha256": "27056884d7fa1c5a406f720a8764ad9e070d1685d05c8c7d3aedf842bd180acd",
           "input": 10,
           "result": 15,
           "scope": "COMBAT_HEAL",
-          "setup_digest": "1c448e552cb01b60f37978d2c951bd767bee2b9ed682a1dcf583751d8baa6221"
+          "setup_digest": "2e30a8318219ee78373fb06b44cef763c37e89059a02d6a065554a029c7131f2"
         }
       ],
       "covered_callbacks": [
@@ -2001,7 +2001,7 @@
       "effect_sha256": "e1b971c86bf4167f1085028c72ea8f00e2c55c7ac9dff4c51f32e94f6efab3b9",
       "game_id": "Magic Flower",
       "id": "MAGIC_FLOWER",
-      "java_sha256": "e48b76228a664c7cfbe69de0090678c04564a84e8221a7c6cc9a9c520acf5b6b",
+      "java_sha256": "e3940116e47e36eb3eea9f048a1808ffe2f8b6654db9e30cab9cce8496054eaf",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/MagicFlower.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -2015,7 +2015,7 @@
       "effect_sha256": "219623814a752ebf0da59493ebd3b16e7cfaf6fef07653bbf573fd28df0a81da",
       "game_id": "Mango",
       "id": "MANGO",
-      "java_sha256": "6c1aafe946e9155329fef76b73fde199f08670097f2ca10c30eeeb98e98c672c",
+      "java_sha256": "670553fc34c9819d0c6bae2bd0b1f664185a0329bea2d5e88d5a62036941ded4",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Mango.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -2026,14 +2026,14 @@
       "callback_scenarios": [
         {
           "callback": "onUnequip",
-          "effect_sha256": "6d717d882be9f2cd25a0e48b47ab57327186de4d07e4050d48b0546ad5f33ff8",
+          "effect_sha256": "f2cf28cd864f9047a8fa376de9990e0e03f9cedc26922b31b1bb472129e6cc9b",
           "result": {
             "energy_delta": -1,
             "hand_delta": 0,
             "necronomicurse_count": 1
           },
           "scope": "PERSISTENT_NEXT_COMBAT",
-          "setup_digest": "93394a1517edc035427831eb070e81ef7bd4dbda39a060c71e697116ee1284fd"
+          "setup_digest": "2e30a8318219ee78373fb06b44cef763c37e89059a02d6a065554a029c7131f2"
         }
       ],
       "covered_callbacks": [
@@ -2044,7 +2044,7 @@
       "effect_sha256": "e00aa9f8db5b36bdfe9e7a58db330dd0bb651777f0359937e921711bbbb38753",
       "game_id": "Mark of Pain",
       "id": "MARK_OF_PAIN",
-      "java_sha256": "d7bb8e1bdcb601ccd2c4e3ab557da64ff0e54a02592a1a729f5940c226d2fb2a",
+      "java_sha256": "1e542976858cbb01c4982fccf0223c01291f1b7a58ad421a60df629d8b7d088e",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/MarkOfPain.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -2055,11 +2055,11 @@
       "callback_scenarios": [
         {
           "callback": "onPlayerHeal",
-          "effect_sha256": "b386390c7e335712c4de732a472801b9e922ecedb651c58a0c0a3e72b3e59f5b",
+          "effect_sha256": "4c1c63e29bb37aa02c0b5398b2c035f708c0518f9c9aa0dec58ade3abf35f792",
           "input": 10,
           "result": 0,
           "scope": "COMBAT_HEAL",
-          "setup_digest": "1c448e552cb01b60f37978d2c951bd767bee2b9ed682a1dcf583751d8baa6221"
+          "setup_digest": "2e30a8318219ee78373fb06b44cef763c37e89059a02d6a065554a029c7131f2"
         }
       ],
       "covered_callbacks": [
@@ -2068,7 +2068,7 @@
       "effect_sha256": "108a786a1ea36d9d709bfcfac5bf5605911e462126fa710d8369cfe6a3c825d7",
       "game_id": "Mark of the Bloom",
       "id": "MARK_OF_THE_BLOOM",
-      "java_sha256": "4535edf13b4ab2382690d78b6d848a78d71083891c0313f1226ff37de61ba0e9",
+      "java_sha256": "bf653a5008278992d62d8fa57a4ed1333a274e7b79395ee09c0f9d6979653434",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/MarkOfTheBloom.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -2126,13 +2126,13 @@
           "callbacks": [
             "onChestOpen"
           ],
-          "effect_sha256": "3ede39759667bb976668fb8421de9c39b402c9d314704e136e70b1e1f19d034e",
+          "effect_sha256": "fb451ab2dfb5edf84b3b3bdafb2cf226439393be0b5540496b10d720fdbf4a75",
           "result": {
             "delta": 1,
             "value": 1
           },
           "scope": "FOCUSED_WORLD_LIFECYCLE",
-          "setup_digest": "9d1c2369312c27aae2f7832848356c0381162e9951b7543ea8f99ed8b1c9ae48"
+          "setup_digest": "e358f0a96043371350d8e43821d0c52b9dd6b216f181e7423204f0e28e4a1812"
         }
       ],
       "covered_callbacks": [
@@ -2143,7 +2143,7 @@
       "effect_sha256": "2487730e1f79d0cb11a39074d5c4a843598804a2e1ca931219331b1e30c0b1e6",
       "game_id": "Matryoshka",
       "id": "MATRYOSHKA",
-      "java_sha256": "c7b38a7a983ee88f9fc4ecde331def2d3a08ab7b102f4a6ac1619562b28ea859",
+      "java_sha256": "18f56dcf6cf8be165550846d67dcafdbe87ffb1a4759cf0178ea1c40c2fdfc14",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Matryoshka.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -2197,7 +2197,7 @@
             "onEnterRoom",
             "onSpendGold"
           ],
-          "effect_sha256": "68a29cefe25df7730383c551b45f83b5ed5f08b26ff10005cd26b5d9017806bf",
+          "effect_sha256": "b9f22fe161127784d9417174d4085b991431b2fb965502db205ed7d64a7de787",
           "result": {
             "first_gain": 12,
             "second_gain": 0,
@@ -2205,7 +2205,7 @@
             "used": true
           },
           "scope": "FOCUSED_RESOURCE_LIFECYCLE",
-          "setup_digest": "cd7ee4bb7688c8f23c20c77e71db77bce1a839182fb8b87e0f009ceee8a7d318"
+          "setup_digest": "e3a6ce501c1663861104d814e203ce933aae6bbebe4e2d69ecee1e3e24382205"
         }
       ],
       "covered_callbacks": [
@@ -2217,7 +2217,7 @@
       "effect_sha256": "d9801c4fb84af6e48e6f07a21df813d67f582524286940d1f4dda3fcc6cd94cf",
       "game_id": "MawBank",
       "id": "MAW_BANK",
-      "java_sha256": "29846299eee845586906ddb4de76fa046e9f9f522c2ee6f60ca413f4badb2210",
+      "java_sha256": "273fc7f610adf3ca8114c4dbf7bcff1da719138a0c357fc538a4e7491030d917",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/MawBank.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -2268,7 +2268,7 @@
       "effect_sha256": "45ce862770cdbb5be862f07ee8894d642dcce99b32ab8419fb0fe53dcd1a0a98",
       "game_id": "MealTicket",
       "id": "MEAL_TICKET",
-      "java_sha256": "b0343c3367005b11fbf163bf7f13cab075c633e8590f04939bbb4fc27e975a5b",
+      "java_sha256": "d64a626e79522648dab9d361b614b653b17eca9f7198cf1eaa643597239e08c7",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/MealTicket.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -2306,13 +2306,13 @@
             "onNotBloodied",
             "onTrigger"
           ],
-          "effect_sha256": "0943af87902d23d5c5a7ea036b1f03e2c4ee90d2df0e42326d1fad8baecb44f7",
+          "effect_sha256": "43b107964cc93e46f8242290ebe99bf36108057ff798839da7aa5d5f09a10c00",
           "result": {
             "hp_delta": 12,
             "max_hp_delta": 0
           },
           "scope": "FOCUSED_COMBAT_VICTORY",
-          "setup_digest": "96cca53056f6f01db50ec0df0da113a4f1f7b9ac1d492290242bd948a6baa7cb"
+          "setup_digest": "66c7ea78ed0382550706b1e6eba221d38954374adf9ce0cfc967e66d1492fe79"
         }
       ],
       "covered_callbacks": [
@@ -2324,7 +2324,7 @@
       "effect_sha256": "de9ecec071797b662715f39ff50f868615d5894ea32f5794d7d10ab26322ae04",
       "game_id": "Meat on the Bone",
       "id": "MEAT_ON_THE_BONE",
-      "java_sha256": "f0dd52ccbfd3273f27e82c9499d979a187a4b1b6a2be4cb5c0a65bdc55b1484f",
+      "java_sha256": "7f4f808bc1898ee41a2e79982bb45a1cca5a0e8d284d73b07175fc2de97083b5",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/MeatOnTheBone.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -2349,7 +2349,7 @@
       "effect_sha256": "b1027790fe649bb9a798af6590741f6c0892cabe34c37030bf7f69863290a286",
       "game_id": "Medical Kit",
       "id": "MEDICAL_KIT",
-      "java_sha256": "180e390765f4355aa9b5d66dc25caaf09d43419dd1f1c7a81c00982549e11bf0",
+      "java_sha256": "d59ad0637e6651a9914a55d20b8c786a386f4895377738341178391018ff2634",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/MedicalKit.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -2360,12 +2360,12 @@
       "callback_scenarios": [
         {
           "callback": "onEnterRoom",
-          "effect_sha256": "56ec3a5083003a2efc077d6602560f9893e868c2d28ff0fbd9b43ec1d83bc31f",
+          "effect_sha256": "8751af03824d0f885b7d8c77b5257cb631ff031007340c4d711a55ffb4556ceb",
           "result": {
             "policy_state_unchanged": true
           },
           "scope": "POLICY_OBSERVABLE_STATE",
-          "setup_digest": "6d6f2d336d2584f6bf1d19127dbd1b24ef6eadeaeb912814c208b8b98f027282"
+          "setup_digest": "40c7a0b8b6ef7f7ef8e5dbe938aa062a9f8d99391ddc4a25e20cfa688455cea1"
         }
       ],
       "covered_callbacks": [
@@ -2374,7 +2374,7 @@
       "effect_sha256": "89e453a3fd1868cbda886c61845a55f82a3fc645304acec14251f2fdba777381",
       "game_id": "Membership Card",
       "id": "MEMBERSHIP_CARD",
-      "java_sha256": "7e05343850d3c081a5eb6ce0af0ccbcc9582b9fcc87b6b7423b5e23d780423c5",
+      "java_sha256": "36d16ca593c99a94f797b80302db072755d5577174f7cc8b3479dd96ed523b3a",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/MembershipCard.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -2388,7 +2388,7 @@
       "effect_sha256": "bba9abb59a1270e74e493ac6bb0b4ea26d698ea6a3981760ab37b466630d8172",
       "game_id": "Mercury Hourglass",
       "id": "MERCURY_HOURGLASS",
-      "java_sha256": "a0da4c37160b80ecbfb8461b89327c9d27a273cd4ba5325136058b7f06824292",
+      "java_sha256": "5a7b2fd169e721a4be61cbde69d99d535f50945fe8096c08451c81379f4d0375",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/MercuryHourglass.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -2425,7 +2425,7 @@
             "onObtainCard",
             "onPreviewObtainCard"
           ],
-          "effect_sha256": "7aa8a29e499c49b3bfe14d7428150d21b16d44142b35229095cd72ec91049aa6",
+          "effect_sha256": "5e6032ff9cb5865faf36995a25dd8fb360dad62ae8b21018a000d53cf9f3e1cb",
           "result": {
             "gold_delta": 0,
             "hp_delta": 0,
@@ -2434,7 +2434,7 @@
             "preview_upgrades": 1
           },
           "scope": "FOCUSED_CARD_ACQUISITION",
-          "setup_digest": "cd12c029c28f55d8af0b608c6d7230b61b87face2d313a644eec202282c6579d"
+          "setup_digest": "62778a38d0d098cca387aa3624df0a22df2fe8c1d98360582a565332753911ba"
         }
       ],
       "covered_callbacks": [
@@ -2446,7 +2446,7 @@
       "effect_sha256": "9a63ae47c0df8d7c2e833e7dd9bab963a0393b3906be8383e512e0d45640032d",
       "game_id": "Molten Egg 2",
       "id": "MOLTEN_EGG",
-      "java_sha256": "ecd04c375bff25b9faa96f3b8f9310e0433042dad568aa8140eaf2397b9aaedf",
+      "java_sha256": "415e68f17fd5fa4fb123344341c12adfa8318bc6a942c9c283f38341b035183f",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/MoltenEgg2.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -2471,7 +2471,7 @@
       "effect_sha256": "a34edde93b119ebab4f6e49e67046eac83681f2cf9154536adfd52a5f86d65a9",
       "game_id": "Mummified Hand",
       "id": "MUMMIFIED_HAND",
-      "java_sha256": "8ac6a851e54cf7f46b6e23deda848233ae0d109f4af071840b808e87ea485664",
+      "java_sha256": "48d8f5909f56fdbe6cf216bd60bcabeafe10082a3d3a760a769a855428db06a8",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/MummifiedHand.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -2485,7 +2485,7 @@
       "effect_sha256": "c1a46670072ed56b2363f6a030fcf3818d962bdc3cf0b9dc28a7afb026d600a3",
       "game_id": "MutagenicStrength",
       "id": "MUTAGENIC_STRENGTH",
-      "java_sha256": "34a6def5d5f3de349888df98029ab915875bfe1b13b97f5318e8f37584613ab9",
+      "java_sha256": "6406fb486c27d2b43ae919f84189825a0b675e7ad8bbeb0703c42e447e3ed536",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/MutagenicStrength.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -2496,14 +2496,14 @@
       "callback_scenarios": [
         {
           "callback": "onUnequip",
-          "effect_sha256": "e92f4c5d0f9c0b4a772955747fdc8be20aa2816a5212f2d521a8976eafb496da",
+          "effect_sha256": "3a660a06f8bed73a1214183e48f259803a803f3297e4fd4a4855abc06111f813",
           "result": {
             "energy_delta": 0,
             "hand_delta": 0,
             "necronomicurse_count": 0
           },
           "scope": "PERSISTENT_NEXT_COMBAT",
-          "setup_digest": "93394a1517edc035427831eb070e81ef7bd4dbda39a060c71e697116ee1284fd"
+          "setup_digest": "2e30a8318219ee78373fb06b44cef763c37e89059a02d6a065554a029c7131f2"
         },
         {
           "callback": "onUseCard",
@@ -2527,7 +2527,7 @@
       "effect_sha256": "0a69233d7f2526ad5473fd1810963d7b4119e93e82df3a14d20ae39e56b9b87a",
       "game_id": "Necronomicon",
       "id": "NECRONOMICON",
-      "java_sha256": "a19dd38884f98e4d3c0726e5ce1bb26fa7f35d9095256fd86e320720f6916c5a",
+      "java_sha256": "56411b7d95078cebc070ec5270ad1d03346cf6ca872bdbd8fbfe423a9a9343dc",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Necronomicon.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -2566,7 +2566,7 @@
       "effect_sha256": "df9ff957d250e09e6c008ce508c02e8a4f7680f5bf4a452a6ceb83d607f02e4c",
       "game_id": "NeowsBlessing",
       "id": "NEOWS_LAMENT",
-      "java_sha256": "c2b974164e8c42b9d4d5a0fa94834fdf0c5819c44a50c76412b40818705bbb64",
+      "java_sha256": "5e50ad24e9978828078619d789a0c4830e4a72c51e9b1bfb2799a7c7e69ea4cc",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/NeowsLament.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -2579,12 +2579,12 @@
           "callbacks": [
             "onPlayerEndTurn"
           ],
-          "effect_sha256": "de459c6addce91ee0a2bec12471920c4db84b428ed28050b34c02e35ce9658a8",
+          "effect_sha256": "830fe460021ca78e75f05eece1b66e4b17db9c73ae9cc2b7afee586de4800b12",
           "result": {
             "option_count": 3
           },
           "scope": "FOCUSED_END_TURN_LIFECYCLE",
-          "setup_digest": "a7fbcb879651425517461a4651f69ce75f693199cc141ef7a48a839e91c7f74d"
+          "setup_digest": "03281d2999ea18f1376efd126bc3f02931f0c119874d7590ab3bb3d9d6b347ab"
         }
       ],
       "covered_callbacks": [
@@ -2593,7 +2593,7 @@
       "effect_sha256": "fe063a0f9faee60e1073e8dcd77a337709d73a8e7e8305a8bec572fe44ce277a",
       "game_id": "Nilry's Codex",
       "id": "NILRYS_CODEX",
-      "java_sha256": "c9572159054d8f42552b29026a8ea7d12e93d2e72f38736ac8108030c3a60c02",
+      "java_sha256": "892d88cf117a5b525984c1f32bc4c5e4225ec7ac0225187470f0d6b024b0cf60",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/NilrysCodex.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -2604,11 +2604,11 @@
       "callback_scenarios": [
         {
           "callback": "changeRareCardRewardChance",
-          "effect_sha256": "a24d72af2493bbd9d13ebeb504aa774ca61d9f9a80d90216d566c50645b4ed46",
+          "effect_sha256": "8de97f8aebf9b5db7649ba53cccef1984b4095c073ddc6f3532b4fa9ded7965d",
           "input": 3,
           "result": 9,
           "scope": "ACT1_CARD_REWARD",
-          "setup_digest": "1c448e552cb01b60f37978d2c951bd767bee2b9ed682a1dcf583751d8baa6221"
+          "setup_digest": "2e30a8318219ee78373fb06b44cef763c37e89059a02d6a065554a029c7131f2"
         }
       ],
       "covered_callbacks": [
@@ -2617,7 +2617,7 @@
       "effect_sha256": "4647f5702b125d4ef0d97693ca1a7cf5994d10fd8077505d9ffce18fcaafe34a",
       "game_id": "Nloth's Gift",
       "id": "NLOTHS_GIFT",
-      "java_sha256": "01d308561cf73aafb5c6f70849164474c78761614a53057ecf015449a6608cb1",
+      "java_sha256": "94981b2c8cfa81a343a727235998e5afd3a307eff2e3ced2719c9783f7ef4237",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/NlothsGift.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -2647,13 +2647,13 @@
           "callbacks": [
             "onChestOpenAfter"
           ],
-          "effect_sha256": "63e92257993bf325e76d1684695d56d4692f45f1b93826a1aa1244cbe66a99c9",
+          "effect_sha256": "51c3b6f3de6439eba2f98237920bba5634908351798a86cd5bb263ab2f1c0b9d",
           "result": {
             "delta": -1,
             "used": true
           },
           "scope": "FOCUSED_WORLD_LIFECYCLE",
-          "setup_digest": "7b1c0bfe294b940ba802781bcfb55757f7e95ae17a764395cfb96511ec9b2b04"
+          "setup_digest": "3f28be3359726a9ef51a7e7f2d43d632e615ea1b85684e8697b8d55eb02c50d3"
         }
       ],
       "covered_callbacks": [
@@ -2663,7 +2663,7 @@
       "effect_sha256": "ad28562b428dc951056abc49fcec0cb3ec8031e8f1d27fe299fed393f4bd766f",
       "game_id": "NlothsMask",
       "id": "NLOTHS_HUNGRY_FACE",
-      "java_sha256": "602dcfad73ffbc27e0d14d40f31f1485750d71c3ffc3f344a4c3b753a25ff4c1",
+      "java_sha256": "7dbfb6c5390e870ce11ff70627f731bd50d3c3fef9deeeb184847826a68ddd37",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/NlothsMask.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -2689,7 +2689,7 @@
       "effect_sha256": "304292c540592109129b45cf243f537a0a5a931c9f3f81d2ee946150081f0537",
       "game_id": "Nunchaku",
       "id": "NUNCHAKU",
-      "java_sha256": "38034b70646529b190c8252dafb0dd33c0ab7fcaec42cc6b7d86f2436a9c5eef",
+      "java_sha256": "dafa9d5af519123932a629b6eb2743b48cb5693a344bdc888519199d14e93f47",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Nunchaku.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -2703,7 +2703,7 @@
       "effect_sha256": "4bbdc4f68988736eeb027ad2a8c6bfabc58c6098aa5dfea090a3c81aa95a4814",
       "game_id": "Oddly Smooth Stone",
       "id": "ODDLY_SMOOTH_STONE",
-      "java_sha256": "5c2812b3e71e57cb505b20562b0dd097a7be2146c6754283fe42dcaa072c9a5f",
+      "java_sha256": "1380417fe10620488852063e37c1f9f1dfa7f03003bb101b829aff58387eed45",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/OddlySmoothStone.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -2715,7 +2715,7 @@
       "effect_sha256": "f2b61b1ee5b56041a0524e229510ab47c3cceb0a057b1561f855f4580544fcce",
       "game_id": "Odd Mushroom",
       "id": "ODD_MUSHROOM",
-      "java_sha256": "16b704734ea135af7636aca39bea0440fb64b2979d922d24881e43ac096189c7",
+      "java_sha256": "bae781f3cce6428879fe784abf29a41ca26d6251a83d02e44530ef972d19edcb",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/OddMushroom.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -2755,7 +2755,7 @@
       "effect_sha256": "0ef1004441fe1c35625f25f7953a3a6f88287cfd7bac365db219dcc7d1a66847",
       "game_id": "Old Coin",
       "id": "OLD_COIN",
-      "java_sha256": "6a758b68b896bdd7394293a83e29c47a696b256abd3ce48312557d8bbc412380",
+      "java_sha256": "298fefbd5afdec4f63d7efae0b1344691208c15baced3e1d35fce74cf6d5e775",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/OldCoin.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -2817,7 +2817,7 @@
       "effect_sha256": "a123a011a93dc0566f0b5d1eea0bbb19d18eb0956ba9b82e7b8a773dc1a4f41a",
       "game_id": "Omamori",
       "id": "OMAMORI",
-      "java_sha256": "3ec7b76b84637e0b11ee24aabfaf055173efcde9d51ff513c52a317d5d7c675c",
+      "java_sha256": "9a4ec0639162f5031e74587dcf5ad191209dd92f2063d4747495ccb265d5cf6f",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Omamori.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -2843,7 +2843,7 @@
       "effect_sha256": "2dae48fe2319331bf1c9695166dbf2918e4b377d7fa10ba2eeda187efc339497",
       "game_id": "OrangePellets",
       "id": "ORANGE_PELLETS",
-      "java_sha256": "d177125bb329a371480df638ba4fe2521c8641daf47edb75c0c4cbc9ca6a7d19",
+      "java_sha256": "532949f32e3bd1d164dacedc6c22579d47823c4f9109804748739837fd4bd806",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/OrangePellets.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -2858,13 +2858,13 @@
             "onPlayerGainedBlock",
             "onVictory"
           ],
-          "effect_sha256": "ddf3e01f18375e8972118c7f2591852ba2263b5e20a9edfb7730554138929544",
+          "effect_sha256": "da0fa6774146c719733518eab1362d2a53523d0bec2212694c41769eb21f666c",
           "result": {
             "block_delta": 6,
             "rounded_block": 2
           },
           "scope": "FOCUSED_END_TURN_LIFECYCLE",
-          "setup_digest": "fd63615eb915e33f0096c8425f61cfe4e650ad54d49b993cbba0656ca0fcff23"
+          "setup_digest": "b5e39f691ee2ece38ac40014732812701048fb3055c3231277c5d680445056d4"
         }
       ],
       "covered_callbacks": [
@@ -2876,7 +2876,7 @@
       "effect_sha256": "942a0f4cc7ac5a8c9169ac9962cf3dd8f96abecec8e26a373e79eb09c6666e01",
       "game_id": "Orichalcum",
       "id": "ORICHALCUM",
-      "java_sha256": "d22bd748201726c196d4838e37e6b289d29e560eb517618f7492a7c086584065",
+      "java_sha256": "8ee08427f57fe1b825510271d514dfff8c258dcd6eb86be5af29c74df2e4e1e3",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Orichalcum.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -2888,10 +2888,10 @@
         {
           "callback": "onVictory",
           "counter": -1,
-          "effect_sha256": "5e98f62abbc3de2439a181188741904f31709391fcce7fe283f9e9f3b970fbd7",
+          "effect_sha256": "e35889724bfb3319323b764eca46d64ddfb582cd73ecfb9b1800906875909f30",
           "initial_counter": 2,
           "scope": "COMBAT_VICTORY_RESET",
-          "setup_digest": "1c448e552cb01b60f37978d2c951bd767bee2b9ed682a1dcf583751d8baa6221"
+          "setup_digest": "d7ac85b19aaf6829e4c8fd4044ec5347bd43928fbb1f760dbd464c7a7463f40e"
         },
         {
           "callback": "onUseCard",
@@ -2912,7 +2912,7 @@
       "effect_sha256": "0f3fec6d70af53cd65c5bdaf3c6260699ce16ba4082dd9a3c50b21e6ff9e2427",
       "game_id": "Ornamental Fan",
       "id": "ORNAMENTAL_FAN",
-      "java_sha256": "b7472f53aab457cedb3fc14efdbd8c348e60170d8a34a91c3254b6695ba34978",
+      "java_sha256": "eefffc4c7de0ff85910884dd367773436038bdad965929078b5185f1ea2bc58a",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/OrnamentalFan.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -2925,12 +2925,12 @@
           "callbacks": [
             "onEquip"
           ],
-          "effect_sha256": "1088d8a8ef3b0d79c85ab5bfc8f12bf2688239e7d7e15b6c408eb7076ca3cb82",
+          "effect_sha256": "a0304d13e1efcd6bd9600053fc5166ae0071d579236837d83cd7ce8fad28cee0",
           "result": {
             "card_rewards": 5
           },
           "scope": "FULL_EQUIP_UI_LIFECYCLE",
-          "setup_digest": "28c2caa2f3a1a8b8af330cad25f3f0c747f25ec3e72e2658766a487b09210d5b"
+          "setup_digest": "e52894f6ab5056bbc31accaa789248791be39bfd1e7d52c0b7ee355e60970c33"
         }
       ],
       "covered_callbacks": [
@@ -2939,7 +2939,7 @@
       "effect_sha256": "a4cb93c9ffee1f909ed7d3ddd8b6748904a58f75f003f6e8b7664315deb0338e",
       "game_id": "Orrery",
       "id": "ORRERY",
-      "java_sha256": "3776faf7cf9ebc6d5e0e582edc0e2fab1ba4cdc292d2b1fc805ad7e6765fa4e3",
+      "java_sha256": "fdce89eb48ad1b0239a675ca329d1369ecea9bff9d049210df4d079394562d90",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Orrery.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -2952,12 +2952,12 @@
           "callbacks": [
             "onEquip"
           ],
-          "effect_sha256": "ea386b16ac70e0abe28244d9d4f43221c24a9709966772ffc50551fbe9a96232",
+          "effect_sha256": "ce65d9011da05f62a1ce168accd9604755909b44a9addcba0abbd37146634a1e",
           "result": {
             "affected": 8
           },
           "scope": "FULL_EQUIP_UI_LIFECYCLE",
-          "setup_digest": "8cc732da7bcac12fc305a2cf0de593ee76186e9ce8cfd5b4e9686cd049217bfb"
+          "setup_digest": "4a808e55240339b96bb7d3e940d2959379bbac149d21c82691d4e9900e09e337"
         }
       ],
       "covered_callbacks": [
@@ -2966,7 +2966,7 @@
       "effect_sha256": "3799fb0f6ea576714654a06537b6c857574d2dd7009b55e2906c9742b93065a0",
       "game_id": "Pandora's Box",
       "id": "PANDORAS_BOX",
-      "java_sha256": "b9ffef323cc4172c29f52068b126afd222122eb9ddeaf1e60cc10aa932f3d41a",
+      "java_sha256": "62e3efeb5a23b9f6ddb267b0302150a21293c5ddfb04c27d9fbd20bfccb87833",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/PandorasBox.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -2980,7 +2980,7 @@
       "effect_sha256": "74f28b96afde36ae491af839cc8ba963d25be898767e0916216503604137baf1",
       "game_id": "Pantograph",
       "id": "PANTOGRAPH",
-      "java_sha256": "93f877889227fdcd245edf19a7acc6324cbd1c2c9ccc1d8e9aa6774349f2bc58",
+      "java_sha256": "c7a4b198b0d8dbe9d3f884160c893cbf9f84c531d9395ba5e1ef650ac2437fd0",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Pantograph.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -2992,7 +2992,7 @@
       "effect_sha256": "fb3682ba338afe08b9093eb6bb4ac690702b8ec08a3edeeb946ed1b84c8a5f06",
       "game_id": "Paper Frog",
       "id": "PAPER_PHROG",
-      "java_sha256": "8430cdfdee6e2fea911ecd43df899c1f15085185bc527ae25cb830fd9c7b58c7",
+      "java_sha256": "c9d44e30ffd26b97ea565ebc0290900dcae7b52d1a80cebe812ddce75b291cbf",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/PaperFrog.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -3053,7 +3053,7 @@
       "effect_sha256": "3b2a639683700787221988a54893516d2fd776e70e7e80d2fc49630524ab778f",
       "game_id": "Peace Pipe",
       "id": "PEACE_PIPE",
-      "java_sha256": "39a95ae5ecdb0940445997ddc81225cea8c82c7f957f76d769eb189647d41d15",
+      "java_sha256": "feed8193be08a2baaa65ddd81ddcc78fb0a8911cd70e2923f48e85b307c2422e",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/PeacePipe.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -3067,7 +3067,7 @@
       "effect_sha256": "6a593fe866e613c5192cbb93c0777a2454eb36c392e132b9b08c88b0c83a5b35",
       "game_id": "Pear",
       "id": "PEAR",
-      "java_sha256": "9443bf19e9f3500cf0d43af069bbfa9dc156855ec791a8c2f7b6c7d624564901",
+      "java_sha256": "3136851cc3cf007688e612a3e15ecec576bf3986157bc0e1490f0c3c2b0723fb",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Pear.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -3094,7 +3094,7 @@
       "effect_sha256": "5c95bf832beb87c2ca5fec425818c48306b51d6e4e1652e39f5cfd06bbfd9062",
       "game_id": "Pen Nib",
       "id": "PEN_NIB",
-      "java_sha256": "9181123c80ab7716c81b4230e726e9b226938e88b4be8a168bcd3e40bec34874",
+      "java_sha256": "fc60a7f13e7a4778c10a3a9bd3181f8f27f939464ef75cc031697ac77a80d314",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/PenNib.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -3104,21 +3104,21 @@
       "callback_complete": true,
       "callback_scenarios": [
         {
+          "callback": "onSpawnMonster",
+          "effect_sha256": "0123f36fccc34c13ab44f84e886fde0af0bb574360ea6383cb00a4e3f6a38fd4",
+          "scope": "FIRST_TURN_STOCK_MONSTER_LIFECYCLE",
+          "setup_digest": "404b410bc32b30e8666642ab856e9e646b450cd2db920c37c1270cbcf1634ac6"
+        },
+        {
           "callback": "onUnequip",
-          "effect_sha256": "6d717d882be9f2cd25a0e48b47ab57327186de4d07e4050d48b0546ad5f33ff8",
+          "effect_sha256": "f2cf28cd864f9047a8fa376de9990e0e03f9cedc26922b31b1bb472129e6cc9b",
           "result": {
             "energy_delta": -1,
             "hand_delta": 0,
             "necronomicurse_count": 1
           },
           "scope": "PERSISTENT_NEXT_COMBAT",
-          "setup_digest": "93394a1517edc035427831eb070e81ef7bd4dbda39a060c71e697116ee1284fd"
-        },
-        {
-          "callback": "onSpawnMonster",
-          "effect_sha256": "0123f36fccc34c13ab44f84e886fde0af0bb574360ea6383cb00a4e3f6a38fd4",
-          "scope": "FIRST_TURN_STOCK_MONSTER_LIFECYCLE",
-          "setup_digest": "404b410bc32b30e8666642ab856e9e646b450cd2db920c37c1270cbcf1634ac6"
+          "setup_digest": "2e30a8318219ee78373fb06b44cef763c37e89059a02d6a065554a029c7131f2"
         }
       ],
       "covered_callbacks": [
@@ -3130,7 +3130,7 @@
       "effect_sha256": "0123f36fccc34c13ab44f84e886fde0af0bb574360ea6383cb00a4e3f6a38fd4",
       "game_id": "Philosopher's Stone",
       "id": "PHILOSOPHERS_STONE",
-      "java_sha256": "1753c4012a6bc841a9281ceefd3109352ba6549d6ffca915a82f94780725fa29",
+      "java_sha256": "95373866751700e50a26b1699ede8be4b5b1fa9e82fe49a2650c067dfc21e67d",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/PhilosopherStone.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -3142,21 +3142,21 @@
         {
           "callback": "onVictory",
           "counter": -1,
-          "effect_sha256": "5e98f62abbc3de2439a181188741904f31709391fcce7fe283f9e9f3b970fbd7",
+          "effect_sha256": "e35889724bfb3319323b764eca46d64ddfb582cd73ecfb9b1800906875909f30",
           "initial_counter": 2,
           "scope": "COMBAT_VICTORY_RESET",
-          "setup_digest": "1c448e552cb01b60f37978d2c951bd767bee2b9ed682a1dcf583751d8baa6221"
+          "setup_digest": "d7ac85b19aaf6829e4c8fd4044ec5347bd43928fbb1f760dbd464c7a7463f40e"
         },
         {
           "callbacks": [
             "onPlayCard"
           ],
-          "effect_sha256": "c5c419f3b6de45ea81359f620cc53a5224ae05a59d562198e8cb024b63e15719",
+          "effect_sha256": "19f26d3fd4ccb2e4a5fab3577a0a073a74b5f0737e906e70a32e533759ad1b57",
           "result": {
             "counter": 1
           },
           "scope": "FOCUSED_TURN_LIFECYCLE",
-          "setup_digest": "ac05e92806684065b9f2097540ce8dcfe9e5ff3861d09dbe5cb15d390ed8e727"
+          "setup_digest": "dd120a2bdc1ea1b07106b0e84015a161a5f51d8ca1118e363c3b5cb797514452"
         }
       ],
       "covered_callbacks": [
@@ -3168,7 +3168,7 @@
       "effect_sha256": "9ea2a3228839192cbee24d7073bf666c662678bd360704f9dbf8c88c2baf3cbf",
       "game_id": "Pocketwatch",
       "id": "POCKETWATCH",
-      "java_sha256": "2bdcaab1f2dd1efbf25143e54598decbc7fb38254c728f87f40d52521f054586",
+      "java_sha256": "6b45c2c90c9310645797b0711dd25c8a276098868ec333d41be208c472c3a840",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Pocketwatch.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -3208,7 +3208,7 @@
       "effect_sha256": "dc756e2b708bc2bfc1fce1d9f0562fab5c22edd8295c2192ed1d5ce0786c9060",
       "game_id": "Potion Belt",
       "id": "POTION_BELT",
-      "java_sha256": "70d019ab2e961c21620d98e62a2e6ce1a160c8a94a1d374157ee70db27df7c83",
+      "java_sha256": "9371cba06872c023a583e4ae3a8a0451fb91107b0f9e80860b3ffceec2ef2e0f",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/PotionBelt.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -3247,7 +3247,7 @@
       "effect_sha256": "efd5b6772fdcd8fcac9b461f41d2a73ba47ad9e084dea7c22f2c8d6df7af24dc",
       "game_id": "Prayer Wheel",
       "id": "PRAYER_WHEEL",
-      "java_sha256": "eed203639536edc24a857baf744af4fa72a58de6bcd0a09497c7dbf2e59d1674",
+      "java_sha256": "619a8d3903cd520d4fd5c94b0c4f690865686dc7a944254ba824d31447389473",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/PrayerWheel.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -3287,7 +3287,7 @@
       "effect_sha256": "4eaeaa90bfa7fdb38ca961f910610cd65188c5189baeb37314742a6a1782ea43",
       "game_id": "PreservedInsect",
       "id": "PRESERVED_INSECT",
-      "java_sha256": "27381f3ba3fa822fdfb978b3f26fd271a871a37cf000eb9c0367ac106c4cb425",
+      "java_sha256": "303c04bda8c9c7d94f540daf9db786a5cabb02761241f0680ed10a419a35abe9",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/PreservedInsect.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -3301,7 +3301,7 @@
       "effect_sha256": "2322f1b0673c3f2129fdf5892b07193a54fabbe286db757e2de3b8acd1f33a69",
       "game_id": "PrismaticShard",
       "id": "PRISMATIC_SHARD",
-      "java_sha256": "c70739a07a055ad6f9f4b3ee7a229b264de1b1e6928a4ad08b7e3cd83accdea4",
+      "java_sha256": "e9813b8cbf06ca83e9e81a4c7896c93f26f36afe3b25c6bdd38645091e00c809",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/PrismaticShard.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -3335,11 +3335,11 @@
         },
         {
           "callback": "changeNumberOfCardsInReward",
-          "effect_sha256": "d4e2b501852c9195ef855a470b705d59b197d355a6fa23f586fd6a769966234a",
+          "effect_sha256": "fd12b86643c0f38adc49470183d035260fef11af0dc727a0fa9919f47b2e589e",
           "input": 3,
           "result": 4,
           "scope": "ACT1_CARD_REWARD",
-          "setup_digest": "1c448e552cb01b60f37978d2c951bd767bee2b9ed682a1dcf583751d8baa6221"
+          "setup_digest": "2e30a8318219ee78373fb06b44cef763c37e89059a02d6a065554a029c7131f2"
         }
       ],
       "covered_callbacks": [
@@ -3349,7 +3349,7 @@
       "effect_sha256": "bab2244105d79e0a62eb61a46b728b21bb2053ce9f4e56f72c106265ee3b0778",
       "game_id": "Question Card",
       "id": "QUESTION_CARD",
-      "java_sha256": "7a88f462d4dc2b111e484941bf42bf4a26ccd743eeb6d46f91a4b01a2d66d908",
+      "java_sha256": "ef7faee05ad55e0d90f3f8e850641f36a549054c02a302bfcc4c9a5c718db608",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/QuestionCard.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -3361,7 +3361,7 @@
       "effect_sha256": "ce831e79faa3143a886b5007d39df487ece4c139d6a7dc039542250e361772ca",
       "game_id": "Red Circlet",
       "id": "RED_CIRCLET",
-      "java_sha256": "321405c0aa33712a93ebd7444dabc78edba1542f71ca7374885ce77e8e97bc8f",
+      "java_sha256": "2ee2ab8c454ffd0036a2fe91a4b252de78c705327157f60662c3be6ef868264e",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/RedCirclet.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -3375,7 +3375,7 @@
       "effect_sha256": "5276a3d5abd9bd42f7e7f41fcdda159c4cf19dbd84b9298c00144b9d13ea3269",
       "game_id": "Red Mask",
       "id": "RED_MASK",
-      "java_sha256": "018000a3cc4c1a54e91b83c4030caefe2a5357da870cfc1b8754161949fe1cff",
+      "java_sha256": "870885c0415d842394a8ed487570ce11429b43f951afc96cd523593f1125cb82",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/RedMask.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -3408,7 +3408,7 @@
       "effect_sha256": "ebb7d8d429c7231d58da3ac3ef8fbf2c7b7def9ea84a4b1f69bc4eedb6705de5",
       "game_id": "Red Skull",
       "id": "RED_SKULL",
-      "java_sha256": "45e62672eb728c68225c57f5db592e340b5af3b9a5039fb442f32e6eebbfe6d4",
+      "java_sha256": "c109afe84adbe8fec6edf72aa786a363bc6e497ecc8fbbf4fea2053f2ccdeffb",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/RedSkull.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -3447,7 +3447,7 @@
       "effect_sha256": "b7972f852f920f235b11a08e6b7ae696310397d4893f383cd0bcbf3a516fcac0",
       "game_id": "Regal Pillow",
       "id": "REGAL_PILLOW",
-      "java_sha256": "e0a7a0c23dd10b0187613168d2bb67f146d5f5a5a8ab2c0d55f10bc591fde19b",
+      "java_sha256": "a35f1eae407ff645a16321860f72f5a35a56dcfb7f96019e607b0546d6167d44",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/RegalPillow.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -3458,14 +3458,14 @@
       "callback_scenarios": [
         {
           "callback": "wasHPLost",
-          "effect_sha256": "60b2f72ad2f171b377835a07b94cbe01cb928626e3836688e3b7e38d99165284",
+          "effect_sha256": "6a4cdb960b1b134c543b5b80b7db7e750c289f38b4a5999713a5baa0b6f44532",
           "result": {
             "drawn": 1,
             "hp_delta": -5,
             "next_turn_block": 0
           },
           "scope": "FOCUSED_COMBAT_HP_LOSS",
-          "setup_digest": "9cdfe722c284e0dcf499b5020123d111c2a1af34893a22f1137e272848fe40da"
+          "setup_digest": "77a1de984dcf1f0e368f89a8f1d53ac6feb4d7624f082acc913ba781e1ce69ea"
         }
       ],
       "covered_callbacks": [
@@ -3474,7 +3474,7 @@
       "effect_sha256": "665003e23d64d8c8c93eee6d4c65f2123d55e8e35de2a7d5b5afdb61b30d7f4e",
       "game_id": "Runic Cube",
       "id": "RUNIC_CUBE",
-      "java_sha256": "36cbf9bc602d0cfa1623561df25965079ac147c41ac621bb1be68ff22ff98f9c",
+      "java_sha256": "13d791a05c6f00be754010408b58d4a8bb8852fe12a3868167a90d5eb09a1e46",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/RunicCube.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -3485,14 +3485,14 @@
       "callback_scenarios": [
         {
           "callback": "onUnequip",
-          "effect_sha256": "6d717d882be9f2cd25a0e48b47ab57327186de4d07e4050d48b0546ad5f33ff8",
+          "effect_sha256": "f2cf28cd864f9047a8fa376de9990e0e03f9cedc26922b31b1bb472129e6cc9b",
           "result": {
             "energy_delta": -1,
             "hand_delta": 0,
             "necronomicurse_count": 1
           },
           "scope": "PERSISTENT_NEXT_COMBAT",
-          "setup_digest": "93394a1517edc035427831eb070e81ef7bd4dbda39a060c71e697116ee1284fd"
+          "setup_digest": "2e30a8318219ee78373fb06b44cef763c37e89059a02d6a065554a029c7131f2"
         }
       ],
       "covered_callbacks": [
@@ -3502,7 +3502,7 @@
       "effect_sha256": "9ed21103026b5101d4709147962a276658e10bf3fba5b75ff4f05269a4160236",
       "game_id": "Runic Dome",
       "id": "RUNIC_DOME",
-      "java_sha256": "9b54a03c93673232686c64fd2cda29df1310925bff0ff17be41ded9374e8de81",
+      "java_sha256": "8f55d0754de1e7fcd47fae587eb8da5173ff2b12999a42780f8105bb8e79f301",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/RunicDome.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -3514,7 +3514,7 @@
       "effect_sha256": "efcb8e6b31b2b8533c037d2d48cd41d547b626c6bd38a32f86728e1dd4d3235c",
       "game_id": "Runic Pyramid",
       "id": "RUNIC_PYRAMID",
-      "java_sha256": "4bcfaa12003c177c0814a755b8078f182fe14630358fd744319b60a295540233",
+      "java_sha256": "f0fc358207c4bbccffe042e125080b8bb2e47c3ca808523a4b3b5519707a2c2b",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/RunicPyramid.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -3528,7 +3528,7 @@
       "effect_sha256": "55fbbc6f495e1e4f6830c5c6a7a57729ceb0359d3393345537217c19e847e2c3",
       "game_id": "SacredBark",
       "id": "SACRED_BARK",
-      "java_sha256": "e50f863e98d353c9e598ade99011dd28787e7886276f2083f0711492c1401727",
+      "java_sha256": "3e1f0b507ccad7536e9bc2e621f3a186bf8c43e01f7bd24cebe85e32a4130f45",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/SacredBark.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -3539,14 +3539,14 @@
       "callback_scenarios": [
         {
           "callback": "wasHPLost",
-          "effect_sha256": "073f089b98d0622e81685643e5b99917dc49bf0d8772e5a856c3d35b37f42478",
+          "effect_sha256": "45a6f5da23b6df376b72b2d61e85d5cb90db2b3cd685703e3b8e83fa4b10fa81",
           "result": {
             "drawn": 0,
             "hp_delta": -5,
             "next_turn_block": 3
           },
           "scope": "FOCUSED_COMBAT_HP_LOSS",
-          "setup_digest": "5349ed82ffde1f988d144d9069d0b602e6a8274d95a23d875b89688c4437d388"
+          "setup_digest": "c54168d4efccbb059d2b2e5dee49b6292718477eb9896a85d4cfc3bdb256fd1a"
         }
       ],
       "covered_callbacks": [
@@ -3555,7 +3555,7 @@
       "effect_sha256": "9fdec64fdb5b90880d30abbfb64fa515471ba0dc4a9568f63b12be43993d286b",
       "game_id": "Self Forming Clay",
       "id": "SELF_FORMING_CLAY",
-      "java_sha256": "96e4c6afcb7a1a4466984f58168cb6086a3638dd25f2f926c9dfa921300b3c8f",
+      "java_sha256": "b91193f3b98ae8746b1d002eb46bb30340e66bd27c922eb54e395de18aabba64",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/SelfFormingClay.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -3609,7 +3609,7 @@
       "effect_sha256": "d7f8dd94670cb313a218e66f577e1ceec4c48d2edd539d8442b7ce530d4585a3",
       "game_id": "Shovel",
       "id": "SHOVEL",
-      "java_sha256": "fff21360138e860b4956c07495c5c1b9240d7cf371e83a8677c37f0586217478",
+      "java_sha256": "364b66b56467781092d3575d42fec356b94c364a290a4717007b5b120a82206e",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Shovel.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -3621,10 +3621,10 @@
         {
           "callback": "onVictory",
           "counter": -1,
-          "effect_sha256": "5e98f62abbc3de2439a181188741904f31709391fcce7fe283f9e9f3b970fbd7",
+          "effect_sha256": "e35889724bfb3319323b764eca46d64ddfb582cd73ecfb9b1800906875909f30",
           "initial_counter": 2,
           "scope": "COMBAT_VICTORY_RESET",
-          "setup_digest": "1c448e552cb01b60f37978d2c951bd767bee2b9ed682a1dcf583751d8baa6221"
+          "setup_digest": "d7ac85b19aaf6829e4c8fd4044ec5347bd43928fbb1f760dbd464c7a7463f40e"
         },
         {
           "callback": "onUseCard",
@@ -3645,7 +3645,7 @@
       "effect_sha256": "89d7334e9496c47aaa34b605efdc657fcd4595f8a9aff4605da1f28452f562b8",
       "game_id": "Shuriken",
       "id": "SHURIKEN",
-      "java_sha256": "76fd92412f4cdd7a9a96ee36cf70a38191c1f1f6c0f847844d5a3a945debd48f",
+      "java_sha256": "31a3c71bdde5647c21ac7769728a347f776e35803863d08c57a1e5533fcd465d",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Shuriken.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -3684,7 +3684,7 @@
       "effect_sha256": "729b293432110395e04e4d5931b632d349b88c3d2f3a88e9d7ec4766893c44e9",
       "game_id": "Singing Bowl",
       "id": "SINGING_BOWL",
-      "java_sha256": "951f239206090684738d745c47722388395bab06d4ca089f0b0871af1cc3f60c",
+      "java_sha256": "20d70521e99d435b8c732b2b4988113f95578e401e45dcfdacd50001d7933c72",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/SingingBowl.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -3698,13 +3698,13 @@
             "beforeEnergyPrep",
             "onVictory"
           ],
-          "effect_sha256": "6a7f93c5258a502a8a9a5f775c0518317f76da95e2601a570acf2692ef9bc409",
+          "effect_sha256": "8b67fb4ae87b6cdddd16a12235c20c81e5be1cddf4bf862ef426152b8505f5c4",
           "result": {
             "elite_energy_bonus": 1,
             "persistent_energy_delta": 0
           },
           "scope": "FOCUSED_END_TURN_LIFECYCLE",
-          "setup_digest": "fb76d3d769b9b6587ff0b971327f4bad113ebed677bb30d5215d4ee18e8b63da"
+          "setup_digest": "fb0588936e8a2d50a2cc5013325614c34b1b3ca173dc9f0eedfb819a12a4a729"
         }
       ],
       "covered_callbacks": [
@@ -3714,7 +3714,7 @@
       "effect_sha256": "42da9d0510612b04d2e359d7152bf4ea1f02f86b85060468db4d301c79bfb0ae",
       "game_id": "SlaversCollar",
       "id": "SLAVERS_COLLAR",
-      "java_sha256": "759f164af963a2ccb608f5b54e077c995de000d5d4b42648168ff1318319b33f",
+      "java_sha256": "79865baf66c4a193817b461989123bba326aa89f4bf76d76cf991454ccd97a2e",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/SlaversCollar.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -3728,7 +3728,7 @@
       "effect_sha256": "c1603d87cd7ecae3a133769c88efdbc59055405e2858b9742ff3792b64f5d4e5",
       "game_id": "Sling",
       "id": "SLING_OF_COURAGE",
-      "java_sha256": "9cd3ae804afa0294c3383eb778562d5cc925a8501b12170856013198aba33973",
+      "java_sha256": "d61f5d299e65be3f8fbccffc3077d3b161f438646046d3ca0698c0002768d0c3",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Sling.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -3762,12 +3762,12 @@
         },
         {
           "callback": "onEnterRoom",
-          "effect_sha256": "3f874d9e174a131cb3470ef9cfc52f0e69a358061d0c56f6a5b0454989c20e64",
+          "effect_sha256": "18597f9ba4092389565f71605b5db218dd9f201c1e66554ef8a079f77910b7d8",
           "result": {
             "policy_state_unchanged": true
           },
           "scope": "POLICY_OBSERVABLE_STATE",
-          "setup_digest": "5264a9d0dffecda8753414905604be6be2405946317e7247fc337df1c5194067"
+          "setup_digest": "f889650432fb1e80585d76d1df13598925d60c15418e73ad554f755c09cd5604"
         }
       ],
       "covered_callbacks": [
@@ -3777,7 +3777,7 @@
       "effect_sha256": "cdfe3a8bac7a3a58d09d7bfe5f0b6e71b6d22d05e0fdb8031bf8f06f8b917df9",
       "game_id": "Smiling Mask",
       "id": "SMILING_MASK",
-      "java_sha256": "f75c5f08febf7d5613216a654b2d666a35cfbe1f88ae6050f779bc9aaf881ecf",
+      "java_sha256": "d48d19c138eb0ee8efc7032ca60a75b5b452460b314a75b39d5669cd7cc628d8",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/SmilingMask.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -3788,14 +3788,14 @@
       "callback_scenarios": [
         {
           "callback": "onUnequip",
-          "effect_sha256": "c6d0a88ac65e6ea00e1a681c135a9896262b9c5140e9254f50ba7ed0e843f031",
+          "effect_sha256": "2e8feea61fb576165e7c8037e90fc40572cce2f9817869c13c0e872477b872cd",
           "result": {
             "energy_delta": 0,
             "hand_delta": -2,
             "necronomicurse_count": 1
           },
           "scope": "PERSISTENT_NEXT_COMBAT",
-          "setup_digest": "93394a1517edc035427831eb070e81ef7bd4dbda39a060c71e697116ee1284fd"
+          "setup_digest": "2e30a8318219ee78373fb06b44cef763c37e89059a02d6a065554a029c7131f2"
         }
       ],
       "covered_callbacks": [
@@ -3806,7 +3806,7 @@
       "effect_sha256": "2d3bc442cabf41e35e0b3841a288afc029774d40db2eb5d8da2d4d2140a22921",
       "game_id": "Snecko Eye",
       "id": "SNECKO_EYE",
-      "java_sha256": "1c146c5a47845b4e2573308f181c52e7c19484e6886572ca8238695c34fc386b",
+      "java_sha256": "00edd6a0dfa78effb07ffae64138c4fd3f4312d583d6e69159b16d981289a5c8",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/SneckoEye.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -3817,14 +3817,14 @@
       "callback_scenarios": [
         {
           "callback": "onUnequip",
-          "effect_sha256": "6d717d882be9f2cd25a0e48b47ab57327186de4d07e4050d48b0546ad5f33ff8",
+          "effect_sha256": "f2cf28cd864f9047a8fa376de9990e0e03f9cedc26922b31b1bb472129e6cc9b",
           "result": {
             "energy_delta": -1,
             "hand_delta": 0,
             "necronomicurse_count": 1
           },
           "scope": "PERSISTENT_NEXT_COMBAT",
-          "setup_digest": "93394a1517edc035427831eb070e81ef7bd4dbda39a060c71e697116ee1284fd"
+          "setup_digest": "2e30a8318219ee78373fb06b44cef763c37e89059a02d6a065554a029c7131f2"
         }
       ],
       "covered_callbacks": [
@@ -3834,7 +3834,7 @@
       "effect_sha256": "042effda164610da4ec4f101b139dce5351efab4dfde97b03ae39f5debf2323e",
       "game_id": "Sozu",
       "id": "SOZU",
-      "java_sha256": "d736f4d3fc332e8e16c41b4f22bfa805f591514222910f99988f48ddd7ffea1a",
+      "java_sha256": "5ceacde709751ed3d8ca9cbc49644a56677ad3c789206fe59f0ee5267ffb0454",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Sozu.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -3846,7 +3846,7 @@
       "effect_sha256": "3dc782eb145e2baf413f5d7356de2ec650bd5ed5e3f36b24ca96b0f1835b1166",
       "game_id": "Spirit Poop",
       "id": "SPIRIT_POOP",
-      "java_sha256": "c34fe75686cd51754df28a7d6ab36b8aadc93804b7d922467e9e346cc71bfece",
+      "java_sha256": "01f0474bec5667f13efe68f0be1207198ecc35cb36b1c370625ca0657214d0c3",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/SpiritPoop.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -3857,13 +3857,13 @@
       "callback_scenarios": [
         {
           "callback": "onEnterRoom",
-          "effect_sha256": "2e82dc96275354e7c28995d30b644116631bea2ec21845219c823cfc6fb6053e",
+          "effect_sha256": "7eef5174ae96de2bb5f3ed86605c58937d6121aa7e1507ddd18d8d2850e0c6c3",
           "result": {
             "gold_delta": 50,
             "hp_delta": 0
           },
           "scope": "ACT1_RESOURCE_TRANSITION",
-          "setup_digest": "6b562f8a2246b1082ec9e8da3e3cb17da86c983328333cbcea089dd9e9136a72"
+          "setup_digest": "7c85aedf5f7fae238adfc340c100f4eb185b35f018d468213f9de79cc1af18d5"
         }
       ],
       "covered_callbacks": [
@@ -3872,7 +3872,7 @@
       "effect_sha256": "263545113b59c54b754b91019f08f3f1c25a7bfcd27f52f7e372a30f99de72cd",
       "game_id": "SsserpentHead",
       "id": "SSSERPENT_HEAD",
-      "java_sha256": "e95b5adc292426183abc5432d3105ba7e97fd945b71457a2fabad641ff108fd0",
+      "java_sha256": "ed9fac18a5b5827466e5e62bb26f013f6539c44873cf5f452fa610bc6837684c",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/SsserpentHead.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -3883,31 +3883,31 @@
       "callback_scenarios": [
         {
           "callback": "justEnteredRoom",
-          "effect_sha256": "deab8679521db91f14947e36cc46508625098627f592a6fc18ccc7566454c968",
+          "effect_sha256": "23d3ad338e21f9619de8f53a8c667a2a29c138d2c26470d694cc32d34a7236ba",
           "result": {
             "policy_state_unchanged": true
           },
           "scope": "POLICY_OBSERVABLE_STATE",
-          "setup_digest": "9a2e56ae0cfd1765c18fd983d7159dd70e46584fa18eff07119863abb027d59b"
+          "setup_digest": "405df9371685b11c973dee9f13caa7f682738355a19435de4dc45efcb5ec0eee"
         },
         {
           "callback": "onVictory",
           "counter": -1,
-          "effect_sha256": "5e98f62abbc3de2439a181188741904f31709391fcce7fe283f9e9f3b970fbd7",
+          "effect_sha256": "e35889724bfb3319323b764eca46d64ddfb582cd73ecfb9b1800906875909f30",
           "initial_counter": 2,
           "scope": "COMBAT_VICTORY_RESET",
-          "setup_digest": "1c448e552cb01b60f37978d2c951bd767bee2b9ed682a1dcf583751d8baa6221"
+          "setup_digest": "d7ac85b19aaf6829e4c8fd4044ec5347bd43928fbb1f760dbd464c7a7463f40e"
         },
         {
           "callbacks": [
             "onPlayerEndTurn"
           ],
-          "effect_sha256": "b6474b67a574b50f9e6ceb0194388cf9fdba2cf367e641ebdf0fd14c74b1eeb1",
+          "effect_sha256": "8269be18c51ae2395cde6535ce0aa269a86cc8074bdc45f41f6eb70c5251bd2e",
           "result": {
             "monster_hp_delta": -52
           },
           "scope": "FOCUSED_END_TURN_LIFECYCLE",
-          "setup_digest": "7d4951c537fb810e2d502815cd7b61d1ea54444f1aba9e81d609323a14a01966"
+          "setup_digest": "5d7e8c304a62ba1661a4329f16fcb3c46fc5cf0acadb5fe134ae395b7268bee6"
         }
       ],
       "covered_callbacks": [
@@ -3920,7 +3920,7 @@
       "effect_sha256": "dbc138c25f4cbc2ea7f05a4630f325f3f939684a5a66e23c61dc535ac6eafaf3",
       "game_id": "StoneCalendar",
       "id": "STONE_CALENDAR",
-      "java_sha256": "50b0e85dc46ca96adb63ad3ecf3752e52b8bc4596becf04f210524d37f277f91",
+      "java_sha256": "1ac0672030735a48fe2cba22443416122785e8b9dd754d2e30f1618c6d40174a",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/StoneCalendar.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -3932,7 +3932,7 @@
       "effect_sha256": "5bf845bf2efc8db97238cb4a2ac284cd955295a95c3e09109b2d3021b19e6982",
       "game_id": "Strange Spoon",
       "id": "STRANGE_SPOON",
-      "java_sha256": "52aea1ac7e2d5c8db53d98e9353f216d4c67c140e40c771f4da9c2a52040e0bf",
+      "java_sha256": "e319dca794cae7abfa9ecc18cedd3cb32ac6fd041d4c947e6ad012d03246526d",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/StrangeSpoon.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -3946,7 +3946,7 @@
       "effect_sha256": "ab1b47879f3f7ccf44439ffb34b814c02ee2329913752082b8a9a08a1758c751",
       "game_id": "Strawberry",
       "id": "STRAWBERRY",
-      "java_sha256": "238aed84958971116878b930091f68f5e096e28c8c6f26ea11146e6c9d130e60",
+      "java_sha256": "23138d8d36c8ae7fc3e56fc714e484bb2311b9bd2cf4cb619be6567552ab828e",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Strawberry.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -3958,9 +3958,9 @@
         {
           "callback": "atDamageModify",
           "damage": 9,
-          "effect_sha256": "84242c5ad34397cc045ce95df2be25627be3f9e560af130ae4d70f41859afd16",
+          "effect_sha256": "220460f67f3b31e154c5678bd11cfd518f1b8bd608563f399db629437c769cb4",
           "scope": "FOCUSED_ATTACK_DAMAGE",
-          "setup_digest": "1c448e552cb01b60f37978d2c951bd767bee2b9ed682a1dcf583751d8baa6221"
+          "setup_digest": "66c7ea78ed0382550706b1e6eba221d38954374adf9ce0cfc967e66d1492fe79"
         }
       ],
       "covered_callbacks": [
@@ -3969,7 +3969,7 @@
       "effect_sha256": "0b42d1fd6b7c6123d6080057d8e3c1587037d147248ce58f50309121409f195d",
       "game_id": "StrikeDummy",
       "id": "STRIKE_DUMMY",
-      "java_sha256": "85b27d19c4d185bbe45000aada393ac1c8caa5fdd6d3fdec12bcb0cb34cd51a6",
+      "java_sha256": "9a144086b2375d5b11e99cf5444820e3ea70828c5a211fcac8cdeae34e000ba1",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/StrikeDummy.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -3980,14 +3980,14 @@
       "callback_scenarios": [
         {
           "callback": "onShuffle",
-          "effect_sha256": "8fc384d9eaed5feb81932cb9d464b5d448f21263355654f673d911a5e54db975",
+          "effect_sha256": "c9800446ae4646917b681576da9b345d09af68a5f74c1c0052ea3fcf54aabc51",
           "result": {
             "block_delta": 0,
             "counter": 0,
             "energy_delta": 2
           },
           "scope": "FOCUSED_DRAW_PILE_SHUFFLE",
-          "setup_digest": "8d2bae7155b88d4d9feb32c4255e19d1a46e0dae9ca12afca0e205931808c4dc"
+          "setup_digest": "3d242ec2b09423e74a6d717e3a21f4c664efdcbfce7f0b37871c331c1c0a4f00"
         }
       ],
       "covered_callbacks": [
@@ -3997,7 +3997,7 @@
       "effect_sha256": "21a4d39755ad3244aef041596ba147ec77911d4ffc88076e1061135a557c78b7",
       "game_id": "Sundial",
       "id": "SUNDIAL",
-      "java_sha256": "7207f2ba9bfcc06ac45c93902b6f3374133ac919036e3432273334cded0ebf8d",
+      "java_sha256": "98fc50fbc8a0f3baaa161f858d6de3d1efd89b29762785d9e65efbec10f8eda1",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Sundial.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -4008,14 +4008,14 @@
       "callback_scenarios": [
         {
           "callback": "onShuffle",
-          "effect_sha256": "c34c8ae842c85d1edefd5dabf6ec18c5bfd9caf91f4fba6cea7728f1475fa39a",
+          "effect_sha256": "4c1d80ae8ffaf4f10fb2028366865a10b9824661cc128dc3ee51d75f59d9a7b3",
           "result": {
             "block_delta": 6,
             "counter": -1,
             "energy_delta": 0
           },
           "scope": "FOCUSED_DRAW_PILE_SHUFFLE",
-          "setup_digest": "fbccbade72df37a91e8d96c75317a19aece87cbd1ea173d9d946580713bdb1ce"
+          "setup_digest": "c7deefc6baa06ce2ac4ed613838ea618e5375f1f90152ac6de6de7df67dd9a54"
         }
       ],
       "covered_callbacks": [
@@ -4024,7 +4024,7 @@
       "effect_sha256": "462a9f8deceb939c80f819cc7205ff098571bfbef3669f0238abe73a45661529",
       "game_id": "TheAbacus",
       "id": "THE_ABACUS",
-      "java_sha256": "2091bcbb8046f64350881502e0d31b30d1ba10e14ba3efec11fde7321e54ab69",
+      "java_sha256": "5274d6820601725bb16b93154a3bd934c4e13a31b1b6f2889fa456c08991ef8d",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Abacus.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -4036,9 +4036,9 @@
         {
           "callback": "onAttackToChangeDamage",
           "damage": 5,
-          "effect_sha256": "1d2e08e6735acf35911127423de77841717d0cdcb38e34a43762fe7ebea13f21",
+          "effect_sha256": "cc63f32a50574b7b9b5eee6fda4efc1e8c31d3ac1d3f45c15d79b19dfc606961",
           "scope": "FOCUSED_ATTACK_DAMAGE",
-          "setup_digest": "1c448e552cb01b60f37978d2c951bd767bee2b9ed682a1dcf583751d8baa6221"
+          "setup_digest": "66c7ea78ed0382550706b1e6eba221d38954374adf9ce0cfc967e66d1492fe79"
         }
       ],
       "covered_callbacks": [
@@ -4047,7 +4047,7 @@
       "effect_sha256": "3a528c3e72edb32117e4a6d36cfb9d599a8aca4313b2397be9b19ca127ba04af",
       "game_id": "Boot",
       "id": "THE_BOOT",
-      "java_sha256": "decb0dd288ff0e0dd2113fcd23343e9ccf27e4dc644ccc59f71d79c30416a761",
+      "java_sha256": "6ec0f798900aa64140cc307f6247275acf38f49059e12002889ffb73d425db2d",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Boot.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -4081,12 +4081,12 @@
         },
         {
           "callback": "onEnterRoom",
-          "effect_sha256": "6a21cabc60017c7c2cd16fe1070859173c3a7fad7ce10cc7676f5e1890772328",
+          "effect_sha256": "f61110c8dc19a76b9ec5d6389415f36192cc4b73d8a9b1300bac55041a7f5522",
           "result": {
             "policy_state_unchanged": true
           },
           "scope": "POLICY_OBSERVABLE_STATE",
-          "setup_digest": "7b7cce8a372f5d68cf9e192dfa1b5a8278ae4ec0b2289410f72da1e7f162a92b"
+          "setup_digest": "d7ac85b19aaf6829e4c8fd4044ec5347bd43928fbb1f760dbd464c7a7463f40e"
         }
       ],
       "covered_callbacks": [
@@ -4096,7 +4096,7 @@
       "effect_sha256": "0c43ae39dd5be63445d194c1dfb921739c87affa5ebf76bcab772063e98f15fe",
       "game_id": "The Courier",
       "id": "THE_COURIER",
-      "java_sha256": "632b901e6fe82ca0ec63d6356bf91df1a306e3c8ba04805a65c8c517f365e1e6",
+      "java_sha256": "5283e08649c0477f78f0b76e060f0504e2d79e310b665585530051727d88af8b",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Courier.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -4110,7 +4110,7 @@
       "effect_sha256": "94aa36e907643613d031ff43bf548ff1570d2121b0eacd44668ee08b59d17afc",
       "game_id": "Thread and Needle",
       "id": "THREAD_AND_NEEDLE",
-      "java_sha256": "0c83e581b00687e5aa387937e79d9dfeab517a57f784e29c58e027e2631d1b54",
+      "java_sha256": "7f9dde1f010217fc8cca7092ff11ab236e0df89b42b83840f56509a1f8d238b0",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/ThreadAndNeedle.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -4150,7 +4150,7 @@
       "effect_sha256": "ef07d05cd864a6a72738dc04c54a188d3d0b6bc8589ee1ff8c6ab6e5af4206b4",
       "game_id": "Tiny Chest",
       "id": "TINY_CHEST",
-      "java_sha256": "faf8f8104e64b656e97122db1d426c8daa50fc3d427828bcca2eb6b1ecdb4908",
+      "java_sha256": "64edae6b13a3718173ba86caecc09d885a00d2b782310ea3fee587571e3d91c2",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/TinyChest.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -4163,7 +4163,7 @@
           "callbacks": [
             "onEquip"
           ],
-          "effect_sha256": "32ad91dd999ec055fb3cfcc003387d88713985d76ec7489755c151f472acd6aa",
+          "effect_sha256": "a3d519a8d81283ba9bfe88935ea54bedc27ef170ba64afa54c0b712df05e84f7",
           "result": {
             "card_rewards": 1,
             "gold_reward": 50,
@@ -4172,7 +4172,7 @@
             "upgraded_delta": 1
           },
           "scope": "FULL_EQUIP_UI_LIFECYCLE",
-          "setup_digest": "fdb8ad8ed64f327a467b7a807f37be7249a7d938448565cd26ce7f794cd9cfdf"
+          "setup_digest": "e2e72f5a83acb04d8aa96e15ae309b679e42814295da537047755899d6161ef6"
         }
       ],
       "covered_callbacks": [
@@ -4181,7 +4181,7 @@
       "effect_sha256": "49333dc9e3e3d77a1591e593714e6dd0c6f58632c2b2037260ab16984827fefe",
       "game_id": "Tiny House",
       "id": "TINY_HOUSE",
-      "java_sha256": "f0934dec447218b50c84db48d77d82e45baa5ddeffeef400f45fc6d0691e5684",
+      "java_sha256": "325b33e5b14511b4173296b43ea47f87173f0ff327b1c030e12851166e36fc95",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/TinyHouse.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -4195,7 +4195,7 @@
       "effect_sha256": "bfb6a02fb4697f8a9ad1f8159775e95799568cb2d03ba8c7cca28d96ff50cade",
       "game_id": "Toolbox",
       "id": "TOOLBOX",
-      "java_sha256": "155b2c81e40f0a0db6a21baf3303875fa9c5fe75e4acda292c2c674491ea9c8d",
+      "java_sha256": "b3a6b409a2635fec0d298a45e001b19bdb10bda37b183cdb4905888de3d0f96d",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Toolbox.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -4206,7 +4206,7 @@
       "callback_scenarios": [
         {
           "artifact": "configs/validation/ironclad_a0_mechanism_semantics.json",
-          "artifact_sha256": "0561f2cf883b344a55a608e377d8d7e8cf055871f6e6f542f32988c7b54ca8cb",
+          "artifact_sha256": "d0f271d3a66dae170e0df89e1b6b2fdaee8a708f26781a5dbcbcade50ff1254a",
           "callback": "onAttacked",
           "effect_sha256": "13b03ab5fc42fafb4fbaa4a11ce775ceceb525ff8c30fa2f0d514248138f3865",
           "scope": "MECHANISM_DAMAGE_BUFFER_INTANGIBLE"
@@ -4218,7 +4218,7 @@
       "effect_sha256": "7d734694d5bdb88d157539c6d6d1de89aee92600dc1c831f0e3a718b56a19364",
       "game_id": "Torii",
       "id": "TORII",
-      "java_sha256": "839a7a14791a944c4be210bb2fec53ef7b1ef763b87346cb6b3f8c58aa9b734e",
+      "java_sha256": "981540a0d16dcfe5f7738b0539c9df603d1ae22fffa93f4b28170d3e737a2e62",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Torii.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -4255,7 +4255,7 @@
             "onObtainCard",
             "onPreviewObtainCard"
           ],
-          "effect_sha256": "b1b1b0bb99b401757681e289dbcbb24f1e1a71aa7fa0aca312329f1147cec1ed",
+          "effect_sha256": "d9fd9980a2ab06aa7e99c6a72072e7dc5bf1c2aafebe714e9058cb8dd94d2bf6",
           "result": {
             "gold_delta": 0,
             "hp_delta": 0,
@@ -4264,7 +4264,7 @@
             "preview_upgrades": 1
           },
           "scope": "FOCUSED_CARD_ACQUISITION",
-          "setup_digest": "84b4d104f1a30977d87b98c2f25ab1336a8a2014fbf8fcb5cc52b7f77c669714"
+          "setup_digest": "6c6ba1f5166ae1ec33efc2054e4f9a7f0825c19d3db3f6d9c04b787cc3a11573"
         }
       ],
       "covered_callbacks": [
@@ -4276,7 +4276,7 @@
       "effect_sha256": "4bbbced3ad212c70cb48e371bc2c2513c79f5ceb2d7b43a3cc4e429362cbdee9",
       "game_id": "Toxic Egg 2",
       "id": "TOXIC_EGG",
-      "java_sha256": "e213521eb94a8d57d1aa2f9739d6469376c3d9242643ffef1201db9249620032",
+      "java_sha256": "1149dee0de59c4bd756bf453daf62ecd4dba8e593193d08c941c6ac42445155d",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/ToxicEgg2.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -4289,7 +4289,7 @@
           "callbacks": [
             "onUsePotion"
           ],
-          "effect_sha256": "028df13c4d1365fd84f6fce154c45139805ec72769dc2e10406559ec08d2d33b",
+          "effect_sha256": "3201894c7d34fc4e2d5b3c7f81e9202dc617b291347437b90b934bd2bb7c23ee",
           "result": {
             "first_gain": 0,
             "second_gain": 0,
@@ -4297,7 +4297,7 @@
             "used": false
           },
           "scope": "FOCUSED_RESOURCE_LIFECYCLE",
-          "setup_digest": "54bd2e49d4c34d2e951fca91aa9753b66334599bc8d26e4120193b39e353ea95"
+          "setup_digest": "163af8ef298e307708a1902abc8abbc3c2a0af494e5429d3ea45ad76a0387ed8"
         }
       ],
       "covered_callbacks": [
@@ -4306,7 +4306,7 @@
       "effect_sha256": "0446ad199061c3ce722a3147d18a6bb723efd436f75c91ecfb354cff65c6f8b2",
       "game_id": "Toy Ornithopter",
       "id": "TOY_ORNITHOPTER",
-      "java_sha256": "4baa1067a58afbd493ed9c04a88f9e347bddbc77875fea8cc519d8af71d189f8",
+      "java_sha256": "2c818ca4e6b7b1fc88793dd628c9bf1ec8ff6050561c8d43eebd6df39e663e73",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/ToyOrnithopter.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -4317,7 +4317,7 @@
       "callback_scenarios": [
         {
           "artifact": "configs/validation/ironclad_a0_mechanism_semantics.json",
-          "artifact_sha256": "0561f2cf883b344a55a608e377d8d7e8cf055871f6e6f542f32988c7b54ca8cb",
+          "artifact_sha256": "d0f271d3a66dae170e0df89e1b6b2fdaee8a708f26781a5dbcbcade50ff1254a",
           "callback": "onLoseHpLast",
           "effect_sha256": "13b03ab5fc42fafb4fbaa4a11ce775ceceb525ff8c30fa2f0d514248138f3865",
           "scope": "MECHANISM_DAMAGE_BUFFER_INTANGIBLE"
@@ -4329,7 +4329,7 @@
       "effect_sha256": "e516c3309d68c09caec0926b10c068661c1c74565f7df9e1ad0c31c5a7498e8d",
       "game_id": "TungstenRod",
       "id": "TUNGSTEN_ROD",
-      "java_sha256": "696f29d6743444b7a81d5f4c9bc4282eaa8e3f9399cba7fbb104cafafef2c5de",
+      "java_sha256": "690106967f973f2a478b48bb0b5561023474289b99d8a65cd30437e2265fe09a",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/TungstenRod.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -4341,7 +4341,7 @@
       "effect_sha256": "be01a367c5c81d050a4b78ae4e9c140560d9e8c0faa137f82a2924287098aa51",
       "game_id": "Turnip",
       "id": "TURNIP",
-      "java_sha256": "feb7c0dc7ead8506d458af058e7dd4b97040ce18e97300427d6cc94cc1e1f016",
+      "java_sha256": "e124c02afbb77b8207c0f73249c7faae21272e558361e09b9d7cea0ee51889d8",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Turnip.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -4354,12 +4354,12 @@
           "callbacks": [
             "onRefreshHand"
           ],
-          "effect_sha256": "1cc1d15b44d108903846520b747f7ff0fc466082f1e2a9659e5f615188e74ecb",
+          "effect_sha256": "6806c6e5b6225377c08b44adf0bec9e528a7c60985a99a362ef8d622ff665821",
           "result": {
             "hand_delta": 1
           },
           "scope": "FOCUSED_TRIGGER_LIFECYCLE",
-          "setup_digest": "26de7854a14225a93e5c7313cb85db17204cec0a70ce61ae019a1669b32d4da9"
+          "setup_digest": "1f16d9a2ce63aca60fa4cd4bd0ec5986d42420985fc3e8d56b0c7c85f6fc5619"
         }
       ],
       "covered_callbacks": [
@@ -4370,7 +4370,7 @@
       "effect_sha256": "bcb86165cdcecb10e4e8008fd62897a8662b535ecba8634272a63337f5e1d905",
       "game_id": "Unceasing Top",
       "id": "UNCEASING_TOP",
-      "java_sha256": "608c4b0785df096799be7aadb7ecc3de877dbef356c769c83a6f1edca2f76a2b",
+      "java_sha256": "3246b51e3830ed3be09e7773f9bc29110591ef62d4ce21bf759a329e5184c074",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/UnceasingTop.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -4384,7 +4384,7 @@
       "effect_sha256": "95dcfa06b384130ec30560c677eff4a1566af343a2ad114e1be50d2f311105e2",
       "game_id": "Vajra",
       "id": "VAJRA",
-      "java_sha256": "a6b09d9f435119cc1f1207733af80f3ea2988c2e4e4db887f20f5ec155b4d86f",
+      "java_sha256": "057aa34c6a4d336226e0190319ecfae229bedf83465a66b1bf51da000324cf9e",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Vajra.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -4395,35 +4395,35 @@
       "callback_scenarios": [
         {
           "callback": "onUnequip",
-          "effect_sha256": "6d717d882be9f2cd25a0e48b47ab57327186de4d07e4050d48b0546ad5f33ff8",
+          "effect_sha256": "f2cf28cd864f9047a8fa376de9990e0e03f9cedc26922b31b1bb472129e6cc9b",
           "result": {
             "energy_delta": -1,
             "hand_delta": 0,
             "necronomicurse_count": 1
           },
           "scope": "PERSISTENT_NEXT_COMBAT",
-          "setup_digest": "93394a1517edc035427831eb070e81ef7bd4dbda39a060c71e697116ee1284fd"
+          "setup_digest": "2e30a8318219ee78373fb06b44cef763c37e89059a02d6a065554a029c7131f2"
         },
         {
           "callback": "onVictory",
           "counter": -1,
-          "effect_sha256": "5e98f62abbc3de2439a181188741904f31709391fcce7fe283f9e9f3b970fbd7",
+          "effect_sha256": "e35889724bfb3319323b764eca46d64ddfb582cd73ecfb9b1800906875909f30",
           "initial_counter": 2,
           "scope": "COMBAT_VICTORY_RESET",
-          "setup_digest": "1c448e552cb01b60f37978d2c951bd767bee2b9ed682a1dcf583751d8baa6221"
+          "setup_digest": "d7ac85b19aaf6829e4c8fd4044ec5347bd43928fbb1f760dbd464c7a7463f40e"
         },
         {
           "callbacks": [
             "canPlay",
             "onPlayCard"
           ],
-          "effect_sha256": "ebe84bbd9ed578f1a082328988586d6d4cdba2b5c78074f84ebf9df672411642",
+          "effect_sha256": "36dca23534c7561f4aad47aab613f47e2bac59b1f70c2d8f09c3cbe0d63cc1a0",
           "result": {
             "can_play": false,
             "counter": 6
           },
           "scope": "FOCUSED_TURN_LIFECYCLE",
-          "setup_digest": "11124b5f2f79e07eadfc4934535b1a9de09e2b7c6318a0d402fac32c56205778"
+          "setup_digest": "c2cc35cc933d307fb08f566966efae09efe15a688eee48b9287a73702d623102"
         }
       ],
       "covered_callbacks": [
@@ -4438,7 +4438,7 @@
       "effect_sha256": "5f4775bec47cc7d4cdd9ad0f233513fa5664acc0996c1a6d2333d0844881ee87",
       "game_id": "Velvet Choker",
       "id": "VELVET_CHOKER",
-      "java_sha256": "673ea56694feae34da4dd1af9ed7d72456befa3f96b1ae2cb7346e45e85a76b6",
+      "java_sha256": "e9c3c480bd53dfb4f13331ff2fbe43728ef25664bc948875c91af971bad2b538",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/VelvetChoker.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -4452,7 +4452,7 @@
       "effect_sha256": "78d5cdc409f2b30770dce208792d1792a12aaf6ec1b5ffc14825021b53435583",
       "game_id": "WarpedTongs",
       "id": "WARPED_TONGS",
-      "java_sha256": "cdee77322f7eea1123a6a65d12282bc50c8152e31abbee80048d5cfdd72e53cf",
+      "java_sha256": "17f015fffb23e22f755e3fe768bb8d0f42bc7a5792b0c8101d3e29d4332175ab",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/WarpedTongs.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -4466,7 +4466,7 @@
       "effect_sha256": "a1b21adf8a512fe80df616571424f27f1a1548fc94c5eeee42c245ed0c6fbf35",
       "game_id": "War Paint",
       "id": "WAR_PAINT",
-      "java_sha256": "4e971f138c77901b8bc45a527b80df5530034e2afe3e377569d2c80a9b0e5698",
+      "java_sha256": "cb07c8d4b13eb6546288b2b8e10fb160c39257f0e0231da977cc171b8510e086",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/WarPaint.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -4480,7 +4480,7 @@
       "effect_sha256": "f93beac0d7771e51b99462a5edb423b5ce10be518f5ee0da290f1f454e507bf2",
       "game_id": "Whetstone",
       "id": "WHETSTONE",
-      "java_sha256": "a2cbacd0651144f996cda49d57306e15d99b5726499ea62979b9aeed03f8f694",
+      "java_sha256": "162d1075b71ac9744cb31a5a0955f38eac0da2387bd899038a2f4743d491e2df",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/Whetstone.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -4492,7 +4492,7 @@
       "effect_sha256": "039c82670a8c6991dd8cbefdf7f00a5be1d4cae8964c6a590cf973e9bbc42311",
       "game_id": "White Beast Statue",
       "id": "WHITE_BEAST_STATUE",
-      "java_sha256": "e526c44f6d7a10865a167b749c16f5e4c6a604606bc1d7ab364d9a7e0f17551b",
+      "java_sha256": "7d92fc2769fa3e7b340c53ec60e2246e67928bd702233905f12a50ad9dbed05a",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/WhiteBeast.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",
@@ -4554,7 +4554,7 @@
       "effect_sha256": "3d4bb3a9edca77db8a16ffbacc94a07f337fb018840598af86dca05df06d7880",
       "game_id": "WingedGreaves",
       "id": "WING_BOOTS",
-      "java_sha256": "51df406dec04f8aa5d04518cbf42462d1ae2c87f06387f05831d60ccc4018fad",
+      "java_sha256": "b2b3ba13a5475e1a33e4c8f78382790cd05fdbf46ce0a15c2295854064c77719",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/relics/WingBoots.java",
       "remaining_callbacks": [],
       "scenario": "FIRST_TURN",

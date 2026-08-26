@@ -18,7 +18,7 @@ from sls.backends.simulator import IRONCLAD_A0_ACT1, SimulatorBackend  # noqa: E
 from sls.content.scope import ironclad_a0_scope_hash, load_ironclad_a0_scope  # noqa: E402
 from sls.content.source_audit import java_sources, registry_game_ids  # noqa: E402
 from sls.contracts import Decision, ScreenType  # noqa: E402
-from sls.rl.training_contract import canonical_digest, sha256_file  # noqa: E402
+from sls.rl.training_contract import canonical_digest, source_sha256  # noqa: E402
 from sls.validation.policies import deterministic_action  # noqa: E402
 from audit_card_semantics import _rng  # noqa: E402
 
@@ -155,7 +155,7 @@ def capture(seed: int) -> dict[str, Any]:
                 "boundary_hashes": [digest],
                 "effect_sha256": canonical_digest([digest]),
                 "java_source": source.path.relative_to(ROOT).as_posix(),
-                "java_sha256": sha256_file(source.path),
+                "java_sha256": source_sha256(source.path),
             })
             print(f"EVENT_AUDIT {index}/{len(event_ids)} {event_id}", file=sys.stderr, flush=True)
     finally:

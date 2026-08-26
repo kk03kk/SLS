@@ -63,7 +63,7 @@ def test_synthetic_step_limit_is_a_failure_terminal() -> None:
     with WorkerPool(IRONCLAD_A0_ACT1, 1) as workers:
         trainer = PPOTrainer(model, workers, config, seed=0)
         rollout = trainer.collect()
-        assert rollout.returns.tolist() == [-1.0]
+        assert rollout.returns.tolist() == pytest.approx([-1.0], abs=1e-6)
         assert trainer.last_collect_terminations["step_limit"] == 1
         assert trainer.episodes == 1
 

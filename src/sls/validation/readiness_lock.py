@@ -11,7 +11,8 @@ from sls.model.encoding import ENCODING_SCHEMA, vocabulary_hash
 from sls.content.scope import IRONCLAD_A0_SCOPE_ID, ironclad_a0_scope_hash
 from sls.content.semantic_audit import semantic_audit_hash, verify_semantic_audit
 from sls.rl.training_contract import (
-    ROOT, TRAINING_CHECKPOINT_SCHEMA, canonical_digest, git_index_digest, git_state,
+    ACT1_PRODUCTION_READINESS_LEVEL, ACT1_PRODUCTION_READINESS_LOCK, ROOT,
+    TRAINING_CHECKPOINT_SCHEMA, canonical_digest, git_index_digest, git_state,
     native_source_digest, sha256_file,
 )
 from sls.validation.readiness import evaluate_route, load_records, readiness_report
@@ -19,10 +20,11 @@ from sls.validation.truth import value_hash
 
 
 READINESS_LOCK_SCHEMA = "sls-act1-readiness-lock-v1"
-DEFAULT_LOCK = ROOT / "configs" / "validation" / "act1_readiness.lock.json"
-TRAINING_READY_LOCK = ROOT / "configs" / "validation" / "act1_training_readiness.lock.json"
+ENGINEERING_LOCK = ROOT / "configs" / "validation" / "act1_readiness.lock.json"
+TRAINING_READY_LOCK = ACT1_PRODUCTION_READINESS_LOCK
+DEFAULT_LOCK = TRAINING_READY_LOCK
 ENGINEERING_READY = "ENGINEERING_READY"
-TRAINING_READY = "TRAINING_READY"
+TRAINING_READY = ACT1_PRODUCTION_READINESS_LEVEL
 READINESS_LEVELS = {ENGINEERING_READY, TRAINING_READY}
 
 

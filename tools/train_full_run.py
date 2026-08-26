@@ -35,9 +35,10 @@ from sls.model import ModelConfig, Policy
 from sls.model.encoding import ENCODING_SCHEMA, vocabulary_hash
 from sls.rl import PPOConfig, PPOTrainer, WorkerPool, evaluate, load_checkpoint, save_checkpoint
 from sls.rl.training_contract import (
-    canonical_digest, git_state, native_artifact, native_source_digest,
+    TRAINING_CHECKPOINT_SCHEMA, canonical_digest, git_state, native_artifact,
+    native_source_digest, readiness_settings,
 )
-from sls.validation.readiness_lock import DEFAULT_LOCK, verify_readiness_lock
+from sls.validation.readiness_lock import verify_readiness_lock
 
 
 PROFILES = {
@@ -63,6 +64,18 @@ def _evaluation_seeds(run: dict[str, object]) -> tuple[int, ...]:
     if count <= 0:
         raise ValueError("evaluation_seed_count must be positive")
     return tuple(range(start, start + count))
+
+
+def _positive_int(run: dict[str, object], key: str, *, default: int | None = None) -> int:
+    if key in run:
+        value = int(run[key])
+    elif default is not None:
+        value = default
+    else:
+        raise ValueError(f"missing required run field: {key}")
+    if value <= 0:
+        raise ValueError(f"{key} must be positive")
+    return value
 
 
 class StopController:
@@ -137,12 +150,17 @@ def main() -> int:
         payload = {**payload, "run": run}
     profile = PROFILES[str(run["profile"])]
     readiness_digest = "UNVERIFIED"
+    readiness_level = "UNVERIFIED"
     if bool(run.get("require_readiness", False)):
-        readiness_path = ROOT / str(run.get("readiness_lock", DEFAULT_LOCK.relative_to(ROOT)))
+        try:
+            readiness_path, readiness_level = readiness_settings(run)
+        except Exception as error:
+            print(json.dumps({"error": "ACT1_PARITY_READINESS_FAILED", "reason": str(error)}, sort_keys=True), file=sys.stderr)
+            return 2
         try:
             readiness = verify_readiness_lock(
                 readiness_path, require_clean=not bool(run.get("allow_dirty", False)),
-                expected_level=str(run.get("readiness_level", "ENGINEERING_READY")),
+                expected_level=readiness_level,
             )
         except Exception as error:
             print(json.dumps({"error": "ACT1_PARITY_READINESS_FAILED", "reason": str(error)}, sort_keys=True), file=sys.stderr)
@@ -156,6 +174,11 @@ def main() -> int:
     )
     model = Policy(ModelConfig(**payload.get("model", {})))
     ppo = PPOConfig(**payload.get("ppo", {}))
+    workers_count = _positive_int(run, "workers")
+    updates = _positive_int(run, "updates")
+    save_interval = _positive_int(run, "save_interval", default=10)
+    evaluate_interval = _positive_int(run, "evaluate_interval", default=save_interval)
+    evaluation_max_steps = _positive_int(run, "evaluation_max_steps", default=512)
     output = ROOT / str(run.get("output", "runs/full-run"))
     output.mkdir(parents=True, exist_ok=True)
     resume_path = _resolve_resume(args.resume, output)
@@ -168,8 +191,8 @@ def main() -> int:
         "profile": profile.profile_id,
         "curriculum_version": profile.version,
         "seed": seed,
-        "workers": int(run["workers"]),
-        "updates": int(run["updates"]),
+        "workers": workers_count,
+        "updates": updates,
         "device": str(device),
         "python": sys.version,
         "platform": platform.platform(),
@@ -182,19 +205,20 @@ def main() -> int:
         "gpu": torch.cuda.get_device_name(device) if str(device).startswith("cuda") else None,
         "config_sha256": hashlib.sha256(config_bytes).hexdigest(),
         "resolved_config_sha256": canonical_digest(payload),
+        "checkpoint_schema": TRAINING_CHECKPOINT_SCHEMA,
         "encoding_schema": ENCODING_SCHEMA,
         "vocabulary_sha256": vocabulary_hash(),
         "readiness_lock_sha256": readiness_digest,
         "content_scope_id": IRONCLAD_A0_SCOPE_ID,
         "content_scope_sha256": ironclad_a0_scope_hash(),
         "semantic_audit_sha256": semantic_audit_hash(),
-        "readiness_level": str(run.get("readiness_level", "ENGINEERING_READY")),
+        "readiness_level": readiness_level,
         "native_source_sha256": source_digest,
         "native_artifact": native_artifact(),
         "model": model.config.to_dict(),
         "ppo": ppo.to_dict(),
         "evaluation_seeds": list(_evaluation_seeds(run)),
-        "evaluation_max_steps": int(run.get("evaluation_max_steps", 512)),
+        "evaluation_max_steps": evaluation_max_steps,
         "started_unix": started,
         "resume": str(resume_path.resolve()) if resume_path else None,
     }
@@ -205,7 +229,7 @@ def main() -> int:
     controller.install()
     trainer: PPOTrainer | None = None
     try:
-        with WorkerPool(profile, int(run["workers"])) as workers:
+        with WorkerPool(profile, workers_count) as workers:
             trainer = PPOTrainer(
                 model, workers, ppo, device=device, seed=seed,
                 readiness_lock_digest=readiness_digest,
@@ -213,9 +237,6 @@ def main() -> int:
             )
             if resume_path is not None:
                 load_checkpoint(resume_path, trainer)
-            updates = int(run["updates"])
-            save_interval = int(run.get("save_interval", 10))
-            evaluate_interval = int(run.get("evaluate_interval", save_interval))
             evaluation_seeds = _evaluation_seeds(run)
             log_path = output / "metrics.jsonl"
             run_manifest["trimmed_metric_records"] = _trim_metrics(log_path, trainer.update) if resume_path else 0
@@ -229,14 +250,14 @@ def main() -> int:
                 record: dict[str, object] = {
                     "update": trainer.update, "episodes": trainer.episodes,
                     "update_seconds": update_seconds,
-                    "decisions_per_second": int(run["workers"]) * ppo.rollout_steps / update_seconds,
+                    "decisions_per_second": workers_count * ppo.rollout_steps / update_seconds,
                     **metrics,
                 }
                 if not controller.requested and trainer.update % evaluate_interval == 0:
                     try:
                         result = evaluate(
                             trainer.model, profile, evaluation_seeds, device=device,
-                            max_steps=ppo.max_episode_steps,
+                            max_steps=evaluation_max_steps,
                             max_boundary_visits=ppo.max_boundary_visits,
                             stop_requested=lambda: controller.requested,
                         )

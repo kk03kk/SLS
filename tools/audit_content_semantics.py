@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 from pathlib import Path
 import re
@@ -31,7 +30,7 @@ from sls.content.source_audit import (  # noqa: E402
     java_relic_metadata,
     java_sources, registry_game_ids,
 )
-from sls.rl.training_contract import canonical_digest  # noqa: E402
+from sls.rl.training_contract import canonical_digest, source_sha256  # noqa: E402
 
 
 CPP_ROOTS = (
@@ -48,7 +47,7 @@ STATUSES = {"VERIFIED", "DIFFERENCE", "BLOCKED", "OUT_OF_SCOPE"}
 
 
 def _sha256(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    return source_sha256(path)
 
 
 def _references(identifier: str, roots: tuple[Path, ...], suffixes: set[str]) -> list[str]:

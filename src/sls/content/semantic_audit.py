@@ -49,7 +49,7 @@ def load_card_semantic_audit() -> dict[str, Any]:
     """Validate the committed, dynamically captured per-card evidence."""
 
     from sls.content.source_audit import java_sources, registry_game_ids
-    from sls.rl.training_contract import canonical_digest, sha256_file
+    from sls.rl.training_contract import canonical_digest, source_sha256
 
     payload = json.loads(CARD_SEMANTIC_AUDIT_PATH.read_text(encoding="utf-8"))
     supplied = payload.get("audit_sha256")
@@ -75,7 +75,7 @@ def load_card_semantic_audit() -> dict[str, Any]:
         if entry.get("game_id") != game_ids[identifier]:
             raise ValueError(f"card semantic game ID mismatch: {identifier}")
         if entry.get("java_source") != source.path.relative_to(ROOT).as_posix() or \
-                entry.get("java_sha256") != sha256_file(source.path):
+                entry.get("java_sha256") != source_sha256(source.path):
             raise ValueError(f"card semantic source evidence is stale: {identifier}")
         variants = list(entry.get("variants") or ())
         if [item.get("upgrades") for item in variants] != [0, 1]:
@@ -95,7 +95,7 @@ def load_potion_semantic_audit() -> dict[str, Any]:
     """Validate the committed Original/native potion effect evidence."""
 
     from sls.content.source_audit import java_sources, registry_game_ids
-    from sls.rl.training_contract import canonical_digest, sha256_file
+    from sls.rl.training_contract import canonical_digest, source_sha256
 
     payload = json.loads(POTION_SEMANTIC_AUDIT_PATH.read_text(encoding="utf-8"))
     supplied = payload.get("audit_sha256")
@@ -119,7 +119,7 @@ def load_potion_semantic_audit() -> dict[str, Any]:
         source = sources[game_ids[identifier]]
         if entry.get("game_id") != game_ids[identifier] or \
                 entry.get("java_source") != source.path.relative_to(ROOT).as_posix() or \
-                entry.get("java_sha256") != sha256_file(source.path):
+                entry.get("java_sha256") != source_sha256(source.path):
             raise ValueError(f"potion semantic source evidence is stale: {identifier}")
         variants = list(entry.get("variants") or ())
         expected_bark = [False] if identifier == "SMOKE_BOMB" else [False, True]
@@ -139,7 +139,7 @@ def load_relic_semantic_audit() -> dict[str, Any]:
     """Validate committed callback-complete relic scenario evidence."""
 
     from sls.content.source_audit import java_relic_callbacks, java_sources, registry_game_ids
-    from sls.rl.training_contract import canonical_digest, sha256_file
+    from sls.rl.training_contract import canonical_digest, source_sha256
 
     payload = json.loads(RELIC_SEMANTIC_AUDIT_PATH.read_text(encoding="utf-8"))
     supplied = payload.get("audit_sha256")
@@ -166,7 +166,7 @@ def load_relic_semantic_audit() -> dict[str, Any]:
                 sorted(covered + remaining) != callbacks or \
                 bool(entry.get("callback_complete")) != (not remaining):
             raise ValueError(f"relic callback accounting is invalid: {identifier}")
-        if entry.get("game_id") != game_ids[identifier] or entry.get("java_sha256") != sha256_file(source.path):
+        if entry.get("game_id") != game_ids[identifier] or entry.get("java_sha256") != source_sha256(source.path):
             raise ValueError(f"relic semantic source evidence is stale: {identifier}")
         if not entry.get("setup_digest") or not entry.get("effect_sha256"):
             raise ValueError(f"relic semantic effect evidence is missing: {identifier}")
@@ -177,7 +177,7 @@ def load_event_semantic_audit() -> dict[str, Any]:
     """Validate exact scoped stock-event constructor evidence."""
 
     from sls.content.source_audit import java_sources, registry_game_ids
-    from sls.rl.training_contract import canonical_digest, sha256_file
+    from sls.rl.training_contract import canonical_digest, source_sha256
 
     payload = json.loads(EVENT_SEMANTIC_AUDIT_PATH.read_text(encoding="utf-8"))
     supplied = payload.get("audit_sha256")
@@ -208,7 +208,7 @@ def load_event_semantic_audit() -> dict[str, Any]:
             raise ValueError(f"event constructor evidence is invalid: {identifier}")
         if item.get("game_id") != game_ids[identifier] or \
                 item.get("java_source") != source.path.relative_to(ROOT).as_posix() or \
-                item.get("java_sha256") != sha256_file(source.path):
+                item.get("java_sha256") != source_sha256(source.path):
             raise ValueError(f"event semantic source evidence is stale: {identifier}")
         if not str(item.get("setup_digest") or ""):
             raise ValueError(f"event setup evidence is missing: {identifier}")
@@ -218,7 +218,7 @@ def load_event_semantic_audit() -> dict[str, Any]:
 def load_mechanism_semantic_audit() -> dict[str, Any]:
     """Validate committed controlled Original/native rule trajectories."""
 
-    from sls.rl.training_contract import canonical_digest, sha256_file
+    from sls.rl.training_contract import canonical_digest, source_sha256
 
     payload = json.loads(MECHANISM_SEMANTIC_AUDIT_PATH.read_text(encoding="utf-8"))
     supplied = payload.get("audit_sha256")
@@ -254,7 +254,7 @@ def load_mechanism_semantic_audit() -> dict[str, Any]:
             raise ValueError(f"mechanism setup digest is missing: {item.get('id')}")
     for relative, digest in dict(payload.get("source_files") or {}).items():
         path = ROOT / str(relative)
-        if not path.is_file() or sha256_file(path) != digest:
+        if not path.is_file() or source_sha256(path) != digest:
             raise ValueError(f"mechanism source evidence is stale: {relative}")
     return payload
 
@@ -262,7 +262,7 @@ def load_mechanism_semantic_audit() -> dict[str, Any]:
 def load_encounter_semantic_audit() -> dict[str, Any]:
     """Validate exact Act 1 encounter and monster constructor/turn traces."""
 
-    from sls.rl.training_contract import canonical_digest, sha256_file
+    from sls.rl.training_contract import canonical_digest, source_sha256
 
     payload = json.loads(ENCOUNTER_SEMANTIC_AUDIT_PATH.read_text(encoding="utf-8"))
     supplied = payload.get("audit_sha256")
@@ -301,7 +301,7 @@ def load_encounter_semantic_audit() -> dict[str, Any]:
         raise ValueError("Ironclad encounter evidence does not cover the exact monster scope")
     for relative, digest in dict(payload.get("source_files") or {}).items():
         path = ROOT / str(relative)
-        if not path.is_file() or sha256_file(path) != digest:
+        if not path.is_file() or source_sha256(path) != digest:
             raise ValueError(f"encounter source evidence is stale: {relative}")
     return payload
 

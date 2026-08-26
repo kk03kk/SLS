@@ -194,7 +194,7 @@ mechanisms; they are not a second environment or training contract.
 - `validation/act1_training_readiness.lock.json`: committed `TRAINING_READY` attestation backed by two real clean four-seed expansion rounds.
 - `model/policy_vocabulary_v2.json`: exact generated policy tokens and vocabulary hash.
 - `train/full_run.toml`: profile, worker, model, PPO, checkpoint, and evaluation settings.
-- `train/act1_smoke.toml`, `train/act1_pilot.toml`: guarded 20/200-update GPU stages.
+- `train/act1_smoke.toml`, `train/act1_pilot.toml`: `TRAINING_READY`-guarded 20/200-update GPU stages.
 - `train/smoke.toml`: one-update CPU integration configuration.
 
 ## `requirements`

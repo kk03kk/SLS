@@ -20,7 +20,7 @@ from sls.content.normalize import normalize_content_id  # noqa: E402
 from sls.content.registry import load_content_registry  # noqa: E402
 from sls.content.scope import ironclad_a0_scope_hash, load_ironclad_a0_scope  # noqa: E402
 from sls.contracts import ActionKind, ScreenType  # noqa: E402
-from sls.rl.training_contract import canonical_digest, sha256_file  # noqa: E402
+from sls.rl.training_contract import canonical_digest, source_sha256  # noqa: E402
 from sls.validation.policies import deterministic_action  # noqa: E402
 from audit_card_semantics import _adapt_probe_payload, _rng  # noqa: E402
 from audit_relic_semantics import _effect_projection  # noqa: E402
@@ -239,7 +239,7 @@ def capture(seed: int) -> dict[str, Any]:
         "oracle_schema": "spirecomm-parity-v10",
         "seed": seed,
         "source_files": {
-            path.relative_to(ROOT).as_posix(): sha256_file(path)
+            path.relative_to(ROOT).as_posix(): source_sha256(path)
             for path in source_files
         },
         "entries": entries,

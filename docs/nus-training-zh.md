@@ -12,14 +12,17 @@ git switch main
 git pull --ff-only origin main
 git status --short
 
-conda create -n sls-train python=3.12 -y
-conda activate sls-train
-python -m pip install --upgrade pip
-python -m pip install -e '.[model,test]'
-TRAIN_PY="$(command -v python)"
+TRAIN_PY=/home/h/hengzhi/venvs/sls/bin/python
+test -x "$TRAIN_PY"
+"$TRAIN_PY" -m pip install -e . --no-deps
 ```
 
-`git status --short` 必须为空。批处理命令使用 `TRAIN_PY` 的绝对路径，不依赖 batch shell 是否自动激活 Conda。若集群要求先加载编译器或 CUDA module，应在提交前按 NUS 当前说明加载；preflight 会对缺失项直接失败。
+`git status --short` 必须为空。该固定 venv 已包含训练依赖；不要在约 1 GiB
+虚拟内存限制的 `xlogin` 上导入 Torch、构建 native、运行测试或训练，也不要在这里
+重新解析/安装模型依赖。`pip install -e . --no-deps` 只刷新同一 checkout 的 editable
+入口。所有 Torch/native/GPU 工作均由下述 Slurm compute job 完成。若集群要求加载
+编译器或 CUDA module，应按 NUS 当前说明在 batch 环境中提供；preflight 会对缺失项
+直接失败。
 
 ## 2. Preflight 与 worker benchmark
 
@@ -37,11 +40,9 @@ tail -f runs/slurm-logs/sls-benchmark-*.out
 
 ## 3. Smoke、pilot 与正式训练
 
-Act 1 使用两级证据门槛。`ENGINEERING_READY` 仅证明三种 Boss 的三条
-完整路线，可运行 preflight、benchmark 和 20-update smoke；它不能启动
-pilot 或正式训练。pilot/train 还要求本地 Original 完成两轮、每轮四个
-覆盖驱动新 seed 的 `TRAINING_READY` lock。服务器不生成该 lock，也不能
-用低等级 lock 或命令行参数绕过。
+NUS 的 preflight、benchmark、20-update smoke、pilot 和正式训练统一要求提交的
+`TRAINING_READY` lock。`ENGINEERING_READY` 只保留给本地证据工程，不在任何默认
+NUS 生产命令中使用。服务器不生成 lock，也不能用低等级 lock 或命令行参数绕过。
 
 ```bash
 "$TRAIN_PY" tools/submit_slurm.py smoke --python "$TRAIN_PY" --workers N
@@ -68,7 +69,9 @@ median failure floor 优于未训练基线，同时 entropy、KL、value loss、
 
 ## 4. 中断与恢复
 
-Slurm 会在终止前 300 秒发送 SIGTERM。训练器完成当前 PPO update 后原子保存 `latest.pt`，将 manifest 标为 `INTERRUPTED`。同一配置和 worker 数量下恢复：
+Slurm 会在终止前 300 秒向 batch task 发送 SIGTERM；提交器使用 shell `exec`，确保
+信号直接到达 Python。训练器完成当前 PPO update 后原子保存 `latest.pt`，将 manifest
+标为 `INTERRUPTED`。同一配置和 worker 数量下恢复：
 
 ```bash
 "$TRAIN_PY" tools/submit_slurm.py pilot --python "$TRAIN_PY" --workers N --resume

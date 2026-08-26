@@ -14,7 +14,7 @@ sys.path.insert(0, str(ROOT / "tools"))
 
 from sls.rl.training_contract import git_state
 from sls.validation.readiness_lock import (
-    DEFAULT_LOCK, ENGINEERING_READY, READINESS_LEVELS, build_readiness_lock,
+    ENGINEERING_LOCK, ENGINEERING_READY, READINESS_LEVELS, build_readiness_lock,
 )
 from replay_truth import replay
 
@@ -31,7 +31,7 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", type=Path, default=ROOT / "validation-results" / "truth")
     parser.add_argument("--config", type=Path, default=ROOT / "configs" / "validation" / "act1_training.toml")
-    parser.add_argument("--output", type=Path, default=DEFAULT_LOCK)
+    parser.add_argument("--output", type=Path, default=ENGINEERING_LOCK)
     parser.add_argument("--allow-dirty", action="store_true", help="development/test only")
     parser.add_argument("--level", choices=sorted(READINESS_LEVELS), default=ENGINEERING_READY)
     parser.add_argument("--expansion-report", type=Path)

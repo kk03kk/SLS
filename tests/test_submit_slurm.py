@@ -10,7 +10,9 @@ from tools.submit_slurm import _parser, build_sbatch_command
 
 
 def _wrapped(command: list[str]) -> list[str]:
-    return shlex.split(command[command.index("--wrap") + 1])
+    wrapped = shlex.split(command[command.index("--wrap") + 1])
+    assert wrapped[0] == "exec"
+    return wrapped[1:]
 
 
 def _simulate_symlink_resolution(
@@ -120,3 +122,42 @@ def test_benchmark_submission_uses_the_guarded_benchmark_entrypoint(tmp_path: Pa
         os.path.abspath(str(python)),
         str(tmp_path / "repo" / "tools" / "benchmark_workers.py"),
     ]
+
+
+@pytest.mark.parametrize(
+    "argv,script,config,extra,partition,walltime",
+    (
+        (("preflight",), "preflight_training.py", None, ("--jobs", "16"), "gpu", "03:00:00"),
+        (("benchmark",), "benchmark_workers.py", None, (), "gpu", "03:00:00"),
+        (("smoke", "--workers", "32"), "train_full_run.py", "act1_smoke.toml", ("--workers", "32"), "gpu", "03:00:00"),
+        (("pilot", "--workers", "32"), "train_full_run.py", "act1_pilot.toml", ("--workers", "32"), "gpu", "03:00:00"),
+        (("train", "--workers", "32"), "train_full_run.py", "full_run.toml", ("--workers", "32"), "gpu-long", "3-00:00:00"),
+        (("pilot", "--workers", "32", "--resume"), "train_full_run.py", "act1_pilot.toml", ("--workers", "32", "--resume", "auto"), "gpu", "03:00:00"),
+        (("train", "--workers", "32", "--resume"), "train_full_run.py", "full_run.toml", ("--workers", "32", "--resume", "auto"), "gpu-long", "3-00:00:00"),
+    ),
+)
+def test_nus_production_command_matrix(
+    tmp_path: Path, argv: tuple[str, ...], script: str, config: str | None,
+    extra: tuple[str, ...], partition: str, walltime: str,
+) -> None:
+    root = tmp_path / "SLS"
+    python = Path("/home/h/hengzhi/venvs/sls/bin/python")
+    args = _parser().parse_args([*argv, "--python", str(python)])
+    command = build_sbatch_command(args, root=root)
+    wrapped = _wrapped(command)
+
+    expected = [os.path.abspath(str(python)), str(root / "tools" / script)]
+    if config is not None:
+        expected += ["--config", str((root / "configs" / "train" / config).resolve())]
+    expected += list(extra)
+    assert wrapped == expected
+    assert f"--partition={partition}" in command
+    assert f"--time={walltime}" in command
+    assert "--signal=B:TERM@300" in command
+
+
+@pytest.mark.parametrize("task", ("preflight", "benchmark"))
+def test_nontraining_jobs_reject_silently_ignored_training_options(task: str) -> None:
+    args = _parser().parse_args([task, "--workers", "32"])
+    with pytest.raises(ValueError, match="does not accept"):
+        build_sbatch_command(args)

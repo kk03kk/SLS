@@ -75,7 +75,7 @@ def test_training_level_cannot_masquerade_without_expansion(tmp_path: Path) -> N
 def test_training_configs_use_the_required_readiness_level() -> None:
     root = Path(__file__).resolve().parents[2]
     expected = {
-        "act1_smoke.toml": (ENGINEERING_READY, "act1_readiness.lock.json"),
+        "act1_smoke.toml": (TRAINING_READY, "act1_training_readiness.lock.json"),
         "act1_pilot.toml": (TRAINING_READY, "act1_training_readiness.lock.json"),
         "full_run.toml": (TRAINING_READY, "act1_training_readiness.lock.json"),
     }

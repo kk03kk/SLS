@@ -17,7 +17,7 @@ from sls.backends.original.adapter import AdaptedOriginalDecision, adapt_origina
 from sls.backends.simulator import IRONCLAD_A0_ACT1, native  # noqa: E402
 from sls.content.scope import ironclad_a0_scope_hash  # noqa: E402
 from sls.contracts import ActionKind, Decision, ScreenType  # noqa: E402
-from sls.rl.training_contract import canonical_digest, sha256_file  # noqa: E402
+from sls.rl.training_contract import canonical_digest, source_sha256  # noqa: E402
 from sls.validation.policies import deterministic_action  # noqa: E402
 from sls.validation.truth import load_bundle  # noqa: E402
 from audit_card_semantics import _adapt_probe_payload, _rng  # noqa: E402
@@ -281,7 +281,7 @@ def capture(seed: int) -> dict[str, Any]:
         "oracle_schema": "spirecomm-parity-v10",
         "seed": seed,
         "source_files": {
-            path.relative_to(ROOT).as_posix(): sha256_file(path)
+            path.relative_to(ROOT).as_posix(): source_sha256(path)
             for path in (*source_paths, *support_paths)
         },
         "entries": entries,

@@ -22,8 +22,8 @@ from sls.curriculum import (
 )
 from sls.model import ModelConfig, Policy
 from sls.rl import PPOConfig, PPOTrainer, WorkerPool, load_checkpoint
-from sls.rl.training_contract import native_source_digest
-from sls.validation.readiness_lock import DEFAULT_LOCK, verify_readiness_lock
+from sls.rl.training_contract import native_source_digest, readiness_settings
+from sls.validation.readiness_lock import verify_readiness_lock
 
 
 PROFILES = {
@@ -44,8 +44,10 @@ def _next_update(
     ppo = PPOConfig(**payload.get("ppo", {}))
     readiness_digest = "UNVERIFIED"
     if bool(run.get("require_readiness", False)):
-        readiness_path = ROOT / str(run.get("readiness_lock", DEFAULT_LOCK.relative_to(ROOT)))
-        readiness_digest = str(verify_readiness_lock(readiness_path)["lock_sha256"])
+        readiness_path, readiness_level = readiness_settings(run)
+        readiness_digest = str(verify_readiness_lock(
+            readiness_path, expected_level=readiness_level,
+        )["lock_sha256"])
     with WorkerPool(profile, int(run["workers"])) as workers:
         trainer = PPOTrainer(
             model, workers, ppo, device=device, seed=int(run["seed"]),

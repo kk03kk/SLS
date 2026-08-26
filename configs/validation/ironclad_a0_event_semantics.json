@@ -1,5 +1,5 @@
 {
-  "audit_sha256": "0c1b0d8c581da599ec5844c7c7ace7e1a9190034173152f50cae450abebf1f7c",
+  "audit_sha256": "656e429d1dd86bd3dec4aab60967738ceeda9f0c78c47be67f23b39c57fbcb7b",
   "entries": [
     {
       "boundary_hashes": [
@@ -8,7 +8,7 @@
       "effect_sha256": "3402a6bf8ffcaa1a29c4e83c9ee81558baf67e9663c2c88d90f53af75487bf64",
       "game_id": "Back to Basics",
       "id": "ANCIENT_WRITING",
-      "java_sha256": "2efeebc254b5afc3dc04fe7a1ae3aa02453c3ec8c4acc1e9309599ce69d10e89",
+      "java_sha256": "dc72fc035a26934da7882a8c533edc6930f17ee458315ff64459115e8ca5eb42",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/city/BackToBasics.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "27663c0e9689e54d09519491d87c029ae7260df78fed6039b97b7b7fb086f877"
@@ -20,7 +20,7 @@
       "effect_sha256": "0bef25cb0c28a1cc89afdf103a02413db432d69046af37b6624b002afb4e9295",
       "game_id": "Drug Dealer",
       "id": "AUGMENTER",
-      "java_sha256": "5102562305008603b92c913d57770ca34755cf61f24ba37d0777f9ad9e21e08d",
+      "java_sha256": "d6d6a3d3de0a1fdd2e987febc61db2197e20a5d882c3fe3360aa7ff1698836d8",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/city/DrugDealer.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "27663c0e9689e54d09519491d87c029ae7260df78fed6039b97b7b7fb086f877"
@@ -32,7 +32,7 @@
       "effect_sha256": "125468598fc0f159c6f9f15a2f9ea5462c8af862290db9b23117ecc5d491d5fe",
       "game_id": "Big Fish",
       "id": "BIG_FISH",
-      "java_sha256": "2af26fd036463c19be5893f8616dd5b5bc5f56ade710a8cda21dc4166a52ba26",
+      "java_sha256": "d14eba34d182ae3a73bb94d247616d280964ec56ee4a4abf4a96a0cfdc5c371f",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/exordium/BigFish.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "27663c0e9689e54d09519491d87c029ae7260df78fed6039b97b7b7fb086f877"
@@ -44,7 +44,7 @@
       "effect_sha256": "d2385ab67b45bd04bd6b3db026eb9c8d5afe13aed9e826eb50d578d5b00d9dcf",
       "game_id": "Bonfire Elementals",
       "id": "BONFIRE_SPIRITS",
-      "java_sha256": "4d9587ea16c43e65d1e9c0c1c4d084cf0dfc60b3b06bccfb09ab60571a1c5198",
+      "java_sha256": "6bb73acaac6dd7426c229957d832fcaa3f9b1d56aabc38b1b86cf1d03357688e",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/shrines/Bonfire.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "27663c0e9689e54d09519491d87c029ae7260df78fed6039b97b7b7fb086f877"
@@ -56,7 +56,7 @@
       "effect_sha256": "1aad5fd5797b2fd08f838bdbf5c4386543e54d381f5b2807750e7ec2f5fbcf3c",
       "game_id": "Colosseum",
       "id": "COLOSSEUM",
-      "java_sha256": "d1e44d06832c632a84c5ce9f9df4e1037d78223266233a6fda8ab6325a209952",
+      "java_sha256": "fb4c3a2557e49f1cffbe38f64b0d0b738bc9ac380896ba92bc6ff6824a44194f",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/city/Colosseum.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "27663c0e9689e54d09519491d87c029ae7260df78fed6039b97b7b7fb086f877"
@@ -68,7 +68,7 @@
       "effect_sha256": "5da16cc2e35e5ded1917ce07906172819fbb344166506bb6e73f73312f49a932",
       "game_id": "Cursed Tome",
       "id": "CURSED_TOME",
-      "java_sha256": "49dc9bf6ed02d7ced478f78118eceaaddd0b535fbae34c8d8e70631b5f3502fa",
+      "java_sha256": "f6737abcd4f6c299bc697905074100efd156e129c42281f95d578575422884ff",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/city/CursedTome.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "27663c0e9689e54d09519491d87c029ae7260df78fed6039b97b7b7fb086f877"
@@ -80,7 +80,7 @@
       "effect_sha256": "c59831231357166a212e4f2f035231debe758ad71f067790d78fb450c81d9924",
       "game_id": "Dead Adventurer",
       "id": "DEAD_ADVENTURER",
-      "java_sha256": "0158c9cc2d3f6cbe84aaae125d2658db74442a75803812aabc67e76a5204d90d",
+      "java_sha256": "359b1281b82dea46d7bc62b6fae61925e0d15adf241a9d5a6b57da54fd149559",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/exordium/DeadAdventurer.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "27663c0e9689e54d09519491d87c029ae7260df78fed6039b97b7b7fb086f877"
@@ -92,7 +92,7 @@
       "effect_sha256": "d42ad812d607a475eb7269edeb10a9842cdf19b17eb7a630285cdd43e43dc28e",
       "game_id": "Designer",
       "id": "DESIGNER_IN_SPIRE",
-      "java_sha256": "b8430daac9d1c491b835867599ba20ba77560f0afb47c8273314f6a65a66297f",
+      "java_sha256": "7639cee73c978915f5ae64779c319cb2225db1a579e5e90c5c0ca5b62c88f065",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/shrines/Designer.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "27663c0e9689e54d09519491d87c029ae7260df78fed6039b97b7b7fb086f877"
@@ -104,7 +104,7 @@
       "effect_sha256": "cd1dd9ff7415813889d45233b0258c9b2f03258e3be39e0fb049631d0436a90a",
       "game_id": "Duplicator",
       "id": "DUPLICATOR",
-      "java_sha256": "835b4e9e44e9f0223ce770e82205fd8c95885acd79d1f61c7089c5b042bb0bae",
+      "java_sha256": "598d651a0ec28ae37c6d5521b4b7c65c976f07402edbc7b3294ee1380f08948f",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/shrines/Duplicator.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "27663c0e9689e54d09519491d87c029ae7260df78fed6039b97b7b7fb086f877"
@@ -116,7 +116,7 @@
       "effect_sha256": "858bf0166b53c31fdc3575f7f4523281ea9a595f722ae3c5e8f0364aaa813274",
       "game_id": "Face Trader",
       "id": "FACE_TRADER",
-      "java_sha256": "7bbf0a9accc5adc9140a9a2af30905fe52b776561c896d9b379c344572847bdd",
+      "java_sha256": "c65459eb800c8dc697acbc34741566e98fb47e616acbf129ea3246dadafe69da",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/shrines/FaceTrader.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "27663c0e9689e54d09519491d87c029ae7260df78fed6039b97b7b7fb086f877"
@@ -128,7 +128,7 @@
       "effect_sha256": "64dd1c00dd7925f6ab55dfc1798947326c661e1fc0f811da438b8eb1c364cbaa",
       "game_id": "Falling",
       "id": "FALLING",
-      "java_sha256": "1c1e3116b3fcbd067e848325a463ac0a1c253b998b20995094f12e0a84b3d2b2",
+      "java_sha256": "ae6ed951929324894a0bba6de04d0360337db3b47bd73f2b678ec06e1def2d56",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/beyond/Falling.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "27663c0e9689e54d09519491d87c029ae7260df78fed6039b97b7b7fb086f877"
@@ -140,7 +140,7 @@
       "effect_sha256": "8eaf6f3ba409bf1713a5d8bc84b2f267b2c61a825979a0a903f73fb941ae8ccd",
       "game_id": "Forgotten Altar",
       "id": "FORGOTTEN_ALTAR",
-      "java_sha256": "ae3a23540edcdb0baa40486d0dd7734e0ea665b01b6162777385eb654017a8ba",
+      "java_sha256": "874ad3903bc3b0239d50c6c365b394122f0036b2875e8db42cca14cf14b2877d",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/city/ForgottenAltar.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "27663c0e9689e54d09519491d87c029ae7260df78fed6039b97b7b7fb086f877"
@@ -152,7 +152,7 @@
       "effect_sha256": "f61c6c27098b9d492e3cd2ebe3f8e84973124b03d746e414bcb5e26970fee14e",
       "game_id": "Ghosts",
       "id": "GHOSTS",
-      "java_sha256": "7eb22e500395431071756013a005840039f1cf45500d2fc59ea6eb83a204d238",
+      "java_sha256": "c5a6ede0dd9fdd5f172d997dd9ac242aaab595a14b70308e9cd7ddc298d379a6",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/city/Ghosts.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "27663c0e9689e54d09519491d87c029ae7260df78fed6039b97b7b7fb086f877"
@@ -164,7 +164,7 @@
       "effect_sha256": "ba1e2f160716214ea198176f4d67c70e665793007be78270dda45c38348fdcea",
       "game_id": "Golden Idol",
       "id": "GOLDEN_IDOL",
-      "java_sha256": "e5af68bd44b52b22f829969490a222c94f7f351d84d49bdd84ecb4ac925aee2d",
+      "java_sha256": "3b3cab0799bb027281f7e4784d83efc9c9f6771bf56d039a1d0694e7d02351aa",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/exordium/GoldenIdolEvent.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "27663c0e9689e54d09519491d87c029ae7260df78fed6039b97b7b7fb086f877"
@@ -176,7 +176,7 @@
       "effect_sha256": "a4eff8ae3ce280eb21a86807b8d22be1f012ea7c9139b2489174588bd2fb549e",
       "game_id": "Golden Shrine",
       "id": "GOLDEN_SHRINE",
-      "java_sha256": "272a2c27908abc3b2d02b2af9e87f49776d16f6c323e878dceaf2a15b753beff",
+      "java_sha256": "a72df126a5aab5b2812947ba752bb714d8a112c5013937ca949eb076d4c8044a",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/shrines/GoldShrine.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "27663c0e9689e54d09519491d87c029ae7260df78fed6039b97b7b7fb086f877"
@@ -188,7 +188,7 @@
       "effect_sha256": "4785f8389ec3b6201463cd010536d47ac804ca43d285bc43720d7705c0ca0661",
       "game_id": "Mushrooms",
       "id": "HYPNOTIZING_COLORED_MUSHROOMS",
-      "java_sha256": "3e731020882d2b8069121323b31cf6a85b27fa600ddb61e03a43c21f819202af",
+      "java_sha256": "0cd9d3b4b9b17a69daada1aba5b5d6e4c60ccf8937673d10c395db4ebfd0f31b",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/exordium/Mushrooms.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "27663c0e9689e54d09519491d87c029ae7260df78fed6039b97b7b7fb086f877"
@@ -200,7 +200,7 @@
       "effect_sha256": "4e0cb99a358625a4b1146442855865efe3566d1203558e7a082b215b3f540eec",
       "game_id": "Knowing Skull",
       "id": "KNOWING_SKULL",
-      "java_sha256": "d206c87ef04548e20f824777e98e0ca930253cdecd77e20f4dfaa4b0d3b5c105",
+      "java_sha256": "a9a324bbb561d36bb6bfa308e1e660488361ef200a64e39a75e1e4f8800013c3",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/city/KnowingSkull.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "27663c0e9689e54d09519491d87c029ae7260df78fed6039b97b7b7fb086f877"
@@ -212,7 +212,7 @@
       "effect_sha256": "4c3dad770ac174c6a8a3bb173f9c54ab13e310ab97ccba5a0789eaff60043880",
       "game_id": "Lab",
       "id": "LAB",
-      "java_sha256": "b667fb6e00997171be36ff6b2fea990c3f90c215d4ae76a8208fe706f07f21fd",
+      "java_sha256": "ee96331834cec864f662e2a1dfc542c2902e8cbd77de5d6feb5f63ede54e4e5a",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/shrines/Lab.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "27663c0e9689e54d09519491d87c029ae7260df78fed6039b97b7b7fb086f877"
@@ -224,7 +224,7 @@
       "effect_sha256": "ba6d3ca0f54541641e581e1118c0a8e2bf47154f095e2cc4220dd912ec5cfa81",
       "game_id": "Living Wall",
       "id": "LIVING_WALL",
-      "java_sha256": "16d1919f3614cf54f8a04a64c84e0969c45d07c1b7ca69bc11cce8b902329dcc",
+      "java_sha256": "0ceb58080e64863b50b4bb09b36944d215563e6df9e4275274150dff5b63a7cb",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/exordium/LivingWall.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "27663c0e9689e54d09519491d87c029ae7260df78fed6039b97b7b7fb086f877"
@@ -236,7 +236,7 @@
       "effect_sha256": "2d4a82e6113b2ab098bbcc7ae72cedadf5ddeb2d8a9f58156304d7f120a69c75",
       "game_id": "Masked Bandits",
       "id": "MASKED_BANDITS",
-      "java_sha256": "a40603420543ce8ead76a507e180bc4289fce856ef1b4640ba77f46c454eb948",
+      "java_sha256": "f76b87d99d51e49fbcaa8a435ea883b22786ac4cba138f3cc989f9aa5b708c36",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/city/MaskedBandits.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "39db0c822d74eee14b34841465534847a4d477502cc8dfacd23641e9b8ad6889"
@@ -248,7 +248,7 @@
       "effect_sha256": "456f5e3d37559cb78c0a68ae51b2c34b3997d38b41f9032e46d8e076926bc714",
       "game_id": "Match and Keep",
       "id": "MATCH_AND_KEEP",
-      "java_sha256": "62051ad6f171a77c90cabec71be690195bba0c914727ec2974a94428f0501563",
+      "java_sha256": "bdd1ed87d61203fd6436ec5cd9853690364877c5b3f1d14dd355d7a2f8677518",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/shrines/GremlinMatchGame.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "27663c0e9689e54d09519491d87c029ae7260df78fed6039b97b7b7fb086f877"
@@ -260,7 +260,7 @@
       "effect_sha256": "c2c1311c7a645e59be48fa2050acd505240da45ef8886ead21daa474a78a7561",
       "game_id": "Mindbloom",
       "id": "MINDBLOOM",
-      "java_sha256": "13b0468dbaca821a027975645d8b36326f821b54171d5deef604e302d8c14497",
+      "java_sha256": "8b0bf1c73646d31c3b2229b4a08db0dbcedf2e731d01dda3316afcf6bb4d2769",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/beyond/MindBloom.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "27663c0e9689e54d09519491d87c029ae7260df78fed6039b97b7b7fb086f877"
@@ -272,7 +272,7 @@
       "effect_sha256": "96c1765a633614a20f2d5fcfe02a256ca5aa2e3c610d7af22d653435ac240e4a",
       "game_id": "Mysterious Sphere",
       "id": "MYSTERIOUS_SPHERE",
-      "java_sha256": "71b147f3f02eb8f72d132c999e22c9111a74af3cf6f2bfd6b8255645f6e1e794",
+      "java_sha256": "3e321b9e9424dac7113a3bcf705ff0f046ee8d8e443a70cafe1ad48b04029461",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/beyond/MysteriousSphere.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "171913a67a4f86b3da722a0bb67b6d4d817c2c4e8ab873530bbe67238ab78f80"
@@ -284,7 +284,7 @@
       "effect_sha256": "1fdc27587ea33ec42bb978ce5ece047d04a27f0567a694625dc3ee3c5fe686e5",
       "game_id": "Nloth",
       "id": "NLOTH",
-      "java_sha256": "ce7c34f8a723a2dd20376bdd0839d6cb1033140476d40d6f7ec1974e476aaded",
+      "java_sha256": "6f8e3f9a9269fe64970a0ca8c71990cc5752edc8cb14282f032ceac14dbaa3b2",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/shrines/Nloth.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "50de0a989432642a160972f663f9cbacc5a0c0025f95757b816fdabc8d8a702d"
@@ -296,7 +296,7 @@
       "effect_sha256": "ad9b6f7a8ce54877a5603979bc60aa140e7e7c8906b33e9a8ddf861e6e108dce",
       "game_id": "Note For Yourself",
       "id": "NOTE_FOR_YOURSELF",
-      "java_sha256": "f435c39cbfc565d16a3aa74ff814771483b515ae1270189109b1259cd19f7887",
+      "java_sha256": "f526608796c6ba3e17e67851122ffd645b0c719ce60b6bbd908a1d0ed4176bbc",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/shrines/NoteForYourself.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "27663c0e9689e54d09519491d87c029ae7260df78fed6039b97b7b7fb086f877"
@@ -308,7 +308,7 @@
       "effect_sha256": "6a528a662fb901f0fe3d56ac592aa2707f1f478690c0c9883efb8f44191dc65c",
       "game_id": "Beggar",
       "id": "OLD_BEGGAR",
-      "java_sha256": "9104b10a8926f5e64bee556cba0f5edfb3224f48d31e45cc8f93e107667b7774",
+      "java_sha256": "90b07bc6499fe136438ee9fd5a8d00d7aa40ccf901cda0fdf7a7d1b5d066be47",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/city/Beggar.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "27663c0e9689e54d09519491d87c029ae7260df78fed6039b97b7b7fb086f877"
@@ -320,7 +320,7 @@
       "effect_sha256": "d274c00234c5df40fc63ef46a33924cf2149a471ef4d18c93bb718b7d9776ea3",
       "game_id": "Accursed Blacksmith",
       "id": "OMINOUS_FORGE",
-      "java_sha256": "c3e9a5a1106c4ccb41bbd984ab75b6e1a894a5146c362ea4bb14743cbe30a7e0",
+      "java_sha256": "d90c2723d66685fde57fe3b50e39b29a565b64bc3d665aa2bc68ba347d17808a",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/shrines/AccursedBlacksmith.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "27663c0e9689e54d09519491d87c029ae7260df78fed6039b97b7b7fb086f877"
@@ -332,7 +332,7 @@
       "effect_sha256": "737b6d22b0cf5658be2466976b510bc18fed310bc393a3c92c70014b473416b1",
       "game_id": "Addict",
       "id": "PLEADING_VAGRANT",
-      "java_sha256": "1287bad4b3d053525127e812eed11afc8ce06d57d7e3e784b19208b6b1b7223f",
+      "java_sha256": "3ee2c78dc00ab3f76a28e0972445e50f354cdccce01ffc76c6afefeab1cbf86d",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/city/Addict.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "27663c0e9689e54d09519491d87c029ae7260df78fed6039b97b7b7fb086f877"
@@ -344,7 +344,7 @@
       "effect_sha256": "c588ff805763f99ad16f6856dc984c1a8a7f58d573c5cbdcc817f1433d54258e",
       "game_id": "Purifier",
       "id": "PURIFIER",
-      "java_sha256": "b85d0c9078e7a2aedc706f83f9a39a1cc01f861a88a313fcbecf139f0cb85280",
+      "java_sha256": "af76b5861f2d0ce91ee9702c0037b8717494e387469632b18ae37e1547c3d09b",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/shrines/PurificationShrine.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "27663c0e9689e54d09519491d87c029ae7260df78fed6039b97b7b7fb086f877"
@@ -356,7 +356,7 @@
       "effect_sha256": "178ecb4df7c42513e4fe472011f3f3db8df08122e080b43d597f8229467c5f0c",
       "game_id": "Scrap Ooze",
       "id": "SCRAP_OOZE",
-      "java_sha256": "a8a38b4ea5e0d349bd65857df57760bbd88d252fca340b02e2ef78a5f345e89c",
+      "java_sha256": "40e759bb4fc7bf076a45654a3f33bf88134ecaddb0e945c270a6bf0fe169abca",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/exordium/ScrapOoze.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "27663c0e9689e54d09519491d87c029ae7260df78fed6039b97b7b7fb086f877"
@@ -368,7 +368,7 @@
       "effect_sha256": "9202e775694559db1c210be9761896188fd42b328766788b4253bfc97e60132e",
       "game_id": "Secret Portal",
       "id": "SECRET_PORTAL",
-      "java_sha256": "228dbd8aff91166058ed01f3c2b6d4b63fcabd3a780230d60b39aa8be9e92c4e",
+      "java_sha256": "7893a6cb088371bd5146d23dd075cffb0f675a8b54f4ae65bd55eedfaa2f70f8",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/beyond/SecretPortal.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "27663c0e9689e54d09519491d87c029ae7260df78fed6039b97b7b7fb086f877"
@@ -380,7 +380,7 @@
       "effect_sha256": "ce89243a8a2afff17d5fd67a6c0d87048a36e16ce76798b19274afcbab2801f7",
       "game_id": "Sensory Stone",
       "id": "SENSORY_STONE",
-      "java_sha256": "aea59c9dce1f089722dd3a438207a1297b3ab16ddacbb53a0169c9ed63db7f11",
+      "java_sha256": "888b2ea6836850e5b04be7e1c24bfe188a161cebd3b868ce9f7a4b906aba0b61",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/beyond/SensoryStone.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "27663c0e9689e54d09519491d87c029ae7260df78fed6039b97b7b7fb086f877"
@@ -392,7 +392,7 @@
       "effect_sha256": "6b8f5f2ee6164d9164708cdadb0442a4fae034a704efcfa09cc94b69c8896af9",
       "game_id": "Shining Light",
       "id": "SHINING_LIGHT",
-      "java_sha256": "e32e8d2b50803b41598d0a53b277ddc89c12155afd0a8508d7cea4d196583d3d",
+      "java_sha256": "f64fe836931e90ca3ccdaed48c44611ffe730230ee74c3fbb87c6cba79c130d9",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/exordium/ShiningLight.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "27663c0e9689e54d09519491d87c029ae7260df78fed6039b97b7b7fb086f877"
@@ -404,7 +404,7 @@
       "effect_sha256": "a6591a5fda365495545e0b28a39d24608bf81cb94671a6d5f6ec4c2e51040949",
       "game_id": "The Cleric",
       "id": "THE_CLERIC",
-      "java_sha256": "88804e16decf98f676a21068b2d5814ccd3b8ad5d2b5fe3e485f22961832358b",
+      "java_sha256": "d8b7ff8b3191169d16da4f50ffda0e659fe8a9975851061755ba5321ef4f9ac7",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/exordium/Cleric.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "27663c0e9689e54d09519491d87c029ae7260df78fed6039b97b7b7fb086f877"
@@ -416,7 +416,7 @@
       "effect_sha256": "36696ab4140c52c4df04a821bbabb46031d5ec18a1cfacbcba1207569d4c0e22",
       "game_id": "Fountain of Cleansing",
       "id": "THE_DIVINE_FOUNTAIN",
-      "java_sha256": "1f22630c6a5def6708426eae4ccb1bb46bf34e92ed148837d0516b519f012d0d",
+      "java_sha256": "9c5e9e7c7cb32f747a85251c8f02eff71d47bcbd4396c1b5423d54bcb015ff36",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/shrines/FountainOfCurseRemoval.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "27663c0e9689e54d09519491d87c029ae7260df78fed6039b97b7b7fb086f877"
@@ -428,7 +428,7 @@
       "effect_sha256": "091a613f2e28decf07f2bcf7b5a6c3989d14adf19e7fdd384df0f4033d54c6dd",
       "game_id": "The Joust",
       "id": "THE_JOUST",
-      "java_sha256": "ff8062e3e8a1104178cc9ba7283e8cd5162c48d7a64f7b68164b0b30cc5bfc01",
+      "java_sha256": "b88c92015b7695a4736aabb9275c363d427c9583b45ecd40aa926c32e178c61e",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/city/TheJoust.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "27663c0e9689e54d09519491d87c029ae7260df78fed6039b97b7b7fb086f877"
@@ -440,7 +440,7 @@
       "effect_sha256": "3384eca8ffe5013e007d6224add70eca90212aba8d6c22feac5a194e41b234cd",
       "game_id": "The Library",
       "id": "THE_LIBRARY",
-      "java_sha256": "748833a2373f620b67af7793e8d8c57e88e3b4f100e456cfdfb56f8ba1e8ea1c",
+      "java_sha256": "8cbe97b4a7a7904d3dbcd5f8940d94e31508cc6e3ca1e2299bd7dea5cf379ff6",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/city/TheLibrary.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "27663c0e9689e54d09519491d87c029ae7260df78fed6039b97b7b7fb086f877"
@@ -452,7 +452,7 @@
       "effect_sha256": "44abc9fcdf5ee72f03c7a33c8eb34c639b727f4aa4801f0e8da52c48bb6608b5",
       "game_id": "The Mausoleum",
       "id": "THE_MAUSOLEUM",
-      "java_sha256": "d0711124d2fdcfa3af9cdb48f0fc5d8c3eb9df698adc501b423520df3ff7785d",
+      "java_sha256": "7f375b4d8016f5a9d5f99e343bd88c3a664ff561f82a475fc455a9b3ef50511d",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/city/TheMausoleum.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "27663c0e9689e54d09519491d87c029ae7260df78fed6039b97b7b7fb086f877"
@@ -464,7 +464,7 @@
       "effect_sha256": "1eda65b542cd6330b48a7b3b247ea06a584c50301508fb275c6c0b4dc6b31336",
       "game_id": "The Moai Head",
       "id": "THE_MOAI_HEAD",
-      "java_sha256": "487937986d47f136bfea129b62df3fb183dc84a4863cd9dd4a0f729028ef9e7f",
+      "java_sha256": "dfe22d211e8d7edb95ed0e75aa6b177bb5f2282164be52231b8f44412c0bfa42",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/beyond/MoaiHead.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "27663c0e9689e54d09519491d87c029ae7260df78fed6039b97b7b7fb086f877"
@@ -476,7 +476,7 @@
       "effect_sha256": "b96c4eba8b8e1b962802eb973d90bcb352a93b27b282496f75d6eb821476e77c",
       "game_id": "Nest",
       "id": "THE_NEST",
-      "java_sha256": "b9d34e10b5b0b9e7af1c00ba2e1a3834a67f19ef6193ebbba0db002aa96fa2bb",
+      "java_sha256": "02bb7cd3bc072d2ed88a278fffdcd8115f2af4ace461ba54a7d3ad5784b777e2",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/city/Nest.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "27663c0e9689e54d09519491d87c029ae7260df78fed6039b97b7b7fb086f877"
@@ -488,7 +488,7 @@
       "effect_sha256": "4aaf4ab0290db427fbba7c7cd1668771508ca82f682cd2063aeb5fc841bbf552",
       "game_id": "Liars Game",
       "id": "THE_SSSSSERPENT",
-      "java_sha256": "a69ba4e638786d965ca1931e87b6f479379f31895cd1d0bb033691f99c837b78",
+      "java_sha256": "cbc65219bcf55b01957577d325df1e02d885790f084c28d1a61e5ae6897586ea",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/exordium/Sssserpent.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "27663c0e9689e54d09519491d87c029ae7260df78fed6039b97b7b7fb086f877"
@@ -500,7 +500,7 @@
       "effect_sha256": "472c1727559344f78466836389c4b8135e6cf65533c1acdbdd47ec0017b237af",
       "game_id": "The Woman in Blue",
       "id": "THE_WOMAN_IN_BLUE",
-      "java_sha256": "e6cb0759d0c2d6a80791300f967bf3d7006b0c8d7e249ebab420d307bf6cb971",
+      "java_sha256": "48f154a3ec9b78abf43c5390b678ac982a43ee3af54aa5cae120e9f6cb3fbd69",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/shrines/WomanInBlue.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "27663c0e9689e54d09519491d87c029ae7260df78fed6039b97b7b7fb086f877"
@@ -512,7 +512,7 @@
       "effect_sha256": "095d8784b1f61088fd95a0f25670267414742de1ccb9d0ef7508c00f3ab683fe",
       "game_id": "Tomb of Lord Red Mask",
       "id": "TOMB_OF_LORD_RED_MASK",
-      "java_sha256": "04b6da78c153ea5fa5ef7fee88ad3f48a7b77ba7dacb931b05dbdc7b1d3ad8a8",
+      "java_sha256": "515880ea139fc92c80f42ae6c7e026ddac23eff0c3dd07891ab687c5d4612053",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/beyond/TombRedMask.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "27663c0e9689e54d09519491d87c029ae7260df78fed6039b97b7b7fb086f877"
@@ -524,7 +524,7 @@
       "effect_sha256": "ba84a1d97fc06ac135f1daaf586bd46e62600db6f04533b98b59691b6bee2ac9",
       "game_id": "Transmorgrifier",
       "id": "TRANSMORGRIFIER",
-      "java_sha256": "85a2c9395390c634c9651ffaa0a262ca75817858e32e6e04d58dbd5918357011",
+      "java_sha256": "decf6448c7b6c7dae59aa622be79efc38b9ec38d6b2e852df4d4e6f28b2a9951",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/shrines/Transmogrifier.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "27663c0e9689e54d09519491d87c029ae7260df78fed6039b97b7b7fb086f877"
@@ -536,7 +536,7 @@
       "effect_sha256": "a1e94e02a3532fa59754b04a2d35a09acfd6e81dac208fe8992f804f39f154fb",
       "game_id": "Upgrade Shrine",
       "id": "UPGRADE_SHRINE",
-      "java_sha256": "2bf8e37516acefda3cea49e1f5471e1c6e57327a8eac3999b8def91578e29fc3",
+      "java_sha256": "0eb65d9033a265fe631dda3554f057c4056a8e515ecddd074979e0636e804eb8",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/shrines/UpgradeShrine.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "27663c0e9689e54d09519491d87c029ae7260df78fed6039b97b7b7fb086f877"
@@ -548,7 +548,7 @@
       "effect_sha256": "eed7c032175c374a2ca0d4b54a91530ff8594c3aeae748f4290d53e7221372b5",
       "game_id": "Vampires",
       "id": "VAMPIRES",
-      "java_sha256": "d15063c9ce74eee9bdfa4c3728ac00166ef61b81aa9acd2c54f47cc59119a03d",
+      "java_sha256": "8d277e7459da9123aa87b1d749191c9926e7f4fd1431d6ef7fce10909c000b89",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/city/Vampires.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "27663c0e9689e54d09519491d87c029ae7260df78fed6039b97b7b7fb086f877"
@@ -560,7 +560,7 @@
       "effect_sha256": "1d9690130783599bc64bf37a2b5f8575e0c84d149d7837db6e587eec3374501e",
       "game_id": "WeMeetAgain",
       "id": "WE_MEET_AGAIN",
-      "java_sha256": "144f2f6a64c5743bbb65b83693cb2beefbc5c81c46b5cd63c59e10bea1bdd0b7",
+      "java_sha256": "933f366a64c29bc9a9ab5d558d7521cfc69a73f80995279dbbe94b7b8153cc86",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/shrines/WeMeetAgain.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "27663c0e9689e54d09519491d87c029ae7260df78fed6039b97b7b7fb086f877"
@@ -572,7 +572,7 @@
       "effect_sha256": "9008e7958f9dee083e63d078bd5ae211c135c006096df47b31d0cae14246fc8f",
       "game_id": "Wheel of Change",
       "id": "WHEEL_OF_CHANGE",
-      "java_sha256": "2eb09af308782f887ffc03c3151539923cc576d580115e916f49b149b8f56b84",
+      "java_sha256": "73e9e0fbf5408c919e5df77ba72cd9a4b31226a36c2dce2526b5964899b30bb7",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/shrines/GremlinWheelGame.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "27663c0e9689e54d09519491d87c029ae7260df78fed6039b97b7b7fb086f877"
@@ -584,7 +584,7 @@
       "effect_sha256": "2ef3f79b3e2e2baabbb542709e02b6f81a78d3cfaee04c4157fa50713a8d8c04",
       "game_id": "Winding Halls",
       "id": "WINDING_HALLS",
-      "java_sha256": "ecb841074abddb46eb1e1cec0d2db28fbe902a6d8134c4a7e00db9a51221da9a",
+      "java_sha256": "f419f2ad258121a4970dffd289118a85c23ddd8d5025efa1d4a4f4cdbb001d2b",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/beyond/WindingHalls.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "27663c0e9689e54d09519491d87c029ae7260df78fed6039b97b7b7fb086f877"
@@ -596,7 +596,7 @@
       "effect_sha256": "244c6d9b20c1565acd82ec914d2ca2d43586f5c6dc973546889b6436b45089de",
       "game_id": "Golden Wing",
       "id": "WING_STATUE",
-      "java_sha256": "9c1a637c1baa55d8f4292583ee939618a579adf44e9a044c75e82cddf5718050",
+      "java_sha256": "737281331f6dddfedb6ee92230c38f999dc3724a6ff90865e90ab9a99e0a0394",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/exordium/GoldenWing.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "27663c0e9689e54d09519491d87c029ae7260df78fed6039b97b7b7fb086f877"
@@ -608,7 +608,7 @@
       "effect_sha256": "637f20c5e52593e1aff7f942e0160c01115cabb315ae5bc0774b4b81dc00ed12",
       "game_id": "World of Goop",
       "id": "WORLD_OF_GOOP",
-      "java_sha256": "81aef1648013c0904e89db1b065410a75a8e1d479d6c6844003b95366c1625b7",
+      "java_sha256": "192549c22d617091384b904c29fd5b5782e4e6952912fa8a92a4177e7cc98c38",
       "java_source": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/exordium/GoopPuddle.java",
       "scenario": "CONSTRUCTOR",
       "setup_digest": "27663c0e9689e54d09519491d87c029ae7260df78fed6039b97b7b7fb086f877"

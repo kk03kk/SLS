@@ -20,9 +20,10 @@ from sls.curriculum import IRONCLAD_A0_ACT1
 from sls.model import ModelConfig, Policy
 from sls.rl import PPOConfig, PPOTrainer, WorkerPool
 from sls.rl.training_contract import git_state, native_artifact, native_source_digest
-from sls.validation.readiness_lock import (
-    READINESS_LEVELS, TRAINING_READY, TRAINING_READY_LOCK, verify_readiness_lock,
+from sls.rl.training_contract import (  # noqa: E402
+    ACT1_PRODUCTION_READINESS_LEVEL, ACT1_PRODUCTION_READINESS_LOCK,
 )
+from sls.validation.readiness_lock import verify_readiness_lock
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -31,9 +32,12 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--rounds", type=int, default=3)
     parser.add_argument("--rollout-steps", type=int, default=64)
     parser.add_argument("--output", type=Path, default=ROOT / "runs" / "worker-benchmark.json")
-    parser.add_argument("--readiness-lock", type=Path, default=TRAINING_READY_LOCK)
     parser.add_argument(
-        "--readiness-level", choices=sorted(READINESS_LEVELS), default=TRAINING_READY,
+        "--readiness-lock", type=Path, default=ACT1_PRODUCTION_READINESS_LOCK,
+    )
+    parser.add_argument(
+        "--readiness-level", choices=(ACT1_PRODUCTION_READINESS_LEVEL,),
+        default=ACT1_PRODUCTION_READINESS_LEVEL,
     )
     parser.add_argument("--allow-dirty", action="store_true", help="development/test only")
     return parser

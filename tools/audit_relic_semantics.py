@@ -20,7 +20,7 @@ from sls.content.source_audit import (  # noqa: E402
     java_relic_callbacks, java_sources, registry_game_ids,
 )
 from sls.contracts import Decision, ScreenType  # noqa: E402
-from sls.rl.training_contract import canonical_digest, sha256_file  # noqa: E402
+from sls.rl.training_contract import canonical_digest, source_sha256  # noqa: E402
 from sls.validation.policies import deterministic_action  # noqa: E402
 from audit_card_semantics import _adapt_probe_payload, _rng  # noqa: E402
 from audit_potion_semantics import _projection  # noqa: E402
@@ -113,7 +113,7 @@ def capture(seed: int) -> dict[str, Any]:
                 "setup_digest": scenario["setup_digest"], "effect_sha256": digest,
                 "game_id": game_ids[relic_id],
                 "java_source": source.path.relative_to(ROOT).as_posix(),
-                "java_sha256": sha256_file(source.path),
+                "java_sha256": source_sha256(source.path),
                 "covered_callbacks": sorted(invoked),
                 "remaining_callbacks": sorted(callbacks - invoked),
                 "callback_complete": callbacks == invoked,

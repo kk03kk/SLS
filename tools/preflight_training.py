@@ -15,8 +15,12 @@ import tempfile
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
+from sls.rl.training_contract import (  # noqa: E402
+    ACT1_PRODUCTION_READINESS_LEVEL, ACT1_PRODUCTION_READINESS_LOCK,
+)
 
-def main() -> int:
+
+def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser()
     parser.add_argument("--allow-cpu", action="store_true")
     parser.add_argument("--skip-build", action="store_true")
@@ -24,13 +28,17 @@ def main() -> int:
     parser.add_argument("--jobs", type=int, default=min(os.cpu_count() or 4, 16))
     parser.add_argument(
         "--readiness-lock", type=Path,
-        default=ROOT / "configs" / "validation" / "act1_training_readiness.lock.json",
+        default=ACT1_PRODUCTION_READINESS_LOCK,
     )
     parser.add_argument(
-        "--readiness-level", choices=("ENGINEERING_READY", "TRAINING_READY"),
-        default="TRAINING_READY",
+        "--readiness-level", choices=(ACT1_PRODUCTION_READINESS_LEVEL,),
+        default=ACT1_PRODUCTION_READINESS_LEVEL,
     )
-    args = parser.parse_args()
+    return parser
+
+
+def main() -> int:
+    args = _parser().parse_args()
     checks: dict[str, object] = {}
     try:
         if platform.system() != "Linux":
