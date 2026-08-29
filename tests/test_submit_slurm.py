@@ -54,6 +54,7 @@ def test_nus_command_matrix(
             "--stage", stage,
             "--config",
             str((root / "configs" / "train" / "ironclad_a0_fullrun.toml").resolve()),
+            "--resume", "auto",
         ]
     assert wrapped == expected
     assert f"--partition={partition}" in command
@@ -71,7 +72,8 @@ def test_training_custom_config_is_forwarded(tmp_path: Path) -> None:
     config.write_text("[run]\n", encoding="utf-8")
     args = _parser().parse_args(["pilot", "--config", str(config)])
     wrapped = _wrapped(build_sbatch_command(args, root=tmp_path / "SLS"))
-    assert wrapped[-2:] == ["--config", str(config.resolve())]
+    assert wrapped[wrapped.index("--config") + 1] == str(config.resolve())
+    assert wrapped[-2:] == ["--resume", "auto"]
     assert wrapped[wrapped.index("--stage") + 1] == "pilot"
 
 
@@ -79,3 +81,9 @@ def test_nontraining_jobs_reject_training_config() -> None:
     args = _parser().parse_args(["benchmark", "--config", "custom.toml"])
     with pytest.raises(ValueError, match="does not accept"):
         build_sbatch_command(args)
+
+
+def test_pilot_forwards_explicit_environment_migration(tmp_path: Path) -> None:
+    args = _parser().parse_args(["pilot", "--resume", "environment-migration"])
+    wrapped = _wrapped(build_sbatch_command(args, root=tmp_path / "SLS"))
+    assert wrapped[-2:] == ["--resume", "environment-migration"]

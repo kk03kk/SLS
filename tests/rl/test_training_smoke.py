@@ -17,6 +17,7 @@ from sls.rl import (
     WorkerPool,
     evaluate,
     load_checkpoint,
+    load_checkpoint_environment_migration,
     save_checkpoint,
 )
 
@@ -85,6 +86,52 @@ def test_one_native_ppo_update_and_exact_resume(tmp_path: Path) -> None:
         torch.save({"schema": "sls-full-run-ppo-v4"}, legacy_v2)
         with pytest.raises(ValueError, match="unsupported training checkpoint"):
             load_checkpoint(legacy_v2, trainer)
+
+
+def test_environment_migration_preserves_learning_and_resets_episode_state(
+    tmp_path: Path,
+) -> None:
+    config = PPOConfig(
+        rollout_steps=1, recurrent_sequence_length=1,
+        minibatch_sequences=1, epochs=1,
+    )
+    model_config = ModelConfig(
+        embedding_dim=32, transformer_layers=1, attention_heads=4,
+        feedforward_dim=64, recurrent_hidden_dim=64,
+    )
+    with WorkerPool(IRONCLAD_A0_ACT1, 1) as workers:
+        source = PPOTrainer(
+            Policy(model_config), workers, config, seed=0,
+            native_contract_digest="old-native", git_commit="old-git",
+            training_config_digest="same-training",
+        )
+        source.environment_steps = 104_448
+        source.update = 51
+        source.memory.fill_(1.0)
+        expected_model = {
+            key: value.detach().clone() for key, value in source.model.state_dict().items()
+        }
+        expected_next_seed = source.next_seed
+        path = save_checkpoint(tmp_path / "old.pt", source)
+
+    with WorkerPool(IRONCLAD_A0_ACT1, 1) as workers:
+        migrated = PPOTrainer(
+            Policy(model_config), workers, config, seed=0,
+            native_contract_digest="new-native", git_commit="new-git",
+            training_config_digest="same-training",
+        )
+        with pytest.raises(ValueError, match="contract does not match"):
+            load_checkpoint(path, migrated)
+        load_checkpoint_environment_migration(path, migrated)
+
+        assert migrated.environment_steps == 104_448
+        assert migrated.update == 51
+        assert migrated.next_seed == expected_next_seed + workers.size
+        assert torch.count_nonzero(migrated.memory) == 0
+        assert migrated.episode_starts.tolist() == [True]
+        assert [limit.steps for limit in migrated.episode_limits] == [0]
+        for key, value in migrated.model.state_dict().items():
+            assert torch.equal(value, expected_model[key]), key
 
 
 def test_synthetic_step_limit_is_a_failure_terminal() -> None:

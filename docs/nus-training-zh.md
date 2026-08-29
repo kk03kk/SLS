@@ -75,6 +75,21 @@ python tools/play_live.py D:/SLS/runs/ironclad-a0-fullrun-v1-smoke.pt --device c
 
 ## 5. Pilot：累计 200 万环境步
 
+如果 `latest.pt` 来自 terminal-outcome 修复之前的 104448-step smoke，先为新提交
+重新运行 `preflight` 和 `benchmark`，然后只执行一次显式环境迁移：
+
+~~~bash
+"$TRAIN_PY" tools/submit_slurm.py preflight --python "$TRAIN_PY"
+"$TRAIN_PY" tools/submit_slurm.py benchmark --python "$TRAIN_PY"
+"$TRAIN_PY" tools/submit_slurm.py pilot --python "$TRAIN_PY" --resume environment-migration
+~~~
+
+迁移严格保留模型、优化器、累计步数、update、下一训练 seed 和 RNG；仅放弃旧
+Simulator 中尚未结束的 worker episode，并清零对应 GRU memory 与 episode limit。
+原始 checkpoint 保留为 `latest.pre-environment-migration.pt`，旧评估选出的 best
+也改名保留。迁移成功后的 `latest.pt` 使用新合同；以后恢复仍使用默认 `auto`，
+不得再次传 `environment-migration`。
+
 ~~~bash
 "$TRAIN_PY" tools/submit_slurm.py pilot --python "$TRAIN_PY"
 tail -f runs/slurm-logs/sls-pilot-*.out

@@ -8,6 +8,7 @@ import pytest
 
 from tools.train_full_run import (
     StopController,
+    _archive_pre_migration_best,
     _positive_int,
     _progress_from_baseline,
     _seed_range,
@@ -89,3 +90,20 @@ def test_progress_report_is_relative_to_update_zero() -> None:
         "reached_act3_rate_delta": pytest.approx(0.1),
         "median_failure_floor_delta": pytest.approx(3.0),
     }
+
+
+def test_environment_migration_archives_stale_best_without_deleting_it(
+    tmp_path: Path,
+) -> None:
+    (tmp_path / "best_success.pt").write_bytes(b"checkpoint")
+    (tmp_path / "best_success.json").write_text("{}\n", encoding="utf-8")
+
+    archived = _archive_pre_migration_best(tmp_path)
+
+    assert archived == [
+        "best_success.pre-environment-migration.pt",
+        "best_success.pre-environment-migration.json",
+    ]
+    assert (tmp_path / archived[0]).read_bytes() == b"checkpoint"
+    assert (tmp_path / archived[1]).read_text(encoding="utf-8") == "{}\n"
+    assert _archive_pre_migration_best(tmp_path) == archived

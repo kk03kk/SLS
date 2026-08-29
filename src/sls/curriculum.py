@@ -20,6 +20,13 @@ class RunPhase(str, Enum):
     DEATH = "DEATH"
 
 
+class TerminalOutcome(str, Enum):
+    """Backend-authoritative terminal result, kept outside policy observation."""
+
+    PLAYER_LOSS = "PLAYER_LOSS"
+    PLAYER_VICTORY = "PLAYER_VICTORY"
+
+
 class EpisodeHorizon(IntEnum):
     ACT_1 = 1
     ACT_2 = 2
@@ -73,13 +80,22 @@ def evaluate_horizon(
     observation: Observation,
     *,
     act_completed: int | None = None,
+    terminal_outcome: TerminalOutcome | None = None,
 ) -> HorizonDecision:
-    phase = phase_of(observation)
+    phase = (
+        RunPhase.DEATH
+        if terminal_outcome is TerminalOutcome.PLAYER_LOSS
+        else RunPhase.VICTORY
+        if terminal_outcome is TerminalOutcome.PLAYER_VICTORY
+        else phase_of(observation)
+    )
     if phase is RunPhase.DEATH:
         return HorizonDecision(True, False, "DEATH")
     if phase is RunPhase.VICTORY:
         if profile.horizon is EpisodeHorizon.HEART and observation.run.act < 4:
             return HorizonDecision(True, False, "HEART_NOT_REACHED")
+        if profile.horizon is EpisodeHorizon.FULL_RUN and observation.run.act < 3:
+            return HorizonDecision(True, False, "ACT_3_NOT_REACHED")
         return HorizonDecision(True, True, "GAME_VICTORY")
     completed = act_completed
     if completed is None and phase is RunPhase.ACT_TRANSITION:

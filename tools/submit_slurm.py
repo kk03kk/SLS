@@ -35,6 +35,9 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--memory", default="64G")
     parser.add_argument("--time")
     parser.add_argument("--config", type=Path)
+    parser.add_argument(
+        "--resume", choices=("auto", "environment-migration"), default="auto",
+    )
     parser.add_argument("--dry-run", action="store_true")
     return parser
 
@@ -45,7 +48,11 @@ def build_sbatch_command(args: argparse.Namespace, *, root: Path = ROOT) -> list
     if args.cpus <= 0:
         raise ValueError("--cpus must be positive")
     if args.task in {"preflight", "benchmark"}:
-        unsupported = ["--config"] if args.config is not None else []
+        unsupported = []
+        if args.config is not None:
+            unsupported.append("--config")
+        if args.resume != "auto":
+            unsupported.append("--resume")
         if unsupported:
             raise ValueError(
                 f"{args.task} does not accept training option(s): "
@@ -73,7 +80,7 @@ def build_sbatch_command(args: argparse.Namespace, *, root: Path = ROOT) -> list
             raise ValueError(f"training config does not exist: {config}")
         command = [
             str(python), str(root / "tools" / "train_full_run.py"),
-            "--stage", args.task, "--config", str(config),
+            "--stage", args.task, "--config", str(config), "--resume", args.resume,
         ]
     logs = root / "runs" / "slurm-logs"
     return [

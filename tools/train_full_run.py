@@ -8,6 +8,7 @@ import json
 import math
 import os
 import platform
+import shutil
 import signal
 import socket
 import sys
@@ -30,6 +31,7 @@ from sls.rl import (
     ShardedWorkerPool,
     evaluate,
     load_checkpoint,
+    load_checkpoint_environment_migration,
     save_checkpoint,
 )
 from sls.rl.best_checkpoint import best_checkpoint_record, update_best_checkpoint
@@ -194,9 +196,36 @@ def _append_record(path: Path, record: dict[str, object]) -> None:
     print(json.dumps(record, sort_keys=True), flush=True)
 
 
+def _archive_pre_migration_best(output: Path) -> list[str]:
+    """Retain best artifacts selected with pre-migration evaluation semantics."""
+
+    pairs = [
+        (output / "best_success.pt", output / "best_success.pre-environment-migration.pt"),
+        (
+            output / "best_success.json",
+            output / "best_success.pre-environment-migration.json",
+        ),
+    ]
+    for source, target in pairs:
+        if source.exists() and target.exists():
+            raise FileExistsError(f"cannot archive both existing best artifacts: {target}")
+    archived = []
+    for source, target in pairs:
+        if source.exists():
+            source.replace(target)
+            archived.append(target.name)
+        elif target.exists():
+            archived.append(target.name)
+    return archived
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--stage", choices=STAGES, required=True)
+    parser.add_argument(
+        "--resume", choices=("auto", "environment-migration"), default="auto",
+        help="Use environment-migration once after an approved simulator contract change.",
+    )
     parser.add_argument(
         "--config", type=Path,
         default=ROOT / "configs" / "train" / "ironclad_a0_fullrun.toml",
@@ -236,6 +265,8 @@ def main() -> int:
     latest = output / "latest.pt"
     if args.stage == "smoke" and latest.exists():
         raise FileExistsError("smoke refuses to overwrite an existing training chain")
+    if args.stage == "smoke" and args.resume != "auto":
+        raise ValueError("smoke cannot use environment migration")
     if args.stage != "smoke" and not latest.exists():
         raise FileNotFoundError(f"{args.stage} requires the smoke/pilot checkpoint: {latest}")
     output.mkdir(parents=True, exist_ok=True)
@@ -302,7 +333,46 @@ def main() -> int:
                 training_seed_limit=periodic_seeds.start,
             )
             if latest.exists():
-                load_checkpoint(latest, trainer)
+                if args.resume == "environment-migration":
+                    backup = output / "latest.pre-environment-migration.pt"
+                    if backup.exists():
+                        if sha256_file(backup) != sha256_file(latest):
+                            raise FileExistsError(
+                                "environment-migration backup already exists with different data"
+                            )
+                    else:
+                        shutil.copy2(latest, backup)
+                    previous = load_checkpoint_environment_migration(latest, trainer)
+                    archived_best = _archive_pre_migration_best(output)
+                    save_checkpoint(latest, trainer)
+                    migration = {
+                        "schema": "sls-environment-migration-v1",
+                        "environment_steps": trainer.environment_steps,
+                        "update": trainer.update,
+                        "abandoned_environments": workers_count,
+                        "first_fresh_seed": trainer.next_seed - workers_count,
+                        "next_seed": trainer.next_seed,
+                        "source_checkpoint_sha256": sha256_file(backup),
+                        "archived_pre_migration_best": archived_best,
+                        "old_git_commit": previous["contract"]["git_commit"],
+                        "new_git_commit": repository["commit"],
+                        "old_native_source_sha256": previous["contract"][
+                            "native_source_sha256"
+                        ],
+                        "new_native_source_sha256": source_digest,
+                    }
+                    _append_record(metrics_path, {
+                        "environment_steps": trainer.environment_steps,
+                        "update": trainer.update,
+                        "environment_migration": migration,
+                    })
+                    manifest["git"] = repository
+                    manifest["native_source_sha256"] = source_digest
+                    manifest["native_artifact"] = native_artifact()
+                    manifest.setdefault("environment_migrations", []).append(migration)
+                    _atomic_json(manifest_path, manifest)
+                else:
+                    load_checkpoint(latest, trainer)
             if trainer.environment_steps >= target_steps:
                 raise ValueError(f"stage target already reached: {trainer.environment_steps}")
 

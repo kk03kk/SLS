@@ -31,6 +31,7 @@ from sls.contracts.continuation import continuation_simulator
 from sls.curriculum import (
     IRONCLAD_A0_HEART,
     CurriculumProfile,
+    TerminalOutcome,
     completed_act_between,
     evaluate_horizon,
 )
@@ -139,13 +140,22 @@ class SimulatorBackend:
                 int(validation_evidence["card_soul_cost_reset_count"]),
             )
             raw = self._native.snapshot()
+        return self._transition_from_raw(previous_observation, raw)
+
+    def _transition_from_raw(
+        self, previous_observation: Observation, raw: Mapping[str, Any],
+    ) -> Transition:
+        """Build one policy transition while retaining native terminal truth."""
+
         next_decision = self._adapt(raw)
+        terminal_outcome = _native_terminal_outcome(raw)
         decision = evaluate_horizon(
             self.profile,
             next_decision.observation,
             act_completed=completed_act_between(
                 previous_observation, next_decision.observation,
             ),
+            terminal_outcome=terminal_outcome,
         )
         if decision.terminated != next_decision.terminal:
             next_decision = Decision(
@@ -158,7 +168,13 @@ class SimulatorBackend:
             reward=1.0 if decision.success else -1.0 if decision.reason == "DEATH" else 0.0,
             terminated=decision.terminated,
             truncated=False,
-            info={"reason": decision.reason, "success": decision.success},
+            info={
+                "reason": decision.reason,
+                "success": decision.success,
+                "terminal_outcome": (
+                    terminal_outcome.value if terminal_outcome is not None else None
+                ),
+            },
         )
 
     def checkpoint(self) -> dict[str, Any]:
@@ -459,6 +475,17 @@ def _screen_type(raw: Mapping[str, Any]) -> ScreenType:
         8: ScreenType.SHOP,
         9: ScreenType.COMBAT,
     }.get(screen, ScreenType.ACT_TRANSITION)
+
+
+def _native_terminal_outcome(raw: Mapping[str, Any]) -> TerminalOutcome | None:
+    outcome = int(raw["public_run"]["outcome"])
+    if outcome == 0:
+        return TerminalOutcome.PLAYER_LOSS
+    if outcome == 1:
+        return None
+    if outcome == 2:
+        return TerminalOutcome.PLAYER_VICTORY
+    raise ValueError(f"unsupported native game outcome: {outcome}")
 
 
 def _semantic_actions(

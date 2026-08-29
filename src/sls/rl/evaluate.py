@@ -9,7 +9,7 @@ from typing import Callable
 import torch
 
 from sls.backends.simulator import SimulatorBackend
-from sls.curriculum import CurriculumProfile
+from sls.curriculum import CurriculumProfile, EpisodeHorizon
 from sls.model import Policy, PolicyBatch
 from sls.rl.episode_limit import EpisodeLimitState
 
@@ -129,6 +129,24 @@ def evaluate(
                 boss_results.setdefault(f"ACT_{previous_act}:{boss}", []).append(True)
             if transition.terminated or transition.truncated:
                 success = bool(transition.info.get("success"))
+                if (
+                    success
+                    and profile.horizon is EpisodeHorizon.FULL_RUN
+                    and not (
+                        current_act >= 3
+                        and (
+                            (
+                                transition.info.get("reason") == "GAME_VICTORY"
+                                and transition.info.get("terminal_outcome")
+                                == "PLAYER_VICTORY"
+                            )
+                            or transition.info.get("reason") == "ACT_3_CLEARED"
+                        )
+                    )
+                ):
+                    raise RuntimeError(
+                        "FullRun backend reported success without a real Act 3 victory"
+                    )
                 successes += int(success)
                 backend_truncations += int(transition.truncated and not transition.terminated)
                 if success and current_act == previous_act:

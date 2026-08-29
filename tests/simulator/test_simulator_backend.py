@@ -3,11 +3,24 @@ from __future__ import annotations
 import gzip
 import hashlib
 import json
+from copy import deepcopy
 from pathlib import Path
 
 import pytest
 
 from sls.contracts import Action, ActionKind
+
+
+def _terminal_transition(
+    backend: object, *, outcome: int, act: int, hp: int,
+) -> object:
+    previous = backend.reset(0).observation
+    raw = deepcopy(backend.raw_state)
+    raw["public_run"]["outcome"] = outcome
+    raw["public_run"]["act"] = act
+    raw["player_state"]["current_hp"] = hp
+    raw["legal_actions"] = []
+    return backend._transition_from_raw(previous, raw)
 
 
 def test_native_full_run_reaches_a_canonical_decision() -> None:
@@ -19,6 +32,44 @@ def test_native_full_run_reaches_a_canonical_decision() -> None:
     assert not decision.terminal
     assert decision.actions
     assert decision.observation.run.act == 1
+
+
+def test_positive_hp_native_loss_is_a_negative_terminal() -> None:
+    pytest.importorskip("sls.backends.simulator.native", exc_type=ImportError)
+    from sls.backends.simulator import SimulatorBackend
+    from sls.curriculum import IRONCLAD_A0_FULLRUN
+
+    transition = _terminal_transition(
+        SimulatorBackend(IRONCLAD_A0_FULLRUN), outcome=0, act=1, hp=17,
+    )
+
+    assert transition.terminated and transition.decision.terminal
+    assert transition.info == {
+        "reason": "DEATH",
+        "success": False,
+        "terminal_outcome": "PLAYER_LOSS",
+    }
+    assert transition.reward == -1.0
+
+
+def test_positive_hp_native_victory_requires_the_fullrun_horizon() -> None:
+    pytest.importorskip("sls.backends.simulator.native", exc_type=ImportError)
+    from sls.backends.simulator import SimulatorBackend
+    from sls.curriculum import IRONCLAD_A0_FULLRUN
+
+    premature = _terminal_transition(
+        SimulatorBackend(IRONCLAD_A0_FULLRUN), outcome=2, act=2, hp=17,
+    )
+    victory = _terminal_transition(
+        SimulatorBackend(IRONCLAD_A0_FULLRUN), outcome=2, act=3, hp=17,
+    )
+
+    assert premature.terminated and not premature.info["success"]
+    assert premature.info["reason"] == "ACT_3_NOT_REACHED"
+    assert victory.terminated and victory.info["success"]
+    assert victory.info["reason"] == "GAME_VICTORY"
+    assert victory.info["terminal_outcome"] == "PLAYER_VICTORY"
+    assert victory.reward == 1.0
 
 
 def test_seed_zero_neow_transform_uses_the_stock_rng_counter() -> None:

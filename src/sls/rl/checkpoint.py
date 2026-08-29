@@ -111,3 +111,70 @@ def load_checkpoint(path: str | Path, trainer: PPOTrainer) -> Mapping[str, Any]:
         torch.cuda.set_rng_state_all(payload["cuda_rng"])
     trainer.decisions = trainer.workers.load_checkpoints(payload["environments"])
     return payload
+
+
+def load_checkpoint_environment_migration(
+    path: str | Path, trainer: PPOTrainer,
+) -> Mapping[str, Any]:
+    """Resume learning state while deliberately abandoning in-flight episodes.
+
+    This is narrower than a warm start: every learning and RNG field is retained,
+    and only Git/native simulator provenance may differ. Worker environments,
+    episode-limit state, and recurrent episode memory are reset together.
+    """
+
+    payload = torch.load(Path(path), map_location="cpu", weights_only=False)
+    if payload.get("schema") != CHECKPOINT_SCHEMA:
+        raise ValueError("unsupported training checkpoint")
+    actual = payload.get("contract")
+    expected = _contract(trainer)
+    if not isinstance(actual, Mapping):
+        raise ValueError("checkpoint contract is missing")
+    allowed_changes = {"git_commit", "native_source_sha256"}
+    incompatible = {
+        key for key in set(actual) | set(expected)
+        if key not in allowed_changes and actual.get(key) != expected.get(key)
+    }
+    if incompatible:
+        raise ValueError(
+            "environment migration checkpoint has incompatible contract fields: "
+            + ", ".join(sorted(incompatible))
+        )
+    changed = {
+        key for key in allowed_changes if actual.get(key) != expected.get(key)
+    }
+    if not changed:
+        raise ValueError("checkpoint does not require environment migration")
+
+    trainer.model.load_state_dict(payload["model"])
+    trainer.optimizer.load_state_dict(payload["optimizer"])
+    state = payload["trainer"]
+    trainer.update = int(state["update"])
+    trainer.episodes = int(state["episodes"])
+    trainer.environment_steps = int(state["environment_steps"])
+    trainer.next_seed = int(state["next_seed"])
+    trainer.random.setstate(state["random"])
+    from sls.rl.episode_limit import TERMINATION_REASONS, EpisodeLimitState
+    counts = state.get("termination_counts")
+    if not isinstance(counts, Mapping) or set(counts) != set(TERMINATION_REASONS):
+        raise ValueError("checkpoint termination counters are invalid")
+    trainer.termination_counts = {key: int(counts[key]) for key in TERMINATION_REASONS}
+    trainer.last_collect_terminations = {key: 0 for key in TERMINATION_REASONS}
+
+    first_seed = trainer.next_seed
+    next_seed = first_seed + trainer.workers.size
+    if trainer.training_seed_limit is not None and next_seed > trainer.training_seed_limit:
+        raise RuntimeError("training seed namespace reached held-out evaluation seeds")
+    trainer.decisions = trainer.workers.reset(range(first_seed, next_seed))
+    trainer.next_seed = next_seed
+    trainer.episode_limits = [EpisodeLimitState.initial(item) for item in trainer.decisions]
+    trainer.memory = trainer.model.initial_memory(trainer.workers.size, trainer.device)
+    trainer.episode_starts = torch.ones(
+        trainer.workers.size, dtype=torch.bool, device=trainer.device,
+    )
+
+    random.setstate(payload["python_rng"])
+    torch.set_rng_state(payload["torch_rng"])
+    if torch.cuda.is_available() and payload.get("cuda_rng") is not None:
+        torch.cuda.set_rng_state_all(payload["cuda_rng"])
+    return payload

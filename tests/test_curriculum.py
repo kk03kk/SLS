@@ -17,6 +17,7 @@ from sls.curriculum import (
     IRONCLAD_A0_HEART,
     IRONCLAD_A20_FULLRUN,
     IRONCLAD_A20_HEART,
+    TerminalOutcome,
     completed_act_between,
     evaluate_horizon,
     ironclad_fullrun_profile,
@@ -83,6 +84,24 @@ def test_fullrun_and_heart_have_distinct_terminal_goals() -> None:
 
     heart_ending = _observation(4, ScreenType.GAME_OVER)
     assert evaluate_horizon(IRONCLAD_A0_HEART, heart_ending).success
+
+
+def test_explicit_terminal_outcome_overrides_positive_hp_heuristic() -> None:
+    positive_hp_game_over = _observation(1, ScreenType.GAME_OVER, hp=17)
+    loss = evaluate_horizon(
+        IRONCLAD_A0_FULLRUN,
+        positive_hp_game_over,
+        terminal_outcome=TerminalOutcome.PLAYER_LOSS,
+    )
+    premature_victory = evaluate_horizon(
+        IRONCLAD_A0_FULLRUN,
+        positive_hp_game_over,
+        terminal_outcome=TerminalOutcome.PLAYER_VICTORY,
+    )
+
+    assert loss.terminated and not loss.success and loss.reason == "DEATH"
+    assert premature_victory.terminated and not premature_victory.success
+    assert premature_victory.reason == "ACT_3_NOT_REACHED"
 
 
 def test_fullrun_stops_after_act_three_even_when_a_key_route_would_continue() -> None:

@@ -26,6 +26,7 @@ __all__ = [
     "WorkerPool",
     "evaluate",
     "load_checkpoint",
+    "load_checkpoint_environment_migration",
     "policy_boundary_fingerprint",
     "save_checkpoint",
 ]
@@ -40,6 +41,9 @@ _LAZY_EXPORTS = {
     "WorkerPool": ("sls.rl.workers", "WorkerPool"),
     "evaluate": ("sls.rl.evaluate", "evaluate"),
     "load_checkpoint": ("sls.rl.checkpoint", "load_checkpoint"),
+    "load_checkpoint_environment_migration": (
+        "sls.rl.checkpoint", "load_checkpoint_environment_migration",
+    ),
     "save_checkpoint": ("sls.rl.checkpoint", "save_checkpoint"),
 }
 

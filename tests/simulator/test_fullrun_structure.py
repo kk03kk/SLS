@@ -83,7 +83,11 @@ def test_policy_visible_route_structurally_reaches_and_defeats_heart(ascension: 
         pytest.fail("canonical FullRun structural route did not terminate")
 
     assert last_transition is not None
-    assert last_transition.info == {"reason": "GAME_VICTORY", "success": True}
+    assert last_transition.info == {
+        "reason": "GAME_VICTORY",
+        "success": True,
+        "terminal_outcome": "PLAYER_VICTORY",
+    }
     assert acts == {1, 2, 3, 4}
     assert decision.observation.run.has_ruby_key
     assert decision.observation.run.has_emerald_key
