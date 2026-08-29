@@ -25,14 +25,9 @@ def _simulator_at_step(
 ):
     """Restore the nearest compatible anchor, falling back to an earlier one."""
 
-    from sls.backends.simulator import (
-        IRONCLAD_A0_ACT1, IRONCLAD_A0_ACT2, IRONCLAD_A0_ACT3,
-        IRONCLAD_A0_HEART, SimulatorBackend,
-    )
+    from sls.backends.simulator import SimulatorBackend
     from sls.contracts import Action
-    profiles = {p.profile_id: p for p in (
-        IRONCLAD_A0_ACT1, IRONCLAD_A0_ACT2, IRONCLAD_A0_ACT3, IRONCLAD_A0_HEART,
-    )}
+    from sls.curriculum import CURRICULUM_PROFILES_BY_ID
     failures: list[str] = []
     anchors = sorted(
         (a for a in manifest.get("anchors", []) if int(a["sequence"]) <= step),
@@ -44,7 +39,7 @@ def _simulator_at_step(
                 bundle / anchor["path"] / "simulator-checkpoint.json.gz", "rt", encoding="utf-8",
             ) as stream:
                 checkpoint = json.load(stream)
-            simulator = SimulatorBackend(profiles[manifest["profile_id"]])
+            simulator = SimulatorBackend(CURRICULUM_PROFILES_BY_ID[manifest["profile_id"]])
             decision = simulator.load_checkpoint(checkpoint)
             action_suffix = []
             for sequence in range(int(anchor["sequence"]), step):
@@ -145,7 +140,11 @@ def extract(
     elif category == "adapter":
         fixture["raw_original_payload"] = boundary["raw_original_payload"]
         expected = boundary.get("canonical_simulator_decision")
-        if expected is None:
+        # An explicit adapter extraction is also the controlled migration path
+        # after a deliberate public-policy contract change.  Re-evaluate the
+        # immutable native checkpoint with the current adapter instead of
+        # copying a stale decision cached in the truth bundle.
+        if target_backend == "original-adapter" or expected is None:
             _, decision, _, _, _ = _simulator_at_step(bundle, manifest, boundaries, step)
             expected = {
                 "observation": decision.observation.to_dict(),

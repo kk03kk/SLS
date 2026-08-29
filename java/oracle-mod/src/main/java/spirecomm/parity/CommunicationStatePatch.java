@@ -219,6 +219,16 @@ public final class CommunicationStatePatch {
         if (Settings.seed == null) {
             return json;
         }
+        // Returning to the main menu is asynchronous.  Settings.seed remains
+        // populated for a few frames after the dungeon and player have already
+        // been torn down, and AbstractDungeon.getCurrRoom() dereferences the
+        // now-null current map node.  Treat that transition as a plain public
+        // CommunicationMod state instead of attempting parity instrumentation.
+        MapRoomNode currentNode = AbstractDungeon.getCurrMapNode();
+        if (currentNode == null || AbstractDungeon.player == null) {
+            return json;
+        }
+        AbstractRoom currentRoom = currentNode.room;
         Map<String, Object> rng = new LinkedHashMap<String, Object>();
         rng.put("ai", ParityRng.state(AbstractDungeon.aiRng));
         rng.put("card_random", ParityRng.state(AbstractDungeon.cardRandomRng));
@@ -240,10 +250,8 @@ public final class CommunicationStatePatch {
         run.put("sapphire_key", Settings.hasSapphireKey);
         run.put("burning_elite_x", null);
         run.put("burning_elite_y", null);
-        if (AbstractDungeon.getCurrMapNode() != null) {
-            run.put("current_map_x", AbstractDungeon.getCurrMapNode().x);
-            run.put("current_map_y", AbstractDungeon.getCurrMapNode().y);
-        }
+        run.put("current_map_x", currentNode.x);
+        run.put("current_map_y", currentNode.y);
         if (AbstractDungeon.map != null) {
             for (ArrayList<MapRoomNode> row : AbstractDungeon.map) {
                 for (MapRoomNode node : row) {
@@ -255,14 +263,13 @@ public final class CommunicationStatePatch {
             }
         }
         Map<String, Object> continuation = new LinkedHashMap<String, Object>();
-        continuation.put("room_class", AbstractDungeon.getCurrRoom() == null ? null
-            : AbstractDungeon.getCurrRoom().getClass().getName());
+        continuation.put("room_class", currentRoom == null ? null
+            : currentRoom.getClass().getName());
         continuation.put("screen", AbstractDungeon.screen == null ? null : AbstractDungeon.screen.name());
-        continuation.put("event_id", AbstractDungeon.getCurrRoom() == null
-            || AbstractDungeon.getCurrRoom().event == null ? null
-            : eventId(AbstractDungeon.getCurrRoom().event));
-        continuation.put("event_phase", AbstractDungeon.getCurrRoom() == null
-            ? null : eventPhase(AbstractDungeon.getCurrRoom().event));
+        continuation.put("event_id", currentRoom == null
+            || currentRoom.event == null ? null : eventId(currentRoom.event));
+        continuation.put("event_phase", currentRoom == null
+            ? null : eventPhase(currentRoom.event));
         continuation.put("action_phase", AbstractDungeon.actionManager == null ? null
             : AbstractDungeon.actionManager.phase.name());
         continuation.put("combat_turn", com.megacrit.cardcrawl.actions.GameActionManager.turn);
@@ -270,8 +277,8 @@ public final class CommunicationStatePatch {
         continuation.put("card_selection_task", null);
         continuation.put("card_selection_count", 0);
         if (AbstractDungeon.screen == AbstractDungeon.CurrentScreen.CARD_REWARD
-                && AbstractDungeon.getCurrRoom() != null
-                && AbstractDungeon.getCurrRoom().phase == AbstractRoom.RoomPhase.COMBAT) {
+                && currentRoom != null
+                && currentRoom.phase == AbstractRoom.RoomPhase.COMBAT) {
             continuation.put("card_selection_source", "GENERATED");
             continuation.put("card_selection_task", "DISCOVERY");
             continuation.put("card_selection_count", 1);
@@ -280,8 +287,8 @@ public final class CommunicationStatePatch {
             continuation.put("card_selection_source", "MASTER_DECK");
             continuation.put("card_selection_task", "BOTTLE");
         }
-        continuation.put("post_combat", AbstractDungeon.getCurrRoom() != null
-            && AbstractDungeon.getCurrRoom().isBattleOver);
+        continuation.put("post_combat", currentRoom != null
+            && currentRoom.isBattleOver);
         continuation.put("loading_post_combat", AbstractDungeon.loading_post_combat);
         continuation.put("ui_boundary_folded", false);
         continuation.put("continuation_kind", AbstractDungeon.screen == null
@@ -300,10 +307,9 @@ public final class CommunicationStatePatch {
         continuation.put("card_queue_types", cardQueueTypes);
         ArrayList<Map<String, Object>> activeCardSouls =
             new ArrayList<Map<String, Object>>();
-        if (AbstractDungeon.getCurrRoom() != null
-                && AbstractDungeon.getCurrRoom().souls != null) {
+        if (currentRoom != null && currentRoom.souls != null) {
             ArrayList<Soul> souls = ReflectionHacks.getPrivate(
-                AbstractDungeon.getCurrRoom().souls, SoulGroup.class, "souls"
+                currentRoom.souls, SoulGroup.class, "souls"
             );
             for (Soul soul : souls) {
                 if (soul.isReadyForReuse || soul.card == null) {
@@ -380,8 +386,7 @@ public final class CommunicationStatePatch {
                 }
             }
         }
-        AbstractEvent currentEvent = AbstractDungeon.getCurrRoom() == null
-            ? null : AbstractDungeon.getCurrRoom().event;
+        AbstractEvent currentEvent = currentRoom == null ? null : currentRoom.event;
         ArrayList<Map<String, Object>> eventOptionRows =
             new ArrayList<Map<String, Object>>();
         if (currentEvent != null) {
@@ -438,20 +443,25 @@ public final class CommunicationStatePatch {
                     + json.substring(optionsAt + needle.length());
             }
         }
+        boolean validationMode = !"production".equalsIgnoreCase(
+            System.getProperty("sls.oracle.mode", "validation"));
+        String validationFields = validationMode
+            ? ",\"_rng\":" + gson.toJson(rng)
+                + ",\"_continuation\":" + gson.toJson(continuation)
+                + ",\"_timing_evidence\":" + gson.toJson(timingEvidence)
+                + ",\"math_seed\":" + Long.toUnsignedString(ParityRng.mathSeed)
+                + (OracleScenarioPatch.activeScenario == null ? ""
+                    : ",\"_parity_scenario\":"
+                        + gson.toJson(OracleScenarioPatch.activeScenario))
+            : "";
         return json.substring(0, json.length() - 1)
             + ",\"_parity_schema\":" + gson.toJson(INSTRUMENTATION_SCHEMA)
-            + ",\"_rng\":" + gson.toJson(rng)
             + ",\"_parity_run\":" + gson.toJson(run)
-            + ",\"_continuation\":" + gson.toJson(continuation)
-            + ",\"_timing_evidence\":" + gson.toJson(timingEvidence)
             + ",\"_monster_intents\":" + gson.toJson(monsterIntents)
             + ",\"_combat_reward_cards\":" + gson.toJson(combatRewardCards)
             + ",\"_event_option_rows\":" + gson.toJson(eventOptionRows)
             + ",\"_match_slots\":" + gson.toJson(matchSlots)
-            + ",\"math_seed\":" + Long.toUnsignedString(ParityRng.mathSeed)
-            + (OracleScenarioPatch.activeScenario == null ? ""
-                : ",\"_parity_scenario\":"
-                    + gson.toJson(OracleScenarioPatch.activeScenario))
+            + validationFields
             + "}";
     }
 

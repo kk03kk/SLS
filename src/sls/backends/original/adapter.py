@@ -6,10 +6,10 @@ from dataclasses import dataclass
 from typing import Any, Mapping, Sequence
 
 from sls.content.normalize import (
-    normalize_card_id, normalize_content_id, normalize_event_id, normalize_potion_id,
-    normalize_power_amount, normalize_power_id,
+    normalize_card_id, normalize_content_id, normalize_event_id, normalize_monster_id,
+    normalize_potion_id, normalize_power_amount, normalize_power_id,
 )
-from sls.content.scope import filter_policy_shop
+from sls.content.scope import filter_policy_offers, filter_policy_shop
 from sls.contracts import (
     Action,
     ActionKind,
@@ -68,6 +68,18 @@ def _reward_kind(reward: Mapping[str, Any]) -> str:
     return "GOLD" if kind == "STOLEN_GOLD" else kind
 
 
+def _has_empty_potion_slot(game: Mapping[str, Any]) -> bool:
+    """Whether a stock potion reward can be collected at this boundary."""
+
+    potions = _mappings(game.get("potions"))
+    # Older/targeted payloads may omit the slot vector.  In that case keep the
+    # reward visible; production Oracle payloads always expose every slot.
+    return not potions or any(
+        normalize_potion_id(item.get("id")) == "EMPTY_POTION_SLOT"
+        for item in potions
+    )
+
+
 @dataclass(frozen=True, slots=True)
 class AdaptedOriginalDecision:
     decision: Decision
@@ -113,6 +125,11 @@ def adapt_original(payload: Mapping[str, Any]) -> AdaptedOriginalDecision:
             options["shop"], actions, commands,
         )
         options["shop"] = shop
+    elif screen is ScreenType.COMBAT_REWARD:
+        rewards, actions, commands = filter_policy_offers(
+            options["reward"], actions, commands,
+        )
+        options["reward"] = rewards
     outcome = str(game.get("screen_type") or "").upper()
     terminal = screen is ScreenType.GAME_OVER or outcome in {"DEATH", "VICTORY"}
     if terminal:
@@ -361,14 +378,12 @@ def _actions(
                         ),
                         f"choose {choice_index}", f"choose {card_index}",
                     )
-                add(
-                    Action(
-                        ActionKind.SKIP_CARD_REWARD,
-                        option_id=f"reward-card:{occurrence}",
-                    ),
-                    f"choose {choice_index}",
-                    "skip",
-                )
+                # This adapter flattens stock's parent CombatRewardScreen and
+                # child CardRewardScreen into one policy boundary.  Child
+                # ``skip`` only closes the card popup and leaves the same
+                # RewardItem available, so exposing it here creates a
+                # stateless no-op loop.  The parent SKIP_REWARD action is the
+                # irreversible way to abandon remaining rewards.
                 if any(
                     normalize_content_id(item.get("id")) == "SINGING_BOWL"
                     for item in _mappings(game.get("relics"))
@@ -383,7 +398,8 @@ def _actions(
             elif reward_type == "GOLD":
                 add(Action(ActionKind.TAKE_REWARD, reward_id=f"reward-gold:{occurrence}"), f"choose {choice_index}")
             elif reward_type == "POTION":
-                add(Action(ActionKind.TAKE_REWARD, reward_id=f"reward-potion:{occurrence}"), f"choose {choice_index}")
+                if _has_empty_potion_slot(game):
+                    add(Action(ActionKind.TAKE_REWARD, reward_id=f"reward-potion:{occurrence}"), f"choose {choice_index}")
             elif reward_type == "RELIC":
                 add(Action(ActionKind.TAKE_REWARD, reward_id=f"reward-relic:{occurrence}"), f"choose {choice_index}")
             elif "SAPPHIRE" in reward_type:
@@ -521,7 +537,7 @@ def _powers(values: Any, prefix: str) -> tuple[PublicEntity, ...]:
 
 
 def _enemy(monster: Mapping[str, Any], index: int, parity: Mapping[str, Any]) -> Enemy:
-    monster_id = normalize_content_id(monster.get("id"))
+    monster_id = normalize_monster_id(monster.get("id"))
     gone = bool(monster.get("is_gone", False)) or _integer(monster.get("current_hp")) <= 0
     intent = str(parity.get("intent") or monster.get("intent") or "UNKNOWN").upper()
     if intent == "DEBUG" and (monster_id, _integer(monster.get("move_id"))) == ("CULTIST", 3):

@@ -16,7 +16,7 @@ ROOT = Path(__file__).resolve().parents[1]
 TASK_CONFIGS = {
     "smoke": "configs/train/act1_smoke.toml",
     "pilot": "configs/train/act1_pilot.toml",
-    "train": "configs/train/full_run.toml",
+    "train": "configs/train/act1_train.toml",
 }
 
 
@@ -40,6 +40,7 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--time")
     parser.add_argument("--config", type=Path)
     parser.add_argument("--resume", action="store_true")
+    parser.add_argument("--warm-start", type=Path)
     parser.add_argument("--workers", type=int, help="selected result from benchmark_workers.py")
     parser.add_argument("--dry-run", action="store_true")
     return parser
@@ -54,6 +55,7 @@ def build_sbatch_command(args: argparse.Namespace, *, root: Path = ROOT) -> list
         unsupported = [
             name for name, value in (
                 ("--config", args.config), ("--resume", args.resume),
+                ("--warm-start", args.warm_start),
                 ("--workers", args.workers),
             )
             if value not in (None, False)
@@ -63,6 +65,8 @@ def build_sbatch_command(args: argparse.Namespace, *, root: Path = ROOT) -> list
                 f"{args.task} does not accept training option(s): "
                 + ", ".join(unsupported)
             )
+    elif args.resume and args.warm_start:
+        raise ValueError("--resume and --warm-start are mutually exclusive")
     python = _absolute_without_symlink_resolution(args.python)
     if args.task == "train":
         partition, walltime = "gpu-long", "3-00:00:00"
@@ -81,6 +85,8 @@ def build_sbatch_command(args: argparse.Namespace, *, root: Path = ROOT) -> list
             command += ["--workers", str(args.workers)]
         if args.resume:
             command += ["--resume", "auto"]
+        if args.warm_start is not None:
+            command += ["--warm-start", str(args.warm_start.resolve())]
     logs = root / "runs" / "slurm-logs"
     return [
         "sbatch", "--parsable", f"--account={args.account}", f"--qos={args.qos}",

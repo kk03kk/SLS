@@ -1,5 +1,5 @@
 {
-  "audit_sha256": "1c066762037a22cc9bbbcbca28420b0e1288011e70bc0652c0584b1937a823b0",
+  "audit_sha256": "f4fcbcbf9e6292e91a17c9b96dfc69d4a28e33202e73853ba669e83c2126522c",
   "entries": [
     {
       "callback_complete": true,
@@ -4206,7 +4206,7 @@
       "callback_scenarios": [
         {
           "artifact": "configs/validation/ironclad_a0_mechanism_semantics.json",
-          "artifact_sha256": "d0f271d3a66dae170e0df89e1b6b2fdaee8a708f26781a5dbcbcade50ff1254a",
+          "artifact_sha256": "c18e72b5dda8dbf879731f31412bae2733ec9bc87cec07d6db2cbb588bcf0402",
           "callback": "onAttacked",
           "effect_sha256": "13b03ab5fc42fafb4fbaa4a11ce775ceceb525ff8c30fa2f0d514248138f3865",
           "scope": "MECHANISM_DAMAGE_BUFFER_INTANGIBLE"
@@ -4317,7 +4317,7 @@
       "callback_scenarios": [
         {
           "artifact": "configs/validation/ironclad_a0_mechanism_semantics.json",
-          "artifact_sha256": "d0f271d3a66dae170e0df89e1b6b2fdaee8a708f26781a5dbcbcade50ff1254a",
+          "artifact_sha256": "c18e72b5dda8dbf879731f31412bae2733ec9bc87cec07d6db2cbb588bcf0402",
           "callback": "onLoseHpLast",
           "effect_sha256": "13b03ab5fc42fafb4fbaa4a11ce775ceceb525ff8c30fa2f0d514248138f3865",
           "scope": "MECHANISM_DAMAGE_BUFFER_INTANGIBLE"
@@ -4563,6 +4563,6 @@
   ],
   "oracle_schema": "spirecomm-parity-v10",
   "schema": "sls-ironclad-relic-semantics-v1",
-  "scope_sha256": "fb9c464dda321dfdb3e237ddef1fcd8427b037c9a39e92510aea183b1d9cfdb8",
+  "scope_sha256": "24a218a612d16c34879dd4469891febc4a770f83d25783e51e79e10476a60f17",
   "seed": 0
 }

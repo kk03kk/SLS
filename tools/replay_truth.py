@@ -57,6 +57,20 @@ def _checkpoint(path: Path) -> dict[str, Any]:
         return json.load(stream)
 
 
+def _has_seed_local_origin(boundaries: list[dict[str, Any]]) -> bool:
+    """Whether a trace contains the real reset boundary and complete suffix."""
+
+    if not boundaries:
+        return False
+    first = boundaries[0]
+    cursor = dict(first.get("cursor") or {})
+    return (
+        int(first.get("sequence", -1)) == 0
+        and int(cursor.get("floor", -1)) == 0
+        and str(cursor.get("screen")) == "NEOW"
+    )
+
+
 def _rng_report(
     original: dict[str, Any], simulator: dict[str, Any],
     previous_original: dict[str, Any] | None, previous_simulator: dict[str, Any] | None,
@@ -93,7 +107,7 @@ def _rng_report(
 
 def replay(
     bundle: Path, *, from_anchor: str | None = None, from_step: int = 0,
-    to_step: int | None = None, window: int = 0,
+    to_step: int | None = None, window: int = 0, public_only: bool = False,
 ) -> tuple[bool, dict[str, Any] | None]:
     manifest, boundaries = load_bundle(bundle)
     resumed_segment = bool(
@@ -129,10 +143,6 @@ def replay(
         try:
             metadata_path = bundle / selected["path"] / "metadata.json"
             metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
-            producer = metadata.get("checkpoint_producer") or {}
-            producer_abi = producer.get("abi") or producer.get("python_abi")
-            if producer_abi and producer_abi != sys.implementation.cache_tag:
-                raise ValueError("native checkpoint ABI is incompatible")
             checkpoint = _checkpoint(bundle / selected["path"] / "simulator-checkpoint.json.gz")
             expected_checkpoint_hash = metadata.get("checkpoint_state_hash")
             if expected_checkpoint_hash and value_hash(checkpoint) != expected_checkpoint_hash:
@@ -147,7 +157,7 @@ def replay(
         except (OSError, ValueError, KeyError, RuntimeError, json.JSONDecodeError) as error:
             restore_failures.append(f"{selected['anchor_id']}: {error}")
     if simulator is None:
-        if resumed_segment:
+        if resumed_segment and not _has_seed_local_origin(boundaries):
             detail = "; ".join(restore_failures) or "bundle contains no native anchor"
             raise ValueError(
                 "derived resume bundle has no compatible checkpoint and cannot be rebuilt "
@@ -182,9 +192,17 @@ def replay(
             continuation_original(boundary["raw_original_payload"]),
             continuation_simulator(simulator.raw_state),
         )
-        combined = {
+        public_differences = {
             **{f"observation:{k}": v for k, v in observation_diff.items()},
             **{f"actions:{k}": v for k, v in action_diff.items()},
+            **{
+                f"terminal:{k}": v for k, v in differences(
+                    {"terminal": original.terminal}, {"terminal": decision.terminal},
+                ).items()
+            },
+        }
+        combined = {
+            **public_differences,
             **{f"state:{k}": v for k, v in state_diff.items()},
             **{f"continuation:{k}": v for k, v in continuation_diff.items()},
         }
@@ -192,18 +210,28 @@ def replay(
             boundary["raw_original_payload"], canonical_screen=boundary["cursor"]["screen"],
         )
         cursor = boundary["cursor"]
-        comparison = comparison_result(
-            evidence_class=manifest["evidence_class"], profile=profile_id,
-            screen=cursor["screen"], act=int(cursor["act"]), floor=int(cursor["floor"]),
-            differences=combined, evidence_gaps=gaps,
-            preceding_action=None if sequence == 0 else (
-                (boundaries[sequence - 1].get("selected_action") or {}).get("kind")
-            ), occurrence_signature=None,
+        comparison = (
+            {
+                "status": "MATCH" if not public_differences else "DIFFERENCE",
+                "category": "POLICY_PUBLIC_CONTRACT",
+                "occurrence_signature": value_hash(public_differences),
+                "cluster_key": "POLICY_PUBLIC_CONTRACT",
+            }
+            if public_only else comparison_result(
+                evidence_class=manifest["evidence_class"], profile=profile_id,
+                screen=cursor["screen"], act=int(cursor["act"]), floor=int(cursor["floor"]),
+                differences=combined, evidence_gaps=gaps,
+                preceding_action=None if sequence == 0 else (
+                    (boundaries[sequence - 1].get("selected_action") or {}).get("kind")
+                ), occurrence_signature=None,
+            )
         )
         if sequence >= from_step and comparison["status"] != "MATCH":
             report_values = (
-                {f"evidence:{item['path']}": [None, item["code"]] for item in gaps}
-                if gaps else combined
+                public_differences if public_only else (
+                    {f"evidence:{item['path']}": [None, item["code"]] for item in gaps}
+                    if gaps else combined
+                )
             )
             first = sorted(report_values)[0]
             rng_paths = [path for path in sorted(report_values) if "rng" in path.lower()]
@@ -216,7 +244,8 @@ def replay(
                 "category": comparison["category"],
                 "signature": comparison["occurrence_signature"],
                 "cluster_key": comparison["cluster_key"], "first_field_path": first,
-                "values": report_values[first], "evidence_gaps": gaps,
+                "values": report_values[first],
+                "evidence_gaps": [] if public_only else gaps,
                 "first_rng_path": rng_paths[0] if rng_paths else None,
                 "nearest_anchor": nearest["anchor_id"] if nearest else None,
                 "restore_mode": restore_mode, "restore_anchor": restore_anchor,
@@ -251,11 +280,15 @@ def main() -> int:
     parser.add_argument("--from-step", type=int, default=0)
     parser.add_argument("--to-step", type=int)
     parser.add_argument("--window", type=int, default=0)
+    parser.add_argument(
+        "--public-only", action="store_true",
+        help="compare only policy-visible observations, actions, and terminal semantics",
+    )
     args = parser.parse_args()
     try:
         matched, detail = replay(
             args.bundle, from_anchor=args.from_anchor, from_step=args.from_step,
-            to_step=args.to_step, window=args.window,
+            to_step=args.to_step, window=args.window, public_only=args.public_only,
         )
     except (OSError, ValueError, KeyError, json.JSONDecodeError) as error:
         print(json.dumps({"valid": False, "error": str(error)}, ensure_ascii=False), file=sys.stderr)

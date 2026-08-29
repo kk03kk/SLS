@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 from pathlib import Path
 import re
@@ -20,6 +19,7 @@ from sls.content.scope import (  # noqa: E402
     IRONCLAD_A0_SCOPE_PATH,
     canonical_scope_digest,
 )
+from sls.rl.training_contract import source_sha256  # noqa: E402
 
 
 CONSTANTS = ROOT / "cpp" / "simulator" / "include" / "constants"
@@ -36,7 +36,7 @@ IRONCLAD_A0_CURSES = {
 
 
 def _sha256(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    return source_sha256(path)
 
 
 def _block(source: str, pattern: str, *, label: str) -> str:

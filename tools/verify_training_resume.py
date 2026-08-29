@@ -14,24 +14,14 @@ sys.path.insert(0, str(ROOT / "src"))
 
 import torch
 
-from sls.curriculum import (
-    IRONCLAD_A0_ACT1,
-    IRONCLAD_A0_ACT2,
-    IRONCLAD_A0_ACT3,
-    IRONCLAD_A0_HEART,
-)
+from sls.curriculum import CURRICULUM_PROFILES_BY_ID
 from sls.model import ModelConfig, Policy
 from sls.rl import PPOConfig, PPOTrainer, WorkerPool, load_checkpoint
 from sls.rl.training_contract import native_source_digest, readiness_settings
 from sls.validation.readiness_lock import verify_readiness_lock
 
 
-PROFILES = {
-    profile.profile_id: profile
-    for profile in (
-        IRONCLAD_A0_ACT1, IRONCLAD_A0_ACT2, IRONCLAD_A0_ACT3, IRONCLAD_A0_HEART,
-    )
-}
+PROFILES = CURRICULUM_PROFILES_BY_ID
 
 
 def _next_update(

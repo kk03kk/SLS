@@ -195,6 +195,7 @@ DamageInfo Monster::getMoveBaseDamage(const BattleContext &bc) const {
         }
 
         case MonsterMoveId::WRITHING_MASS_FLAIL:            return {asc2 ? 16 : 15};
+        case MonsterMoveId::WRITHING_MASS_WITHER:           return {asc2 ? 12 : 10};
         case MonsterMoveId::WRITHING_MASS_MULTI_STRIKE:     return {asc2 ? 9 : 7, 3};
         case MonsterMoveId::WRITHING_MASS_STRONG_STRIKE:    return {asc2 ? 38 : 32};
 

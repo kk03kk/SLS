@@ -211,8 +211,10 @@ void Monster::preBattleAction(BattleContext &bc) {
         }
 
         case MonsterId::WRITHING_MASS: {
-            setHasStatus<MS::REACTIVE>(true);
             setStatus<MS::REACTIVE>(0);
+            // Reactive is an active zero-amount power. setStatus(0) clears
+            // presence, so restore it afterward for mechanics and snapshots.
+            setHasStatus<MS::REACTIVE>(true);
             buff<MS::MALLEABLE>(3);
             break;
         }
@@ -568,6 +570,10 @@ void Monster::takeTurn(BattleContext &bc) {     // todo, maybe for monsters that
 
         case MMID::CENTURION_DEFEND: {
             if (bc.monsters.getAliveCount() > 1) {
+                // GainBlockRandomMonsterAction asks aiRng to choose from the
+                // one valid non-Centurion target; random(0) still advances
+                // the stock stream.
+                bc.aiRng.random(0);
                 auto &mystic = bc.monsters.arr[1];
                 mystic.addBlock(asc17 ? 20 : 15);
             }
@@ -1669,18 +1675,23 @@ void Monster::takeTurn(BattleContext &bc) {     // todo, maybe for monsters that
 
         case MMID::DONU_BEAM:
             attackPlayerHelper(bc, asc4 ? 12 : 10, 2);
+            // Stock enqueues RollMoveAction even though getMove ignores its
+            // random argument. Preserve that aiRng draw for exact parity.
+            bc.aiRng.random(0, 99);
             setMove(MonsterMoveId::DONU_CIRCLE_OF_POWER);
             break;
 
         case MMID::DONU_CIRCLE_OF_POWER:
             bc.monsters.arr[0].buff<MS::STRENGTH>(3); // shouldn't matter if deca is dead
             buff<MS::STRENGTH>(3);
+            bc.aiRng.random(0, 99);
             setMove(MonsterMoveId::DONU_BEAM);
             break;
 
         case MMID::DECA_BEAM:
             attackPlayerHelper(bc, asc4 ? 12 : 10, 2);
             bc.addToBot( Actions::MakeTempCardInDiscard(CardId::DAZED, 2) );
+            bc.aiRng.random(0, 99);
             setMove(MonsterMoveId::DECA_SQUARE_OF_PROTECTION);
             break;
 
@@ -1693,6 +1704,7 @@ void Monster::takeTurn(BattleContext &bc) {     // todo, maybe for monsters that
                 deca.buff<MS::PLATED_ARMOR>(3);
                 donu.buff<MS::PLATED_ARMOR>(3);
             }
+            bc.aiRng.random(0, 99);
             setMove(MonsterMoveId::DECA_BEAM);
             break;
         }
@@ -3580,14 +3592,12 @@ void Monster::returnStasisCard(BattleContext &bc) {
 }
 
 int reptoSummonHelper(const BattleContext &bc, int daggerIdxs[2], int daggerCount) {
-    // Reptomancer's Java daggers[] initially contains the two encounter
-    // daggers only.  Its summon loop examines at most daggersPerSpawn (one,
-    // or two at A18), so the two otherwise-null array entries are never
-    // candidate spawn positions.  Reuse only those two tracked daggers.
-    constexpr int searchOrder[2] = {4, 1};
+    // Match Java's four-entry daggers[]: the two encounter daggers occupy
+    // entries 0/1 and the summon loop continues through empty entries 2/3.
+    constexpr int searchOrder[4] = {4, 1, 3, 0};
 
     int openSlotsFound = 0;
-    for (int i = 0; i < 2; ++i) {
+    for (int i = 0; i < 4; ++i) {
         const auto mIdx = searchOrder[i];
         const auto &m = bc.monsters.arr[mIdx];
 

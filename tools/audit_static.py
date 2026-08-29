@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 from pathlib import Path
 import re
@@ -13,6 +12,8 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
+
+from sls.rl.training_contract import source_sha256  # noqa: E402
 REGISTRY = ROOT / "src" / "sls" / "content" / "registry.json"
 JAVA = ROOT / "reference" / "original-game" / "decompiled"
 CONSTANTS = ROOT / "cpp" / "simulator" / "include" / "constants"
@@ -22,7 +23,7 @@ RELIC_POOLS = CONSTANTS / "RelicPools.h"
 POTIONS = CONSTANTS / "Potions.h"
 EVENTS = CONSTANTS / "Events.h"
 GAME_CONTEXT = ROOT / "cpp" / "simulator" / "src" / "game" / "GameContext.cpp"
-POLICY_VOCABULARY = ROOT / "configs" / "model" / "policy_vocabulary_v2.json"
+POLICY_VOCABULARY = ROOT / "configs" / "model" / "policy_vocabulary_v3.json"
 NATIVE_MODULE = ROOT / "cpp" / "simulator" / "python" / "module.cpp"
 
 IRONCLAD_REACHABLE_STATUSES = {"BURN", "DAZED", "SLIMED", "VOID", "WOUND"}
@@ -84,7 +85,7 @@ def audit() -> dict[str, Any]:
 
     hash_mismatches: list[str] = []
     for filename, expected in registry["source"]["header_sha256"].items():
-        actual = hashlib.sha256((CONSTANTS / filename).read_bytes()).hexdigest()
+        actual = source_sha256(CONSTANTS / filename)
         if actual != expected:
             hash_mismatches.append(filename)
     if hash_mismatches:

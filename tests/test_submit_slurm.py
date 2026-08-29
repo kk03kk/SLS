@@ -110,7 +110,24 @@ def test_train_keeps_long_partition_and_default_config(tmp_path: Path) -> None:
     wrapped = _wrapped(command)
     assert "--partition=gpu-long" in command
     assert "--time=3-00:00:00" in command
-    assert wrapped[3] == str((tmp_path / "repo" / "configs" / "train" / "full_run.toml").resolve())
+    assert wrapped[3] == str((tmp_path / "repo" / "configs" / "train" / "act1_train.toml").resolve())
+
+
+def test_training_can_forward_a_warm_start_checkpoint(tmp_path: Path) -> None:
+    checkpoint = tmp_path / "act1" / "latest.pt"
+    args = _parser().parse_args([
+        "pilot", "--python", str(tmp_path / "python"), "--warm-start", str(checkpoint),
+    ])
+    wrapped = _wrapped(build_sbatch_command(args, root=tmp_path / "repo"))
+    assert wrapped[-2:] == ["--warm-start", str(checkpoint.resolve())]
+
+
+def test_exact_resume_and_warm_start_are_mutually_exclusive() -> None:
+    args = _parser().parse_args([
+        "train", "--resume", "--warm-start", "runs/act1/latest.pt",
+    ])
+    with pytest.raises(ValueError, match="mutually exclusive"):
+        build_sbatch_command(args)
 
 
 def test_benchmark_submission_uses_the_guarded_benchmark_entrypoint(tmp_path: Path) -> None:
@@ -131,9 +148,9 @@ def test_benchmark_submission_uses_the_guarded_benchmark_entrypoint(tmp_path: Pa
         (("benchmark",), "benchmark_workers.py", None, (), "gpu", "03:00:00"),
         (("smoke", "--workers", "32"), "train_full_run.py", "act1_smoke.toml", ("--workers", "32"), "gpu", "03:00:00"),
         (("pilot", "--workers", "32"), "train_full_run.py", "act1_pilot.toml", ("--workers", "32"), "gpu", "03:00:00"),
-        (("train", "--workers", "32"), "train_full_run.py", "full_run.toml", ("--workers", "32"), "gpu-long", "3-00:00:00"),
+        (("train", "--workers", "32"), "train_full_run.py", "act1_train.toml", ("--workers", "32"), "gpu-long", "3-00:00:00"),
         (("pilot", "--workers", "32", "--resume"), "train_full_run.py", "act1_pilot.toml", ("--workers", "32", "--resume", "auto"), "gpu", "03:00:00"),
-        (("train", "--workers", "32", "--resume"), "train_full_run.py", "full_run.toml", ("--workers", "32", "--resume", "auto"), "gpu-long", "3-00:00:00"),
+        (("train", "--workers", "32", "--resume"), "train_full_run.py", "act1_train.toml", ("--workers", "32", "--resume", "auto"), "gpu-long", "3-00:00:00"),
     ),
 )
 def test_nus_production_command_matrix(
@@ -156,8 +173,13 @@ def test_nus_production_command_matrix(
     assert "--signal=B:TERM@300" in command
 
 
-@pytest.mark.parametrize("task", ("preflight", "benchmark"))
-def test_nontraining_jobs_reject_silently_ignored_training_options(task: str) -> None:
-    args = _parser().parse_args([task, "--workers", "32"])
+@pytest.mark.parametrize("task,option", (
+    ("preflight", ("--workers", "32")),
+    ("benchmark", ("--warm-start", "latest.pt")),
+))
+def test_nontraining_jobs_reject_silently_ignored_training_options(
+    task: str, option: tuple[str, str],
+) -> None:
+    args = _parser().parse_args([task, *option])
     with pytest.raises(ValueError, match="does not accept"):
         build_sbatch_command(args)

@@ -65,6 +65,45 @@ def test_reset_folds_the_original_only_neow_dialog() -> None:
     assert all(action.kind is ActionKind.CHOOSE_NEOW_OPTION for action in decision.actions)
 
 
+def test_reset_waits_for_asynchronous_run_start() -> None:
+    menu = {
+        "in_game": False,
+        "ready_for_command": True,
+        "available_commands": ["start", "state"],
+    }
+    start_ack = dict(menu)
+    transport = ScriptedTransport([
+        menu, start_ack, game_payload(["Continue"]),
+        game_payload(["A", "B", "C", "D"]),
+    ])
+    backend = OriginalBackend(OriginalSession(transport), IRONCLAD_A0_ACT1)
+
+    decision = backend.reset(3)
+
+    assert transport.sent[2] == "state"
+    assert decision.observation.screen is ScreenType.NEOW
+
+
+def test_reset_advances_transient_neow_animation() -> None:
+    menu = {
+        "in_game": False,
+        "ready_for_command": True,
+        "available_commands": ["start", "state"],
+    }
+    animating = game_payload(["Continue"])
+    animating["available_commands"] = ["wait", "state"]
+    transport = ScriptedTransport([
+        menu, animating, game_payload(["Continue"]),
+        game_payload(["A", "B", "C", "D"]),
+    ])
+    backend = OriginalBackend(OriginalSession(transport), IRONCLAD_A0_ACT1)
+
+    decision = backend.reset(4)
+
+    assert transport.sent[2:] == ["wait 1", "choose 0"]
+    assert decision.observation.screen is ScreenType.NEOW
+
+
 @pytest.mark.parametrize("use_candidate_id", [False, True])
 def test_step_folds_grid_confirmation_and_single_neow_leave_boundary(
     use_candidate_id: bool,

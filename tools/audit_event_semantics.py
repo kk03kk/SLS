@@ -51,14 +51,16 @@ def _settle_original_event(
 
 
 def _state(decision: Decision, payload: Mapping[str, Any]) -> dict[str, Any]:
+    """Return the policy-visible constructor contract.
+
+    Hidden RNG cursor equality is intentionally excluded from policy-transfer-v1.
+    Random event behavior is covered by the independent distribution audit.
+    """
     observation = decision.observation.to_dict()
     # A targeted EventRoom is deliberately not inserted into the generated map
     # graph. Map reachability is outside the event constructor contract and is
     # validated by full-run truth; all event/player/deck/action state remains.
     observation["map_nodes"] = []
-    rng_payload = dict(payload)
-    if "_rng" not in rng_payload and "rng" in rng_payload:
-        rng_payload["_rng"] = rng_payload["rng"]
     return {
         "decision": {
             "observation": observation,
@@ -68,7 +70,6 @@ def _state(decision: Decision, payload: Mapping[str, Any]) -> dict[str, Any]:
             ),
             "terminal": decision.terminal,
         },
-        "rng": _rng(rng_payload),
     }
 
 

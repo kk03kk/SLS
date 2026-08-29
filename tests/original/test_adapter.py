@@ -196,12 +196,39 @@ def test_combat_card_reward_is_folded_into_semantic_candidates() -> None:
     ]
     kinds = [action.kind for action in adapted.decision.actions]
     assert kinds.count(ActionKind.CHOOSE_CARD_REWARD) == 2
-    skip = next(
-        action for action in adapted.decision.actions
-        if action.kind is ActionKind.SKIP_CARD_REWARD
-    )
-    assert skip.option_id == "reward-card:0"
-    assert adapted.commands[skip.candidate_id] == ("choose 0", "skip")
+    assert ActionKind.SKIP_CARD_REWARD not in kinds
+    assert ActionKind.SKIP_REWARD in kinds
+
+
+def test_full_potion_slots_hide_uncollectable_combat_reward() -> None:
+    payload = {
+        "in_game": True,
+        "ready_for_command": True,
+        "available_commands": ["choose", "proceed"],
+        "game_state": base_game(
+            potions=[
+                {"id": "SneckoOil"},
+                {"id": "HeartOfIron"},
+                {"id": "Block Potion"},
+            ],
+            screen_type="COMBAT_REWARD",
+            screen_state={"rewards": [
+                {"reward_type": "POTION", "potion": {"id": "EntropicBrew"}},
+                {"reward_type": "GOLD", "gold": 10},
+            ]},
+        ),
+    }
+
+    adapted = adapt_original(payload)
+    reward_ids = {
+        action.reward_id for action in adapted.decision.actions
+        if action.kind is ActionKind.TAKE_REWARD
+    }
+    assert reward_ids == {"reward-gold:0"}
+    assert adapted.decision.observation.reward_options[0].instance_id == "reward-gold:0"
+    assert {item.instance_id for item in adapted.decision.observation.reward_options} == {
+        "reward-gold:0", "reward-potion:0",
+    }
 
 
 def test_golden_idol_second_phase_uses_stable_semantic_option_ids() -> None:

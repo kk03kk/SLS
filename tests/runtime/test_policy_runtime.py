@@ -1,0 +1,140 @@
+from __future__ import annotations
+
+from pathlib import Path
+from types import SimpleNamespace
+
+import pytest
+import torch
+
+from sls.backends.simulator import SimulatorBackend
+from sls.curriculum import IRONCLAD_A0_ACT1
+from sls.model import ModelConfig, Policy
+from sls.runtime.artifact import (
+    POLICY_ARTIFACT_SCHEMA, LoadedPolicyArtifact, PolicyArtifactMetadata,
+    export_policy_artifact, load_policy_artifact,
+)
+from sls.runtime.controller import AgentRuntime, boundary_id
+from sls.contracts import Transition
+
+
+def _runtime_artifact() -> LoadedPolicyArtifact:
+    config = ModelConfig(
+        embedding_dim=32, transformer_layers=1, attention_heads=4,
+        feedforward_dim=64,
+    )
+    model = Policy(config).eval()
+    metadata = PolicyArtifactMetadata(
+        model=config.to_dict(), encoding_schema=config.to_dict()["encoding_schema"],
+        vocabulary_sha256=config.to_dict()["vocabulary_hash"],
+        ascension_min=0, ascension_max=20, goal="HEART",
+    )
+    return LoadedPolicyArtifact(model, metadata)
+
+
+class _FixedRuntime(AgentRuntime):
+    def choose(self, decision):  # type: ignore[no-untyped-def]
+        return 0, 1.0
+
+
+class _DisconnectBackend:
+    def __init__(self, first, second, mode: str):  # type: ignore[no-untyped-def]
+        self.current = first
+        self.second = second
+        self.mode = mode
+        self.calls = []
+
+    def attach(self):  # type: ignore[no-untyped-def]
+        return self.current
+
+    def step(self, action):  # type: ignore[no-untyped-def]
+        self.calls.append(action.candidate_id)
+        if self.mode == "before":
+            raise ConnectionError("disconnected before send")
+        self.current = self.second
+        if self.mode == "after":
+            raise ConnectionError("disconnected after send")
+        return Transition(self.second, 0.0, False, False, {})
+
+
+def _two_boundaries():  # type: ignore[no-untyped-def]
+    backend = SimulatorBackend(IRONCLAD_A0_ACT1)
+    first = backend.reset(7)
+    second = backend.step(first.actions[0]).decision
+    assert boundary_id(first) != boundary_id(second)
+    return first, second
+
+
+def test_policy_artifact_round_trip_is_strict_and_standalone(tmp_path: Path) -> None:
+    config = ModelConfig(
+        embedding_dim=32, transformer_layers=1, attention_heads=4,
+        feedforward_dim=64,
+    )
+    model = Policy(config)
+    checkpoint = tmp_path / "checkpoint.pt"
+    torch.save({
+        "contract": {"model": config.to_dict()},
+        "model": model.state_dict(),
+    }, checkpoint)
+    artifact = export_policy_artifact(
+        checkpoint, tmp_path / "policy.pt",
+        ascension_min=0, ascension_max=20, goal="HEART",
+    )
+    loaded = load_policy_artifact(artifact)
+    assert loaded.metadata.goal == "HEART"
+    assert loaded.metadata.ascension_min == 0
+    assert loaded.metadata.ascension_max == 20
+    assert POLICY_ARTIFACT_SCHEMA == "sls-policy-artifact-v1"
+    for expected, actual in zip(model.parameters(), loaded.model.parameters()):
+        assert torch.equal(expected, actual)
+
+
+def test_boundary_id_is_candidate_order_independent() -> None:
+    decision = SimulatorBackend(IRONCLAD_A0_ACT1).reset(7)
+    reordered = type(decision)(
+        decision.observation, tuple(reversed(decision.actions)), decision.terminal,
+    )
+    assert boundary_id(decision) == boundary_id(reordered)
+
+
+def test_disconnect_before_send_never_blindly_retries_same_boundary(tmp_path: Path) -> None:
+    first, second = _two_boundaries()
+    backend = _DisconnectBackend(first, second, "before")
+    log = tmp_path / "actions.jsonl"
+    runtime = _FixedRuntime(backend, _runtime_artifact(), log_path=log)
+    with pytest.raises(ConnectionError):
+        runtime.run(max_actions=1)
+    with pytest.raises(RuntimeError, match="refusing to resend"):
+        _FixedRuntime(backend, _runtime_artifact(), log_path=log).run(max_actions=1)
+    assert len(backend.calls) == 1
+
+
+def test_disconnect_after_send_rereads_advanced_boundary_without_resend(tmp_path: Path) -> None:
+    first, second = _two_boundaries()
+    backend = _DisconnectBackend(first, second, "after")
+    log = tmp_path / "actions.jsonl"
+    with pytest.raises(ConnectionError):
+        _FixedRuntime(backend, _runtime_artifact(), log_path=log).run(max_actions=1)
+    first_candidate = backend.calls[0]
+    backend.mode = "normal"
+    _FixedRuntime(backend, _runtime_artifact(), log_path=log).run(max_actions=1)
+    assert backend.calls.count(first_candidate) == 1
+
+
+def test_disconnect_after_state_read_recovers_from_intent_journal(tmp_path: Path) -> None:
+    first, second = _two_boundaries()
+    backend = _DisconnectBackend(first, second, "normal")
+    log = tmp_path / "actions.jsonl"
+    runtime = _FixedRuntime(backend, _runtime_artifact(), log_path=log)
+    normal_log = runtime._log
+
+    def fail_ack(record):  # type: ignore[no-untyped-def]
+        if record.get("phase") == "ACK":
+            raise ConnectionError("disconnected after state read")
+        normal_log(record)
+
+    runtime._log = fail_ack  # type: ignore[method-assign]
+    with pytest.raises(ConnectionError):
+        runtime.run(max_actions=1)
+    first_candidate = backend.calls[0]
+    _FixedRuntime(backend, _runtime_artifact(), log_path=log).run(max_actions=1)
+    assert backend.calls.count(first_candidate) == 1

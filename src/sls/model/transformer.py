@@ -1,4 +1,4 @@
-"""Canonical FullRun actor/value transformer using structural policy input v2."""
+"""Canonical FullRun actor/value transformer using relational policy input v3."""
 
 from __future__ import annotations
 
@@ -9,7 +9,7 @@ from torch import nn
 
 from sls.model.encoding import (
     ACTION_TYPE_IDS, CATEGORICAL_FIELDS, ENCODING_SCHEMA, ENTITY_TYPES,
-    NUMERIC_FIELDS, policy_vocabulary, vocabulary_hash,
+    NUMERIC_FIELDS, SCREEN_GROUPS, policy_vocabulary, vocabulary_hash,
 )
 
 
@@ -20,11 +20,14 @@ class ModelConfig:
     attention_heads: int = 4
     feedforward_dim: int = 256
     dropout: float = 0.0
+    architecture: str = "sls-relational-policy-v3"
 
     def __post_init__(self) -> None:
         values = asdict(self)
         if any(value <= 0 for value in values.values() if isinstance(value, int)):
             raise ValueError("model dimensions must be positive")
+        if self.architecture != "sls-relational-policy-v3":
+            raise ValueError(f"unsupported policy architecture: {self.architecture}")
         if self.embedding_dim % self.attention_heads:
             raise ValueError("embedding_dim must be divisible by attention_heads")
 
@@ -50,7 +53,8 @@ class Policy(nn.Module):
         self.entity_type = nn.Embedding(len(ENTITY_TYPES), d)
         self.content = nn.Embedding(len(vocabulary["content"]), d, padding_idx=0)
         self.category = nn.Embedding(len(vocabulary["categorical"]), d, padding_idx=0)
-        self.map_relation = nn.Linear(d, d, bias=False)
+        self.map_out_relation = nn.Linear(d, d, bias=False)
+        self.map_in_relation = nn.Linear(d, d, bias=False)
         layer = nn.TransformerEncoderLayer(
             d_model=d, nhead=config.attention_heads, dim_feedforward=config.feedforward_dim,
             dropout=config.dropout, batch_first=True, norm_first=True,
@@ -59,13 +63,14 @@ class Policy(nn.Module):
         self.action_numeric = nn.Linear(len(NUMERIC_FIELDS) * 2, d)
         self.action_type = nn.Embedding(len(ACTION_TYPE_IDS), d)
         self.reference_role = nn.Embedding(5, d)
-        self.state_query = nn.Linear(d, d, bias=False)
-        self.action_key = nn.Linear(d, d, bias=False)
-        self.action_bias = nn.Linear(d, 1)
+        self.state_queries = nn.ModuleList(nn.Linear(d, d, bias=False) for _ in SCREEN_GROUPS)
+        self.action_keys = nn.ModuleList(nn.Linear(d, d, bias=False) for _ in SCREEN_GROUPS)
+        self.action_biases = nn.ModuleList(nn.Linear(d, 1) for _ in SCREEN_GROUPS)
         self.value_head = nn.Sequential(nn.LayerNorm(d), nn.Linear(d, 1))
 
     def forward(
-        self, entity_numeric: torch.Tensor, entity_numeric_present: torch.Tensor,
+        self, screen_types: torch.Tensor, entity_numeric: torch.Tensor,
+        entity_numeric_present: torch.Tensor,
         entity_types: torch.Tensor, entity_content: torch.Tensor,
         entity_categories: torch.Tensor, entity_adjacency: torch.Tensor,
         entity_padding: torch.Tensor, action_numeric: torch.Tensor,
@@ -79,8 +84,12 @@ class Policy(nn.Module):
         entities = entities + self.content(entity_content).sum(dim=-2)
         entities = entities + self.category(entity_categories).sum(dim=-2)
         adjacency = entity_adjacency.to(entities.dtype)
-        degree = adjacency.sum(dim=-1, keepdim=True).clamp_min(1.0)
-        entities = entities + self.map_relation(torch.bmm(adjacency / degree, entities))
+        out_degree = adjacency.sum(dim=-1, keepdim=True).clamp_min(1.0)
+        incoming = adjacency.transpose(1, 2)
+        in_degree = incoming.sum(dim=-1, keepdim=True).clamp_min(1.0)
+        entities = entities + self.map_out_relation(
+            torch.bmm(adjacency / out_degree, entities)
+        ) + self.map_in_relation(torch.bmm(incoming / in_degree, entities))
         cls = self.cls.expand(batch, -1, -1)
         cls_padding = torch.zeros(batch, 1, dtype=torch.bool, device=entity_padding.device)
         hidden = self.backbone(
@@ -100,9 +109,22 @@ class Policy(nn.Module):
         candidates = candidates + (
             (gathered + roles) * action_reference_mask.unsqueeze(-1)
         ).sum(dim=2)
-        query = self.state_query(state).unsqueeze(1)
-        logits = (query * self.action_key(candidates)).sum(dim=-1) / self.config.embedding_dim**0.5
-        logits = (logits + self.action_bias(candidates).squeeze(-1)).masked_fill(
+        logits = torch.empty(
+            candidates.shape[:2], dtype=candidates.dtype, device=candidates.device,
+        )
+        for group, (query_head, key_head, bias_head) in enumerate(zip(
+            self.state_queries, self.action_keys, self.action_biases,
+        )):
+            selected = screen_types == group
+            if not torch.any(selected):
+                continue
+            query = query_head(state[selected]).unsqueeze(1)
+            keys = key_head(candidates[selected])
+            logits[selected] = (
+                (query * keys).sum(dim=-1) / self.config.embedding_dim**0.5
+                + bias_head(candidates[selected]).squeeze(-1)
+            )
+        logits = logits.masked_fill(
             action_padding, torch.finfo(logits.dtype).min,
         )
         if torch.any(action_padding.all(dim=1)):

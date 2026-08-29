@@ -6,12 +6,12 @@ from dataclasses import dataclass
 
 import torch
 
-from sls.contracts import Decision
+from sls.model.batching import EncodedDecision
 
 
 @dataclass(frozen=True, slots=True)
 class RolloutBatch:
-    decisions: tuple[Decision, ...]
+    encoded_decisions: tuple[EncodedDecision, ...]
     action_indices: torch.Tensor
     old_log_probabilities: torch.Tensor
     old_values: torch.Tensor

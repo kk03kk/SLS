@@ -1,0 +1,31 @@
+{
+  "schema": "sls-policy-transfer-v1",
+  "gate_sha256": "e11d3b4875d029275e9ed87838be734142aa12885d2bdf9c15d2d162e87cb290",
+  "encoding_schema": "sls-policy-input-v3",
+  "vocabulary_sha256": "b2d70dce56bb325046e906f9028b2b17d128403f211bf66b238b5491d3eee437",
+  "evidence": "",
+  "evidence_sha256": "",
+  "exact_trajectory_required": false,
+  "excluded_content_ids": ["PRISMATIC_SHARD"],
+  "deterministic_probe_suites": [
+    "cards",
+    "relics",
+    "potions",
+    "encounters",
+    "events",
+    "mechanisms"
+  ],
+  "stochastic_total_variation_limit": 0.05,
+  "acceptance": {
+    "minimum_public_boundaries": 500,
+    "minimum_stochastic_samples_per_category": 2000,
+    "minimum_stochastic_seeds_per_category": 32,
+    "required_bosses": ["HEXAGHOST", "SLIME_BOSS", "THE_GUARDIAN"],
+    "required_screens": ["COMBAT", "MAP", "EVENT", "SHOP", "REST", "TREASURE", "CARD_REWARD", "COMBAT_REWARD", "BOSS_REWARD"],
+    "required_selected_actions": ["PLAY_CARD", "END_TURN", "CHOOSE_MAP_NODE", "CHOOSE_EVENT_OPTION", "USE_POTION", "TAKE_REWARD", "CHOOSE_CARD_REWARD", "CHOOSE_BOSS_RELIC"]
+  },
+  "profiles": [
+    "IRONCLAD_A0_ACT1"
+  ],
+  "production_requires_original_policy_canary": true
+}

@@ -1,5 +1,5 @@
 {
-  "audit_sha256": "bf42049b60d2f23972c1d423affeb7641d93530c9516e33ee14ed74dc2721c37",
+  "audit_sha256": "e48514467bbccd4f39c01c999345d5ecd22b164ebda51116008cd9e36695d142",
   "entries": [
     {
       "boundary_hashes": [
@@ -306,7 +306,7 @@
   ],
   "oracle_schema": "spirecomm-parity-v10",
   "schema": "sls-ironclad-encounter-semantics-v1",
-  "scope_sha256": "fb9c464dda321dfdb3e237ddef1fcd8427b037c9a39e92510aea183b1d9cfdb8",
+  "scope_sha256": "24a218a612d16c34879dd4469891febc4a770f83d25783e51e79e10476a60f17",
   "seed": 0,
   "source_files": {
     "reference/original-game/decompiled/com/megacrit/cardcrawl/helpers/MonsterHelper.java": "e6a60cdfa7af881d5f128a9532664ea33f32e71239cda49f3983fceac95a10e1",
@@ -335,6 +335,6 @@
     "reference/original-game/decompiled/com/megacrit/cardcrawl/monsters/exordium/SpikeSlime_M.java": "6eb1991db8ac36b1037871537c8669b135a58705ab2b33ca74550dcf84cad707",
     "reference/original-game/decompiled/com/megacrit/cardcrawl/monsters/exordium/SpikeSlime_S.java": "3ebda589dc277d9d0a5f0a59ab3fb03783cb4e74ee0f03a1a9f40ca9126302b5",
     "reference/original-game/decompiled/com/megacrit/cardcrawl/monsters/exordium/TheGuardian.java": "40571fa4c941d70c1814b0c0ff5cffa7d8933e24b49d95f2b531a3dc05598d56",
-    "src/sls/content/registry.json": "a7b70c1badb2745dac7fff1d5d5b01819006e9a59218c4f0815b5f1d2af5dcec"
+    "src/sls/content/registry.json": "a42159c57de972a45d0d2f9998e1f269daa5d3c8c54ff9fb6f52650fdd1f5c2a"
   }
 }

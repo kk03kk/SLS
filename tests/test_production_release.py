@@ -1,15 +1,16 @@
 from __future__ import annotations
 
 from pathlib import Path
+import json
 import tomllib
 
 from sls.rl.episode_limit import EPISODE_LIMIT_SCHEMA
 from sls.rl.reward import REWARD_SCHEMA
 from sls.rl.training_contract import (
-    ACT1_PRODUCTION_READINESS_LEVEL, ACT1_PRODUCTION_READINESS_LOCK,
     TRAINING_CHECKPOINT_SCHEMA, ROOT, source_sha256,
 )
-from sls.validation.readiness_lock import DEFAULT_LOCK
+from sls.validation.transfer import POLICY_TRANSFER_SCHEMA
+from sls.validation.transfer_gate import verify_policy_transfer_gate
 from tools import benchmark_workers, preflight_training
 from tools.submit_slurm import TASK_CONFIGS
 
@@ -17,8 +18,11 @@ from tools.submit_slurm import TASK_CONFIGS
 def test_all_nus_training_stages_share_one_strict_production_contract() -> None:
     expected_updates = {"smoke": 20, "pilot": 200, "train": 1000}
     outputs = set()
-    relative_lock = ACT1_PRODUCTION_READINESS_LOCK.relative_to(ROOT).as_posix()
-    assert ACT1_PRODUCTION_READINESS_LOCK.is_file()
+    gate_template = ROOT / "configs" / "validation" / "policy_transfer_v1.json"
+    template = json.loads(gate_template.read_text(encoding="utf-8"))
+    assert template["schema"] == POLICY_TRANSFER_SCHEMA
+    assert not template["evidence"]
+    relative_gate = "runs/policy_transfer_v1.json"
 
     for task, relative in TASK_CONFIGS.items():
         path = ROOT / relative
@@ -27,9 +31,11 @@ def test_all_nus_training_stages_share_one_strict_production_contract() -> None:
             payload = tomllib.load(stream)
         run, ppo = payload["run"], payload["ppo"]
         assert run["profile"] == "IRONCLAD_A0_ACT1"
-        assert run["require_readiness"] is True
-        assert run["readiness_lock"] == relative_lock
-        assert run["readiness_level"] == ACT1_PRODUCTION_READINESS_LEVEL
+        assert run["require_readiness"] is False
+        assert run["require_transfer_gate"] is True
+        assert run["transfer_gate"] == relative_gate
+        assert run["worker_backend"] == "sharded-vector"
+        assert run["state_corpus"] == "runs/teacher-act1.json.gz"
         assert run["device"] == "cuda"
         assert "allow_dirty" not in run
         assert int(run["updates"]) == expected_updates[task]
@@ -56,14 +62,13 @@ def test_strict_readiness_config_binds_the_full_expansion_contract() -> None:
     }
 
 
-def test_preflight_and_benchmark_share_the_production_readiness_defaults() -> None:
-    assert DEFAULT_LOCK == ACT1_PRODUCTION_READINESS_LOCK
+def test_preflight_and_benchmark_share_the_policy_transfer_default() -> None:
+    expected = ROOT / "runs" / "policy_transfer_v1.json"
     for args in (
         preflight_training._parser().parse_args([]),
         benchmark_workers._parser().parse_args([]),
     ):
-        assert args.readiness_lock == ACT1_PRODUCTION_READINESS_LOCK
-        assert args.readiness_level == ACT1_PRODUCTION_READINESS_LEVEL
+        assert args.transfer_gate == expected
         assert not args.allow_dirty
 
 

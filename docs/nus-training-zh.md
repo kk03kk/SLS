@@ -41,21 +41,29 @@ tail -f runs/slurm-logs/sls-benchmark-*.out
 ## 3. Smoke、pilot 与正式训练
 
 NUS 的 preflight、benchmark、20-update smoke、pilot 和正式训练统一要求提交的
-`TRAINING_READY` lock。`ENGINEERING_READY` 只保留给本地证据工程，不在任何默认
-NUS 生产命令中使用。服务器不生成 lock，也不能用低等级 lock 或命令行参数绕过。
+policy-transfer gate。全新 clone 的 preflight 会从已提交的随机样本证据与真值路线
+自动生成绑定当前 clean main SHA 的 `runs/policy_transfer_v1.json`。它校验公开
+Observation、合法 Action、编码/词表、禁用内容、确定性机制探针与随机分布；
+整局隐藏 RNG 同轨迹不阻塞训练。20-seed Original canary 是模型部署放行项，不阻塞
+生成 teacher、BC 或 PPO 训练。
+
+先在 compute job 或等价 Python 3.12 + native 环境生成自动教师状态库；三个生产
+配置默认从该文件以 50% 概率恢复中途公开状态：
+
+```bash
+"$TRAIN_PY" tools/generate_teacher_corpus.py --seed-count 1000 --output runs/teacher-act1.json.gz
+```
 
 ```bash
 "$TRAIN_PY" tools/submit_slurm.py smoke --python "$TRAIN_PY" --workers N
 tail -f runs/slurm-logs/sls-smoke-*.out
 
-test -f configs/validation/act1_training_readiness.lock.json
-"$TRAIN_PY" tools/verify_readiness_lock.py configs/validation/act1_training_readiness.lock.json
+test -f configs/validation/policy_transfer_v1.json
 "$TRAIN_PY" tools/submit_slurm.py pilot --python "$TRAIN_PY" --workers N
 tail -f runs/slurm-logs/sls-pilot-*.out
 ```
 
-仓库现在已包含真实生成并验签的 `TRAINING_READY` lock；若文件缺失或验签失败，
-必须安全停止，不应创建占位文件或绕过等级检查。先检查 smoke 的
+若 transfer gate 缺失、词表过期或不覆盖目标 profile，必须安全停止。先检查 smoke 的
 `run-manifest.json` 为 `COMPLETE`，没有 NaN/Inf，checkpoint exact resume 正常。
 pilot 每 10 updates 在固定 100 seeds 上评估。只有最近连续三次评估的成功率或
 median failure floor 优于未训练基线，同时 entropy、KL、value loss、gradient norm
@@ -79,6 +87,6 @@ Slurm 会在终止前 300 秒向 batch task 发送 SIGTERM；提交器使用 she
 "$TRAIN_PY" tools/submit_slurm.py train --python "$TRAIN_PY" --workers N --resume
 ```
 
-恢复会严格核对模型、PPO、课程、readiness lock、native source、Python/Torch/CUDA 和 worker 数。任何不一致都应新建训练，不要修改 checkpoint 绕过检查。metrics 中晚于 checkpoint update 的残留记录会被移除，避免重复曲线。
+恢复会严格核对模型、PPO、课程、transfer gate、native source、Python/Torch/CUDA 和 worker 数。任何不一致都应新建训练，不要修改 checkpoint 绕过检查。metrics 中晚于 checkpoint update 的残留记录会被移除，避免重复曲线。
 
-Act 1 晋级门槛仍是固定 held-out 100 seeds 成功率至少 80%，三个 Boss 各至少 60%，连续三次达到。训练表现不能替代 Original parity 证据。
+课程加入下一阶段的信号是独立 held-out seeds 连续三次成功率至少 20%；旧阶段继续混合采样。产品最终胜率门槛需由完整 A0–A20 曲线决定。

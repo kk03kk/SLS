@@ -768,9 +768,13 @@ void search::SimpleAgent::stepCardReward(GameContext &gc) {
     }
 
     if (pickableCards.empty()) {
-        // No acceptable card and no guaranteed Singing Bowl: leave the whole
-        // reward screen. A CARD action with idx2=5 is only legal with the Bowl.
-        takeAction(gc, GameAction(GameAction::RewardsActionType::SKIP));
+        // Neow owns a stock CardRewardScreen, whose explicit card-skip action
+        // is distinct from the generic Rewards container skip. Combat rewards
+        // are flattened by the public contract, so abandoning that parent
+        // boundary remains the irreversible generic SKIP action.
+        takeAction(gc, gc.curEvent == Event::NEOW
+            ? GameAction(GameAction::RewardsActionType::CARD, lastRewardIdx, 6)
+            : GameAction(GameAction::RewardsActionType::SKIP));
         return;
     }
 
@@ -813,7 +817,8 @@ void search::SimpleAgent::stepShopScreen(GameContext &gc) {
 
     for (int i = 0; i < 3; ++i) {
         if (s.relicPrice(i) == -1 ||
-            gc.gold < s.relicPrice(i))
+            gc.gold < s.relicPrice(i) ||
+            s.relics[i] == RelicId::PRISMATIC_SHARD)
         {
             continue;
         }

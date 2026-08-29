@@ -7,10 +7,12 @@ import subprocess
 from sls.content.scope import (
     IRONCLAD_A0_SCOPE_ID,
     IRONCLAD_A0_SCOPE_PATH,
+    UnsupportedContentPolicy,
+    filter_policy_offers,
     filter_policy_shop,
     load_ironclad_a0_scope,
 )
-from sls.contracts import Action, ActionKind, ShopItem
+from sls.contracts import Action, ActionKind, PublicEntity, ShopItem
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -82,3 +84,32 @@ def test_shop_filter_hides_prismatic_without_renumbering_or_rewriting_mapping() 
     assert actions == (buy_akabeko, leave)
     assert filtered == {buy_akabeko.candidate_id: 222, leave.candidate_id: 333}
     assert items[0].instance_id == "shop-relic:1"
+
+
+def test_reward_filter_is_profile_scoped_and_preserves_other_candidate_identity() -> None:
+    shard = PublicEntity("reward-relic:0", "PRISMATIC_SHARD")
+    akabeko = PublicEntity("reward-relic:1", "AKABEKO")
+    take_shard = Action(ActionKind.TAKE_REWARD, reward_id=shard.instance_id)
+    take_akabeko = Action(ActionKind.TAKE_REWARD, reward_id=akabeko.instance_id)
+    skip = Action(ActionKind.SKIP_REWARD)
+    mapping = {
+        take_shard.candidate_id: 11,
+        take_akabeko.candidate_id: 22,
+        skip.candidate_id: 33,
+    }
+
+    items, actions, filtered = filter_policy_offers(
+        (shard, akabeko), (take_shard, take_akabeko, skip), mapping,
+    )
+    assert items == (akabeko,)
+    assert actions == (take_akabeko, skip)
+    assert filtered == {take_akabeko.candidate_id: 22, skip.candidate_id: 33}
+    assert items[0].instance_id == "reward-relic:1"
+
+    # A future character scope can explicitly support the relic without
+    # changing registries, native pools, or this filtering primitive.
+    all_content = UnsupportedContentPolicy(frozenset())
+    assert filter_policy_offers(
+        (shard,), (take_shard,), {take_shard.candidate_id: 11},
+        policy=all_content,
+    ) == ((shard,), (take_shard,), {take_shard.candidate_id: 11})

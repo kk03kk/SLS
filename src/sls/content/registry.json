@@ -3919,13 +3919,13 @@
   "schema_version": 1,
   "source": {
     "header_sha256": {
-      "Cards.h": "41f38c7ad6f03d70f03ed9746ee5bc8e57717ce66255a31775230c6d3fbbb9ef",
-      "CharacterClasses.h": "81dc2b5ca3395b826c2e33677b4943b6cc35b67b1c81f5d076b8abda02db289d",
-      "Events.h": "d558be77e7f187784a7eb66c21a537b458304d7dcbc934c6498d635a74cb97f1",
-      "MonsterEncounters.h": "5363596ba4d216bf635c1f8d6066e180712c590529210d6264746b877e27bcce",
-      "MonsterIds.h": "913c21a6b69d22cbe0ff99d99e46b75a6cea83462f519d1150b7fc9360f2e792",
-      "Potions.h": "88b8675f0278b64931d6f7b0ed203b4bf72ed9df01adb698465cd7837b6b59a9",
-      "Relics.h": "092473d34e953ec4e9328d602250b67cb2d12c6df0be9b7bbaf435de47aa88d0"
+      "Cards.h": "2420f04c8d9365361635cd5b3960793b2711cc7dc477ecc421f5d15180f41a75",
+      "CharacterClasses.h": "5f75e1d2072009e36df3c1af48047a2dce7ea417a84a7497b87fffaece759c82",
+      "Events.h": "286a6556f2ef7261f682bcf59752f3fb9dea6dc3b3b24a952295d2db65e69e38",
+      "MonsterEncounters.h": "10fd2aaa1c1023c8c5164b257b8559575c99ef1f6f2dce86042c3aae5462f8cb",
+      "MonsterIds.h": "7403a5aa94ac3e512a81b6a9d0b54d615cfb2366079dffb9e270b624f2324978",
+      "Potions.h": "b038da5278bce6a1ded37d2d40090ec98d8f590c9eee61a3caa490235e46cecb",
+      "Relics.h": "639044d25f699a83de7e8e3c7a88e9519ce8de35977b29e96805184f9f8924c7"
     },
     "simulator_manifest": "cpp/simulator/SLS_VENDOR.json"
   }

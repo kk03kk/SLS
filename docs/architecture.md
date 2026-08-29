@@ -45,7 +45,7 @@ seeds, screens, action kinds, semantic steps, complete runs, and matching runs.
 
 ## FullRun RL
 
-Policy input `sls-policy-input-v2` encodes observation entities with exact
+Policy input `sls-policy-input-v3` encodes observation entities with exact
 content/category tokens, numeric presence masks, and typed map adjacency. Each
 candidate action has a kind, fixed metadata slots, and five masked entity
 references (`subject`, `target`, `option`, `node`, `reward`). Protocol-only
@@ -60,6 +60,13 @@ centralized. Fixed-horizon rollout, terminal-safe GAE, clipped PPO, entropy,
 value loss, gradient clipping, evaluation, and exact native environment
 checkpoints all use the same canonical Decision contract.
 
+Exact resume and curriculum transfer are separate contracts. Exact resume
+restores the optimizer, RNGs, worker environments, episode limiters, and the
+entire training/source/readiness contract. Weight-only warm start validates the
+model architecture, encoding schema, vocabulary hash, and state-dict shape,
+but deliberately does not restore those exact-run states. The two modes are
+mutually exclusive.
+
 Act curriculum completion is detected only when the next public observation
 has actually entered a higher Act. Boss death, reward, chest, Boss relic, and
 delayed selection continuations do not terminate early. Training rollouts may
@@ -73,11 +80,15 @@ The backend's authoritative transition and reward remain unchanged. Per-worker
 step/visit state is part of checkpoint v3, so exact resume cannot cross or lose
 an episode-limit boundary.
 
-The training gate is curriculum-scoped rather than the final release gate.
-Act 1 PPO requires three provenance- and resume-hash-continuous paired Original
-routes, one for every Act 1 boss, with zero selected-boundary gaps or
-differences through the first Act 2 boundary. Final Heart FullRun acceptance
-remains the stricter independent 10-seed release requirement.
+The training gate is `policy-transfer-v1`: public observations, candidate
+identity, terminal meaning, vocabulary, unsupported content, and deterministic
+mechanism probes are strict. Random mechanisms use distribution comparisons;
+same-seed whole-run traces remain useful diagnostics, not policy blockers.
+
+The source-generated A0-A20 FullRun inventory and staged semantic ledger are
+described in `ironclad-fullrun-expansion.md`. Native structural traversal is
+not a release claim: Act 2, Act 3, Heart, and A1-A20 remain blocked until their
+Original/native transition and route evidence closes.
 
 The ignored Original artifacts are converted locally into a committed
 readiness lock after current-code replay of every selected route segment. A
@@ -85,12 +96,9 @@ Linux training host verifies the lock against Git blob-based adapter,
 canonicalizer, policy, vocabulary, checkpoint, and native-source contracts;
 it never needs the game or truth bundles.
 
-All default NUS stages share one production readiness contract:
-`configs/validation/act1_training_readiness.lock.json` at `TRAINING_READY`.
-Readiness-required TOML files must state both fields explicitly; the training
-entrypoint does not fall back to the legacy engineering lock. Source-evidence
-hashes canonicalize CRLF to LF so the same committed audit verifies on Windows
-and Linux checkouts.
+All default NUS stages share `configs/validation/policy_transfer_v1.json`.
+Legacy readiness locks remain verifiable historical attestations but are not
+consulted by default training configurations.
 
 ## Reproducibility profiles
 

@@ -12,7 +12,7 @@ from typing import Any
 from sls.content import load_content_registry
 from sls.contracts import ActionKind, ScreenType
 
-ENCODING_SCHEMA = "sls-policy-input-v2"
+ENCODING_SCHEMA = "sls-policy-input-v3"
 ENTITY_TYPES = (
     "PLAYER", "RUN", "CARD", "ENEMY", "POWER", "RELIC", "POTION",
     "MAP_NODE", "CHOICE", "REWARD", "SHOP_ITEM", "EVENT_OPTION",
@@ -36,6 +36,15 @@ MONSTER_INTENTS = (
     "DEBUFF", "STRONG_DEBUFF", "DEFEND", "DEFEND_BUFF", "DEFEND_DEBUFF",
     "ESCAPE", "MAGIC", "SLEEP", "STUN", "UNKNOWN", "DEBUG",
 )
+SCREEN_GROUPS = ("COMBAT", "RUN", "CHOICE")
+SCREEN_GROUP_IDS = {name: index for index, name in enumerate(SCREEN_GROUPS)}
+SCREEN_TO_GROUP = {
+    "COMBAT": "COMBAT",
+    "MAP": "RUN", "SHOP": "RUN", "REST": "RUN", "TREASURE": "RUN",
+    "ACT_TRANSITION": "RUN",
+    "NEOW": "CHOICE", "CARD_REWARD": "CHOICE", "COMBAT_REWARD": "CHOICE",
+    "EVENT": "CHOICE", "BOSS_REWARD": "CHOICE", "GAME_OVER": "CHOICE",
+}
 
 _PLAYER_POWERS = """
 DOUBLE_DAMAGE DRAW_REDUCTION FRAIL INTANGIBLE VULNERABLE WEAK BIAS CONFUSED
@@ -73,7 +82,7 @@ _CATEGORY_VALUES = {
     "BURNING_ELITE", "M", "E", "?", "R", "$", "T", "B",
 }
 VOCABULARY_PATH = (
-    Path(__file__).resolve().parents[3] / "configs" / "model" / "policy_vocabulary_v2.json"
+    Path(__file__).resolve().parents[3] / "configs" / "model" / "policy_vocabulary_v3.json"
 )
 _CONSTANT_HEADERS = Path(__file__).resolve().parents[3] / "cpp" / "simulator" / "include" / "constants"
 _NATIVE_MODULE = Path(__file__).resolve().parents[3] / "cpp" / "simulator" / "python" / "module.cpp"
@@ -119,6 +128,7 @@ def build_policy_vocabulary() -> dict[str, Any]:
         "entity_types": list(ENTITY_TYPES),
         "action_types": list(ACTION_TYPE_IDS),
         "reference_roles": ["subject", "target", "option", "node", "reward"],
+        "screen_groups": list(SCREEN_GROUPS),
     }
     encoded = json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
     payload["sha256"] = hashlib.sha256(encoded).hexdigest()

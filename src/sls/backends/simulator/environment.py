@@ -31,7 +31,7 @@ from sls.contracts.continuation import continuation_simulator
 from sls.content.normalize import (
     normalize_content_id, normalize_power_amount, normalize_power_id,
 )
-from sls.content.scope import filter_policy_shop
+from sls.content.scope import filter_policy_offers, filter_policy_shop
 
 
 class SimulatorBackend:
@@ -257,6 +257,11 @@ class SimulatorBackend:
                 options["shop"], actions, candidate_bits,
             )
             options["shop"] = shop
+        elif screen is ScreenType.COMBAT_REWARD:
+            rewards, actions, candidate_bits = filter_policy_offers(
+                options["reward"], actions, candidate_bits,
+            )
+            options["reward"] = rewards
         self._candidate_bits = candidate_bits
         map_nodes = tuple(
             MapNode(
@@ -395,7 +400,7 @@ def _combat_cards(
 def _powers(values: Any, prefix: str) -> tuple[PublicEntity, ...]:
     visible = sorted([
         value for value in values
-        if normalize_power_id(value["id"]) not in {"ASLEEP"}
+        if normalize_power_id(value["id"]) not in {"ASLEEP", "MINION_LEADER"}
     ], key=lambda value: (
         normalize_power_id(value["id"]), int(value["amount"]),
     ))
@@ -476,6 +481,16 @@ def _semantic_actions(
         if _is_neow_card_reward(raw) and int(native["reward_type"]) == 6:
             # The native Rewards container has a generic skip-all action that
             # stock's Neow CardRewardScreen does not expose.
+            continue
+        if (
+            screen is ScreenType.COMBAT_REWARD
+            and native.get("domain") != "COMBAT"
+            and int(native.get("reward_type", -1)) == 0
+            and int(native.get("idx2", -1)) == 6
+        ):
+            # The public adapter flattens the stock parent/child reward UI.
+            # Closing only the child card popup returns to an identical
+            # policy boundary and is therefore not a semantic action.
             continue
         if native.get("domain") == "COMBAT":
             action_type = int(native["action_type"])

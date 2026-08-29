@@ -170,7 +170,9 @@ mechanisms; they are not a second environment or training contract.
 - `check_original.py`: verify imported hashes and Java compiler.
 - `build_oracle.py`: deterministic Oracle JAR compilation.
 - `generate_content_registry.py`: regenerate registry from C++ headers.
-- `generate_policy_vocabulary.py`: generate/check the committed collision-free policy input v2 vocabulary.
+- `generate_policy_vocabulary.py`: generate/check the committed collision-free policy input v3 vocabulary.
+- `generate_fullrun_inventory.py`: Original-theoretical versus current-native Ironclad A0-A20 reachable closure.
+- `audit_fullrun_semantics.py`: staged FullRun evidence ledger; incomplete stages remain explicitly blocked.
 - `audit_static.py`: machine-check Java/C++ IDs, registry freshness, supported card cases, and historical markers.
 - `find_act1_boss_seeds.py`: locate the lowest native seed for each Act 1 boss.
 - `search_combat_suffix.py`, `search_act1_suffix.py`: read-only native checkpoint suffix search for local Original verification.
@@ -183,7 +185,7 @@ mechanisms; they are not a second environment or training contract.
 - `submit_slurm.py`: single-GPU Slurm submission for preflight, benchmark, smoke, pilot, and long training.
 - `validate_full_run.py`: one-seed CommunicationMod parity entry.
 - `validate_corpus.py`: TOML-driven multi-seed parity corpus, acceptance gate, traces, and coverage summary.
-- `train_full_run.py`: canonical FullRun PPO entry and resume/save/evaluate loop.
+- `train_full_run.py`: canonical FullRun PPO entry, exact resume, weight-only curriculum warm start, save, and evaluate loop.
 
 ## `configs`
 
@@ -192,10 +194,10 @@ mechanisms; they are not a second environment or training contract.
 - `validation/act1_training_ready.toml`: strict two-round expansion requirements for pilot/training.
 - `validation/act1_readiness.lock.json`: committed engineering-only evidence and cross-platform source-contract attestation.
 - `validation/act1_training_readiness.lock.json`: committed `TRAINING_READY` attestation backed by two real clean four-seed expansion rounds.
-- `model/policy_vocabulary_v2.json`: exact generated policy tokens and vocabulary hash.
-- `train/full_run.toml`: profile, worker, model, PPO, checkpoint, and evaluation settings.
-- `train/act1_smoke.toml`, `train/act1_pilot.toml`: `TRAINING_READY`-guarded 20/200-update GPU stages.
-- `train/smoke.toml`: one-update CPU integration configuration.
+- `validation/policy_transfer_v1.json`: active public-contract and deterministic-probe training gate; hidden whole-run RNG identity is diagnostic.
+- `model/policy_vocabulary_v3.json`: exact generated policy tokens and vocabulary hash.
+- `train/act1_train.toml`: production Act 1 worker, model, PPO, checkpoint, and evaluation settings.
+- `train/act1_smoke.toml`, `train/act1_pilot.toml`: policy-transfer-gated 20/200-update GPU stages.
 
 ## `requirements`
 

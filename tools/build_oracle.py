@@ -62,12 +62,12 @@ def scenario_relic_allowlist() -> bytes:
 
 
 def scenario_encounter_allowlist() -> bytes:
-    scope = json.loads(
-        (ROOT / "configs" / "validation" / "ironclad_a0_content_scope.json").read_text(
+    inventory = json.loads(
+        (ROOT / "configs" / "validation" / "ironclad_fullrun_inventory.json").read_text(
             encoding="utf-8"
         )
     )
-    ids = set(map(str, scope["encounters"]["act1"]))
+    ids = set().union(*(map(str, values) for values in inventory["encounters"].values()))
     registry = json.loads(
         (ROOT / "src" / "sls" / "content" / "registry.json").read_text(encoding="utf-8")
     )
@@ -85,11 +85,32 @@ def scenario_encounter_allowlist() -> bytes:
     # explicit so a display-name cleanup cannot redirect an Oracle probe to
     # MonsterHelper's ApologySlime fallback.
     stock_constructor_keys = {
+        "BOOK_OF_STABBING": "Book of Stabbing",
+        "CENTURION_AND_HEALER": "Centurion and Healer",
+        "CHOSEN_AND_BYRDS": "Chosen and Byrds",
+        "COLOSSEUM_EVENT_NOBS": "Colosseum Nobs",
+        "COLOSSEUM_EVENT_SLAVERS": "Colosseum Slavers",
+        "CULTIST_AND_CHOSEN": "Cultist and Chosen",
+        "DONU_AND_DECA": "Donu and Deca",
+        "FOUR_SHAPES": "4 Shapes",
+        "LAGAVULIN_EVENT": "Lagavulin Event",
+        "MASKED_BANDITS_EVENT": "Masked Bandits",
+        "MUSHROOMS_EVENT": "The Mushroom Lair",
+        "MYSTERIOUS_SPHERE_EVENT": "Mysterious Sphere",
+        "SENTRY_AND_SPHERE": "Sentry and Sphere",
+        "SHELLED_PARASITE_AND_FUNGI": "Shelled Parasite and Fungi",
+        "SHIELD_AND_SPEAR": "Shield and Spear",
+        "SPHERE_AND_TWO_SHAPES": "Sphere and 2 Shapes",
+        "THREE_BYRDS": "3 Byrds",
+        "THREE_CULTIST": "3 Cultists",
+        "THREE_DARKLINGS": "3 Darklings",
         "TWO_LOUSE": "2 Louse",
         "LOTS_OF_SLIMES": "Lots of Slimes",
+        "THREE_SHAPES": "3 Shapes",
         "THREE_LOUSE": "3 Louse",
         "TWO_FUNGI_BEASTS": "2 Fungi Beasts",
         "THREE_SENTRIES": "3 Sentries",
+        "TWO_THIEVES": "2 Thieves",
     }
     return "".join(
         f"{identifier}\t{stock_constructor_keys.get(identifier, mapping[identifier])}\n"

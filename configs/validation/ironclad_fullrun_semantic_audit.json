@@ -1,0 +1,2233 @@
+{
+  "audit_sha256": "b6f6d750d871d31f48698f22270fa10c72ffa9451109ef1e3db17d1d4cd67983",
+  "entries": [
+    {
+      "category": "ascension_modifier",
+      "details": {
+        "level": 10,
+        "native_source": {
+          "path": "cpp/simulator/src/game/GameContext.cpp",
+          "predicate": "ascension >= 10"
+        },
+        "original_source": {
+          "path": "reference/original-game/decompiled/com/megacrit/cardcrawl/dungeons/AbstractDungeon.java",
+          "predicate": "ascensionLevel >= 10"
+        }
+      },
+      "evidence_levels": [
+        "SOURCE_MATCHED"
+      ],
+      "id": "ASCENDERS_BANE",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "A10_PLUS",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "ascension_modifier",
+      "details": {
+        "level": 11,
+        "native_source": {
+          "path": "cpp/simulator/src/game/GameContext.cpp",
+          "predicate": "ascension >= 11"
+        },
+        "original_source": {
+          "path": "reference/original-game/decompiled/com/megacrit/cardcrawl/characters/AbstractPlayer.java",
+          "predicate": "ascensionLevel >= 11"
+        }
+      },
+      "evidence_levels": [
+        "SOURCE_MATCHED"
+      ],
+      "id": "ONE_LESS_POTION_SLOT",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "A11_PLUS",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "ascension_modifier",
+      "details": {
+        "level": 12,
+        "native_source": {
+          "path": "cpp/simulator/src/game/Game.cpp",
+          "predicate": "ascension < 12"
+        },
+        "original_source": {
+          "path": "reference/original-game/decompiled/com/megacrit/cardcrawl/dungeons/TheCity.java",
+          "predicate": "ascensionLevel >= 12"
+        }
+      },
+      "evidence_levels": [
+        "SOURCE_MATCHED"
+      ],
+      "id": "FEWER_UPGRADED_CARDS",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "A12_PLUS",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "ascension_modifier",
+      "details": {
+        "level": 13,
+        "native_source": {
+          "path": "cpp/simulator/src/game/GameContext.cpp",
+          "predicate": "ascension >= 13"
+        },
+        "original_source": {
+          "path": "reference/original-game/decompiled/com/megacrit/cardcrawl/rooms/AbstractRoom.java",
+          "predicate": "ascensionLevel >= 13"
+        }
+      },
+      "evidence_levels": [
+        "SOURCE_MATCHED"
+      ],
+      "id": "LESS_BOSS_GOLD",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "A13_PLUS",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "ascension_modifier",
+      "details": {
+        "level": 14,
+        "native_source": {
+          "path": "cpp/simulator/src/game/GameContext.cpp",
+          "predicate": "ascension < 14"
+        },
+        "original_source": {
+          "path": "reference/original-game/decompiled/com/megacrit/cardcrawl/dungeons/AbstractDungeon.java",
+          "predicate": "ascensionLevel >= 14"
+        }
+      },
+      "evidence_levels": [
+        "SOURCE_MATCHED"
+      ],
+      "id": "LOWER_MAX_HP",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "A14_PLUS",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "ascension_modifier",
+      "details": {
+        "level": 15,
+        "native_source": {
+          "path": "cpp/simulator/src/game/GameContext.cpp",
+          "predicate": "ascension >= 15"
+        },
+        "original_source": {
+          "path": "reference/original-game/decompiled/com/megacrit/cardcrawl/events/shrines/WomanInBlue.java",
+          "predicate": "ascensionLevel >= 15"
+        }
+      },
+      "evidence_levels": [
+        "SOURCE_MATCHED"
+      ],
+      "id": "UNFAVORABLE_EVENTS",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "A15_PLUS",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "ascension_modifier",
+      "details": {
+        "level": 16,
+        "native_source": {
+          "path": "cpp/simulator/src/game/Shop.cpp",
+          "predicate": "ascension >= 16"
+        },
+        "original_source": {
+          "path": "reference/original-game/decompiled/com/megacrit/cardcrawl/shop/ShopScreen.java",
+          "predicate": "ascensionLevel >= 16"
+        }
+      },
+      "evidence_levels": [
+        "SOURCE_MATCHED"
+      ],
+      "id": "COSTLIER_SHOPS",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "A16_PLUS",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "ascension_modifier",
+      "details": {
+        "level": 17,
+        "native_source": {
+          "path": "cpp/simulator/src/combat/MonsterSpecific.cpp",
+          "predicate": "ascension >= 17"
+        },
+        "original_source": {
+          "path": "reference/original-game/decompiled/com/megacrit/cardcrawl/monsters/exordium/SpikeSlime_M.java",
+          "predicate": "ascensionLevel >= 17"
+        }
+      },
+      "evidence_levels": [
+        "SOURCE_MATCHED"
+      ],
+      "id": "CHALLENGING_NORMAL_AI",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "A17_PLUS",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "ascension_modifier",
+      "details": {
+        "level": 18,
+        "native_source": {
+          "path": "cpp/simulator/src/combat/MonsterSpecific.cpp",
+          "predicate": "ascension >= 18"
+        },
+        "original_source": {
+          "path": "reference/original-game/decompiled/com/megacrit/cardcrawl/monsters/exordium/Sentry.java",
+          "predicate": "ascensionLevel >= 18"
+        }
+      },
+      "evidence_levels": [
+        "SOURCE_MATCHED"
+      ],
+      "id": "CHALLENGING_ELITE_AI",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "A18_PLUS",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "ascension_modifier",
+      "details": {
+        "level": 19,
+        "native_source": {
+          "path": "cpp/simulator/src/combat/MonsterSpecific.cpp",
+          "predicate": "ascension >= 19"
+        },
+        "original_source": {
+          "path": "reference/original-game/decompiled/com/megacrit/cardcrawl/monsters/exordium/TheGuardian.java",
+          "predicate": "ascensionLevel >= 19"
+        }
+      },
+      "evidence_levels": [
+        "SOURCE_MATCHED"
+      ],
+      "id": "CHALLENGING_BOSS_AI",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "A19_PLUS",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "ascension_modifier",
+      "details": {
+        "level": 1,
+        "native_source": {
+          "path": "cpp/simulator/src/game/Map.cpp",
+          "predicate": "ascensionLevel > 0"
+        },
+        "original_source": {
+          "path": "reference/original-game/decompiled/com/megacrit/cardcrawl/dungeons/AbstractDungeon.java",
+          "predicate": "ascensionLevel >= 1"
+        }
+      },
+      "evidence_levels": [
+        "SOURCE_MATCHED"
+      ],
+      "id": "MORE_ELITES",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "A1_PLUS",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "ascension_modifier",
+      "details": {
+        "level": 20,
+        "native_source": {
+          "path": "cpp/simulator/src/game/GameContext.cpp",
+          "predicate": "ascension >= 20"
+        },
+        "original_source": {
+          "path": "reference/original-game/decompiled/com/megacrit/cardcrawl/ui/buttons/ProceedButton.java",
+          "predicate": "ascensionLevel >= 20"
+        }
+      },
+      "evidence_levels": [
+        "SOURCE_MATCHED"
+      ],
+      "id": "DOUBLE_ACT3_BOSS",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "A20_PLUS",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "ascension_modifier",
+      "details": {
+        "level": 2,
+        "native_source": {
+          "path": "cpp/simulator/src/combat/MonsterMoveDamage.cpp",
+          "predicate": "asc2"
+        },
+        "original_source": {
+          "path": "reference/original-game/decompiled/com/megacrit/cardcrawl/monsters/exordium/SpikeSlime_S.java",
+          "predicate": "ascensionLevel >= 2"
+        }
+      },
+      "evidence_levels": [
+        "SOURCE_MATCHED"
+      ],
+      "id": "DEADLIER_NORMALS",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "A2_PLUS",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "ascension_modifier",
+      "details": {
+        "level": 3,
+        "native_source": {
+          "path": "cpp/simulator/src/combat/MonsterMoveDamage.cpp",
+          "predicate": "asc3"
+        },
+        "original_source": {
+          "path": "reference/original-game/decompiled/com/megacrit/cardcrawl/monsters/exordium/Sentry.java",
+          "predicate": "ascensionLevel >= 3"
+        }
+      },
+      "evidence_levels": [
+        "SOURCE_MATCHED"
+      ],
+      "id": "DEADLIER_ELITES",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "A3_PLUS",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "ascension_modifier",
+      "details": {
+        "level": 4,
+        "native_source": {
+          "path": "cpp/simulator/src/combat/MonsterMoveDamage.cpp",
+          "predicate": "asc4"
+        },
+        "original_source": {
+          "path": "reference/original-game/decompiled/com/megacrit/cardcrawl/monsters/exordium/SlimeBoss.java",
+          "predicate": "ascensionLevel >= 4"
+        }
+      },
+      "evidence_levels": [
+        "SOURCE_MATCHED"
+      ],
+      "id": "DEADLIER_BOSSES",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "A4_PLUS",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "ascension_modifier",
+      "details": {
+        "level": 5,
+        "native_source": {
+          "path": "cpp/simulator/src/game/GameContext.cpp",
+          "predicate": "ascension >= 5"
+        },
+        "original_source": {
+          "path": "reference/original-game/decompiled/com/megacrit/cardcrawl/dungeons/AbstractDungeon.java",
+          "predicate": "ascensionLevel >= 5"
+        }
+      },
+      "evidence_levels": [
+        "SOURCE_MATCHED"
+      ],
+      "id": "REDUCED_POST_BOSS_HEAL",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "A5_PLUS",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "ascension_modifier",
+      "details": {
+        "level": 6,
+        "native_source": {
+          "path": "cpp/simulator/src/game/GameContext.cpp",
+          "predicate": "ascension < 6"
+        },
+        "original_source": {
+          "path": "reference/original-game/decompiled/com/megacrit/cardcrawl/dungeons/AbstractDungeon.java",
+          "predicate": "ascensionLevel >= 6"
+        }
+      },
+      "evidence_levels": [
+        "SOURCE_MATCHED"
+      ],
+      "id": "DAMAGED_START",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "A6_PLUS",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "ascension_modifier",
+      "details": {
+        "level": 7,
+        "native_source": {
+          "path": "cpp/simulator/src/combat/MonsterSpecific.cpp",
+          "predicate": "ascension >= 7"
+        },
+        "original_source": {
+          "path": "reference/original-game/decompiled/com/megacrit/cardcrawl/monsters/exordium/SpikeSlime_S.java",
+          "predicate": "ascensionLevel >= 7"
+        }
+      },
+      "evidence_levels": [
+        "SOURCE_MATCHED"
+      ],
+      "id": "TOUGHER_NORMALS",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "A7_PLUS",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "ascension_modifier",
+      "details": {
+        "level": 8,
+        "native_source": {
+          "path": "cpp/simulator/src/combat/MonsterSpecific.cpp",
+          "predicate": "ascension >= 8"
+        },
+        "original_source": {
+          "path": "reference/original-game/decompiled/com/megacrit/cardcrawl/monsters/exordium/Sentry.java",
+          "predicate": "ascensionLevel >= 8"
+        }
+      },
+      "evidence_levels": [
+        "SOURCE_MATCHED"
+      ],
+      "id": "TOUGHER_ELITES",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "A8_PLUS",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "ascension_modifier",
+      "details": {
+        "level": 9,
+        "native_source": {
+          "path": "cpp/simulator/src/combat/MonsterSpecific.cpp",
+          "predicate": "ascension >= 9"
+        },
+        "original_source": {
+          "path": "reference/original-game/decompiled/com/megacrit/cardcrawl/monsters/exordium/SlimeBoss.java",
+          "predicate": "ascensionLevel >= 9"
+        }
+      },
+      "evidence_levels": [
+        "SOURCE_MATCHED"
+      ],
+      "id": "TOUGHER_BOSSES",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "A9_PLUS",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "card",
+      "details": {},
+      "evidence_levels": [
+        "SOURCE_ENUMERATED",
+        "NATIVE_METADATA_PRESENT"
+      ],
+      "id": "ASCENDERS_BANE",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED"
+      ],
+      "stage": "A10_PLUS",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "encounter",
+      "details": {
+        "reachable_stages": [
+          "ACT2"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "AUTOMATON",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT2",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "encounter",
+      "details": {
+        "reachable_stages": [
+          "ACT2"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "BOOK_OF_STABBING",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT2",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "encounter",
+      "details": {
+        "reachable_stages": [
+          "ACT2"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "CENTURION_AND_HEALER",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT2",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "encounter",
+      "details": {
+        "reachable_stages": [
+          "ACT2"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "CHAMP",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT2",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "encounter",
+      "details": {
+        "reachable_stages": [
+          "ACT2"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "CHOSEN",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT2",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "encounter",
+      "details": {
+        "reachable_stages": [
+          "ACT2"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "CHOSEN_AND_BYRDS",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT2",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "encounter",
+      "details": {
+        "reachable_stages": [
+          "ACT2"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "COLLECTOR",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT2",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "encounter",
+      "details": {
+        "reachable_stages": [
+          "ACT2"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "CULTIST_AND_CHOSEN",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT2",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "encounter",
+      "details": {
+        "reachable_stages": [
+          "ACT2"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "GREMLIN_LEADER",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT2",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "encounter",
+      "details": {
+        "reachable_stages": [
+          "ACT2"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "SENTRY_AND_SPHERE",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT2",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "encounter",
+      "details": {
+        "reachable_stages": [
+          "ACT2"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "SHELLED_PARASITE_AND_FUNGI",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT2",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "encounter",
+      "details": {
+        "reachable_stages": [
+          "ACT2"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "SHELL_PARASITE",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT2",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "encounter",
+      "details": {
+        "reachable_stages": [
+          "ACT2"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "SLAVERS",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT2",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "encounter",
+      "details": {
+        "reachable_stages": [
+          "ACT2"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "SNAKE_PLANT",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT2",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "encounter",
+      "details": {
+        "reachable_stages": [
+          "ACT2"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "SNECKO",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT2",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "encounter",
+      "details": {
+        "reachable_stages": [
+          "ACT2"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "SPHERIC_GUARDIAN",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT2",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "encounter",
+      "details": {
+        "reachable_stages": [
+          "ACT2"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "THREE_BYRDS",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT2",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "encounter",
+      "details": {
+        "reachable_stages": [
+          "ACT2"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "THREE_CULTIST",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT2",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "encounter",
+      "details": {
+        "reachable_stages": [
+          "ACT2"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "TWO_THIEVES",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT2",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "encounter",
+      "details": {
+        "reachable_stages": [
+          "ACT3"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "AWAKENED_ONE",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT3",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "encounter",
+      "details": {
+        "reachable_stages": [
+          "ACT3"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "DONU_AND_DECA",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT3",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "encounter",
+      "details": {
+        "reachable_stages": [
+          "ACT3"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "FOUR_SHAPES",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT3",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "encounter",
+      "details": {
+        "reachable_stages": [
+          "ACT3"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "GIANT_HEAD",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT3",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "encounter",
+      "details": {
+        "reachable_stages": [
+          "ACT3"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "JAW_WORM_HORDE",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT3",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "encounter",
+      "details": {
+        "reachable_stages": [
+          "ACT3"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "MAW",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT3",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "encounter",
+      "details": {
+        "reachable_stages": [
+          "ACT3"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "NEMESIS",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT3",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "encounter",
+      "details": {
+        "reachable_stages": [
+          "ACT3"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "ORB_WALKER",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT3",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "encounter",
+      "details": {
+        "reachable_stages": [
+          "ACT3"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "REPTOMANCER",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT3",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "encounter",
+      "details": {
+        "reachable_stages": [
+          "ACT3"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "SPHERE_AND_TWO_SHAPES",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT3",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "encounter",
+      "details": {
+        "reachable_stages": [
+          "ACT3"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "SPIRE_GROWTH",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT3",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "encounter",
+      "details": {
+        "reachable_stages": [
+          "ACT3"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "THREE_DARKLINGS",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT3",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "encounter",
+      "details": {
+        "reachable_stages": [
+          "ACT3"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "THREE_SHAPES",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT3",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "encounter",
+      "details": {
+        "reachable_stages": [
+          "ACT3"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "TIME_EATER",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT3",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "encounter",
+      "details": {
+        "reachable_stages": [
+          "ACT3"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "TRANSIENT",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT3",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "encounter",
+      "details": {
+        "reachable_stages": [
+          "ACT3"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "WRITHING_MASS",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT3",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "encounter",
+      "details": {
+        "reachable_stages": [
+          "ACT4"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "SHIELD_AND_SPEAR",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT4",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "encounter",
+      "details": {
+        "reachable_stages": [
+          "ACT4"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "THE_HEART",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT4",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "encounter",
+      "details": {
+        "reachable_stages": [
+          "EVENTS"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "COLOSSEUM_EVENT_NOBS",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "EVENTS",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "encounter",
+      "details": {
+        "reachable_stages": [
+          "EVENTS"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "COLOSSEUM_EVENT_SLAVERS",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "EVENTS",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "encounter",
+      "details": {
+        "reachable_stages": [
+          "EVENTS"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "LAGAVULIN_EVENT",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "EVENTS",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "encounter",
+      "details": {
+        "reachable_stages": [
+          "EVENTS"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "MASKED_BANDITS_EVENT",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "EVENTS",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "encounter",
+      "details": {
+        "reachable_stages": [
+          "EVENTS"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "MUSHROOMS_EVENT",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "EVENTS",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "encounter",
+      "details": {
+        "reachable_stages": [
+          "EVENTS"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "MYSTERIOUS_SPHERE_EVENT",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "EVENTS",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "monster",
+      "details": {
+        "reachable_stages": [
+          "ACT2"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "BOOK_OF_STABBING",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT2",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "monster",
+      "details": {
+        "reachable_stages": [
+          "ACT2"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "BRONZE_AUTOMATON",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT2",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "monster",
+      "details": {
+        "reachable_stages": [
+          "ACT2"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "BRONZE_ORB",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT2",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "monster",
+      "details": {
+        "reachable_stages": [
+          "ACT2"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "BYRD",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT2",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "monster",
+      "details": {
+        "reachable_stages": [
+          "ACT2"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "CENTURION",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT2",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "monster",
+      "details": {
+        "reachable_stages": [
+          "ACT2"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "CHOSEN",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT2",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "monster",
+      "details": {
+        "reachable_stages": [
+          "ACT2"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "GREMLIN_LEADER",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT2",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "monster",
+      "details": {
+        "reachable_stages": [
+          "ACT2"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "MUGGER",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT2",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "monster",
+      "details": {
+        "reachable_stages": [
+          "ACT2"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "MYSTIC",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT2",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "monster",
+      "details": {
+        "reachable_stages": [
+          "ACT2"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "SHELLED_PARASITE",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT2",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "monster",
+      "details": {
+        "reachable_stages": [
+          "ACT2"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "SNAKE_PLANT",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT2",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "monster",
+      "details": {
+        "reachable_stages": [
+          "ACT2"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "SNECKO",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT2",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "monster",
+      "details": {
+        "reachable_stages": [
+          "ACT2",
+          "ACT3"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "SPHERIC_GUARDIAN",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT2",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "monster",
+      "details": {
+        "reachable_stages": [
+          "ACT2",
+          "EVENTS"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "TASKMASTER",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT2",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "monster",
+      "details": {
+        "reachable_stages": [
+          "ACT2"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "THE_CHAMP",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT2",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "monster",
+      "details": {
+        "reachable_stages": [
+          "ACT2"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "THE_COLLECTOR",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT2",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "monster",
+      "details": {
+        "reachable_stages": [
+          "ACT2"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "TORCH_HEAD",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT2",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "monster",
+      "details": {
+        "reachable_stages": [
+          "ACT3"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "AWAKENED_ONE",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT3",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "monster",
+      "details": {
+        "reachable_stages": [
+          "ACT3"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "DAGGER",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT3",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "monster",
+      "details": {
+        "reachable_stages": [
+          "ACT3"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "DARKLING",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT3",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "monster",
+      "details": {
+        "reachable_stages": [
+          "ACT3"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "DECA",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT3",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "monster",
+      "details": {
+        "reachable_stages": [
+          "ACT3"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "DONU",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT3",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "monster",
+      "details": {
+        "reachable_stages": [
+          "ACT3",
+          "EVENTS"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "EXPLODER",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT3",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "monster",
+      "details": {
+        "reachable_stages": [
+          "ACT3"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "GIANT_HEAD",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT3",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "monster",
+      "details": {
+        "reachable_stages": [
+          "ACT3"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "NEMESIS",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT3",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "monster",
+      "details": {
+        "reachable_stages": [
+          "ACT3",
+          "EVENTS"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "ORB_WALKER",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT3",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "monster",
+      "details": {
+        "reachable_stages": [
+          "ACT3"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "REPTOMANCER",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT3",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "monster",
+      "details": {
+        "reachable_stages": [
+          "ACT3",
+          "EVENTS"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "REPULSOR",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT3",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "monster",
+      "details": {
+        "reachable_stages": [
+          "ACT3",
+          "EVENTS"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "SPIKER",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT3",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "monster",
+      "details": {
+        "reachable_stages": [
+          "ACT3"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "SPIRE_GROWTH",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT3",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "monster",
+      "details": {
+        "reachable_stages": [
+          "ACT3"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "THE_MAW",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT3",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "monster",
+      "details": {
+        "reachable_stages": [
+          "ACT3"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "TIME_EATER",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT3",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "monster",
+      "details": {
+        "reachable_stages": [
+          "ACT3"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "TRANSIENT",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT3",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "monster",
+      "details": {
+        "reachable_stages": [
+          "ACT3"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "WRITHING_MASS",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT3",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "monster",
+      "details": {
+        "reachable_stages": [
+          "ACT4"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "CORRUPT_HEART",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT4",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "monster",
+      "details": {
+        "reachable_stages": [
+          "ACT4"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "SPIRE_SHIELD",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT4",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "monster",
+      "details": {
+        "reachable_stages": [
+          "ACT4"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "SPIRE_SPEAR",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT4",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "monster",
+      "details": {
+        "reachable_stages": [
+          "EVENTS"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "BEAR",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "EVENTS",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "monster",
+      "details": {
+        "reachable_stages": [
+          "EVENTS"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "POINTY",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "EVENTS",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "monster",
+      "details": {
+        "reachable_stages": [
+          "EVENTS"
+        ]
+      },
+      "evidence_levels": [
+        "NATIVE_ENUMERATED"
+      ],
+      "id": "ROMEO",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "NATIVE_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "EVENTS",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "relic",
+      "details": {},
+      "differences": {
+        "impact": "214 Original-reachable reward cards are absent from native runs",
+        "native": "GameContext::disablePrismaticShard is true",
+        "original": "ordinary rewards use CardLibrary.getAnyColorCard(rarity)"
+      },
+      "evidence_levels": [
+        "SOURCE_MATCHED"
+      ],
+      "id": "PRISMATIC_SHARD",
+      "remaining": [
+        "NATIVE_VERIFIED",
+        "ORIGINAL_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "FULLRUN_CLOSURE",
+      "status": "DIFFERENCE"
+    },
+    {
+      "category": "run_system",
+      "details": {
+        "test": "tests/simulator/test_fullrun_structure.py"
+      },
+      "evidence_levels": [
+        "NATIVE_EXECUTED",
+        "SOURCE_MATCHED"
+      ],
+      "id": "A20_SECOND_ACT3_BOSS",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "A20",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "run_system",
+      "details": {
+        "test": "tests/simulator/test_fullrun_structure.py"
+      },
+      "evidence_levels": [
+        "NATIVE_EXECUTED"
+      ],
+      "id": "ACT_TRANSITIONS",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "ACT2_ACT3",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "run_system",
+      "details": {
+        "test": "tests/simulator/test_fullrun_structure.py"
+      },
+      "evidence_levels": [
+        "NATIVE_EXECUTED"
+      ],
+      "id": "ACT4_HEART_ROUTE",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "HEART",
+      "status": "BLOCKED"
+    },
+    {
+      "category": "run_system",
+      "details": {
+        "test": "tests/simulator/test_fullrun_structure.py"
+      },
+      "evidence_levels": [
+        "NATIVE_EXECUTED",
+        "POLICY_VISIBLE"
+      ],
+      "id": "THREE_KEYS",
+      "remaining": [
+        "ORIGINAL_VERIFIED",
+        "ROUTE_VERIFIED"
+      ],
+      "stage": "HEART",
+      "status": "BLOCKED"
+    }
+  ],
+  "inherited_act1_audit": {
+    "audit_sha256": "364b228798f9163ef1143f458f810189cc13a8857a7e8d3a0d0aa310c2a3dcbf",
+    "path": "configs/validation/ironclad_a0_semantic_audit.json",
+    "status_counts": {
+      "BLOCKED": 0,
+      "DIFFERENCE": 0,
+      "OUT_OF_SCOPE": 0,
+      "VERIFIED": 418
+    }
+  },
+  "inventory_sha256": "1a4437b8f1c1a541f9951a478a8f312b5f764e0fee8ce860c4906282ffbf3986",
+  "schema": "sls-ironclad-fullrun-semantic-audit-v1",
+  "stages": {
+    "A0_ACT1": {
+      "inherited": true,
+      "status": "TRAINING_READY"
+    },
+    "A0_ACT2": {
+      "reason": "later encounter/monster and route parity is incomplete",
+      "status": "BLOCKED"
+    },
+    "A0_ACT3": {
+      "reason": "later encounter/monster and route parity is incomplete",
+      "status": "BLOCKED"
+    },
+    "A0_HEART": {
+      "reason": "key/Act 4 route parity is incomplete",
+      "status": "BLOCKED"
+    },
+    "A1_A20": {
+      "reason": "ascension modifier parity is incomplete",
+      "status": "BLOCKED"
+    }
+  },
+  "summary": {
+    "claim": "The native route is structurally executable; no later-stage or ascension entry is promoted without executable Original/native parity evidence.",
+    "fullrun_training_ready": false,
+    "status_counts": {
+      "BLOCKED": 108,
+      "DIFFERENCE": 1,
+      "OUT_OF_SCOPE": 0,
+      "VERIFIED": 418
+    }
+  }
+}

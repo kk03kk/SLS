@@ -2,13 +2,17 @@
 
 from __future__ import annotations
 
-import hashlib
 import json
 import re
 from pathlib import Path
+import sys
 
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "src"))
+
+from sls.rl.training_contract import source_sha256  # noqa: E402
+
 HEADERS = ROOT / "cpp" / "simulator" / "include" / "constants"
 OUTPUT = ROOT / "src" / "sls" / "content" / "registry.json"
 SOURCES = {
@@ -78,7 +82,7 @@ def main() -> int:
     for category, (filename, enum_name) in SOURCES.items():
         path = HEADERS / filename
         categories[category] = enum_items(path, enum_name)
-        hashes[filename] = hashlib.sha256(path.read_bytes()).hexdigest()
+        hashes[filename] = source_sha256(path)
     for category, (filename, array_name) in GAME_ID_ARRAYS.items():
         path = HEADERS / filename
         values = string_array(path, array_name)

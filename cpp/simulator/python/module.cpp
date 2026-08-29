@@ -14,6 +14,7 @@
 #include "constants/Cards.h"
 #include "constants/MonsterEncounters.h"
 #include "game/GameContext.h"
+#include "game/Game.h"
 #include "sim/search/Action.h"
 #include "sim/search/GameAction.h"
 #include "sim/search/SimpleAgent.h"
@@ -147,7 +148,7 @@ py::list player_powers(const Player &p) {
     return result;
 }
 
-py::list monster_powers(const Monster &m) {
+py::list monster_powers(const Monster &m, const BattleContext *context = nullptr) {
     py::list result;
     // Stock inserts SplitPower before debuffs subsequently applied to the
     // Slime Boss. Keep that public ordering even though the native simulator
@@ -160,6 +161,22 @@ py::list monster_powers(const Monster &m) {
         const int index = static_cast<int>(status);
         result.append(power(
             enemyStatusStrings[index], amount, enemyStatusStrings[index]));
+    }
+    if (context != nullptr && context->player.hasStatus<PlayerStatus::SURROUNDED>()
+            && (m.id == MonsterId::SPIRE_SHIELD || m.id == MonsterId::SPIRE_SPEAR)
+            && m.idx != context->player.lastTargetedMonster) {
+        result.append(power("BACK_ATTACK", -1, "BACK_ATTACK"));
+    }
+    if (m.id == MonsterId::AWAKENED_ONE && !m.miscInfo && !m.isDeadOrEscaped()) {
+        result.append(power("UNAWAKENED", -1, "UNAWAKENED"));
+    }
+    // Stock exposes ExplosivePower's three-turn countdown. Native encodes the
+    // same lifecycle in Exploder's move history rather than a status slot.
+    if (m.id == MonsterId::EXPLODER && !m.isDeadOrEscaped()) {
+        const int countdown = m.moveHistory[0] == MonsterMoveId::EXPLODER_EXPLODE
+            ? 1
+            : (m.moveHistory[1] == MonsterMoveId::EXPLODER_SLAM ? 2 : 3);
+        result.append(power("EXPLOSIVE", countdown, "EXPLOSIVE"));
     }
     return result;
 }
@@ -278,7 +295,6 @@ const char *intent_name(const Monster &monster, const BattleContext *context = n
         case MMID::GREEN_LOUSE_SPIT_WEB:
         case MMID::NEMESIS_DEBUFF:
         case MMID::REPULSOR_REPULSE:
-        case MMID::ROMEO_MOCK:
         case MMID::SENTRY_BOLT:
         case MMID::SPIKE_SLIME_L_LICK:
         case MMID::SPIKE_SLIME_M_LICK:
@@ -290,6 +306,7 @@ const char *intent_name(const Monster &monster, const BattleContext *context = n
         case MMID::BLUE_SLAVER_RAKE:
         case MMID::CHOSEN_DEBILITATE:
         case MMID::DECA_BEAM:
+        case MMID::DAGGER_STAB:
         case MMID::FAT_GREMLIN_SMASH:
         case MMID::HEXAGHOST_INFERNO:
         case MMID::HEXAGHOST_SEAR:
@@ -297,6 +314,7 @@ const char *intent_name(const Monster &monster, const BattleContext *context = n
         case MMID::ORB_WALKER_LASER:
         case MMID::RED_SLAVER_SCRAPE:
         case MMID::REPTOMANCER_SNAKE_STRIKE:
+        case MMID::ROMEO_AGONIZING_SLASH:
         case MMID::SHELLED_PARASITE_FELL:
         case MMID::SNECKO_TAIL_WHIP:
         case MMID::SPHERIC_GUARDIAN_ATTACK_DEBUFF:
@@ -339,6 +357,7 @@ const char *intent_name(const Monster &monster, const BattleContext *context = n
         case MMID::JAW_WORM_BELLOW:
             return "DEFEND_BUFF";
         case MMID::JAW_WORM_THRASH:
+        case MMID::BEAR_LUNGE:
         case MMID::SPHERIC_GUARDIAN_HARDEN:
         case MMID::SPIRE_SHIELD_SMASH:
         case MMID::WRITHING_MASS_FLAIL:
@@ -583,7 +602,7 @@ py::dict public_combat_state(
             : intent_name(display_monster, &bc);
         value["intent_damage"] = hide_intents ? 0 : adjusted_damage;
         value["intent_hits"] = hide_intents ? 0 : damage.attackCount;
-        value["powers"] = monster_powers(monster);
+        value["powers"] = monster_powers(monster, &bc);
         value["is_gone"] = monster.isDeadOrEscaped();
         monsters.append(value);
     };
@@ -603,7 +622,7 @@ py::dict public_combat_state(
         value["intent"] = hide_intents ? "NONE" : intent_name(monster, &bc);
         value["intent_damage"] = hide_intents ? 0 : adjusted_damage;
         value["intent_hits"] = hide_intents ? 0 : damage.attackCount;
-        value["powers"] = monster_powers(monster);
+        value["powers"] = monster_powers(monster, &bc);
         value["is_gone"] = monster.isDeadOrEscaped();
         monsters.append(value);
     };
@@ -2709,7 +2728,9 @@ public:
         bc_->actionQueue.clear();
         bc_->cardQueue.clear();
         bc_->monsters = MonsterGroup();
-        bc_->monsters.init(*bc_, parse_encounter(encounter_id));
+        const auto encounter = parse_encounter(encounter_id);
+        bc_->encounter = encounter;
+        bc_->monsters.init(*bc_, encounter);
         set_card_piles(
             {"Strike_R", "Defend_R"}, {"Defend_R", "Strike_R"}, {}, {});
         bc_->player.curHp = 80;
@@ -3504,12 +3525,26 @@ private:
         if (values.size() > bc_->monsters.arr.size()) {
             throw std::invalid_argument("Combat checkpoint has too many monsters");
         }
-        bc_->monsters.monsterCount = static_cast<int>(values.size());
-        for (int index = 0; index < bc_->monsters.monsterCount; ++index) {
+        bc_->monsters.monsterCount = 0;
+        std::array<bool, 7> occupied{};
+        for (int index = 0; index < static_cast<int>(values.size()); ++index) {
             const auto value = values[index].cast<py::dict>();
             const auto internal = value["_internal"].cast<py::dict>();
+            int slot = index;
+            if (value.contains("instance_id")) {
+                const auto instance = value["instance_id"].cast<std::string>();
+                constexpr std::string_view prefix = "monster:";
+                if (instance.rfind(prefix, 0) != 0) {
+                    throw std::invalid_argument("Combat checkpoint monster instance is invalid");
+                }
+                slot = std::stoi(instance.substr(prefix.size()));
+            }
+            if (slot < 0 || slot >= static_cast<int>(bc_->monsters.arr.size()) || occupied[slot]) {
+                throw std::invalid_argument("Combat checkpoint monster slot is invalid");
+            }
+            occupied[slot] = true;
             Monster monster;
-            monster.idx = index;
+            monster.idx = slot;
             const auto monster_id = value["monster_id"].cast<std::string>();
             monster.id = monster_id.rfind("INVALID", 0) == 0
                 ? MonsterId::INVALID : parse_monster(monster_id);
@@ -3549,7 +3584,8 @@ private:
                     if (monster.hasStatusInternal(status)) monster.recordPowerApplied(status);
                 }
             }
-            bc_->monsters.arr[index] = monster;
+            bc_->monsters.arr[slot] = monster;
+            bc_->monsters.monsterCount = std::max(bc_->monsters.monsterCount, slot + 1);
             if (monster.curHp > 0 && !monster.halfDead && !monster.isEscapingB)
                 ++bc_->monsters.monstersAlive;
         }
@@ -3663,10 +3699,10 @@ private:
         py::list monsters;
         for (int i = 0; i < bc_->monsters.monsterCount; ++i) {
             const auto &monster = bc_->monsters.arr[i];
-            const bool reserved_summon_slot = monster.id == MonsterId::INVALID && (
-                (bc_->encounter == MonsterEncounter::AUTOMATON && (i == 0 || i == 2)) ||
-                (bc_->encounter == MonsterEncounter::COLLECTOR && (i == 0 || i == 1)));
-            if (reserved_summon_slot) continue;
+            // Sparse native layouts reserve INVALID slots for summons (for
+            // example Automaton, Collector, Gremlin Leader and Reptomancer).
+            // Stock never exposes those implementation placeholders.
+            if (monster.id == MonsterId::INVALID) continue;
             const auto damage = monster.getMoveBaseDamage(*bc_);
             auto &player_for_display = bc_->player;
             const auto saved_status_bits0 = player_for_display.statusBits0;
@@ -3683,6 +3719,9 @@ private:
             player_for_display.justAppliedBits = saved_just_applied;
             player_for_display.powerOrder = saved_power_order;
             py::dict value;
+            // Preserve the native slot privately so the canonical adapter can
+            // renumber sparse summon layouts without redirecting targets.
+            value["instance_id"] = "monster:" + std::to_string(i);
             value["id"] = monster.getName();
             value["name"] = monster.getName();
             value["monster_id"] = monsterIdStrings[static_cast<int>(monster.id)];
@@ -3733,7 +3772,7 @@ private:
             value["move_hits"] = damage.attackCount;
             value["half_dead"] = monster.halfDead;
             value["is_gone"] = monster.isDeadOrEscaped();
-            value["powers"] = monster_powers(monster);
+            value["powers"] = monster_powers(monster, bc_.get());
             monsters.append(value);
         }
         combat["monsters"] = monsters;
@@ -4074,11 +4113,15 @@ public:
             gc_->monsterHpRng.random(35, 39); // Romeo
             gc_->monsterHpRng.random(38, 42); // Bear
         } else if (gc_->curEvent == Event::MYSTERIOUS_SPHERE) {
-            // Each Orb Walker rolls once in the super-constructor and once in
-            // its explicit A0 HP setup.
-            for (int index = 0; index < 4; ++index) {
-                gc_->monsterHpRng.random(90, 96);
-            }
+            // Stock constructs two random Ancient Shapes and one Orb Walker
+            // when the event opens. Shapes consume one misc + one HP draw;
+            // Orb Walker consumes two HP draws (one discarded).
+            gc_->miscRng.random(2);
+            gc_->monsterHpRng.random(30, 56);
+            gc_->miscRng.random(2);
+            gc_->monsterHpRng.random(30, 56);
+            gc_->monsterHpRng.random(90, 96);
+            gc_->monsterHpRng.random(90, 96);
         }
         battle_.reset();
         battle_action_count_ = 0;
@@ -4226,6 +4269,20 @@ public:
             ? state["progress_state"].cast<py::dict>() : py::dict();
         const auto screen = state.contains("screen_info")
             ? state["screen_info"].cast<py::dict>() : py::dict();
+        bool legacyUnsettledVictory = false;
+        if (state.contains("combat_checkpoint") && !screen.empty() &&
+                screen.contains("complete") && screen["complete"].cast<bool>() &&
+                screen["screen_state"].cast<int>() ==
+                    static_cast<int>(ScreenState::BATTLE)) {
+            const auto legacyCombat = state["combat_checkpoint"].cast<py::dict>();
+            if (legacyCombat.contains("game_state")) {
+                const auto legacyGame = legacyCombat["game_state"].cast<py::dict>();
+                legacyUnsettledVictory =
+                    legacyGame.contains("outcome") &&
+                    legacyGame["outcome"].cast<std::string>() == "PLAYER_VICTORY" &&
+                    !legacyGame.contains("combat_state");
+            }
+        }
         const bool registeredLegacyEvent =
             !screen.empty() && !screen["complete"].cast<bool>() &&
             screen["screen_state"].cast<int>() == static_cast<int>(ScreenState::EVENT_SCREEN) &&
@@ -4234,7 +4291,7 @@ public:
              progress["current_event"].cast<int>() == static_cast<int>(Event::THE_CLERIC) ||
              progress["current_event"].cast<int>() == static_cast<int>(Event::BIG_FISH) ||
              progress["current_event"].cast<int>() == static_cast<int>(Event::UPGRADE_SHRINE));
-        if ((state.contains("screen_info") &&
+        if (legacyUnsettledVictory || (state.contains("screen_info") &&
                 !screen["complete"].cast<bool>() && !registeredLegacyEvent) ||
                 replay_required) {
             if (!state.contains("replay_actions")) {
@@ -4247,6 +4304,26 @@ public:
                 py::int_(run["math_seed"].cast<std::uint64_t>()));
             for (const auto item : requested_history) step(item.cast<std::uint32_t>());
             const auto replayed = snapshot();
+            if (legacyUnsettledVictory) {
+                // Crash-dump v1 could capture a battle won entirely by
+                // start-of-combat effects before FullRun called exitBattle.
+                // Its terminal battle projection intentionally omitted the
+                // agent-facing combat_state, so direct battle restoration is
+                // impossible.  The complete native action history is the
+                // durable representation for this one historical shape.
+                const auto migratedRun = replayed["public_run"].cast<py::dict>();
+                const auto migratedActions = replayed["legal_actions"].cast<py::list>();
+                if (migratedRun["act"].cast<int>() != run["act"].cast<int>() ||
+                        migratedRun["floor"].cast<int>() != run["floor"].cast<int>() ||
+                        migratedRun["screen_state"].cast<int>() !=
+                            static_cast<int>(ScreenState::REWARDS) ||
+                        replayed.contains("combat_checkpoint") ||
+                        migratedActions.empty()) {
+                    throw std::invalid_argument(
+                        "Legacy start-of-combat victory did not migrate to rewards");
+                }
+                return;
+            }
             // Checkpoints are persisted as JSON.  pybind snapshots may contain
             // tuples, which become lists after a JSON/gzip round trip even
             // though the checkpoint is otherwise byte-for-byte equivalent in
@@ -4531,6 +4608,27 @@ public:
         return result;
     }
 
+    int scripted_step() {
+        require_reset();
+        search::SimpleAgent agent;
+        agent.curGameContext = gc_.get();
+        if (battle_) {
+            if (battle_->inputState == InputState::CARD_SELECT) {
+                agent.stepBattleCardSelect(*battle_);
+            } else if (battle_->inputState == InputState::PLAYER_NORMAL) {
+                agent.stepBattleCardPlay(*battle_);
+            } else {
+                throw std::logic_error("Scripted step requires an agent-facing battle state");
+            }
+        } else {
+            agent.stepOutOfCombat(*gc_);
+        }
+        if (agent.actionHistory.empty()) {
+            throw std::logic_error("Scripted step did not execute an action");
+        }
+        return agent.actionHistory.front();
+    }
+
     py::dict scripted_playout_act1() {
         require_reset();
         search::SimpleAgent agent;
@@ -4597,6 +4695,17 @@ private:
         battle_->init(*gc_, gc_->info.encounter);
         battle_action_count_ = 0;
         has_terminal_display_moves_ = false;
+        // Relics and powers execute during BattleContext::init.  They can end
+        // combat before the policy receives its first combat boundary (for
+        // example Neow's Lament setting 1 HP followed by Mercury Hourglass).
+        // Stock drains those actions and proceeds to room rewards without a
+        // player command, so settle the native battle synchronously as well.
+        if (battle_->outcome != Outcome::UNDECIDED) {
+            battle_->exitBattle(*gc_);
+            if (battle_->outcome != Outcome::PLAYER_LOSS) {
+                battle_.reset();
+            }
+        }
     }
 };
 
@@ -4636,6 +4745,52 @@ py::list shuffle_probe(std::uint64_t seed) {
     java::Collections::shuffle(values.begin(), values.end(), java::Random(seed));
     py::list result;
     for (const auto value : values) result.append(value);
+    return result;
+}
+
+py::dict stochastic_distribution_probe(std::uint64_t base_seed, int samples) {
+    if (samples <= 0) throw std::invalid_argument("samples must be positive");
+    py::dict result;
+    py::list draw_shuffle;
+    py::list card_rewards;
+    py::list potion_rewards;
+    py::list relic_rewards;
+    py::list random_events;
+    py::list encounters;
+    constexpr std::uint64_t stride = 0x9E3779B97F4A7C15ULL;
+    for (int index = 0; index < samples; ++index) {
+        const auto seed = base_seed + stride * static_cast<std::uint64_t>(index);
+        std::array<int, 10> order {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+        java::Collections::shuffle(order.begin(), order.end(), java::Random(seed));
+        std::string order_key;
+        for (const auto value : order) order_key += static_cast<char>('0' + value);
+        draw_shuffle.append(order_key);
+
+        GameContext gc(CharacterClass::IRONCLAD, seed, 0);
+        const auto cards = gc.createCardReward(Room::MONSTER);
+        std::string card_key;
+        for (const auto &card : cards) {
+            if (!card_key.empty()) card_key += '|';
+            card_key += cardEnumStrings[static_cast<int>(card.id)];
+            card_key += card.isUpgraded() ? "+" : "";
+        }
+        card_rewards.append(card_key);
+        const auto potion = returnRandomPotion(gc.potionRng, gc.cc);
+        potion_rewards.append(potionEnumNames[static_cast<int>(potion)]);
+        const auto tier = returnRandomRelicTier(gc.relicRng, gc.act);
+        const auto relic = gc.returnRandomRelic(tier, false);
+        relic_rewards.append(relicEnumNames[static_cast<int>(relic)]);
+        const auto event = gc.generateEvent(gc.eventRng);
+        random_events.append(eventIdStrings[static_cast<int>(event)]);
+        const auto encounter = gc.getMonsterForRoomCreation();
+        encounters.append(monsterEncounterEnumNames[static_cast<int>(encounter)]);
+    }
+    result["draw_shuffle"] = draw_shuffle;
+    result["card_rewards"] = card_rewards;
+    result["potion_rewards"] = potion_rewards;
+    result["relic_rewards"] = relic_rewards;
+    result["random_events"] = random_events;
+    result["encounters"] = encounters;
     return result;
 }
 
@@ -5531,6 +5686,8 @@ PYBIND11_MODULE(_lightspeed, module) {
     module.doc() = "Canonical FullRun sts_lightspeed bridge and rule probes";
     module.def("rng_probe", &rng_probe, py::arg("seed"));
     module.def("shuffle_probe", &shuffle_probe, py::arg("seed"));
+    module.def("stochastic_distribution_probe", &stochastic_distribution_probe,
+        py::arg("base_seed"), py::arg("samples"));
     module.def("action_queue_probe", &action_queue_probe);
     module.def("card_color_probe", &card_color_probe);
     module.def("card_metadata_probe", &card_metadata_probe);
@@ -5653,6 +5810,7 @@ PYBIND11_MODULE(_lightspeed, module) {
              py::arg("purchased_card"))
         .def("scripted_playout", &LightspeedRunState::scripted_playout)
         .def("scripted_playout_act1", &LightspeedRunState::scripted_playout_act1)
+        .def("scripted_step", &LightspeedRunState::scripted_step)
         .def("resolve_battle_scripted", &LightspeedRunState::resolve_battle_scripted)
         .def("search_battle_suffix", &LightspeedRunState::search_battle_suffix,
              py::arg("simulations"));

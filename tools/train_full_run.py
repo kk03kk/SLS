@@ -23,28 +23,26 @@ sys.path.insert(0, str(ROOT / "src"))
 import torch
 
 from sls.content.scope import IRONCLAD_A0_SCOPE_ID, ironclad_a0_scope_hash
-from sls.content.semantic_audit import semantic_audit_hash
 
-from sls.curriculum import (
-    IRONCLAD_A0_ACT1,
-    IRONCLAD_A0_ACT2,
-    IRONCLAD_A0_ACT3,
-    IRONCLAD_A0_HEART,
-)
+from sls.curriculum import CURRICULUM_PROFILES_BY_ID
 from sls.model import ModelConfig, Policy
 from sls.model.encoding import ENCODING_SCHEMA, vocabulary_hash
-from sls.rl import PPOConfig, PPOTrainer, WorkerPool, evaluate, load_checkpoint, save_checkpoint
+from sls.rl import (
+    PPOConfig, PPOTrainer, ShardedWorkerPool, VectorWorkerPool, WorkerPool,
+    evaluate, load_checkpoint,
+    load_model_weights, save_checkpoint,
+)
+from sls.rl.best_checkpoint import best_checkpoint_record, update_best_checkpoint
 from sls.rl.training_contract import (
     TRAINING_CHECKPOINT_SCHEMA, canonical_digest, git_state, native_artifact,
     native_source_digest, readiness_settings,
 )
+from sls.rl.demonstrations import load_teacher_corpus
 from sls.validation.readiness_lock import verify_readiness_lock
+from sls.validation.transfer_gate import verify_policy_transfer_gate
 
 
-PROFILES = {
-    item.profile_id: item
-    for item in (IRONCLAD_A0_ACT1, IRONCLAD_A0_ACT2, IRONCLAD_A0_ACT3, IRONCLAD_A0_HEART)
-}
+PROFILES = CURRICULUM_PROFILES_BY_ID
 
 
 def _atomic_json(path: Path, value: object) -> None:
@@ -76,6 +74,15 @@ def _positive_int(run: dict[str, object], key: str, *, default: int | None = Non
     if value <= 0:
         raise ValueError(f"{key} must be positive")
     return value
+
+
+def _require_readiness_profile(readiness: dict[str, object], profile_id: str) -> None:
+    locked_profile = str(readiness.get("profile") or "")
+    if locked_profile != profile_id:
+        raise ValueError(
+            f"readiness lock is for {locked_profile or 'an unspecified profile'}, "
+            f"not {profile_id}"
+        )
 
 
 class StopController:
@@ -136,10 +143,19 @@ def _slurm_environment() -> dict[str, str]:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--config", type=Path, default=ROOT / "configs" / "train" / "full_run.toml")
+    parser.add_argument("--config", type=Path, default=ROOT / "configs" / "train" / "act1_train.toml")
     parser.add_argument("--resume", help="checkpoint path or 'auto' for OUTPUT/latest.pt")
+    parser.add_argument("--warm-start", type=Path, help="compatible checkpoint weights only")
     parser.add_argument("--workers", type=int, help="override configured worker count")
+    parser.add_argument(
+        "--state-corpus", type=Path,
+        help="teacher corpus whose checkpoints provide half of mid-run resets",
+    )
     args = parser.parse_args()
+    if torch.cuda.is_available():
+        torch.set_float32_matmul_precision("high")
+    if args.resume and args.warm_start:
+        parser.error("--resume and --warm-start are mutually exclusive")
     config_bytes = args.config.read_bytes()
     payload = tomllib.loads(config_bytes.decode("utf-8"))
     run = payload["run"]
@@ -151,6 +167,23 @@ def main() -> int:
     profile = PROFILES[str(run["profile"])]
     readiness_digest = "UNVERIFIED"
     readiness_level = "UNVERIFIED"
+    transfer_gate_path = run.get("transfer_gate")
+    if bool(run.get("require_transfer_gate", False)):
+        if not transfer_gate_path:
+            raise ValueError("require_transfer_gate needs transfer_gate")
+        resolved_gate = Path(str(transfer_gate_path))
+        if not resolved_gate.is_absolute():
+            resolved_gate = ROOT / resolved_gate
+        transfer_gate = verify_policy_transfer_gate(
+            resolved_gate, profile_id=profile.profile_id,
+            # The Original policy canary is a deployment release gate.  PPO
+            # training is gated by the exact public contract, deterministic
+            # probes, and stochastic distributions and may create the model
+            # that will subsequently be canaried.
+            require_canary=False,
+        )
+        readiness_digest = hashlib.sha256(resolved_gate.read_bytes()).hexdigest()
+        readiness_level = str(transfer_gate["schema"])
     if bool(run.get("require_readiness", False)):
         try:
             readiness_path, readiness_level = readiness_settings(run)
@@ -162,6 +195,7 @@ def main() -> int:
                 readiness_path, require_clean=not bool(run.get("allow_dirty", False)),
                 expected_level=readiness_level,
             )
+            _require_readiness_profile(dict(readiness), profile.profile_id)
         except Exception as error:
             print(json.dumps({"error": "ACT1_PARITY_READINESS_FAILED", "reason": str(error)}, sort_keys=True), file=sys.stderr)
             return 2
@@ -173,6 +207,31 @@ def main() -> int:
         "cpu" if device_name == "auto" else device_name
     )
     model = Policy(ModelConfig(**payload.get("model", {})))
+    warm_start = None
+    if args.warm_start is not None:
+        warm_path = args.warm_start if args.warm_start.is_absolute() else ROOT / args.warm_start
+        warm_start = {
+            "path": str(warm_path.resolve()),
+            **load_model_weights(warm_path, model),
+        }
+    checkpoint_reservoir = ()
+    state_corpus = None
+    configured_corpus = args.state_corpus or (
+        Path(str(run["state_corpus"])) if run.get("state_corpus") else None
+    )
+    if configured_corpus is not None:
+        corpus_path = configured_corpus if configured_corpus.is_absolute() else ROOT / configured_corpus
+        corpus = load_teacher_corpus(corpus_path)
+        if str(corpus.get("profile")) != profile.profile_id:
+            raise ValueError("state corpus profile does not match the training profile")
+        checkpoint_reservoir = tuple(
+            dict(example["checkpoint"]) for example in corpus["examples"]
+        )
+        state_corpus = {
+            "path": str(corpus_path.resolve()),
+            "examples": len(checkpoint_reservoir),
+            "sha256": hashlib.sha256(corpus_path.read_bytes()).hexdigest(),
+        }
     ppo = PPOConfig(**payload.get("ppo", {}))
     workers_count = _positive_int(run, "workers")
     updates = _positive_int(run, "updates")
@@ -211,7 +270,6 @@ def main() -> int:
         "readiness_lock_sha256": readiness_digest,
         "content_scope_id": IRONCLAD_A0_SCOPE_ID,
         "content_scope_sha256": ironclad_a0_scope_hash(),
-        "semantic_audit_sha256": semantic_audit_hash(),
         "readiness_level": readiness_level,
         "native_source_sha256": source_digest,
         "native_artifact": native_artifact(),
@@ -221,6 +279,8 @@ def main() -> int:
         "evaluation_max_steps": evaluation_max_steps,
         "started_unix": started,
         "resume": str(resume_path.resolve()) if resume_path else None,
+        "warm_start": warm_start,
+        "state_corpus": state_corpus,
     }
     _atomic_json(output / "run-manifest.json", run_manifest)
     if str(device).startswith("cuda"):
@@ -229,11 +289,26 @@ def main() -> int:
     controller.install()
     trainer: PPOTrainer | None = None
     try:
-        with WorkerPool(profile, workers_count) as workers:
+        worker_backend = str(run.get("worker_backend", "sharded-vector"))
+        pool_types = {
+            "sharded-vector": ShardedWorkerPool,
+            "local-vector": VectorWorkerPool,
+            "spawned": WorkerPool,
+        }
+        if worker_backend not in pool_types:
+            raise ValueError(f"unknown worker backend: {worker_backend}")
+        pool_type = pool_types[worker_backend]
+        with pool_type(
+            profile, workers_count, crash_dump_dir=output / "crashes",
+        ) as workers:
             trainer = PPOTrainer(
                 model, workers, ppo, device=device, seed=seed,
                 readiness_lock_digest=readiness_digest,
                 native_contract_digest=source_digest,
+                checkpoint_reservoir=checkpoint_reservoir,
+                checkpoint_reservoir_digest=(
+                    str(state_corpus["sha256"]) if state_corpus else "NONE"
+                ),
             )
             if resume_path is not None:
                 load_checkpoint(resume_path, trainer)
@@ -261,7 +336,15 @@ def main() -> int:
                             max_boundary_visits=ppo.max_boundary_visits,
                             stop_requested=lambda: controller.requested,
                         )
-                        record["evaluation"] = asdict(result)
+                        evaluation = asdict(result)
+                        record["evaluation"] = evaluation
+                        best_record = best_checkpoint_record(
+                            evaluation, update=trainer.update, warm_start=warm_start,
+                        )
+                        record["best_checkpoint_updated"] = update_best_checkpoint(
+                            output, best_record,
+                            save=lambda path: save_checkpoint(path, trainer),
+                        )
                     except InterruptedError:
                         record["evaluation_interrupted"] = True
                 with log_path.open("a", encoding="utf-8") as stream:

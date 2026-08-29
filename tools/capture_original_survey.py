@@ -12,14 +12,12 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from sls.backends.original import OriginalBackend, OriginalSession, StdioTransport
-from sls.backends.simulator import IRONCLAD_A0_ACT1, IRONCLAD_A0_ACT2, IRONCLAD_A0_ACT3, IRONCLAD_A0_HEART
+from sls.curriculum import CURRICULUM_PROFILES_BY_ID
 from sls.validation.policies import PRIORITY
 from sls.validation.truth import TruthBundleRecorder, file_hash, native_build_metadata
 
 
-PROFILES = {p.profile_id: p for p in (
-    IRONCLAD_A0_ACT1, IRONCLAD_A0_ACT2, IRONCLAD_A0_ACT3, IRONCLAD_A0_HEART,
-)}
+PROFILES = CURRICULUM_PROFILES_BY_ID
 
 
 def choose_original(decision, variant: int):

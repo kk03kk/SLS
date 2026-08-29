@@ -10,7 +10,20 @@ pytest.importorskip("sls.backends.simulator.native", exc_type=ImportError)
 
 from sls.curriculum import IRONCLAD_A0_ACT1
 from sls.model import ModelConfig, Policy
-from sls.rl import PPOConfig, PPOTrainer, WorkerPool, evaluate, load_checkpoint, save_checkpoint
+from sls.rl import (
+    PPOConfig, PPOTrainer, ShardedWorkerPool, WorkerPool, evaluate, load_checkpoint,
+    load_model_weights, save_checkpoint,
+)
+
+
+def test_sharded_worker_hosts_multiple_environments_per_process() -> None:
+    with ShardedWorkerPool(IRONCLAD_A0_ACT1, 4, shard_count=2) as workers:
+        decisions = workers.reset((0, 1, 2, 3))
+        transitions = workers.step(tuple(item.actions[0].candidate_id for item in decisions))
+        assert len(transitions) == 4
+        states = workers.checkpoints()
+        restored = workers.load_checkpoints(states)
+        assert len(restored) == 4
 
 
 def test_one_native_ppo_update_and_exact_resume(tmp_path: Path) -> None:
@@ -26,7 +39,10 @@ def test_one_native_ppo_update_and_exact_resume(tmp_path: Path) -> None:
         metrics = trainer.train_update()
         assert trainer.update == 1
         assert all(torch.isfinite(torch.tensor(value)) for value in metrics.values())
-        assert {"approx_kl", "gradient_norm"} <= metrics.keys()
+        assert {
+            "approx_kl", "approx_kl_final", "approx_kl_epoch_1",
+            "clip_fraction", "gradient_norm",
+        } <= metrics.keys()
         path = save_checkpoint(tmp_path / "checkpoint.pt", trainer)
         expected_limits = [item.to_dict() for item in trainer.episode_limits]
         expected_seed = trainer.next_seed
@@ -43,6 +59,20 @@ def test_one_native_ppo_update_and_exact_resume(tmp_path: Path) -> None:
         assert actual_metrics == pytest.approx(expected_metrics, rel=0.0, abs=0.0)
         for key, value in trainer.model.state_dict().items():
             assert torch.equal(value, expected_model[key]), key
+
+        transferred = Policy(model.config)
+        metadata = load_model_weights(path, transferred)
+        assert metadata["profile"] == IRONCLAD_A0_ACT1.profile_id
+        assert metadata["update"] == 1
+        saved_weights = torch.load(path, map_location="cpu", weights_only=False)["model"]
+        for key, value in transferred.state_dict().items():
+            assert torch.equal(value, saved_weights[key]), key
+        incompatible = Policy(ModelConfig(
+            embedding_dim=64, transformer_layers=1,
+            attention_heads=4, feedforward_dim=64,
+        ))
+        with pytest.raises(ValueError, match="architecture is incompatible"):
+            load_model_weights(path, incompatible)
 
         legacy = tmp_path / "legacy-v1.pt"
         torch.save({"schema": "sls-full-run-ppo-v1"}, legacy)

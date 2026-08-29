@@ -4,6 +4,7 @@ import importlib.util
 from pathlib import Path
 
 from sls.content.scope import load_ironclad_a0_scope
+from sls.validation.fullrun_audit import load_fullrun_inventory
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -26,3 +27,11 @@ def test_stock_monster_source_locator_covers_the_exact_act1_scope() -> None:
     expected = set(map(str, load_ironclad_a0_scope()["monsters"]["act1"]))
     assert expected <= sources.keys()
     assert all(sources[identifier].is_file() for identifier in expected)
+
+
+def test_stock_monster_source_locator_covers_the_fullrun_scope() -> None:
+    module = _module()
+    sources = module._monster_sources()
+    inventory = load_fullrun_inventory()
+    expected = set().union(*map(set, inventory["monsters"].values()))
+    assert expected <= sources.keys()

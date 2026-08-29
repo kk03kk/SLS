@@ -15,25 +15,12 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from sls.backends.original import OriginalBackend, OriginalSession, StdioTransport
-from sls.backends.simulator import (
-    IRONCLAD_A0_ACT1,
-    IRONCLAD_A0_ACT2,
-    IRONCLAD_A0_ACT3,
-    IRONCLAD_A0_HEART,
-    SimulatorBackend,
-)
+from sls.backends.simulator import SimulatorBackend
+from sls.curriculum import CURRICULUM_PROFILES_BY_ID
 from sls.validation import run_paired, summarize
 
 
-PROFILES = {
-    profile.profile_id: profile
-    for profile in (
-        IRONCLAD_A0_ACT1,
-        IRONCLAD_A0_ACT2,
-        IRONCLAD_A0_ACT3,
-        IRONCLAD_A0_HEART,
-    )
-}
+PROFILES = CURRICULUM_PROFILES_BY_ID
 
 
 def _load_config(path: Path) -> dict[str, object]:

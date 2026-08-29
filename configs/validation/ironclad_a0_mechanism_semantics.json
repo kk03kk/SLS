@@ -1,5 +1,5 @@
 {
-  "audit_sha256": "f76dd4b2307250264e6dcb1267f5a62d8eb4ceee2942e83fcc4cd3e24d5b0589",
+  "audit_sha256": "4b0f331c4a35b670beb5172342970d21bfa2fab11c4412b2dc97ef0ae61302b8",
   "entries": [
     {
       "actions": [
@@ -103,11 +103,11 @@
   ],
   "oracle_schema": "spirecomm-parity-v10",
   "schema": "sls-ironclad-mechanism-semantics-v1",
-  "scope_sha256": "fb9c464dda321dfdb3e237ddef1fcd8427b037c9a39e92510aea183b1d9cfdb8",
+  "scope_sha256": "24a218a612d16c34879dd4469891febc4a770f83d25783e51e79e10476a60f17",
   "seed": 0,
   "source_files": {
-    "cpp/simulator/python/module.cpp": "ac18eac26093e2ad265eaee2baf512f5c68a7db419a5842d20b97c494d8b37cb",
-    "java/oracle-mod/src/main/java/spirecomm/parity/OracleScenarioPatch.java": "4860a879b173663a0aff7326d6311b0e4c63961c1ecd8206fbfa60b322a69789",
+    "cpp/simulator/python/module.cpp": "eaae39537ac55b754855ecbfbfc462ba9ef2f9d0d449f9de222a334920004e14",
+    "java/oracle-mod/src/main/java/spirecomm/parity/OracleScenarioPatch.java": "276a00af431c799764d96c0daa13ee0c9a88eae1a3e6f04b7c9b7e4c1bea4f77",
     "reference/original-game/decompiled/com/megacrit/cardcrawl/orbs/Frost.java": "74c6f567c91c526b0fd2b9b8040888bab54eab329d099251ad94f81dadeb1439",
     "reference/original-game/decompiled/com/megacrit/cardcrawl/orbs/Plasma.java": "3758d5402fd24491fae363bf64fc4e871e917f5f89d44d2265840c96db648cce",
     "reference/original-game/decompiled/com/megacrit/cardcrawl/potions/BloodPotion.java": "a494503c681b7301e3abed41606fe640550f81806e1d327c78be2e7a15f09865",

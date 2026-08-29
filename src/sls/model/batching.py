@@ -11,7 +11,8 @@ import torch
 from sls.contracts import Decision, Observation
 from sls.model.encoding import (
     ACTION_TYPE_IDS, CATEGORICAL_FIELDS, CATEGORICAL_FIELD_IDS, ENTITY_TYPE_IDS,
-    NUMERIC_FIELDS, NUMERIC_FIELD_IDS, categorical_token, content_token,
+    NUMERIC_FIELDS, NUMERIC_FIELD_IDS, SCREEN_GROUP_IDS, SCREEN_TO_GROUP,
+    categorical_token, content_token,
 )
 
 REFERENCE_FIELDS = ("subject_id", "target_id", "option_id", "node_id", "reward_id")
@@ -19,6 +20,7 @@ REFERENCE_FIELDS = ("subject_id", "target_id", "option_id", "node_id", "reward_i
 
 @dataclass(frozen=True, slots=True)
 class EncodedDecision:
+    screen_type: torch.Tensor
     entity_numeric: torch.Tensor
     entity_numeric_present: torch.Tensor
     entity_types: torch.Tensor
@@ -42,6 +44,7 @@ class EncodedDecision:
 
 @dataclass(frozen=True, slots=True)
 class PolicyBatch:
+    screen_types: torch.Tensor
     entity_numeric: torch.Tensor
     entity_numeric_present: torch.Tensor
     entity_types: torch.Tensor
@@ -58,7 +61,11 @@ class PolicyBatch:
 
     @classmethod
     def from_decisions(cls, decisions: Iterable[Decision], config: object | None = None) -> "PolicyBatch":
-        encoded = [encode_decision(value) for value in decisions]
+        return cls.from_encoded([encode_decision(value) for value in decisions])
+
+    @classmethod
+    def from_encoded(cls, encoded: Iterable[EncodedDecision]) -> "PolicyBatch":
+        encoded = list(encoded)
         if not encoded:
             raise ValueError("policy batch cannot be empty")
         if any(value.action_count == 0 for value in encoded):
@@ -80,6 +87,7 @@ class PolicyBatch:
         action_references = torch.zeros(b, a, rf, dtype=torch.long)
         action_reference_mask = torch.zeros(b, a, rf, dtype=torch.bool)
         action_padding = torch.ones(b, a, dtype=torch.bool)
+        screen_types = torch.zeros(b, dtype=torch.long)
         for index, item in enumerate(encoded):
             ec, ac = item.entity_count, item.action_count
             entity_numeric[index, :ec] = item.entity_numeric
@@ -95,15 +103,35 @@ class PolicyBatch:
             action_references[index, :ac] = item.action_references
             action_reference_mask[index, :ac] = item.action_reference_mask
             action_padding[index, :ac] = False
+            screen_types[index] = item.screen_type
         return cls(
-            entity_numeric, entity_numeric_present, entity_types, entity_content,
+            screen_types, entity_numeric, entity_numeric_present, entity_types, entity_content,
             entity_categories, entity_adjacency, entity_padding, action_numeric,
             action_numeric_present, action_types, action_references,
             action_reference_mask, action_padding,
         )
 
     def to(self, device: torch.device | str) -> "PolicyBatch":
-        return PolicyBatch(*(value.to(device, non_blocking=True) for value in self.model_inputs()))
+        target = torch.device(device)
+        values = self.model_inputs()
+        if target.type != "cuda":
+            return PolicyBatch(*(value.to(target) for value in values))
+
+        # Fourteen tiny host-to-device copies dominate small policy batches.
+        # Coalesce fields by dtype, transfer three contiguous buffers, then
+        # recover zero-copy views with their original shapes.
+        moved: list[torch.Tensor | None] = [None] * len(values)
+        for dtype in {value.dtype for value in values}:
+            positions = [index for index, value in enumerate(values) if value.dtype == dtype]
+            flat = torch.cat([values[index].reshape(-1) for index in positions]).to(
+                target, non_blocking=True,
+            )
+            offset = 0
+            for index in positions:
+                count = values[index].numel()
+                moved[index] = flat[offset:offset + count].view(values[index].shape)
+                offset += count
+        return PolicyBatch(*(value for value in moved if value is not None))
 
     def model_inputs(self) -> tuple[torch.Tensor, ...]:
         return tuple(getattr(self, name) for name in self.__dataclass_fields__)
@@ -241,6 +269,7 @@ def encode_decision(decision: Decision, config: object | None = None) -> Encoded
         action_references.append(refs); action_masks.append(masks)
 
     return EncodedDecision(
+        torch.tensor(SCREEN_GROUP_IDS[SCREEN_TO_GROUP[observation.screen.value]]),
         torch.tensor(numeric_rows, dtype=torch.float32), torch.tensor(present_rows, dtype=torch.bool),
         torch.tensor(type_rows, dtype=torch.long), torch.tensor(content_rows, dtype=torch.long),
         torch.tensor(category_rows, dtype=torch.long), adjacency,

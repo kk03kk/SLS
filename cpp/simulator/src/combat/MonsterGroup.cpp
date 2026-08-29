@@ -323,7 +323,8 @@ void MonsterGroup::createMonsters(BattleContext &bc, MonsterEncounter encounter)
             break;
 
         case MonsterEncounter::MYSTERIOUS_SPHERE_EVENT:
-            createMonster(bc, MonsterId::ORB_WALKER);
+            createMonster(bc, getAncientShape(bc.miscRng));
+            createMonster(bc, getAncientShape(bc.miscRng));
             createMonster(bc, MonsterId::ORB_WALKER);
             break;
 

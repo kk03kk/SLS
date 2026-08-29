@@ -1,4 +1,4 @@
-"""Differential constructor and first-turn traces for all scoped Act 1 encounters."""
+"""Differential constructor and first-turn traces for scoped encounters."""
 
 from __future__ import annotations
 
@@ -15,7 +15,7 @@ sys.path.insert(0, str(ROOT / "tools"))
 
 from sls.backends.original import OriginalBackend, OriginalSession, StdioTransport  # noqa: E402
 from sls.backends.original.adapter import AdaptedOriginalDecision, adapt_original  # noqa: E402
-from sls.backends.simulator import IRONCLAD_A0_ACT1, native  # noqa: E402
+from sls.backends.simulator import IRONCLAD_A0_ACT1, IRONCLAD_A0_HEART, native  # noqa: E402
 from sls.content.normalize import normalize_content_id  # noqa: E402
 from sls.content.registry import load_content_registry  # noqa: E402
 from sls.content.scope import ironclad_a0_scope_hash, load_ironclad_a0_scope  # noqa: E402
@@ -28,13 +28,31 @@ from audit_relic_semantics import _effect_projection  # noqa: E402
 
 def _monster_sources() -> dict[str, Path]:
     result: dict[str, Path] = {}
+    registry = load_content_registry()
+    game_ids = {
+        str(item["game_id"]): str(item["id"])
+        for item in registry.items("monsters")
+        if item.get("game_id")
+    }
+    original_aliases = {
+        "BanditBear": "BEAR",
+        "BanditChild": "POINTY",
+        "BanditLeader": "ROMEO",
+        "Champ": "THE_CHAMP",
+        "Healer": "MYSTIC",
+        "Maw": "THE_MAW",
+        "SlaverBoss": "TASKMASTER",
+    }
     root = ROOT / "reference" / "original-game" / "decompiled" / "com" / "megacrit" / "cardcrawl" / "monsters"
     for path in root.rglob("*.java"):
         text = path.read_text(encoding="utf-8", errors="replace")
         match = re.search(r'public\s+static\s+final\s+String\s+ID\s*=\s*"([^"]+)"', text)
         if match is None:
             continue
-        result[normalize_content_id(match.group(1))] = path
+        game_id = match.group(1)
+        result[original_aliases.get(
+            game_id, game_ids.get(game_id, normalize_content_id(game_id)),
+        )] = path
     return result
 
 
@@ -46,7 +64,7 @@ def _state(adapted: AdaptedOriginalDecision, payload: Mapping[str, Any]) -> dict
     # omit this one representation-only implementation marker.
     decision["powers"] = [
         power for power in decision["powers"]
-        if power["content_id"] != "ASLEEP"
+        if power["content_id"] not in {"ASLEEP", "MINION_LEADER"}
     ]
     for index, power in enumerate(decision["powers"]):
         power["instance_id"] = f"POWER:{index}"
@@ -73,13 +91,42 @@ def _assert_match(
     return canonical_digest(expected)
 
 
-def capture(seed: int) -> dict[str, Any]:
+def capture(
+    seed: int, *, fullrun: bool = False, only_encounter: str | None = None,
+) -> dict[str, Any]:
     scope = load_ironclad_a0_scope()
-    encounter_ids = tuple(map(str, scope["encounters"]["act1"]))
-    expected_monsters = set(map(str, scope["monsters"]["act1"]))
+    if fullrun:
+        inventory = json.loads(
+            (ROOT / "configs" / "validation" / "ironclad_fullrun_inventory.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        encounter_ids = tuple(sorted(set().union(*(
+            set(map(str, values)) for values in inventory["encounters"].values()
+        ))))
+        expected_monsters = set().union(*(
+            set(map(str, values)) for values in inventory["monsters"].values()
+        ))
+        profile = IRONCLAD_A0_HEART
+        scope_digest = str(inventory["inventory_sha256"])
+        schema = "sls-ironclad-fullrun-encounter-semantics-v1"
+    else:
+        encounter_ids = tuple(map(str, scope["encounters"]["act1"]))
+        expected_monsters = set(map(str, scope["monsters"]["act1"]))
+        profile = IRONCLAD_A0_ACT1
+        scope_digest = ironclad_a0_scope_hash()
+        schema = "sls-ironclad-encounter-semantics-v1"
+    if only_encounter is not None:
+        wanted = tuple(
+            item.strip().upper() for item in only_encounter.split(",") if item.strip()
+        )
+        unknown = sorted(set(wanted) - set(encounter_ids))
+        if not wanted or unknown:
+            raise ValueError(f"unknown scoped encounter(s): {unknown or only_encounter}")
+        encounter_ids = tuple(item for item in encounter_ids if item in set(wanted))
     monster_sources = _monster_sources()
     session = OriginalSession(StdioTransport())
-    backend = OriginalBackend(session, IRONCLAD_A0_ACT1)
+    backend = OriginalBackend(session, profile)
     try:
         decision = backend.reset(seed)
         for _ in range(40):
@@ -152,11 +199,15 @@ def capture(seed: int) -> dict[str, Any]:
         # Repeat only the two relevant stock encounters and stop as soon as the
         # exact monster closure is covered.
         entry_by_id = {entry["id"]: entry for entry in entries}
-        for encounter_id in ("LARGE_SLIME", "GREMLIN_GANG"):
+        coverage_encounters = () if only_encounter is not None else (
+            ("LARGE_SLIME", "LOTS_OF_SLIMES", "GREMLIN_GANG", "GREMLIN_LEADER")
+            if fullrun else ("LARGE_SLIME", "GREMLIN_GANG")
+        )
+        for encounter_id in coverage_encounters:
             for variant in range(1, 13):
                 if covered_monsters == expected_monsters:
                     break
-                target_missing = (
+                target_missing = expected_monsters - covered_monsters if fullrun else (
                     {"ACID_SLIME_L", "SPIKE_SLIME_L"}
                     if encounter_id == "LARGE_SLIME" else
                     {"FAT_GREMLIN", "GREMLIN_WIZARD", "MAD_GREMLIN", "SHIELD_GREMLIN", "SNEAKY_GREMLIN"}
@@ -220,7 +271,7 @@ def capture(seed: int) -> dict[str, Any]:
     finally:
         backend.return_to_menu()
 
-    if covered_monsters != expected_monsters:
+    if only_encounter is None and covered_monsters != expected_monsters:
         raise RuntimeError(
             f"encounter probes do not cover exact monster scope: "
             f"missing={sorted(expected_monsters - covered_monsters)} "
@@ -229,13 +280,13 @@ def capture(seed: int) -> dict[str, Any]:
     registry = ROOT / "src" / "sls" / "content" / "registry.json"
     helper = ROOT / "reference" / "original-game" / "decompiled" / "com" / "megacrit" / "cardcrawl" / "helpers" / "MonsterHelper.java"
     source_files = [registry, helper]
-    for monster_id in sorted(expected_monsters):
+    for monster_id in sorted(covered_monsters if only_encounter is not None else expected_monsters):
         if monster_id not in monster_sources:
             raise RuntimeError(f"missing stock monster source: {monster_id}")
         source_files.append(monster_sources[monster_id])
     result: dict[str, Any] = {
-        "schema": "sls-ironclad-encounter-semantics-v1",
-        "scope_sha256": ironclad_a0_scope_hash(),
+        "schema": schema,
+        "scope_sha256": scope_digest,
         "oracle_schema": "spirecomm-parity-v10",
         "seed": seed,
         "source_files": {
@@ -251,12 +302,16 @@ def capture(seed: int) -> dict[str, Any]:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--seed", type=int, default=0)
+    parser.add_argument("--fullrun", action="store_true")
+    parser.add_argument("--only-encounter")
     parser.add_argument(
         "--output", type=Path,
         default=ROOT / "configs" / "validation" / "ironclad_a0_encounter_semantics.json",
     )
     args = parser.parse_args()
-    payload = capture(args.seed)
+    payload = capture(
+        args.seed, fullrun=args.fullrun, only_encounter=args.only_encounter,
+    )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     return 0

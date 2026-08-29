@@ -18,9 +18,12 @@ __all__ = [
     "EpisodeLimitState",
     "PPOConfig",
     "PPOTrainer",
+    "ShardedWorkerPool",
+    "VectorWorkerPool",
     "WorkerPool",
     "evaluate",
     "load_checkpoint",
+    "load_model_weights",
     "policy_boundary_fingerprint",
     "save_checkpoint",
 ]
@@ -30,9 +33,12 @@ _LAZY_EXPORTS = {
     "EvaluationResult": ("sls.rl.evaluate", "EvaluationResult"),
     "PPOConfig": ("sls.rl.ppo", "PPOConfig"),
     "PPOTrainer": ("sls.rl.ppo", "PPOTrainer"),
+    "ShardedWorkerPool": ("sls.rl.workers", "ShardedWorkerPool"),
+    "VectorWorkerPool": ("sls.rl.workers", "VectorWorkerPool"),
     "WorkerPool": ("sls.rl.workers", "WorkerPool"),
     "evaluate": ("sls.rl.evaluate", "evaluate"),
     "load_checkpoint": ("sls.rl.checkpoint", "load_checkpoint"),
+    "load_model_weights": ("sls.rl.checkpoint", "load_model_weights"),
     "save_checkpoint": ("sls.rl.checkpoint", "save_checkpoint"),
 }
 

@@ -47,6 +47,22 @@ def launcher_command(game_root: Path, mod_the_spire: Path, *, skip_intro: bool) 
 
 
 def _entry(mode: str, args: argparse.Namespace) -> tuple[Path, list[str]]:
+    if mode == "stochastic-transfer":
+        return ROOT / "tools" / "collect_stochastic_transfer.py", [
+            "--seed-start", str(args.stochastic_seed_start),
+            "--seed-count", str(args.stochastic_seed_count),
+            "--samples-per-seed", str(args.samples_per_seed),
+            "--output", args.stochastic_output.resolve().as_posix(),
+        ]
+    if mode == "policy-transfer":
+        if args.artifact is None:
+            raise ValueError("policy-transfer requires --artifact")
+        return ROOT / "tools" / "evaluate_policy_transfer.py", [
+            args.artifact.resolve().as_posix(), "--ascension", str(args.ascension),
+            "--seeds", *map(str, args.seeds),
+            "--device", args.device, "--max-actions", str(args.max_steps),
+            "--output", args.transfer_output.resolve().as_posix(),
+        ]
     if mode == "card-audit":
         return ROOT / "tools" / "audit_card_semantics.py", [
             "--seed", str(args.seed),
@@ -73,10 +89,15 @@ def _entry(mode: str, args: argparse.Namespace) -> tuple[Path, list[str]]:
             "--output", args.mechanism_audit_output.resolve().as_posix(),
         ]
     if mode == "encounter-audit":
-        return ROOT / "tools" / "audit_encounter_semantics.py", [
+        values = [
             "--seed", str(args.seed),
             "--output", args.encounter_audit_output.resolve().as_posix(),
         ]
+        if args.fullrun:
+            values.append("--fullrun")
+        if args.only_encounter:
+            values.extend(("--only-encounter", args.only_encounter))
+        return ROOT / "tools" / "audit_encounter_semantics.py", values
     if mode == "event-audit":
         return ROOT / "tools" / "audit_event_semantics.py", [
             "--seed", str(args.seed),
@@ -117,11 +138,26 @@ def _entry(mode: str, args: argparse.Namespace) -> tuple[Path, list[str]]:
 def main() -> int:
     local = Path.home() / "AppData" / "Local" / "ModTheSpire"
     parser = argparse.ArgumentParser()
-    parser.add_argument("mode", choices=("capture", "resume", "survey", "card-audit", "potion-audit", "relic-audit", "relic-spawn-audit", "mechanism-audit", "encounter-audit", "event-audit"))
+    parser.add_argument("mode", choices=("capture", "resume", "survey", "policy-transfer", "stochastic-transfer", "card-audit", "potion-audit", "relic-audit", "relic-spawn-audit", "mechanism-audit", "encounter-audit", "event-audit"))
     parser.add_argument("--game-root", type=Path, default=Path(r"D:\Steam\steamapps\common\SlayTheSpire"))
     parser.add_argument("--python", type=Path, default=Path(r"D:\Anaconda\envs\DL\python.exe"))
     parser.add_argument("--config", type=Path, default=local / "CommunicationMod" / "config.properties")
     parser.add_argument("--seed", type=int, default=0)
+    parser.add_argument("--seeds", type=int, nargs="+", default=(0, 3, 4))
+    parser.add_argument("--ascension", type=int, default=0)
+    parser.add_argument("--stochastic-seed-start", type=int, default=30_000)
+    parser.add_argument("--stochastic-seed-count", type=int, default=32)
+    parser.add_argument("--samples-per-seed", type=int, default=63)
+    parser.add_argument(
+        "--stochastic-output", type=Path,
+        default=ROOT / "runs" / "policy_transfer_stochastic_samples.json",
+    )
+    parser.add_argument("--device", default="cpu")
+    parser.add_argument("--artifact", type=Path)
+    parser.add_argument(
+        "--transfer-output", type=Path,
+        default=ROOT / "validation-results" / "reports" / "policy-transfer.json",
+    )
     parser.add_argument("--profile", default="IRONCLAD_A0_HEART")
     parser.add_argument("--max-steps", type=int, default=10)
     parser.add_argument("--max-act", type=int, default=1)
@@ -133,6 +169,8 @@ def main() -> int:
     parser.add_argument("--action-plan", type=Path)
     parser.add_argument("--action-plan-offset", type=int, default=0)
     parser.add_argument("--require-clean", action="store_true")
+    parser.add_argument("--fullrun", action="store_true")
+    parser.add_argument("--only-encounter")
     parser.add_argument("--timeout", type=int, default=300)
     parser.add_argument(
         "--audit-output", type=Path,

@@ -4,6 +4,7 @@ from sls.content.normalize import (
     normalize_card_id,
     normalize_content_id,
     normalize_event_id,
+    normalize_monster_id,
     normalize_potion_id,
     normalize_power_amount,
     normalize_power_id,
@@ -74,9 +75,9 @@ def test_amountless_power_set_matches_decompiled_stock_sources() -> None:
             identifier = re.search(r'public static final String ID\s*=\s*"([^"]+)"', text)
         assert identifier is not None, path
         actual.add(normalize_power_id(identifier.group(1)))
-    # Confusion inherits AbstractPower's default -1 amount without assigning
-    # it in its constructor; all other amountless powers assign -1 explicitly.
-    assert actual | {"CONFUSED"} == set(AMOUNTLESS_POWER_IDS)
+    # Confusion, Minion, and the two Life Link implementations inherit
+    # AbstractPower's default -1 amount; the others assign -1 explicitly.
+    assert actual | {"CONFUSED", "MINION", "REACTIVE", "REGROW", "SHIFTING"} == set(AMOUNTLESS_POWER_IDS)
 
 
 def test_stock_sssserpent_class_alias_matches_liars_game() -> None:
@@ -87,5 +88,15 @@ def test_stock_sssserpent_class_alias_matches_liars_game() -> None:
 def test_stock_gremlin_class_ids_match_native_monster_ids() -> None:
     assert normalize_content_id("GremlinWarrior") == "MAD_GREMLIN"
     assert normalize_content_id("GremlinTsundere") == "SHIELD_GREMLIN"
+    assert normalize_content_id("Healer") == "MYSTIC"
+    assert normalize_monster_id("Champ") == "THE_CHAMP"
+    assert normalize_monster_id("Maw") == "THE_MAW"
+    assert normalize_content_id("BanditBear") == "BEAR"
+    assert normalize_content_id("BanditChild") == "POINTY"
+    assert normalize_content_id("BanditLeader") == "ROMEO"
+    assert normalize_content_id("SlaverBoss") == "TASKMASTER"
+    assert normalize_power_id("Generic Strength Up Power") == "GENERIC_STRENGTH_UP"
+    assert normalize_power_id("Life Link") == "REGROW"
+    assert normalize_power_id("Compulsive") == "REACTIVE"
     assert normalize_event_id("GoopPuddle") == "WORLD_OF_GOOP"
     assert normalize_event_id("World of Goop") == "WORLD_OF_GOOP"

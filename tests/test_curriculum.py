@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from dataclasses import replace
 
+import pytest
+
 from sls.contracts import (
     Action,
     ActionKind,
@@ -14,8 +16,13 @@ from sls.contracts import (
 from sls.curriculum import (
     IRONCLAD_A0_ACT1,
     IRONCLAD_A0_ACT2,
+    IRONCLAD_A0_FULLRUN,
+    IRONCLAD_A0_HEART,
+    IRONCLAD_A20_FULLRUN,
+    IRONCLAD_A20_HEART,
     completed_act_between,
     evaluate_horizon,
+    ironclad_fullrun_profile,
 )
 
 
@@ -67,6 +74,30 @@ def test_death_takes_precedence_over_completed_act() -> None:
 def test_profile_contract_version_changed() -> None:
     assert IRONCLAD_A0_ACT1.version == 2
     assert replace(IRONCLAD_A0_ACT1).version == 2
+
+
+def test_fullrun_and_heart_have_distinct_terminal_goals() -> None:
+    act_three_ending = _observation(3, ScreenType.GAME_OVER)
+    fullrun = evaluate_horizon(IRONCLAD_A0_FULLRUN, act_three_ending)
+    heart = evaluate_horizon(IRONCLAD_A0_HEART, act_three_ending)
+    assert fullrun.terminated and fullrun.success
+    assert heart.terminated and not heart.success
+    assert heart.reason == "HEART_NOT_REACHED"
+
+    heart_ending = _observation(4, ScreenType.GAME_OVER)
+    assert evaluate_horizon(IRONCLAD_A0_HEART, heart_ending).success
+
+
+def test_all_fullrun_ascensions_are_real_profiles() -> None:
+    assert ironclad_fullrun_profile(0) == IRONCLAD_A0_FULLRUN
+    assert ironclad_fullrun_profile(20) == IRONCLAD_A20_FULLRUN
+    assert ironclad_fullrun_profile(20, require_heart=True) == IRONCLAD_A20_HEART
+    for ascension in range(21):
+        profile = ironclad_fullrun_profile(ascension)
+        assert profile.ascension == ascension
+        assert profile.profile_id == f"IRONCLAD_A{ascension}_FULLRUN"
+    with pytest.raises(ValueError, match="between 0 and 20"):
+        ironclad_fullrun_profile(21)
 
 
 def test_offline_replay_applies_the_same_act_horizon_wrapper() -> None:

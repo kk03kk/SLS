@@ -77,6 +77,7 @@
     "B",
     "BACKFLIP",
     "BACKSTAB",
+    "BACK_ATTACK",
     "BAG_OF_MARBLES",
     "BAG_OF_PREPARATION",
     "BALL_LIGHTNING",
@@ -338,6 +339,7 @@
     "EXORDIUM_WILDLIFE",
     "EXPERTISE",
     "EXPLODER",
+    "EXPLOSIVE",
     "EXPLOSIVE_POTION",
     "EXPUNGER",
     "FACE_OF_CLERIC",
@@ -900,6 +902,7 @@
     "TWO_FUNGI_BEASTS",
     "TWO_LOUSE",
     "TWO_THIEVES",
+    "UNAWAKENED",
     "UNCEASING_TOP",
     "UNKNOWN",
     "UNLOAD",
@@ -996,6 +999,7 @@
     "A_THOUSAND_CUTS",
     "BACKFLIP",
     "BACKSTAB",
+    "BACK_ATTACK",
     "BAG_OF_MARBLES",
     "BAG_OF_PREPARATION",
     "BALL_LIGHTNING",
@@ -1233,6 +1237,7 @@
     "EXORDIUM_WILDLIFE",
     "EXPERTISE",
     "EXPLODER",
+    "EXPLOSIVE",
     "EXPLOSIVE_POTION",
     "EXPUNGER",
     "FACE_OF_CLERIC",
@@ -1749,6 +1754,7 @@
     "TWO_FUNGI_BEASTS",
     "TWO_LOUSE",
     "TWO_THIEVES",
+    "UNAWAKENED",
     "UNCEASING_TOP",
     "UNLOAD",
     "UPGRADE_SHRINE",
@@ -1857,6 +1863,11 @@
     "node",
     "reward"
   ],
-  "schema": "sls-policy-input-v2",
-  "sha256": "98e69b9733abfa4662ead56c0d02fb604b67575a2ba4c1785ba3fe736e7f01b6"
+  "schema": "sls-policy-input-v3",
+  "screen_groups": [
+    "COMBAT",
+    "RUN",
+    "CHOICE"
+  ],
+  "sha256": "b2d70dce56bb325046e906f9028b2b17d128403f211bf66b238b5491d3eee437"
 }

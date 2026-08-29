@@ -88,18 +88,15 @@ def test_training_level_requires_explicit_expansion_contract(tmp_path: Path) -> 
         verify_readiness_lock(path, require_clean=False, expected_level=TRAINING_READY)
 
 
-def test_training_configs_use_the_required_readiness_level() -> None:
+def test_training_configs_use_policy_transfer_gate() -> None:
     root = Path(__file__).resolve().parents[2]
-    expected = {
-        "act1_smoke.toml": (TRAINING_READY, "act1_training_readiness.lock.json"),
-        "act1_pilot.toml": (TRAINING_READY, "act1_training_readiness.lock.json"),
-        "full_run.toml": (TRAINING_READY, "act1_training_readiness.lock.json"),
-    }
-    for name, (level, lock_name) in expected.items():
+    expected = ("act1_smoke.toml", "act1_pilot.toml", "act1_train.toml")
+    for name in expected:
         with (root / "configs" / "train" / name).open("rb") as stream:
             run = tomllib.load(stream)["run"]
-        assert run["readiness_level"] == level
-        assert Path(run["readiness_lock"]).name == lock_name
+        assert run["require_readiness"] is False
+        assert run["require_transfer_gate"] is True
+        assert Path(run["transfer_gate"]).name == "policy_transfer_v1.json"
 
 
 def _expansion_records(*, short_seed: int | None = None, bad_seed: int | None = None):

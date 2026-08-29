@@ -58,33 +58,41 @@ autosave workflow is documented in
 - `docs/architecture.md`: contracts, backend relationship, parity, and RL flow.
 - `docs/repository-map.md`: responsibility of every first-party directory/file.
 - `docs/static-audit.md`: local static evidence, fixes, known gaps, and proof boundary.
+- `docs/ironclad-fullrun-expansion.md`: source-generated A0-A20 closure, current FullRun evidence, and blocked readiness stages.
 - `docs/local-runtime.md`: files that must come from the local game/Mod installation.
 
-## Training
+## Training and live play
 
-PPO uses the same canonical Decision contract as validation. Policy input v2
-uses the committed exact vocabulary and entity/action references; it has no
-string hash buckets. Verify the vocabulary and the curriculum-scoped parity
-gate before a large run:
+PPO and production inference use the same stateless Decision contract. Policy
+v3 is a relational, screen-aware model with exact content tokens, explicit map
+edges, card zones, entity types, and semantic action references. Training is
+gated by `policy-transfer-v1`: exact public observations/actions and short
+deterministic probes are required; whole-run hidden RNG identity is diagnostic.
 
 ```bash
 python tools/bootstrap.py --with-model
 python tools/generate_policy_vocabulary.py --check
-python tools/validate_training_readiness.py
-python tools/verify_readiness_lock.py configs/validation/act1_training_readiness.lock.json
-python tools/benchmark_act1.py
-python tools/train_full_run.py --config configs/train/full_run.toml
+python tools/preflight_training.py
+python tools/generate_teacher_corpus.py --seed-count 1000 --output runs/teacher-act1.json.gz
+python tools/pretrain_behavior.py runs/teacher-act1.json.gz --output runs/act1-bc.pt --device cuda
+python tools/train_full_run.py --config configs/train/act1_train.toml --warm-start runs/act1-bc.pt
 ```
 
-The Act 1 gate is separate from final 10-seed Heart FullRun acceptance. It
-requires three hash-continuous Original routes covering Slime Boss, Guardian,
-and Hexaghost plus the committed strict expansion evidence. The default
-preflight, worker benchmark, 20-update smoke, 200-update pilot, and long Act 1
-training all require the same `TRAINING_READY` lock. The guarded configurations are
-`configs/train/act1_smoke.toml` and `configs/train/act1_pilot.toml`. A one-update
-ungated developer integration check remains in `configs/train/smoke.toml` and
-does not constitute a training run or parity evidence.
+Resume an exact run, or export and attach the current real Ironclad game:
+
+```bash
+python tools/train_full_run.py --config configs/train/act1_train.toml --resume auto
+python tools/export_policy.py runs/heart-a0-a20/latest.pt --output runs/ironclad-heart.pt --ascension-min 0 --ascension-max 20 --goal HEART
+python tools/play_live.py runs/ironclad-heart.pt --device cuda
+```
+
+The live controller uses deterministic argmax, rejects Prismatic Shard runs,
+journals intent/ack records, refuses uncertain resends, supports Ctrl-C, and
+can attach at any public decision boundary. `act1_train.toml` is deliberately
+named for its real horizon; Heart naming is reserved for a Heart curriculum.
+Launch the Mod with JVM property `-Dsls.oracle.mode=production` to suppress
+validation-only RNG, continuation, timing, and scenario fields on the wire.
 
 NUS Linux/Slurm 的拉取、preflight、worker benchmark、smoke、pilot、长期训练和
 安全恢复命令见 [`docs/nus-training-zh.md`](docs/nus-training-zh.md)。服务器只验证
-提交的 readiness lock，不需要 Original 游戏或本地 truth bundles。
+提交的 policy-transfer gate，不需要 Original 游戏或本地 truth bundles。

@@ -47,6 +47,7 @@ class OriginalBackend:
             if "reset_run" not in available:
                 raise RuntimeError("Oracle Mod reset_run command is unavailable")
             payload = self.session.execute("reset_run")
+            payload = self._wait_for_main_menu(payload)
         if payload.get("in_game"):
             raise RuntimeError("Original game did not return to the main menu")
         available = {str(item).lower() for item in payload.get("available_commands") or ()}
@@ -56,6 +57,7 @@ class OriginalBackend:
             f"start {self.profile.character_id} {self.profile.ascension} "
             f"{long_to_seed_string(int(seed))}"
         )
+        payload = self._wait_for_run_start(payload)
         payload = self._fold_initial_neow_dialog(payload)
         self._adapted = adapt_original(payload)
         return self._adapted.decision
@@ -71,6 +73,7 @@ class OriginalBackend:
             if "reset_run" not in available:
                 raise RuntimeError("cannot resume while Original is in a run")
             payload = self.session.execute("reset_run")
+            payload = self._wait_for_main_menu(payload)
         available = {str(item).lower() for item in payload.get("available_commands") or ()}
         if "parity_continue" not in available:
             raise RuntimeError(f"parity_continue is unavailable: {sorted(available)}")
@@ -91,8 +94,50 @@ class OriginalBackend:
         available = {str(item).lower() for item in payload.get("available_commands") or ()}
         if "reset_run" not in available:
             raise RuntimeError("validation run cannot return to the main menu")
-        self.session.execute("reset_run")
+        self._wait_for_main_menu(self.session.execute("reset_run"))
         self._adapted = None
+
+    def _wait_for_main_menu(
+        self, payload: dict[str, Any], *, limit: int = 240,
+    ) -> dict[str, Any]:
+        """Wait through the asynchronous stock dungeon-to-menu transition."""
+
+        for _ in range(limit):
+            if not payload.get("in_game"):
+                return payload
+            available = {
+                str(item).lower() for item in payload.get("available_commands") or ()
+            }
+            # ``state`` remains valid on both sides of the asynchronous menu
+            # transition; ``wait`` can be advertised by the last dungeon
+            # payload and become invalid before it reaches CommunicationMod.
+            command = "state" if "state" in available else (
+                "wait 1" if "wait" in available else None
+            )
+            if command is None:
+                raise RuntimeError(
+                    "Original is leaving the run without an advertised wait/state command"
+                )
+            payload = self.session.execute(command)
+        raise RuntimeError("Original game did not reach the main menu after reset_run")
+
+    def _wait_for_run_start(
+        self, payload: dict[str, Any], *, limit: int = 240,
+    ) -> dict[str, Any]:
+        """Wait through CommunicationMod's asynchronous start acknowledgement."""
+
+        for _ in range(limit):
+            if payload.get("in_game") and payload.get("game_state"):
+                return payload
+            available = {
+                str(item).lower() for item in payload.get("available_commands") or ()
+            }
+            if "state" not in available:
+                raise RuntimeError(
+                    "Original start transition does not advertise the state command"
+                )
+            payload = self.session.execute("state")
+        raise RuntimeError("Original game did not enter the run after start")
 
     def step(self, action: Action | str) -> Transition:
         if self._adapted is None:
@@ -428,14 +473,37 @@ class OriginalBackend:
     def validation_snapshot(self) -> ValidationSnapshot:
         return self.session.validation_snapshot()
 
-    def _fold_initial_neow_dialog(self, payload: dict[str, Any]) -> dict[str, Any]:
-        game = payload.get("game_state") or {}
-        choices = game.get("choice_list") or []
-        if int(game.get("floor", 0) or 0) == 0 and len(choices) == 1:
-            available = {str(item).lower() for item in payload.get("available_commands") or ()}
-            if "choose" in available:
-                return self.session.execute("choose 0")
-        return payload
+    def _fold_initial_neow_dialog(
+        self, payload: dict[str, Any], *, limit: int = 240,
+    ) -> dict[str, Any]:
+        """Settle Neow's animation and fold its non-semantic Continue dialog."""
+
+        folded_continue = False
+        for _ in range(limit):
+            game = payload.get("game_state") or {}
+            if int(game.get("floor", 0) or 0) != 0:
+                return payload
+            choices = game.get("choice_list") or []
+            available = {
+                str(item).lower() for item in payload.get("available_commands") or ()
+            }
+            if "choose" in available and choices:
+                if len(choices) == 1 and not folded_continue:
+                    payload = self.session.execute("choose 0")
+                    folded_continue = True
+                    continue
+                return payload
+            # Merely requesting state does not advance Neow's opening
+            # animation. ``wait`` is the protocol's explicit frame advance.
+            if "wait" in available:
+                payload = self.session.execute("wait 1")
+            elif "state" in available:
+                payload = self.session.execute("state")
+            else:
+                raise RuntimeError(
+                    "Neow opening has no choose, wait, or state command"
+                )
+        raise RuntimeError("Neow opening did not become actionable")
 
     def _fold_protocol_only_boundaries(
         self, payload: dict[str, Any], executed: list[str] | None = None,

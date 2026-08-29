@@ -5,6 +5,7 @@ import com.evacipated.cardcrawl.modthespire.lib.SpirePostfixPatch;
 import com.evacipated.cardcrawl.modthespire.lib.SpirePrefixPatch;
 import com.evacipated.cardcrawl.modthespire.lib.SpireReturn;
 import com.megacrit.cardcrawl.cards.AbstractCard;
+import com.megacrit.cardcrawl.cards.CardGroup;
 import com.megacrit.cardcrawl.cards.DamageInfo;
 import com.megacrit.cardcrawl.actions.GameActionManager;
 import com.megacrit.cardcrawl.actions.common.DrawCardAction;
@@ -50,6 +51,8 @@ import com.megacrit.cardcrawl.potions.PotionSlot;
 import com.megacrit.cardcrawl.potions.SmokeBomb;
 import com.megacrit.cardcrawl.rewards.RewardItem;
 import com.megacrit.cardcrawl.core.AbstractCreature;
+import com.megacrit.cardcrawl.core.CardCrawlGame;
+import com.megacrit.cardcrawl.random.Random;
 import communicationmod.CommandExecutor;
 import communicationmod.CommunicationMod;
 import communicationmod.GameStateListener;
@@ -66,6 +69,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.lang.reflect.Method;
 
 /** Whitelist-only setup boundaries for original-game differential tests. */
 public final class OracleScenarioPatch {
@@ -76,6 +80,7 @@ public final class OracleScenarioPatch {
     public static final String ENCOUNTER_PROBE_COMMAND = "parity_encounter";
     public static final String ENGINE_PROBE_COMMAND = "parity_engine";
     public static final String EVENT_PROBE_COMMAND = "parity_event";
+    public static final String DISTRIBUTION_PROBE_COMMAND = "parity_distribution";
     public static final String RELIC_SPAWN_PROBE_COMMAND = "parity_relic_spawn";
     public static final String RELIC_UNEQUIP_PROBE_COMMAND = "parity_relic_unequip";
     public static final String RELIC_COUNTER_PROBE_COMMAND = "parity_relic_counter";
@@ -168,7 +173,7 @@ public final class OracleScenarioPatch {
     private static final Map<String, String> EVENT_ALLOWLIST = loadAllowlist(
         "/spirecomm/parity/scenario-event-allowlist.tsv"
     );
-    public static Map<String, String> activeScenario = null;
+    public static Map<String, Object> activeScenario = null;
 
     private OracleScenarioPatch() {}
 
@@ -232,7 +237,7 @@ public final class OracleScenarioPatch {
     }
 
     private static void activate(String id, String source, AbstractPlayer player) {
-        Map<String, String> evidence = new LinkedHashMap<String, String>();
+        Map<String, Object> evidence = new LinkedHashMap<String, Object>();
         evidence.put("scenario_id", id);
         evidence.put("source", source);
         evidence.put("setup_digest", setupDigest(player));
@@ -258,18 +263,38 @@ public final class OracleScenarioPatch {
         player.cardsPlayedThisTurn = 0;
         player.currentBlock = 0;
         player.energy.energy = 3;
+        // Clearing DrawReductionPower directly bypasses its onRemove hook;
+        // restore the per-combat hand size explicitly between probes.
+        player.gameHandSize = player.masterHandSize;
         AbstractDungeon.actionManager.actions.clear();
+        AbstractDungeon.actionManager.preTurnActions.clear();
         AbstractDungeon.actionManager.currentAction = null;
+        AbstractDungeon.actionManager.previousAction = null;
+        AbstractDungeon.actionManager.turnStartCurrentAction = null;
+        AbstractDungeon.actionManager.lastCard = null;
         AbstractDungeon.actionManager.cardQueue.clear();
+        AbstractDungeon.actionManager.monsterQueue.clear();
         AbstractDungeon.actionManager.cardsPlayedThisTurn.clear();
         AbstractDungeon.actionManager.cardsPlayedThisCombat.clear();
+        AbstractDungeon.actionManager.orbsChanneledThisTurn.clear();
+        AbstractDungeon.actionManager.orbsChanneledThisCombat.clear();
+        AbstractDungeon.actionManager.uniqueStancesThisCombat.clear();
+        AbstractDungeon.actionManager.mantraGained = 0;
+        AbstractDungeon.actionManager.phase = GameActionManager.Phase.WAITING_ON_USER;
+        AbstractDungeon.actionManager.hasControl = true;
+        AbstractDungeon.actionManager.turnHasEnded = false;
+        AbstractDungeon.actionManager.usingCard = false;
+        AbstractDungeon.actionManager.monsterAttacksQueued = true;
         AbstractDungeon.effectList.clear();
         AbstractDungeon.effectsQueue.clear();
         AbstractDungeon.topLevelEffects.clear();
         AbstractDungeon.topLevelEffectsQueue.clear();
         GameActionManager.totalDiscardedThisTurn = 0;
         GameActionManager.damageReceivedThisTurn = 0;
+        GameActionManager.damageReceivedThisCombat = 0;
         GameActionManager.hpLossThisCombat = 0;
+        GameActionManager.energyGainedThisCombat = 0;
+        GameActionManager.playerHpLastTurn = player.currentHealth;
         GameActionManager.turn = 1;
     }
 
@@ -1469,6 +1494,132 @@ public final class OracleScenarioPatch {
         GameStateListener.registerStateChange();
     }
 
+    /** Batch independent stock stochastic mechanisms without exposing them to production. */
+    private static void applyDistributionProbe(long baseSeed, int count) {
+        if (count <= 0 || count > 4096) {
+            throw new IllegalArgumentException("parity_distribution count must be 1..4096");
+        }
+        Random savedCard = AbstractDungeon.cardRng;
+        Random savedPotion = AbstractDungeon.potionRng;
+        Random savedRelic = AbstractDungeon.relicRng;
+        Random savedMonster = AbstractDungeon.monsterRng;
+        ArrayList<String> common = new ArrayList<String>(AbstractDungeon.commonRelicPool);
+        ArrayList<String> uncommon = new ArrayList<String>(AbstractDungeon.uncommonRelicPool);
+        ArrayList<String> rare = new ArrayList<String>(AbstractDungeon.rareRelicPool);
+        ArrayList<String> shop = new ArrayList<String>(AbstractDungeon.shopRelicPool);
+        ArrayList<String> boss = new ArrayList<String>(AbstractDungeon.bossRelicPool);
+        ArrayList<String> events = new ArrayList<String>(AbstractDungeon.eventList);
+        ArrayList<String> shrines = new ArrayList<String>(AbstractDungeon.shrineList);
+        ArrayList<String> special = new ArrayList<String>(AbstractDungeon.specialOneTimeEventList);
+        ArrayList<String> monsters = new ArrayList<String>(AbstractDungeon.monsterList);
+        ArrayList<String> elites = new ArrayList<String>(AbstractDungeon.eliteMonsterList);
+        Map<String, ArrayList<String>> samples = new LinkedHashMap<String, ArrayList<String>>();
+        int savedCardBlizz = AbstractDungeon.cardBlizzRandomizer;
+        for (String category : new String[] {
+                "draw_shuffle", "card_rewards", "potion_rewards", "relic_rewards",
+                "random_events", "encounters"}) {
+            samples.put(category, new ArrayList<String>());
+        }
+        try {
+            for (int index = 0; index < count; ++index) {
+                long seed = baseSeed + 0x9E3779B97F4A7C15L * (long)index;
+                CardGroup group = new CardGroup(CardGroup.CardGroupType.UNSPECIFIED);
+                String[] cardIds = new String[] {
+                    "Strike_R", "Defend_R", "Bash", "Anger", "Flex",
+                    "Cleave", "Clothesline", "Shrug It Off", "Pommel Strike", "Inflame"
+                };
+                for (String cardId : cardIds) group.addToBottom(card(cardId));
+                group.shuffle(new Random(Long.valueOf(seed)));
+                StringBuilder order = new StringBuilder();
+                for (AbstractCard shuffled : group.group) {
+                    for (int original = 0; original < cardIds.length; ++original) {
+                        if (cardIds[original].equals(shuffled.cardID)) {
+                            order.append(original);
+                            break;
+                        }
+                    }
+                }
+                samples.get("draw_shuffle").add(order.toString());
+
+                AbstractDungeon.cardRng = new Random(Long.valueOf(seed));
+                AbstractDungeon.cardBlizzRandomizer = AbstractDungeon.cardBlizzStartOffset;
+                ArrayList<AbstractCard> reward = AbstractDungeon.getRewardCards();
+                StringBuilder cardReward = new StringBuilder();
+                for (AbstractCard value : reward) {
+                    if (cardReward.length() > 0) cardReward.append('|');
+                    cardReward.append(value.cardID);
+                    if (value.upgraded) cardReward.append('+');
+                }
+                samples.get("card_rewards").add(cardReward.toString());
+
+                AbstractDungeon.potionRng = new Random(Long.valueOf(seed));
+                samples.get("potion_rewards").add(AbstractDungeon.returnRandomPotion().ID);
+
+                AbstractDungeon.relicRng = new Random(Long.valueOf(seed));
+                try {
+                    Method initializeRelics = AbstractDungeon.class.getDeclaredMethod(
+                        "initializeRelicList");
+                    initializeRelics.setAccessible(true);
+                    initializeRelics.invoke(CardCrawlGame.dungeon);
+                } catch (Exception error) {
+                    throw new IllegalStateException("cannot invoke stock relic initialization", error);
+                }
+                samples.get("relic_rewards").add(
+                    AbstractDungeon.returnRandomRelicKey(AbstractDungeon.returnRandomRelicTier()));
+
+                AbstractDungeon.eventList.clear();
+                AbstractDungeon.eventList.addAll(events);
+                AbstractDungeon.shrineList.clear();
+                AbstractDungeon.shrineList.addAll(shrines);
+                AbstractDungeon.specialOneTimeEventList.clear();
+                AbstractDungeon.specialOneTimeEventList.addAll(special);
+                AbstractEvent event = AbstractDungeon.generateEvent(new Random(Long.valueOf(seed)));
+                samples.get("random_events").add(
+                    event == null ? "NONE" : event.getClass().getSimpleName());
+
+                AbstractDungeon.monsterList.clear();
+                AbstractDungeon.monsterRng = new Random(Long.valueOf(seed));
+                try {
+                    Method weak = CardCrawlGame.dungeon.getClass().getDeclaredMethod(
+                        "generateWeakEnemies", Integer.TYPE);
+                    Method strong = CardCrawlGame.dungeon.getClass().getDeclaredMethod(
+                        "generateStrongEnemies", Integer.TYPE);
+                    weak.setAccessible(true);
+                    strong.setAccessible(true);
+                    weak.invoke(CardCrawlGame.dungeon, Integer.valueOf(3));
+                    strong.invoke(CardCrawlGame.dungeon, Integer.valueOf(12));
+                } catch (Exception error) {
+                    throw new IllegalStateException("cannot invoke stock encounter generation", error);
+                }
+                samples.get("encounters").add(AbstractDungeon.monsterList.get(0));
+            }
+        } finally {
+            AbstractDungeon.cardRng = savedCard;
+            AbstractDungeon.potionRng = savedPotion;
+            AbstractDungeon.relicRng = savedRelic;
+            AbstractDungeon.monsterRng = savedMonster;
+            AbstractDungeon.cardBlizzRandomizer = savedCardBlizz;
+            AbstractDungeon.commonRelicPool.clear(); AbstractDungeon.commonRelicPool.addAll(common);
+            AbstractDungeon.uncommonRelicPool.clear(); AbstractDungeon.uncommonRelicPool.addAll(uncommon);
+            AbstractDungeon.rareRelicPool.clear(); AbstractDungeon.rareRelicPool.addAll(rare);
+            AbstractDungeon.shopRelicPool.clear(); AbstractDungeon.shopRelicPool.addAll(shop);
+            AbstractDungeon.bossRelicPool.clear(); AbstractDungeon.bossRelicPool.addAll(boss);
+            AbstractDungeon.eventList.clear(); AbstractDungeon.eventList.addAll(events);
+            AbstractDungeon.shrineList.clear(); AbstractDungeon.shrineList.addAll(shrines);
+            AbstractDungeon.specialOneTimeEventList.clear();
+            AbstractDungeon.specialOneTimeEventList.addAll(special);
+            AbstractDungeon.monsterList.clear(); AbstractDungeon.monsterList.addAll(monsters);
+            AbstractDungeon.eliteMonsterList.clear(); AbstractDungeon.eliteMonsterList.addAll(elites);
+        }
+        activate("distribution_probe:" + Long.toUnsignedString(baseSeed) + ":" + count,
+            "STOCK_INDEPENDENT_STOCHASTIC_V1", AbstractDungeon.player);
+        activeScenario.put("base_seed", Long.toUnsignedString(baseSeed));
+        activeScenario.put("sample_count", Integer.toString(count));
+        activeScenario.put("samples", samples);
+        CommunicationMod.mustSendGameState = true;
+        GameStateListener.registerStateChange();
+    }
+
     /** Construct a stock encounter using the live stock RNG streams. */
     private static void applyEncounterProbe(String encounterId) {
         String gameId = ENCOUNTER_ALLOWLIST.get(encounterId.toUpperCase(Locale.ROOT));
@@ -1654,6 +1805,9 @@ public final class OracleScenarioPatch {
             if (AbstractDungeon.player != null && !commands.contains(EVENT_PROBE_COMMAND)) {
                 commands.add(EVENT_PROBE_COMMAND);
             }
+            if (AbstractDungeon.player != null && !commands.contains(DISTRIBUTION_PROBE_COMMAND)) {
+                commands.add(DISTRIBUTION_PROBE_COMMAND);
+            }
             if (AbstractDungeon.player != null && !commands.contains(RELIC_SPAWN_PROBE_COMMAND)) {
                 commands.add(RELIC_SPAWN_PROBE_COMMAND);
             }
@@ -1754,6 +1908,15 @@ public final class OracleScenarioPatch {
                 return SpireReturn.Continue();
             }
             if (!normalized.startsWith(COMMAND + " ")) {
+                if (normalized.startsWith(DISTRIBUTION_PROBE_COMMAND + " ")) {
+                    String[] parts = command.trim().split("\\s+");
+                    if (parts.length != 3) throw new IllegalArgumentException(
+                        "parity_distribution requires BASE_SEED COUNT"
+                    );
+                    applyDistributionProbe(
+                        Long.parseUnsignedLong(parts[1]), Integer.parseInt(parts[2]));
+                    return SpireReturn.Return(Boolean.TRUE);
+                }
                 if (normalized.startsWith(RELIC_EQUIP_PROBE_COMMAND + " ")) {
                     String[] parts = command.trim().split("\\s+");
                     if (parts.length != 2) throw new IllegalArgumentException(

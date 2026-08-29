@@ -46,8 +46,12 @@ def normalize_content_id(value: object) -> str:
     return {
         "FUZZY_LOUSE_NORMAL": "RED_LOUSE",
         "FUZZY_LOUSE_DEFENSIVE": "GREEN_LOUSE",
+        "BANDIT_BEAR": "BEAR",
+        "BANDIT_CHILD": "POINTY",
+        "BANDIT_LEADER": "ROMEO",
         "SLAVER_BLUE": "BLUE_SLAVER",
         "SLAVER_RED": "RED_SLAVER",
+        "SLAVER_BOSS": "TASKMASTER",
         "TOXIC_EGG_2": "TOXIC_EGG",
         "FROZEN_EGG_2": "FROZEN_EGG",
         "GREMLIN_FAT": "FAT_GREMLIN",
@@ -56,7 +60,22 @@ def normalize_content_id(value: object) -> str:
         # gremlins; native names them by their public combat roles.
         "GREMLIN_WARRIOR": "MAD_GREMLIN",
         "GREMLIN_TSUNDERE": "SHIELD_GREMLIN",
+        # Stock's Healer class/ID is the enemy exposed as MYSTIC by the
+        # native simulator and canonical registry.
+        "HEALER": "MYSTIC",
         "SERPENT": "SPIRE_GROWTH",
+    }.get(normalized, normalized)
+
+
+def normalize_monster_id(value: object) -> str:
+    """Normalize stock monster class/save IDs with monster-category context."""
+
+    normalized = normalize_content_id(value)
+    return {
+        # These bare stock IDs collide with canonical encounter IDs, so they
+        # cannot safely live in the category-agnostic alias table above.
+        "CHAMP": "THE_CHAMP",
+        "MAW": "THE_MAW",
     }.get(normalized, normalized)
 
 
@@ -96,6 +115,12 @@ def normalize_power_id(value: object) -> str:
         # Stock FlexPower is the end-of-turn Strength-loss marker represented
         # by PlayerStatus::LOSE_STRENGTH in the native simulator.
         "FLEX": "LOSE_STRENGTH",
+        # Stock StrengthUpPower includes its implementation suffix.
+        "GENERIC_STRENGTH_UP_POWER": "GENERIC_STRENGTH_UP",
+        # Darklings expose both RegrowPower and ResurrectPower as "Life Link".
+        "LIFE_LINK": "REGROW",
+        # Writhing Mass's ReactivePower exposes the stock ID "Compulsive".
+        "COMPULSIVE": "REACTIVE",
         # Stock's WeakPower public ID is "Weakened".
         "WEAKENED": "WEAK",
         # Stock's RegenPower public ID is "Regenerate".
@@ -123,8 +148,8 @@ def normalize_power_id(value: object) -> str:
 
 AMOUNTLESS_POWER_IDS = frozenset({
     "BACK_ATTACK", "BARRICADE", "CORRUPTION", "END_TURN_DEATH",
-    "CONFUSED", "FREE_ATTACK_POWER", "NO_DRAW", "PAINFUL_STABS", "SPLIT", "STASIS",
-    "SURROUNDED", "UNAWAKENED",
+    "CONFUSED", "FREE_ATTACK_POWER", "MINION", "NO_DRAW", "PAINFUL_STABS", "REACTIVE", "REGROW", "SPLIT", "STASIS",
+    "SHIFTING", "SURROUNDED", "UNAWAKENED",
 })
 
 
@@ -152,6 +177,11 @@ def _event_aliases() -> dict[str, str]:
                     aliases[_compact(without_article)] = canonical
                     aliases[_compact(without_article + "Event")] = canonical
     aliases[_compact("GremlinWheelGame")] = "WHEEL_OF_CHANGE"
+    aliases[_compact("GremlinMatchGame")] = "MATCH_AND_KEEP"
+    aliases[_compact("Bonfire")] = "BONFIRE_SPIRITS"
+    aliases[_compact("PurificationShrine")] = "PURIFIER"
+    aliases[_compact("Transmogrifier")] = "TRANSMORGRIFIER"
+    aliases[_compact("GoldShrine")] = "GOLDEN_SHRINE"
     # The stock class name is unrelated to its save/game ID "Liars Game".
     aliases[_compact("Sssserpent")] = "THE_SSSSSERPENT"
     aliases[_compact("GoopPuddle")] = "WORLD_OF_GOOP"
@@ -162,3 +192,25 @@ def normalize_event_id(value: object) -> str:
     """Normalize event IDs, including stock Java class-name suffixes."""
 
     return _event_aliases().get(_compact(value), normalize_content_id(value))
+
+
+@lru_cache(maxsize=1)
+def _encounter_aliases() -> dict[str, str]:
+    aliases: dict[str, str] = {}
+    for item in load_content_registry().categories.get("encounters", ()):
+        canonical = str(item["id"])
+        for value in (canonical, item.get("game_id")):
+            if value:
+                aliases[_compact(value)] = canonical
+    return aliases
+
+
+def normalize_encounter_id(value: object) -> str:
+    """Normalize stock encounter metric keys with encounter-category context."""
+
+    compact = _compact(value)
+    return {
+        "2LOUSE": "TWO_LOUSE",
+        "3LOUSE": "THREE_LOUSE",
+        "2FUNGIBEASTS": "TWO_FUNGI_BEASTS",
+    }.get(compact, _encounter_aliases().get(compact, normalize_content_id(value)))

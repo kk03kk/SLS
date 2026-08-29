@@ -10,7 +10,6 @@ from typing import Any, Mapping
 import torch
 
 from sls.content.scope import IRONCLAD_A0_SCOPE_ID, ironclad_a0_scope_hash
-from sls.content.semantic_audit import semantic_audit_hash
 from sls.model.encoding import ENCODING_SCHEMA, vocabulary_hash
 from sls.rl.ppo import PPOTrainer
 from sls.rl.training_contract import TRAINING_CHECKPOINT_SCHEMA, runtime_contract
@@ -30,9 +29,9 @@ def _contract(trainer: PPOTrainer) -> dict[str, Any]:
         "vocabulary_sha256": vocabulary_hash(),
         "content_scope_id": IRONCLAD_A0_SCOPE_ID,
         "content_scope_sha256": ironclad_a0_scope_hash(),
-        "semantic_audit_sha256": semantic_audit_hash(),
         "readiness_lock_sha256": trainer.readiness_lock_digest,
         "native_source_sha256": trainer.native_contract_digest,
+        "checkpoint_reservoir_sha256": trainer.checkpoint_reservoir_digest,
         "runtime": runtime_contract(torch),
     }
 
@@ -97,3 +96,45 @@ def load_checkpoint(path: str | Path, trainer: PPOTrainer) -> Mapping[str, Any]:
         torch.cuda.set_rng_state_all(payload["cuda_rng"])
     trainer.decisions = trainer.workers.load_checkpoints(payload["environments"])
     return payload
+
+
+def load_model_weights(path: str | Path, model: torch.nn.Module) -> Mapping[str, Any]:
+    """Load only policy weights for a compatible curriculum transfer.
+
+    Unlike exact resume, this intentionally ignores the source profile,
+    workers, PPO optimizer, readiness lock, native digest, RNG, and environment
+    state.  Architecture and policy vocabulary remain strict contracts.
+    """
+
+    payload = torch.load(Path(path), map_location="cpu", weights_only=False)
+    if payload.get("schema") == "sls-behavior-pretrain-v1":
+        config = getattr(model, "config", None)
+        if config is None or payload.get("model_config") != config.to_dict():
+            raise ValueError("behavior-pretrained model architecture is incompatible")
+        model.load_state_dict(payload["model"], strict=True)
+        return {
+            "schema": payload["schema"], "profile": "IRONCLAD_A0_ACT1_TEACHER",
+            "corpus": payload.get("corpus"),
+        }
+    if payload.get("schema") != CHECKPOINT_SCHEMA:
+        raise ValueError("unsupported training checkpoint")
+    contract = payload.get("contract")
+    if not isinstance(contract, Mapping):
+        raise ValueError("training checkpoint has no transfer contract")
+    config = getattr(model, "config", None)
+    if config is None or contract.get("model") != config.to_dict():
+        raise ValueError("checkpoint model architecture is incompatible with warm start")
+    if contract.get("encoding_schema") != ENCODING_SCHEMA:
+        raise ValueError("checkpoint encoding schema is incompatible with warm start")
+    if contract.get("vocabulary_sha256") != vocabulary_hash():
+        raise ValueError("checkpoint vocabulary is incompatible with warm start")
+    model.load_state_dict(payload["model"], strict=True)
+    source_profile = contract.get("profile")
+    trainer_state = payload.get("trainer") or {}
+    return {
+        "schema": payload["schema"],
+        "update": int(trainer_state.get("update", 0)),
+        "profile": getattr(source_profile, "profile_id", str(source_profile)),
+        "readiness_lock_sha256": contract.get("readiness_lock_sha256"),
+        "native_source_sha256": contract.get("native_source_sha256"),
+    }

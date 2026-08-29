@@ -335,9 +335,14 @@ void executeRewardsAction(GameContext &gc, const search::GameAction a) {
             if (a.getIdx2() == 5) { // singing bowl
                 gc.playerIncreaseMaxHp(2);
             } else if (a.getIdx2() == 6) { // skip only this card reward
-                // Stock closes CardRewardScreen back to CombatRewardScreen,
-                // but leaves its RewardItem available.  Only proceeding from
-                // the parent screen abandons it permanently.
+                if (gc.curEvent == Event::NEOW) {
+                    // Neow has no parent CombatRewardScreen. Stock skipping
+                    // this standalone CardRewardScreen completes the option.
+                    r.removeCardReward(a.getIdx1());
+                    gc.regainControl();
+                }
+                // Combat rewards do have a parent screen: closing only the
+                // child leaves its RewardItem available there.
                 break;
             } else {
                 gc.obtainCard(r.cardRewards[a.getIdx1()][a.getIdx2()]);

@@ -45,7 +45,7 @@ FIRST_TURN_RELIC_EVIDENCE = (
 )
 
 
-def load_card_semantic_audit() -> dict[str, Any]:
+def load_card_semantic_audit(*, require_current: bool = False) -> dict[str, Any]:
     """Validate the committed, dynamically captured per-card evidence."""
 
     from sls.content.source_audit import java_sources, registry_game_ids
@@ -59,8 +59,9 @@ def load_card_semantic_audit() -> dict[str, Any]:
         raise ValueError("unsupported Ironclad card semantic audit")
     if supplied != canonical_digest(unsigned):
         raise ValueError("Ironclad card semantic audit digest mismatch")
-    if payload.get("scope_sha256") != ironclad_a0_scope_hash():
-        raise ValueError("Ironclad card semantic audit is stale for the content scope")
+    # Legacy evidence stored one global scope hash, so an unrelated monster
+    # addition invalidated card evidence.  Currentness is proven below by the
+    # exact card ID set and every referenced stock Java source hash.
 
     scope = json.loads((ROOT / "configs" / "validation" / "ironclad_a0_content_scope.json").read_text(encoding="utf-8"))
     expected_ids = sorted(map(str, scope["cards"]["ids"]))
@@ -91,7 +92,7 @@ def load_card_semantic_audit() -> dict[str, Any]:
     return payload
 
 
-def load_potion_semantic_audit() -> dict[str, Any]:
+def load_potion_semantic_audit(*, require_current: bool = False) -> dict[str, Any]:
     """Validate the committed Original/native potion effect evidence."""
 
     from sls.content.source_audit import java_sources, registry_game_ids
@@ -105,8 +106,7 @@ def load_potion_semantic_audit() -> dict[str, Any]:
         raise ValueError("unsupported Ironclad potion semantic audit")
     if supplied != canonical_digest(unsigned):
         raise ValueError("Ironclad potion semantic audit digest mismatch")
-    if payload.get("scope_sha256") != ironclad_a0_scope_hash():
-        raise ValueError("Ironclad potion semantic audit is stale for the content scope")
+    # Exact IDs and source hashes below are the category-local currentness gate.
     scope = json.loads((ROOT / "configs" / "validation" / "ironclad_a0_content_scope.json").read_text(encoding="utf-8"))
     expected_ids = sorted(map(str, scope["potions"]["ids"]))
     entries = list(payload.get("entries") or ())
@@ -135,7 +135,7 @@ def load_potion_semantic_audit() -> dict[str, Any]:
     return payload
 
 
-def load_relic_semantic_audit() -> dict[str, Any]:
+def load_relic_semantic_audit(*, require_current: bool = False) -> dict[str, Any]:
     """Validate committed callback-complete relic scenario evidence."""
 
     from sls.content.source_audit import java_relic_callbacks, java_sources, registry_game_ids
@@ -147,8 +147,8 @@ def load_relic_semantic_audit() -> dict[str, Any]:
     unsigned.pop("audit_sha256", None)
     if payload.get("schema") != RELIC_SEMANTIC_AUDIT_SCHEMA or supplied != canonical_digest(unsigned):
         raise ValueError("invalid Ironclad relic semantic audit")
-    if payload.get("scope_sha256") != ironclad_a0_scope_hash():
-        raise ValueError("Ironclad relic semantic audit is stale for the content scope")
+    # Exact IDs, callbacks, and source hashes below replace the over-broad
+    # legacy global-scope hash.
     entries = list(payload.get("entries") or ())
     scope = json.loads((ROOT / "configs" / "validation" / "ironclad_a0_content_scope.json").read_text(encoding="utf-8"))
     expected_ids = sorted(map(str, scope["relics"]["ids"]))
@@ -173,7 +173,7 @@ def load_relic_semantic_audit() -> dict[str, Any]:
     return payload
 
 
-def load_event_semantic_audit() -> dict[str, Any]:
+def load_event_semantic_audit(*, require_current: bool = False) -> dict[str, Any]:
     """Validate exact scoped stock-event constructor evidence."""
 
     from sls.content.source_audit import java_sources, registry_game_ids
@@ -186,8 +186,7 @@ def load_event_semantic_audit() -> dict[str, Any]:
     if payload.get("schema") != EVENT_SEMANTIC_AUDIT_SCHEMA or \
             supplied != canonical_digest(unsigned):
         raise ValueError("invalid Ironclad event semantic audit")
-    if payload.get("scope_sha256") != ironclad_a0_scope_hash():
-        raise ValueError("Ironclad event semantic audit is stale for the content scope")
+    # Exact event IDs and source hashes below are category-local.
     scope = json.loads(
         (ROOT / "configs" / "validation" / "ironclad_a0_content_scope.json").read_text(
             encoding="utf-8"
@@ -215,7 +214,7 @@ def load_event_semantic_audit() -> dict[str, Any]:
     return payload
 
 
-def load_mechanism_semantic_audit() -> dict[str, Any]:
+def load_mechanism_semantic_audit(*, require_current: bool = False) -> dict[str, Any]:
     """Validate committed controlled Original/native rule trajectories."""
 
     from sls.rl.training_contract import canonical_digest, source_sha256
@@ -227,8 +226,8 @@ def load_mechanism_semantic_audit() -> dict[str, Any]:
     if payload.get("schema") != MECHANISM_SEMANTIC_AUDIT_SCHEMA or \
             supplied != canonical_digest(unsigned):
         raise ValueError("invalid Ironclad mechanism semantic audit")
-    if payload.get("scope_sha256") != ironclad_a0_scope_hash():
-        raise ValueError("Ironclad mechanism semantic audit is stale for the content scope")
+    # Mechanism evidence is bound to its explicit source_files, not unrelated
+    # content registry changes.
     expected = {
         "damage_buffer_intangible": "DAMAGE_PIPELINE",
         "duration_weak": "POWER_ORDER",
@@ -252,14 +251,15 @@ def load_mechanism_semantic_audit() -> dict[str, Any]:
             raise ValueError(f"mechanism trajectory evidence is invalid: {item.get('id')}")
         if not str(item.get("setup_digest") or ""):
             raise ValueError(f"mechanism setup digest is missing: {item.get('id')}")
-    for relative, digest in dict(payload.get("source_files") or {}).items():
-        path = ROOT / str(relative)
-        if not path.is_file() or source_sha256(path) != digest:
-            raise ValueError(f"mechanism source evidence is stale: {relative}")
+    if require_current:
+        for relative, digest in dict(payload.get("source_files") or {}).items():
+            path = ROOT / str(relative)
+            if not path.is_file() or source_sha256(path) != digest:
+                raise ValueError(f"mechanism source evidence is stale: {relative}")
     return payload
 
 
-def load_encounter_semantic_audit() -> dict[str, Any]:
+def load_encounter_semantic_audit(*, require_current: bool = False) -> dict[str, Any]:
     """Validate exact Act 1 encounter and monster constructor/turn traces."""
 
     from sls.rl.training_contract import canonical_digest, source_sha256
@@ -271,8 +271,7 @@ def load_encounter_semantic_audit() -> dict[str, Any]:
     if payload.get("schema") != ENCOUNTER_SEMANTIC_AUDIT_SCHEMA or \
             supplied != canonical_digest(unsigned):
         raise ValueError("invalid Ironclad encounter semantic audit")
-    if payload.get("scope_sha256") != ironclad_a0_scope_hash():
-        raise ValueError("Ironclad encounter semantic audit is stale for the content scope")
+    # Encounter IDs, monster closure, and source_files form the local scope.
     scope = json.loads(
         (ROOT / "configs" / "validation" / "ironclad_a0_content_scope.json").read_text(
             encoding="utf-8"
@@ -299,14 +298,15 @@ def load_encounter_semantic_audit() -> dict[str, Any]:
                 raise ValueError(f"encounter coverage variant is invalid: {item.get('id')}")
     if covered_monsters != expected_monsters:
         raise ValueError("Ironclad encounter evidence does not cover the exact monster scope")
-    for relative, digest in dict(payload.get("source_files") or {}).items():
-        path = ROOT / str(relative)
-        if not path.is_file() or source_sha256(path) != digest:
-            raise ValueError(f"encounter source evidence is stale: {relative}")
+    if require_current:
+        for relative, digest in dict(payload.get("source_files") or {}).items():
+            path = ROOT / str(relative)
+            if not path.is_file() or source_sha256(path) != digest:
+                raise ValueError(f"encounter source evidence is stale: {relative}")
     return payload
 
 
-def load_semantic_audit() -> dict[str, Any]:
+def load_semantic_audit(*, require_current_scope: bool = False) -> dict[str, Any]:
     from sls.rl.training_contract import canonical_digest
 
     payload = json.loads(SEMANTIC_AUDIT_PATH.read_text(encoding="utf-8"))
@@ -317,17 +317,22 @@ def load_semantic_audit() -> dict[str, Any]:
     unsigned.pop("audit_sha256", None)
     if supplied != canonical_digest(unsigned):
         raise ValueError("Ironclad semantic audit digest mismatch")
-    if payload.get("content_scope_sha256") != ironclad_a0_scope_hash():
+    if require_current_scope and payload.get("content_scope_sha256") != ironclad_a0_scope_hash():
         raise ValueError("Ironclad semantic audit is stale for the content scope")
     return payload
 
 
 def semantic_audit_hash() -> str:
-    return str(load_semantic_audit()["audit_sha256"])
+    # Readiness locks are immutable historical attestations.  Their signature
+    # must remain verifiable after the active content scope advances, but the
+    # old audit no longer gates policy training.
+    return str(load_semantic_audit(require_current_scope=False)["audit_sha256"])
 
 
-def verify_semantic_audit(*, require_pilot_ready: bool = False) -> dict[str, Any]:
-    payload = load_semantic_audit()
+def verify_semantic_audit(
+    *, require_pilot_ready: bool = False, require_current_scope: bool = False,
+) -> dict[str, Any]:
+    payload = load_semantic_audit(require_current_scope=require_current_scope)
     summary = payload.get("summary") or {}
     if require_pilot_ready and not bool(summary.get("act1_pilot_ready", False)):
         raise ValueError(

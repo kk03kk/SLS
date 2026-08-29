@@ -24,7 +24,7 @@ class EpisodeHorizon(IntEnum):
     ACT_1 = 1
     ACT_2 = 2
     ACT_3 = 3
-    HEART = 4
+    HEART, FULL_RUN = 4, 5
 
 
 @dataclass(frozen=True, slots=True)
@@ -78,11 +78,17 @@ def evaluate_horizon(
     if phase is RunPhase.DEATH:
         return HorizonDecision(True, False, "DEATH")
     if phase is RunPhase.VICTORY:
+        if profile.horizon is EpisodeHorizon.HEART and observation.run.act < 4:
+            return HorizonDecision(True, False, "HEART_NOT_REACHED")
         return HorizonDecision(True, True, "GAME_VICTORY")
     completed = act_completed
     if completed is None and phase is RunPhase.ACT_TRANSITION:
         completed = max(0, observation.run.act - 1)
-    if completed is not None and completed >= int(profile.horizon):
+    if (
+        profile.horizon is not EpisodeHorizon.FULL_RUN
+        and completed is not None
+        and completed >= int(profile.horizon)
+    ):
         return HorizonDecision(True, True, f"ACT_{int(profile.horizon)}_CLEARED")
     return HorizonDecision(False, False, None)
 
@@ -101,3 +107,32 @@ def completed_act_between(previous: Observation, current: Observation) -> int | 
     if current_act <= previous_act:
         return None
     return current_act - 1
+
+
+def ironclad_fullrun_profile(
+    ascension: int, *, require_heart: bool = False,
+) -> CurriculumProfile:
+    if ascension < 0 or ascension > 20:
+        raise ValueError("Ironclad ascension must be between 0 and 20")
+    suffix = "HEART" if require_heart else "FULLRUN"
+    horizon = EpisodeHorizon.HEART if require_heart else EpisodeHorizon.FULL_RUN
+    return CurriculumProfile(
+        f"IRONCLAD_A{ascension}_{suffix}", "IRONCLAD", ascension, horizon,
+    )
+
+
+IRONCLAD_FULLRUN_PROFILES = tuple(
+    ironclad_fullrun_profile(ascension, require_heart=require_heart)
+    for ascension in range(21)
+    for require_heart in (False, True)
+)
+IRONCLAD_A0_FULLRUN = IRONCLAD_FULLRUN_PROFILES[0]
+IRONCLAD_A20_FULLRUN = IRONCLAD_FULLRUN_PROFILES[-2]
+IRONCLAD_A20_HEART = IRONCLAD_FULLRUN_PROFILES[-1]
+IRONCLAD_CURRICULUM_PROFILES = (
+    IRONCLAD_A0_ACT1, IRONCLAD_A0_ACT2, IRONCLAD_A0_ACT3,
+    *IRONCLAD_FULLRUN_PROFILES,
+)
+CURRICULUM_PROFILES_BY_ID = {
+    profile.profile_id: profile for profile in IRONCLAD_CURRICULUM_PROFILES
+}

@@ -444,7 +444,9 @@ def test_hidden_combat_reward_cards_are_an_evidence_gap_until_oracle_supplies_th
         {"id": "Whirlwind", "upgrades": 0},
     ]]
     decision = adapt_original(payload).decision
-    assert len(decision.actions) == 6
+    # The flattened policy boundary omits stock's reversible child-popup
+    # ``skip``; the parent SKIP_REWARD remains the irreversible abandon action.
+    assert len(decision.actions) == 5
     assert [item.content_id for item in decision.observation.reward_options] == [
         "ANGER", "CLOTHESLINE", "WHIRLWIND", "GOLD",
     ]
