@@ -897,18 +897,31 @@ void GameContext::setupEvent() { // todo necronomicon event
             break;
 
         case Event::FALLING: { // todo test and CANNOT BE BOTTLED
-            int counts[3] {0,0,0};
+            int attackCards = 0;
+            int skillCards = 0;
+            int powerCards = 0;
             for (int i = 0; i < deck.cards.size(); ++i) {
                 if (deck.isCardBottled(i)) {
                     continue;
                 }
-                const auto &c = deck.cards[i];
-                ++counts[static_cast<int>(c.getType())];
+                switch (deck.cards[i].getType()) {
+                    case CardType::ATTACK:
+                        ++attackCards;
+                        break;
+                    case CardType::SKILL:
+                        ++skillCards;
+                        break;
+                    case CardType::POWER:
+                        ++powerCards;
+                        break;
+                    default:
+                        break;
+                }
             }
 
-            int attacksIdx = counts[0] > 0 ? miscRng.random(counts[0] - 1) : -1;
-            int skillsIdx = counts[1] > 0 ? miscRng.random(counts[1] - 1) : -1;
-            int powersIdx = counts[2] > 0 ? miscRng.random(counts[2] - 1) : -1;
+            int attacksIdx = attackCards > 0 ? miscRng.random(attackCards - 1) : -1;
+            int skillsIdx = skillCards > 0 ? miscRng.random(skillCards - 1) : -1;
+            int powersIdx = powerCards > 0 ? miscRng.random(powerCards - 1) : -1;
 
             int attackCount = 0;
             int skillCount = 0;
