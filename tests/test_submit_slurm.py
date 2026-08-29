@@ -28,7 +28,7 @@ def test_all_tasks_preserve_virtualenv_python_path(tmp_path: Path, task: str) ->
     (
         ("preflight", "preflight_training.py", None, "gpu", "03:00:00"),
         ("benchmark", "benchmark_workers.py", None, "gpu", "03:00:00"),
-        ("smoke", "train_full_run.py", "smoke", "gpu", "03:00:00"),
+        ("smoke", "train_full_run.py", "smoke", "gpu-long", "1-00:00:00"),
         ("pilot", "train_full_run.py", "pilot", "gpu-long", "12:00:00"),
         ("train", "train_full_run.py", "train", "gpu-long", "3-00:00:00"),
     ),

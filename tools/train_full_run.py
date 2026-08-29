@@ -230,6 +230,26 @@ def _require_predecessor_promotion(
         raise ValueError(f"{stage_name} requires {predecessor} promotion gate to pass")
 
 
+def _require_interrupted_smoke_resume(
+    manifest: dict[str, object], training_identity: str,
+) -> None:
+    """Allow only an exact continuation of an interrupted smoke stage."""
+
+    stages = manifest.get("stages")
+    smoke = stages.get("smoke") if isinstance(stages, dict) else None
+    if (
+        manifest.get("schema") != MANIFEST_SCHEMA
+        or manifest.get("training_identity_sha256") != training_identity
+        or manifest.get("status") != "INTERRUPTED"
+        or not isinstance(smoke, dict)
+        or smoke.get("status") != "INTERRUPTED"
+        or smoke.get("profile") != "IRONCLAD_A0_ACT1"
+    ):
+        raise FileExistsError(
+            "smoke refuses to overwrite a non-interrupted or incompatible training chain"
+        )
+
+
 def _append_record(path: Path, record: dict[str, object]) -> None:
     with path.open("a", encoding="utf-8") as stream:
         stream.write(json.dumps(record, sort_keys=True) + "\n")
@@ -296,8 +316,26 @@ def main() -> int:
     evaluation_max_steps = int(run["evaluation_max_steps"])
     output = ROOT / str(run["output"])
     latest = output / "latest.pt"
-    if args.stage == "smoke" and latest.exists():
-        raise FileExistsError("smoke refuses to overwrite an existing training chain")
+    manifest_path = output / "run-manifest.json"
+    output_existed = output.exists()
+    if manifest_path.exists():
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        if (
+            manifest.get("schema") != MANIFEST_SCHEMA
+            or manifest.get("training_identity_sha256") != identity
+        ):
+            raise ValueError("existing run manifest belongs to another training chain")
+    else:
+        manifest = None
+    if args.stage == "smoke":
+        if latest.exists():
+            if manifest is None:
+                raise FileExistsError("smoke checkpoint has no matching run manifest")
+            _require_interrupted_smoke_resume(manifest, identity)
+        elif output_existed:
+            raise FileExistsError(
+                "smoke refuses an existing training directory without a resumable checkpoint"
+            )
     if args.stage == "smoke" and args.resume != "auto":
         raise ValueError("smoke cannot use environment migration")
     if args.stage != "smoke" and not latest.exists():
@@ -308,15 +346,7 @@ def main() -> int:
     metrics_path = stage_output / "metrics.jsonl"
     selection_output = stage_output / "selection"
     started = time.time()
-    manifest_path = output / "run-manifest.json"
-    if manifest_path.exists():
-        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-        if (
-            manifest.get("schema") != MANIFEST_SCHEMA
-            or manifest.get("training_identity_sha256") != identity
-        ):
-            raise ValueError("existing run manifest belongs to another training chain")
-    else:
+    if manifest is None:
         manifest = {
             "schema": MANIFEST_SCHEMA,
             "simulator_only": True,

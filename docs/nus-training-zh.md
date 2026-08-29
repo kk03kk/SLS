@@ -56,6 +56,9 @@ tail -n 5 runs/ironclad-a0-fullrun-v2/stages/smoke/metrics.jsonl
 find runs/ironclad-a0-fullrun-v2/crashes -type f 2>/dev/null
 ~~~
 
+Smoke 默认申请 `gpu-long` 和 24 小时，足够覆盖当前 A100 基准下约 17 小时的
+500 万步训练；若仍因 TERM 安全中断，原样再次提交 smoke 会从 `latest.pt` 精确恢复。
+
 状态必须为 COMPLETE，不得出现 crash、NaN、非法 Decision 或 OOM。只有 128-seed
 评估达到 20% Act 1 成功率且无 backend/limit/self-loop 错误，smoke artifact 才会生成。用
 compute node 对保存点重复计算两次下一 update：
@@ -84,7 +87,7 @@ scp -o ProxyJump=hengzhi@sjump.comp.nus.edu.sg hengzhi@xlogin.comp.nus.edu.sg:~/
 tail -f runs/slurm-logs/sls-pilot-*.out
 ~~~
 
-Pilot 默认申请 `gpu-long` 和 12 小时；它的 200 万步目标在 3 小时 `gpu` 配额内
+Pilot 默认申请 `gpu-long` 和 12 小时；它新增约 2000 万步的目标在 3 小时 `gpu` 配额内
 没有可靠余量。
 
 只有 smoke 晋级门通过后才允许启动 Pilot。Pilot 自动迁移 smoke 的 latest.pt，保留学习

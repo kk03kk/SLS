@@ -11,6 +11,7 @@ from tools.train_full_run import (
     _positive_int,
     _progress_from_baseline,
     _promotion_passes,
+    _require_interrupted_smoke_resume,
     _require_predecessor_promotion,
     _seed_range,
     _training_identity,
@@ -18,11 +19,46 @@ from tools.train_full_run import (
 )
 
 
+def _interrupted_smoke_manifest() -> dict[str, object]:
+    return {
+        "schema": "sls-recurrent-ppo-run-v2",
+        "training_identity_sha256": "identity",
+        "status": "INTERRUPTED",
+        "stages": {
+            "smoke": {
+                "status": "INTERRUPTED",
+                "profile": "IRONCLAD_A0_ACT1",
+            },
+        },
+    }
+
+
 def test_stop_controller_defers_signal_to_safe_boundary() -> None:
     controller = StopController()
     controller.handler(signal.SIGTERM, None)
     assert controller.requested is True
     assert controller.signal_name == "SIGTERM"
+
+
+def test_interrupted_smoke_chain_is_exactly_resumable() -> None:
+    _require_interrupted_smoke_resume(_interrupted_smoke_manifest(), "identity")
+
+
+@pytest.mark.parametrize(
+    ("field", "value"),
+    (
+        ("status", "RUNNING"),
+        ("status", "COMPLETE"),
+        ("training_identity_sha256", "other"),
+    ),
+)
+def test_smoke_resume_rejects_non_interrupted_or_incompatible_chains(
+    field: str, value: str,
+) -> None:
+    manifest = _interrupted_smoke_manifest()
+    manifest[field] = value
+    with pytest.raises(FileExistsError, match="non-interrupted or incompatible"):
+        _require_interrupted_smoke_resume(manifest, "identity")
 
 
 def test_evaluation_seed_namespaces_are_disjoint_from_training() -> None:

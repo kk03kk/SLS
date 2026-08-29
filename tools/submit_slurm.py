@@ -59,11 +59,13 @@ def build_sbatch_command(args: argparse.Namespace, *, root: Path = ROOT) -> list
                 + ", ".join(unsupported)
             )
     python = _absolute_without_symlink_resolution(args.python)
-    if args.task in {"pilot", "train"}:
+    if args.task in {"smoke", "pilot", "train"}:
         partition, walltime = "gpu-long", "3-00:00:00"
     else:
         partition, walltime = "gpu", "03:00:00"
-    if args.task == "pilot":
+    if args.task == "smoke":
+        walltime = "1-00:00:00"
+    elif args.task == "pilot":
         walltime = "12:00:00"
     partition = args.partition or partition
     walltime = args.time or walltime
