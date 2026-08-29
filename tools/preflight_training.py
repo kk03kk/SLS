@@ -51,7 +51,7 @@ def main() -> int:
 
         from sls.backends.simulator import SimulatorBackend
         from sls.content.scope import IRONCLAD_A0_SCOPE_ID, ironclad_a0_scope_hash
-        from sls.curriculum import IRONCLAD_A0_ACT1
+        from sls.curriculum import IRONCLAD_A0_FULLRUN
         from sls.model import ENCODING_SCHEMA, ModelConfig, Policy, PolicyBatch
         from sls.rl import (
             PPOConfig,
@@ -71,7 +71,7 @@ def main() -> int:
             raise RuntimeError("preflight requires a clean Git worktree")
         if ENCODING_SCHEMA != "sls-policy-input-v3":
             raise RuntimeError("preflight requires the policy v3 encoding contract")
-        decision = SimulatorBackend(IRONCLAD_A0_ACT1).reset(0)
+        decision = SimulatorBackend(IRONCLAD_A0_FULLRUN).reset(0)
         if decision.terminal or not decision.actions:
             raise RuntimeError("simulator smoke produced an invalid Decision")
         if hashlib.sha256(SEED_8335_DUMP.read_bytes()).hexdigest() != SEED_8335_SHA256:
@@ -83,11 +83,20 @@ def main() -> int:
         if not args.allow_cpu and not torch.cuda.is_available():
             raise RuntimeError("CUDA GPU is not visible to PyTorch")
         device = "cuda" if torch.cuda.is_available() else "cpu"
-        model = Policy(ModelConfig(embedding_dim=32, transformer_layers=1, attention_heads=4, feedforward_dim=64)).to(device)
-        with VectorWorkerPool(IRONCLAD_A0_ACT1, 1) as workers:
+        if not args.allow_cpu and "A100" not in torch.cuda.get_device_name(0).upper():
+            raise RuntimeError("canonical server preflight requires an NVIDIA A100 GPU")
+        model = Policy(ModelConfig(
+            embedding_dim=32, transformer_layers=1, attention_heads=4,
+            feedforward_dim=64, recurrent_hidden_dim=64,
+        )).to(device)
+        with VectorWorkerPool(IRONCLAD_A0_FULLRUN, 1) as workers:
             trainer = PPOTrainer(
-                model, workers, PPOConfig(rollout_steps=1, epochs=1, minibatch_size=1),
+                model, workers, PPOConfig(
+                    rollout_steps=1, recurrent_sequence_length=1,
+                    minibatch_sequences=1, epochs=1,
+                ),
                 device=device, seed=918273,
+                training_seed_limit=1_000_000_000_000,
                 native_contract_digest=native_source_digest(),
                 git_commit=str(repository["commit"]),
                 training_config_digest="PREFLIGHT_MICRO_RESUME",
@@ -116,6 +125,8 @@ def main() -> int:
             "torch": torch.__version__, "cuda": torch.version.cuda,
             "gpu": torch.cuda.get_device_name(0) if torch.cuda.is_available() else None,
             "device": device,
+            "policy_architecture": model.config.architecture,
+            "recurrent_memory_size": model.config.recurrent_hidden_dim,
         }
     except Exception as error:
         checks = {"schema": "sls-linux-training-preflight-v1", "ok": False, "error": str(error), "error_type": type(error).__name__}

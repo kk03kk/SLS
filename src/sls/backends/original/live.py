@@ -26,6 +26,12 @@ class LiveGameBackend(OriginalBackend):
     ) -> None:
         super().__init__(session=session, profile=IRONCLAD_A0_HEART)
         self.content_policy = content_policy or UnsupportedContentPolicy.ironclad()
+        self.require_heart = True
+
+    def configure_goal(self, goal: str) -> None:
+        if goal not in {"FULLRUN", "HEART"}:
+            raise ValueError("live backend requires a FullRun or Heart artifact")
+        self.require_heart = goal == "HEART"
 
     def attach(self) -> Decision:
         payload = self.session.payload or self.session.connect()
@@ -41,7 +47,9 @@ class LiveGameBackend(OriginalBackend):
         if not 0 <= ascension <= 20:
             raise ValueError(f"invalid Ironclad ascension: {ascension}")
         self.content_policy.validate_observation(observation)
-        self.profile = ironclad_fullrun_profile(ascension, require_heart=True)
+        self.profile = ironclad_fullrun_profile(
+            ascension, require_heart=self.require_heart,
+        )
         self._adapted = adapted
         self._last_executed_commands = ()
         self._last_validation_evidence = {}

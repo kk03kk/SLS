@@ -1,63 +1,67 @@
 # SLS
 
 SLS is a simulator-first reinforcement-learning project for Slay the Spire.
-The repository contains a native C++ FullRun simulator, one canonical
-observation/action contract, a relational Transformer policy, PPO training,
-exact checkpoints, and a live-game controller for CommunicationMod.
+Its canonical target is an Ironclad A0 run from Neow through the Act 3 victory.
+Training starts from random weights and uses no teacher trajectories, behavior
+cloning, samples, or automatic curriculum.
 
-The project deliberately trains from random weights. It does not contain or
-consume teacher trajectories, behavior-cloning corpora, Original-game truth
-bundles, or parity release gates. The simulator is the training environment;
-real-game runs are downstream deployment tests.
+The policy is a relational Transformer state encoder followed by a GRU memory,
+variable-size semantic action scorer, value head, and recurrent PPO. The C++
+FullRun simulator is the training authority; CommunicationMod is used later to
+test the exported policy in the real game.
 
-## Setup
+## Local setup
 
-Requirements: Python 3.12+, Windows or Linux, and a C++ compiler. The Windows
-builder installs its pinned Zig toolchain.
+Requirements are Python 3.12+, Windows or Linux, and a C++ compiler.
 
-```bash
-python -m pip install -e ".[test]"
-python tools/build_native.py
-pytest
-```
-
-Install the model dependencies and run the server checks:
-
-```bash
+~~~bash
 python tools/bootstrap.py --with-model
-python tools/preflight_training.py --allow-cpu  # omit --allow-cpu on the GPU server
-python tools/benchmark_workers.py
-```
+python tools/preflight_training.py --allow-cpu
+~~~
 
-## Training
+The bootstrap installs pinned dependencies, builds the native simulator, and
+runs the complete test suite.
 
-The current checked-in configs are the stable Act 1 baseline used while the
-A0 FullRun recurrent training path is built.
+## Server training
 
-```bash
-python tools/train_full_run.py --config configs/train/act1_smoke.toml
-python tools/train_full_run.py --config configs/train/act1_pilot.toml
-python tools/train_full_run.py --config configs/train/act1_train.toml --resume auto
-```
+There is one configuration and one exact-resume training chain:
 
-Every run starts from natural simulator resets and random policy weights. Exact
-resume restores the optimizer, RNGs, worker environments, and episode-limit
-state. Generated builds, runs, checkpoints, logs, game JARs, and saves are
-ignored by Git.
+~~~bash
+python tools/submit_slurm.py preflight --python "$TRAIN_PY"
+python tools/submit_slurm.py benchmark --python "$TRAIN_PY"
+python tools/submit_slurm.py smoke --python "$TRAIN_PY"
+python tools/submit_slurm.py pilot --python "$TRAIN_PY"
+python tools/submit_slurm.py train --python "$TRAIN_PY"
+~~~
+
+Smoke stops at 100,000 environment decisions, pilot continues the same
+checkpoint to 2,000,000, and train continues to 50,000,000. Repeating the
+training submission after a Slurm time limit resumes the same chain. Worker and
+shard counts are selected automatically by the benchmark for the current Git
+commit and simulator source.
+
+Exact checkpoints include model and optimizer state, GRU memory, simulator
+environments, episode limits, counters, and all RNG states. Periodic evaluation
+uses 128 held-out seeds beginning at 10^12; final evaluation uses 1,000
+different seeds beginning at 2*10^12.
+
+See [the Chinese NUS runbook](docs/nus-training-zh.md) for the complete
+deployment, monitoring, download, and recovery procedure.
 
 ## Live game
 
-Export a simulator-trained checkpoint, launch Slay the Spire with
-CommunicationMod, then attach the controller:
+Each completed stage exports a simulator-only FullRun artifact. Start a fresh
+Ironclad A0 game and attach at the Neow decision:
 
-```bash
-python tools/export_policy.py runs/act1-train-v3/latest.pt \
-  --output runs/ironclad.pt --ascension-min 0 --ascension-max 0 --goal ACT1
-python tools/play_live.py runs/ironclad.pt --device cuda --max-actions 5
-```
+~~~bash
+python tools/play_live.py \
+  runs/ironclad-a0-fullrun-v1/ironclad-a0-fullrun-v1-smoke.pt \
+  --device cpu --max-actions 5
+~~~
 
-Artifacts are explicitly marked `simulator_only`. Live play journals every
-intent and acknowledgement and refuses uncertain resends.
+The live journal persists recurrent memory with each intent/acknowledgement.
+The controller can resume only when the current boundary matches the journal;
+it rejects unprovable mid-run attachment and uncertain action resends.
 
 See [architecture](docs/architecture.md), [repository map](docs/repository-map.md),
 and [local runtime](docs/local-runtime.md).

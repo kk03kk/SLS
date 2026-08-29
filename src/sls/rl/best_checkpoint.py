@@ -7,24 +7,24 @@ import os
 from pathlib import Path
 from typing import Any, Callable, Mapping
 
-BEST_CHECKPOINT_SCHEMA = "sls-best-success-v1"
+BEST_CHECKPOINT_SCHEMA = "sls-best-success-v2"
 
 
 def evaluation_rank(record: Mapping[str, Any]) -> tuple[float, ...]:
     """Rank progress while penalizing non-progress before reward magnitude."""
 
-    bosses = dict(record.get("boss_success_rate") or {})
-    minimum_boss_success = min(map(float, bosses.values())) if bosses else 0.0
     failure_floor = record.get("median_failure_floor")
     return (
         float(record["successes"]),
+        float(record["reached_act3"]),
+        float(record["reached_act2"]),
+        float("inf") if failure_floor is None else float(failure_floor),
+        -float(record.get("backend_errors", 0)),
         -float(record["step_limits"]),
         -float(record["cycle_limits"]),
         -float(record["self_loops"]),
         -float(record["timeouts"]),
         -float(record["backend_truncations"]),
-        minimum_boss_success,
-        float("inf") if failure_floor is None else float(failure_floor),
         -float(record["mean_steps"]),
     )
 
@@ -38,6 +38,11 @@ def best_checkpoint_record(
         "schema": BEST_CHECKPOINT_SCHEMA,
         "update": int(update),
         "successes": int(evaluation["successes"]),
+        "success_rate": float(evaluation["success_rate"]),
+        "reached_act2": int(evaluation["reached_act2"]),
+        "reached_act3": int(evaluation["reached_act3"]),
+        "reached_act2_rate": float(evaluation["reached_act2_rate"]),
+        "reached_act3_rate": float(evaluation["reached_act3_rate"]),
         "episodes": int(evaluation["episodes"]),
         "mean_reward": float(evaluation["mean_reward"]),
         "mean_steps": float(evaluation["mean_steps"]),
@@ -47,6 +52,7 @@ def best_checkpoint_record(
         "self_loops": int(evaluation["self_loops"]),
         "timeouts": int(evaluation["timeouts"]),
         "backend_truncations": int(evaluation["backend_truncations"]),
+        "backend_errors": int(evaluation.get("backend_errors", 0)),
         "boss_success_rate": {
             str(key): float(value)
             for key, value in sorted(dict(evaluation["boss_success_rate"]).items())

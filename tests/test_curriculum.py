@@ -85,6 +85,21 @@ def test_fullrun_and_heart_have_distinct_terminal_goals() -> None:
     assert evaluate_horizon(IRONCLAD_A0_HEART, heart_ending).success
 
 
+def test_fullrun_stops_after_act_three_even_when_a_key_route_would_continue() -> None:
+    previous = _observation(3, ScreenType.BOSS_REWARD)
+    act_four = _observation(4, ScreenType.MAP)
+    completed = completed_act_between(previous, act_four)
+    fullrun = evaluate_horizon(
+        IRONCLAD_A0_FULLRUN, act_four, act_completed=completed,
+    )
+    heart = evaluate_horizon(
+        IRONCLAD_A0_HEART, act_four, act_completed=completed,
+    )
+    assert fullrun.terminated and fullrun.success
+    assert fullrun.reason == "ACT_3_CLEARED"
+    assert not heart.terminated
+
+
 def test_all_fullrun_ascensions_are_real_profiles() -> None:
     assert ironclad_fullrun_profile(0) == IRONCLAD_A0_FULLRUN
     assert ironclad_fullrun_profile(20) == IRONCLAD_A20_FULLRUN

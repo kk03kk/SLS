@@ -23,5 +23,7 @@ def test_canonical_assets_are_present() -> None:
         "src/sls/content/scope.json",
         "tools/train_full_run.py",
         "tools/play_live.py",
+        "configs/train/ironclad_a0_fullrun.toml",
+        "docs/nus-training-zh.md",
     ):
         assert (ROOT / relative).is_file(), relative

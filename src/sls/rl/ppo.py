@@ -57,30 +57,38 @@ def policy_distance_metrics(
 @dataclass(frozen=True, slots=True)
 class PPOConfig:
     rollout_steps: int = 128
-    learning_rate: float = 3e-4
+    recurrent_sequence_length: int = 32
+    minibatch_sequences: int = 16
+    learning_rate: float = 2.5e-4
     gamma: float = 0.999
     gae_lambda: float = 0.95
     clip_ratio: float = 0.2
     value_coefficient: float = 0.5
-    entropy_coefficient: float = 0.01
-    entropy_final: float = 0.001
-    entropy_decay_updates: int = 1_000
-    target_kl: float = 0.015
+    entropy_coefficient: float = 0.02
+    entropy_final: float = 0.002
+    entropy_decay_steps: int = 40_000_000
+    target_kl: float = 0.02
     value_clip_ratio: float = 0.2
     max_gradient_norm: float = 0.5
-    epochs: int = 4
-    minibatch_size: int = 256
-    potential_shaping: bool = False
+    epochs: int = 2
+    potential_shaping: bool = True
     potential_scale: float = 0.2
     reward_schema: str = REWARD_SCHEMA
     episode_limit_schema: str = EPISODE_LIMIT_SCHEMA
-    max_episode_steps: int = 512
+    max_episode_steps: int = 4_096
     max_boundary_visits: int = 4
     limit_failure_reward: float = -1.0
 
     def __post_init__(self) -> None:
-        if self.rollout_steps <= 0 or self.epochs <= 0 or self.minibatch_size <= 0:
+        if (
+            self.rollout_steps <= 0
+            or self.epochs <= 0
+            or self.recurrent_sequence_length <= 0
+            or self.minibatch_sequences <= 0
+        ):
             raise ValueError("PPO sizes must be positive")
+        if self.rollout_steps % self.recurrent_sequence_length:
+            raise ValueError("rollout_steps must be divisible by recurrent_sequence_length")
         if self.learning_rate <= 0.0:
             raise ValueError("learning_rate must be positive")
         if not 0.0 < self.gamma <= 1.0 or not 0.0 <= self.gae_lambda <= 1.0:
@@ -99,7 +107,7 @@ class PPOConfig:
             raise ValueError(f"unsupported episode limit schema: {self.episode_limit_schema}")
         if not 0.0 <= self.entropy_final <= self.entropy_coefficient:
             raise ValueError("entropy_final must be between zero and entropy_coefficient")
-        if self.entropy_decay_updates <= 0 or self.target_kl <= 0.0:
+        if self.entropy_decay_steps <= 0 or self.target_kl <= 0.0:
             raise ValueError("entropy decay and target KL must be positive")
         if self.value_clip_ratio <= 0.0:
             raise ValueError("value_clip_ratio must be positive")
@@ -124,6 +132,7 @@ class PPOTrainer:
         native_contract_digest: str | None = None,
         git_commit: str = "TEST_OR_UNSPECIFIED",
         training_config_digest: str = "TEST_OR_UNSPECIFIED",
+        training_seed_limit: int | None = None,
     ) -> None:
         self.model = model.to(device)
         self.workers = workers
@@ -134,33 +143,50 @@ class PPOTrainer:
         self.next_seed = int(seed)
         self.update = 0
         self.episodes = 0
+        self.environment_steps = 0
         self.native_contract_digest = native_contract_digest or native_source_digest()
         self.git_commit = str(git_commit)
         self.training_config_digest = str(training_config_digest)
+        self.training_seed_limit = training_seed_limit
         self.decisions = workers.reset(self._take_seeds(workers.size))
+        self.memory = self.model.initial_memory(workers.size, self.device)
+        self.episode_starts = torch.ones(workers.size, dtype=torch.bool, device=self.device)
         self.episode_limits = [EpisodeLimitState.initial(item) for item in self.decisions]
         self.termination_counts = {reason: 0 for reason in TERMINATION_REASONS}
         self.last_collect_terminations = {reason: 0 for reason in TERMINATION_REASONS}
 
     def _take_seeds(self, count: int) -> list[int]:
+        if (
+            self.training_seed_limit is not None
+            and self.next_seed + count > self.training_seed_limit
+        ):
+            raise RuntimeError("training seed namespace reached held-out evaluation seeds")
         result = list(range(self.next_seed, self.next_seed + count))
         self.next_seed += count
         return result
 
     @torch.no_grad()
     def collect(self) -> RolloutBatch:
-        encoded_steps = []
+        encoded_steps: list[tuple[object, ...]] = []
         action_steps: list[torch.Tensor] = []
         log_probability_steps: list[torch.Tensor] = []
         value_steps: list[torch.Tensor] = []
         reward_steps: list[torch.Tensor] = []
         terminal_steps: list[torch.Tensor] = []
+        episode_start_steps: list[torch.Tensor] = []
+        memory_steps: list[torch.Tensor] = []
         collect_terminations = {reason: 0 for reason in TERMINATION_REASONS}
         self.model.eval()
         for _ in range(self.config.rollout_steps):
-            encoded = [encode_decision(value) for value in self.decisions]
+            encoded = tuple(encode_decision(value) for value in self.decisions)
             batch = PolicyBatch.from_encoded(encoded).to(self.device)
-            output = self.model(*batch.model_inputs())
+            episode_start_steps.append(self.episode_starts.cpu())
+            memory_steps.append(self.memory.cpu())
+            output = self.model(
+                *batch.model_inputs(),
+                memory=self.memory,
+                episode_start_mask=self.episode_starts,
+            )
             distribution = Categorical(logits=output.logits)
             actions = distribution.sample()
             candidate_ids = [
@@ -208,16 +234,29 @@ class PPOTrainer:
                     reset_indices.append(index)
             reward_steps.append(torch.tensor(rewards, dtype=torch.float32))
             terminal_steps.append(torch.tensor(terminals, dtype=torch.bool))
+            next_memory = output.next_memory.detach()
+            next_episode_starts = torch.zeros(
+                self.workers.size, dtype=torch.bool, device=self.device,
+            )
             for index in reset_indices:
                 next_decisions[index] = self._reset_worker(index)
                 self.episode_limits[index] = EpisodeLimitState.initial(next_decisions[index])
+                next_memory[index].zero_()
+                next_episode_starts[index] = True
                 self.episodes += 1
             self.decisions = next_decisions
+            self.memory = next_memory
+            self.episode_starts = next_episode_starts
 
         self.last_collect_terminations = collect_terminations
+        self.environment_steps += self.config.rollout_steps * self.workers.size
 
         bootstrap_batch = PolicyBatch.from_decisions(self.decisions, self.model.config).to(self.device)
-        bootstrap = self.model(*bootstrap_batch.model_inputs()).value.cpu()
+        bootstrap = self.model(
+            *bootstrap_batch.model_inputs(),
+            memory=self.memory,
+            episode_start_mask=self.episode_starts,
+        ).value.cpu()
         values = torch.stack(value_steps)
         advantages, returns = generalized_advantage_estimate(
             torch.stack(reward_steps),
@@ -227,18 +266,19 @@ class PPOTrainer:
             self.config.gamma,
             self.config.gae_lambda,
         )
-        flat_encoded = tuple(value for step in encoded_steps for value in step)
         return RolloutBatch(
-            flat_encoded,
-            torch.stack(action_steps).flatten(),
-            torch.stack(log_probability_steps).flatten(),
-            values.flatten(),
-            advantages.flatten(),
-            returns.flatten(),
+            tuple(encoded_steps),
+            torch.stack(action_steps),
+            torch.stack(log_probability_steps),
+            values,
+            advantages,
+            returns,
+            torch.stack(episode_start_steps),
+            torch.stack(memory_steps),
         )
 
     def optimize(self, rollout: RolloutBatch) -> dict[str, float]:
-        count = len(rollout.encoded_decisions)
+        chunks = self._sequence_chunks(rollout)
         normalized_advantages = normalize_advantages(rollout.advantages)
         totals = {
             "policy": 0.0, "value": 0.0, "entropy": 0.0, "loss": 0.0,
@@ -246,41 +286,45 @@ class PPOTrainer:
         }
         updates = 0
         self.model.train()
-        entropy_progress = min(1.0, self.update / self.config.entropy_decay_updates)
+        entropy_progress = min(
+            1.0, self.environment_steps / self.config.entropy_decay_steps,
+        )
         entropy_coefficient = (
             self.config.entropy_coefficient
             + entropy_progress * (self.config.entropy_final - self.config.entropy_coefficient)
         )
         epoch_diagnostics: dict[str, float] = {}
         for epoch in range(self.config.epochs):
-            indices = list(range(count))
-            self.random.shuffle(indices)
-            for start in range(0, count, self.config.minibatch_size):
-                selected = indices[start:start + self.config.minibatch_size]
-                batch = PolicyBatch.from_encoded(
-                    rollout.encoded_decisions[index] for index in selected
-                ).to(self.device)
-                output = self.model(*batch.model_inputs())
-                action_indices = rollout.action_indices[selected].to(self.device)
-                distribution = Categorical(logits=output.logits)
-                log_probabilities = distribution.log_prob(action_indices)
-                ratio = torch.exp(
-                    log_probabilities - rollout.old_log_probabilities[selected].to(self.device)
+            self.random.shuffle(chunks)
+            for start in range(0, len(chunks), self.config.minibatch_sequences):
+                selected = chunks[start:start + self.config.minibatch_sequences]
+                log_probabilities, values, entropy_values = self._evaluate_sequences(
+                    rollout, selected,
                 )
-                advantage = normalized_advantages[selected].to(self.device)
+                old_log_probabilities = self._select_sequences(
+                    rollout.old_log_probabilities, selected,
+                ).to(self.device)
+                ratio = torch.exp(
+                    log_probabilities - old_log_probabilities
+                )
+                advantage = self._select_sequences(
+                    normalized_advantages, selected,
+                ).to(self.device)
                 policy_loss = clipped_policy_loss(
                     ratio, advantage, self.config.clip_ratio,
                 )
-                old_values = rollout.old_values[selected].to(self.device)
-                returns = rollout.returns[selected].to(self.device)
-                clipped_values = old_values + (output.value - old_values).clamp(
+                old_values = self._select_sequences(
+                    rollout.old_values, selected,
+                ).to(self.device)
+                returns = self._select_sequences(rollout.returns, selected).to(self.device)
+                clipped_values = old_values + (values - old_values).clamp(
                     -self.config.value_clip_ratio, self.config.value_clip_ratio,
                 )
                 value_loss = 0.5 * torch.maximum(
-                    (output.value - returns).square(),
+                    (values - returns).square(),
                     (clipped_values - returns).square(),
                 ).mean()
-                entropy = distribution.entropy().mean()
+                entropy = entropy_values.mean()
                 loss = (
                     policy_loss
                     + self.config.value_coefficient * value_loss
@@ -293,9 +337,7 @@ class PPOTrainer:
                 )
                 self.optimizer.step()
                 approximate_kl, _ = policy_distance_metrics(
-                    rollout.old_log_probabilities[selected].to(self.device),
-                    log_probabilities,
-                    self.config.clip_ratio,
+                    old_log_probabilities, log_probabilities, self.config.clip_ratio,
                 )
                 for key, value in (
                     ("policy", policy_loss), ("value", value_loss),
@@ -323,6 +365,67 @@ class PPOTrainer:
         )
         return {**result, **epoch_diagnostics}
 
+    def _sequence_chunks(self, rollout: RolloutBatch) -> list[tuple[int, int]]:
+        time_steps, environments = rollout.shape
+        length = self.config.recurrent_sequence_length
+        if time_steps % length:
+            raise ValueError("rollout time dimension is not sequence aligned")
+        return [
+            (time, environment)
+            for environment in range(environments)
+            for time in range(0, time_steps, length)
+        ]
+
+    def _select_sequences(
+        self,
+        tensor: torch.Tensor,
+        chunks: list[tuple[int, int]],
+    ) -> torch.Tensor:
+        length = self.config.recurrent_sequence_length
+        return torch.stack([
+            tensor[start:start + length, environment]
+            for start, environment in chunks
+        ]).flatten()
+
+    def _evaluate_sequences(
+        self,
+        rollout: RolloutBatch,
+        chunks: list[tuple[int, int]],
+    ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+        memory = torch.stack([
+            rollout.input_memories[start, environment]
+            for start, environment in chunks
+        ]).to(self.device)
+        log_probabilities: list[torch.Tensor] = []
+        values: list[torch.Tensor] = []
+        entropies: list[torch.Tensor] = []
+        for offset in range(self.config.recurrent_sequence_length):
+            encoded = (
+                rollout.encoded_decisions[start + offset][environment]
+                for start, environment in chunks
+            )
+            batch = PolicyBatch.from_encoded(encoded).to(self.device)
+            starts = torch.tensor([
+                bool(rollout.episode_starts[start + offset, environment])
+                for start, environment in chunks
+            ], dtype=torch.bool, device=self.device)
+            output = self.model(
+                *batch.model_inputs(), memory=memory, episode_start_mask=starts,
+            )
+            memory = output.next_memory
+            distribution = Categorical(logits=output.logits)
+            actions = torch.tensor([
+                int(rollout.action_indices[start + offset, environment])
+                for start, environment in chunks
+            ], dtype=torch.long, device=self.device)
+            log_probabilities.append(distribution.log_prob(actions))
+            values.append(output.value)
+            entropies.append(distribution.entropy())
+        return tuple(
+            torch.stack(items, dim=1).flatten()
+            for items in (log_probabilities, values, entropies)
+        )  # type: ignore[return-value]
+
     def _reset_worker(self, index: int):  # type: ignore[no-untyped-def]
         return self.workers.reset_one(index, self._take_seeds(1)[0])
 
@@ -330,26 +433,22 @@ class PPOTrainer:
     def _policy_diagnostics(self, rollout: RolloutBatch) -> tuple[float, float]:
         """Measure the current policy on the complete fixed rollout."""
 
-        count = len(rollout.encoded_decisions)
+        chunks = self._sequence_chunks(rollout)
+        count = rollout.action_indices.numel()
         kl_total = 0.0
         clipped_total = 0.0
         was_training = self.model.training
         self.model.eval()
-        for start in range(0, count, self.config.minibatch_size):
-            selected = list(range(start, min(count, start + self.config.minibatch_size)))
-            batch = PolicyBatch.from_encoded(
-                rollout.encoded_decisions[index] for index in selected
+        for start in range(0, len(chunks), self.config.minibatch_sequences):
+            selected = chunks[start:start + self.config.minibatch_sequences]
+            new_log_probabilities, _, _ = self._evaluate_sequences(rollout, selected)
+            old_log_probabilities = self._select_sequences(
+                rollout.old_log_probabilities, selected,
             ).to(self.device)
-            output = self.model(*batch.model_inputs())
-            distribution = Categorical(logits=output.logits)
-            actions = rollout.action_indices[selected].to(self.device)
-            new_log_probabilities = distribution.log_prob(actions)
             approximate_kl, clip_fraction = policy_distance_metrics(
-                rollout.old_log_probabilities[selected].to(self.device),
-                new_log_probabilities,
-                self.config.clip_ratio,
+                old_log_probabilities, new_log_probabilities, self.config.clip_ratio,
             )
-            weight = len(selected)
+            weight = len(new_log_probabilities)
             kl_total += float(approximate_kl) * weight
             clipped_total += float(clip_fraction) * weight
         self.model.train(was_training)

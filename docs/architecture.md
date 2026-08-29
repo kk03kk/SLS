@@ -19,8 +19,10 @@ C++ FullRun simulator
     -> SimulatorBackend
     -> canonical contracts
     -> vector workers
-    -> relational policy + value head
-    -> PPO
+    -> relational Transformer state encoder
+    -> GRU episode memory
+    -> variable-candidate policy + value heads
+    -> recurrent PPO
     -> exact checkpoint / simulator-only artifact
     -> CommunicationMod live controller
 ```
@@ -31,10 +33,20 @@ main repository. The pre-cleanup history remains recoverable from the Git tag
 `pre-training-cleanup-20260829`.
 
 Training workers own native environments while model inference is centralized.
-Rollouts use terminal-safe GAE, clipped PPO, entropy regularization, value
-clipping, gradient clipping, and deterministic held-out evaluation. Synthetic
-step/cycle limits become training failures and are part of exact-resume state.
+Rollouts remain time-major and are optimized as contiguous recurrent sequences.
+Episode-start masks reset only the corresponding GRU row; GAE, memory and
+gradients never cross a terminal boundary. Entropy decay is driven by total
+environment decisions so changing the benchmark-selected worker count does not
+change the schedule.
 
-Live play uses the same observation, action encoder, model, and candidate
-scorer. Policy artifacts record model/vocabulary/source/config digests and are
-always marked as simulator-trained rather than Original-validated.
+Smoke, pilot and train are cumulative boundaries in one run rather than three
+initializations. Checkpoints restore GRU memory, worker environments, optimizer,
+episode limits, seed allocator, environment-step count and RNG state exactly.
+Periodic and final evaluation use separate high seed namespaces that training
+cannot enter.
+
+Live play uses the same observation, action encoder, recurrent model, and
+candidate scorer. The intent journal stores the post-observation GRU memory;
+restart is allowed only at the matching acknowledged boundary. Policy artifacts
+record model/vocabulary/source/config digests and are always marked as
+simulator-trained rather than Original-validated.

@@ -11,7 +11,7 @@ import torch
 from sls.content.scope import policy_excluded_content_ids
 from sls.model import ENCODING_SCHEMA, ModelConfig, Policy, vocabulary_hash
 
-POLICY_ARTIFACT_SCHEMA = "sls-policy-artifact-v3"
+POLICY_ARTIFACT_SCHEMA = "sls-policy-artifact-v4"
 
 
 @dataclass(frozen=True, slots=True)
@@ -23,6 +23,7 @@ class PolicyArtifactMetadata:
     source_git_commit: str
     native_source_sha256: str
     training_config_sha256: str
+    recurrent_memory_size: int
     ascension_min: int = 0
     ascension_max: int = 0
     goal: str = "ACT1"
@@ -37,6 +38,10 @@ class PolicyArtifactMetadata:
             raise ValueError("policy artifact native source digest is missing")
         if not self.training_config_sha256:
             raise ValueError("policy artifact training config digest is missing")
+        if self.recurrent_memory_size <= 0:
+            raise ValueError("policy artifact recurrent memory size is invalid")
+        if int(self.model.get("recurrent_hidden_dim", 0)) != self.recurrent_memory_size:
+            raise ValueError("policy artifact recurrent metadata is inconsistent")
         if self.encoding_schema != ENCODING_SCHEMA:
             raise ValueError("policy artifact encoding schema is incompatible")
         if self.vocabulary_sha256 != vocabulary_hash():
@@ -67,6 +72,7 @@ def _metadata(
         source_git_commit=str(provenance.get("git_commit") or ""),
         native_source_sha256=str(provenance.get("native_source_sha256") or ""),
         training_config_sha256=str(provenance.get("training_config_sha256") or ""),
+        recurrent_memory_size=int(model_config["recurrent_hidden_dim"]),
         ascension_min=ascension_min,
         ascension_max=ascension_max,
         goal=goal,

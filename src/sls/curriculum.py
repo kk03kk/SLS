@@ -84,12 +84,9 @@ def evaluate_horizon(
     completed = act_completed
     if completed is None and phase is RunPhase.ACT_TRANSITION:
         completed = max(0, observation.run.act - 1)
-    if (
-        profile.horizon is not EpisodeHorizon.FULL_RUN
-        and completed is not None
-        and completed >= int(profile.horizon)
-    ):
-        return HorizonDecision(True, True, f"ACT_{int(profile.horizon)}_CLEARED")
+    target_act = 3 if profile.horizon is EpisodeHorizon.FULL_RUN else int(profile.horizon)
+    if completed is not None and completed >= target_act:
+        return HorizonDecision(True, True, f"ACT_{target_act}_CLEARED")
     return HorizonDecision(False, False, None)
 
 

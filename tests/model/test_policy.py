@@ -99,6 +99,48 @@ def test_entity_reordering_preserves_semantic_logits() -> None:
     assert torch.allclose(first_logits, second_logits, rtol=0.0, atol=1e-6)
 
 
+def test_recurrent_history_changes_policy_output() -> None:
+    torch.manual_seed(19)
+    config = ModelConfig(
+        embedding_dim=32, transformer_layers=1, attention_heads=4,
+        recurrent_hidden_dim=64,
+    )
+    policy = Policy(config).eval()
+    batch = PolicyBatch.from_decisions((_combat_decision(),))
+    zero = policy.initial_memory(1)
+    history = torch.ones_like(zero)
+    first = policy(*batch.model_inputs(), memory=zero)
+    second = policy(*batch.model_inputs(), memory=history)
+    assert not torch.allclose(first.logits, second.logits)
+    assert not torch.allclose(first.value, second.value)
+
+
+def test_episode_start_mask_resets_only_selected_memory_rows() -> None:
+    torch.manual_seed(23)
+    config = ModelConfig(
+        embedding_dim=32, transformer_layers=1, attention_heads=4,
+        recurrent_hidden_dim=64,
+    )
+    policy = Policy(config).eval()
+    decision = _combat_decision()
+    batch = PolicyBatch.from_decisions((decision, decision))
+    memory = torch.randn(2, 64)
+    masked = policy(
+        *batch.model_inputs(), memory=memory,
+        episode_start_mask=torch.tensor([True, False]),
+    )
+    reset = policy(
+        *PolicyBatch.from_decisions((decision,)).model_inputs(),
+        memory=torch.zeros(1, 64),
+    )
+    continued = policy(
+        *PolicyBatch.from_decisions((decision,)).model_inputs(),
+        memory=memory[1:],
+    )
+    assert torch.allclose(masked.next_memory[:1], reset.next_memory)
+    assert torch.allclose(masked.next_memory[1:], continued.next_memory)
+
+
 def test_duplicate_card_instances_resolve_to_distinct_entity_tokens() -> None:
     encoded = encode_decision(_combat_decision())
     subject_column = 0

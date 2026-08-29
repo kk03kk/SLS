@@ -9,7 +9,7 @@ from typing import Any, Mapping
 
 from sls.contracts import Decision
 
-EPISODE_LIMIT_SCHEMA = "sls-act1-episode-limit-v1"
+EPISODE_LIMIT_SCHEMA = "sls-fullrun-episode-limit-v2"
 TERMINATION_REASONS = ("success", "death", "backend_truncated", "step_limit", "cycle_limit")
 
 

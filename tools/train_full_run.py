@@ -1,4 +1,4 @@
-"""Train the canonical FullRun policy with native simulator workers."""
+"""Train one exact-resume Ironclad A0 FullRun recurrent PPO run."""
 
 from __future__ import annotations
 
@@ -23,14 +23,11 @@ import torch
 
 from sls.content.scope import IRONCLAD_A0_SCOPE_ID, ironclad_a0_scope_hash
 from sls.curriculum import CURRICULUM_PROFILES_BY_ID
-from sls.model import ModelConfig, Policy
-from sls.model.encoding import ENCODING_SCHEMA, vocabulary_hash
+from sls.model import ENCODING_SCHEMA, ModelConfig, Policy, vocabulary_hash
 from sls.rl import (
     PPOConfig,
     PPOTrainer,
     ShardedWorkerPool,
-    VectorWorkerPool,
-    WorkerPool,
     evaluate,
     load_checkpoint,
     save_checkpoint,
@@ -42,9 +39,13 @@ from sls.rl.training_contract import (
     git_state,
     native_artifact,
     native_source_digest,
+    sha256_file,
 )
+from sls.runtime.artifact import export_policy_artifact
 
-PROFILES = CURRICULUM_PROFILES_BY_ID
+STAGES = ("smoke", "pilot", "train")
+MANIFEST_SCHEMA = "sls-recurrent-ppo-run-v1"
+BENCHMARK_SCHEMA = "sls-worker-benchmark-v2"
 
 
 def _atomic_json(path: Path, value: object) -> None:
@@ -56,26 +57,68 @@ def _atomic_json(path: Path, value: object) -> None:
     temporary.replace(path)
 
 
-def _evaluation_seeds(run: dict[str, object]) -> tuple[int, ...]:
-    if "evaluation_seeds" in run:
-        return tuple(int(value) for value in run["evaluation_seeds"])
-    start = int(run.get("evaluation_seed_start", 10_000))
-    count = int(run.get("evaluation_seed_count", 100))
-    if count <= 0:
-        raise ValueError("evaluation_seed_count must be positive")
-    return tuple(range(start, start + count))
-
-
-def _positive_int(run: dict[str, object], key: str, *, default: int | None = None) -> int:
-    if key in run:
-        value = int(run[key])
-    elif default is not None:
-        value = default
-    else:
-        raise ValueError(f"missing required run field: {key}")
+def _positive_int(mapping: dict[str, object], key: str) -> int:
+    value = int(mapping[key])
     if value <= 0:
         raise ValueError(f"{key} must be positive")
     return value
+
+
+def _seed_range(start: int, count: int) -> range:
+    if start < 0 or count <= 0:
+        raise ValueError("seed ranges require a non-negative start and positive count")
+    return range(start, start + count)
+
+
+def _validate_seed_namespaces(run: dict[str, object]) -> tuple[range, range]:
+    periodic = _seed_range(
+        int(run["periodic_evaluation_seed_start"]),
+        int(run["periodic_evaluation_seed_count"]),
+    )
+    final = _seed_range(
+        int(run["final_evaluation_seed_start"]),
+        int(run["final_evaluation_seed_count"]),
+    )
+    if periodic.stop > final.start and final.stop > periodic.start:
+        raise ValueError("periodic and final evaluation seed ranges overlap")
+    if periodic.start == 0 or final.start == 0:
+        raise ValueError("held-out evaluation seeds overlap the training namespace")
+    return periodic, final
+
+
+def _load_benchmark(
+    path: Path,
+    *,
+    repository: dict[str, object],
+    native_digest: str,
+) -> tuple[int, int]:
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if payload.get("schema") != BENCHMARK_SCHEMA:
+        raise ValueError("worker benchmark schema is incompatible")
+    if (payload.get("git") or {}).get("commit") != repository["commit"]:
+        raise ValueError("worker benchmark belongs to a different Git commit")
+    if payload.get("native_source_sha256") != native_digest:
+        raise ValueError("worker benchmark belongs to different simulator sources")
+    return int(payload["selected_workers"]), int(payload["selected_shards"])
+
+
+def _training_identity(
+    payload: dict[str, object], *, workers: int, shards: int,
+) -> str:
+    run = dict(payload["run"])
+    return canonical_digest({
+        "profile": run["profile"],
+        "seed": int(run["seed"]),
+        "worker_backend": run["worker_backend"],
+        "workers": workers,
+        "shards": shards,
+        "periodic_evaluation_seed_start": int(run["periodic_evaluation_seed_start"]),
+        "periodic_evaluation_seed_count": int(run["periodic_evaluation_seed_count"]),
+        "final_evaluation_seed_start": int(run["final_evaluation_seed_start"]),
+        "final_evaluation_seed_count": int(run["final_evaluation_seed_count"]),
+        "model": payload["model"],
+        "ppo": payload["ppo"],
+    })
 
 
 class StopController:
@@ -95,34 +138,6 @@ class StopController:
         signal.signal(signal.SIGINT, self.handler)
 
 
-def _resolve_resume(value: str | None, output: Path) -> Path | None:
-    if value is None:
-        return None
-    path = output / "latest.pt" if value == "auto" else Path(value)
-    if not path.exists():
-        raise FileNotFoundError(f"resume checkpoint does not exist: {path}")
-    return path
-
-
-def _trim_metrics(path: Path, completed_update: int) -> int:
-    if not path.exists():
-        return 0
-    kept: list[str] = []
-    removed = 0
-    for line in path.read_text(encoding="utf-8").splitlines():
-        if not line.strip():
-            continue
-        record = json.loads(line)
-        if int(record["update"]) <= completed_update:
-            kept.append(json.dumps(record, sort_keys=True))
-        else:
-            removed += 1
-    temporary = path.with_suffix(path.suffix + ".tmp")
-    temporary.write_text("".join(item + "\n" for item in kept), encoding="utf-8")
-    temporary.replace(path)
-    return removed
-
-
 def _slurm_environment() -> dict[str, str]:
     return {
         key: os.environ[key]
@@ -134,173 +149,311 @@ def _slurm_environment() -> dict[str, str]:
     }
 
 
+def _last_evaluation_step(path: Path) -> int:
+    result = -1
+    if path.exists():
+        for line in path.read_text(encoding="utf-8").splitlines():
+            record = json.loads(line)
+            if "evaluation" in record:
+                result = max(result, int(record["environment_steps"]))
+    return result
+
+
+def _baseline_evaluation(path: Path) -> dict[str, object] | None:
+    if not path.exists():
+        return None
+    for line in path.read_text(encoding="utf-8").splitlines():
+        record = json.loads(line)
+        if record.get("baseline") is True and isinstance(record.get("evaluation"), dict):
+            return dict(record["evaluation"])
+    return None
+
+
+def _progress_from_baseline(
+    baseline: dict[str, object], evaluation: dict[str, object],
+) -> dict[str, float | None]:
+    def delta(key: str) -> float | None:
+        before = baseline.get(key)
+        after = evaluation.get(key)
+        if before is None or after is None:
+            return None
+        return float(after) - float(before)
+
+    return {
+        "reached_act2_rate_delta": delta("reached_act2_rate"),
+        "reached_act3_rate_delta": delta("reached_act3_rate"),
+        "median_failure_floor_delta": delta("median_failure_floor"),
+    }
+
+
+def _append_record(path: Path, record: dict[str, object]) -> None:
+    with path.open("a", encoding="utf-8") as stream:
+        stream.write(json.dumps(record, sort_keys=True) + "\n")
+        stream.flush()
+        os.fsync(stream.fileno())
+    print(json.dumps(record, sort_keys=True), flush=True)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--config", type=Path, default=ROOT / "configs" / "train" / "act1_train.toml")
-    parser.add_argument("--resume", help="checkpoint path or 'auto' for OUTPUT/latest.pt")
-    parser.add_argument("--workers", type=int, help="override configured worker count")
+    parser.add_argument("--stage", choices=STAGES, required=True)
+    parser.add_argument(
+        "--config", type=Path,
+        default=ROOT / "configs" / "train" / "ironclad_a0_fullrun.toml",
+    )
     args = parser.parse_args()
     if torch.cuda.is_available():
         torch.set_float32_matmul_precision("high")
+
     config_bytes = args.config.read_bytes()
     payload = tomllib.loads(config_bytes.decode("utf-8"))
-    run = payload["run"]
-    if args.workers is not None:
-        if args.workers <= 0:
-            parser.error("--workers must be positive")
-        run = {**run, "workers": args.workers}
-        payload = {**payload, "run": run}
-    profile = PROFILES[str(run["profile"])]
-    seed = int(run["seed"])
-    torch.manual_seed(seed)
-    device_name = str(run.get("device", "auto"))
-    device = "cuda" if device_name == "auto" and torch.cuda.is_available() else (
-        "cpu" if device_name == "auto" else device_name
-    )
-    if str(device).startswith("cuda") and not torch.cuda.is_available():
-        raise RuntimeError("training config requires CUDA but CUDA is unavailable")
-    model = Policy(ModelConfig(**payload.get("model", {})))
-    ppo = PPOConfig(**payload.get("ppo", {}))
-    workers_count = _positive_int(run, "workers")
-    updates = _positive_int(run, "updates")
-    save_interval = _positive_int(run, "save_interval", default=10)
-    evaluate_interval = _positive_int(run, "evaluate_interval", default=save_interval)
-    evaluation_max_steps = _positive_int(run, "evaluation_max_steps", default=512)
-    output = ROOT / str(run.get("output", "runs/full-run"))
-    output.mkdir(parents=True, exist_ok=True)
-    resume_path = _resolve_resume(args.resume, output)
-    started = time.time()
-    source_digest = native_source_digest()
+    run = dict(payload["run"])
+    stage = dict(payload["stages"][args.stage])
+    periodic_seeds, final_seeds = _validate_seed_namespaces(run)
     repository = git_state()
     if bool(repository["dirty"]):
         raise ValueError("training requires a clean Git worktree")
-    resolved_config_digest = canonical_digest(payload)
-    run_manifest: dict[str, object] = {
-        "schema": "sls-ppo-run-manifest-v2",
-        "simulator_only": True,
+    source_digest = native_source_digest()
+    benchmark_path = ROOT / str(run["benchmark"])
+    workers_count, shard_count = _load_benchmark(
+        benchmark_path, repository=repository, native_digest=source_digest,
+    )
+    identity = _training_identity(payload, workers=workers_count, shards=shard_count)
+    profile = CURRICULUM_PROFILES_BY_ID[str(run["profile"])]
+    if profile.profile_id != "IRONCLAD_A0_FULLRUN":
+        raise ValueError("canonical training config must use IRONCLAD_A0_FULLRUN")
+    seed = int(run["seed"])
+    torch.manual_seed(seed)
+    device = str(run["device"])
+    if device.startswith("cuda") and not torch.cuda.is_available():
+        raise RuntimeError("training config requires CUDA but CUDA is unavailable")
+    model = Policy(ModelConfig(**payload["model"]))
+    ppo = PPOConfig(**payload["ppo"])
+    target_steps = _positive_int(stage, "target_environment_steps")
+    evaluate_every = _positive_int(stage, "evaluate_every_steps")
+    evaluation_max_steps = int(run["evaluation_max_steps"])
+    output = ROOT / str(run["output"])
+    latest = output / "latest.pt"
+    if args.stage == "smoke" and latest.exists():
+        raise FileExistsError("smoke refuses to overwrite an existing training chain")
+    if args.stage != "smoke" and not latest.exists():
+        raise FileNotFoundError(f"{args.stage} requires the smoke/pilot checkpoint: {latest}")
+    output.mkdir(parents=True, exist_ok=True)
+    metrics_path = output / "metrics.jsonl"
+    started = time.time()
+    manifest_path = output / "run-manifest.json"
+    if manifest_path.exists():
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        if (
+            manifest.get("schema") != MANIFEST_SCHEMA
+            or manifest.get("training_identity_sha256") != identity
+        ):
+            raise ValueError("existing run manifest belongs to another training chain")
+    else:
+        manifest = {
+            "schema": MANIFEST_SCHEMA,
+            "simulator_only": True,
+            "profile": profile.profile_id,
+            "training_identity_sha256": identity,
+            "config_sha256": hashlib.sha256(config_bytes).hexdigest(),
+            "git": repository,
+            "native_source_sha256": source_digest,
+            "native_artifact": native_artifact(),
+            "encoding_schema": ENCODING_SCHEMA,
+            "vocabulary_sha256": vocabulary_hash(),
+            "content_scope_id": IRONCLAD_A0_SCOPE_ID,
+            "content_scope_sha256": ironclad_a0_scope_hash(),
+            "checkpoint_schema": TRAINING_CHECKPOINT_SCHEMA,
+            "model": model.config.to_dict(),
+            "ppo": ppo.to_dict(),
+            "workers": workers_count,
+            "shards": shard_count,
+            "periodic_evaluation_seeds": [periodic_seeds.start, periodic_seeds.stop],
+            "final_evaluation_seeds": [final_seeds.start, final_seeds.stop],
+            "created_unix": started,
+            "stages": {},
+        }
+    manifest.update({
         "status": "RUNNING",
-        "profile": profile.profile_id,
-        "curriculum_version": profile.version,
-        "seed": seed,
-        "workers": workers_count,
-        "updates": updates,
-        "device": str(device),
+        "active_stage": args.stage,
         "python": sys.version,
         "platform": platform.platform(),
         "hostname": socket.gethostname(),
-        "git": repository,
-        "slurm": _slurm_environment(),
         "torch": torch.__version__,
-        "cuda_available": torch.cuda.is_available(),
-        "cuda_version": torch.version.cuda,
-        "gpu": torch.cuda.get_device_name(device) if str(device).startswith("cuda") else None,
-        "config_sha256": hashlib.sha256(config_bytes).hexdigest(),
-        "resolved_config_sha256": resolved_config_digest,
-        "checkpoint_schema": TRAINING_CHECKPOINT_SCHEMA,
-        "encoding_schema": ENCODING_SCHEMA,
-        "vocabulary_sha256": vocabulary_hash(),
-        "content_scope_id": IRONCLAD_A0_SCOPE_ID,
-        "content_scope_sha256": ironclad_a0_scope_hash(),
-        "native_source_sha256": source_digest,
-        "native_artifact": native_artifact(),
-        "model": model.config.to_dict(),
-        "ppo": ppo.to_dict(),
-        "evaluation_seeds": list(_evaluation_seeds(run)),
-        "evaluation_max_steps": evaluation_max_steps,
-        "started_unix": started,
-        "resume": str(resume_path.resolve()) if resume_path else None,
-    }
-    _atomic_json(output / "run-manifest.json", run_manifest)
-    if str(device).startswith("cuda"):
-        torch.cuda.reset_peak_memory_stats(device)
+        "cuda": torch.version.cuda,
+        "gpu": torch.cuda.get_device_name(device),
+        "slurm": _slurm_environment(),
+    })
+    _atomic_json(manifest_path, manifest)
+    torch.cuda.reset_peak_memory_stats(device)
     controller = StopController()
     controller.install()
     trainer: PPOTrainer | None = None
     try:
-        worker_backend = str(run.get("worker_backend", "sharded-vector"))
-        pool_types = {
-            "sharded-vector": ShardedWorkerPool,
-            "local-vector": VectorWorkerPool,
-            "spawned": WorkerPool,
-        }
-        if worker_backend not in pool_types:
-            raise ValueError(f"unknown worker backend: {worker_backend}")
-        pool_type = pool_types[worker_backend]
-        with pool_type(
-            profile, workers_count, crash_dump_dir=output / "crashes",
+        with ShardedWorkerPool(
+            profile, workers_count, shard_count=shard_count,
+            crash_dump_dir=output / "crashes",
         ) as workers:
             trainer = PPOTrainer(
                 model, workers, ppo, device=device, seed=seed,
                 native_contract_digest=source_digest,
                 git_commit=str(repository["commit"]),
-                training_config_digest=resolved_config_digest,
+                training_config_digest=identity,
+                training_seed_limit=periodic_seeds.start,
             )
-            if resume_path is not None:
-                load_checkpoint(resume_path, trainer)
-            evaluation_seeds = _evaluation_seeds(run)
-            log_path = output / "metrics.jsonl"
-            run_manifest["trimmed_metric_records"] = _trim_metrics(log_path, trainer.update) if resume_path else 0
-            while trainer.update < updates:
+            if latest.exists():
+                load_checkpoint(latest, trainer)
+            if trainer.environment_steps >= target_steps:
+                raise ValueError(f"stage target already reached: {trainer.environment_steps}")
+
+            last_eval = _last_evaluation_step(metrics_path)
+            baseline_evaluation = _baseline_evaluation(metrics_path)
+            if trainer.environment_steps == 0 and last_eval < 0:
+                baseline = asdict(evaluate(
+                    trainer.model, profile, tuple(periodic_seeds), device=device,
+                    max_steps=evaluation_max_steps,
+                    max_boundary_visits=ppo.max_boundary_visits,
+                ))
+                record = {
+                    "update": 0, "environment_steps": 0, "evaluation": baseline,
+                    "baseline": True,
+                }
+                update_best_checkpoint(
+                    output, best_checkpoint_record(baseline, update=0),
+                    save=lambda path: save_checkpoint(path, trainer),
+                )
+                _append_record(metrics_path, record)
+                baseline_evaluation = baseline
+
+            next_save = ((trainer.environment_steps // 500_000) + 1) * 500_000
+            next_eval = ((trainer.environment_steps // evaluate_every) + 1) * evaluate_every
+            while trainer.environment_steps < target_steps and not controller.requested:
                 update_started = time.perf_counter()
                 metrics = trainer.train_update()
-                non_finite = {key: value for key, value in metrics.items() if not math.isfinite(value)}
+                non_finite = {
+                    key: value for key, value in metrics.items()
+                    if not math.isfinite(value)
+                }
                 if non_finite:
                     raise FloatingPointError(f"non-finite PPO metrics: {non_finite}")
-                update_seconds = time.perf_counter() - update_started
-                record: dict[str, object] = {
-                    "update": trainer.update, "episodes": trainer.episodes,
-                    "update_seconds": update_seconds,
-                    "decisions_per_second": workers_count * ppo.rollout_steps / update_seconds,
+                elapsed = time.perf_counter() - update_started
+                record = {
+                    "update": trainer.update,
+                    "environment_steps": trainer.environment_steps,
+                    "episodes": trainer.episodes,
+                    "update_seconds": elapsed,
+                    "decisions_per_second": workers_count * ppo.rollout_steps / elapsed,
                     **metrics,
                 }
-                if not controller.requested and trainer.update % evaluate_interval == 0:
+                if trainer.environment_steps >= next_eval:
                     try:
-                        result = evaluate(
-                            trainer.model, profile, evaluation_seeds, device=device,
+                        evaluation = asdict(evaluate(
+                            trainer.model, profile, tuple(periodic_seeds), device=device,
                             max_steps=evaluation_max_steps,
                             max_boundary_visits=ppo.max_boundary_visits,
                             stop_requested=lambda: controller.requested,
-                        )
-                        evaluation = asdict(result)
+                        ))
                         record["evaluation"] = evaluation
-                        best_record = best_checkpoint_record(
-                            evaluation, update=trainer.update,
-                        )
+                        if baseline_evaluation is not None:
+                            record["progress_from_baseline"] = _progress_from_baseline(
+                                baseline_evaluation, evaluation,
+                            )
                         record["best_checkpoint_updated"] = update_best_checkpoint(
-                            output, best_record,
+                            output, best_checkpoint_record(evaluation, update=trainer.update),
                             save=lambda path: save_checkpoint(path, trainer),
                         )
+                        while next_eval <= trainer.environment_steps:
+                            next_eval += evaluate_every
                     except InterruptedError:
                         record["evaluation_interrupted"] = True
-                with log_path.open("a", encoding="utf-8") as stream:
-                    stream.write(json.dumps(record, sort_keys=True) + "\n")
-                    stream.flush()
-                    os.fsync(stream.fileno())
-                print(json.dumps(record, sort_keys=True), flush=True)
-                if trainer.update % save_interval == 0 or controller.requested:
-                    save_checkpoint(output / f"checkpoint-{trainer.update:08d}.pt", trainer)
-                    save_checkpoint(output / "latest.pt", trainer)
-                if controller.requested:
-                    break
-            save_checkpoint(output / "latest.pt", trainer)
+                _append_record(metrics_path, record)
+                if trainer.environment_steps >= next_save:
+                    save_checkpoint(
+                        output / f"checkpoint-steps-{trainer.environment_steps:012d}.pt",
+                        trainer,
+                    )
+                    save_checkpoint(latest, trainer)
+                    while next_save <= trainer.environment_steps:
+                        next_save += 500_000
+
+            save_checkpoint(latest, trainer)
+            completed = trainer.environment_steps >= target_steps
+            if completed and not controller.requested:
+                best = output / "best_success.pt"
+                selected = best if best.exists() else latest
+                export_policy_artifact(
+                    selected, output / f"ironclad-a0-fullrun-v1-{args.stage}.pt",
+                    ascension_min=0, ascension_max=0, goal="FULLRUN",
+                )
+            if args.stage == "train" and completed and not controller.requested:
+                save_checkpoint(output / "final.pt", trainer)
+                selected_payload = torch.load(
+                    selected, map_location="cpu", weights_only=False,
+                )
+                trainer.model.load_state_dict(selected_payload["model"])
+                final_result = asdict(evaluate(
+                    trainer.model, profile, tuple(final_seeds), device=device,
+                    max_steps=evaluation_max_steps,
+                    max_boundary_visits=ppo.max_boundary_visits,
+                ))
+                _atomic_json(output / "final-evaluation.json", {
+                    "schema": "sls-final-evaluation-v1",
+                    "checkpoint": selected.name,
+                    "seeds": [final_seeds.start, final_seeds.stop],
+                    "result": final_result,
+                })
+                export_policy_artifact(
+                    selected, output / "ironclad-a0-fullrun-v1.pt",
+                    ascension_min=0, ascension_max=0, goal="FULLRUN",
+                )
+
         status = "INTERRUPTED" if controller.requested else "COMPLETE"
-        run_manifest.update({
-            "status": status, "stop_signal": controller.signal_name,
-            "finished_unix": time.time(), "elapsed_seconds": time.time() - started,
-            "completed_updates": trainer.update, "episodes": trainer.episodes,
+        manifest["stages"][args.stage] = {
+            "status": status,
+            "target_environment_steps": target_steps,
+            "completed_environment_steps": trainer.environment_steps,
+            "finished_unix": time.time(),
+            "stop_signal": controller.signal_name,
+        }
+        manifest.update({
+            "status": status,
+            "active_stage": None,
+            "environment_steps": trainer.environment_steps,
+            "updates": trainer.update,
+            "episodes": trainer.episodes,
             "termination_counts": dict(trainer.termination_counts),
-            "cuda_peak_memory_bytes": torch.cuda.max_memory_allocated(device) if str(device).startswith("cuda") else 0,
+            "cuda_peak_memory_bytes": torch.cuda.max_memory_allocated(device),
         })
-        _atomic_json(output / "run-manifest.json", run_manifest)
+        _atomic_json(manifest_path, manifest)
+        if args.stage == "train" and status == "COMPLETE":
+            bundle_names = (
+                "run-manifest.json", "metrics.jsonl", "best_success.pt",
+                "latest.pt", "final.pt", "final-evaluation.json",
+                "ironclad-a0-fullrun-v1.pt",
+            )
+            _atomic_json(output / "training-bundle.json", {
+                "schema": "sls-training-bundle-v1",
+                "files": {
+                    name: sha256_file(output / name)
+                    for name in bundle_names
+                    if (output / name).is_file()
+                },
+                "crash_files": sorted(
+                    str(path.relative_to(output))
+                    for path in (output / "crashes").glob("*.json")
+                ) if (output / "crashes").is_dir() else [],
+                "live_action_journals": "collected locally under logs/",
+            })
         return 3 if controller.requested else 0
     except BaseException as error:
-        run_manifest.update({
-            "status": "FAILED", "finished_unix": time.time(),
-            "elapsed_seconds": time.time() - started,
-            "completed_updates": trainer.update if trainer else 0,
-            "error_type": type(error).__name__, "error": str(error),
+        manifest.update({
+            "status": "FAILED",
+            "active_stage": args.stage,
+            "error_type": type(error).__name__,
+            "error": str(error),
+            "failed_unix": time.time(),
         })
-        _atomic_json(output / "run-manifest.json", run_manifest)
+        _atomic_json(manifest_path, manifest)
         raise
 
 

@@ -5,7 +5,6 @@ from __future__ import annotations
 import argparse
 import json
 import sys
-import tomllib
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -13,26 +12,30 @@ sys.path.insert(0, str(ROOT / "src"))
 
 import torch
 
-from sls.curriculum import CURRICULUM_PROFILES_BY_ID
 from sls.model import ModelConfig, Policy
-from sls.rl import PPOConfig, PPOTrainer, WorkerPool, load_checkpoint
-from sls.rl.training_contract import native_source_digest
-
-PROFILES = CURRICULUM_PROFILES_BY_ID
+from sls.rl import PPOConfig, PPOTrainer, ShardedWorkerPool, load_checkpoint
 
 
 def _next_update(
-    checkpoint: Path, payload: dict[str, object], device: str,
-) -> tuple[dict[str, float], dict[str, torch.Tensor], int, int]:
-    run = payload["run"]
-    assert isinstance(run, dict)
-    profile = PROFILES[str(run["profile"])]
-    model = Policy(ModelConfig(**payload.get("model", {})))
-    ppo = PPOConfig(**payload.get("ppo", {}))
-    with WorkerPool(profile, int(run["workers"])) as workers:
+    checkpoint: Path, device: str,
+) -> tuple[dict[str, float], dict[str, torch.Tensor], int, int, int, torch.Tensor]:
+    payload = torch.load(checkpoint, map_location="cpu", weights_only=False)
+    contract = payload["contract"]
+    model_config = dict(contract["model"])
+    model_config.pop("encoding_schema", None)
+    model_config.pop("vocabulary_hash", None)
+    model = Policy(ModelConfig(**model_config))
+    ppo = PPOConfig(**contract["ppo"])
+    with ShardedWorkerPool(
+        contract["profile"], int(contract["workers"]),
+        shard_count=int(contract["worker_shards"]),
+    ) as workers:
         trainer = PPOTrainer(
-            model, workers, ppo, device=device, seed=int(run["seed"]),
-            native_contract_digest=native_source_digest(),
+            model, workers, ppo, device=device, seed=0,
+            native_contract_digest=str(contract["native_source_sha256"]),
+            git_commit=str(contract["git_commit"]),
+            training_config_digest=str(contract["training_config_sha256"]),
+            training_seed_limit=contract["training_seed_limit"],
         )
         load_checkpoint(checkpoint, trainer)
         metrics = trainer.train_update()
@@ -40,27 +43,27 @@ def _next_update(
             key: value.detach().cpu().clone()
             for key, value in trainer.model.state_dict().items()
         }
-        return metrics, state, trainer.next_seed, trainer.episodes
+        return (
+            metrics, state, trainer.next_seed, trainer.episodes,
+            trainer.environment_steps, trainer.memory.detach().cpu().clone(),
+        )
 
 
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("checkpoint", type=Path)
-    parser.add_argument("--config", type=Path, required=True)
     parser.add_argument("--device", default="auto")
     args = parser.parse_args()
-    with args.config.open("rb") as stream:
-        payload = tomllib.load(stream)
     device = "cuda" if args.device == "auto" and torch.cuda.is_available() else (
         "cpu" if args.device == "auto" else args.device
     )
-    first = _next_update(args.checkpoint, payload, device)
-    second = _next_update(args.checkpoint, payload, device)
+    first = _next_update(args.checkpoint, device)
+    second = _next_update(args.checkpoint, device)
     metric_match = first[0] == second[0]
     model_match = first[1].keys() == second[1].keys() and all(
         torch.equal(first[1][key], second[1][key]) for key in first[1]
     )
-    state_match = first[2:] == second[2:]
+    state_match = first[2:5] == second[2:5] and torch.equal(first[5], second[5])
     result = {
         "schema": "sls-training-exact-resume-check-v1",
         "checkpoint": str(args.checkpoint.resolve()),

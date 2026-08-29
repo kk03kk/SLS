@@ -24,15 +24,19 @@ class ModelConfig:
     transformer_layers: int = 4
     attention_heads: int = 4
     feedforward_dim: int = 256
+    recurrent_hidden_dim: int = 256
+    recurrent_layers: int = 1
     dropout: float = 0.0
-    architecture: str = "sls-relational-policy-v3"
+    architecture: str = "sls-recurrent-relational-policy-v4"
 
     def __post_init__(self) -> None:
         values = asdict(self)
         if any(value <= 0 for value in values.values() if isinstance(value, int)):
             raise ValueError("model dimensions must be positive")
-        if self.architecture != "sls-relational-policy-v3":
+        if self.architecture != "sls-recurrent-relational-policy-v4":
             raise ValueError(f"unsupported policy architecture: {self.architecture}")
+        if self.recurrent_layers != 1:
+            raise ValueError("the v4 policy supports exactly one recurrent layer")
         if self.embedding_dim % self.attention_heads:
             raise ValueError("embedding_dim must be divisible by attention_heads")
 
@@ -45,6 +49,7 @@ class PolicyOutput:
     logits: torch.Tensor
     value: torch.Tensor
     state: torch.Tensor
+    next_memory: torch.Tensor
 
 
 class Policy(nn.Module):
@@ -65,13 +70,25 @@ class Policy(nn.Module):
             dropout=config.dropout, batch_first=True, norm_first=True,
         )
         self.backbone = nn.TransformerEncoder(layer, config.transformer_layers, enable_nested_tensor=False)
+        self.memory = nn.GRUCell(d, config.recurrent_hidden_dim)
+        h = config.recurrent_hidden_dim
         self.action_numeric = nn.Linear(len(NUMERIC_FIELDS) * 2, d)
         self.action_type = nn.Embedding(len(ACTION_TYPE_IDS), d)
         self.reference_role = nn.Embedding(5, d)
-        self.state_queries = nn.ModuleList(nn.Linear(d, d, bias=False) for _ in SCREEN_GROUPS)
+        self.state_queries = nn.ModuleList(nn.Linear(h, d, bias=False) for _ in SCREEN_GROUPS)
         self.action_keys = nn.ModuleList(nn.Linear(d, d, bias=False) for _ in SCREEN_GROUPS)
         self.action_biases = nn.ModuleList(nn.Linear(d, 1) for _ in SCREEN_GROUPS)
-        self.value_head = nn.Sequential(nn.LayerNorm(d), nn.Linear(d, 1))
+        self.value_head = nn.Sequential(nn.LayerNorm(h), nn.Linear(h, 1))
+
+    def initial_memory(
+        self,
+        batch_size: int,
+        device: str | torch.device | None = None,
+    ) -> torch.Tensor:
+        if batch_size <= 0:
+            raise ValueError("memory batch size must be positive")
+        target = device or self.cls.device
+        return torch.zeros(batch_size, self.config.recurrent_hidden_dim, device=target)
 
     def forward(
         self, screen_types: torch.Tensor, entity_numeric: torch.Tensor,
@@ -82,6 +99,8 @@ class Policy(nn.Module):
         action_numeric_present: torch.Tensor, action_types: torch.Tensor,
         action_references: torch.Tensor, action_reference_mask: torch.Tensor,
         action_padding: torch.Tensor,
+        memory: torch.Tensor | None = None,
+        episode_start_mask: torch.Tensor | None = None,
     ) -> PolicyOutput:
         batch, entity_count, _ = entity_numeric.shape
         numeric = torch.cat((entity_numeric, entity_numeric_present.to(entity_numeric.dtype)), dim=-1)
@@ -101,7 +120,19 @@ class Policy(nn.Module):
             torch.cat((cls, entities), dim=1),
             src_key_padding_mask=torch.cat((cls_padding, entity_padding), dim=1),
         )
-        state, entity_hidden = hidden[:, 0], hidden[:, 1:]
+        encoded_state, entity_hidden = hidden[:, 0], hidden[:, 1:]
+        if memory is None:
+            memory = self.initial_memory(batch, encoded_state.device)
+        if memory.shape != (batch, self.config.recurrent_hidden_dim):
+            raise ValueError("recurrent memory has an incompatible shape")
+        if episode_start_mask is not None:
+            if episode_start_mask.shape != (batch,):
+                raise ValueError("episode start mask has an incompatible shape")
+            reset_mask = episode_start_mask.to(
+                device=memory.device, dtype=torch.bool,
+            ).unsqueeze(1)
+            memory = memory.masked_fill(reset_mask, 0.0)
+        next_memory = self.memory(encoded_state, memory)
         action_values = torch.cat((action_numeric, action_numeric_present.to(action_numeric.dtype)), dim=-1)
         candidates = self.action_numeric(action_values) + self.action_type(action_types)
         safe_refs = action_references.clamp(0, max(0, entity_count - 1))
@@ -123,7 +154,7 @@ class Policy(nn.Module):
             selected = screen_types == group
             if not torch.any(selected):
                 continue
-            query = query_head(state[selected]).unsqueeze(1)
+            query = query_head(next_memory[selected]).unsqueeze(1)
             keys = key_head(candidates[selected])
             logits[selected] = (
                 (query * keys).sum(dim=-1) / self.config.embedding_dim**0.5
@@ -134,4 +165,9 @@ class Policy(nn.Module):
         )
         if torch.any(action_padding.all(dim=1)):
             raise ValueError("every decision requires at least one legal semantic candidate")
-        return PolicyOutput(logits, self.value_head(state).squeeze(-1), state)
+        return PolicyOutput(
+            logits,
+            self.value_head(next_memory).squeeze(-1),
+            encoded_state,
+            next_memory,
+        )

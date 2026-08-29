@@ -11,20 +11,10 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from sls.backends.simulator import SimulatorBackend
-from sls.curriculum import (
-    IRONCLAD_A0_ACT1,
-    IRONCLAD_A0_ACT2,
-    IRONCLAD_A0_ACT3,
-    IRONCLAD_A0_HEART,
-)
+from sls.curriculum import CURRICULUM_PROFILES_BY_ID
 from sls.rl.workers import CRASH_DUMP_SCHEMA, _action_groups, _option_groups
 
-PROFILES = {
-    profile.profile_id: profile
-    for profile in (
-        IRONCLAD_A0_ACT1, IRONCLAD_A0_ACT2, IRONCLAD_A0_ACT3, IRONCLAD_A0_HEART,
-    )
-}
+PROFILES = CURRICULUM_PROFILES_BY_ID
 
 
 def replay_dump(path: Path) -> dict[str, object]:

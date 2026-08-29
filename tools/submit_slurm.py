@@ -13,11 +13,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 
 
-TASK_CONFIGS = {
-    "smoke": "configs/train/act1_smoke.toml",
-    "pilot": "configs/train/act1_pilot.toml",
-    "train": "configs/train/act1_train.toml",
-}
+TRAIN_CONFIG = "configs/train/ironclad_a0_fullrun.toml"
 
 
 def _absolute_without_symlink_resolution(path: Path) -> str:
@@ -39,8 +35,6 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--memory", default="64G")
     parser.add_argument("--time")
     parser.add_argument("--config", type=Path)
-    parser.add_argument("--resume", action="store_true")
-    parser.add_argument("--workers", type=int, help="selected result from benchmark_workers.py")
     parser.add_argument("--dry-run", action="store_true")
     return parser
 
@@ -51,13 +45,7 @@ def build_sbatch_command(args: argparse.Namespace, *, root: Path = ROOT) -> list
     if args.cpus <= 0:
         raise ValueError("--cpus must be positive")
     if args.task in {"preflight", "benchmark"}:
-        unsupported = [
-            name for name, value in (
-                ("--config", args.config), ("--resume", args.resume),
-                ("--workers", args.workers),
-            )
-            if value not in (None, False)
-        ]
+        unsupported = ["--config"] if args.config is not None else []
         if unsupported:
             raise ValueError(
                 f"{args.task} does not accept training option(s): "
@@ -80,14 +68,13 @@ def build_sbatch_command(args: argparse.Namespace, *, root: Path = ROOT) -> list
             str(python), str(root / "tools" / "benchmark_workers.py"),
         ]
     else:
-        config = (args.config or root / TASK_CONFIGS[args.task]).resolve()
+        config = (args.config or root / TRAIN_CONFIG).resolve()
         if not config.is_file() and args.config is not None:
             raise ValueError(f"training config does not exist: {config}")
-        command = [str(python), str(root / "tools" / "train_full_run.py"), "--config", str(config)]
-        if args.workers is not None:
-            command += ["--workers", str(args.workers)]
-        if args.resume:
-            command += ["--resume", "auto"]
+        command = [
+            str(python), str(root / "tools" / "train_full_run.py"),
+            "--stage", args.task, "--config", str(config),
+        ]
     logs = root / "runs" / "slurm-logs"
     return [
         "sbatch", "--parsable", f"--account={args.account}", f"--qos={args.qos}",

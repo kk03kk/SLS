@@ -11,7 +11,7 @@ from pathlib import Path
 from typing import Iterable
 
 ROOT = Path(__file__).resolve().parents[3]
-TRAINING_CHECKPOINT_SCHEMA = "sls-full-run-ppo-v4"
+TRAINING_CHECKPOINT_SCHEMA = "sls-full-run-ppo-v5"
 NATIVE_SOURCE_PATHS = (
     "cpp/simulator",
     "src/sls/backends/simulator",

@@ -5,6 +5,7 @@ from pathlib import Path
 import pytest
 import torch
 
+from sls.backends.original import LiveGameBackend
 from sls.backends.simulator import SimulatorBackend
 from sls.contracts import Transition
 from sls.curriculum import IRONCLAD_A0_ACT1
@@ -31,6 +32,7 @@ def _runtime_artifact() -> LoadedPolicyArtifact:
         simulator_only=True,
         source_git_commit="test", native_source_sha256="test-native",
         training_config_sha256="test-config",
+        recurrent_memory_size=config.recurrent_hidden_dim,
         ascension_min=0, ascension_max=20, goal="HEART",
     )
     return LoadedPolicyArtifact(model, metadata)
@@ -93,7 +95,7 @@ def test_policy_artifact_round_trip_is_strict_and_standalone(tmp_path: Path) -> 
     assert loaded.metadata.goal == "HEART"
     assert loaded.metadata.ascension_min == 0
     assert loaded.metadata.ascension_max == 20
-    assert POLICY_ARTIFACT_SCHEMA == "sls-policy-artifact-v3"
+    assert POLICY_ARTIFACT_SCHEMA == "sls-policy-artifact-v4"
     for expected, actual in zip(model.parameters(), loaded.model.parameters()):
         assert torch.equal(expected, actual)
 
@@ -148,3 +150,33 @@ def test_disconnect_after_state_read_recovers_from_intent_journal(tmp_path: Path
     first_candidate = backend.calls[0]
     _FixedRuntime(backend, _runtime_artifact(), log_path=log).run(max_actions=1)
     assert backend.calls.count(first_candidate) == 1
+
+
+def test_recurrent_runtime_rejects_midrun_attach_without_matching_journal(
+    tmp_path: Path,
+) -> None:
+    _, second = _two_boundaries()
+    backend = _DisconnectBackend(second, second, "normal")
+    with pytest.raises(RuntimeError, match="only start at Neow"):
+        AgentRuntime(
+            backend, _runtime_artifact(), log_path=tmp_path / "new.jsonl",
+        ).run(max_actions=1)
+
+
+def test_acknowledged_recurrent_memory_resumes_at_matching_boundary(
+    tmp_path: Path,
+) -> None:
+    first, second = _two_boundaries()
+    backend = _DisconnectBackend(first, second, "normal")
+    log = tmp_path / "actions.jsonl"
+    AgentRuntime(backend, _runtime_artifact(), log_path=log).run(max_actions=1)
+    AgentRuntime(backend, _runtime_artifact(), log_path=log).run(max_actions=1)
+    assert len(backend.calls) == 2
+
+
+def test_live_backend_uses_artifact_fullrun_goal_instead_of_forcing_heart() -> None:
+    backend = LiveGameBackend()
+    backend.configure_goal("FULLRUN")
+    assert backend.require_heart is False
+    backend.configure_goal("HEART")
+    assert backend.require_heart is True

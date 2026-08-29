@@ -24,6 +24,7 @@ def _contract(trainer: PPOTrainer) -> dict[str, Any]:
         "profile": trainer.workers.profile,
         "curriculum_version": trainer.workers.profile.version,
         "workers": trainer.workers.size,
+        "worker_shards": getattr(trainer.workers, "shard_count", 1),
         "encoding_schema": ENCODING_SCHEMA,
         "vocabulary_sha256": vocabulary_hash(),
         "content_scope_id": IRONCLAD_A0_SCOPE_ID,
@@ -33,6 +34,7 @@ def _contract(trainer: PPOTrainer) -> dict[str, Any]:
         "simulator_only": True,
         "git_commit": trainer.git_commit,
         "training_config_sha256": trainer.training_config_digest,
+        "training_seed_limit": trainer.training_seed_limit,
     }
 
 
@@ -48,10 +50,13 @@ def save_checkpoint(path: str | Path, trainer: PPOTrainer) -> Path:
         "trainer": {
             "update": trainer.update,
             "episodes": trainer.episodes,
+            "environment_steps": trainer.environment_steps,
             "next_seed": trainer.next_seed,
             "random": trainer.random.getstate(),
             "episode_limits": [item.to_dict() for item in trainer.episode_limits],
             "termination_counts": dict(trainer.termination_counts),
+            "memory": trainer.memory.detach().cpu(),
+            "episode_starts": trainer.episode_starts.detach().cpu(),
         },
         "python_rng": random.getstate(),
         "torch_rng": torch.get_rng_state(),
@@ -78,6 +83,7 @@ def load_checkpoint(path: str | Path, trainer: PPOTrainer) -> Mapping[str, Any]:
     state = payload["trainer"]
     trainer.update = int(state["update"])
     trainer.episodes = int(state["episodes"])
+    trainer.environment_steps = int(state["environment_steps"])
     trainer.next_seed = int(state["next_seed"])
     trainer.random.setstate(state["random"])
     from sls.rl.episode_limit import TERMINATION_REASONS, EpisodeLimitState
@@ -90,6 +96,15 @@ def load_checkpoint(path: str | Path, trainer: PPOTrainer) -> Mapping[str, Any]:
         raise ValueError("checkpoint termination counters are invalid")
     trainer.termination_counts = {key: int(counts[key]) for key in TERMINATION_REASONS}
     trainer.last_collect_terminations = {key: 0 for key in TERMINATION_REASONS}
+    memory = state.get("memory")
+    starts = state.get("episode_starts")
+    expected_memory = (trainer.workers.size, trainer.model.config.recurrent_hidden_dim)
+    if not isinstance(memory, torch.Tensor) or tuple(memory.shape) != expected_memory:
+        raise ValueError("checkpoint recurrent memory is invalid")
+    if not isinstance(starts, torch.Tensor) or tuple(starts.shape) != (trainer.workers.size,):
+        raise ValueError("checkpoint episode-start mask is invalid")
+    trainer.memory = memory.to(trainer.device)
+    trainer.episode_starts = starts.to(trainer.device, dtype=torch.bool)
     random.setstate(payload["python_rng"])
     torch.set_rng_state(payload["torch_rng"])
     if torch.cuda.is_available() and payload.get("cuda_rng") is not None:

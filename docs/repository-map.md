@@ -8,11 +8,11 @@
   session transport.
 - `src/sls/content`: generated content registry, normalization, and the
   policy-visible Ironclad scope.
-- `src/sls/model`: policy vocabulary, batching, and relational Transformer.
-- `src/sls/rl`: workers, rollout math, PPO, evaluation, rewards, episode
+- `src/sls/model`: policy vocabulary, batching, relational Transformer, and GRU.
+- `src/sls/rl`: workers, recurrent rollout math, PPO, evaluation, rewards, episode
   limits, and exact checkpoints.
 - `src/sls/runtime`: simulator-only policy artifacts and safe live controller.
-- `configs/train`: smoke, pilot, and long-run training configs.
+- `configs/train`: one canonical A0 FullRun config with cumulative stage targets.
 - `tools`: native build, training, resume verification, worker benchmark,
   Slurm submission, policy export, and live play.
 - `tests`: contracts, simulator, model, RL, checkpoint, and live-runtime tests.

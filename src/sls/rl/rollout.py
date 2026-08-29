@@ -11,12 +11,18 @@ from sls.model.batching import EncodedDecision
 
 @dataclass(frozen=True, slots=True)
 class RolloutBatch:
-    encoded_decisions: tuple[EncodedDecision, ...]
+    encoded_decisions: tuple[tuple[EncodedDecision, ...], ...]
     action_indices: torch.Tensor
     old_log_probabilities: torch.Tensor
     old_values: torch.Tensor
     advantages: torch.Tensor
     returns: torch.Tensor
+    episode_starts: torch.Tensor
+    input_memories: torch.Tensor
+
+    @property
+    def shape(self) -> tuple[int, int]:
+        return tuple(self.action_indices.shape)  # type: ignore[return-value]
 
 
 def generalized_advantage_estimate(
