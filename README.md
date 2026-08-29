@@ -29,7 +29,8 @@ There is one configuration and one exact-resume training chain:
 ~~~bash
 python tools/submit_slurm.py preflight --python "$TRAIN_PY"
 python tools/submit_slurm.py benchmark --python "$TRAIN_PY"
-python tools/submit_slurm.py smoke --python "$TRAIN_PY"
+python tools/submit_slurm.py smoke --python "$TRAIN_PY" \
+  --initialize-from runs/ironclad-a0-fullrun-v1/best_success.pt
 python tools/submit_slurm.py pilot --python "$TRAIN_PY"
 python tools/submit_slurm.py train --python "$TRAIN_PY"
 ~~~
@@ -55,7 +56,7 @@ Ironclad A0 game and attach at the Neow decision:
 
 ~~~bash
 python tools/play_live.py \
-  runs/ironclad-a0-fullrun-v1/ironclad-a0-fullrun-v1-smoke.pt \
+  runs/ironclad-a0-fullrun-v2/ironclad-a0-fullrun-v2-smoke.pt \
   --device cpu --max-actions 5
 ~~~
 

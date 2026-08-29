@@ -73,9 +73,15 @@ def test_canonical_fullrun_config_freezes_stage_and_recurrent_contract() -> None
     assert payload["run"]["profile"] == "IRONCLAD_A0_FULLRUN"
     assert payload["stages"]["smoke"]["target_environment_steps"] == 100_000
     assert payload["stages"]["pilot"]["target_environment_steps"] == 2_000_000
+    assert payload["stages"]["pilot"]["evaluate_every_steps"] == 250_000
     assert payload["stages"]["train"]["target_environment_steps"] == 50_000_000
     assert payload["model"]["architecture"] == "sls-recurrent-relational-policy-v4"
     assert payload["model"]["recurrent_hidden_dim"] == 256
+    assert payload["run"]["seed"] == 10_000_000
+    assert payload["run"]["output"] == "runs/ironclad-a0-fullrun-v2"
+    assert payload["ppo"]["gamma"] == 1.0
+    assert payload["ppo"]["failure_progress_scale"] == 0.8
+    assert payload["ppo"]["reward_schema"] == "sls-curriculum-progress-v3"
     assert payload["ppo"]["recurrent_sequence_length"] == 32
     assert payload["ppo"]["max_episode_steps"] == 4096
 

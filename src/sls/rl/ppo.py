@@ -14,7 +14,12 @@ from sls.rl.episode_limit import (
     TERMINATION_REASONS,
     EpisodeLimitState,
 )
-from sls.rl.reward import REWARD_SCHEMA, shape_curriculum_reward
+from sls.rl.reward import (
+    DEFAULT_FAILURE_PROGRESS_SCALE,
+    REWARD_SCHEMA,
+    curriculum_terminal_reward,
+    shape_curriculum_reward,
+)
 from sls.rl.rollout import RolloutBatch, generalized_advantage_estimate
 from sls.rl.training_contract import native_source_digest
 from sls.rl.workers import WorkerPool
@@ -60,7 +65,7 @@ class PPOConfig:
     recurrent_sequence_length: int = 32
     minibatch_sequences: int = 16
     learning_rate: float = 2.5e-4
-    gamma: float = 0.999
+    gamma: float = 1.0
     gae_lambda: float = 0.95
     clip_ratio: float = 0.2
     value_coefficient: float = 0.5
@@ -73,6 +78,7 @@ class PPOConfig:
     epochs: int = 2
     potential_shaping: bool = True
     potential_scale: float = 0.2
+    failure_progress_scale: float = DEFAULT_FAILURE_PROGRESS_SCALE
     reward_schema: str = REWARD_SCHEMA
     episode_limit_schema: str = EPISODE_LIMIT_SCHEMA
     max_episode_steps: int = 4_096
@@ -101,6 +107,8 @@ class PPOConfig:
             raise ValueError("max_gradient_norm must be positive")
         if self.potential_scale < 0.0:
             raise ValueError("potential_scale cannot be negative")
+        if not 0.0 < self.failure_progress_scale < 1.0:
+            raise ValueError("failure_progress_scale must be between zero and one")
         if self.reward_schema != REWARD_SCHEMA:
             raise ValueError(f"unsupported reward schema: {self.reward_schema}")
         if self.episode_limit_schema != EPISODE_LIMIT_SCHEMA:
@@ -207,9 +215,17 @@ class PPOTrainer:
                 terminal = bool(item.terminated or item.truncated)
                 reward = float(item.reward)
                 if item.terminated:
-                    reason = "success" if bool(item.info.get("success")) else "death"
+                    success = bool(item.info.get("success"))
+                    reason = "success" if success else "death"
+                    reward = curriculum_terminal_reward(
+                        item.decision.observation,
+                        self.workers.profile,
+                        success=success,
+                        failure_progress_scale=self.config.failure_progress_scale,
+                    )
                 elif item.truncated:
                     reason = "backend_truncated"
+                    reward = self.config.limit_failure_reward
                 else:
                     reason = self.episode_limits[index].observe(
                         item.decision,

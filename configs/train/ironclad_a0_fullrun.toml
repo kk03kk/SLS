@@ -1,10 +1,10 @@
 [run]
 profile = "IRONCLAD_A0_FULLRUN"
-seed = 0
+seed = 10000000
 device = "cuda"
 worker_backend = "sharded-vector"
 benchmark = "runs/worker-benchmark.json"
-output = "runs/ironclad-a0-fullrun-v1"
+output = "runs/ironclad-a0-fullrun-v2"
 periodic_evaluation_seed_start = 1000000000000
 periodic_evaluation_seed_count = 128
 final_evaluation_seed_start = 2000000000000
@@ -17,7 +17,7 @@ evaluate_every_steps = 100000
 
 [stages.pilot]
 target_environment_steps = 2000000
-evaluate_every_steps = 500000
+evaluate_every_steps = 250000
 
 [stages.train]
 target_environment_steps = 50000000
@@ -38,7 +38,7 @@ rollout_steps = 128
 recurrent_sequence_length = 32
 minibatch_sequences = 16
 learning_rate = 0.00025
-gamma = 0.999
+gamma = 1.0
 gae_lambda = 0.95
 clip_ratio = 0.2
 value_coefficient = 0.5
@@ -51,7 +51,8 @@ max_gradient_norm = 0.5
 epochs = 2
 potential_shaping = true
 potential_scale = 0.2
-reward_schema = "sls-curriculum-potential-v2"
+failure_progress_scale = 0.8
+reward_schema = "sls-curriculum-progress-v3"
 episode_limit_schema = "sls-fullrun-episode-limit-v2"
 max_episode_steps = 4096
 max_boundary_visits = 4

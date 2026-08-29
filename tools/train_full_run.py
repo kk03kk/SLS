@@ -230,6 +230,10 @@ def main() -> int:
         "--config", type=Path,
         default=ROOT / "configs" / "train" / "ironclad_a0_fullrun.toml",
     )
+    parser.add_argument(
+        "--initialize-from", type=Path,
+        help="Start a fresh smoke chain from checkpoint model weights only.",
+    )
     args = parser.parse_args()
     if torch.cuda.is_available():
         torch.set_float32_matmul_precision("high")
@@ -263,12 +267,57 @@ def main() -> int:
     evaluation_max_steps = int(run["evaluation_max_steps"])
     output = ROOT / str(run["output"])
     latest = output / "latest.pt"
+    if args.initialize_from is not None and args.stage != "smoke":
+        raise ValueError("--initialize-from is only valid for a fresh smoke chain")
     if args.stage == "smoke" and latest.exists():
         raise FileExistsError("smoke refuses to overwrite an existing training chain")
     if args.stage == "smoke" and args.resume != "auto":
         raise ValueError("smoke cannot use environment migration")
     if args.stage != "smoke" and not latest.exists():
         raise FileNotFoundError(f"{args.stage} requires the smoke/pilot checkpoint: {latest}")
+    initialization = None
+    if args.initialize_from is not None:
+        source = args.initialize_from.resolve()
+        if not source.is_file():
+            raise FileNotFoundError(f"initialization checkpoint does not exist: {source}")
+        source_payload = torch.load(source, map_location="cpu", weights_only=False)
+        source_contract = source_payload.get("contract")
+        if (
+            source_payload.get("schema") != TRAINING_CHECKPOINT_SCHEMA
+            or not isinstance(source_contract, dict)
+            or not isinstance(source_payload.get("model"), dict)
+        ):
+            raise ValueError("initialization source is not a training checkpoint")
+        required_contract = {
+            "model": model.config.to_dict(),
+            "profile": profile,
+            "encoding_schema": ENCODING_SCHEMA,
+            "vocabulary_sha256": vocabulary_hash(),
+            "content_scope_id": IRONCLAD_A0_SCOPE_ID,
+            "content_scope_sha256": ironclad_a0_scope_hash(),
+        }
+        incompatible = [
+            key for key, value in required_contract.items()
+            if source_contract.get(key) != value
+        ]
+        if incompatible:
+            raise ValueError(
+                "initialization checkpoint is incompatible: "
+                + ", ".join(sorted(incompatible))
+            )
+        model.load_state_dict(source_payload["model"], strict=True)
+        source_trainer = dict(source_payload.get("trainer") or {})
+        initialization = {
+            "schema": "sls-policy-initialization-v1",
+            "source": str(source),
+            "source_sha256": sha256_file(source),
+            "source_git_commit": source_contract.get("git_commit"),
+            "source_environment_steps": source_trainer.get("environment_steps"),
+            "source_update": source_trainer.get("update"),
+            "optimizer": "RESET",
+            "environments": "FRESH",
+            "recurrent_memory": "ZERO",
+        }
     output.mkdir(parents=True, exist_ok=True)
     metrics_path = output / "metrics.jsonl"
     started = time.time()
@@ -304,6 +353,8 @@ def main() -> int:
             "created_unix": started,
             "stages": {},
         }
+        if initialization is not None:
+            manifest["initialization"] = initialization
     manifest.update({
         "status": "RUNNING",
         "active_stage": args.stage,
@@ -383,6 +434,7 @@ def main() -> int:
                     trainer.model, profile, tuple(periodic_seeds), device=device,
                     max_steps=evaluation_max_steps,
                     max_boundary_visits=ppo.max_boundary_visits,
+                    failure_progress_scale=ppo.failure_progress_scale,
                 ))
                 record = {
                     "update": 0, "environment_steps": 0, "evaluation": baseline,
@@ -421,6 +473,7 @@ def main() -> int:
                             trainer.model, profile, tuple(periodic_seeds), device=device,
                             max_steps=evaluation_max_steps,
                             max_boundary_visits=ppo.max_boundary_visits,
+                            failure_progress_scale=ppo.failure_progress_scale,
                             stop_requested=lambda: controller.requested,
                         ))
                         record["evaluation"] = evaluation
@@ -452,7 +505,7 @@ def main() -> int:
                 best = output / "best_success.pt"
                 selected = best if best.exists() else latest
                 export_policy_artifact(
-                    selected, output / f"ironclad-a0-fullrun-v1-{args.stage}.pt",
+                    selected, output / f"{output.name}-{args.stage}.pt",
                     ascension_min=0, ascension_max=0, goal="FULLRUN",
                 )
             if args.stage == "train" and completed and not controller.requested:
@@ -465,6 +518,7 @@ def main() -> int:
                     trainer.model, profile, tuple(final_seeds), device=device,
                     max_steps=evaluation_max_steps,
                     max_boundary_visits=ppo.max_boundary_visits,
+                    failure_progress_scale=ppo.failure_progress_scale,
                 ))
                 _atomic_json(output / "final-evaluation.json", {
                     "schema": "sls-final-evaluation-v1",
@@ -473,7 +527,7 @@ def main() -> int:
                     "result": final_result,
                 })
                 export_policy_artifact(
-                    selected, output / "ironclad-a0-fullrun-v1.pt",
+                    selected, output / f"{output.name}.pt",
                     ascension_min=0, ascension_max=0, goal="FULLRUN",
                 )
 
@@ -499,7 +553,7 @@ def main() -> int:
             bundle_names = (
                 "run-manifest.json", "metrics.jsonl", "best_success.pt",
                 "latest.pt", "final.pt", "final-evaluation.json",
-                "ironclad-a0-fullrun-v1.pt",
+                f"{output.name}.pt",
             )
             _atomic_json(output / "training-bundle.json", {
                 "schema": "sls-training-bundle-v1",
@@ -514,7 +568,10 @@ def main() -> int:
                 ) if (output / "crashes").is_dir() else [],
                 "live_action_journals": "collected locally under logs/",
             })
-        return 3 if controller.requested else 0
+        # A handled signal is a successful safe shutdown.  The manifest carries
+        # INTERRUPTED state; a non-zero process exit incorrectly marks the batch
+        # step FAILED even though latest.pt was saved atomically.
+        return 0
     except BaseException as error:
         manifest.update({
             "status": "FAILED",

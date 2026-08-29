@@ -73,6 +73,59 @@ def test_evaluation_success_is_a_real_fullrun_victory(
     assert result.successes == 1
     assert result.success_rate == 1.0
     assert result.reached_act3 == 1
+    assert result.mean_reward == 1.0
+
+
+def test_evaluation_failure_reward_includes_terminal_floor(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    module = importlib.import_module("sls.rl.evaluate")
+
+    class LossBackend(_VictoryBackend):
+        def step(self, _action: Action) -> Transition:
+            return Transition(
+                Decision(_observation(1, ScreenType.GAME_OVER), (), True),
+                reward=-1.0,
+                terminated=True,
+                info={
+                    "reason": "DEATH",
+                    "success": False,
+                    "terminal_outcome": "PLAYER_LOSS",
+                },
+            )
+
+    monkeypatch.setattr(module, "SimulatorBackend", LossBackend)
+    result = module.evaluate(
+        _model(), IRONCLAD_A0_FULLRUN, (10**12,), max_steps=1,
+    )
+
+    assert result.mean_reward == pytest.approx(-1.0 + 0.8 * 6 / 50)
+    assert result.median_failure_floor == 6
+
+
+def test_evaluation_limit_failure_does_not_receive_floor_credit(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    module = importlib.import_module("sls.rl.evaluate")
+
+    class NeverEndsBackend(_VictoryBackend):
+        def step(self, _action: Action) -> Transition:
+            return Transition(
+                Decision(
+                    _observation(1, ScreenType.COMBAT),
+                    (Action(ActionKind.END_TURN),),
+                ),
+                reward=0.0,
+                terminated=False,
+            )
+
+    monkeypatch.setattr(module, "SimulatorBackend", NeverEndsBackend)
+    result = module.evaluate(
+        _model(), IRONCLAD_A0_FULLRUN, (10**12,), max_steps=1,
+    )
+
+    assert result.mean_reward == -1.0
+    assert result.step_limits == 1
 
 
 def test_evaluation_rejects_success_before_act_three(

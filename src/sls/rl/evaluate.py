@@ -12,6 +12,10 @@ from sls.backends.simulator import SimulatorBackend
 from sls.curriculum import CurriculumProfile, EpisodeHorizon
 from sls.model import Policy, PolicyBatch
 from sls.rl.episode_limit import EpisodeLimitState
+from sls.rl.reward import (
+    DEFAULT_FAILURE_PROGRESS_SCALE,
+    curriculum_terminal_reward,
+)
 
 
 @dataclass(frozen=True, slots=True)
@@ -57,6 +61,7 @@ def evaluate(
     device: str | torch.device = "cpu",
     max_steps: int = 512,
     max_boundary_visits: int = 4,
+    failure_progress_scale: float = DEFAULT_FAILURE_PROGRESS_SCALE,
     stop_requested: Callable[[], bool] | None = None,
 ) -> EvaluationResult:
     model.eval().to(device)
@@ -112,11 +117,11 @@ def evaluate(
                 transition = backend.step(action)
             except Exception:
                 backend_errors += 1
+                episode_rewards[index] += -1.0
                 failure_floors.append(decisions[index].observation.run.floor)
                 boss = bosses_by_act[index].get(previous_act, "UNKNOWN")
                 boss_results.setdefault(f"ACT_{previous_act}:{boss}", []).append(False)
                 continue
-            episode_rewards[index] += transition.reward
             episode_steps[index] += 1
             decisions[index] = transition.decision
             current_act = transition.decision.observation.run.act
@@ -129,6 +134,16 @@ def evaluate(
                 boss_results.setdefault(f"ACT_{previous_act}:{boss}", []).append(True)
             if transition.terminated or transition.truncated:
                 success = bool(transition.info.get("success"))
+                episode_rewards[index] += (
+                    curriculum_terminal_reward(
+                        transition.decision.observation,
+                        profile,
+                        success=success,
+                        failure_progress_scale=failure_progress_scale,
+                    )
+                    if transition.terminated
+                    else -1.0
+                )
                 if (
                     success
                     and profile.horizon is EpisodeHorizon.FULL_RUN
@@ -164,6 +179,7 @@ def evaluate(
                 max_boundary_visits=max_boundary_visits,
             )
             if limit_reason is not None:
+                episode_rewards[index] += -1.0
                 step_limits += int(limit_reason == "step_limit")
                 cycle_limits += int(limit_reason == "cycle_limit")
                 self_loops += int(limit_reason == "cycle_limit")
@@ -175,6 +191,7 @@ def evaluate(
         active = still_active
     timeouts = len(active)
     for index in active:
+        episode_rewards[index] += -1.0
         act = decisions[index].observation.run.act
         boss = bosses_by_act[index].get(act, "UNKNOWN")
         boss_results.setdefault(f"ACT_{act}:{boss}", []).append(False)
