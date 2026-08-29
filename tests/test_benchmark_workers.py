@@ -19,10 +19,31 @@ def test_experimental_benchmark_does_not_require_policy_transfer(monkeypatch) ->
     assert result["policy_transfer_verified"] is False
 
 
+def test_fresh_clone_experimental_benchmark_never_reads_missing_gate(
+    tmp_path: Path, monkeypatch,
+) -> None:
+    missing = tmp_path / "runs" / "policy_transfer_v1.json"
+    args = benchmark_workers._parser().parse_args([
+        "--mode", "experimental", "--transfer-gate", str(missing),
+    ])
+    monkeypatch.setattr(
+        benchmark_workers, "git_state", lambda: {"dirty": False, "commit": "test"},
+    )
+    safety = benchmark_workers._benchmark_safety(args)
+    assert not missing.exists()
+    assert safety == {
+        "training_mode": benchmark_workers.TrainingMode.EXPERIMENTAL,
+        "policy_transfer_verified": False,
+        "transfer_gate_sha256": "EXPERIMENTAL_UNVERIFIED",
+        "transfer_gate_schema": None,
+    }
+
+
 def test_benchmark_allows_explicit_transfer_gate(
     tmp_path: Path, monkeypatch,
 ) -> None:
     gate = tmp_path / "policy-transfer.json"
+    gate.write_bytes(b"verified production gate")
     args = benchmark_workers._parser().parse_args([
         "--mode", "production", "--transfer-gate", str(gate),
     ])
@@ -37,11 +58,28 @@ def test_benchmark_allows_explicit_transfer_gate(
 
     monkeypatch.setattr(benchmark_workers, "git_state", lambda: {"dirty": False})
     monkeypatch.setattr(benchmark_workers, "verify_policy_transfer_gate", verify)
-    benchmark_workers._verify_benchmark_readiness(args)
+    safety = benchmark_workers._benchmark_safety(args)
     assert call == {
         "path": gate, "profile_id": "IRONCLAD_A0_ACT1",
         "require_canary": True,
     }
+    assert safety["training_mode"] is benchmark_workers.TrainingMode.PRODUCTION
+    assert safety["policy_transfer_verified"] is True
+    assert safety["transfer_gate_schema"] == "sls-policy-transfer-v1"
+
+
+def test_fresh_clone_production_benchmark_rejects_missing_gate(
+    tmp_path: Path, monkeypatch,
+) -> None:
+    missing = tmp_path / "runs" / "policy_transfer_v1.json"
+    args = benchmark_workers._parser().parse_args([
+        "--mode", "production", "--transfer-gate", str(missing),
+    ])
+    monkeypatch.setattr(
+        benchmark_workers, "git_state", lambda: {"dirty": False, "commit": "test"},
+    )
+    with pytest.raises(FileNotFoundError):
+        benchmark_workers._benchmark_safety(args)
 
 
 def test_benchmark_propagates_gate_profile_errors(monkeypatch) -> None:

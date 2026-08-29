@@ -17,9 +17,11 @@ import torch
 from sls.content.scope import IRONCLAD_A0_SCOPE_ID, ironclad_a0_scope_hash
 
 from sls.curriculum import IRONCLAD_A0_ACT1
-from sls.model import ModelConfig, Policy
+from sls.model import ENCODING_SCHEMA, ModelConfig, Policy, vocabulary_hash
 from sls.rl import PPOConfig, PPOTrainer, ShardedWorkerPool
-from sls.rl.training_contract import git_state, native_artifact, native_source_digest
+from sls.rl.training_contract import (
+    canonical_digest, git_state, native_artifact, native_source_digest,
+)
 from sls.validation.transfer_gate import verify_policy_transfer_gate
 from sls.rl.training_mode import TrainingMode, parse_training_mode
 
@@ -60,6 +62,28 @@ def _verify_benchmark_readiness(args: argparse.Namespace) -> dict[str, object]:
     )
 
 
+def _benchmark_safety(args: argparse.Namespace) -> dict[str, object]:
+    """Resolve benchmark provenance without touching a gate in experimental mode."""
+
+    mode = parse_training_mode(args.mode)
+    verified = _verify_benchmark_readiness(args)
+    if mode is TrainingMode.EXPERIMENTAL:
+        return {
+            "training_mode": mode,
+            "policy_transfer_verified": False,
+            "transfer_gate_sha256": "EXPERIMENTAL_UNVERIFIED",
+            "transfer_gate_schema": None,
+        }
+    return {
+        "training_mode": mode,
+        "policy_transfer_verified": True,
+        "transfer_gate_sha256": hashlib.sha256(
+            args.transfer_gate.read_bytes()
+        ).hexdigest(),
+        "transfer_gate_schema": str(verified["schema"]),
+    }
+
+
 def main() -> int:
     args = _parser().parse_args()
     if args.baseline_dps <= 0 or args.target_multiplier <= 0:
@@ -67,16 +91,37 @@ def main() -> int:
     if not torch.cuda.is_available():
         raise SystemExit("worker benchmark requires one CUDA GPU")
     torch.set_float32_matmul_precision("high")
-    transfer_gate = _verify_benchmark_readiness(args)
-    transfer_digest = hashlib.sha256(args.transfer_gate.read_bytes()).hexdigest()
+    safety = _benchmark_safety(args)
+    mode = safety["training_mode"]
+    assert isinstance(mode, TrainingMode)
+    repository = git_state()
+    if ENCODING_SCHEMA != "sls-policy-input-v3":
+        raise RuntimeError("worker benchmark requires the policy v3 encoding contract")
+    vocabulary_digest = vocabulary_hash()
+    source_digest = native_source_digest()
+    artifact = native_artifact()
+    if artifact is None:
+        raise RuntimeError("worker benchmark requires the compiled native simulator")
+    benchmark_config_digest = canonical_digest({
+        "workers": sorted(set(args.workers)),
+        "rounds": args.rounds,
+        "rollout_steps": args.rollout_steps,
+        "baseline_dps": args.baseline_dps,
+        "target_multiplier": args.target_multiplier,
+        "mode": mode.value,
+    })
     rows = []
     for count in sorted(set(args.workers)):
         model = Policy(ModelConfig()).to("cuda")
         with ShardedWorkerPool(IRONCLAD_A0_ACT1, count) as pool:
             trainer = PPOTrainer(
                 model, pool, PPOConfig(rollout_steps=args.rollout_steps), device="cuda", seed=0,
-                readiness_lock_digest=transfer_digest,
-                native_contract_digest=native_source_digest(),
+                readiness_lock_digest=str(safety["transfer_gate_sha256"]),
+                native_contract_digest=source_digest,
+                training_mode=mode,
+                policy_transfer_verified=bool(safety["policy_transfer_verified"]),
+                git_commit=str(repository["commit"]),
+                training_config_digest=benchmark_config_digest,
             )
             trainer.collect()  # warmup
             torch.cuda.synchronize()
@@ -91,20 +136,21 @@ def main() -> int:
     throughput_target = args.baseline_dps * args.target_multiplier
     result = {
         "schema": "sls-worker-benchmark-v1", "selected_workers": selected,
-        "training_mode": parse_training_mode(args.mode).value,
-        "policy_transfer_verified": (
-            parse_training_mode(args.mode) is TrainingMode.PRODUCTION
-        ),
-        "selection_threshold": 0.95, "results": rows, "git": git_state(),
+        "training_mode": mode.value,
+        "policy_transfer_verified": bool(safety["policy_transfer_verified"]),
+        "selection_threshold": 0.95, "results": rows, "git": repository,
         "baseline_decisions_per_second": args.baseline_dps,
         "target_multiplier": args.target_multiplier,
         "target_decisions_per_second": throughput_target,
         "target_met": peak >= throughput_target,
-        "transfer_gate_sha256": transfer_digest,
-        "transfer_gate_schema": transfer_gate["schema"],
+        "transfer_gate_sha256": safety["transfer_gate_sha256"],
+        "transfer_gate_schema": safety["transfer_gate_schema"],
+        "encoding_schema": ENCODING_SCHEMA,
+        "vocabulary_sha256": vocabulary_digest,
+        "benchmark_config_sha256": benchmark_config_digest,
         "content_scope_id": IRONCLAD_A0_SCOPE_ID,
         "content_scope_sha256": ironclad_a0_scope_hash(),
-        "native_source_sha256": native_source_digest(), "native_artifact": native_artifact(),
+        "native_source_sha256": source_digest, "native_artifact": artifact,
         "torch": torch.__version__, "cuda": torch.version.cuda, "gpu": torch.cuda.get_device_name(0),
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
