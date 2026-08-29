@@ -27,7 +27,10 @@ def model_state_sha256(state: Mapping[str, Any]) -> str:
         digest.update(name.encode("utf-8"))
         digest.update(str(value.dtype).encode("ascii"))
         digest.update(str(tuple(value.shape)).encode("ascii"))
-        digest.update(value.view(torch.uint8).numpy().tobytes())
+        # Keep policy artifacts independent of NumPy: torch is the only model
+        # runtime dependency and a fresh production install may not include it.
+        octets = value.reshape(-1).view(torch.uint8).tolist()
+        digest.update(bytes(octets))
     return digest.hexdigest()
 
 
