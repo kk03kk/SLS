@@ -115,18 +115,24 @@ def run(*args: object, env: dict[str, str] | None = None) -> None:
 def sanitizer_environment(
     compiler: str, environment: dict[str, str],
 ) -> dict[str, str]:
-    """Preload ASan before Python when importing a sanitized extension."""
+    """Preload ASan and the C++ runtime for a sanitized Python extension."""
 
-    result = subprocess.run(
-        (compiler, "-print-file-name=libasan.so"),
-        check=True, capture_output=True, text=True,
-    )
-    runtime = Path(result.stdout.strip())
-    if not runtime.is_file():
-        raise RuntimeError(f"compiler did not provide an ASan runtime: {runtime}")
+    runtimes: list[Path] = []
+    for library in ("libasan.so", "libstdc++.so.6"):
+        result = subprocess.run(
+            (compiler, f"-print-file-name={library}"),
+            check=True, capture_output=True, text=True,
+        )
+        runtime = Path(result.stdout.strip())
+        if not runtime.is_file():
+            raise RuntimeError(
+                f"compiler did not provide sanitizer dependency {library}: {runtime}"
+            )
+        runtimes.append(runtime)
     configured = dict(environment)
     existing = configured.get("LD_PRELOAD")
-    configured["LD_PRELOAD"] = str(runtime) + (os.pathsep + existing if existing else "")
+    preload = os.pathsep.join(str(runtime) for runtime in runtimes)
+    configured["LD_PRELOAD"] = preload + (os.pathsep + existing if existing else "")
     configured.setdefault("ASAN_OPTIONS", "detect_leaks=0")
     return configured
 

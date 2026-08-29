@@ -1,10 +1,17 @@
 from __future__ import annotations
 
+import os
 from pathlib import Path
+from subprocess import CompletedProcess
 
 import pytest
 
-from tools.build_native import build_tool_paths, configure_command, native_build_command
+from tools.build_native import (
+    build_tool_paths,
+    configure_command,
+    native_build_command,
+    sanitizer_environment,
+)
 
 
 @pytest.mark.parametrize(
@@ -75,3 +82,25 @@ def test_linux_sanitizer_flag_is_explicit(tmp_path: Path) -> None:
     assert "-DSLS_NATIVE_SOURCE_SHA256=digest" in command
     assert "-DSLS_GIT_COMMIT=commit" in command
     assert "-DSLS_ENABLE_SANITIZERS=ON" in command
+
+
+def test_sanitizer_environment_preloads_cxx_runtime_for_exceptions(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    asan = tmp_path / "libasan.so"
+    stdcpp = tmp_path / "libstdc++.so.6"
+    asan.touch()
+    stdcpp.touch()
+
+    def compiler_query(command: tuple[str, str], **_: object) -> CompletedProcess[str]:
+        library = command[1].removeprefix("-print-file-name=")
+        path = {asan.name: asan, stdcpp.name: stdcpp}[library]
+        return CompletedProcess(command, 0, stdout=f"{path}\n", stderr="")
+
+    monkeypatch.setattr("tools.build_native.subprocess.run", compiler_query)
+    configured = sanitizer_environment("c++", {"LD_PRELOAD": "/existing.so"})
+
+    assert configured["LD_PRELOAD"] == os.pathsep.join(
+        (str(asan), str(stdcpp), "/existing.so")
+    )
+    assert configured["ASAN_OPTIONS"] == "detect_leaks=0"
