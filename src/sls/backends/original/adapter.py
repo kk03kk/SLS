@@ -6,8 +6,13 @@ from dataclasses import dataclass
 from typing import Any, Mapping, Sequence
 
 from sls.content.normalize import (
-    normalize_card_id, normalize_content_id, normalize_event_id, normalize_monster_id,
-    normalize_potion_id, normalize_power_amount, normalize_power_id,
+    normalize_card_id,
+    normalize_content_id,
+    normalize_event_id,
+    normalize_monster_id,
+    normalize_potion_id,
+    normalize_power_amount,
+    normalize_power_id,
 )
 from sls.content.scope import filter_policy_offers, filter_policy_shop
 from sls.contracts import (
@@ -24,7 +29,6 @@ from sls.contracts import (
     ScreenType,
     ShopItem,
 )
-
 
 ROOM_SYMBOLS = {
     "M": "MONSTER",

@@ -2,18 +2,17 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
 import json
 import multiprocessing as mp
-from multiprocessing.connection import Connection
 import os
-from pathlib import Path
 import time
+from dataclasses import dataclass, field
+from multiprocessing.connection import Connection
+from pathlib import Path
 from typing import Any, Mapping, Sequence
 
 from sls.contracts import Decision, Transition
 from sls.curriculum import CurriculumProfile
-
 
 CRASH_DUMP_SCHEMA = "sls-simulator-crash-v1"
 

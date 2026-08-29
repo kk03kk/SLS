@@ -4,19 +4,20 @@ from __future__ import annotations
 
 import argparse
 import json
-from pathlib import Path
 import sys
-
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from sls.backends.simulator import SimulatorBackend
 from sls.curriculum import (
-    IRONCLAD_A0_ACT1, IRONCLAD_A0_ACT2, IRONCLAD_A0_ACT3, IRONCLAD_A0_HEART,
+    IRONCLAD_A0_ACT1,
+    IRONCLAD_A0_ACT2,
+    IRONCLAD_A0_ACT3,
+    IRONCLAD_A0_HEART,
 )
 from sls.rl.workers import CRASH_DUMP_SCHEMA, _action_groups, _option_groups
-
 
 PROFILES = {
     profile.profile_id: profile

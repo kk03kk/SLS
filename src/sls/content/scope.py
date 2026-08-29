@@ -10,17 +10,13 @@ from __future__ import annotations
 
 import hashlib
 import json
-from pathlib import Path
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any, Iterable, Mapping, TypeVar
-
 
 CONTENT_SCOPE_SCHEMA = "sls-content-scope-v1"
 IRONCLAD_A0_SCOPE_ID = "sls-ironclad-a0-content-v1"
-ROOT = Path(__file__).resolve().parents[3]
-IRONCLAD_A0_SCOPE_PATH = (
-    ROOT / "configs" / "validation" / "ironclad_a0_content_scope.json"
-)
+IRONCLAD_A0_SCOPE_PATH = Path(__file__).with_name("scope.json")
 
 
 def canonical_scope_digest(value: Mapping[str, Any]) -> str:

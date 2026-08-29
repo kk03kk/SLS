@@ -2,17 +2,24 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 import math
+from dataclasses import dataclass
 from typing import Iterable, Mapping
 
 import torch
 
 from sls.contracts import Decision, Observation
 from sls.model.encoding import (
-    ACTION_TYPE_IDS, CATEGORICAL_FIELDS, CATEGORICAL_FIELD_IDS, ENTITY_TYPE_IDS,
-    NUMERIC_FIELDS, NUMERIC_FIELD_IDS, SCREEN_GROUP_IDS, SCREEN_TO_GROUP,
-    categorical_token, content_token,
+    ACTION_TYPE_IDS,
+    CATEGORICAL_FIELD_IDS,
+    CATEGORICAL_FIELDS,
+    ENTITY_TYPE_IDS,
+    NUMERIC_FIELD_IDS,
+    NUMERIC_FIELDS,
+    SCREEN_GROUP_IDS,
+    SCREEN_TO_GROUP,
+    categorical_token,
+    content_token,
 )
 
 REFERENCE_FIELDS = ("subject_id", "target_id", "option_id", "node_id", "reward_id")
@@ -241,8 +248,10 @@ def encode_decision(decision: Decision, config: object | None = None) -> Encoded
         references[reference] = index
         numeric, present, categories = _features(values, path=f"entity[{reference}]")
         base_content, variant = content_token(content)
-        numeric_rows.append(numeric); present_rows.append(present)
-        type_rows.append(ENTITY_TYPE_IDS[kind]); content_rows.append((base_content, variant))
+        numeric_rows.append(numeric)
+        present_rows.append(present)
+        type_rows.append(ENTITY_TYPE_IDS[kind])
+        content_rows.append((base_content, variant))
         category_rows.append(categories)
 
     adjacency = torch.zeros(len(rows), len(rows), dtype=torch.bool)
@@ -259,14 +268,18 @@ def encode_decision(decision: Decision, config: object | None = None) -> Encoded
         for field in REFERENCE_FIELDS:
             value = getattr(action, field)
             if value is not None and value in references:
-                refs.append(references[value]); masks.append(True)
+                refs.append(references[value])
+                masks.append(True)
             elif value is not None:
                 raise ValueError(f"unresolved action {field}: {value}")
             else:
-                refs.append(0); masks.append(False)
-        action_numeric.append(numeric); action_present.append(present)
+                refs.append(0)
+                masks.append(False)
+        action_numeric.append(numeric)
+        action_present.append(present)
         action_types.append(ACTION_TYPE_IDS[action.kind.value])
-        action_references.append(refs); action_masks.append(masks)
+        action_references.append(refs)
+        action_masks.append(masks)
 
     return EncodedDecision(
         torch.tensor(SCREEN_GROUP_IDS[SCREEN_TO_GROUP[observation.screen.value]]),

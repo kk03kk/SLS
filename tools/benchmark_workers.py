@@ -3,11 +3,10 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
-from pathlib import Path
 import sys
 import time
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
@@ -15,17 +14,15 @@ sys.path.insert(0, str(ROOT / "src"))
 import torch
 
 from sls.content.scope import IRONCLAD_A0_SCOPE_ID, ironclad_a0_scope_hash
-
 from sls.curriculum import IRONCLAD_A0_ACT1
 from sls.model import ENCODING_SCHEMA, ModelConfig, Policy, vocabulary_hash
 from sls.rl import PPOConfig, PPOTrainer, ShardedWorkerPool
 from sls.rl.training_contract import (
-    canonical_digest, git_state, native_artifact, native_source_digest,
+    canonical_digest,
+    git_state,
+    native_artifact,
+    native_source_digest,
 )
-from sls.validation.transfer_gate import verify_policy_transfer_gate
-from sls.rl.training_mode import TrainingMode, parse_training_mode
-
-TRANSFER_GATE = ROOT / "runs" / "policy_transfer_v1.json"
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -34,54 +31,11 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--rounds", type=int, default=3)
     parser.add_argument("--rollout-steps", type=int, default=64)
     parser.add_argument("--output", type=Path, default=ROOT / "runs" / "worker-benchmark.json")
-    parser.add_argument("--transfer-gate", type=Path, default=TRANSFER_GATE)
     parser.add_argument("--baseline-dps", type=float, default=72.0)
     parser.add_argument("--target-multiplier", type=float, default=4.0)
     parser.add_argument("--require-target", action="store_true")
     parser.add_argument("--allow-dirty", action="store_true", help="development/test only")
-    parser.add_argument(
-        "--mode", required=True, choices=("experimental", "production"),
-    )
     return parser
-
-
-def _verify_benchmark_readiness(args: argparse.Namespace) -> dict[str, object]:
-    mode = parse_training_mode(args.mode)
-    repository = git_state()
-    if bool(repository["dirty"]) and not args.allow_dirty:
-        raise ValueError("worker benchmark requires a clean Git worktree")
-    if mode is TrainingMode.EXPERIMENTAL:
-        return {
-            "schema": "sls-experimental-training-safety-v1",
-            "training_mode": mode.value,
-            "policy_transfer_verified": False,
-        }
-    return verify_policy_transfer_gate(
-        args.transfer_gate, profile_id=IRONCLAD_A0_ACT1.profile_id,
-        require_canary=True,
-    )
-
-
-def _benchmark_safety(args: argparse.Namespace) -> dict[str, object]:
-    """Resolve benchmark provenance without touching a gate in experimental mode."""
-
-    mode = parse_training_mode(args.mode)
-    verified = _verify_benchmark_readiness(args)
-    if mode is TrainingMode.EXPERIMENTAL:
-        return {
-            "training_mode": mode,
-            "policy_transfer_verified": False,
-            "transfer_gate_sha256": "EXPERIMENTAL_UNVERIFIED",
-            "transfer_gate_schema": None,
-        }
-    return {
-        "training_mode": mode,
-        "policy_transfer_verified": True,
-        "transfer_gate_sha256": hashlib.sha256(
-            args.transfer_gate.read_bytes()
-        ).hexdigest(),
-        "transfer_gate_schema": str(verified["schema"]),
-    }
 
 
 def main() -> int:
@@ -91,10 +45,9 @@ def main() -> int:
     if not torch.cuda.is_available():
         raise SystemExit("worker benchmark requires one CUDA GPU")
     torch.set_float32_matmul_precision("high")
-    safety = _benchmark_safety(args)
-    mode = safety["training_mode"]
-    assert isinstance(mode, TrainingMode)
     repository = git_state()
+    if bool(repository["dirty"]) and not args.allow_dirty:
+        raise ValueError("worker benchmark requires a clean Git worktree")
     if ENCODING_SCHEMA != "sls-policy-input-v3":
         raise RuntimeError("worker benchmark requires the policy v3 encoding contract")
     vocabulary_digest = vocabulary_hash()
@@ -108,7 +61,6 @@ def main() -> int:
         "rollout_steps": args.rollout_steps,
         "baseline_dps": args.baseline_dps,
         "target_multiplier": args.target_multiplier,
-        "mode": mode.value,
     })
     rows = []
     for count in sorted(set(args.workers)):
@@ -116,10 +68,7 @@ def main() -> int:
         with ShardedWorkerPool(IRONCLAD_A0_ACT1, count) as pool:
             trainer = PPOTrainer(
                 model, pool, PPOConfig(rollout_steps=args.rollout_steps), device="cuda", seed=0,
-                readiness_lock_digest=str(safety["transfer_gate_sha256"]),
                 native_contract_digest=source_digest,
-                training_mode=mode,
-                policy_transfer_verified=bool(safety["policy_transfer_verified"]),
                 git_commit=str(repository["commit"]),
                 training_config_digest=benchmark_config_digest,
             )
@@ -136,15 +85,12 @@ def main() -> int:
     throughput_target = args.baseline_dps * args.target_multiplier
     result = {
         "schema": "sls-worker-benchmark-v1", "selected_workers": selected,
-        "training_mode": mode.value,
-        "policy_transfer_verified": bool(safety["policy_transfer_verified"]),
+        "simulator_only": True,
         "selection_threshold": 0.95, "results": rows, "git": repository,
         "baseline_decisions_per_second": args.baseline_dps,
         "target_multiplier": args.target_multiplier,
         "target_decisions_per_second": throughput_target,
         "target_met": peak >= throughput_target,
-        "transfer_gate_sha256": safety["transfer_gate_sha256"],
-        "transfer_gate_schema": safety["transfer_gate_schema"],
         "encoding_schema": ENCODING_SCHEMA,
         "vocabulary_sha256": vocabulary_digest,
         "benchmark_config_sha256": benchmark_config_digest,

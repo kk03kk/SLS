@@ -23,8 +23,15 @@ where = ["src"]
 include = ["sls*"]
 
 [tool.setuptools.package-data]
-"sls.content" = ["registry.json"]
+"sls.content" = ["registry.json", "scope.json"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-ra"
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I"]
+
+[tool.ruff.lint.per-file-ignores]
+"tools/*.py" = ["E402"]
+"tests/**/*.py" = ["E402"]

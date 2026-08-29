@@ -4,12 +4,11 @@ import pytest
 
 from sls.content.scope import load_ironclad_a0_scope
 
-
 native = pytest.importorskip("sls.backends.simulator.native", exc_type=ImportError)
 
 
 def _play_first_card(battle: object) -> None:
-    action = next(
+    next(
         item for item in battle.snapshot()["_legal_actions"]
         if item["kind"] == "play" and item["card_index"] == 1
     )

@@ -5,9 +5,6 @@ from dataclasses import replace
 import pytest
 
 from sls.contracts import (
-    Action,
-    ActionKind,
-    Decision,
     Observation,
     Player,
     RunContext,
@@ -98,19 +95,3 @@ def test_all_fullrun_ascensions_are_real_profiles() -> None:
         assert profile.profile_id == f"IRONCLAD_A{ascension}_FULLRUN"
     with pytest.raises(ValueError, match="between 0 and 20"):
         ironclad_fullrun_profile(21)
-
-
-def test_offline_replay_applies_the_same_act_horizon_wrapper() -> None:
-    from tools.replay_truth import _apply_profile_horizon
-
-    legal = (Action(ActionKind.END_TURN),)
-    previous = Decision(_observation(1, ScreenType.BOSS_REWARD), legal, False)
-    raw_map = Decision(
-        _observation(2, ScreenType.MAP),
-        # The raw Original adapter still sees legal Act 2 map candidates.
-        legal,
-        False,
-    )
-    replayed = _apply_profile_horizon(IRONCLAD_A0_ACT1, previous, raw_map)
-    assert replayed.terminal
-    assert replayed.actions == ()

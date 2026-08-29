@@ -4,10 +4,9 @@ from __future__ import annotations
 
 import argparse
 import json
-from pathlib import Path
 import sys
 import tomllib
-
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
@@ -17,9 +16,7 @@ import torch
 from sls.curriculum import CURRICULUM_PROFILES_BY_ID
 from sls.model import ModelConfig, Policy
 from sls.rl import PPOConfig, PPOTrainer, WorkerPool, load_checkpoint
-from sls.rl.training_contract import native_source_digest, readiness_settings
-from sls.validation.readiness_lock import verify_readiness_lock
-
+from sls.rl.training_contract import native_source_digest
 
 PROFILES = CURRICULUM_PROFILES_BY_ID
 
@@ -32,16 +29,9 @@ def _next_update(
     profile = PROFILES[str(run["profile"])]
     model = Policy(ModelConfig(**payload.get("model", {})))
     ppo = PPOConfig(**payload.get("ppo", {}))
-    readiness_digest = "UNVERIFIED"
-    if bool(run.get("require_readiness", False)):
-        readiness_path, readiness_level = readiness_settings(run)
-        readiness_digest = str(verify_readiness_lock(
-            readiness_path, expected_level=readiness_level,
-        )["lock_sha256"])
     with WorkerPool(profile, int(run["workers"])) as workers:
         trainer = PPOTrainer(
             model, workers, ppo, device=device, seed=int(run["seed"]),
-            readiness_lock_digest=readiness_digest,
             native_contract_digest=native_source_digest(),
         )
         load_checkpoint(checkpoint, trainer)

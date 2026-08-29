@@ -1,3 +1,3 @@
-"""Canonical FullRun Slay the Spire simulator and validation package."""
+"""Simulator-first Slay the Spire reinforcement-learning package."""
 
 __version__ = "0.1.0"

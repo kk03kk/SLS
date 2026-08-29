@@ -1,20 +1,22 @@
 from __future__ import annotations
 
 from pathlib import Path
-from types import SimpleNamespace
 
 import pytest
 import torch
 
 from sls.backends.simulator import SimulatorBackend
+from sls.contracts import Transition
 from sls.curriculum import IRONCLAD_A0_ACT1
 from sls.model import ModelConfig, Policy
 from sls.runtime.artifact import (
-    POLICY_ARTIFACT_SCHEMA, LoadedPolicyArtifact, PolicyArtifactMetadata,
-    export_policy_artifact, load_policy_artifact,
+    POLICY_ARTIFACT_SCHEMA,
+    LoadedPolicyArtifact,
+    PolicyArtifactMetadata,
+    export_policy_artifact,
+    load_policy_artifact,
 )
 from sls.runtime.controller import AgentRuntime, boundary_id
-from sls.contracts import Transition
 
 
 def _runtime_artifact() -> LoadedPolicyArtifact:
@@ -26,7 +28,7 @@ def _runtime_artifact() -> LoadedPolicyArtifact:
     metadata = PolicyArtifactMetadata(
         model=config.to_dict(), encoding_schema=config.to_dict()["encoding_schema"],
         vocabulary_sha256=config.to_dict()["vocabulary_hash"],
-        training_mode="PRODUCTION", policy_transfer_verified=True,
+        simulator_only=True,
         source_git_commit="test", native_source_sha256="test-native",
         training_config_sha256="test-config",
         ascension_min=0, ascension_max=20, goal="HEART",
@@ -76,8 +78,8 @@ def test_policy_artifact_round_trip_is_strict_and_standalone(tmp_path: Path) -> 
     checkpoint = tmp_path / "checkpoint.pt"
     torch.save({
         "contract": {
-            "model": config.to_dict(), "training_mode": "PRODUCTION",
-            "policy_transfer_verified": True, "git_commit": "test",
+            "model": config.to_dict(), "simulator_only": True,
+            "git_commit": "test",
             "native_source_sha256": "test-native",
             "training_config_sha256": "test-config",
         },
@@ -91,7 +93,7 @@ def test_policy_artifact_round_trip_is_strict_and_standalone(tmp_path: Path) -> 
     assert loaded.metadata.goal == "HEART"
     assert loaded.metadata.ascension_min == 0
     assert loaded.metadata.ascension_max == 20
-    assert POLICY_ARTIFACT_SCHEMA == "sls-policy-artifact-v2"
+    assert POLICY_ARTIFACT_SCHEMA == "sls-policy-artifact-v3"
     for expected, actual in zip(model.parameters(), loaded.model.parameters()):
         assert torch.equal(expected, actual)
 

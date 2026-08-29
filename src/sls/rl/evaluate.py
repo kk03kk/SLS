@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 import statistics
+from dataclasses import dataclass
 from typing import Callable
 
 import torch

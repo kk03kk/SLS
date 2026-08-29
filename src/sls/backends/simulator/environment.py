@@ -5,6 +5,12 @@ from __future__ import annotations
 import json
 from typing import Any, Mapping
 
+from sls.content.normalize import (
+    normalize_content_id,
+    normalize_power_amount,
+    normalize_power_id,
+)
+from sls.content.scope import filter_policy_offers, filter_policy_shop
 from sls.contracts import (
     Action,
     ActionKind,
@@ -21,17 +27,13 @@ from sls.contracts import (
     Transition,
     ValidationSnapshot,
 )
+from sls.contracts.continuation import continuation_simulator
 from sls.curriculum import (
-    CurriculumProfile,
     IRONCLAD_A0_HEART,
+    CurriculumProfile,
     completed_act_between,
     evaluate_horizon,
 )
-from sls.contracts.continuation import continuation_simulator
-from sls.content.normalize import (
-    normalize_content_id, normalize_power_amount, normalize_power_id,
-)
-from sls.content.scope import filter_policy_offers, filter_policy_shop
 
 
 class SimulatorBackend:
@@ -516,7 +518,6 @@ def _semantic_actions(
                     ),
                 )
             elif action_type == 2:
-                options = raw["public_combat"]["choice"]["options"]
                 action = Action(
                     ActionKind.SELECT_CARD,
                     subject_id=f"CHOICE:{hand_choice_index.get(source, source)}",
@@ -660,7 +661,6 @@ def _screen_entities(raw: Mapping[str, Any]) -> dict[str, tuple[Any, ...]]:
         "choice": (), "reward": (), "shop": (), "event": (), "rest": (), "boss": (),
     }
     screen = _screen_type(raw)
-    info = raw["screen_info"]
     public_screen = raw["public_screen"]
     public_combat = raw.get("public_combat", {})
     actions = raw["legal_actions"]

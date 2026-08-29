@@ -7,7 +7,6 @@ import os
 from pathlib import Path
 from typing import Any, Callable, Mapping
 
-
 BEST_CHECKPOINT_SCHEMA = "sls-best-success-v1"
 
 
@@ -34,12 +33,10 @@ def best_checkpoint_record(
     evaluation: Mapping[str, Any],
     *,
     update: int,
-    warm_start: Mapping[str, Any] | None,
 ) -> dict[str, Any]:
     return {
         "schema": BEST_CHECKPOINT_SCHEMA,
         "update": int(update),
-        "warm_start": dict(warm_start) if warm_start is not None else None,
         "successes": int(evaluation["successes"]),
         "episodes": int(evaluation["episodes"]),
         "mean_reward": float(evaluation["mean_reward"]),

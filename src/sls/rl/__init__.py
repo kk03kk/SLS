@@ -1,8 +1,7 @@
 """Canonical FullRun reinforcement-learning implementation.
 
-The package also contains lightweight contracts used by validation tooling.
-Keep torch-backed training modules lazy so those tools do not require the model
-runtime merely because Python imports :mod:`sls.rl` first.
+Torch-backed modules are imported lazily so simulator and content utilities do
+not require the model runtime merely because Python imports :mod:`sls.rl`.
 """
 
 from __future__ import annotations
@@ -10,7 +9,11 @@ from __future__ import annotations
 from importlib import import_module
 from typing import Any
 
-from sls.rl.episode_limit import EPISODE_LIMIT_SCHEMA, EpisodeLimitState, policy_boundary_fingerprint
+from sls.rl.episode_limit import (
+    EPISODE_LIMIT_SCHEMA,
+    EpisodeLimitState,
+    policy_boundary_fingerprint,
+)
 
 __all__ = [
     "EvaluationResult",
@@ -23,11 +26,8 @@ __all__ = [
     "WorkerPool",
     "evaluate",
     "load_checkpoint",
-    "load_model_weights",
     "policy_boundary_fingerprint",
     "save_checkpoint",
-    "TrainingMode",
-    "parse_training_mode",
 ]
 
 
@@ -40,10 +40,7 @@ _LAZY_EXPORTS = {
     "WorkerPool": ("sls.rl.workers", "WorkerPool"),
     "evaluate": ("sls.rl.evaluate", "evaluate"),
     "load_checkpoint": ("sls.rl.checkpoint", "load_checkpoint"),
-    "load_model_weights": ("sls.rl.checkpoint", "load_model_weights"),
     "save_checkpoint": ("sls.rl.checkpoint", "save_checkpoint"),
-    "TrainingMode": ("sls.rl.training_mode", "TrainingMode"),
-    "parse_training_mode": ("sls.rl.training_mode", "parse_training_mode"),
 }
 
 

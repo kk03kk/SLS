@@ -55,29 +55,10 @@ def test_amountless_stock_powers_use_presence_without_rewriting_numeric_debuffs(
     assert normalize_power_amount("Strength", -1) == -1
 
 
-def test_amountless_power_set_matches_decompiled_stock_sources() -> None:
-    import re
-    from pathlib import Path
-
-    root = Path(__file__).resolve().parents[2]
-    power_root = root / "reference" / "original-game" / "decompiled" / "com" / (
-        "megacrit/cardcrawl/powers"
+def test_amountless_power_set_contains_required_runtime_aliases() -> None:
+    assert {"CONFUSED", "MINION", "REACTIVE", "REGROW", "SHIFTING"} <= set(
+        AMOUNTLESS_POWER_IDS
     )
-    actual = set()
-    for path in power_root.rglob("*.java"):
-        if "deprecated" in path.parts:
-            continue
-        text = path.read_text(encoding="utf-8", errors="replace")
-        if not re.search(r"this\.amount\s*=\s*-1\s*;", text):
-            continue
-        identifier = re.search(r'public static final String POWER_ID\s*=\s*"([^"]+)"', text)
-        if identifier is None:
-            identifier = re.search(r'public static final String ID\s*=\s*"([^"]+)"', text)
-        assert identifier is not None, path
-        actual.add(normalize_power_id(identifier.group(1)))
-    # Confusion, Minion, and the two Life Link implementations inherit
-    # AbstractPower's default -1 amount; the others assign -1 explicitly.
-    assert actual | {"CONFUSED", "MINION", "REACTIVE", "REGROW", "SHIFTING"} == set(AMOUNTLESS_POWER_IDS)
 
 
 def test_stock_sssserpent_class_alias_matches_liars_game() -> None:

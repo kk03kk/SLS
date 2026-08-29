@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import pytest
 
-
 torch = pytest.importorskip("torch")
 
 from sls.rl.rollout import generalized_advantage_estimate

@@ -5,18 +5,13 @@ from __future__ import annotations
 import hashlib
 import importlib
 import json
-from pathlib import Path
 import subprocess
 import sys
-from typing import Iterable, Mapping
-
+from pathlib import Path
+from typing import Iterable
 
 ROOT = Path(__file__).resolve().parents[3]
-TRAINING_CHECKPOINT_SCHEMA = "sls-full-run-ppo-v3"
-ACT1_PRODUCTION_READINESS_LOCK = (
-    ROOT / "configs" / "validation" / "act1_training_readiness.lock.json"
-)
-ACT1_PRODUCTION_READINESS_LEVEL = "TRAINING_READY"
+TRAINING_CHECKPOINT_SCHEMA = "sls-full-run-ppo-v4"
 NATIVE_SOURCE_PATHS = (
     "cpp/simulator",
     "src/sls/backends/simulator",
@@ -38,18 +33,6 @@ def source_sha256(path: Path) -> str:
 
     payload = path.read_bytes().replace(b"\r\n", b"\n")
     return hashlib.sha256(payload).hexdigest()
-
-
-def readiness_settings(run: Mapping[str, object]) -> tuple[Path, str]:
-    """Return the explicit lock contract for a readiness-gated run."""
-
-    missing = [key for key in ("readiness_lock", "readiness_level") if key not in run]
-    if missing:
-        raise ValueError(
-            "readiness-required training config is missing explicit field(s): "
-            + ", ".join(missing)
-        )
-    return ROOT / str(run["readiness_lock"]), str(run["readiness_level"])
 
 
 def _git(*args: str) -> str:

@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-from functools import lru_cache
 import re
+from functools import lru_cache
 
 from sls.content.registry import load_content_registry
 

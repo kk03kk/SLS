@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import hashlib
 import json
-from pathlib import Path
 import time
+from pathlib import Path
 from typing import Callable
 
 import torch
@@ -88,10 +88,6 @@ class AgentRuntime:
         decision = self.backend.attach()
         ascension = decision.observation.run.ascension
         metadata = self.artifact.metadata
-        if metadata.goal != "HEART":
-            raise ValueError(
-                f"live deployment requires a HEART artifact, got {metadata.goal}"
-            )
         if not metadata.ascension_min <= ascension <= metadata.ascension_max:
             raise ValueError(f"policy artifact does not support ascension {ascension}")
         unresolved = self._unresolved_intent()

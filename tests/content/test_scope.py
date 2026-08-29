@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-import subprocess
 
 from sls.content.scope import (
     IRONCLAD_A0_SCOPE_ID,
@@ -14,16 +13,10 @@ from sls.content.scope import (
 )
 from sls.contracts import Action, ActionKind, PublicEntity, ShopItem
 
-
 ROOT = Path(__file__).resolve().parents[2]
-PYTHON = Path(__import__("sys").executable)
 
 
 def test_committed_ironclad_scope_is_current_and_exactly_scoped() -> None:
-    subprocess.run(
-        (str(PYTHON), str(ROOT / "tools" / "generate_content_scope.py"), "--check"),
-        cwd=ROOT, check=True,
-    )
     scope = load_ironclad_a0_scope()
     assert scope["scope_id"] == IRONCLAD_A0_SCOPE_ID
     assert len(scope["cards"]["red"]) == 75
@@ -57,10 +50,6 @@ def test_scope_file_digest_is_deterministic() -> None:
     first = IRONCLAD_A0_SCOPE_PATH.read_bytes()
     parsed = json.loads(first)
     assert parsed == load_ironclad_a0_scope()
-    subprocess.run(
-        (str(PYTHON), str(ROOT / "tools" / "generate_content_scope.py"), "--check"),
-        cwd=ROOT, check=True,
-    )
     assert IRONCLAD_A0_SCOPE_PATH.read_bytes() == first
 
 

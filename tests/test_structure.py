@@ -1,6 +1,5 @@
 from pathlib import Path
 
-
 ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -20,8 +19,9 @@ def test_canonical_assets_are_present() -> None:
     for relative in (
         "cpp/simulator/CMakeLists.txt",
         "cpp/simulator/python/module.cpp",
-        "java/oracle-mod/ModTheSpire.json",
-        "reference/original-game/manifest.json",
         "src/sls/contracts/decision.py",
+        "src/sls/content/scope.json",
+        "tools/train_full_run.py",
+        "tools/play_live.py",
     ):
         assert (ROOT / relative).is_file(), relative

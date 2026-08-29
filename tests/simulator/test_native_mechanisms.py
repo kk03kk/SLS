@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import pytest
 
-
 native = pytest.importorskip("sls.backends.simulator.native", exc_type=ImportError)
 
 
@@ -285,8 +284,6 @@ def test_full_run_checkpoint_is_exact_across_decision_boundaries() -> None:
     """Exercise run screens, combat choices, rewards, RNG and card identity."""
 
     from sls.backends.simulator import IRONCLAD_A0_HEART, SimulatorBackend
-    from sls.validation.policies import PRIORITY
-
     for seed in (0, 1, 2, 9, 10, 11, 12):
         first = SimulatorBackend(IRONCLAD_A0_HEART)
         decision = first.reset(seed)
@@ -301,9 +298,7 @@ def test_full_run_checkpoint_is_exact_across_decision_boundaries() -> None:
 
             ordered = sorted(
                 decision.actions,
-                key=lambda action: (
-                    PRIORITY.get(action.kind, 999), action.candidate_id,
-                ),
+                key=lambda action: action.candidate_id,
             )
             action = ordered[
                 (seed + step_index // 17) % min(len(ordered), 3)

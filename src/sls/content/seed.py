@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-
 STS_SEED_ALPHABET = "0123456789ABCDEFGHIJKLMNPQRSTUVWXYZ"
 
 

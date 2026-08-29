@@ -1,4 +1,4 @@
-"""Production policy artifacts and live-game control."""
+"""Simulator-trained policy artifacts and live-game control."""
 
 from sls.runtime.artifact import (
     POLICY_ARTIFACT_SCHEMA,

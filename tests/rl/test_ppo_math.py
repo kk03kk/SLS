@@ -4,11 +4,12 @@ import math
 
 import pytest
 
-
 torch = pytest.importorskip("torch")
 
 from sls.rl.ppo import (
-    PPOConfig, clipped_policy_loss, normalize_advantages,
+    PPOConfig,
+    clipped_policy_loss,
+    normalize_advantages,
     policy_distance_metrics,
 )
 

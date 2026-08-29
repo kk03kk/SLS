@@ -1,6 +1,15 @@
 from __future__ import annotations
 
-from sls.contracts import Action, ActionKind, Decision, MapNode, Observation, Player, RunContext, ScreenType
+from sls.contracts import (
+    Action,
+    ActionKind,
+    Decision,
+    MapNode,
+    Observation,
+    Player,
+    RunContext,
+    ScreenType,
+)
 from sls.rl.episode_limit import EpisodeLimitState, policy_boundary_fingerprint
 
 

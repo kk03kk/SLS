@@ -8,8 +8,13 @@ import torch
 from torch import nn
 
 from sls.model.encoding import (
-    ACTION_TYPE_IDS, CATEGORICAL_FIELDS, ENCODING_SCHEMA, ENTITY_TYPES,
-    NUMERIC_FIELDS, SCREEN_GROUPS, policy_vocabulary, vocabulary_hash,
+    ACTION_TYPE_IDS,
+    ENCODING_SCHEMA,
+    ENTITY_TYPES,
+    NUMERIC_FIELDS,
+    SCREEN_GROUPS,
+    policy_vocabulary,
+    vocabulary_hash,
 )
 
 

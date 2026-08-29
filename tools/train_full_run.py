@@ -3,19 +3,18 @@
 from __future__ import annotations
 
 import argparse
-from dataclasses import asdict
 import hashlib
 import json
 import math
 import os
-from pathlib import Path
 import platform
 import signal
 import socket
 import sys
 import time
 import tomllib
-
+from dataclasses import asdict
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
@@ -23,25 +22,27 @@ sys.path.insert(0, str(ROOT / "src"))
 import torch
 
 from sls.content.scope import IRONCLAD_A0_SCOPE_ID, ironclad_a0_scope_hash
-
 from sls.curriculum import CURRICULUM_PROFILES_BY_ID
 from sls.model import ModelConfig, Policy
 from sls.model.encoding import ENCODING_SCHEMA, vocabulary_hash
 from sls.rl import (
-    PPOConfig, PPOTrainer, ShardedWorkerPool, VectorWorkerPool, WorkerPool,
-    evaluate, load_checkpoint,
-    load_model_weights, save_checkpoint,
+    PPOConfig,
+    PPOTrainer,
+    ShardedWorkerPool,
+    VectorWorkerPool,
+    WorkerPool,
+    evaluate,
+    load_checkpoint,
+    save_checkpoint,
 )
 from sls.rl.best_checkpoint import best_checkpoint_record, update_best_checkpoint
 from sls.rl.training_contract import (
-    TRAINING_CHECKPOINT_SCHEMA, canonical_digest, git_state, native_artifact,
-    native_source_digest, readiness_settings,
+    TRAINING_CHECKPOINT_SCHEMA,
+    canonical_digest,
+    git_state,
+    native_artifact,
+    native_source_digest,
 )
-from sls.rl.demonstrations import load_teacher_corpus
-from sls.rl.training_mode import TrainingMode, parse_training_mode
-from sls.validation.readiness_lock import verify_readiness_lock
-from sls.validation.transfer_gate import verify_policy_transfer_gate
-
 
 PROFILES = CURRICULUM_PROFILES_BY_ID
 
@@ -75,15 +76,6 @@ def _positive_int(run: dict[str, object], key: str, *, default: int | None = Non
     if value <= 0:
         raise ValueError(f"{key} must be positive")
     return value
-
-
-def _require_readiness_profile(readiness: dict[str, object], profile_id: str) -> None:
-    locked_profile = str(readiness.get("profile") or "")
-    if locked_profile != profile_id:
-        raise ValueError(
-            f"readiness lock is for {locked_profile or 'an unspecified profile'}, "
-            f"not {profile_id}"
-        )
 
 
 class StopController:
@@ -142,58 +134,14 @@ def _slurm_environment() -> dict[str, str]:
     }
 
 
-def resolve_training_safety(
-    run: dict[str, object], profile_id: str, *, root: Path = ROOT,
-) -> dict[str, object]:
-    """Resolve the explicit mode without an experimental-to-production fallback."""
-
-    mode = parse_training_mode(run.get("training_mode"))
-    requires_transfer = bool(run.get("require_transfer_gate", False))
-    if mode is TrainingMode.EXPERIMENTAL:
-        if requires_transfer:
-            raise ValueError(
-                "experimental config must not claim the production transfer gate"
-            )
-        return {
-            "training_mode": mode,
-            "policy_transfer_verified": False,
-            "readiness_digest": "EXPERIMENTAL_UNVERIFIED",
-            "readiness_level": "EXPERIMENTAL",
-        }
-    if not requires_transfer:
-        raise ValueError("production config must require the policy-transfer gate")
-    configured = run.get("transfer_gate")
-    if not configured:
-        raise ValueError("production config requires an explicit transfer_gate")
-    gate_path = Path(str(configured))
-    if not gate_path.is_absolute():
-        gate_path = root / gate_path
-    gate = verify_policy_transfer_gate(
-        gate_path, profile_id=profile_id, require_canary=True,
-    )
-    return {
-        "training_mode": mode,
-        "policy_transfer_verified": True,
-        "readiness_digest": hashlib.sha256(gate_path.read_bytes()).hexdigest(),
-        "readiness_level": str(gate["schema"]),
-    }
-
-
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=Path, default=ROOT / "configs" / "train" / "act1_train.toml")
     parser.add_argument("--resume", help="checkpoint path or 'auto' for OUTPUT/latest.pt")
-    parser.add_argument("--warm-start", type=Path, help="compatible checkpoint weights only")
     parser.add_argument("--workers", type=int, help="override configured worker count")
-    parser.add_argument(
-        "--state-corpus", type=Path,
-        help="teacher corpus whose checkpoints provide half of mid-run resets",
-    )
     args = parser.parse_args()
     if torch.cuda.is_available():
         torch.set_float32_matmul_precision("high")
-    if args.resume and args.warm_start:
-        parser.error("--resume and --warm-start are mutually exclusive")
     config_bytes = args.config.read_bytes()
     payload = tomllib.loads(config_bytes.decode("utf-8"))
     run = payload["run"]
@@ -203,28 +151,6 @@ def main() -> int:
         run = {**run, "workers": args.workers}
         payload = {**payload, "run": run}
     profile = PROFILES[str(run["profile"])]
-    safety = resolve_training_safety(run, profile.profile_id)
-    training_mode = safety["training_mode"]
-    assert isinstance(training_mode, TrainingMode)
-    policy_transfer_verified = bool(safety["policy_transfer_verified"])
-    readiness_digest = str(safety["readiness_digest"])
-    readiness_level = str(safety["readiness_level"])
-    if bool(run.get("require_readiness", False)):
-        try:
-            readiness_path, readiness_level = readiness_settings(run)
-        except Exception as error:
-            print(json.dumps({"error": "ACT1_PARITY_READINESS_FAILED", "reason": str(error)}, sort_keys=True), file=sys.stderr)
-            return 2
-        try:
-            readiness = verify_readiness_lock(
-                readiness_path, require_clean=not bool(run.get("allow_dirty", False)),
-                expected_level=readiness_level,
-            )
-            _require_readiness_profile(dict(readiness), profile.profile_id)
-        except Exception as error:
-            print(json.dumps({"error": "ACT1_PARITY_READINESS_FAILED", "reason": str(error)}, sort_keys=True), file=sys.stderr)
-            return 2
-        readiness_digest = str(readiness["lock_sha256"])
     seed = int(run["seed"])
     torch.manual_seed(seed)
     device_name = str(run.get("device", "auto"))
@@ -234,37 +160,6 @@ def main() -> int:
     if str(device).startswith("cuda") and not torch.cuda.is_available():
         raise RuntimeError("training config requires CUDA but CUDA is unavailable")
     model = Policy(ModelConfig(**payload.get("model", {})))
-    warm_start = None
-    if args.warm_start is not None:
-        warm_path = args.warm_start if args.warm_start.is_absolute() else ROOT / args.warm_start
-        warm_start = {
-            "path": str(warm_path.resolve()),
-            **load_model_weights(
-                warm_path, model, target_training_mode=training_mode,
-            ),
-        }
-    checkpoint_reservoir = ()
-    state_corpus = None
-    configured_corpus = args.state_corpus or (
-        Path(str(run["state_corpus"])) if run.get("state_corpus") else None
-    )
-    if configured_corpus is not None:
-        corpus_path = configured_corpus if configured_corpus.is_absolute() else ROOT / configured_corpus
-        corpus = load_teacher_corpus(corpus_path)
-        if training_mode is TrainingMode.PRODUCTION:
-            raise ValueError(
-                "experimental teacher corpus requires an explicit production promotion"
-            )
-        if str(corpus.get("profile")) != profile.profile_id:
-            raise ValueError("state corpus profile does not match the training profile")
-        checkpoint_reservoir = tuple(
-            dict(example["checkpoint"]) for example in corpus["examples"]
-        )
-        state_corpus = {
-            "path": str(corpus_path.resolve()),
-            "examples": len(checkpoint_reservoir),
-            "sha256": hashlib.sha256(corpus_path.read_bytes()).hexdigest(),
-        }
     ppo = PPOConfig(**payload.get("ppo", {}))
     workers_count = _positive_int(run, "workers")
     updates = _positive_int(run, "updates")
@@ -282,8 +177,7 @@ def main() -> int:
     resolved_config_digest = canonical_digest(payload)
     run_manifest: dict[str, object] = {
         "schema": "sls-ppo-run-manifest-v2",
-        "training_mode": training_mode.value,
-        "policy_transfer_verified": policy_transfer_verified,
+        "simulator_only": True,
         "status": "RUNNING",
         "profile": profile.profile_id,
         "curriculum_version": profile.version,
@@ -305,10 +199,8 @@ def main() -> int:
         "checkpoint_schema": TRAINING_CHECKPOINT_SCHEMA,
         "encoding_schema": ENCODING_SCHEMA,
         "vocabulary_sha256": vocabulary_hash(),
-        "readiness_lock_sha256": readiness_digest,
         "content_scope_id": IRONCLAD_A0_SCOPE_ID,
         "content_scope_sha256": ironclad_a0_scope_hash(),
-        "readiness_level": readiness_level,
         "native_source_sha256": source_digest,
         "native_artifact": native_artifact(),
         "model": model.config.to_dict(),
@@ -317,8 +209,6 @@ def main() -> int:
         "evaluation_max_steps": evaluation_max_steps,
         "started_unix": started,
         "resume": str(resume_path.resolve()) if resume_path else None,
-        "warm_start": warm_start,
-        "state_corpus": state_corpus,
     }
     _atomic_json(output / "run-manifest.json", run_manifest)
     if str(device).startswith("cuda"):
@@ -341,14 +231,7 @@ def main() -> int:
         ) as workers:
             trainer = PPOTrainer(
                 model, workers, ppo, device=device, seed=seed,
-                readiness_lock_digest=readiness_digest,
                 native_contract_digest=source_digest,
-                checkpoint_reservoir=checkpoint_reservoir,
-                checkpoint_reservoir_digest=(
-                    str(state_corpus["sha256"]) if state_corpus else "NONE"
-                ),
-                training_mode=training_mode,
-                policy_transfer_verified=policy_transfer_verified,
                 git_commit=str(repository["commit"]),
                 training_config_digest=resolved_config_digest,
             )
@@ -381,7 +264,7 @@ def main() -> int:
                         evaluation = asdict(result)
                         record["evaluation"] = evaluation
                         best_record = best_checkpoint_record(
-                            evaluation, update=trainer.update, warm_start=warm_start,
+                            evaluation, update=trainer.update,
                         )
                         record["best_checkpoint_updated"] = update_best_checkpoint(
                             output, best_record,

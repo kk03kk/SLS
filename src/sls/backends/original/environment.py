@@ -10,8 +10,8 @@ from sls.content.seed import long_to_seed_string
 from sls.contracts import Action, ActionKind, Decision, Transition, ValidationSnapshot
 from sls.contracts.continuation import continuation_original
 from sls.curriculum import (
-    CurriculumProfile,
     IRONCLAD_A0_HEART,
+    CurriculumProfile,
     completed_act_between,
     evaluate_horizon,
 )

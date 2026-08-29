@@ -2,22 +2,21 @@
 
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass
 import random
-from typing import Mapping, Sequence
+from dataclasses import asdict, dataclass
 
 import torch
 from torch.distributions import Categorical
 
-from sls.contracts import Decision
 from sls.model import Policy, PolicyBatch, encode_decision
 from sls.rl.episode_limit import (
-    EPISODE_LIMIT_SCHEMA, EpisodeLimitState, TERMINATION_REASONS,
+    EPISODE_LIMIT_SCHEMA,
+    TERMINATION_REASONS,
+    EpisodeLimitState,
 )
-from sls.rl.rollout import RolloutBatch, generalized_advantage_estimate
 from sls.rl.reward import REWARD_SCHEMA, shape_curriculum_reward
+from sls.rl.rollout import RolloutBatch, generalized_advantage_estimate
 from sls.rl.training_contract import native_source_digest
-from sls.rl.training_mode import TrainingMode, parse_training_mode
 from sls.rl.workers import WorkerPool
 
 
@@ -78,7 +77,6 @@ class PPOConfig:
     max_episode_steps: int = 512
     max_boundary_visits: int = 4
     limit_failure_reward: float = -1.0
-    reservoir_reset_probability: float = 0.5
 
     def __post_init__(self) -> None:
         if self.rollout_steps <= 0 or self.epochs <= 0 or self.minibatch_size <= 0:
@@ -109,8 +107,6 @@ class PPOConfig:
             raise ValueError("episode limits must be positive")
         if self.limit_failure_reward >= 0.0:
             raise ValueError("limit_failure_reward must be negative")
-        if not 0.0 <= self.reservoir_reset_probability <= 1.0:
-            raise ValueError("reservoir_reset_probability must be between zero and one")
 
     def to_dict(self) -> dict[str, int | float | bool | str]:
         return asdict(self)
@@ -125,12 +121,7 @@ class PPOTrainer:
         *,
         device: str | torch.device = "cpu",
         seed: int = 0,
-        readiness_lock_digest: str = "UNVERIFIED",
         native_contract_digest: str | None = None,
-        checkpoint_reservoir: Sequence[Mapping[str, object]] = (),
-        checkpoint_reservoir_digest: str = "NONE",
-        training_mode: TrainingMode | str = TrainingMode.EXPERIMENTAL,
-        policy_transfer_verified: bool = False,
         git_commit: str = "TEST_OR_UNSPECIFIED",
         training_config_digest: str = "TEST_OR_UNSPECIFIED",
     ) -> None:
@@ -143,14 +134,7 @@ class PPOTrainer:
         self.next_seed = int(seed)
         self.update = 0
         self.episodes = 0
-        self.readiness_lock_digest = str(readiness_lock_digest)
         self.native_contract_digest = native_contract_digest or native_source_digest()
-        self.checkpoint_reservoir = tuple(checkpoint_reservoir)
-        self.checkpoint_reservoir_digest = str(checkpoint_reservoir_digest)
-        self.training_mode = parse_training_mode(training_mode)
-        self.policy_transfer_verified = bool(policy_transfer_verified)
-        if self.training_mode is TrainingMode.PRODUCTION and not self.policy_transfer_verified:
-            raise ValueError("production trainer requires verified policy transfer")
         self.git_commit = str(git_commit)
         self.training_config_digest = str(training_config_digest)
         self.decisions = workers.reset(self._take_seeds(workers.size))
@@ -340,12 +324,6 @@ class PPOTrainer:
         return {**result, **epoch_diagnostics}
 
     def _reset_worker(self, index: int):  # type: ignore[no-untyped-def]
-        if self.checkpoint_reservoir and (
-            self.random.random() < self.config.reservoir_reset_probability
-        ):
-            return self.workers.load_one(
-                index, self.random.choice(self.checkpoint_reservoir),
-            )
         return self.workers.reset_one(index, self._take_seeds(1)[0])
 
     @torch.no_grad()

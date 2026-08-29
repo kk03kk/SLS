@@ -7,7 +7,10 @@ import pytest
 
 from sls.curriculum import IRONCLAD_A0_ACT1
 from sls.rl.workers import (
-    CRASH_DUMP_SCHEMA, VectorWorkerPool, WorkerPool, _crash_payload,
+    CRASH_DUMP_SCHEMA,
+    VectorWorkerPool,
+    WorkerPool,
+    _crash_payload,
     _write_crash_dump,
 )
 

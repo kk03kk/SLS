@@ -6,8 +6,8 @@ import json
 import os
 import queue
 import sys
-from pathlib import Path
 import threading
+from pathlib import Path
 from typing import Any, Callable, Protocol, TextIO
 
 

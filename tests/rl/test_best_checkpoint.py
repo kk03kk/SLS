@@ -4,7 +4,9 @@ import json
 from pathlib import Path
 
 from sls.rl.best_checkpoint import (
-    BEST_CHECKPOINT_SCHEMA, best_checkpoint_record, evaluation_rank,
+    BEST_CHECKPOINT_SCHEMA,
+    best_checkpoint_record,
+    evaluation_rank,
     update_best_checkpoint,
 )
 
@@ -33,16 +35,16 @@ def test_rank_penalizes_stalling_before_failure_floor_or_reward() -> None:
 
 def test_best_checkpoint_keeps_earlier_tie_and_replaces_strict_improvement(tmp_path: Path) -> None:
     saved: list[Path] = []
-    first = best_checkpoint_record(_evaluation(), update=10, warm_start={"update": 200})
+    first = best_checkpoint_record(_evaluation(), update=10)
     assert update_best_checkpoint(tmp_path, first, save=lambda path: saved.append(path))
     assert saved == [tmp_path / "best_success.pt"]
     assert not update_best_checkpoint(
         tmp_path,
-        best_checkpoint_record(_evaluation(), update=20, warm_start={"update": 200}),
+        best_checkpoint_record(_evaluation(), update=20),
         save=lambda path: saved.append(path),
     )
     improved = best_checkpoint_record(
-        _evaluation(successes=12), update=30, warm_start={"update": 200},
+        _evaluation(successes=12), update=30,
     )
     assert update_best_checkpoint(tmp_path, improved, save=lambda path: saved.append(path))
     stored = json.loads((tmp_path / "best_success.json").read_text(encoding="utf-8"))
@@ -89,7 +91,7 @@ def test_nus_pilot_history_selects_update_200_not_latest() -> None:
         },
     }
     records = {
-        update: best_checkpoint_record(value, update=update, warm_start=None)
+        update: best_checkpoint_record(value, update=update)
         for update, value in evaluations.items()
     }
     assert max(records, key=lambda update: evaluation_rank(records[update])) == 200

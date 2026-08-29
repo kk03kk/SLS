@@ -1,5 +1,4 @@
 [run]
-training_mode = "EXPERIMENTAL"
 profile = "IRONCLAD_A0_ACT1"
 seed = 0
 device = "cuda"
@@ -11,11 +10,7 @@ evaluate_interval = 10
 evaluation_seed_start = 10000
 evaluation_seed_count = 100
 evaluation_max_steps = 512
-require_readiness = false
-require_transfer_gate = false
-transfer_gate = "runs/policy_transfer_v1.json"
 output = "runs/act1-smoke-v3"
-state_corpus = "runs/teacher-act1.json.gz"
 
 [model]
 embedding_dim = 128
@@ -46,4 +41,3 @@ episode_limit_schema = "sls-act1-episode-limit-v1"
 max_episode_steps = 512
 max_boundary_visits = 4
 limit_failure_reward = -1.0
-reservoir_reset_probability = 0.5
