@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import time
+
 from sls.backends.original.adapter import adapt_original
 from sls.backends.original.environment import OriginalBackend
 from sls.backends.original.session import OriginalSession
@@ -23,10 +25,16 @@ class LiveGameBackend(OriginalBackend):
         session: OriginalSession | None = None,
         *,
         content_policy: UnsupportedContentPolicy | None = None,
+        wait_for_neow: bool = False,
+        wait_timeout_seconds: float = 600.0,
     ) -> None:
+        if wait_timeout_seconds <= 0:
+            raise ValueError("wait timeout must be positive")
         super().__init__(session=session, profile=IRONCLAD_A0_HEART)
         self.content_policy = content_policy or UnsupportedContentPolicy.ironclad()
         self.require_heart = True
+        self.wait_for_neow = wait_for_neow
+        self.wait_timeout_seconds = wait_timeout_seconds
 
     def configure_goal(self, goal: str) -> None:
         if goal not in {"FULLRUN", "HEART"}:
@@ -35,8 +43,22 @@ class LiveGameBackend(OriginalBackend):
 
     def attach(self) -> Decision:
         payload = self.session.payload or self.session.connect()
-        if not bool(payload.get("in_game")):
-            raise RuntimeError("start or continue an Ironclad run before attaching the agent")
+        deadline = time.monotonic() + self.wait_timeout_seconds
+        while not bool(payload.get("in_game")):
+            if not self.wait_for_neow:
+                raise RuntimeError("start or continue an Ironclad run before attaching the agent")
+            if time.monotonic() >= deadline:
+                raise TimeoutError("timed out waiting for a fresh Neow boundary")
+            available = {
+                str(command).lower()
+                for command in payload.get("available_commands") or ()
+            }
+            if "state" not in available:
+                raise RuntimeError("Original main menu does not advertise state polling")
+            time.sleep(0.25)
+            payload = self.session.execute("state")
+        if self.wait_for_neow:
+            payload = self._fold_initial_neow_dialog(payload)
         adapted = adapt_original(payload)
         observation = adapted.decision.observation
         if observation.player.character_id != "IRONCLAD":

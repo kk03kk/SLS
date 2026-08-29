@@ -74,14 +74,35 @@ def native_artifact() -> dict[str, str] | None:
     if origin is None:
         return None
     path = Path(origin).resolve()
-    return {"path": str(path), "sha256": sha256_file(path)}
+    embedded_source = str(getattr(module, "NATIVE_SOURCE_SHA256", ""))
+    expected_source = native_source_digest()
+    if embedded_source != expected_source:
+        raise RuntimeError(
+            "native simulator is stale or has unverified provenance: "
+            f"embedded={embedded_source or 'MISSING'} expected={expected_source}; "
+            "run python tools/build_native.py"
+        )
+    return {
+        "path": str(path),
+        "sha256": sha256_file(path),
+        "source_sha256": embedded_source,
+        "git_commit": str(getattr(module, "GIT_COMMIT", "UNKNOWN")),
+    }
 
 
 def runtime_contract(torch_module: object) -> dict[str, object]:
+    cuda = getattr(torch_module, "cuda")
+    backends = getattr(torch_module, "backends")
     return {
         "python_cache_tag": sys.implementation.cache_tag,
         "torch": str(getattr(torch_module, "__version__")),
         "cuda": getattr(getattr(torch_module, "version"), "cuda"),
+        "cudnn": getattr(backends.cudnn, "version")(),
+        "cuda_device_count": cuda.device_count() if cuda.is_available() else 0,
+        "cuda_device": cuda.get_device_name(0) if cuda.is_available() else None,
+        "deterministic_algorithms": bool(
+            getattr(torch_module, "are_deterministic_algorithms_enabled")()
+        ),
     }
 
 

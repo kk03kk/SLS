@@ -12,7 +12,7 @@
 - `src/sls/rl`: workers, recurrent rollout math, PPO, evaluation, rewards, episode
   limits, and exact checkpoints.
 - `src/sls/runtime`: simulator-only policy artifacts and safe live controller.
-- `configs/train`: one canonical A0 FullRun config with cumulative stage targets.
+- `configs/train`: one canonical self-generated Act 1 -> Act 2 -> FullRun chain.
 - `tools`: native build, training, resume verification, worker benchmark,
   Slurm submission, policy export, and live play.
 - `tests`: contracts, simulator, model, RL, checkpoint, and live-runtime tests.

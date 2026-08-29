@@ -7,7 +7,7 @@ import os
 from pathlib import Path
 from typing import Any, Callable, Mapping
 
-BEST_CHECKPOINT_SCHEMA = "sls-best-success-v2"
+BEST_CHECKPOINT_SCHEMA = "sls-best-progress-v3"
 
 
 def evaluation_rank(record: Mapping[str, Any]) -> tuple[float, ...]:
@@ -69,14 +69,15 @@ def update_best_checkpoint(
 ) -> bool:
     """Save only a strict deterministic-evaluation improvement."""
 
-    metadata_path = output / "best_success.json"
+    output.mkdir(parents=True, exist_ok=True)
+    metadata_path = output / "best_progress.json"
     if metadata_path.exists():
         existing = json.loads(metadata_path.read_text(encoding="utf-8"))
         if existing.get("schema") != BEST_CHECKPOINT_SCHEMA:
             raise ValueError("unsupported best-checkpoint metadata")
         if evaluation_rank(record) <= evaluation_rank(existing):
             return False
-    save(output / "best_success.pt")
+    save(output / "best_progress.pt")
     temporary = metadata_path.with_suffix(metadata_path.suffix + ".tmp")
     temporary.write_text(
         json.dumps(record, ensure_ascii=False, indent=2, sort_keys=True) + "\n",

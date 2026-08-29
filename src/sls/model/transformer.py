@@ -27,16 +27,16 @@ class ModelConfig:
     recurrent_hidden_dim: int = 256
     recurrent_layers: int = 1
     dropout: float = 0.0
-    architecture: str = "sls-recurrent-relational-policy-v4"
+    architecture: str = "sls-recurrent-relational-policy-v5"
 
     def __post_init__(self) -> None:
         values = asdict(self)
         if any(value <= 0 for value in values.values() if isinstance(value, int)):
             raise ValueError("model dimensions must be positive")
-        if self.architecture != "sls-recurrent-relational-policy-v4":
+        if self.architecture != "sls-recurrent-relational-policy-v5":
             raise ValueError(f"unsupported policy architecture: {self.architecture}")
         if self.recurrent_layers != 1:
-            raise ValueError("the v4 policy supports exactly one recurrent layer")
+            raise ValueError("the v5 policy supports exactly one recurrent layer")
         if self.embedding_dim % self.attention_heads:
             raise ValueError("embedding_dim must be divisible by attention_heads")
 
@@ -71,6 +71,8 @@ class Policy(nn.Module):
         )
         self.backbone = nn.TransformerEncoder(layer, config.transformer_layers, enable_nested_tensor=False)
         self.memory = nn.GRUCell(d, config.recurrent_hidden_dim)
+        self.previous_action = nn.Embedding(len(ACTION_TYPE_IDS) + 1, d, padding_idx=0)
+        self.previous_reward = nn.Linear(1, d, bias=False)
         h = config.recurrent_hidden_dim
         self.action_numeric = nn.Linear(len(NUMERIC_FIELDS) * 2, d)
         self.action_type = nn.Embedding(len(ACTION_TYPE_IDS), d)
@@ -101,6 +103,8 @@ class Policy(nn.Module):
         action_padding: torch.Tensor,
         memory: torch.Tensor | None = None,
         episode_start_mask: torch.Tensor | None = None,
+        previous_action_types: torch.Tensor | None = None,
+        previous_rewards: torch.Tensor | None = None,
     ) -> PolicyOutput:
         batch, entity_count, _ = entity_numeric.shape
         numeric = torch.cat((entity_numeric, entity_numeric_present.to(entity_numeric.dtype)), dim=-1)
@@ -132,7 +136,16 @@ class Policy(nn.Module):
                 device=memory.device, dtype=torch.bool,
             ).unsqueeze(1)
             memory = memory.masked_fill(reset_mask, 0.0)
-        next_memory = self.memory(encoded_state, memory)
+        if previous_action_types is None:
+            previous_action_types = torch.zeros(batch, dtype=torch.long, device=encoded_state.device)
+        if previous_rewards is None:
+            previous_rewards = torch.zeros(batch, dtype=encoded_state.dtype, device=encoded_state.device)
+        if previous_action_types.shape != (batch,) or previous_rewards.shape != (batch,):
+            raise ValueError("previous action and reward inputs must match the policy batch")
+        experience = self.previous_action(previous_action_types) + self.previous_reward(
+            previous_rewards.to(encoded_state.dtype).unsqueeze(1)
+        )
+        next_memory = self.memory(encoded_state + experience, memory)
         action_values = torch.cat((action_numeric, action_numeric_present.to(action_numeric.dtype)), dim=-1)
         candidates = self.action_numeric(action_values) + self.action_type(action_types)
         safe_refs = action_references.clamp(0, max(0, entity_count - 1))

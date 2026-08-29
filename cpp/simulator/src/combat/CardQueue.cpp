@@ -32,7 +32,7 @@ void CardQueue::clear() {
 }
 
 void CardQueue::pushFront(CardQueueItem item) {
-    assert(size != arr.size());
+    if (size >= capacity) throw std::overflow_error("card queue overflow");
     --frontIdx;
     ++size;
     if (frontIdx < 0) {
@@ -42,7 +42,7 @@ void CardQueue::pushFront(CardQueueItem item) {
 }
 
 void CardQueue::pushBack(CardQueueItem item) {
-    assert(size != capacity);
+    if (size >= capacity) throw std::overflow_error("card queue overflow");
     arr.at(backIdx) = std::move(item);
     ++backIdx;
     ++size;
@@ -52,7 +52,7 @@ void CardQueue::pushBack(CardQueueItem item) {
 }
 
 CardQueueItem CardQueue::popFront() {
-    assert(size > 0);
+    if (size <= 0) throw std::underflow_error("card queue underflow");
     CardQueueItem &item = arr.at(frontIdx);
     ++frontIdx;
     --size;
@@ -63,7 +63,7 @@ CardQueueItem CardQueue::popFront() {
 }
 
 CardQueueItem CardQueue::popBack() {
-    assert(size > 0);
+    if (size <= 0) throw std::underflow_error("card queue underflow");
     --backIdx;
     --size;
     if (backIdx < 0) {
@@ -74,6 +74,6 @@ CardQueueItem CardQueue::popBack() {
 }
 
 CardQueueItem &CardQueue::front() {
-    assert(size > 0);
+    if (size <= 0) throw std::underflow_error("card queue underflow");
     return arr.at(frontIdx);
 }

@@ -21,6 +21,8 @@ def main() -> int:
     parser.add_argument("--log", type=Path, default=ROOT / "logs" / "live-agent.jsonl")
     parser.add_argument("--low-confidence", type=float, default=0.55)
     parser.add_argument("--max-actions", type=int)
+    parser.add_argument("--wait-for-neow", action="store_true")
+    parser.add_argument("--wait-timeout", type=float, default=600.0)
     args = parser.parse_args()
     stopped = False
 
@@ -32,7 +34,10 @@ def main() -> int:
     signal.signal(signal.SIGTERM, stop)
     loaded = load_policy_artifact(args.artifact, device=args.device)
     runtime = AgentRuntime(
-        LiveGameBackend(), loaded, device=args.device,
+        LiveGameBackend(
+            wait_for_neow=args.wait_for_neow,
+            wait_timeout_seconds=args.wait_timeout,
+        ), loaded, device=args.device,
         log_path=args.log, low_confidence=args.low_confidence,
     )
     final = runtime.run(max_actions=args.max_actions, stop_requested=lambda: stopped)

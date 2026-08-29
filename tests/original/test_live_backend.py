@@ -55,3 +55,24 @@ def test_live_backend_requires_an_active_run() -> None:
     backend = LiveGameBackend(OriginalSession(ScriptedTransport([payload])))
     with pytest.raises(RuntimeError, match="start or continue"):
         backend.attach()
+
+
+def test_live_backend_can_wait_at_the_menu_for_fresh_neow() -> None:
+    menu = {
+        "in_game": False, "ready_for_command": True,
+        "available_commands": ["state"],
+    }
+    transport = ScriptedTransport([menu, game_payload(["A", "B", "C", "D"])])
+    backend = LiveGameBackend(
+        OriginalSession(transport), wait_for_neow=True, wait_timeout_seconds=1,
+    )
+
+    decision = backend.attach()
+
+    assert transport.sent == ["ready", "state"]
+    assert decision.observation.screen.value == "NEOW"
+
+
+def test_live_backend_rejects_non_positive_wait_timeout() -> None:
+    with pytest.raises(ValueError, match="positive"):
+        LiveGameBackend(wait_for_neow=True, wait_timeout_seconds=0)

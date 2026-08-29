@@ -20,7 +20,7 @@ C++ FullRun simulator
     -> canonical contracts
     -> vector workers
     -> relational Transformer state encoder
-    -> GRU episode memory
+    -> GRU belief memory (previous action + reward + current observation)
     -> variable-candidate policy + value heads
     -> recurrent PPO
     -> exact checkpoint / simulator-only artifact
@@ -39,14 +39,20 @@ gradients never cross a terminal boundary. Entropy decay is driven by total
 environment decisions so changing the benchmark-selected worker count does not
 change the schedule.
 
-Smoke, pilot and train are cumulative boundaries in one run rather than three
-initializations. Checkpoints restore GRU memory, worker environments, optimizer,
-episode limits, seed allocator, environment-step count and RNG state exactly.
+Smoke, pilot and train are cumulative Act 1, Act 2 and FullRun horizons in one
+learning chain rather than three initializations. Horizon migrations preserve
+learning/RNG state and reset environments, belief memory, previous experience
+and episode limits together. Ordinary checkpoints restore all fields exactly.
 Periodic and final evaluation use separate high seed namespaces that training
 cannot enter.
 
-Live play uses the same observation, action encoder, recurrent model, and
-candidate scorer. The intent journal stores the post-observation GRU memory;
-restart is allowed only at the matching acknowledged boundary. Policy artifacts
-record model/vocabulary/source/config digests and are always marked as
-simulator-trained rather than Original-validated.
+PPO normalizes advantages independently for combat, run and choice decisions,
+and normalizes entropy by legal-candidate count. Evaluation aborts on backend
+errors. A checkpoint becomes an artifact only after a configured milestone gate;
+the final live artifact also requires a passing independent 1,000-seed run.
+
+Live play uses the same observation, previous-experience input, action encoder,
+recurrent model and candidate scorer. Restart is allowed only at an acknowledged
+matching boundary. Policy artifacts bind model weights, vocabulary, source and
+configuration digests and remain marked simulator-trained rather than
+Original-validated.

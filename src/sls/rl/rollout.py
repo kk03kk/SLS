@@ -19,6 +19,8 @@ class RolloutBatch:
     returns: torch.Tensor
     episode_starts: torch.Tensor
     input_memories: torch.Tensor
+    previous_action_types: torch.Tensor
+    previous_rewards: torch.Tensor
 
     @property
     def shape(self) -> tuple[int, int]:

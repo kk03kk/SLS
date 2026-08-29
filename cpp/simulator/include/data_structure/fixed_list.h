@@ -6,6 +6,7 @@
 #define STS_LIGHTSPEED_FIXEDLIST_H
 
 #include <array>
+#include <stdexcept>
 
 namespace sts {
 
@@ -21,10 +22,14 @@ namespace sts {
 
         fixed_list() = default;
         fixed_list(const fixed_list &rhs) = default;
-        fixed_list(int size) noexcept : list_size(size) {}
+        fixed_list &operator=(const fixed_list &rhs) = default;
+        fixed_list(int size) : list_size(size) {
+            if (size < 0 || size > capacity) throw std::length_error("fixed_list size out of range");
+        }
 //        fixed_list(fixed_list &&rhs)  noexcept : list_size(rhs.list_size), optionMap(std::move(rhs.optionMap)) {}
 
         fixed_list(std::initializer_list<T> l) {
+            if (l.size() > static_cast<std::size_t>(capacity)) throw std::length_error("fixed_list initializer overflow");
             for (auto x : l) {
                 arr[list_size++] = x;
             }
@@ -51,35 +56,44 @@ namespace sts {
         }
 
         T& operator[](int idx) {
+            if (idx < 0 || idx >= list_size) throw std::out_of_range("fixed_list index");
             return arr[idx];
         }
 
         const T& operator[](int idx) const {
+            if (idx < 0 || idx >= list_size) throw std::out_of_range("fixed_list index");
             return arr[idx];
         }
 
         T& front() {
+            if (empty()) throw std::underflow_error("fixed_list is empty");
             return arr[0];
         }
 
         const T& front() const {
+            if (empty()) throw std::underflow_error("fixed_list is empty");
             return arr[0];
         }
 
         T& back() {
+            if (empty()) throw std::underflow_error("fixed_list is empty");
             return arr[list_size-1];
         }
 
         const T& back() const {
+            if (empty()) throw std::underflow_error("fixed_list is empty");
             return arr[list_size-1];
         }
 
-        T pop_back() noexcept {
+        T pop_back() {
+            if (empty()) throw std::underflow_error("fixed_list is empty");
             return arr[--list_size];
         }
 
 
         void insert(int idx, T t) {
+            if (list_size >= capacity) throw std::overflow_error("fixed_list overflow");
+            if (idx < 0 || idx > list_size) throw std::out_of_range("fixed_list insert index");
             for (int i = list_size; i > idx; --i) {
                 arr[i] = arr[i-1];
             }
@@ -88,7 +102,9 @@ namespace sts {
         }
 
         void insert(iterator it, T t) {
-            for (T* i = arr.end()-1; i != it; --i) {
+            if (list_size >= capacity) throw std::overflow_error("fixed_list overflow");
+            if (it < begin() || it > end()) throw std::out_of_range("fixed_list insert iterator");
+            for (T* i = end(); i != it; --i) {
                 *i = *(i-1);
             }
             *it = t;
@@ -96,10 +112,12 @@ namespace sts {
         }
 
         void push_back(T t) {
+            if (list_size >= capacity) throw std::overflow_error("fixed_list overflow");
             arr[list_size++] = std::move(t);
         }
 
         void remove(int idx) {
+            if (idx < 0 || idx >= list_size) throw std::out_of_range("fixed_list remove index");
             while (idx+1 < list_size) {
                 arr[idx] = arr[idx+1];
                 ++idx;
@@ -108,6 +126,7 @@ namespace sts {
         }
 
         void erase(iterator it) {
+            if (it < begin() || it >= end()) throw std::out_of_range("fixed_list erase iterator");
             while ((it+1) != end()) {
                 *it = *(it+1);
                 ++it;
@@ -116,6 +135,7 @@ namespace sts {
         }
 
         void remove_back() {
+            if (empty()) throw std::underflow_error("fixed_list is empty");
             --list_size;
         }
 
@@ -128,6 +148,7 @@ namespace sts {
         }
 
         void resize(int size) {
+            if (size < 0 || size > capacity) throw std::length_error("fixed_list resize out of range");
             list_size = size;
         }
 

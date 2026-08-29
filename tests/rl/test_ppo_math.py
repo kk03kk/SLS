@@ -10,6 +10,7 @@ from sls.rl.ppo import (
     PPOConfig,
     clipped_policy_loss,
     normalize_advantages,
+    normalize_advantages_by_domain,
     policy_distance_metrics,
 )
 
@@ -18,6 +19,18 @@ def test_advantages_are_normalized_once_over_the_complete_rollout() -> None:
     normalized = normalize_advantages(torch.tensor([1.0, 2.0, 3.0, 4.0]))
     assert float(normalized.mean()) == pytest.approx(0.0, abs=1e-7)
     assert float(normalized.std(unbiased=False)) == pytest.approx(1.0, abs=1e-7)
+
+
+def test_advantages_are_normalized_independently_by_decision_domain() -> None:
+    class Encoded:
+        def __init__(self, domain: int) -> None:
+            self.screen_type = torch.tensor(domain)
+
+    advantages = torch.tensor([[1.0, 3.0], [100.0, 104.0]])
+    encoded = ((Encoded(0), Encoded(0)), (Encoded(1), Encoded(1)))
+    normalized = normalize_advantages_by_domain(advantages, encoded)
+    assert normalized[0].tolist() == pytest.approx([-1.0, 1.0])
+    assert normalized[1].tolist() == pytest.approx([-1.0, 1.0])
 
 
 def test_clipped_objective_handles_positive_and_negative_advantages() -> None:

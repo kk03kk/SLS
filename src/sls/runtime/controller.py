@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+import os
 import time
 from dataclasses import asdict
 from pathlib import Path
@@ -15,6 +16,7 @@ import torch
 from sls.backends.original import LiveGameBackend
 from sls.contracts import Decision
 from sls.model import PolicyBatch
+from sls.model.encoding import ACTION_TYPE_IDS
 from sls.runtime.artifact import LoadedPolicyArtifact
 
 
@@ -46,6 +48,8 @@ class AgentRuntime:
         self.log_path = log_path
         self.low_confidence = low_confidence
         self.memory = artifact.model.initial_memory(1, self.device)
+        self.previous_action_types = torch.zeros(1, dtype=torch.long, device=self.device)
+        self.previous_rewards = torch.zeros(1, dtype=torch.float32, device=self.device)
         self._choice_memory = self.memory
 
     @property
@@ -61,6 +65,8 @@ class AgentRuntime:
         self.log_path.parent.mkdir(parents=True, exist_ok=True)
         with self.log_path.open("a", encoding="utf-8") as stream:
             stream.write(json.dumps(record, sort_keys=True) + "\n")
+            stream.flush()
+            os.fsync(stream.fileno())
 
     def _journal_state(
         self,
@@ -85,6 +91,8 @@ class AgentRuntime:
                     latest = {
                         **intent,
                         "observed_boundary_id": record.get("observed_boundary_id"),
+                        "previous_action_type": record.get("previous_action_type"),
+                        "previous_reward": record.get("previous_reward"),
                     }
             elif record.get("phase") == "RECOVERED":
                 pending.pop(identifier, None)
@@ -102,11 +110,25 @@ class AgentRuntime:
         if not all(math.isfinite(value) for value in values):
             raise RuntimeError("live memory journal contains non-finite values")
         self.memory = torch.tensor(values, dtype=torch.float32, device=self.device).view(1, -1)
+        action_type = int(record.get("previous_action_type") or 0)
+        reward = float(record.get("previous_reward") or 0.0)
+        if not 0 <= action_type <= len(ACTION_TYPE_IDS) or not math.isfinite(reward):
+            raise RuntimeError("live memory journal has invalid previous experience")
+        self.previous_action_types = torch.tensor(
+            [action_type], dtype=torch.long, device=self.device,
+        )
+        self.previous_rewards = torch.tensor(
+            [reward], dtype=torch.float32, device=self.device,
+        )
 
     @torch.no_grad()
     def choose(self, decision: Decision) -> tuple[int, float]:
         batch = PolicyBatch.from_decisions((decision,), self.artifact.model.config).to(self.device)
-        output = self.artifact.model(*batch.model_inputs(), memory=self.memory)
+        output = self.artifact.model(
+            *batch.model_inputs(), memory=self.memory,
+            previous_action_types=self.previous_action_types,
+            previous_rewards=self.previous_rewards,
+        )
         self._choice_memory = output.next_memory.detach()
         probabilities = output.logits.softmax(dim=1)
         index = int(probabilities[0].argmax().item())
@@ -137,14 +159,10 @@ class AgentRuntime:
                     "previous action delivery is uncertain and the boundary is unchanged; "
                     "refusing to resend"
                 )
-            self._restore_memory(unresolved)
-            self._log({
-                "schema": "sls-live-action-v1", "phase": "RECOVERED",
-                "time_unix": time.time(), "boundary_id": unresolved_boundary,
-                "observed_boundary_id": current,
-                "artifact_id": self.artifact_id,
-                "memory_after": self.memory[0].detach().cpu().tolist(),
-            })
+            raise RuntimeError(
+                "previous action delivery is uncertain and the current boundary is different; "
+                "the protocol cannot prove that this boundary is the intended successor"
+            )
         elif latest is not None and latest.get("observed_boundary_id") == current:
             self._restore_memory(latest)
         elif not (
@@ -169,7 +187,7 @@ class AgentRuntime:
             action = decision.actions[index]
             memory_after = self._choice_memory[0].detach().cpu().tolist()
             self._log({
-                "schema": "sls-live-action-v1",
+                "schema": "sls-live-action-v2",
                 "phase": "INTENT",
                 "time_unix": time.time(),
                 "boundary_id": current_boundary,
@@ -187,10 +205,19 @@ class AgentRuntime:
             previous_boundary = current_boundary
             transition = self.backend.step(action)
             decision = transition.decision
+            self.previous_action_types = torch.tensor(
+                [ACTION_TYPE_IDS[action.kind.value] + 1],
+                dtype=torch.long, device=self.device,
+            )
+            self.previous_rewards = torch.tensor(
+                [float(transition.reward)], dtype=torch.float32, device=self.device,
+            )
             self._log({
-                "schema": "sls-live-action-v1", "phase": "ACK",
+                "schema": "sls-live-action-v2", "phase": "ACK",
                 "time_unix": time.time(), "boundary_id": current_boundary,
                 "observed_boundary_id": boundary_id(decision),
+                "previous_action_type": int(self.previous_action_types[0]),
+                "previous_reward": float(self.previous_rewards[0]),
             })
             actions_taken += 1
             if max_actions is not None and actions_taken >= max_actions:

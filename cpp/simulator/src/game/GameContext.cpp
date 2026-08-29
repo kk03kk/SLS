@@ -2545,7 +2545,8 @@ void GameContext::chooseMatchAndKeepCards(int idx1, int idx2) {
     if (idx1 < 0 || idx1 >= 12 || info.toSelectCards[idx1].card.id == CardId::INVALID
         || idx2 == idx1 || idx2 < 0 || idx2 >= 12 || info.toSelectCards[idx2].card.id == CardId::INVALID
             ) {
-        assert(false);}
+        throw std::invalid_argument("invalid Match and Keep card selection");
+    }
 
     auto &s1 = info.toSelectCards[idx1].card;
     auto &s2 = info.toSelectCards[idx2].card;

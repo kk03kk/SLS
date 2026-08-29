@@ -39,7 +39,7 @@ def test_best_checkpoint_keeps_earlier_tie_and_replaces_strict_improvement(tmp_p
     saved: list[Path] = []
     first = best_checkpoint_record(_evaluation(), update=10)
     assert update_best_checkpoint(tmp_path, first, save=lambda path: saved.append(path))
-    assert saved == [tmp_path / "best_success.pt"]
+    assert saved == [tmp_path / "best_progress.pt"]
     assert not update_best_checkpoint(
         tmp_path,
         best_checkpoint_record(_evaluation(), update=20),
@@ -49,7 +49,7 @@ def test_best_checkpoint_keeps_earlier_tie_and_replaces_strict_improvement(tmp_p
         _evaluation(successes=12), update=30,
     )
     assert update_best_checkpoint(tmp_path, improved, save=lambda path: saved.append(path))
-    stored = json.loads((tmp_path / "best_success.json").read_text(encoding="utf-8"))
+    stored = json.loads((tmp_path / "best_progress.json").read_text(encoding="utf-8"))
     assert stored["schema"] == BEST_CHECKPOINT_SCHEMA
     assert stored["update"] == 30
     assert stored["mean_reward"] == -0.5

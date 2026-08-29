@@ -8,6 +8,7 @@ import json
 import math
 import os
 import platform
+import random
 import shutil
 import signal
 import socket
@@ -19,6 +20,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
+os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
 
 import torch
 
@@ -46,7 +48,7 @@ from sls.rl.training_contract import (
 from sls.runtime.artifact import export_policy_artifact
 
 STAGES = ("smoke", "pilot", "train")
-MANIFEST_SCHEMA = "sls-recurrent-ppo-run-v1"
+MANIFEST_SCHEMA = "sls-recurrent-ppo-run-v2"
 BENCHMARK_SCHEMA = "sls-worker-benchmark-v2"
 
 
@@ -93,6 +95,7 @@ def _load_benchmark(
     *,
     repository: dict[str, object],
     native_digest: str,
+    native_binary_sha256: str,
 ) -> tuple[int, int]:
     payload = json.loads(path.read_text(encoding="utf-8"))
     if payload.get("schema") != BENCHMARK_SCHEMA:
@@ -101,6 +104,9 @@ def _load_benchmark(
         raise ValueError("worker benchmark belongs to a different Git commit")
     if payload.get("native_source_sha256") != native_digest:
         raise ValueError("worker benchmark belongs to different simulator sources")
+    benchmark_artifact = payload.get("native_artifact") or {}
+    if benchmark_artifact.get("sha256") != native_binary_sha256:
+        raise ValueError("worker benchmark used a different native simulator binary")
     return int(payload["selected_workers"]), int(payload["selected_shards"])
 
 
@@ -120,6 +126,7 @@ def _training_identity(
         "final_evaluation_seed_count": int(run["final_evaluation_seed_count"]),
         "model": payload["model"],
         "ppo": payload["ppo"],
+        "stages": payload["stages"],
     })
 
 
@@ -188,35 +195,47 @@ def _progress_from_baseline(
     }
 
 
+def _promotion_passes(evaluation: dict[str, object], stage: dict[str, object]) -> bool:
+    episodes = int(evaluation["episodes"])
+    failures = (
+        int(evaluation.get("backend_errors", 0))
+        + int(evaluation.get("backend_truncations", 0))
+        + int(evaluation.get("step_limits", 0))
+        + int(evaluation.get("cycle_limits", 0))
+        + int(evaluation.get("self_loops", 0))
+        + int(evaluation.get("timeouts", 0))
+    )
+    return (
+        failures == 0
+        and float(evaluation["success_rate"]) >= float(stage["minimum_success_rate"])
+        and float(evaluation["reached_act2_rate"])
+        >= float(stage.get("minimum_reached_act2_rate", 0.0))
+        and float(evaluation["reached_act3_rate"])
+        >= float(stage.get("minimum_reached_act3_rate", 0.0))
+        and episodes >= int(stage.get("minimum_evaluation_episodes", 1))
+    )
+
+
+def _require_predecessor_promotion(
+    manifest: dict[str, object], stage_name: str,
+) -> None:
+    predecessor = {"pilot": "smoke", "train": "pilot"}.get(stage_name)
+    if predecessor is None:
+        return
+    stages = manifest.get("stages")
+    previous = stages.get(predecessor) if isinstance(stages, dict) else None
+    if not isinstance(previous, dict) or previous.get("status") != "COMPLETE":
+        raise ValueError(f"{stage_name} requires completed {predecessor} stage")
+    if previous.get("promotion_passed") is not True:
+        raise ValueError(f"{stage_name} requires {predecessor} promotion gate to pass")
+
+
 def _append_record(path: Path, record: dict[str, object]) -> None:
     with path.open("a", encoding="utf-8") as stream:
         stream.write(json.dumps(record, sort_keys=True) + "\n")
         stream.flush()
         os.fsync(stream.fileno())
     print(json.dumps(record, sort_keys=True), flush=True)
-
-
-def _archive_pre_migration_best(output: Path) -> list[str]:
-    """Retain best artifacts selected with pre-migration evaluation semantics."""
-
-    pairs = [
-        (output / "best_success.pt", output / "best_success.pre-environment-migration.pt"),
-        (
-            output / "best_success.json",
-            output / "best_success.pre-environment-migration.json",
-        ),
-    ]
-    for source, target in pairs:
-        if source.exists() and target.exists():
-            raise FileExistsError(f"cannot archive both existing best artifacts: {target}")
-    archived = []
-    for source, target in pairs:
-        if source.exists():
-            source.replace(target)
-            archived.append(target.name)
-        elif target.exists():
-            archived.append(target.name)
-    return archived
 
 
 def main() -> int:
@@ -229,10 +248,6 @@ def main() -> int:
     parser.add_argument(
         "--config", type=Path,
         default=ROOT / "configs" / "train" / "ironclad_a0_fullrun.toml",
-    )
-    parser.add_argument(
-        "--initialize-from", type=Path,
-        help="Start a fresh smoke chain from checkpoint model weights only.",
     )
     args = parser.parse_args()
     if torch.cuda.is_available():
@@ -247,16 +262,30 @@ def main() -> int:
     if bool(repository["dirty"]):
         raise ValueError("training requires a clean Git worktree")
     source_digest = native_source_digest()
+    artifact = native_artifact()
+    if artifact is None:
+        raise RuntimeError("training requires the compiled native simulator")
     benchmark_path = ROOT / str(run["benchmark"])
     workers_count, shard_count = _load_benchmark(
         benchmark_path, repository=repository, native_digest=source_digest,
+        native_binary_sha256=artifact["sha256"],
     )
     identity = _training_identity(payload, workers=workers_count, shards=shard_count)
-    profile = CURRICULUM_PROFILES_BY_ID[str(run["profile"])]
-    if profile.profile_id != "IRONCLAD_A0_FULLRUN":
-        raise ValueError("canonical training config must use IRONCLAD_A0_FULLRUN")
+    profile = CURRICULUM_PROFILES_BY_ID[str(stage["profile"])]
+    expected_profiles = {
+        "smoke": "IRONCLAD_A0_ACT1",
+        "pilot": "IRONCLAD_A0_ACT2",
+        "train": "IRONCLAD_A0_FULLRUN",
+    }
+    if profile.profile_id != expected_profiles[args.stage]:
+        raise ValueError(
+            f"{args.stage} must use curriculum profile {expected_profiles[args.stage]}"
+        )
     seed = int(run["seed"])
+    random.seed(seed)
     torch.manual_seed(seed)
+    torch.use_deterministic_algorithms(bool(run.get("deterministic", True)))
+    torch.backends.cudnn.benchmark = False
     device = str(run["device"])
     if device.startswith("cuda") and not torch.cuda.is_available():
         raise RuntimeError("training config requires CUDA but CUDA is unavailable")
@@ -267,59 +296,17 @@ def main() -> int:
     evaluation_max_steps = int(run["evaluation_max_steps"])
     output = ROOT / str(run["output"])
     latest = output / "latest.pt"
-    if args.initialize_from is not None and args.stage != "smoke":
-        raise ValueError("--initialize-from is only valid for a fresh smoke chain")
     if args.stage == "smoke" and latest.exists():
         raise FileExistsError("smoke refuses to overwrite an existing training chain")
     if args.stage == "smoke" and args.resume != "auto":
         raise ValueError("smoke cannot use environment migration")
     if args.stage != "smoke" and not latest.exists():
         raise FileNotFoundError(f"{args.stage} requires the smoke/pilot checkpoint: {latest}")
-    initialization = None
-    if args.initialize_from is not None:
-        source = args.initialize_from.resolve()
-        if not source.is_file():
-            raise FileNotFoundError(f"initialization checkpoint does not exist: {source}")
-        source_payload = torch.load(source, map_location="cpu", weights_only=False)
-        source_contract = source_payload.get("contract")
-        if (
-            source_payload.get("schema") != TRAINING_CHECKPOINT_SCHEMA
-            or not isinstance(source_contract, dict)
-            or not isinstance(source_payload.get("model"), dict)
-        ):
-            raise ValueError("initialization source is not a training checkpoint")
-        required_contract = {
-            "model": model.config.to_dict(),
-            "profile": profile,
-            "encoding_schema": ENCODING_SCHEMA,
-            "vocabulary_sha256": vocabulary_hash(),
-            "content_scope_id": IRONCLAD_A0_SCOPE_ID,
-            "content_scope_sha256": ironclad_a0_scope_hash(),
-        }
-        incompatible = [
-            key for key, value in required_contract.items()
-            if source_contract.get(key) != value
-        ]
-        if incompatible:
-            raise ValueError(
-                "initialization checkpoint is incompatible: "
-                + ", ".join(sorted(incompatible))
-            )
-        model.load_state_dict(source_payload["model"], strict=True)
-        source_trainer = dict(source_payload.get("trainer") or {})
-        initialization = {
-            "schema": "sls-policy-initialization-v1",
-            "source": str(source),
-            "source_sha256": sha256_file(source),
-            "source_git_commit": source_contract.get("git_commit"),
-            "source_environment_steps": source_trainer.get("environment_steps"),
-            "source_update": source_trainer.get("update"),
-            "optimizer": "RESET",
-            "environments": "FRESH",
-            "recurrent_memory": "ZERO",
-        }
     output.mkdir(parents=True, exist_ok=True)
-    metrics_path = output / "metrics.jsonl"
+    stage_output = output / "stages" / args.stage
+    stage_output.mkdir(parents=True, exist_ok=True)
+    metrics_path = stage_output / "metrics.jsonl"
+    selection_output = stage_output / "selection"
     started = time.time()
     manifest_path = output / "run-manifest.json"
     if manifest_path.exists():
@@ -333,12 +320,16 @@ def main() -> int:
         manifest = {
             "schema": MANIFEST_SCHEMA,
             "simulator_only": True,
-            "profile": profile.profile_id,
+            "profile": str(run["profile"]),
+            "curriculum": {
+                name: str(value["profile"])
+                for name, value in payload["stages"].items()
+            },
             "training_identity_sha256": identity,
             "config_sha256": hashlib.sha256(config_bytes).hexdigest(),
             "git": repository,
             "native_source_sha256": source_digest,
-            "native_artifact": native_artifact(),
+            "native_artifact": artifact,
             "encoding_schema": ENCODING_SCHEMA,
             "vocabulary_sha256": vocabulary_hash(),
             "content_scope_id": IRONCLAD_A0_SCOPE_ID,
@@ -353,8 +344,7 @@ def main() -> int:
             "created_unix": started,
             "stages": {},
         }
-        if initialization is not None:
-            manifest["initialization"] = initialization
+    _require_predecessor_promotion(manifest, args.stage)
     manifest.update({
         "status": "RUNNING",
         "active_stage": args.stage,
@@ -363,11 +353,13 @@ def main() -> int:
         "hostname": socket.gethostname(),
         "torch": torch.__version__,
         "cuda": torch.version.cuda,
-        "gpu": torch.cuda.get_device_name(device),
+        "gpu": torch.cuda.get_device_name(device) if device.startswith("cuda") else None,
+        "deterministic_algorithms": torch.are_deterministic_algorithms_enabled(),
         "slurm": _slurm_environment(),
     })
     _atomic_json(manifest_path, manifest)
-    torch.cuda.reset_peak_memory_stats(device)
+    if device.startswith("cuda"):
+        torch.cuda.reset_peak_memory_stats(device)
     controller = StopController()
     controller.install()
     trainer: PPOTrainer | None = None
@@ -384,8 +376,11 @@ def main() -> int:
                 training_seed_limit=periodic_seeds.start,
             )
             if latest.exists():
-                if args.resume == "environment-migration":
-                    backup = output / "latest.pre-environment-migration.pt"
+                checkpoint_preview = torch.load(latest, map_location="cpu", weights_only=False)
+                previous_profile = checkpoint_preview.get("contract", {}).get("profile")
+                profile_changed = previous_profile != profile
+                if args.resume == "environment-migration" or profile_changed:
+                    backup = output / f"latest.pre-{args.stage}-migration.pt"
                     if backup.exists():
                         if sha256_file(backup) != sha256_file(latest):
                             raise FileExistsError(
@@ -394,17 +389,17 @@ def main() -> int:
                     else:
                         shutil.copy2(latest, backup)
                     previous = load_checkpoint_environment_migration(latest, trainer)
-                    archived_best = _archive_pre_migration_best(output)
                     save_checkpoint(latest, trainer)
                     migration = {
-                        "schema": "sls-environment-migration-v1",
+                        "schema": "sls-learning-environment-migration-v2",
                         "environment_steps": trainer.environment_steps,
                         "update": trainer.update,
                         "abandoned_environments": workers_count,
                         "first_fresh_seed": trainer.next_seed - workers_count,
                         "next_seed": trainer.next_seed,
                         "source_checkpoint_sha256": sha256_file(backup),
-                        "archived_pre_migration_best": archived_best,
+                        "old_profile": getattr(previous["contract"]["profile"], "profile_id", None),
+                        "new_profile": profile.profile_id,
                         "old_git_commit": previous["contract"]["git_commit"],
                         "new_git_commit": repository["commit"],
                         "old_native_source_sha256": previous["contract"][
@@ -419,8 +414,8 @@ def main() -> int:
                     })
                     manifest["git"] = repository
                     manifest["native_source_sha256"] = source_digest
-                    manifest["native_artifact"] = native_artifact()
-                    manifest.setdefault("environment_migrations", []).append(migration)
+                    manifest["native_artifact"] = artifact
+                    manifest.setdefault("learning_migrations", []).append(migration)
                     _atomic_json(manifest_path, manifest)
                 else:
                     load_checkpoint(latest, trainer)
@@ -429,7 +424,7 @@ def main() -> int:
 
             last_eval = _last_evaluation_step(metrics_path)
             baseline_evaluation = _baseline_evaluation(metrics_path)
-            if trainer.environment_steps == 0 and last_eval < 0:
+            if last_eval < 0:
                 baseline = asdict(evaluate(
                     trainer.model, profile, tuple(periodic_seeds), device=device,
                     max_steps=evaluation_max_steps,
@@ -437,11 +432,13 @@ def main() -> int:
                     failure_progress_scale=ppo.failure_progress_scale,
                 ))
                 record = {
-                    "update": 0, "environment_steps": 0, "evaluation": baseline,
+                    "update": trainer.update,
+                    "environment_steps": trainer.environment_steps,
+                    "evaluation": baseline,
                     "baseline": True,
                 }
                 update_best_checkpoint(
-                    output, best_checkpoint_record(baseline, update=0),
+                    selection_output, best_checkpoint_record(baseline, update=0),
                     save=lambda path: save_checkpoint(path, trainer),
                 )
                 _append_record(metrics_path, record)
@@ -482,7 +479,7 @@ def main() -> int:
                                 baseline_evaluation, evaluation,
                             )
                         record["best_checkpoint_updated"] = update_best_checkpoint(
-                            output, best_checkpoint_record(evaluation, update=trainer.update),
+                            selection_output, best_checkpoint_record(evaluation, update=trainer.update),
                             save=lambda path: save_checkpoint(path, trainer),
                         )
                         while next_eval <= trainer.environment_steps:
@@ -501,13 +498,19 @@ def main() -> int:
 
             save_checkpoint(latest, trainer)
             completed = trainer.environment_steps >= target_steps
+            promoted = False
             if completed and not controller.requested:
-                best = output / "best_success.pt"
+                best = selection_output / "best_progress.pt"
                 selected = best if best.exists() else latest
-                export_policy_artifact(
-                    selected, output / f"{output.name}-{args.stage}.pt",
-                    ascension_min=0, ascension_max=0, goal="FULLRUN",
-                )
+                best_record_path = selection_output / "best_progress.json"
+                best_record = json.loads(best_record_path.read_text(encoding="utf-8"))
+                promoted = _promotion_passes(best_record, stage)
+                if promoted:
+                    goal = {"smoke": "ACT1", "pilot": "ACT2", "train": "FULLRUN"}[args.stage]
+                    export_policy_artifact(
+                        selected, stage_output / f"{output.name}-{args.stage}.pt",
+                        ascension_min=0, ascension_max=0, goal=goal,
+                    )
             if args.stage == "train" and completed and not controller.requested:
                 save_checkpoint(output / "final.pt", trainer)
                 selected_payload = torch.load(
@@ -520,16 +523,20 @@ def main() -> int:
                     max_boundary_visits=ppo.max_boundary_visits,
                     failure_progress_scale=ppo.failure_progress_scale,
                 ))
+                final_promoted = _promotion_passes(final_result, stage)
                 _atomic_json(output / "final-evaluation.json", {
-                    "schema": "sls-final-evaluation-v1",
+                    "schema": "sls-final-evaluation-v2",
                     "checkpoint": selected.name,
                     "seeds": [final_seeds.start, final_seeds.stop],
                     "result": final_result,
+                    "promotion_passed": final_promoted,
                 })
-                export_policy_artifact(
-                    selected, output / f"{output.name}.pt",
-                    ascension_min=0, ascension_max=0, goal="FULLRUN",
-                )
+                if final_promoted:
+                    export_policy_artifact(
+                        selected, output / f"{output.name}.pt",
+                        ascension_min=0, ascension_max=0, goal="FULLRUN",
+                    )
+                promoted = promoted and final_promoted
 
         status = "INTERRUPTED" if controller.requested else "COMPLETE"
         manifest["stages"][args.stage] = {
@@ -538,6 +545,8 @@ def main() -> int:
             "completed_environment_steps": trainer.environment_steps,
             "finished_unix": time.time(),
             "stop_signal": controller.signal_name,
+            "profile": profile.profile_id,
+            "promotion_passed": promoted,
         }
         manifest.update({
             "status": status,
@@ -546,21 +555,31 @@ def main() -> int:
             "updates": trainer.update,
             "episodes": trainer.episodes,
             "termination_counts": dict(trainer.termination_counts),
-            "cuda_peak_memory_bytes": torch.cuda.max_memory_allocated(device),
+            "cuda_peak_memory_bytes": (
+                torch.cuda.max_memory_allocated(device) if device.startswith("cuda") else 0
+            ),
         })
         _atomic_json(manifest_path, manifest)
         if args.stage == "train" and status == "COMPLETE":
-            bundle_names = (
-                "run-manifest.json", "metrics.jsonl", "best_success.pt",
-                "latest.pt", "final.pt", "final-evaluation.json",
-                f"{output.name}.pt",
-            )
+            bundle_paths = [
+                output / "run-manifest.json", output / "latest.pt",
+                output / "final.pt", output / "final-evaluation.json",
+                output / f"{output.name}.pt",
+            ]
+            for stage_name in STAGES:
+                stage_dir = output / "stages" / stage_name
+                bundle_paths.extend((
+                    stage_dir / "metrics.jsonl",
+                    stage_dir / "selection" / "best_progress.json",
+                    stage_dir / "selection" / "best_progress.pt",
+                    stage_dir / f"{output.name}-{stage_name}.pt",
+                ))
             _atomic_json(output / "training-bundle.json", {
-                "schema": "sls-training-bundle-v1",
+                "schema": "sls-training-bundle-v2",
                 "files": {
-                    name: sha256_file(output / name)
-                    for name in bundle_names
-                    if (output / name).is_file()
+                    path.relative_to(output).as_posix(): sha256_file(path)
+                    for path in bundle_paths
+                    if path.is_file()
                 },
                 "crash_files": sorted(
                     str(path.relative_to(output))

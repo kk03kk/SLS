@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import os
 import platform
 import shutil
@@ -18,6 +19,25 @@ TOOLS = CACHE / "tools"
 SOURCE = ROOT / "cpp" / "simulator"
 BUILD = CACHE / f"cmake-{sys.platform}-{sys.implementation.cache_tag}"
 OUTPUT = CACHE / "native" / sys.implementation.cache_tag
+
+
+def _git(*args: str) -> str:
+    return subprocess.run(
+        ("git", *args), cwd=ROOT, check=True, capture_output=True,
+        text=True, encoding="utf-8",
+    ).stdout.strip()
+
+
+def native_source_digest() -> str:
+    paths = (
+        "cpp/simulator", "src/sls/backends/simulator", "src/sls/content",
+        "tools/build_native.py",
+    )
+    entries = _git("ls-files", "-s", "--", *paths).splitlines()
+    if not entries:
+        raise RuntimeError("native build provenance contains no tracked files")
+    encoded = ("\n".join(sorted(entries)) + "\n").encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
 
 
 @dataclass(frozen=True, slots=True)
@@ -54,12 +74,18 @@ def configure_command(
     python_executable: str = sys.executable,
     python_include: Path | None = None,
     python_library: Path | None = None,
+    source_digest: str = "UNKNOWN",
+    git_commit: str = "UNKNOWN",
+    sanitizers: bool = False,
 ) -> list[object]:
     command: list[object] = [
         paths.cmake, "-S", source, "-B", build, "-G", "Ninja",
         f"-DCMAKE_MAKE_PROGRAM={paths.ninja}", f"-Dpybind11_DIR={paths.pybind_dir}",
         f"-DPython_EXECUTABLE={python_executable}",
         f"-DSLS_NATIVE_OUTPUT_DIR={output}", "-DCMAKE_BUILD_TYPE=Release",
+        f"-DSLS_NATIVE_SOURCE_SHA256={source_digest}",
+        f"-DSLS_GIT_COMMIT={git_commit}",
+        f"-DSLS_ENABLE_SANITIZERS={'ON' if sanitizers else 'OFF'}",
     ]
     if system == "Windows":
         include = python_include or Path(sysconfig.get_paths()["include"])
@@ -86,9 +112,29 @@ def run(*args: object, env: dict[str, str] | None = None) -> None:
     subprocess.run(command, cwd=ROOT, env=env, check=True)
 
 
+def sanitizer_environment(
+    compiler: str, environment: dict[str, str],
+) -> dict[str, str]:
+    """Preload ASan before Python when importing a sanitized extension."""
+
+    result = subprocess.run(
+        (compiler, "-print-file-name=libasan.so"),
+        check=True, capture_output=True, text=True,
+    )
+    runtime = Path(result.stdout.strip())
+    if not runtime.is_file():
+        raise RuntimeError(f"compiler did not provide an ASan runtime: {runtime}")
+    configured = dict(environment)
+    existing = configured.get("LD_PRELOAD")
+    configured["LD_PRELOAD"] = str(runtime) + (os.pathsep + existing if existing else "")
+    configured.setdefault("ASAN_OPTIONS", "detect_leaks=0")
+    return configured
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--jobs", type=int, default=min(os.cpu_count() or 4, 8))
+    parser.add_argument("--sanitizers", action="store_true")
     args = parser.parse_args()
     if args.jobs <= 0:
         parser.error("--jobs must be positive")
@@ -119,11 +165,20 @@ def main() -> int:
 
     OUTPUT.mkdir(parents=True, exist_ok=True)
     build_env = dict(os.environ)
-    configure = configure_command(system, paths)
+    if args.sanitizers and system == "Windows":
+        parser.error("--sanitizers is currently supported on Linux only")
+    configure = configure_command(
+        system, paths, source_digest=native_source_digest(),
+        git_commit=_git("rev-parse", "HEAD"), sanitizers=args.sanitizers,
+    )
     if system == "Windows":
         build_env["ZIG_EXECUTABLE"] = paths.zig.as_posix()
-    elif not (os.environ.get("CXX") or shutil.which("c++") or shutil.which("g++")):
-        raise RuntimeError("Linux native build requires CXX, c++, or g++")
+    else:
+        compiler = os.environ.get("CXX") or shutil.which("c++") or shutil.which("g++")
+        if not compiler:
+            raise RuntimeError("Linux native build requires CXX, c++, or g++")
+        if args.sanitizers:
+            build_env = sanitizer_environment(compiler, build_env)
 
     run(*configure, env=build_env)
     run(*native_build_command(paths, args.jobs), env=build_env)

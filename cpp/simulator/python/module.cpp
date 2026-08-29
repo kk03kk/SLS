@@ -5683,6 +5683,8 @@ py::dict complete_power_order_probe() {
 }  // namespace
 
 PYBIND11_MODULE(_lightspeed, module) {
+    module.attr("NATIVE_SOURCE_SHA256") = SLS_NATIVE_SOURCE_SHA256;
+    module.attr("GIT_COMMIT") = SLS_GIT_COMMIT;
     module.doc() = "Canonical FullRun sts_lightspeed bridge and rule probes";
     module.def("rng_probe", &rng_probe, py::arg("seed"));
     module.def("shuffle_probe", &shuffle_probe, py::arg("seed"));

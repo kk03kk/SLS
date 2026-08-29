@@ -36,6 +36,9 @@ def test_linux_configure_uses_same_required_cmake_binary(tmp_path: Path) -> None
     assert "-DPython_EXECUTABLE=/home/h/hengzhi/venvs/sls/bin/python" in command
     assert f"-DSLS_NATIVE_OUTPUT_DIR={output}" in command
     assert "-DCMAKE_BUILD_TYPE=Release" in command
+    assert "-DSLS_NATIVE_SOURCE_SHA256=UNKNOWN" in command
+    assert "-DSLS_GIT_COMMIT=UNKNOWN" in command
+    assert "-DSLS_ENABLE_SANITIZERS=OFF" in command
     assert native_build_command(paths, 12, build=build) == [
         paths.cmake, "--build", build, "--parallel", 12,
     ]
@@ -60,3 +63,15 @@ def test_windows_configure_keeps_zig_toolchain_and_python_paths(tmp_path: Path) 
     assert f"-DPython_INCLUDE_DIR={include}" in command
     assert f"-DPython_LIBRARY={library}" in command
     assert r"-DPython_EXECUTABLE=D:\envs\DL\python.exe" in command
+
+
+def test_linux_sanitizer_flag_is_explicit(tmp_path: Path) -> None:
+    paths = build_tool_paths("Linux", tmp_path / "tools")
+    command = configure_command(
+        "Linux", paths, source=tmp_path / "source", build=tmp_path / "build",
+        output=tmp_path / "output", source_digest="digest", git_commit="commit",
+        sanitizers=True,
+    )
+    assert "-DSLS_NATIVE_SOURCE_SHA256=digest" in command
+    assert "-DSLS_GIT_COMMIT=commit" in command
+    assert "-DSLS_ENABLE_SANITIZERS=ON" in command

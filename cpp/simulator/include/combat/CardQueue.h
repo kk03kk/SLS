@@ -7,6 +7,7 @@
 
 #include <array>
 #include <cassert>
+#include <stdexcept>
 
 #include "combat/CardInstance.h"
 

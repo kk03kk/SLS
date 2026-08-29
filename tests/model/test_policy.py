@@ -115,6 +115,27 @@ def test_recurrent_history_changes_policy_output() -> None:
     assert not torch.allclose(first.value, second.value)
 
 
+def test_recurrent_policy_conditions_on_previous_action_and_reward() -> None:
+    torch.manual_seed(31)
+    config = ModelConfig(
+        embedding_dim=32, transformer_layers=1, attention_heads=4,
+        recurrent_hidden_dim=64,
+    )
+    policy = Policy(config).eval()
+    batch = PolicyBatch.from_decisions((_combat_decision(),))
+    baseline = policy(
+        *batch.model_inputs(),
+        previous_action_types=torch.zeros(1, dtype=torch.long),
+        previous_rewards=torch.zeros(1),
+    )
+    experienced = policy(
+        *batch.model_inputs(),
+        previous_action_types=torch.ones(1, dtype=torch.long),
+        previous_rewards=torch.ones(1),
+    )
+    assert not torch.allclose(baseline.next_memory, experienced.next_memory)
+
+
 def test_episode_start_mask_resets_only_selected_memory_rows() -> None:
     torch.manual_seed(23)
     config = ModelConfig(

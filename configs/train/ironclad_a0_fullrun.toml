@@ -2,6 +2,7 @@
 profile = "IRONCLAD_A0_FULLRUN"
 seed = 10000000
 device = "cuda"
+deterministic = true
 worker_backend = "sharded-vector"
 benchmark = "runs/worker-benchmark.json"
 output = "runs/ironclad-a0-fullrun-v2"
@@ -12,16 +13,31 @@ final_evaluation_seed_count = 1000
 evaluation_max_steps = 4096
 
 [stages.smoke]
-target_environment_steps = 100000
-evaluate_every_steps = 100000
+profile = "IRONCLAD_A0_ACT1"
+target_environment_steps = 5000000
+evaluate_every_steps = 500000
+minimum_success_rate = 0.20
+minimum_reached_act2_rate = 0.0
+minimum_reached_act3_rate = 0.0
+minimum_evaluation_episodes = 128
 
 [stages.pilot]
-target_environment_steps = 2000000
-evaluate_every_steps = 250000
+profile = "IRONCLAD_A0_ACT2"
+target_environment_steps = 25000000
+evaluate_every_steps = 2000000
+minimum_success_rate = 0.05
+minimum_reached_act2_rate = 0.50
+minimum_reached_act3_rate = 0.0
+minimum_evaluation_episodes = 128
 
 [stages.train]
-target_environment_steps = 50000000
-evaluate_every_steps = 2000000
+profile = "IRONCLAD_A0_FULLRUN"
+target_environment_steps = 100000000
+evaluate_every_steps = 5000000
+minimum_success_rate = 0.01
+minimum_reached_act2_rate = 0.75
+minimum_reached_act3_rate = 0.25
+minimum_evaluation_episodes = 128
 
 [model]
 embedding_dim = 128
@@ -31,15 +47,15 @@ feedforward_dim = 256
 recurrent_hidden_dim = 256
 recurrent_layers = 1
 dropout = 0.0
-architecture = "sls-recurrent-relational-policy-v4"
+architecture = "sls-recurrent-relational-policy-v5"
 
 [ppo]
-rollout_steps = 128
-recurrent_sequence_length = 32
+rollout_steps = 256
+recurrent_sequence_length = 64
 minibatch_sequences = 16
 learning_rate = 0.00025
 gamma = 1.0
-gae_lambda = 0.95
+gae_lambda = 0.98
 clip_ratio = 0.2
 value_coefficient = 0.5
 entropy_coefficient = 0.02

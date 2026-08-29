@@ -396,7 +396,7 @@ namespace sts {
 
     template <MonsterStatus s>
     void Monster::setJustApplied(bool value) {
-        std::uint64_t mask;
+        std::uint64_t mask = 0;
         if (s == MonsterStatus::VULNERABLE) {
             mask = 0x1ULL << 63;
         } else if (s == MonsterStatus::WEAK) {
@@ -414,7 +414,7 @@ namespace sts {
 
     template <MonsterStatus s>
     bool Monster::wasJustApplied() const {
-        std::uint64_t mask;
+        std::uint64_t mask = 0;
         if (s == MonsterStatus::VULNERABLE) {
             mask = 0x1ULL << 63;
         } else if (s == MonsterStatus::WEAK) {

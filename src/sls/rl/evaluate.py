@@ -11,6 +11,7 @@ import torch
 from sls.backends.simulator import SimulatorBackend
 from sls.curriculum import CurriculumProfile, EpisodeHorizon
 from sls.model import Policy, PolicyBatch
+from sls.model.encoding import ACTION_TYPE_IDS
 from sls.rl.episode_limit import EpisodeLimitState
 from sls.rl.reward import (
     DEFAULT_FAILURE_PROGRESS_SCALE,
@@ -72,6 +73,8 @@ def evaluate(
     decisions = [backend.reset(seed) for backend, seed in zip(backends, seed_values)]
     memory = model.initial_memory(len(seed_values), device)
     episode_starts = torch.ones(len(seed_values), dtype=torch.bool, device=device)
+    previous_action_types = torch.zeros(len(seed_values), dtype=torch.long, device=device)
+    previous_rewards = torch.zeros(len(seed_values), dtype=torch.float32, device=device)
     bosses_by_act: list[dict[int, str]] = [dict() for _ in seed_values]
     for index, decision in enumerate(decisions):
         bosses_by_act[index][decision.observation.run.act] = (
@@ -104,6 +107,8 @@ def evaluate(
             *batch.model_inputs(),
             memory=active_memory,
             episode_start_mask=episode_starts[active],
+            previous_action_types=previous_action_types[active],
+            previous_rewards=previous_rewards[active],
         )
         memory[active] = output.next_memory
         episode_starts[active] = False
@@ -115,14 +120,15 @@ def evaluate(
             previous_act = decisions[index].observation.run.act
             try:
                 transition = backend.step(action)
-            except Exception:
-                backend_errors += 1
-                episode_rewards[index] += -1.0
-                failure_floors.append(decisions[index].observation.run.floor)
-                boss = bosses_by_act[index].get(previous_act, "UNKNOWN")
-                boss_results.setdefault(f"ACT_{previous_act}:{boss}", []).append(False)
-                continue
+            except Exception as error:
+                raise RuntimeError(
+                    "canonical evaluation backend failed at "
+                    f"seed={seed_values[index]} step={episode_steps[index]} "
+                    f"action={action.candidate_id}"
+                ) from error
             episode_steps[index] += 1
+            previous_action_types[index] = ACTION_TYPE_IDS[action.kind.value] + 1
+            previous_rewards[index] = float(transition.reward)
             decisions[index] = transition.decision
             current_act = transition.decision.observation.run.act
             max_acts[index] = max(max_acts[index], current_act)

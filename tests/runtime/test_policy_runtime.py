@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from dataclasses import replace
 from pathlib import Path
 
 import pytest
@@ -16,6 +17,7 @@ from sls.runtime.artifact import (
     PolicyArtifactMetadata,
     export_policy_artifact,
     load_policy_artifact,
+    model_state_sha256,
 )
 from sls.runtime.controller import AgentRuntime, boundary_id
 
@@ -32,6 +34,7 @@ def _runtime_artifact() -> LoadedPolicyArtifact:
         simulator_only=True,
         source_git_commit="test", native_source_sha256="test-native",
         training_config_sha256="test-config",
+        model_sha256=model_state_sha256(model.state_dict()),
         recurrent_memory_size=config.recurrent_hidden_dim,
         ascension_min=0, ascension_max=20, goal="HEART",
     )
@@ -95,7 +98,7 @@ def test_policy_artifact_round_trip_is_strict_and_standalone(tmp_path: Path) -> 
     assert loaded.metadata.goal == "HEART"
     assert loaded.metadata.ascension_min == 0
     assert loaded.metadata.ascension_max == 20
-    assert POLICY_ARTIFACT_SCHEMA == "sls-policy-artifact-v4"
+    assert POLICY_ARTIFACT_SCHEMA == "sls-policy-artifact-v5"
     for expected, actual in zip(model.parameters(), loaded.model.parameters()):
         assert torch.equal(expected, actual)
 
@@ -120,7 +123,7 @@ def test_disconnect_before_send_never_blindly_retries_same_boundary(tmp_path: Pa
     assert len(backend.calls) == 1
 
 
-def test_disconnect_after_send_rereads_advanced_boundary_without_resend(tmp_path: Path) -> None:
+def test_disconnect_after_send_rejects_unprovable_advanced_boundary(tmp_path: Path) -> None:
     first, second = _two_boundaries()
     backend = _DisconnectBackend(first, second, "after")
     log = tmp_path / "actions.jsonl"
@@ -128,11 +131,12 @@ def test_disconnect_after_send_rereads_advanced_boundary_without_resend(tmp_path
         _FixedRuntime(backend, _runtime_artifact(), log_path=log).run(max_actions=1)
     first_candidate = backend.calls[0]
     backend.mode = "normal"
-    _FixedRuntime(backend, _runtime_artifact(), log_path=log).run(max_actions=1)
+    with pytest.raises(RuntimeError, match="cannot prove"):
+        _FixedRuntime(backend, _runtime_artifact(), log_path=log).run(max_actions=1)
     assert backend.calls.count(first_candidate) == 1
 
 
-def test_disconnect_after_state_read_recovers_from_intent_journal(tmp_path: Path) -> None:
+def test_disconnect_after_state_read_still_requires_a_durable_ack(tmp_path: Path) -> None:
     first, second = _two_boundaries()
     backend = _DisconnectBackend(first, second, "normal")
     log = tmp_path / "actions.jsonl"
@@ -148,8 +152,25 @@ def test_disconnect_after_state_read_recovers_from_intent_journal(tmp_path: Path
     with pytest.raises(ConnectionError):
         runtime.run(max_actions=1)
     first_candidate = backend.calls[0]
-    _FixedRuntime(backend, _runtime_artifact(), log_path=log).run(max_actions=1)
+    with pytest.raises(RuntimeError, match="cannot prove"):
+        _FixedRuntime(backend, _runtime_artifact(), log_path=log).run(max_actions=1)
     assert backend.calls.count(first_candidate) == 1
+
+
+def test_artifact_identity_includes_model_weights() -> None:
+    first = _runtime_artifact()
+    second = _runtime_artifact()
+    with torch.no_grad():
+        next(second.model.parameters()).add_(1.0)
+    second_metadata = replace(
+        second.metadata,
+        model_sha256=model_state_sha256(second.model.state_dict()),
+    )
+    first_runtime = AgentRuntime(LiveGameBackend(), first)
+    second_runtime = AgentRuntime(
+        LiveGameBackend(), LoadedPolicyArtifact(second.model, second_metadata),
+    )
+    assert first_runtime.artifact_id != second_runtime.artifact_id
 
 
 def test_recurrent_runtime_rejects_midrun_attach_without_matching_journal(
@@ -169,8 +190,9 @@ def test_acknowledged_recurrent_memory_resumes_at_matching_boundary(
     first, second = _two_boundaries()
     backend = _DisconnectBackend(first, second, "normal")
     log = tmp_path / "actions.jsonl"
-    AgentRuntime(backend, _runtime_artifact(), log_path=log).run(max_actions=1)
-    AgentRuntime(backend, _runtime_artifact(), log_path=log).run(max_actions=1)
+    artifact = _runtime_artifact()
+    AgentRuntime(backend, artifact, log_path=log).run(max_actions=1)
+    AgentRuntime(backend, artifact, log_path=log).run(max_actions=1)
     assert len(backend.calls) == 2
 
 

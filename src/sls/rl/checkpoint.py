@@ -57,6 +57,8 @@ def save_checkpoint(path: str | Path, trainer: PPOTrainer) -> Path:
             "termination_counts": dict(trainer.termination_counts),
             "memory": trainer.memory.detach().cpu(),
             "episode_starts": trainer.episode_starts.detach().cpu(),
+            "previous_action_types": trainer.previous_action_types.detach().cpu(),
+            "previous_rewards": trainer.previous_rewards.detach().cpu(),
         },
         "python_rng": random.getstate(),
         "torch_rng": torch.get_rng_state(),
@@ -98,13 +100,21 @@ def load_checkpoint(path: str | Path, trainer: PPOTrainer) -> Mapping[str, Any]:
     trainer.last_collect_terminations = {key: 0 for key in TERMINATION_REASONS}
     memory = state.get("memory")
     starts = state.get("episode_starts")
+    previous_actions = state.get("previous_action_types")
+    previous_rewards = state.get("previous_rewards")
     expected_memory = (trainer.workers.size, trainer.model.config.recurrent_hidden_dim)
     if not isinstance(memory, torch.Tensor) or tuple(memory.shape) != expected_memory:
         raise ValueError("checkpoint recurrent memory is invalid")
     if not isinstance(starts, torch.Tensor) or tuple(starts.shape) != (trainer.workers.size,):
         raise ValueError("checkpoint episode-start mask is invalid")
+    if not isinstance(previous_actions, torch.Tensor) or tuple(previous_actions.shape) != (trainer.workers.size,):
+        raise ValueError("checkpoint previous-action state is invalid")
+    if not isinstance(previous_rewards, torch.Tensor) or tuple(previous_rewards.shape) != (trainer.workers.size,):
+        raise ValueError("checkpoint previous-reward state is invalid")
     trainer.memory = memory.to(trainer.device)
     trainer.episode_starts = starts.to(trainer.device, dtype=torch.bool)
+    trainer.previous_action_types = previous_actions.to(trainer.device, dtype=torch.long)
+    trainer.previous_rewards = previous_rewards.to(trainer.device, dtype=torch.float32)
     random.setstate(payload["python_rng"])
     torch.set_rng_state(payload["torch_rng"])
     if torch.cuda.is_available() and payload.get("cuda_rng") is not None:
@@ -130,7 +140,9 @@ def load_checkpoint_environment_migration(
     expected = _contract(trainer)
     if not isinstance(actual, Mapping):
         raise ValueError("checkpoint contract is missing")
-    allowed_changes = {"git_commit", "native_source_sha256"}
+    allowed_changes = {
+        "git_commit", "native_source_sha256", "profile", "curriculum_version",
+    }
     incompatible = {
         key for key in set(actual) | set(expected)
         if key not in allowed_changes and actual.get(key) != expected.get(key)
@@ -171,6 +183,12 @@ def load_checkpoint_environment_migration(
     trainer.memory = trainer.model.initial_memory(trainer.workers.size, trainer.device)
     trainer.episode_starts = torch.ones(
         trainer.workers.size, dtype=torch.bool, device=trainer.device,
+    )
+    trainer.previous_action_types = torch.zeros(
+        trainer.workers.size, dtype=torch.long, device=trainer.device,
+    )
+    trainer.previous_rewards = torch.zeros(
+        trainer.workers.size, dtype=torch.float32, device=trainer.device,
     )
 
     random.setstate(payload["python_rng"])

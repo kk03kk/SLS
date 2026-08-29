@@ -10,6 +10,7 @@
 #include <bitset>
 #include <functional>
 #include <cassert>
+#include <stdexcept>
 
 
 namespace sts {
@@ -69,9 +70,7 @@ namespace sts {
 
     template <int capacity>
     void ActionQueue<capacity>::pushFront(Action a) {
-#ifdef sts_asserts
-        assert(size != capacity);
-#endif
+        if (size >= capacity) throw std::overflow_error("action queue overflow");
         --front;
         ++size;
         if (front < 0) {
@@ -83,11 +82,7 @@ namespace sts {
 
     template<int capacity>
     void ActionQueue<capacity>::pushBack(Action a) {
-#ifdef sts_asserts
-        if (size >= capacity) {
-            assert(false);
-        }
-#endif
+        if (size >= capacity) throw std::overflow_error("action queue overflow");
         if (back >= capacity) {
             back = 0;
         }
@@ -104,9 +99,7 @@ namespace sts {
 
     template<int capacity>
     ActionFunction ActionQueue<capacity>::popFront() {
-#ifdef sts_asserts
-        assert(size > 0 );
-#endif
+        if (size <= 0) throw std::underflow_error("action queue underflow");
         ActionFunction a = arr[front];
         ++front;
         --size;

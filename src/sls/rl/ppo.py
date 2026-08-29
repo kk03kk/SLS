@@ -33,6 +33,24 @@ def normalize_advantages(advantages: torch.Tensor) -> torch.Tensor:
     )
 
 
+def normalize_advantages_by_domain(
+    advantages: torch.Tensor,
+    encoded_decisions: tuple[tuple[object, ...], ...],
+) -> torch.Tensor:
+    """Normalize combat, run and choice decisions independently."""
+
+    result = torch.empty_like(advantages)
+    domains = torch.tensor([
+        [int(getattr(item, "screen_type")) for item in step]
+        for step in encoded_decisions
+    ])
+    for domain in domains.unique():
+        mask = domains == domain
+        values = advantages[mask]
+        result[mask] = (values - values.mean()) / (values.std(unbiased=False) + 1e-8)
+    return result
+
+
 def clipped_policy_loss(
     ratios: torch.Tensor, advantages: torch.Tensor, clip_ratio: float,
 ) -> torch.Tensor:
@@ -159,6 +177,8 @@ class PPOTrainer:
         self.decisions = workers.reset(self._take_seeds(workers.size))
         self.memory = self.model.initial_memory(workers.size, self.device)
         self.episode_starts = torch.ones(workers.size, dtype=torch.bool, device=self.device)
+        self.previous_action_types = torch.zeros(workers.size, dtype=torch.long, device=self.device)
+        self.previous_rewards = torch.zeros(workers.size, dtype=torch.float32, device=self.device)
         self.episode_limits = [EpisodeLimitState.initial(item) for item in self.decisions]
         self.termination_counts = {reason: 0 for reason in TERMINATION_REASONS}
         self.last_collect_terminations = {reason: 0 for reason in TERMINATION_REASONS}
@@ -183,6 +203,8 @@ class PPOTrainer:
         terminal_steps: list[torch.Tensor] = []
         episode_start_steps: list[torch.Tensor] = []
         memory_steps: list[torch.Tensor] = []
+        previous_action_steps: list[torch.Tensor] = []
+        previous_reward_steps: list[torch.Tensor] = []
         collect_terminations = {reason: 0 for reason in TERMINATION_REASONS}
         self.model.eval()
         for _ in range(self.config.rollout_steps):
@@ -190,10 +212,14 @@ class PPOTrainer:
             batch = PolicyBatch.from_encoded(encoded).to(self.device)
             episode_start_steps.append(self.episode_starts.cpu())
             memory_steps.append(self.memory.cpu())
+            previous_action_steps.append(self.previous_action_types.cpu())
+            previous_reward_steps.append(self.previous_rewards.cpu())
             output = self.model(
                 *batch.model_inputs(),
                 memory=self.memory,
                 episode_start_mask=self.episode_starts,
+                previous_action_types=self.previous_action_types,
+                previous_rewards=self.previous_rewards,
             )
             distribution = Categorical(logits=output.logits)
             actions = distribution.sample()
@@ -254,15 +280,26 @@ class PPOTrainer:
             next_episode_starts = torch.zeros(
                 self.workers.size, dtype=torch.bool, device=self.device,
             )
+            next_previous_actions = batch.action_types[
+                torch.arange(self.workers.size, device=self.device), actions
+            ] + 1
+            next_previous_rewards = torch.tensor(
+                [float(item.reward) for item in transitions],
+                dtype=torch.float32, device=self.device,
+            )
             for index in reset_indices:
                 next_decisions[index] = self._reset_worker(index)
                 self.episode_limits[index] = EpisodeLimitState.initial(next_decisions[index])
                 next_memory[index].zero_()
                 next_episode_starts[index] = True
+                next_previous_actions[index] = 0
+                next_previous_rewards[index] = 0.0
                 self.episodes += 1
             self.decisions = next_decisions
             self.memory = next_memory
             self.episode_starts = next_episode_starts
+            self.previous_action_types = next_previous_actions
+            self.previous_rewards = next_previous_rewards
 
         self.last_collect_terminations = collect_terminations
         self.environment_steps += self.config.rollout_steps * self.workers.size
@@ -272,6 +309,8 @@ class PPOTrainer:
             *bootstrap_batch.model_inputs(),
             memory=self.memory,
             episode_start_mask=self.episode_starts,
+            previous_action_types=self.previous_action_types,
+            previous_rewards=self.previous_rewards,
         ).value.cpu()
         values = torch.stack(value_steps)
         advantages, returns = generalized_advantage_estimate(
@@ -291,11 +330,15 @@ class PPOTrainer:
             returns,
             torch.stack(episode_start_steps),
             torch.stack(memory_steps),
+            torch.stack(previous_action_steps),
+            torch.stack(previous_reward_steps),
         )
 
     def optimize(self, rollout: RolloutBatch) -> dict[str, float]:
         chunks = self._sequence_chunks(rollout)
-        normalized_advantages = normalize_advantages(rollout.advantages)
+        normalized_advantages = normalize_advantages_by_domain(
+            rollout.advantages, rollout.encoded_decisions,
+        )
         totals = {
             "policy": 0.0, "value": 0.0, "entropy": 0.0, "loss": 0.0,
             "approx_kl": 0.0, "gradient_norm": 0.0, "epochs_completed": 0.0,
@@ -379,6 +422,18 @@ class PPOTrainer:
         result["kl_early_stop"] = float(
             epoch_diagnostics.get("approx_kl_final", 0.0) > self.config.target_kl
         )
+        returns_variance = rollout.returns.var(unbiased=False)
+        result["value_explained_variance"] = float(
+            1.0 - (rollout.returns - rollout.old_values).var(unbiased=False)
+            / returns_variance.clamp_min(1e-8)
+        )
+        domains = torch.tensor([
+            [int(item.screen_type) for item in step]
+            for step in rollout.encoded_decisions
+        ])
+        domain_names = ("combat", "run", "choice")
+        for domain, name in enumerate(domain_names):
+            result[f"samples_{name}_fraction"] = float((domains == domain).float().mean())
         return {**result, **epoch_diagnostics}
 
     def _sequence_chunks(self, rollout: RolloutBatch) -> list[tuple[int, int]]:
@@ -427,6 +482,14 @@ class PPOTrainer:
             ], dtype=torch.bool, device=self.device)
             output = self.model(
                 *batch.model_inputs(), memory=memory, episode_start_mask=starts,
+                previous_action_types=torch.tensor([
+                    int(rollout.previous_action_types[start + offset, environment])
+                    for start, environment in chunks
+                ], dtype=torch.long, device=self.device),
+                previous_rewards=torch.tensor([
+                    float(rollout.previous_rewards[start + offset, environment])
+                    for start, environment in chunks
+                ], dtype=torch.float32, device=self.device),
             )
             memory = output.next_memory
             distribution = Categorical(logits=output.logits)
@@ -436,7 +499,14 @@ class PPOTrainer:
             ], dtype=torch.long, device=self.device)
             log_probabilities.append(distribution.log_prob(actions))
             values.append(output.value)
-            entropies.append(distribution.entropy())
+            legal = (~batch.action_padding).sum(dim=1).to(output.logits.dtype)
+            scale = legal.log()
+            normalized_entropy = torch.where(
+                legal > 1,
+                distribution.entropy() / scale.clamp_min(1e-8),
+                torch.zeros_like(legal),
+            )
+            entropies.append(normalized_entropy)
         return tuple(
             torch.stack(items, dim=1).flatten()
             for items in (log_probabilities, values, entropies)

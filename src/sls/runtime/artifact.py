@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any, Mapping
@@ -11,7 +12,23 @@ import torch
 from sls.content.scope import policy_excluded_content_ids
 from sls.model import ENCODING_SCHEMA, ModelConfig, Policy, vocabulary_hash
 
-POLICY_ARTIFACT_SCHEMA = "sls-policy-artifact-v4"
+POLICY_ARTIFACT_SCHEMA = "sls-policy-artifact-v5"
+
+
+def model_state_sha256(state: Mapping[str, Any]) -> str:
+    """Hash a state dict without relying on pickle serialization details."""
+
+    digest = hashlib.sha256()
+    for name in sorted(state):
+        tensor = state[name]
+        if not isinstance(tensor, torch.Tensor):
+            raise ValueError(f"model state entry is not a tensor: {name}")
+        value = tensor.detach().cpu().contiguous()
+        digest.update(name.encode("utf-8"))
+        digest.update(str(value.dtype).encode("ascii"))
+        digest.update(str(tuple(value.shape)).encode("ascii"))
+        digest.update(value.view(torch.uint8).numpy().tobytes())
+    return digest.hexdigest()
 
 
 @dataclass(frozen=True, slots=True)
@@ -23,6 +40,7 @@ class PolicyArtifactMetadata:
     source_git_commit: str
     native_source_sha256: str
     training_config_sha256: str
+    model_sha256: str
     recurrent_memory_size: int
     ascension_min: int = 0
     ascension_max: int = 0
@@ -38,6 +56,8 @@ class PolicyArtifactMetadata:
             raise ValueError("policy artifact native source digest is missing")
         if not self.training_config_sha256:
             raise ValueError("policy artifact training config digest is missing")
+        if len(self.model_sha256) != 64:
+            raise ValueError("policy artifact model digest is invalid")
         if self.recurrent_memory_size <= 0:
             raise ValueError("policy artifact recurrent memory size is invalid")
         if int(self.model.get("recurrent_hidden_dim", 0)) != self.recurrent_memory_size:
@@ -63,6 +83,7 @@ class LoadedPolicyArtifact:
 def _metadata(
     model_config: Mapping[str, Any], *, ascension_min: int,
     ascension_max: int, goal: str, provenance: Mapping[str, object],
+    model_sha256: str,
 ) -> PolicyArtifactMetadata:
     return PolicyArtifactMetadata(
         model=dict(model_config),
@@ -72,6 +93,7 @@ def _metadata(
         source_git_commit=str(provenance.get("git_commit") or ""),
         native_source_sha256=str(provenance.get("native_source_sha256") or ""),
         training_config_sha256=str(provenance.get("training_config_sha256") or ""),
+        model_sha256=model_sha256,
         recurrent_memory_size=int(model_config["recurrent_hidden_dim"]),
         ascension_min=ascension_min,
         ascension_max=ascension_max,
@@ -109,6 +131,7 @@ def save_policy_artifact(
     metadata = _metadata(
         model.config.to_dict(), ascension_min=ascension_min,
         ascension_max=ascension_max, goal=goal, provenance=provenance,
+        model_sha256=model_state_sha256(model.state_dict()),
     )
     metadata.validate()
     target = Path(output)
@@ -128,7 +151,7 @@ def load_policy_artifact(
     *,
     device: str | torch.device = "cpu",
 ) -> LoadedPolicyArtifact:
-    payload = torch.load(Path(path), map_location="cpu", weights_only=False)
+    payload = torch.load(Path(path), map_location="cpu", weights_only=True)
     if payload.get("schema") != POLICY_ARTIFACT_SCHEMA:
         raise ValueError("unsupported production policy artifact")
     raw = payload.get("metadata")
@@ -141,5 +164,7 @@ def load_policy_artifact(
     config_payload.pop("vocabulary_hash", None)
     model = Policy(ModelConfig(**config_payload))
     model.load_state_dict(payload["model"], strict=True)
+    if model_state_sha256(model.state_dict()) != metadata.model_sha256:
+        raise ValueError("policy artifact model digest does not match its weights")
     model.eval().to(device)
     return LoadedPolicyArtifact(model, metadata)

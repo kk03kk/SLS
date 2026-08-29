@@ -24,6 +24,7 @@ include = ["sls*"]
 
 [tool.setuptools.package-data]
 "sls.content" = ["registry.json", "scope.json"]
+"sls.model" = ["policy_vocabulary_v3.json"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

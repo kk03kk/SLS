@@ -83,23 +83,6 @@ def test_nontraining_jobs_reject_training_config() -> None:
         build_sbatch_command(args)
 
 
-def test_smoke_forwards_fresh_policy_initialization(tmp_path: Path) -> None:
-    checkpoint = tmp_path / "best.pt"
-    args = _parser().parse_args([
-        "smoke", "--initialize-from", str(checkpoint),
-    ])
-    wrapped = _wrapped(build_sbatch_command(args, root=tmp_path / "SLS"))
-    assert wrapped[-2:] == [
-        "--initialize-from", os.path.abspath(str(checkpoint)),
-    ]
-
-
-def test_nontraining_jobs_reject_policy_initialization() -> None:
-    args = _parser().parse_args(["benchmark", "--initialize-from", "best.pt"])
-    with pytest.raises(ValueError, match="does not accept"):
-        build_sbatch_command(args)
-
-
 def test_pilot_forwards_explicit_environment_migration(tmp_path: Path) -> None:
     args = _parser().parse_args(["pilot", "--resume", "environment-migration"])
     wrapped = _wrapped(build_sbatch_command(args, root=tmp_path / "SLS"))

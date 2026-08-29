@@ -8,9 +8,10 @@ import pytest
 
 from tools.train_full_run import (
     StopController,
-    _archive_pre_migration_best,
     _positive_int,
     _progress_from_baseline,
+    _promotion_passes,
+    _require_predecessor_promotion,
     _seed_range,
     _training_identity,
     _validate_seed_namespaces,
@@ -41,7 +42,7 @@ def test_evaluation_seed_namespaces_are_disjoint_from_training() -> None:
         })
 
 
-def test_stage_targets_do_not_change_training_identity() -> None:
+def test_curriculum_and_stage_targets_are_part_of_training_identity() -> None:
     payload = {
         "run": {
             "profile": "IRONCLAD_A0_FULLRUN", "seed": 0,
@@ -57,7 +58,7 @@ def test_stage_targets_do_not_change_training_identity() -> None:
     }
     first = _training_identity(payload, workers=32, shards=8)
     payload["stages"] = {"train": {"target_environment_steps": 50_000_000}}
-    assert _training_identity(payload, workers=32, shards=8) == first
+    assert _training_identity(payload, workers=32, shards=8) != first
 
 
 def test_positive_training_intervals_fail_before_the_training_loop() -> None:
@@ -71,18 +72,19 @@ def test_canonical_fullrun_config_freezes_stage_and_recurrent_contract() -> None
     with path.open("rb") as stream:
         payload = tomllib.load(stream)
     assert payload["run"]["profile"] == "IRONCLAD_A0_FULLRUN"
-    assert payload["stages"]["smoke"]["target_environment_steps"] == 100_000
-    assert payload["stages"]["pilot"]["target_environment_steps"] == 2_000_000
-    assert payload["stages"]["pilot"]["evaluate_every_steps"] == 250_000
-    assert payload["stages"]["train"]["target_environment_steps"] == 50_000_000
-    assert payload["model"]["architecture"] == "sls-recurrent-relational-policy-v4"
+    assert payload["stages"]["smoke"]["profile"] == "IRONCLAD_A0_ACT1"
+    assert payload["stages"]["smoke"]["target_environment_steps"] == 5_000_000
+    assert payload["stages"]["pilot"]["profile"] == "IRONCLAD_A0_ACT2"
+    assert payload["stages"]["pilot"]["target_environment_steps"] == 25_000_000
+    assert payload["stages"]["train"]["target_environment_steps"] == 100_000_000
+    assert payload["model"]["architecture"] == "sls-recurrent-relational-policy-v5"
     assert payload["model"]["recurrent_hidden_dim"] == 256
     assert payload["run"]["seed"] == 10_000_000
     assert payload["run"]["output"] == "runs/ironclad-a0-fullrun-v2"
     assert payload["ppo"]["gamma"] == 1.0
     assert payload["ppo"]["failure_progress_scale"] == 0.8
     assert payload["ppo"]["reward_schema"] == "sls-curriculum-progress-v3"
-    assert payload["ppo"]["recurrent_sequence_length"] == 32
+    assert payload["ppo"]["recurrent_sequence_length"] == 64
     assert payload["ppo"]["max_episode_steps"] == 4096
 
 
@@ -98,18 +100,35 @@ def test_progress_report_is_relative_to_update_zero() -> None:
     }
 
 
-def test_environment_migration_archives_stale_best_without_deleting_it(
-    tmp_path: Path,
-) -> None:
-    (tmp_path / "best_success.pt").write_bytes(b"checkpoint")
-    (tmp_path / "best_success.json").write_text("{}\n", encoding="utf-8")
+def test_policy_promotion_requires_quality_and_zero_runtime_failures() -> None:
+    stage = {
+        "minimum_success_rate": 0.1,
+        "minimum_reached_act2_rate": 0.5,
+        "minimum_reached_act3_rate": 0.2,
+        "minimum_evaluation_episodes": 100,
+    }
+    result = {
+        "episodes": 128, "success_rate": 0.2,
+        "reached_act2_rate": 0.7, "reached_act3_rate": 0.3,
+        "backend_errors": 0, "backend_truncations": 0,
+        "step_limits": 0, "cycle_limits": 0, "timeouts": 0,
+    }
+    assert _promotion_passes(result, stage)
+    assert not _promotion_passes({**result, "backend_errors": 1}, stage)
+    assert not _promotion_passes({**result, "self_loops": 1}, stage)
+    assert not _promotion_passes({**result, "success_rate": 0.01}, stage)
 
-    archived = _archive_pre_migration_best(tmp_path)
 
-    assert archived == [
-        "best_success.pre-environment-migration.pt",
-        "best_success.pre-environment-migration.json",
-    ]
-    assert (tmp_path / archived[0]).read_bytes() == b"checkpoint"
-    assert (tmp_path / archived[1]).read_text(encoding="utf-8") == "{}\n"
-    assert _archive_pre_migration_best(tmp_path) == archived
+def test_curriculum_stage_requires_successful_predecessor_promotion() -> None:
+    manifest = {
+        "stages": {
+            "smoke": {"status": "COMPLETE", "promotion_passed": True},
+            "pilot": {"status": "COMPLETE", "promotion_passed": True},
+        },
+    }
+    _require_predecessor_promotion(manifest, "smoke")
+    _require_predecessor_promotion(manifest, "pilot")
+    _require_predecessor_promotion(manifest, "train")
+    manifest["stages"]["pilot"]["promotion_passed"] = False
+    with pytest.raises(ValueError, match="promotion gate"):
+        _require_predecessor_promotion(manifest, "train")

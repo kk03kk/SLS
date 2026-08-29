@@ -81,9 +81,7 @@ _CATEGORY_VALUES = {
     "MONSTER", "ELITE", "EVENT", "REST", "SHOP", "TREASURE", "BOSS",
     "BURNING_ELITE", "M", "E", "?", "R", "$", "T", "B",
 }
-VOCABULARY_PATH = (
-    Path(__file__).resolve().parents[3] / "configs" / "model" / "policy_vocabulary_v3.json"
-)
+VOCABULARY_PATH = Path(__file__).with_name("policy_vocabulary_v3.json")
 _CONSTANT_HEADERS = Path(__file__).resolve().parents[3] / "cpp" / "simulator" / "include" / "constants"
 _NATIVE_MODULE = Path(__file__).resolve().parents[3] / "cpp" / "simulator" / "python" / "module.cpp"
 
@@ -143,17 +141,25 @@ def policy_vocabulary() -> dict[str, Any]:
             "run tools/generate_policy_vocabulary.py"
         )
     payload = json.loads(VOCABULARY_PATH.read_text(encoding="utf-8"))
-    expected = build_policy_vocabulary()
-    if payload != expected:
-        raise RuntimeError(
-            "committed policy vocabulary does not match the registry; "
-            "run tools/generate_policy_vocabulary.py"
-        )
+    unsigned = dict(payload)
+    claimed = str(unsigned.pop("sha256", ""))
+    encoded = json.dumps(unsigned, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    if hashlib.sha256(encoded).hexdigest() != claimed:
+        raise RuntimeError("committed policy vocabulary digest is invalid")
     return payload
 
 
 def vocabulary_hash() -> str:
     return str(policy_vocabulary()["sha256"])
+
+
+@lru_cache(maxsize=1)
+def _vocabulary_indices() -> tuple[dict[str, int], dict[str, int]]:
+    vocabulary = policy_vocabulary()
+    return (
+        {str(value): index for index, value in enumerate(vocabulary["content"])},
+        {str(value): index for index, value in enumerate(vocabulary["categorical"])},
+    )
 
 
 def content_token(value: str | None) -> tuple[int, int]:
@@ -163,22 +169,20 @@ def content_token(value: str | None) -> tuple[int, int]:
     if ":OPTION:" in raw:
         raw, ordinal = raw.rsplit(":OPTION:", 1)
         variant = f"OPTION:{int(ordinal)}"
-    vocabulary = policy_vocabulary()
     try:
-        content = vocabulary["content"].index(raw)
-    except ValueError as error:
+        content = _vocabulary_indices()[0][raw]
+    except KeyError as error:
         raise ValueError(f"unknown policy content ID: {value}") from error
     try:
-        variant_id = vocabulary["categorical"].index(variant)
-    except ValueError as error:
+        variant_id = _vocabulary_indices()[1][variant]
+    except KeyError as error:
         raise ValueError(f"unknown policy content variant: {variant}") from error
     return content, variant_id
 
 
 def categorical_token(value: str | None, *, path: str) -> int:
     raw = "NONE" if value is None else str(value).upper()
-    values = policy_vocabulary()["categorical"]
     try:
-        return values.index(raw)
-    except ValueError as error:
+        return _vocabulary_indices()[1][raw]
+    except KeyError as error:
         raise ValueError(f"unknown policy categorical value at {path}: {value}") from error
