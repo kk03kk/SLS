@@ -21,6 +21,35 @@ def test_native_full_run_reaches_a_canonical_decision() -> None:
     assert decision.observation.run.act == 1
 
 
+def test_seed_zero_neow_transform_uses_the_stock_rng_counter() -> None:
+    """The fixed boss option consumes one draw; transform is the sixth draw."""
+
+    pytest.importorskip("sls.backends.simulator.native", exc_type=ImportError)
+    from sls.backends.simulator import IRONCLAD_A0_ACT1, SimulatorBackend
+
+    backend = SimulatorBackend(IRONCLAD_A0_ACT1)
+    decision = backend.reset(0)
+    transform = next(
+        action for action in decision.actions
+        if action.kind is ActionKind.CHOOSE_NEOW_OPTION
+        and action.option_id == "event-option:0"
+    )
+    decision = backend.step(transform).decision
+
+    assert decision.observation.screen.value == "CARD_REWARD"
+    assert backend.checkpoint()["rng"]["neow"]["counter"] == 5
+    fifth_strike = next(
+        action for action in decision.actions
+        if action.kind is ActionKind.SELECT_CARD
+        and action.subject_id == "select-card:4"
+    )
+    decision = backend.step(fifth_strike).decision
+
+    assert decision.observation.screen.value == "MAP"
+    assert [card.card_id for card in decision.observation.deck][-1] == "WILD_STRIKE"
+    assert backend.checkpoint()["rng"]["neow"]["counter"] == 6
+
+
 def test_worker_crash_dump_replays_the_exact_native_boundary(tmp_path: Path) -> None:
     pytest.importorskip("sls.backends.simulator.native", exc_type=ImportError)
     from sls.backends.simulator import IRONCLAD_A0_ACT1, SimulatorBackend
