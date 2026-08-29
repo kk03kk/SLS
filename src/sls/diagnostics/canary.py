@@ -32,9 +32,13 @@ def stable_hash(value: object) -> str:
     return hashlib.sha256(_json_bytes(value)).hexdigest()
 
 
+def _tensor_bytes(value: torch.Tensor) -> bytes:
+    return bytes(value.reshape(-1).view(torch.uint8).tolist())
+
+
 def tensor_hash(value: torch.Tensor) -> str:
     tensor = value.detach().to(device="cpu", dtype=torch.float32).contiguous()
-    return hashlib.sha256(tensor.numpy().tobytes()).hexdigest()
+    return hashlib.sha256(_tensor_bytes(tensor)).hexdigest()
 
 
 def policy_input_hash(batch: PolicyBatch, memory: torch.Tensor) -> str:
@@ -43,7 +47,7 @@ def policy_input_hash(batch: PolicyBatch, memory: torch.Tensor) -> str:
         canonical = tensor.detach().cpu().contiguous()
         digest.update(str(canonical.dtype).encode("ascii"))
         digest.update(_json_bytes(list(canonical.shape)))
-        digest.update(canonical.numpy().tobytes())
+        digest.update(_tensor_bytes(canonical))
     return digest.hexdigest()
 
 
