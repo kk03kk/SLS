@@ -90,12 +90,17 @@ def test_training_level_requires_explicit_expansion_contract(tmp_path: Path) -> 
 
 def test_training_configs_use_policy_transfer_gate() -> None:
     root = Path(__file__).resolve().parents[2]
-    expected = ("act1_smoke.toml", "act1_pilot.toml", "act1_train.toml")
-    for name in expected:
+    expected = {
+        "act1_smoke.toml": ("EXPERIMENTAL", False),
+        "act1_pilot.toml": ("EXPERIMENTAL", False),
+        "act1_train.toml": ("PRODUCTION", True),
+    }
+    for name, (mode, requires_gate) in expected.items():
         with (root / "configs" / "train" / name).open("rb") as stream:
             run = tomllib.load(stream)["run"]
         assert run["require_readiness"] is False
-        assert run["require_transfer_gate"] is True
+        assert run["training_mode"] == mode
+        assert run["require_transfer_gate"] is requires_gate
         assert Path(run["transfer_gate"]).name == "policy_transfer_v1.json"
 
 

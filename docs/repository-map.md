@@ -181,7 +181,7 @@ mechanisms; they are not a second environment or training contract.
 - `select_act1_validation_seeds.py`: deterministic coverage-novel Act 1 seed/variant selection over native simulator trajectories.
 - `record_act1_validation_round.py`: deterministic provenance assembly for a selected local Original expansion round.
 - `benchmark_act1.py`: guarded fixed-100-seed random/deterministic/native/untrained baselines.
-- `preflight_training.py`, `benchmark_workers.py`: Linux/CUDA/native exact-resume preflight and centralized-inference worker selection.
+- `preflight_training.py`, `benchmark_workers.py`: explicit experimental/production Linux, CUDA, native, exact-resume, transfer, and centralized-inference checks.
 - `submit_slurm.py`: single-GPU Slurm submission for preflight, benchmark, smoke, pilot, and long training.
 - `validate_full_run.py`: one-seed CommunicationMod parity entry.
 - `validate_corpus.py`: TOML-driven multi-seed parity corpus, acceptance gate, traces, and coverage summary.
@@ -194,10 +194,11 @@ mechanisms; they are not a second environment or training contract.
 - `validation/act1_training_ready.toml`: strict two-round expansion requirements for pilot/training.
 - `validation/act1_readiness.lock.json`: committed engineering-only evidence and cross-platform source-contract attestation.
 - `validation/act1_training_readiness.lock.json`: committed `TRAINING_READY` attestation backed by two real clean four-seed expansion rounds.
-- `validation/policy_transfer_v1.json`: active public-contract and deterministic-probe training gate; hidden whole-run RNG identity is diagnostic.
+- `validation/original_truth_act1/`: minimal immutable Original-derived Act 1 route chains replayed when building fresh policy-transfer evidence.
+- `validation/policy_transfer_v1.json`: production public-contract, distribution, deterministic-probe, and policy-canary gate template; hidden whole-run RNG identity is diagnostic.
 - `model/policy_vocabulary_v3.json`: exact generated policy tokens and vocabulary hash.
-- `train/act1_train.toml`: production Act 1 worker, model, PPO, checkpoint, and evaluation settings.
-- `train/act1_smoke.toml`, `train/act1_pilot.toml`: policy-transfer-gated 20/200-update GPU stages.
+- `train/act1_train.toml`: `PRODUCTION` Act 1 worker, model, PPO, checkpoint, and evaluation settings; a verified transfer gate is mandatory.
+- `train/act1_smoke.toml`, `train/act1_pilot.toml`: explicitly `EXPERIMENTAL` 20/200-update GPU stages; artifacts remain unverified and cannot be deployed.
 
 ## `requirements`
 

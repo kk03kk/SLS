@@ -26,6 +26,9 @@ def _runtime_artifact() -> LoadedPolicyArtifact:
     metadata = PolicyArtifactMetadata(
         model=config.to_dict(), encoding_schema=config.to_dict()["encoding_schema"],
         vocabulary_sha256=config.to_dict()["vocabulary_hash"],
+        training_mode="PRODUCTION", policy_transfer_verified=True,
+        source_git_commit="test", native_source_sha256="test-native",
+        training_config_sha256="test-config",
         ascension_min=0, ascension_max=20, goal="HEART",
     )
     return LoadedPolicyArtifact(model, metadata)
@@ -72,7 +75,12 @@ def test_policy_artifact_round_trip_is_strict_and_standalone(tmp_path: Path) -> 
     model = Policy(config)
     checkpoint = tmp_path / "checkpoint.pt"
     torch.save({
-        "contract": {"model": config.to_dict()},
+        "contract": {
+            "model": config.to_dict(), "training_mode": "PRODUCTION",
+            "policy_transfer_verified": True, "git_commit": "test",
+            "native_source_sha256": "test-native",
+            "training_config_sha256": "test-config",
+        },
         "model": model.state_dict(),
     }, checkpoint)
     artifact = export_policy_artifact(
@@ -83,7 +91,7 @@ def test_policy_artifact_round_trip_is_strict_and_standalone(tmp_path: Path) -> 
     assert loaded.metadata.goal == "HEART"
     assert loaded.metadata.ascension_min == 0
     assert loaded.metadata.ascension_max == 20
-    assert POLICY_ARTIFACT_SCHEMA == "sls-policy-artifact-v1"
+    assert POLICY_ARTIFACT_SCHEMA == "sls-policy-artifact-v2"
     for expected, actual in zip(model.parameters(), loaded.model.parameters()):
         assert torch.equal(expected, actual)
 

@@ -1,5 +1,5 @@
 {
-  "audit_sha256": "364b228798f9163ef1143f458f810189cc13a8857a7e8d3a0d0aa310c2a3dcbf",
+  "audit_sha256": "2d15655ee4041c82d921229d157a7c8aa854ccd8c8e01011207e5ad6d7503726",
   "content_scope_sha256": "24a218a612d16c34879dd4469891febc4a770f83d25783e51e79e10476a60f17",
   "entries": {
     "cards": [
@@ -3631,7 +3631,7 @@
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:496",
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:553",
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:877",
-          "src/sls/backends/original/adapter.py:628",
+          "src/sls/backends/original/adapter.py:641",
           "src/sls/contracts/continuation.py:155",
           "src/sls/contracts/continuation.py:39",
           "src/sls/contracts/continuation.py:46"
@@ -8018,7 +8018,7 @@
           "cpp/simulator/src/combat/MonsterGroup.cpp:482",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:2322",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:45",
-          "src/sls/backends/original/adapter.py:530"
+          "src/sls/backends/original/adapter.py:543"
         ],
         "status": "VERIFIED",
         "test_references": [
@@ -9354,8 +9354,8 @@
           "cpp/simulator/src/sim/search/GameAction.cpp:451",
           "cpp/simulator/src/sim/search/GameAction.cpp:690",
           "cpp/simulator/src/sim/search/GameAction.cpp:750",
-          "src/sls/backends/original/adapter.py:294",
-          "src/sls/backends/original/adapter.py:661",
+          "src/sls/backends/original/adapter.py:306",
+          "src/sls/backends/original/adapter.py:674",
           "src/sls/backends/simulator/environment.py:681",
           "src/sls/content/normalize.py:180"
         ],
@@ -9462,16 +9462,16 @@
           "cpp/simulator/src/sim/search/ScumSearchAgent2.cpp:362",
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:673",
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:775",
-          "src/sls/backends/original/adapter.py:284",
-          "src/sls/backends/original/adapter.py:309",
-          "src/sls/backends/original/adapter.py:310",
-          "src/sls/backends/original/adapter.py:312",
-          "src/sls/backends/original/adapter.py:464",
-          "src/sls/backends/original/adapter.py:465",
-          "src/sls/backends/original/adapter.py:607",
-          "src/sls/backends/original/adapter.py:654",
-          "src/sls/backends/original/adapter.py:655",
-          "src/sls/backends/original/adapter.py:676",
+          "src/sls/backends/original/adapter.py:296",
+          "src/sls/backends/original/adapter.py:321",
+          "src/sls/backends/original/adapter.py:322",
+          "src/sls/backends/original/adapter.py:324",
+          "src/sls/backends/original/adapter.py:477",
+          "src/sls/backends/original/adapter.py:478",
+          "src/sls/backends/original/adapter.py:620",
+          "src/sls/backends/original/adapter.py:667",
+          "src/sls/backends/original/adapter.py:668",
+          "src/sls/backends/original/adapter.py:689",
           "src/sls/backends/original/environment.py:600",
           "src/sls/backends/simulator/environment.py:421",
           "src/sls/backends/simulator/environment.py:433",
@@ -10645,7 +10645,7 @@
           "cpp/simulator/src/combat/MonsterGroup.cpp:482",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:2322",
           "cpp/simulator/src/combat/MonsterSpecific.cpp:45",
-          "src/sls/backends/original/adapter.py:530"
+          "src/sls/backends/original/adapter.py:543"
         ],
         "status": "VERIFIED",
         "test_references": [
@@ -14179,7 +14179,7 @@
         },
         "scope_groups": [],
         "simulator_references": [
-          "src/sls/backends/original/adapter.py:89",
+          "src/sls/backends/original/adapter.py:101",
           "src/sls/backends/simulator/environment.py:219"
         ],
         "status": "VERIFIED",
@@ -16280,7 +16280,7 @@
           "cpp/simulator/src/game/GameContext.cpp:1524",
           "cpp/simulator/src/game/GameContext.cpp:1957",
           "cpp/simulator/src/sim/search/SimpleAgent.cpp:821",
-          "src/sls/runtime/artifact.py:26"
+          "src/sls/runtime/artifact.py:32"
         ],
         "status": "VERIFIED",
         "test_references": [
@@ -16737,7 +16737,7 @@
           "cpp/simulator/src/sim/ConsoleSimulator.cpp:473",
           "cpp/simulator/src/sim/search/GameAction.cpp:194",
           "cpp/simulator/src/sim/search/GameAction.cpp:609",
-          "src/sls/backends/original/adapter.py:376"
+          "src/sls/backends/original/adapter.py:388"
         ],
         "status": "VERIFIED",
         "test_references": []

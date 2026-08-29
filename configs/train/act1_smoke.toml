@@ -1,4 +1,5 @@
 [run]
+training_mode = "EXPERIMENTAL"
 profile = "IRONCLAD_A0_ACT1"
 seed = 0
 device = "cuda"
@@ -11,7 +12,7 @@ evaluation_seed_start = 10000
 evaluation_seed_count = 100
 evaluation_max_steps = 512
 require_readiness = false
-require_transfer_gate = true
+require_transfer_gate = false
 transfer_gate = "runs/policy_transfer_v1.json"
 output = "runs/act1-smoke-v3"
 state_corpus = "runs/teacher-act1.json.gz"

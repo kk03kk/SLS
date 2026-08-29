@@ -1,12 +1,14 @@
-# NUS 单 GPU 训练操作手册
+# NUS 单 GPU 实验训练操作手册
 
-服务器只运行已由本地 Original 证据锁定的 native simulator。不要把游戏、Mod、autosave 或大型 truth bundle 上传到集群，也不要在 `xlogin` 上直接训练。
+当前下一步仅运行 `EXPERIMENTAL` teacher、BC 和 20-update smoke，不启动
+1000-update production 长训。实验模式不会伪装成策略迁移已验证：其 checkpoint、
+artifact 和 manifest 永久记录 `training_mode=EXPERIMENTAL` 与
+`policy_transfer_verified=false`，不能用于 production export、resume 或真实游戏。
 
-## 1. 登录、拉取与环境
+## 1. 拉取与刷新 editable 环境
 
 ```bash
 ssh -J hengzhi@sjump.comp.nus.edu.sg hengzhi@xlogin.comp.nus.edu.sg
-git clone https://github.com/kk03kk/SLS.git
 cd SLS
 git switch main
 git pull --ff-only origin main
@@ -17,76 +19,79 @@ test -x "$TRAIN_PY"
 "$TRAIN_PY" -m pip install -e . --no-deps
 ```
 
-`git status --short` 必须为空。该固定 venv 已包含训练依赖；不要在约 1 GiB
-虚拟内存限制的 `xlogin` 上导入 Torch、构建 native、运行测试或训练，也不要在这里
-重新解析/安装模型依赖。`pip install -e . --no-deps` 只刷新同一 checkout 的 editable
-入口。所有 Torch/native/GPU 工作均由下述 Slurm compute job 完成。若集群要求加载
-编译器或 CUDA module，应按 NUS 当前说明在 batch 环境中提供；preflight 会对缺失项
-直接失败。
+`git status --short` 必须为空。不要在约 1 GiB 内存限制的 `xlogin` 上导入 Torch、
+编译 native 或训练；下面命令均提交或申请 compute 资源。
 
-## 2. Preflight 与 worker benchmark
+## 2. Experimental preflight 与吞吐 benchmark
 
 ```bash
-"$TRAIN_PY" tools/submit_slurm.py preflight --python "$TRAIN_PY"
-squeue -u "$USER"
+"$TRAIN_PY" tools/submit_slurm.py preflight --mode experimental --python "$TRAIN_PY"
 tail -f runs/slurm-logs/sls-preflight-*.out
 
-"$TRAIN_PY" tools/submit_slurm.py benchmark --python "$TRAIN_PY"
+"$TRAIN_PY" tools/submit_slurm.py benchmark --mode experimental --python "$TRAIN_PY"
 tail -f runs/slurm-logs/sls-benchmark-*.out
-"$TRAIN_PY" -c 'import json; print(json.load(open("runs/worker-benchmark.json"))["selected_workers"])'
+N=$("$TRAIN_PY" -c 'import json; print(json.load(open("runs/worker-benchmark.json"))["selected_workers"])')
+echo "$N"
 ```
 
-默认资源是 `allusers/normal`、一张 `a100-40`、16 CPU、64 GB。若 `sinfo` 显示的 GRES 名不同，使用 `--gpu NAME` 覆盖；短任务默认 `gpu`，最长三小时。benchmark 测试 8/16/24/32 workers，并选择达到峰值吞吐 95% 的最小数量。记下输出的 `selected_workers`，以下以 `N` 表示。
+Experimental preflight 仍强制检查 clean Git/source identity、Linux/Python/compiler、
+native build/import、CUDA、Policy v3/词表、Decision invariant、seed 8335 crash replay、
+单 worker 启动和 checkpoint exact-resume；唯一省略的是 production transfer gate。
 
-## 3. Smoke、pilot 与正式训练
+## 3. 1000-seed teacher、独立 validation 与 BC
 
-NUS 的 preflight、benchmark、20-update smoke、pilot 和正式训练统一要求提交的
-policy-transfer gate。全新 clone 的 preflight 会从已提交的随机样本证据与真值路线
-自动生成绑定当前 clean main SHA 的 `runs/policy_transfer_v1.json`。它校验公开
-Observation、合法 Action、编码/词表、禁用内容、确定性机制探针与随机分布；
-整局隐藏 RNG 同轨迹不阻塞训练。20-seed Original canary 是模型部署放行项，不阻塞
-生成 teacher、BC 或 PPO 训练。
-
-先在 compute job 或等价 Python 3.12 + native 环境生成自动教师状态库；三个生产
-配置默认从该文件以 50% 概率恢复中途公开状态：
+以下 `srun` 使工作实际发生在 compute node。训练集使用 seeds 0–999，validation
+使用 20000–20099，二者不重叠。
 
 ```bash
-"$TRAIN_PY" tools/generate_teacher_corpus.py --seed-count 1000 --output runs/teacher-act1.json.gz
+srun --account=allusers --qos=normal --partition=gpu --gres=gpu:a100-40:1 --cpus-per-task=16 --mem=64G --time=03:00:00 \
+  "$TRAIN_PY" tools/generate_teacher_corpus.py --seed-start 0 --seed-count 1000 --workers 16 --output runs/teacher-act1.json.gz
+
+srun --account=allusers --qos=normal --partition=gpu --gres=gpu:a100-40:1 --cpus-per-task=16 --mem=64G --time=03:00:00 \
+  "$TRAIN_PY" tools/generate_teacher_corpus.py --seed-start 20000 --seed-count 100 --workers 16 --output runs/teacher-act1-validation.json.gz
+
+"$TRAIN_PY" -c 'import gzip,json; p=json.load(gzip.open("runs/teacher-act1.json.gz","rt")); print({k:(len(p[k]) if k=="examples" else p[k]) for k in ("teacher_successes","rejected_labels","examples","corpus_sha256")})'
+
+srun --account=allusers --qos=normal --partition=gpu --gres=gpu:a100-40:1 --cpus-per-task=16 --mem=64G --time=03:00:00 \
+  "$TRAIN_PY" tools/pretrain_behavior.py runs/teacher-act1.json.gz --validation-corpus runs/teacher-act1-validation.json.gz --output runs/act1-bc.pt --artifact-output runs/act1-bc-artifact.pt --device cuda
 ```
 
+BC 会验证每个 label 在 checkpoint 中恰好对应一个合法 candidate，并要求 held-out
+accuracy 比随机初始化至少提高 5 个百分点。corpus 与 BC 都记录 Git、native、词表、
+生成/训练配置 digest、成功数、拒绝 label 数及 corpus digest。
+
+## 4. 20-update experimental smoke
+
 ```bash
-"$TRAIN_PY" tools/submit_slurm.py smoke --python "$TRAIN_PY" --workers N
+"$TRAIN_PY" tools/submit_slurm.py smoke --python "$TRAIN_PY" --workers "$N" --warm-start runs/act1-bc.pt
 tail -f runs/slurm-logs/sls-smoke-*.out
-
-test -f configs/validation/policy_transfer_v1.json
-"$TRAIN_PY" tools/submit_slurm.py pilot --python "$TRAIN_PY" --workers N
-tail -f runs/slurm-logs/sls-pilot-*.out
 ```
 
-若 transfer gate 缺失、词表过期或不覆盖目标 profile，必须安全停止。先检查 smoke 的
-`run-manifest.json` 为 `COMPLETE`，没有 NaN/Inf，checkpoint exact resume 正常。
-pilot 每 10 updates 在固定 100 seeds 上评估。只有最近连续三次评估的成功率或
-median failure floor 优于未训练基线，同时 entropy、KL、value loss、gradient norm
-和 step/cycle limit 触发率正常，才提交长期训练：
+完成后检查：
 
 ```bash
-"$TRAIN_PY" tools/submit_slurm.py train --python "$TRAIN_PY" --workers N
+tail -n 5 runs/act1-smoke-v3/metrics.jsonl
+"$TRAIN_PY" -c 'import json; p=json.load(open("runs/act1-smoke-v3/run-manifest.json")); print({k:p.get(k) for k in ("status","training_mode","policy_transfer_verified","best_checkpoint")})'
 ```
 
-正式任务默认使用 `gpu-long`，时限三天。当前实现是 centralized inference 的单 GPU PPO，不要申请多 GPU，也不要用 `torchrun`。
-
-## 4. 中断与恢复
-
-Slurm 会在终止前 300 秒向 batch task 发送 SIGTERM；提交器使用 shell `exec`，确保
-信号直接到达 Python。训练器完成当前 PPO update 后原子保存 `latest.pt`，将 manifest
-标为 `INTERRUPTED`。同一配置和 worker 数量下恢复：
+重点查看 evaluation、`approx_kl_final`、`clip_fraction`、`epochs_completed`、
+`kl_early_stop`、`terminations_step_limit` 和 `terminations_cycle_limit`。确认 smoke
+无 crash/NaN/非法 Decision 且曲线合理后，再决定是否提交 200-update pilot：
 
 ```bash
-"$TRAIN_PY" tools/submit_slurm.py pilot --python "$TRAIN_PY" --workers N --resume
-# 或正式训练
-"$TRAIN_PY" tools/submit_slurm.py train --python "$TRAIN_PY" --workers N --resume
+"$TRAIN_PY" tools/submit_slurm.py pilot --python "$TRAIN_PY" --workers "$N" --warm-start runs/act1-bc.pt
 ```
 
-恢复会严格核对模型、PPO、课程、transfer gate、native source、Python/Torch/CUDA 和 worker 数。任何不一致都应新建训练，不要修改 checkpoint 绕过检查。metrics 中晚于 checkpoint update 的残留记录会被移除，避免重复曲线。
+## 5. Production 状态
 
-课程加入下一阶段的信号是独立 held-out seeds 连续三次成功率至少 20%；旧阶段继续混合采样。产品最终胜率门槛需由完整 A0–A20 曲线决定。
+Production preflight 命令是：
+
+```bash
+"$TRAIN_PY" tools/submit_slurm.py preflight --mode production --python "$TRAIN_PY"
+```
+
+它在全部 experimental 检查之上，严格验证当前 clean commit 绑定的完整
+`policy-transfer-v1`：提交的 Original-derived immutable routes、随机分布、确定性
+语义套件以及已接受的 Original policy canary。缺失任何一项都会 fail-fast。
+仓库现在已修复 fresh clone 不含 truth routes 的问题；但在生成并接受当前 v3 的
+20-seed Original canary 之前，production preflight 与 `act1_train.toml` 仍应保持阻塞。

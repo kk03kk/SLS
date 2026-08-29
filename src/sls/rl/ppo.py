@@ -17,6 +17,7 @@ from sls.rl.episode_limit import (
 from sls.rl.rollout import RolloutBatch, generalized_advantage_estimate
 from sls.rl.reward import REWARD_SCHEMA, shape_curriculum_reward
 from sls.rl.training_contract import native_source_digest
+from sls.rl.training_mode import TrainingMode, parse_training_mode
 from sls.rl.workers import WorkerPool
 
 
@@ -128,6 +129,10 @@ class PPOTrainer:
         native_contract_digest: str | None = None,
         checkpoint_reservoir: Sequence[Mapping[str, object]] = (),
         checkpoint_reservoir_digest: str = "NONE",
+        training_mode: TrainingMode | str = TrainingMode.EXPERIMENTAL,
+        policy_transfer_verified: bool = False,
+        git_commit: str = "TEST_OR_UNSPECIFIED",
+        training_config_digest: str = "TEST_OR_UNSPECIFIED",
     ) -> None:
         self.model = model.to(device)
         self.workers = workers
@@ -142,6 +147,12 @@ class PPOTrainer:
         self.native_contract_digest = native_contract_digest or native_source_digest()
         self.checkpoint_reservoir = tuple(checkpoint_reservoir)
         self.checkpoint_reservoir_digest = str(checkpoint_reservoir_digest)
+        self.training_mode = parse_training_mode(training_mode)
+        self.policy_transfer_verified = bool(policy_transfer_verified)
+        if self.training_mode is TrainingMode.PRODUCTION and not self.policy_transfer_verified:
+            raise ValueError("production trainer requires verified policy transfer")
+        self.git_commit = str(git_commit)
+        self.training_config_digest = str(training_config_digest)
         self.decisions = workers.reset(self._take_seeds(workers.size))
         self.episode_limits = [EpisodeLimitState.initial(item) for item in self.decisions]
         self.termination_counts = {reason: 0 for reason in TERMINATION_REASONS}

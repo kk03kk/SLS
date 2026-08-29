@@ -9,6 +9,7 @@ import shlex
 import shutil
 import subprocess
 import sys
+import tomllib
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -18,6 +19,7 @@ TASK_CONFIGS = {
     "pilot": "configs/train/act1_pilot.toml",
     "train": "configs/train/act1_train.toml",
 }
+TASK_MODES = {"smoke": "EXPERIMENTAL", "pilot": "EXPERIMENTAL", "train": "PRODUCTION"}
 
 
 def _absolute_without_symlink_resolution(path: Path) -> str:
@@ -43,6 +45,7 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--warm-start", type=Path)
     parser.add_argument("--workers", type=int, help="selected result from benchmark_workers.py")
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--mode", choices=("experimental", "production"))
     return parser
 
 
@@ -65,8 +68,12 @@ def build_sbatch_command(args: argparse.Namespace, *, root: Path = ROOT) -> list
                 f"{args.task} does not accept training option(s): "
                 + ", ".join(unsupported)
             )
+        if args.mode is None:
+            raise ValueError(f"{args.task} requires explicit --mode")
     elif args.resume and args.warm_start:
         raise ValueError("--resume and --warm-start are mutually exclusive")
+    elif args.mode is not None:
+        raise ValueError("training task mode is defined only by its TOML config")
     python = _absolute_without_symlink_resolution(args.python)
     if args.task == "train":
         partition, walltime = "gpu-long", "3-00:00:00"
@@ -75,11 +82,32 @@ def build_sbatch_command(args: argparse.Namespace, *, root: Path = ROOT) -> list
     partition = args.partition or partition
     walltime = args.time or walltime
     if args.task == "preflight":
-        command = [str(python), str(root / "tools" / "preflight_training.py"), "--jobs", str(args.cpus)]
+        command = [
+            str(python), str(root / "tools" / "preflight_training.py"),
+            "--mode", str(args.mode), "--jobs", str(args.cpus),
+        ]
     elif args.task == "benchmark":
-        command = [str(python), str(root / "tools" / "benchmark_workers.py")]
+        command = [
+            str(python), str(root / "tools" / "benchmark_workers.py"),
+            "--mode", str(args.mode),
+        ]
     else:
         config = (args.config or root / TASK_CONFIGS[args.task]).resolve()
+        if config.is_file():
+            with config.open("rb") as stream:
+                configured_mode = str(
+                    tomllib.load(stream).get("run", {}).get("training_mode") or ""
+                ).upper()
+        elif args.config is not None:
+            raise ValueError(f"training config does not exist: {config}")
+        else:
+            # Unit/dry-run callers may provide a synthetic root. The task's
+            # built-in default remains statically bound to its required mode.
+            configured_mode = TASK_MODES[args.task]
+        if configured_mode != TASK_MODES[args.task]:
+            raise ValueError(
+                f"{args.task} config training_mode must be {TASK_MODES[args.task]}"
+            )
         command = [str(python), str(root / "tools" / "train_full_run.py"), "--config", str(config)]
         if args.workers is not None:
             command += ["--workers", str(args.workers)]

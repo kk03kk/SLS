@@ -90,15 +90,17 @@ described in `ironclad-fullrun-expansion.md`. Native structural traversal is
 not a release claim: Act 2, Act 3, Heart, and A1-A20 remain blocked until their
 Original/native transition and route evidence closes.
 
-The ignored Original artifacts are converted locally into a committed
-readiness lock after current-code replay of every selected route segment. A
-Linux training host verifies the lock against Git blob-based adapter,
-canonicalizer, policy, vocabulary, checkpoint, and native-source contracts;
-it never needs the game or truth bundles.
+The minimal immutable Original route bundles used by the Act 1 transfer builder
+are committed under `configs/validation/original_truth_act1`. This avoids any
+dependency on ignored developer-local `validation-results/truth` data while
+still replaying every selected public boundary against current simulator code.
 
-All default NUS stages share `configs/validation/policy_transfer_v1.json`.
-Legacy readiness locks remain verifiable historical attestations but are not
-consulted by default training configurations.
+Training safety is typed and fail-closed. `EXPERIMENTAL` is allowed only for
+smoke, pilot, teacher/BC, and throughput work and permanently records
+`policy_transfer_verified=false`. `PRODUCTION` requires the current
+Git/native/vocabulary-bound transfer gate and its accepted Original policy
+canary. Missing or invalid modes are errors; production loaders reject an
+experimental source regardless of its filename.
 
 ## Reproducibility profiles
 

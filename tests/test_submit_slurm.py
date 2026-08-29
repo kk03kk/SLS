@@ -41,7 +41,10 @@ def test_all_tasks_preserve_virtualenv_python_symlink(
     _simulate_symlink_resolution(monkeypatch, entry, target)
     assert entry.resolve() == Path(os.path.abspath(str(target)))
 
-    args = _parser().parse_args([task, "--python", str(entry), "--dry-run"])
+    argv = [task, "--python", str(entry), "--dry-run"]
+    if task in {"preflight", "benchmark"}:
+        argv += ["--mode", "experimental"]
+    args = _parser().parse_args(argv)
     wrapped = _wrapped(build_sbatch_command(args, root=tmp_path / "repo"))
 
     assert wrapped[0] == os.path.abspath(str(entry))
@@ -61,7 +64,10 @@ def test_python_path_expands_home_without_resolving_symlink(
     monkeypatch.setenv("HOME", str(home))
     monkeypatch.setenv("USERPROFILE", str(home))
 
-    args = _parser().parse_args(["preflight", "--python", "~/venvs/sls/bin/python"])
+    args = _parser().parse_args([
+        "preflight", "--mode", "experimental",
+        "--python", "~/venvs/sls/bin/python",
+    ])
     wrapped = _wrapped(build_sbatch_command(args, root=tmp_path / "repo"))
 
     assert wrapped[0] == os.path.abspath(str(entry))
@@ -72,7 +78,10 @@ def test_linux_home_example_is_preserved_exactly(monkeypatch: pytest.MonkeyPatch
     expected = "/home/h/hengzhi/venvs/sls/bin/python"
     monkeypatch.setattr(os.path, "expanduser", lambda _value: expected)
     monkeypatch.setattr(os.path, "abspath", lambda value: value)
-    args = _parser().parse_args(["preflight", "--python", "~/venvs/sls/bin/python"])
+    args = _parser().parse_args([
+        "preflight", "--mode", "experimental",
+        "--python", "~/venvs/sls/bin/python",
+    ])
 
     wrapped = _wrapped(build_sbatch_command(args, root=Path("/home/h/hengzhi/SLS")))
 
@@ -83,6 +92,7 @@ def test_linux_home_example_is_preserved_exactly(monkeypatch: pytest.MonkeyPatch
 def test_training_flags_config_and_slurm_defaults_are_unchanged(tmp_path: Path) -> None:
     python = tmp_path / "venv" / "bin" / "python"
     config = tmp_path / "custom.toml"
+    config.write_text('[run]\ntraining_mode = "EXPERIMENTAL"\n', encoding="utf-8")
     args = _parser().parse_args([
         "pilot", "--python", str(python), "--workers", "24", "--resume",
         "--config", str(config),
@@ -132,20 +142,23 @@ def test_exact_resume_and_warm_start_are_mutually_exclusive() -> None:
 
 def test_benchmark_submission_uses_the_guarded_benchmark_entrypoint(tmp_path: Path) -> None:
     python = tmp_path / "venv" / "bin" / "python"
-    args = _parser().parse_args(["benchmark", "--python", str(python)])
+    args = _parser().parse_args([
+        "benchmark", "--mode", "experimental", "--python", str(python),
+    ])
     wrapped = _wrapped(build_sbatch_command(args, root=tmp_path / "repo"))
 
     assert wrapped == [
         os.path.abspath(str(python)),
         str(tmp_path / "repo" / "tools" / "benchmark_workers.py"),
+        "--mode", "experimental",
     ]
 
 
 @pytest.mark.parametrize(
     "argv,script,config,extra,partition,walltime",
     (
-        (("preflight",), "preflight_training.py", None, ("--jobs", "16"), "gpu", "03:00:00"),
-        (("benchmark",), "benchmark_workers.py", None, (), "gpu", "03:00:00"),
+        (("preflight", "--mode", "experimental"), "preflight_training.py", None, ("--mode", "experimental", "--jobs", "16"), "gpu", "03:00:00"),
+        (("benchmark", "--mode", "experimental"), "benchmark_workers.py", None, ("--mode", "experimental"), "gpu", "03:00:00"),
         (("smoke", "--workers", "32"), "train_full_run.py", "act1_smoke.toml", ("--workers", "32"), "gpu", "03:00:00"),
         (("pilot", "--workers", "32"), "train_full_run.py", "act1_pilot.toml", ("--workers", "32"), "gpu", "03:00:00"),
         (("train", "--workers", "32"), "train_full_run.py", "act1_train.toml", ("--workers", "32"), "gpu-long", "3-00:00:00"),
@@ -180,6 +193,6 @@ def test_nus_production_command_matrix(
 def test_nontraining_jobs_reject_silently_ignored_training_options(
     task: str, option: tuple[str, str],
 ) -> None:
-    args = _parser().parse_args([task, *option])
+    args = _parser().parse_args([task, "--mode", "experimental", *option])
     with pytest.raises(ValueError, match="does not accept"):
         build_sbatch_command(args)

@@ -205,7 +205,8 @@ def build_evidence(
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--truth-root", type=Path, default=ROOT / "validation-results/truth",
+        "--truth-root", type=Path,
+        default=ROOT / "configs/validation/original_truth_act1",
     )
     parser.add_argument(
         "--output", type=Path,

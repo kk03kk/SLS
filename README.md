@@ -65,17 +65,20 @@ autosave workflow is documented in
 
 PPO and production inference use the same stateless Decision contract. Policy
 v3 is a relational, screen-aware model with exact content tokens, explicit map
-edges, card zones, entity types, and semantic action references. Training is
-gated by `policy-transfer-v1`: exact public observations/actions and short
-deterministic probes are required; whole-run hidden RNG identity is diagnostic.
+edges, card zones, entity types, and semantic action references. Training has
+two explicit safety levels. `EXPERIMENTAL` smoke/pilot runs retain native,
+Decision, regression, CUDA, vocabulary, source-identity, and exact-resume
+checks, but do not claim policy transfer. `PRODUCTION` additionally requires a
+complete `policy-transfer-v1` gate, including the Original policy canary.
 
 ```bash
 python tools/bootstrap.py --with-model
 python tools/generate_policy_vocabulary.py --check
-python tools/preflight_training.py
+python tools/preflight_training.py --mode experimental
 python tools/generate_teacher_corpus.py --seed-count 1000 --output runs/teacher-act1.json.gz
-python tools/pretrain_behavior.py runs/teacher-act1.json.gz --output runs/act1-bc.pt --device cuda
-python tools/train_full_run.py --config configs/train/act1_train.toml --warm-start runs/act1-bc.pt
+python tools/generate_teacher_corpus.py --seed-start 20000 --seed-count 100 --output runs/teacher-act1-validation.json.gz
+python tools/pretrain_behavior.py runs/teacher-act1.json.gz --validation-corpus runs/teacher-act1-validation.json.gz --output runs/act1-bc.pt --artifact-output runs/act1-bc-artifact.pt --device cuda
+python tools/train_full_run.py --config configs/train/act1_smoke.toml --warm-start runs/act1-bc.pt
 ```
 
 Resume an exact run, or export and attach the current real Ironclad game:
@@ -86,13 +89,15 @@ python tools/export_policy.py runs/heart-a0-a20/latest.pt --output runs/ironclad
 python tools/play_live.py runs/ironclad-heart.pt --device cuda
 ```
 
-The live controller uses deterministic argmax, rejects Prismatic Shard runs,
+Experimental checkpoints and artifacts are permanently marked and are rejected
+by production export, production resume/warm-start, and live play. The live
+controller uses deterministic argmax, rejects Prismatic Shard runs,
 journals intent/ack records, refuses uncertain resends, supports Ctrl-C, and
 can attach at any public decision boundary. `act1_train.toml` is deliberately
 named for its real horizon; Heart naming is reserved for a Heart curriculum.
 Launch the Mod with JVM property `-Dsls.oracle.mode=production` to suppress
 validation-only RNG, continuation, timing, and scenario fields on the wire.
 
-NUS Linux/Slurm 的拉取、preflight、worker benchmark、smoke、pilot、长期训练和
-安全恢复命令见 [`docs/nus-training-zh.md`](docs/nus-training-zh.md)。服务器只验证
-提交的 policy-transfer gate，不需要 Original 游戏或本地 truth bundles。
+NUS Linux/Slurm 的拉取、分层 preflight、teacher/BC、smoke 和 pilot 命令见
+[`docs/nus-training-zh.md`](docs/nus-training-zh.md)。仓库包含构建 production gate
+所需的最小不可变 Original 路线；最终 production gate 仍需已接受的 Original canary。

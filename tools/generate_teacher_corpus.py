@@ -16,7 +16,10 @@ sys.path.insert(0, str(ROOT / "src"))
 from sls.backends.simulator import IRONCLAD_A0_ACT1, SimulatorBackend  # noqa: E402
 from sls.model.encoding import vocabulary_hash  # noqa: E402
 from sls.rl.demonstrations import TEACHER_CORPUS_SCHEMA  # noqa: E402
-from sls.rl.training_contract import canonical_digest, native_source_digest  # noqa: E402
+from sls.rl.training_contract import (  # noqa: E402
+    canonical_digest, git_state, native_source_digest,
+)
+from sls.rl.training_mode import TrainingMode  # noqa: E402
 
 
 def _generate_seed(task: tuple[int, int]):
@@ -110,7 +113,15 @@ def generate(
         "rejections": rejections,
         "native_source_sha256": native_source_digest(),
         "vocabulary_sha256": vocabulary_hash(), "examples": examples,
+        "training_mode": TrainingMode.EXPERIMENTAL.value,
+        "policy_transfer_verified": False,
+        "git_commit": str(git_state()["commit"]),
+        "generation_config": {
+            "seed_start": seed_start, "seed_count": seed_count,
+            "stride": stride, "workers": workers,
+        },
     }
+    payload["generation_config_sha256"] = canonical_digest(payload["generation_config"])
     payload["corpus_sha256"] = canonical_digest(payload)
     return payload
 

@@ -13,6 +13,7 @@ from sls.content.scope import IRONCLAD_A0_SCOPE_ID, ironclad_a0_scope_hash
 from sls.model.encoding import ENCODING_SCHEMA, vocabulary_hash
 from sls.rl.ppo import PPOTrainer
 from sls.rl.training_contract import TRAINING_CHECKPOINT_SCHEMA, runtime_contract
+from sls.rl.training_mode import TrainingMode, parse_training_mode, require_artifact_mode
 
 
 CHECKPOINT_SCHEMA = TRAINING_CHECKPOINT_SCHEMA
@@ -33,6 +34,10 @@ def _contract(trainer: PPOTrainer) -> dict[str, Any]:
         "native_source_sha256": trainer.native_contract_digest,
         "checkpoint_reservoir_sha256": trainer.checkpoint_reservoir_digest,
         "runtime": runtime_contract(torch),
+        "training_mode": trainer.training_mode.value,
+        "policy_transfer_verified": trainer.policy_transfer_verified,
+        "git_commit": trainer.git_commit,
+        "training_config_sha256": trainer.training_config_digest,
     }
 
 
@@ -98,7 +103,10 @@ def load_checkpoint(path: str | Path, trainer: PPOTrainer) -> Mapping[str, Any]:
     return payload
 
 
-def load_model_weights(path: str | Path, model: torch.nn.Module) -> Mapping[str, Any]:
+def load_model_weights(
+    path: str | Path, model: torch.nn.Module, *,
+    target_training_mode: TrainingMode | str = TrainingMode.EXPERIMENTAL,
+) -> Mapping[str, Any]:
     """Load only policy weights for a compatible curriculum transfer.
 
     Unlike exact resume, this intentionally ignores the source profile,
@@ -107,14 +115,21 @@ def load_model_weights(path: str | Path, model: torch.nn.Module) -> Mapping[str,
     """
 
     payload = torch.load(Path(path), map_location="cpu", weights_only=False)
+    target_mode = parse_training_mode(target_training_mode, field="target_training_mode")
     if payload.get("schema") == "sls-behavior-pretrain-v1":
+        provenance = payload.get("provenance")
+        if not isinstance(provenance, Mapping):
+            raise ValueError("behavior-pretrained model has no safety provenance")
+        require_artifact_mode(
+            provenance, production=target_mode is TrainingMode.PRODUCTION,
+        )
         config = getattr(model, "config", None)
         if config is None or payload.get("model_config") != config.to_dict():
             raise ValueError("behavior-pretrained model architecture is incompatible")
         model.load_state_dict(payload["model"], strict=True)
         return {
             "schema": payload["schema"], "profile": "IRONCLAD_A0_ACT1_TEACHER",
-            "corpus": payload.get("corpus"),
+            "corpus": payload.get("corpus"), "provenance": dict(provenance),
         }
     if payload.get("schema") != CHECKPOINT_SCHEMA:
         raise ValueError("unsupported training checkpoint")
@@ -128,6 +143,9 @@ def load_model_weights(path: str | Path, model: torch.nn.Module) -> Mapping[str,
         raise ValueError("checkpoint encoding schema is incompatible with warm start")
     if contract.get("vocabulary_sha256") != vocabulary_hash():
         raise ValueError("checkpoint vocabulary is incompatible with warm start")
+    require_artifact_mode(
+        contract, production=target_mode is TrainingMode.PRODUCTION,
+    )
     model.load_state_dict(payload["model"], strict=True)
     source_profile = contract.get("profile")
     trainer_state = payload.get("trainer") or {}
@@ -137,4 +155,8 @@ def load_model_weights(path: str | Path, model: torch.nn.Module) -> Mapping[str,
         "profile": getattr(source_profile, "profile_id", str(source_profile)),
         "readiness_lock_sha256": contract.get("readiness_lock_sha256"),
         "native_source_sha256": contract.get("native_source_sha256"),
+        "training_mode": contract.get("training_mode"),
+        "policy_transfer_verified": contract.get("policy_transfer_verified"),
+        "git_commit": contract.get("git_commit"),
+        "training_config_sha256": contract.get("training_config_sha256"),
     }

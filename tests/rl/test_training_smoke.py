@@ -14,6 +14,7 @@ from sls.rl import (
     PPOConfig, PPOTrainer, ShardedWorkerPool, WorkerPool, evaluate, load_checkpoint,
     load_model_weights, save_checkpoint,
 )
+from sls.rl.training_mode import TrainingMode
 
 
 def test_sharded_worker_hosts_multiple_environments_per_process() -> None:
@@ -44,6 +45,11 @@ def test_one_native_ppo_update_and_exact_resume(tmp_path: Path) -> None:
             "clip_fraction", "gradient_norm",
         } <= metrics.keys()
         path = save_checkpoint(tmp_path / "checkpoint.pt", trainer)
+        saved_payload = torch.load(path, map_location="cpu", weights_only=False)
+        assert saved_payload["contract"]["training_mode"] == "EXPERIMENTAL"
+        assert saved_payload["contract"]["policy_transfer_verified"] is False
+        assert saved_payload["contract"]["git_commit"] == "TEST_OR_UNSPECIFIED"
+        assert "training_config_sha256" in saved_payload["contract"]
         expected_limits = [item.to_dict() for item in trainer.episode_limits]
         expected_seed = trainer.next_seed
         expected_metrics = trainer.train_update()
@@ -73,6 +79,11 @@ def test_one_native_ppo_update_and_exact_resume(tmp_path: Path) -> None:
         ))
         with pytest.raises(ValueError, match="architecture is incompatible"):
             load_model_weights(path, incompatible)
+        with pytest.raises(ValueError, match="cannot be used for production"):
+            load_model_weights(
+                path, Policy(model.config),
+                target_training_mode=TrainingMode.PRODUCTION,
+            )
 
         legacy = tmp_path / "legacy-v1.pt"
         torch.save({"schema": "sls-full-run-ppo-v1"}, legacy)
@@ -82,6 +93,10 @@ def test_one_native_ppo_update_and_exact_resume(tmp_path: Path) -> None:
         torch.save({"schema": "sls-full-run-ppo-v2"}, legacy_v2)
         with pytest.raises(ValueError, match="unsupported training checkpoint"):
             load_checkpoint(legacy_v2, trainer)
+        trainer.training_mode = TrainingMode.PRODUCTION
+        trainer.policy_transfer_verified = True
+        with pytest.raises(ValueError, match="contract does not match"):
+            load_checkpoint(path, trainer)
 
 
 def test_synthetic_step_limit_is_a_failure_terminal() -> None:

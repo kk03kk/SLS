@@ -26,6 +26,8 @@ __all__ = [
     "load_model_weights",
     "policy_boundary_fingerprint",
     "save_checkpoint",
+    "TrainingMode",
+    "parse_training_mode",
 ]
 
 
@@ -40,6 +42,8 @@ _LAZY_EXPORTS = {
     "load_checkpoint": ("sls.rl.checkpoint", "load_checkpoint"),
     "load_model_weights": ("sls.rl.checkpoint", "load_model_weights"),
     "save_checkpoint": ("sls.rl.checkpoint", "save_checkpoint"),
+    "TrainingMode": ("sls.rl.training_mode", "TrainingMode"),
+    "parse_training_mode": ("sls.rl.training_mode", "parse_training_mode"),
 }
 
 

@@ -17,6 +17,11 @@ from sls.backends.simulator import IRONCLAD_A0_ACT1, SimulatorBackend  # noqa: E
 from sls.model import ModelConfig, Policy, PolicyBatch, encode_decision  # noqa: E402
 from sls.rl.demonstrations import load_teacher_corpus  # noqa: E402
 from sls.runtime import save_policy_artifact  # noqa: E402
+from sls.model.encoding import vocabulary_hash  # noqa: E402
+from sls.rl.training_contract import (  # noqa: E402
+    canonical_digest, git_state, native_source_digest,
+)
+from sls.rl.training_mode import TrainingMode  # noqa: E402
 
 
 def _encoded_examples(examples: Iterable[Mapping[str, object]]):  # type: ignore[no-untyped-def]
@@ -102,15 +107,35 @@ def main() -> int:
             f"baseline={baseline_accuracy:.4f}, trained={validation_accuracy:.4f}"
         )
     args.output.parent.mkdir(parents=True, exist_ok=True)
+    provenance = {
+        "training_mode": TrainingMode.EXPERIMENTAL.value,
+        "policy_transfer_verified": False,
+        "git_commit": str(git_state()["commit"]),
+        "native_source_sha256": native_source_digest(),
+        "encoding_schema": model.config.to_dict()["encoding_schema"],
+        "vocabulary_sha256": vocabulary_hash(),
+        "training_config_sha256": canonical_digest({
+            "epochs": args.epochs, "batch_size": args.batch_size,
+            "model": model.config.to_dict(),
+        }),
+        "teacher_corpus_sha256": training["corpus_sha256"],
+        "validation_corpus_sha256": validation["corpus_sha256"],
+        "teacher_successes": int(training["teacher_successes"]),
+        "rejected_labels": int(training["rejected_labels"]),
+        "teacher_examples": len(examples),
+    }
     torch.save({
         "schema": "sls-behavior-pretrain-v1", "model_config": model.config.to_dict(),
         "model": model.state_dict(), "corpus": str(args.corpus.resolve()),
         "validation_corpus": str(args.validation_corpus.resolve()),
         "baseline_validation_accuracy": baseline_accuracy,
         "validation_accuracy": validation_accuracy,
+        "provenance": provenance,
     }, args.output)
+    args.artifact_output.parent.mkdir(parents=True, exist_ok=True)
     save_policy_artifact(
         model, args.artifact_output, ascension_min=0, ascension_max=0, goal="ACT1",
+        provenance=provenance,
     )
     print({
         "baseline_validation_accuracy": baseline_accuracy,

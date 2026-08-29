@@ -111,7 +111,11 @@ def main() -> int:
         default=ROOT / "runs/policy_transfer_v1.json",
     )
     args = parser.parse_args()
-    loaded = load_policy_artifact(args.artifact, device=args.device)
+    # Canary evaluation is the promotion path for a still-experimental model;
+    # live deployment keeps the loader's production-only default.
+    loaded = load_policy_artifact(
+        args.artifact, device=args.device, allow_experimental=True,
+    )
     if not loaded.metadata.ascension_min <= args.ascension <= loaded.metadata.ascension_max:
         raise ValueError("policy artifact does not cover the requested ascension")
     if loaded.metadata.goal == "HEART":

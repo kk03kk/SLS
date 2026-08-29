@@ -10,9 +10,10 @@ import torch
 
 from sls.content.scope import policy_excluded_content_ids
 from sls.model import ENCODING_SCHEMA, ModelConfig, Policy, vocabulary_hash
+from sls.rl.training_mode import TrainingMode, require_artifact_mode
 
 
-POLICY_ARTIFACT_SCHEMA = "sls-policy-artifact-v1"
+POLICY_ARTIFACT_SCHEMA = "sls-policy-artifact-v2"
 
 
 @dataclass(frozen=True, slots=True)
@@ -20,12 +21,24 @@ class PolicyArtifactMetadata:
     model: Mapping[str, Any]
     encoding_schema: str
     vocabulary_sha256: str
+    training_mode: str
+    policy_transfer_verified: bool
+    source_git_commit: str
+    native_source_sha256: str
+    training_config_sha256: str
     ascension_min: int = 0
     ascension_max: int = 0
     goal: str = "ACT1"
     excluded_content_ids: tuple[str, ...] = ("PRISMATIC_SHARD",)
 
     def validate(self) -> None:
+        require_artifact_mode(asdict(self), production=False)
+        if not self.source_git_commit:
+            raise ValueError("policy artifact source Git commit is missing")
+        if not self.native_source_sha256:
+            raise ValueError("policy artifact native source digest is missing")
+        if not self.training_config_sha256:
+            raise ValueError("policy artifact training config digest is missing")
         if self.encoding_schema != ENCODING_SCHEMA:
             raise ValueError("policy artifact encoding schema is incompatible")
         if self.vocabulary_sha256 != vocabulary_hash():
@@ -46,12 +59,18 @@ class LoadedPolicyArtifact:
 
 def _metadata(
     model_config: Mapping[str, Any], *, ascension_min: int,
-    ascension_max: int, goal: str,
+    ascension_max: int, goal: str, provenance: Mapping[str, object],
 ) -> PolicyArtifactMetadata:
+    mode = require_artifact_mode(provenance, production=False)
     return PolicyArtifactMetadata(
         model=dict(model_config),
         encoding_schema=ENCODING_SCHEMA,
         vocabulary_sha256=vocabulary_hash(),
+        training_mode=mode.value,
+        policy_transfer_verified=bool(provenance["policy_transfer_verified"]),
+        source_git_commit=str(provenance.get("git_commit") or ""),
+        native_source_sha256=str(provenance.get("native_source_sha256") or ""),
+        training_config_sha256=str(provenance.get("training_config_sha256") or ""),
         ascension_min=ascension_min,
         ascension_max=ascension_max,
         goal=goal,
@@ -67,6 +86,7 @@ def export_policy_artifact(
     contract = payload.get("contract")
     if not isinstance(contract, Mapping) or not isinstance(payload.get("model"), Mapping):
         raise ValueError("training checkpoint has no model transfer contract")
+    require_artifact_mode(contract, production=True)
     config_payload = dict(contract.get("model") or {})
     config_payload.pop("encoding_schema", None)
     config_payload.pop("vocabulary_hash", None)
@@ -75,19 +95,19 @@ def export_policy_artifact(
     model.load_state_dict(payload["model"], strict=True)
     return save_policy_artifact(
         model, output, ascension_min=ascension_min,
-        ascension_max=ascension_max, goal=goal,
+        ascension_max=ascension_max, goal=goal, provenance=contract,
     )
 
 
 def save_policy_artifact(
     model: Policy, output: str | Path, *, ascension_min: int,
-    ascension_max: int, goal: str,
+    ascension_max: int, goal: str, provenance: Mapping[str, object],
 ) -> Path:
     """Write an already-loaded v3 policy as a strict production artifact."""
 
     metadata = _metadata(
         model.config.to_dict(), ascension_min=ascension_min,
-        ascension_max=ascension_max, goal=goal,
+        ascension_max=ascension_max, goal=goal, provenance=provenance,
     )
     metadata.validate()
     target = Path(output)
@@ -106,6 +126,7 @@ def load_policy_artifact(
     path: str | Path,
     *,
     device: str | torch.device = "cpu",
+    allow_experimental: bool = False,
 ) -> LoadedPolicyArtifact:
     payload = torch.load(Path(path), map_location="cpu", weights_only=False)
     if payload.get("schema") != POLICY_ARTIFACT_SCHEMA:
@@ -115,6 +136,7 @@ def load_policy_artifact(
         raise ValueError("policy artifact metadata is missing")
     metadata = PolicyArtifactMetadata(**dict(raw))
     metadata.validate()
+    require_artifact_mode(asdict(metadata), production=not allow_experimental)
     config_payload = dict(metadata.model)
     config_payload.pop("encoding_schema", None)
     config_payload.pop("vocabulary_hash", None)

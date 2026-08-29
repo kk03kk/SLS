@@ -21,6 +21,7 @@ from sls.model import ModelConfig, Policy
 from sls.rl import PPOConfig, PPOTrainer, ShardedWorkerPool
 from sls.rl.training_contract import git_state, native_artifact, native_source_digest
 from sls.validation.transfer_gate import verify_policy_transfer_gate
+from sls.rl.training_mode import TrainingMode, parse_training_mode
 
 TRANSFER_GATE = ROOT / "runs" / "policy_transfer_v1.json"
 
@@ -36,13 +37,26 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--target-multiplier", type=float, default=4.0)
     parser.add_argument("--require-target", action="store_true")
     parser.add_argument("--allow-dirty", action="store_true", help="development/test only")
+    parser.add_argument(
+        "--mode", required=True, choices=("experimental", "production"),
+    )
     return parser
 
 
 def _verify_benchmark_readiness(args: argparse.Namespace) -> dict[str, object]:
+    mode = parse_training_mode(args.mode)
+    repository = git_state()
+    if bool(repository["dirty"]) and not args.allow_dirty:
+        raise ValueError("worker benchmark requires a clean Git worktree")
+    if mode is TrainingMode.EXPERIMENTAL:
+        return {
+            "schema": "sls-experimental-training-safety-v1",
+            "training_mode": mode.value,
+            "policy_transfer_verified": False,
+        }
     return verify_policy_transfer_gate(
         args.transfer_gate, profile_id=IRONCLAD_A0_ACT1.profile_id,
-        require_canary=False,
+        require_canary=True,
     )
 
 
@@ -77,6 +91,10 @@ def main() -> int:
     throughput_target = args.baseline_dps * args.target_multiplier
     result = {
         "schema": "sls-worker-benchmark-v1", "selected_workers": selected,
+        "training_mode": parse_training_mode(args.mode).value,
+        "policy_transfer_verified": (
+            parse_training_mode(args.mode) is TrainingMode.PRODUCTION
+        ),
         "selection_threshold": 0.95, "results": rows, "git": git_state(),
         "baseline_decisions_per_second": args.baseline_dps,
         "target_multiplier": args.target_multiplier,
