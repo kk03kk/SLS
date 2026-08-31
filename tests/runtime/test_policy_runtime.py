@@ -8,9 +8,11 @@ import torch
 
 from sls.backends.original import LiveGameBackend
 from sls.backends.simulator import SimulatorBackend
+from sls.content.scope import IRONCLAD_A0_SCOPE_ID, ironclad_a0_scope_hash
 from sls.contracts import Transition
 from sls.curriculum import IRONCLAD_A0_ACT1
-from sls.model import ModelConfig, Policy
+from sls.model import ENCODING_SCHEMA, ModelConfig, Policy, vocabulary_hash
+from sls.rl.training_contract import TRAINING_CHECKPOINT_SCHEMA
 from sls.runtime.artifact import (
     POLICY_ARTIFACT_SCHEMA,
     LoadedPolicyArtifact,
@@ -85,10 +87,15 @@ def test_policy_artifact_round_trip_is_strict_and_standalone(tmp_path: Path) -> 
         "contract": {
             "model": config.to_dict(), "simulator_only": True,
             "git_commit": "test",
-            "native_source_sha256": "test-native",
+            "native_source_sha256": "a" * 64,
             "training_config_sha256": "test-config",
+            "encoding_schema": ENCODING_SCHEMA,
+            "vocabulary_sha256": vocabulary_hash(),
+            "content_scope_id": IRONCLAD_A0_SCOPE_ID,
+            "content_scope_sha256": ironclad_a0_scope_hash(),
         },
         "model": model.state_dict(),
+        "schema": TRAINING_CHECKPOINT_SCHEMA,
     }, checkpoint)
     artifact = export_policy_artifact(
         checkpoint, tmp_path / "policy.pt",

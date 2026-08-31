@@ -10,11 +10,62 @@ from typing import Any, Mapping
 import torch
 
 from sls.content.scope import IRONCLAD_A0_SCOPE_ID, ironclad_a0_scope_hash
+from sls.model import ModelConfig, Policy
 from sls.model.encoding import ENCODING_SCHEMA, vocabulary_hash
 from sls.rl.ppo import PPOTrainer
 from sls.rl.training_contract import TRAINING_CHECKPOINT_SCHEMA, runtime_contract
 
 CHECKPOINT_SCHEMA = TRAINING_CHECKPOINT_SCHEMA
+
+
+def _require_sha256(value: object, field: str) -> None:
+    if not isinstance(value, str) or len(value) != 64:
+        raise ValueError(f"training checkpoint {field} is invalid")
+    try:
+        int(value, 16)
+    except ValueError as error:
+        raise ValueError(f"training checkpoint {field} is invalid") from error
+
+
+def policy_from_training_checkpoint(
+    payload: Mapping[str, Any], *, device: str | torch.device = "cpu",
+) -> Policy:
+    """Load policy weights after strict checkpoint and input-identity validation.
+
+    Native/content version hashes may describe an older approved environment,
+    but must be present and valid. Input meanings and content-scope identity
+    remain exact, which is the compatibility boundary for evaluation/migration.
+    """
+
+    if payload.get("schema") != CHECKPOINT_SCHEMA:
+        raise ValueError("unsupported training checkpoint")
+    contract = payload.get("contract")
+    state = payload.get("model")
+    if not isinstance(contract, Mapping) or not isinstance(state, Mapping):
+        raise ValueError("training checkpoint has no model transfer contract")
+    expected = {
+        "encoding_schema": ENCODING_SCHEMA,
+        "vocabulary_sha256": vocabulary_hash(),
+        "content_scope_id": IRONCLAD_A0_SCOPE_ID,
+        "simulator_only": True,
+    }
+    incompatible = [
+        key for key, value in expected.items() if contract.get(key) != value
+    ]
+    if incompatible:
+        raise ValueError(
+            "training checkpoint policy identity is incompatible: "
+            + ", ".join(sorted(incompatible))
+        )
+    _require_sha256(contract.get("content_scope_sha256"), "content scope digest")
+    _require_sha256(contract.get("native_source_sha256"), "native source digest")
+    config_payload = contract.get("model")
+    if not isinstance(config_payload, Mapping):
+        raise ValueError("training checkpoint model config is missing")
+    model = Policy(ModelConfig.from_dict(config_payload))
+    model.load_state_dict(state, strict=True)
+    model.eval().to(device)
+    return model
 
 
 def _contract(trainer: PPOTrainer) -> dict[str, Any]:

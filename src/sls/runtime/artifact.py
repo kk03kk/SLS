@@ -11,6 +11,7 @@ import torch
 
 from sls.content.scope import policy_excluded_content_ids
 from sls.model import ENCODING_SCHEMA, ModelConfig, Policy, vocabulary_hash
+from sls.rl.checkpoint import policy_from_training_checkpoint
 
 POLICY_ARTIFACT_SCHEMA = "sls-policy-artifact-v5"
 
@@ -111,14 +112,9 @@ def export_policy_artifact(
 ) -> Path:
     payload = torch.load(Path(checkpoint), map_location="cpu", weights_only=False)
     contract = payload.get("contract")
-    if not isinstance(contract, Mapping) or not isinstance(payload.get("model"), Mapping):
+    if not isinstance(contract, Mapping):
         raise ValueError("training checkpoint has no model transfer contract")
-    config_payload = dict(contract.get("model") or {})
-    config_payload.pop("encoding_schema", None)
-    config_payload.pop("vocabulary_hash", None)
-    config = ModelConfig(**config_payload)
-    model = Policy(config)
-    model.load_state_dict(payload["model"], strict=True)
+    model = policy_from_training_checkpoint(payload)
     return save_policy_artifact(
         model, output, ascension_min=ascension_min,
         ascension_max=ascension_max, goal=goal, provenance=contract,
@@ -162,10 +158,7 @@ def load_policy_artifact(
         raise ValueError("policy artifact metadata is missing")
     metadata = PolicyArtifactMetadata(**dict(raw))
     metadata.validate()
-    config_payload = dict(metadata.model)
-    config_payload.pop("encoding_schema", None)
-    config_payload.pop("vocabulary_hash", None)
-    model = Policy(ModelConfig(**config_payload))
+    model = Policy(ModelConfig.from_dict(metadata.model))
     model.load_state_dict(payload["model"], strict=True)
     if model_state_sha256(model.state_dict()) != metadata.model_sha256:
         raise ValueError("policy artifact model digest does not match its weights")

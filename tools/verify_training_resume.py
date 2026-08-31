@@ -21,10 +21,7 @@ def _next_update(
 ) -> tuple[dict[str, float], dict[str, torch.Tensor], int, int, int, torch.Tensor]:
     payload = torch.load(checkpoint, map_location="cpu", weights_only=False)
     contract = payload["contract"]
-    model_config = dict(contract["model"])
-    model_config.pop("encoding_schema", None)
-    model_config.pop("vocabulary_hash", None)
-    model = Policy(ModelConfig(**model_config))
+    model = Policy(ModelConfig.from_dict(contract["model"]))
     ppo = PPOConfig(**contract["ppo"])
     with ShardedWorkerPool(
         contract["profile"], int(contract["workers"]),

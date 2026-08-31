@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import os
 import platform
@@ -20,16 +19,16 @@ sys.path.insert(0, str(ROOT / "src"))
 
 import torch
 
-from sls.content.scope import IRONCLAD_A0_SCOPE_ID, ironclad_a0_scope_hash
+from sls.content.scope import ironclad_a0_scope_hash
 from sls.curriculum import CURRICULUM_PROFILES_BY_ID
-from sls.model import ENCODING_SCHEMA, ModelConfig, Policy, vocabulary_hash
-from sls.rl import evaluate
+from sls.rl import evaluate, policy_from_training_checkpoint
 from sls.rl.training_contract import (
     TRAINING_CHECKPOINT_SCHEMA,
     native_artifact,
     native_source_digest,
     sha256_file,
 )
+from sls.runtime.artifact import model_state_sha256
 
 
 class StopController:
@@ -38,14 +37,6 @@ class StopController:
 
     def handler(self, _number: int, _frame: object) -> None:
         self.requested = True
-
-
-def _model_sha256(state: Mapping[str, torch.Tensor]) -> str:
-    digest = hashlib.sha256()
-    for name, tensor in sorted(state.items()):
-        digest.update(name.encode("utf-8"))
-        digest.update(tensor.detach().cpu().contiguous().numpy().tobytes())
-    return digest.hexdigest()
 
 
 def _atomic_json(path: Path, payload: object) -> None:
@@ -91,24 +82,8 @@ def main(argv: list[str] | None = None) -> int:
     model_state = payload.get("model")
     if not isinstance(contract, Mapping) or not isinstance(model_state, Mapping):
         raise ValueError("checkpoint model contract is missing")
-    structural_fields = {
-        "encoding_schema": ENCODING_SCHEMA,
-        "vocabulary_sha256": vocabulary_hash(),
-        "content_scope_id": IRONCLAD_A0_SCOPE_ID,
-    }
-    incompatible = [
-        key for key, expected in structural_fields.items()
-        if contract.get(key) != expected
-    ]
-    if incompatible:
-        raise ValueError(
-            "checkpoint is structurally incompatible with current policy inputs: "
-            + ", ".join(incompatible)
-        )
-
     profile = CURRICULUM_PROFILES_BY_ID[args.profile]
-    model = Policy(ModelConfig(**dict(contract["model"])))
-    model.load_state_dict(model_state, strict=True)
+    model = policy_from_training_checkpoint(payload)
     torch.use_deterministic_algorithms(True)
     torch.backends.cudnn.benchmark = False
 
@@ -136,7 +111,7 @@ def main(argv: list[str] | None = None) -> int:
         "schema": "sls-checkpoint-evaluation-v1",
         "checkpoint": str(checkpoint),
         "checkpoint_sha256": sha256_file(checkpoint),
-        "model_sha256": _model_sha256(model_state),
+        "model_sha256": model_state_sha256(model_state),
         "profile": profile.profile_id,
         "seed_range": [seeds[0], seeds[-1] + 1],
         "simulator": {

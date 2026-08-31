@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
+from typing import Any, Mapping, Self
 
 import torch
 from torch import nn
@@ -42,6 +43,26 @@ class ModelConfig:
 
     def to_dict(self) -> dict[str, int | float | str]:
         return {**asdict(self), "encoding_schema": ENCODING_SCHEMA, "vocabulary_hash": vocabulary_hash()}
+
+    @classmethod
+    def from_dict(cls, payload: Mapping[str, Any]) -> Self:
+        """Load constructor fields plus legacy embedded input identity metadata."""
+
+        values = dict(payload)
+        metadata_fields = {"encoding_schema", "vocabulary_hash"}
+        present = metadata_fields.intersection(values)
+        if present and present != metadata_fields:
+            missing = ", ".join(sorted(metadata_fields - present))
+            raise ValueError(f"model config identity metadata is incomplete: {missing}")
+        if present:
+            if values.pop("encoding_schema") != ENCODING_SCHEMA:
+                raise ValueError("model config encoding schema is incompatible")
+            if values.pop("vocabulary_hash") != vocabulary_hash():
+                raise ValueError("model config vocabulary is incompatible")
+        try:
+            return cls(**values)
+        except TypeError as error:
+            raise ValueError(f"model config fields are invalid: {error}") from error
 
 
 @dataclass(frozen=True, slots=True)
