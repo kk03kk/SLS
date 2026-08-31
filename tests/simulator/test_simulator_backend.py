@@ -72,6 +72,34 @@ def test_positive_hp_native_victory_requires_the_fullrun_horizon() -> None:
     assert victory.reward == 1.0
 
 
+def test_native_reported_act_two_boss_clear_ends_before_rewards() -> None:
+    pytest.importorskip("sls.backends.simulator.native", exc_type=ImportError)
+    from sls.backends.simulator import SimulatorBackend
+    from sls.curriculum import IRONCLAD_A0_ACT2
+
+    backend = SimulatorBackend(IRONCLAD_A0_ACT2)
+    previous = backend.reset(0).observation
+    raw = deepcopy(backend.raw_state)
+    raw["public_run"].update({
+        "act": 2, "floor": 33, "outcome": 1, "screen_state": 2,
+        "completed_act": 2,
+    })
+    raw["progress_state"].update({"current_room": 6, "screen_state": 2})
+    raw["public_screen"] = {
+        "card_rewards": [], "gold": [], "relics": [], "potions": [],
+        "emerald_key": False, "sapphire_key": False,
+    }
+    raw["legal_actions"] = [{
+        "bits": 1, "domain": "RUN", "idx1": 0, "idx2": 0,
+        "reward_type": 6, "potion": False,
+    }]
+    transition = backend._transition_from_raw(previous, raw)
+
+    assert transition.terminated and transition.info["success"]
+    assert transition.info["reason"] == "ACT_2_CLEARED"
+    assert transition.decision.actions == ()
+
+
 def test_seed_zero_neow_transform_uses_the_stock_rng_counter() -> None:
     """The fixed boss option consumes one draw; transform is the sixth draw."""
 

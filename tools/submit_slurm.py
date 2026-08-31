@@ -124,6 +124,7 @@ def build_sbatch_command(args: argparse.Namespace, *, root: Path = ROOT) -> list
     logs = root / "local" / "runs" / "slurm-logs"
     return [
         "sbatch", "--parsable", f"--account={args.account}", f"--qos={args.qos}",
+        "--export=ALL,CUBLAS_WORKSPACE_CONFIG=:4096:8",
         f"--partition={partition}", f"--gres=gpu:{args.gpu}:1", f"--cpus-per-task={args.cpus}",
         f"--mem={args.memory}", f"--time={walltime}", "--signal=B:TERM@300",
         f"--job-name=sls-{args.task}", f"--chdir={root}",

@@ -72,6 +72,7 @@ def test_nus_command_matrix(
     assert f"--time={walltime}" in command
     assert "--account=allusers" in command
     assert "--qos=normal" in command
+    assert "--export=ALL,CUBLAS_WORKSPACE_CONFIG=:4096:8" in command
     assert "--gres=gpu:a100-40:1" in command
     assert "--cpus-per-task=16" in command
     assert "--mem=64G" in command

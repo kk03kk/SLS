@@ -4237,6 +4237,15 @@ public:
         public_run["outcome"] = static_cast<int>(gc_->outcome);
         public_run["screen_state"] = static_cast<int>(gc_->screenState);
         public_run["current_event_id"] = eventIdStrings[static_cast<int>(gc_->curEvent)];
+        // Curriculum horizons end when the target boss is defeated, before
+        // card/combat/boss-relic reward UI.  This is transition truth for the
+        // backend, not a policy input or a prediction of future progress.
+        public_run["completed_act"] = (
+            gc_->curRoom == Room::BOSS &&
+            gc_->act >= 1 && gc_->act <= 3 &&
+            gc_->screenState != ScreenState::BATTLE &&
+            gc_->outcome != GameOutcome::PLAYER_LOSS
+        ) ? gc_->act : 0;
         result["public_run"] = public_run;
         py::list replay_actions;
         for (const auto bits : action_history_) replay_actions.append(bits);

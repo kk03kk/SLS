@@ -32,12 +32,18 @@ def _observation(act: int, screen: ScreenType, *, hp: int = 80) -> Observation:
     )
 
 
-def test_act_one_waits_for_actual_act_change() -> None:
+def test_act_one_requires_explicit_boss_completion_before_act_change() -> None:
     boss_reward = _observation(1, ScreenType.BOSS_REWARD)
     selection = _observation(1, ScreenType.CARD_REWARD)
     assert not evaluate_horizon(IRONCLAD_A0_ACT1, boss_reward).terminated
     assert not evaluate_horizon(IRONCLAD_A0_ACT1, selection).terminated
     assert completed_act_between(boss_reward, selection) is None
+
+    completed = evaluate_horizon(
+        IRONCLAD_A0_ACT1, selection, act_completed=1,
+    )
+    assert completed.terminated and completed.success
+    assert completed.reason == "ACT_1_CLEARED"
 
 
 def test_act_one_completes_on_entry_to_act_two() -> None:
@@ -70,8 +76,8 @@ def test_death_takes_precedence_over_completed_act() -> None:
 
 
 def test_profile_contract_version_changed() -> None:
-    assert IRONCLAD_A0_ACT1.version == 2
-    assert replace(IRONCLAD_A0_ACT1).version == 2
+    assert IRONCLAD_A0_ACT1.version == 3
+    assert replace(IRONCLAD_A0_ACT1).version == 3
 
 
 def test_fullrun_and_heart_have_distinct_terminal_goals() -> None:

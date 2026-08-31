@@ -195,7 +195,7 @@ def load_checkpoint_environment_migration(
         raise ValueError("checkpoint contract is missing")
     allowed_changes = {
         "git_commit", "native_source_sha256", "content_scope_sha256",
-        "profile", "curriculum_version",
+        "profile", "curriculum_version", "training_config_sha256",
     }
     incompatible = {
         key for key in set(actual) | set(expected)

@@ -149,12 +149,15 @@ class SimulatorBackend:
 
         next_decision = self._adapt(raw)
         terminal_outcome = _native_terminal_outcome(raw)
+        reported_completed_act = int(raw["public_run"].get("completed_act", 0))
+        completed_act = (
+            reported_completed_act if reported_completed_act > 0
+            else completed_act_between(previous_observation, next_decision.observation)
+        )
         decision = evaluate_horizon(
             self.profile,
             next_decision.observation,
-            act_completed=completed_act_between(
-                previous_observation, next_decision.observation,
-            ),
+            act_completed=completed_act,
             terminal_outcome=terminal_outcome,
         )
         if decision.terminated != next_decision.terminal:

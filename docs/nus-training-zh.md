@@ -39,8 +39,9 @@ tail -f local/runs/slurm-logs/sls-benchmark-*.out
 "$TRAIN_PY" -c 'import json; p=json.load(open("local/runs/worker-benchmark.json")); print(p["selected_workers"], p["selected_shards"])'
 ~~~
 
-Preflight 必须报告 A100、CUDA、native import、Decision invariant、seed 8335、
-GRU forward/backward 和 checkpoint exact-resume 全部通过。Benchmark 会在
+Preflight 必须报告 A100、CUDA、`CUBLAS_WORKSPACE_CONFIG=:4096:8`、确定性算法、
+native import、Decision invariant、seed 8335、GRU forward/backward 和 checkpoint
+exact-resume 全部通过。Benchmark 会在
 16:8、24:8、32:8、32:16、48:16 中选择达到峰值 95% 的最小 worker/shard
 组合，并绑定当前 Git commit、native source digest 和实际二进制 SHA-256。后续任务
 只接受同一个原生二进制。
@@ -87,18 +88,20 @@ scp -o ProxyJump=hengzhi@sjump.comp.nus.edu.sg hengzhi@xlogin.comp.nus.edu.sg:~/
 该 artifact 的 goal 是 ACT1，不能交给 FullRun 实机控制器。它只用于独立模拟器
 回放、轨迹捕获和阶段诊断。实机接管必须等待最终 FullRun 晋级门通过。
 
-## 5. Pilot：Act 2 课程，累计 2,500 万环境步
+## 5. Pilot：Act 2 课程，本轮累计到 750 万环境步
 
 ~~~bash
 "$TRAIN_PY" tools/submit_slurm.py pilot --python "$TRAIN_PY" --resume environment-migration
 tail -f local/runs/slurm-logs/sls-pilot-*.out
 ~~~
 
-Pilot 默认申请 `gpu-long` 和 12 小时；它新增约 2000 万步的目标在 3 小时 `gpu` 配额内
-没有可靠余量。
+Pilot 默认申请 `gpu-long` 和 12 小时；从已完成的 500 万步 Smoke 继续新增约
+250 万步。课程在 Act 2 Boss 被击败后立即终止，不再选择战后卡牌、战斗奖励或
+Boss 遗物。每跨过 50 万训练步使用固定的 1,000 个保留种子评估；由于评估开销较大，
+12 小时可能只完成部分目标。TERM 会在安全边界保存，原命令再次提交即可精确续跑。
 
-只有 smoke 晋级门通过后才允许启动 Pilot。Pilot 自动迁移 smoke 的 latest.pt，保留学习
-状态并用新 seed 重置环境，且先记录 Act 2 horizon 的阶段基线。完成后要求 Act 2
+只有 smoke 晋级门通过后才允许启动 Pilot。Pilot 显式迁移 smoke 的 latest.pt，保留学习
+状态并用新 seed 重置环境，且先以固定 1,000 seeds 记录 Act 2 horizon 的阶段基线。完成后要求 Act 2
 成功率至少 5%、Act 2 到达率至少 50%，且无 backend/limit/self-loop 错误。
 
 ## 6. 正式训练：FullRun 课程，累计 1 亿环境步
@@ -108,7 +111,7 @@ Pilot 默认申请 `gpu-long` 和 12 小时；它新增约 2000 万步的目标�
 tail -f local/runs/slurm-logs/sls-train-*.out
 ~~~
 
-训练每跨过 50 万环境步保存编号 checkpoint，每 500 万步在固定 128 个保留种子
+训练每跨过 50 万环境步保存编号 checkpoint，每 500 万步在固定 1,000 个保留种子
 上评估。Slurm 会在 72 小时 walltime 到达前 5 分钟发送 SIGTERM，程序会在安全边界
 保存并将 manifest 标为 INTERRUPTED。此时原样再次提交 train；不得重新提交 smoke
 或删除输出目录。

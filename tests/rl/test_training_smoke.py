@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import math
+from dataclasses import replace
 from pathlib import Path
 
 import pytest
@@ -115,13 +116,15 @@ def test_environment_migration_preserves_learning_and_resets_episode_state(
         path = save_checkpoint(tmp_path / "old.pt", source)
         payload = torch.load(path, map_location="cpu", weights_only=False)
         payload["contract"]["content_scope_sha256"] = "old-scope-hash"
+        payload["contract"]["profile"] = replace(IRONCLAD_A0_ACT1, version=2)
+        payload["contract"]["curriculum_version"] = 2
         torch.save(payload, path)
 
     with WorkerPool(IRONCLAD_A0_ACT1, 1) as workers:
         migrated = PPOTrainer(
             Policy(model_config), workers, config, seed=0,
             native_contract_digest="new-native", git_commit="new-git",
-            training_config_digest="same-training",
+            training_config_digest="approved-new-training-schedule",
         )
         with pytest.raises(ValueError, match="contract does not match"):
             load_checkpoint(path, migrated)

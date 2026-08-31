@@ -7,7 +7,7 @@ worker_backend = "sharded-vector"
 benchmark = "local/runs/worker-benchmark.json"
 output = "local/runs/ironclad-a0-fullrun-v2"
 periodic_evaluation_seed_start = 1000000000000
-periodic_evaluation_seed_count = 128
+periodic_evaluation_seed_count = 1000
 final_evaluation_seed_start = 2000000000000
 final_evaluation_seed_count = 1000
 evaluation_max_steps = 4096
@@ -23,12 +23,12 @@ minimum_evaluation_episodes = 128
 
 [stages.pilot]
 profile = "IRONCLAD_A0_ACT2"
-target_environment_steps = 25000000
-evaluate_every_steps = 2000000
+target_environment_steps = 7500000
+evaluate_every_steps = 500000
 minimum_success_rate = 0.05
 minimum_reached_act2_rate = 0.50
 minimum_reached_act3_rate = 0.0
-minimum_evaluation_episodes = 128
+minimum_evaluation_episodes = 1000
 
 [stages.train]
 profile = "IRONCLAD_A0_FULLRUN"
@@ -37,7 +37,7 @@ evaluate_every_steps = 5000000
 minimum_success_rate = 0.01
 minimum_reached_act2_rate = 0.75
 minimum_reached_act3_rate = 0.25
-minimum_evaluation_episodes = 128
+minimum_evaluation_episodes = 1000
 
 [model]
 embedding_dim = 128

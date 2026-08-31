@@ -41,7 +41,7 @@ class CurriculumProfile:
     ascension: int
     horizon: EpisodeHorizon
     start_distribution: str = "NATURAL_RUN_START"
-    version: int = 2
+    version: int = 3
 
 
 IRONCLAD_A0_ACT1 = CurriculumProfile("IRONCLAD_A0_ACT1", "IRONCLAD", 0, EpisodeHorizon.ACT_1)

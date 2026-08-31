@@ -60,6 +60,34 @@ def _structural_action(decision: Decision) -> Action:
     return decision.actions[0]
 
 
+def test_act_two_horizon_ends_at_boss_defeat_before_reward_choices() -> None:
+    pytest.importorskip("sls.backends.simulator.native", exc_type=ImportError)
+    from sls.backends.simulator import SimulatorBackend
+    from sls.curriculum import IRONCLAD_A0_ACT2
+
+    backend = SimulatorBackend(IRONCLAD_A0_ACT2)
+    decision = backend.reset(0)
+    backend._native._set_skip_battles_for_testing(True)
+    last_transition = None
+    for _ in range(160):
+        if decision.terminal:
+            break
+        last_transition = backend.step(_structural_action(decision))
+        decision = last_transition.decision
+    else:
+        pytest.fail("Act 2 structural route did not terminate")
+
+    assert last_transition is not None
+    assert last_transition.info == {
+        "reason": "ACT_2_CLEARED",
+        "success": True,
+        "terminal_outcome": None,
+    }
+    assert decision.observation.run.act == 2
+    assert decision.observation.screen is ScreenType.COMBAT_REWARD
+    assert decision.actions == ()
+
+
 @pytest.mark.parametrize("ascension", (0, 20))
 def test_policy_visible_route_structurally_reaches_and_defeats_heart(ascension: int) -> None:
     pytest.importorskip("sls.backends.simulator.native", exc_type=ImportError)

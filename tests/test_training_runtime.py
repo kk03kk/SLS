@@ -17,6 +17,7 @@ from tools.train_full_run import (
     _require_predecessor_promotion,
     _seed_range,
     _training_identity,
+    _validate_existing_manifest,
     _validate_seed_namespaces,
 )
 
@@ -117,6 +118,26 @@ def test_curriculum_and_stage_targets_are_part_of_training_identity() -> None:
     assert _training_identity(payload, workers=32, shards=8) != first
 
 
+def test_changed_schedule_requires_explicit_environment_migration() -> None:
+    manifest = {
+        "schema": "sls-recurrent-ppo-run-v2",
+        "training_identity_sha256": "old-schedule",
+    }
+    with pytest.raises(ValueError, match="explicit environment-migration"):
+        _validate_existing_manifest(manifest, identity="new-schedule", resume="auto")
+    _validate_existing_manifest(
+        manifest, identity="new-schedule", resume="environment-migration",
+    )
+
+
+def test_manifest_schema_is_never_migrated() -> None:
+    with pytest.raises(ValueError, match="another training chain"):
+        _validate_existing_manifest(
+            {"schema": "unknown", "training_identity_sha256": "old"},
+            identity="new", resume="environment-migration",
+        )
+
+
 def test_positive_training_intervals_fail_before_the_training_loop() -> None:
     assert _positive_int({"target": 20}, "target") == 20
     with pytest.raises(ValueError, match="must be positive"):
@@ -131,7 +152,10 @@ def test_canonical_fullrun_config_freezes_stage_and_recurrent_contract() -> None
     assert payload["stages"]["smoke"]["profile"] == "IRONCLAD_A0_ACT1"
     assert payload["stages"]["smoke"]["target_environment_steps"] == 5_000_000
     assert payload["stages"]["pilot"]["profile"] == "IRONCLAD_A0_ACT2"
-    assert payload["stages"]["pilot"]["target_environment_steps"] == 25_000_000
+    assert payload["stages"]["pilot"]["target_environment_steps"] == 7_500_000
+    assert payload["stages"]["pilot"]["evaluate_every_steps"] == 500_000
+    assert payload["stages"]["pilot"]["minimum_evaluation_episodes"] == 1000
+    assert payload["run"]["periodic_evaluation_seed_count"] == 1000
     assert payload["stages"]["train"]["target_environment_steps"] == 100_000_000
     assert payload["model"]["architecture"] == "sls-recurrent-relational-policy-v5"
     assert payload["model"]["recurrent_hidden_dim"] == 256

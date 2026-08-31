@@ -15,6 +15,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
+os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
 
 SEED_8335_DUMP = ROOT / "tests/fixtures/regressions/nus-worker-23-seed-8335-invalid-decision.json"
 SEED_8335_SHA256 = "bbd6fa5644223ebee07681849d5e2654466cc21e27affbd69cf688a0404eb4a7"
@@ -50,6 +51,8 @@ def main() -> int:
         if not args.skip_build:
             subprocess.run([sys.executable, str(ROOT / "tools" / "build_native.py"), "--jobs", str(args.jobs)], cwd=ROOT, check=True)
         import torch
+        torch.use_deterministic_algorithms(True)
+        torch.backends.cudnn.benchmark = False
         from replay_failed_state import replay_dump
 
         from sls.backends.simulator import SimulatorBackend
@@ -126,6 +129,8 @@ def main() -> int:
             "torch": torch.__version__, "cuda": torch.version.cuda,
             "gpu": torch.cuda.get_device_name(0) if torch.cuda.is_available() else None,
             "device": device,
+            "cublas_workspace_config": os.environ.get("CUBLAS_WORKSPACE_CONFIG"),
+            "deterministic_algorithms": torch.are_deterministic_algorithms_enabled(),
             "policy_architecture": model.config.architecture,
             "recurrent_memory_size": model.config.recurrent_hidden_dim,
         }

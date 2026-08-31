@@ -247,6 +247,20 @@ def _require_interrupted_smoke_resume(
         )
 
 
+def _validate_existing_manifest(
+    manifest: dict[str, object], *, identity: str, resume: str,
+) -> None:
+    if manifest.get("schema") != MANIFEST_SCHEMA:
+        raise ValueError("existing run manifest belongs to another training chain")
+    if (
+        manifest.get("training_identity_sha256") != identity
+        and resume != "environment-migration"
+    ):
+        raise ValueError(
+            "training schedule changed; use explicit environment-migration"
+        )
+
+
 def _append_record(path: Path, record: dict[str, object]) -> None:
     with path.open("a", encoding="utf-8") as stream:
         stream.write(json.dumps(record, sort_keys=True) + "\n")
@@ -315,11 +329,9 @@ def main() -> int:
     output_existed = output.exists()
     if manifest_path.exists():
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-        if (
-            manifest.get("schema") != MANIFEST_SCHEMA
-            or manifest.get("training_identity_sha256") != identity
-        ):
-            raise ValueError("existing run manifest belongs to another training chain")
+        _validate_existing_manifest(
+            manifest, identity=identity, resume=args.resume,
+        )
     else:
         manifest = None
     if args.stage == "smoke":
@@ -404,7 +416,19 @@ def main() -> int:
                 checkpoint_preview = torch.load(latest, map_location="cpu", weights_only=False)
                 previous_profile = checkpoint_preview.get("contract", {}).get("profile")
                 profile_changed = previous_profile != profile
-                if args.resume == "environment-migration" or profile_changed:
+                loaded_exactly = False
+                if args.resume == "environment-migration":
+                    try:
+                        load_checkpoint(latest, trainer)
+                        loaded_exactly = True
+                    except ValueError:
+                        # The strict migration loader below will distinguish
+                        # approved environment/schedule changes from unsafe
+                        # model, PPO, vocabulary, runtime, or scope changes.
+                        pass
+                if not loaded_exactly and (
+                    args.resume == "environment-migration" or profile_changed
+                ):
                     backup = output / f"latest.pre-{args.stage}-migration.pt"
                     if backup.exists():
                         if sha256_file(backup) != sha256_file(latest):
@@ -435,6 +459,10 @@ def main() -> int:
                             "content_scope_sha256"
                         ],
                         "new_content_scope_sha256": ironclad_a0_scope_hash(),
+                        "old_training_identity_sha256": manifest.get(
+                            "training_identity_sha256"
+                        ),
+                        "new_training_identity_sha256": identity,
                     }
                     _append_record(metrics_path, {
                         "environment_steps": trainer.environment_steps,
@@ -445,9 +473,17 @@ def main() -> int:
                     manifest["native_source_sha256"] = source_digest
                     manifest["native_artifact"] = artifact
                     manifest["content_scope_sha256"] = ironclad_a0_scope_hash()
+                    manifest["training_identity_sha256"] = identity
+                    manifest["config_sha256"] = hashlib.sha256(config_bytes).hexdigest()
+                    manifest["periodic_evaluation_seeds"] = [
+                        periodic_seeds.start, periodic_seeds.stop,
+                    ]
+                    manifest["final_evaluation_seeds"] = [
+                        final_seeds.start, final_seeds.stop,
+                    ]
                     manifest.setdefault("learning_migrations", []).append(migration)
                     _atomic_json(manifest_path, manifest)
-                else:
+                elif not loaded_exactly:
                     load_checkpoint(latest, trainer)
             if trainer.environment_steps >= target_steps:
                 raise ValueError(f"stage target already reached: {trainer.environment_steps}")
