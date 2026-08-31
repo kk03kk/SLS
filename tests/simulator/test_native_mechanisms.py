@@ -15,6 +15,65 @@ def test_original_compatible_rng_is_seeded_and_advances_exactly() -> None:
     assert native.shuffle_probe(0) == [4, 8, 9, 6, 3, 5, 2, 1, 7, 0]
 
 
+def test_red_slaver_post_entangle_stab_threshold_matches_stock() -> None:
+    assert native.red_slaver_move_probe() == {
+        49: "RED_SLAVER_SCRAPE",
+        50: "RED_SLAVER_SCRAPE",
+        54: "RED_SLAVER_SCRAPE",
+        55: "RED_SLAVER_STAB",
+        74: "RED_SLAVER_STAB",
+    }
+
+
+def test_stock_monster_move_edge_cases() -> None:
+    probe = native.monster_move_parity_probe()
+    assert probe["acid_slime_l_a17_after_two_spits"] in {
+        "ACID_SLIME_L_TACKLE",
+        "ACID_SLIME_L_LICK",
+    }
+    assert probe["book_a18_initial_move"] == "BOOK_OF_STABBING_SINGLE_STAB"
+    assert probe["book_a18_initial_stab_count"] == 2
+    assert probe["book_a18_after_two_multi_move"] == "BOOK_OF_STABBING_SINGLE_STAB"
+    assert probe["book_a18_after_two_multi_stab_count"] == 4
+    assert probe["bronze_automaton_after_summon"] == [
+        "BRONZE_AUTOMATON_FLAIL",
+        "BRONZE_AUTOMATON_BOOST",
+        "BRONZE_AUTOMATON_FLAIL",
+        "BRONZE_AUTOMATON_BOOST",
+        "BRONZE_AUTOMATON_HYPER_BEAM",
+        "BRONZE_AUTOMATON_STUNNED",
+    ]
+    assert probe["bronze_orb_first_stasis_move"] == "BRONZE_ORB_STASIS"
+    assert probe["bronze_orb_used_stasis_on_selection"] == 1
+    assert probe["bronze_orb_no_second_stasis_move"] != "BRONZE_ORB_STASIS"
+    assert probe["gremlin_nob_a18_after_bellow"] == "GREMLIN_NOB_SKULL_BASH"
+    assert probe["gremlin_nob_a18_after_two_rushes"] == "GREMLIN_NOB_SKULL_BASH"
+    assert probe["giant_head_a18_turn_four_move"] == "GIANT_HEAD_IT_IS_TIME"
+    assert probe["giant_head_a18_first_time_damage"] == 40
+    assert probe["gremlin_wizard_sequence"] == [
+        "GREMLIN_WIZARD_CHARGING",
+        "GREMLIN_WIZARD_CHARGING",
+        "GREMLIN_WIZARD_CHARGING",
+        "GREMLIN_WIZARD_ULTIMATE_BLAST",
+        "GREMLIN_WIZARD_CHARGING",
+    ]
+    assert probe["nemesis_initial_move"] == "NEMESIS_ATTACK"
+    assert probe["nemesis_initial_cooldown"] == -1
+    assert (
+        probe["nemesis_scythe_after_one_intervening_move"]
+        == "NEMESIS_SCYTHE"
+    )
+    assert probe["nemesis_reset_cooldown"] == 2
+    assert (
+        probe["snake_plant_a17_after_recent_spores"]
+        == "SNAKE_PLANT_CHOMP"
+    )
+    assert probe["champ_after_two_defensive_stances"] != "THE_CHAMP_DEFENSIVE_STANCE"
+    assert probe["champ_a0_gloat_strength"] == 2
+    assert probe["writhing_mass_reactive_rng_draws"] == 1
+    assert probe["writhing_mass_reactive_persists"] is True
+
+
 def test_core_combat_rule_probes() -> None:
     fairy = native.run_fairy_potion_probe()
     assert fairy == {"normal": 30, "sacred_bark": 60}
@@ -33,6 +92,15 @@ def test_core_combat_rule_probes() -> None:
     assert damage["intangible_damage"] == 1
     assert damage["torii_tungsten_five"] == 0
     assert damage["buffer_multi_hit"] == {"buffer": 0, "damage": 7}
+
+
+def test_original_payload_intent_damage_reflects_player_intangible() -> None:
+    battle = native.LightspeedBattle()
+    battle.reset_card_probe(0, "APPARITION", False)
+    battle.step("play", card_index=1, target_index=0)
+    monster = battle.snapshot()["game_state"]["combat_state"]["monsters"][0]
+    assert monster["move_base_damage"] == 6
+    assert monster["move_adjusted_damage"] == 1
 
 
 @pytest.mark.parametrize("power", ["DOUBLE_TAP", "DUPLICATION", "ECHO_FORM"])
@@ -217,6 +285,26 @@ def test_smoke_bomb_restrictions_and_curl_up_lethal_order() -> None:
     assert curl_up["lethal"]["hp"] == 0
     assert curl_up["lethal"]["block"] == 0
     assert curl_up["nonlethal"] == {"block": 4, "curl_up": 0, "hp": 1}
+
+
+def test_stock_relic_callback_boundaries_and_used_up_counter() -> None:
+    battle = native.LightspeedBattle()
+
+    champion_belt = battle.relic_trigger_probe(0, "CHAMPION_BELT")
+    assert champion_belt["weak"] == 1
+    assert champion_belt["vulnerable"] == 0
+
+    lizard_tail = battle.relic_trigger_probe(0, "LIZARD_TAIL")
+    assert lizard_tail["hp_delta"] == 40
+    assert lizard_tail["counter"] == -2
+
+    art_of_war = battle.relic_turn_state_probe(0, "ART_OF_WAR")
+    assert art_of_war["attack_bonus"] == 0
+    assert art_of_war["skill_bonus"] == 1
+    assert art_of_war["energy_delta"] == 1
+
+    hungry_face = battle.relic_world_probe(0, "NLOTHS_HUNGRY_FACE")
+    assert hungry_face == {"delta": -1, "value": -2, "used": True}
 
 
 def test_card_metadata_is_complete_enough_for_all_character_colors() -> None:

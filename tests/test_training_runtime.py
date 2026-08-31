@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import signal
 import tomllib
 from pathlib import Path
@@ -8,6 +9,7 @@ import pytest
 
 from tools.train_full_run import (
     StopController,
+    _load_benchmark,
     _positive_int,
     _progress_from_baseline,
     _promotion_passes,
@@ -17,6 +19,24 @@ from tools.train_full_run import (
     _training_identity,
     _validate_seed_namespaces,
 )
+
+
+def test_worker_benchmark_is_bound_to_local_source_and_binary_not_git(
+    tmp_path: Path,
+) -> None:
+    path = tmp_path / "benchmark.json"
+    path.write_text(json.dumps({
+        "schema": "sls-worker-benchmark-v2",
+        "selected_workers": 16,
+        "selected_shards": 8,
+        "git": {"commit": "unrelated-optional-metadata"},
+        "native_source_sha256": "source",
+        "native_artifact": {"sha256": "binary"},
+    }), encoding="utf-8")
+
+    assert _load_benchmark(
+        path, native_digest="source", native_binary_sha256="binary",
+    ) == (16, 8)
 
 
 def _interrupted_smoke_manifest() -> dict[str, object]:
@@ -116,7 +136,7 @@ def test_canonical_fullrun_config_freezes_stage_and_recurrent_contract() -> None
     assert payload["model"]["architecture"] == "sls-recurrent-relational-policy-v5"
     assert payload["model"]["recurrent_hidden_dim"] == 256
     assert payload["run"]["seed"] == 10_000_000
-    assert payload["run"]["output"] == "runs/ironclad-a0-fullrun-v2"
+    assert payload["run"]["output"] == "local/runs/ironclad-a0-fullrun-v2"
     assert payload["ppo"]["gamma"] == 1.0
     assert payload["ppo"]["failure_progress_scale"] == 0.8
     assert payload["ppo"]["reward_schema"] == "sls-curriculum-progress-v3"

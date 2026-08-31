@@ -7,13 +7,13 @@ import importlib
 import json
 import subprocess
 import sys
+from collections.abc import Iterable
 from pathlib import Path
-from typing import Iterable
 
 ROOT = Path(__file__).resolve().parents[3]
 TRAINING_CHECKPOINT_SCHEMA = "sls-full-run-ppo-v5"
 NATIVE_SOURCE_PATHS = (
-    "cpp/simulator",
+    "native/simulator",
     "src/sls/backends/simulator",
     "src/sls/content",
     "tools/build_native.py",
@@ -44,11 +44,16 @@ def _git(*args: str) -> str:
 
 
 def git_state() -> dict[str, object]:
-    return {
-        "commit": _git("rev-parse", "HEAD"),
-        "branch": _git("branch", "--show-current"),
-        "dirty": bool(_git("status", "--porcelain", "--untracked-files=all")),
-    }
+    """Return optional Git metadata without making local execution depend on Git."""
+
+    try:
+        return {
+            "commit": _git("rev-parse", "HEAD"),
+            "branch": _git("branch", "--show-current"),
+            "dirty": bool(_git("status", "--porcelain", "--untracked-files=all")),
+        }
+    except (FileNotFoundError, subprocess.CalledProcessError):
+        return {"commit": "LOCAL", "branch": "", "dirty": None}
 
 
 def git_index_digest(paths: Iterable[str]) -> str:
@@ -61,8 +66,36 @@ def git_index_digest(paths: Iterable[str]) -> str:
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()
 
 
+def local_source_digest(paths: Iterable[str], *, root: Path = ROOT) -> str:
+    """Hash a source tree from local paths, independent of Git and line endings."""
+
+    files: list[Path] = []
+    for relative in paths:
+        target = root / relative
+        if target.is_file():
+            files.append(target)
+        elif target.is_dir():
+            files.extend(
+                path for path in target.rglob("*")
+                if path.is_file()
+                and "__pycache__" not in path.parts
+                and path.suffix not in {".pyc", ".pyo"}
+            )
+    if not files:
+        raise RuntimeError("training contract contains no local source files")
+    digest = hashlib.sha256()
+    for path in sorted(files, key=lambda item: item.relative_to(root).as_posix()):
+        relative = path.relative_to(root).as_posix().encode("utf-8")
+        payload = path.read_bytes().replace(b"\r\n", b"\n")
+        digest.update(len(relative).to_bytes(4, "big"))
+        digest.update(relative)
+        digest.update(len(payload).to_bytes(8, "big"))
+        digest.update(payload)
+    return digest.hexdigest()
+
+
 def native_source_digest() -> str:
-    return git_index_digest(NATIVE_SOURCE_PATHS)
+    return local_source_digest(NATIVE_SOURCE_PATHS)
 
 
 def native_artifact() -> dict[str, str] | None:

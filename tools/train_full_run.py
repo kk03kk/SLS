@@ -93,15 +93,12 @@ def _validate_seed_namespaces(run: dict[str, object]) -> tuple[range, range]:
 def _load_benchmark(
     path: Path,
     *,
-    repository: dict[str, object],
     native_digest: str,
     native_binary_sha256: str,
 ) -> tuple[int, int]:
     payload = json.loads(path.read_text(encoding="utf-8"))
     if payload.get("schema") != BENCHMARK_SCHEMA:
         raise ValueError("worker benchmark schema is incompatible")
-    if (payload.get("git") or {}).get("commit") != repository["commit"]:
-        raise ValueError("worker benchmark belongs to a different Git commit")
     if payload.get("native_source_sha256") != native_digest:
         raise ValueError("worker benchmark belongs to different simulator sources")
     benchmark_artifact = payload.get("native_artifact") or {}
@@ -279,15 +276,13 @@ def main() -> int:
     stage = dict(payload["stages"][args.stage])
     periodic_seeds, final_seeds = _validate_seed_namespaces(run)
     repository = git_state()
-    if bool(repository["dirty"]):
-        raise ValueError("training requires a clean Git worktree")
     source_digest = native_source_digest()
     artifact = native_artifact()
     if artifact is None:
         raise RuntimeError("training requires the compiled native simulator")
     benchmark_path = ROOT / str(run["benchmark"])
     workers_count, shard_count = _load_benchmark(
-        benchmark_path, repository=repository, native_digest=source_digest,
+        benchmark_path, native_digest=source_digest,
         native_binary_sha256=artifact["sha256"],
     )
     identity = _training_identity(payload, workers=workers_count, shards=shard_count)
@@ -436,6 +431,10 @@ def main() -> int:
                             "native_source_sha256"
                         ],
                         "new_native_source_sha256": source_digest,
+                        "old_content_scope_sha256": previous["contract"][
+                            "content_scope_sha256"
+                        ],
+                        "new_content_scope_sha256": ironclad_a0_scope_hash(),
                     }
                     _append_record(metrics_path, {
                         "environment_steps": trainer.environment_steps,
@@ -445,6 +444,7 @@ def main() -> int:
                     manifest["git"] = repository
                     manifest["native_source_sha256"] = source_digest
                     manifest["native_artifact"] = artifact
+                    manifest["content_scope_sha256"] = ironclad_a0_scope_hash()
                     manifest.setdefault("learning_migrations", []).append(migration)
                     _atomic_json(manifest_path, manifest)
                 else:
@@ -615,7 +615,7 @@ def main() -> int:
                     str(path.relative_to(output))
                     for path in (output / "crashes").glob("*.json")
                 ) if (output / "crashes").is_dir() else [],
-                "live_action_journals": "collected locally under logs/",
+                "live_action_journals": "collected locally under local/logs/",
             })
         # A handled signal is a successful safe shutdown.  The manifest carries
         # INTERRUPTED state; a non-zero process exit incorrectly marks the batch

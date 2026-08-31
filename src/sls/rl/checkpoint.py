@@ -129,8 +129,10 @@ def load_checkpoint_environment_migration(
     """Resume learning state while deliberately abandoning in-flight episodes.
 
     This is narrower than a warm start: every learning and RNG field is retained,
-    and only Git/native simulator provenance may differ. Worker environments,
-    episode-limit state, and recurrent episode memory are reset together.
+    and only approved environment provenance may differ. The content-scope ID,
+    vocabulary, encoding, model, and PPO contracts must still match. Worker
+    environments, episode-limit state, and recurrent episode memory are reset
+    together.
     """
 
     payload = torch.load(Path(path), map_location="cpu", weights_only=False)
@@ -141,7 +143,8 @@ def load_checkpoint_environment_migration(
     if not isinstance(actual, Mapping):
         raise ValueError("checkpoint contract is missing")
     allowed_changes = {
-        "git_commit", "native_source_sha256", "profile", "curriculum_version",
+        "git_commit", "native_source_sha256", "content_scope_sha256",
+        "profile", "curriculum_version",
     }
     incompatible = {
         key for key in set(actual) | set(expected)

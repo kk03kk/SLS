@@ -1,5 +1,7 @@
 from pathlib import Path
 
+from sls.curriculum import EpisodeHorizon
+from tools.capture_policy_trajectory import _profile_for_goal
 from tools.run_original_canary import BackupJournal, launcher_command
 
 
@@ -27,3 +29,11 @@ def test_launcher_pins_only_the_required_mods(tmp_path: Path) -> None:
     assert "--skip-intro" in command
     assert command[-1] == "basemod,CommunicationMod,spirecomm-parity"
     assert "SuperFastMode" not in " ".join(command)
+
+
+def test_canary_uses_the_artifact_curriculum_horizon() -> None:
+    assert _profile_for_goal("ACT1").horizon is EpisodeHorizon.ACT_1
+    assert _profile_for_goal("ACT2").horizon is EpisodeHorizon.ACT_2
+    assert _profile_for_goal("ACT3").horizon is EpisodeHorizon.ACT_3
+    assert _profile_for_goal("FULLRUN").horizon is EpisodeHorizon.FULL_RUN
+    assert _profile_for_goal("HEART").horizon is EpisodeHorizon.HEART

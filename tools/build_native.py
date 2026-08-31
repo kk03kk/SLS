@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import os
 import platform
 import shutil
@@ -14,30 +13,17 @@ from dataclasses import dataclass
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-CACHE = ROOT / ".build"
+SRC = ROOT / "src"
+if str(SRC) not in sys.path:
+    sys.path.insert(0, str(SRC))
+
+from sls.rl.training_contract import git_state, native_source_digest
+
+CACHE = ROOT / "local" / "build"
 TOOLS = CACHE / "tools"
-SOURCE = ROOT / "cpp" / "simulator"
+SOURCE = ROOT / "native" / "simulator"
 BUILD = CACHE / f"cmake-{sys.platform}-{sys.implementation.cache_tag}"
 OUTPUT = CACHE / "native" / sys.implementation.cache_tag
-
-
-def _git(*args: str) -> str:
-    return subprocess.run(
-        ("git", *args), cwd=ROOT, check=True, capture_output=True,
-        text=True, encoding="utf-8",
-    ).stdout.strip()
-
-
-def native_source_digest() -> str:
-    paths = (
-        "cpp/simulator", "src/sls/backends/simulator", "src/sls/content",
-        "tools/build_native.py",
-    )
-    entries = _git("ls-files", "-s", "--", *paths).splitlines()
-    if not entries:
-        raise RuntimeError("native build provenance contains no tracked files")
-    encoded = ("\n".join(sorted(entries)) + "\n").encode("utf-8")
-    return hashlib.sha256(encoded).hexdigest()
 
 
 @dataclass(frozen=True, slots=True)
@@ -175,7 +161,7 @@ def main() -> int:
         parser.error("--sanitizers is currently supported on Linux only")
     configure = configure_command(
         system, paths, source_digest=native_source_digest(),
-        git_commit=_git("rev-parse", "HEAD"), sanitizers=args.sanitizers,
+        git_commit=str(git_state()["commit"]), sanitizers=args.sanitizers,
     )
     if system == "Windows":
         build_env["ZIG_EXECUTABLE"] = paths.zig.as_posix()

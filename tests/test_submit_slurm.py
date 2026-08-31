@@ -15,7 +15,9 @@ def _wrapped(command: list[str]) -> list[str]:
     return wrapped[1:]
 
 
-@pytest.mark.parametrize("task", ("preflight", "benchmark", "smoke", "pilot", "train"))
+@pytest.mark.parametrize(
+    "task", ("preflight", "benchmark", "evaluate", "smoke", "pilot", "train"),
+)
 def test_all_tasks_preserve_virtualenv_python_path(tmp_path: Path, task: str) -> None:
     python = tmp_path / "venv" / "bin" / "python"
     args = _parser().parse_args([task, "--python", str(python)])
@@ -28,6 +30,7 @@ def test_all_tasks_preserve_virtualenv_python_path(tmp_path: Path, task: str) ->
     (
         ("preflight", "preflight_training.py", None, "gpu", "03:00:00"),
         ("benchmark", "benchmark_workers.py", None, "gpu", "03:00:00"),
+        ("evaluate", "evaluate_checkpoint.py", None, "gpu", "03:00:00"),
         ("smoke", "train_full_run.py", "smoke", "gpu-long", "1-00:00:00"),
         ("pilot", "train_full_run.py", "pilot", "gpu-long", "12:00:00"),
         ("train", "train_full_run.py", "train", "gpu-long", "3-00:00:00"),
@@ -49,6 +52,14 @@ def test_nus_command_matrix(
     expected = [os.path.abspath(str(python)), str(root / "tools" / script)]
     if task == "preflight":
         expected += ["--jobs", "16"]
+    elif task == "evaluate":
+        expected += [
+            str((root / "local" / "runs" / "ironclad-a0-fullrun-v2" / "latest.pt").resolve()),
+            "--output",
+            str((root / "local" / "runs" / "evaluations" / "latest-act1-current-sim-1000.json").resolve()),
+            "--profile", "IRONCLAD_A0_ACT1", "--episodes", "1000",
+            "--seed-start", "3000000000000", "--device", "cuda",
+        ]
     elif stage is not None:
         expected += [
             "--stage", stage,
@@ -80,6 +91,22 @@ def test_training_custom_config_is_forwarded(tmp_path: Path) -> None:
 def test_nontraining_jobs_reject_training_config() -> None:
     args = _parser().parse_args(["benchmark", "--config", "custom.toml"])
     with pytest.raises(ValueError, match="does not accept"):
+        build_sbatch_command(args)
+
+
+def test_benchmark_layouts_are_forwarded(tmp_path: Path) -> None:
+    args = _parser().parse_args([
+        "benchmark", "--benchmark-layouts", "48:16",
+    ])
+    wrapped = _wrapped(build_sbatch_command(args, root=tmp_path / "SLS"))
+    assert wrapped[-2:] == ["--layouts", "48:16"]
+
+
+def test_training_rejects_benchmark_layouts() -> None:
+    args = _parser().parse_args([
+        "pilot", "--benchmark-layouts", "48:16",
+    ])
+    with pytest.raises(ValueError, match="only valid for benchmark"):
         build_sbatch_command(args)
 
 

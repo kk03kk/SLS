@@ -24,7 +24,10 @@ def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser()
     parser.add_argument("--allow-cpu", action="store_true")
     parser.add_argument("--skip-build", action="store_true")
-    parser.add_argument("--allow-dirty", action="store_true", help="development/test only")
+    parser.add_argument(
+        "--allow-dirty", action="store_true",
+        help="deprecated; local source digests are authoritative",
+    )
     parser.add_argument("--jobs", type=int, default=min(os.cpu_count() or 4, 16))
     return parser
 
@@ -67,8 +70,6 @@ def main() -> int:
         )
 
         repository = git_state()
-        if bool(repository["dirty"]) and not args.allow_dirty:
-            raise RuntimeError("preflight requires a clean Git worktree")
         if ENCODING_SCHEMA != "sls-policy-input-v3":
             raise RuntimeError("preflight requires the policy v3 encoding contract")
         decision = SimulatorBackend(IRONCLAD_A0_FULLRUN).reset(0)

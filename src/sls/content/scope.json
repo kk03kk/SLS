@@ -618,7 +618,7 @@
   },
   "schema": "sls-content-scope-v1",
   "scope_id": "sls-ironclad-a0-content-v1",
-  "scope_sha256": "24a218a612d16c34879dd4469891febc4a770f83d25783e51e79e10476a60f17",
+  "scope_sha256": "2d28deceff462d58c24baf2cbe0758a79c98d475b32d32a14e88863e6bf9569f",
   "shared_engine_primitives": [
     "DAMAGE_PIPELINE",
     "ORBS",
@@ -627,15 +627,15 @@
     "STANCES"
   ],
   "source_sha256": {
-    "cpp/simulator/include/constants/CardPools.h": "bae67383f9b6239263a67b0db7ae34f14aaf27ac812be8874f865b7ed10f7073",
-    "cpp/simulator/include/constants/Cards.h": "2420f04c8d9365361635cd5b3960793b2711cc7dc477ecc421f5d15180f41a75",
-    "cpp/simulator/include/constants/Events.h": "286a6556f2ef7261f682bcf59752f3fb9dea6dc3b3b24a952295d2db65e69e38",
-    "cpp/simulator/include/constants/MonsterEncounters.h": "10fd2aaa1c1023c8c5164b257b8559575c99ef1f6f2dce86042c3aae5462f8cb",
-    "cpp/simulator/include/constants/MonsterIds.h": "7403a5aa94ac3e512a81b6a9d0b54d615cfb2366079dffb9e270b624f2324978",
-    "cpp/simulator/include/constants/Potions.h": "b038da5278bce6a1ded37d2d40090ec98d8f590c9eee61a3caa490235e46cecb",
-    "cpp/simulator/include/constants/RelicPools.h": "7a709ee1634065813d62c78fc0676e0551a8ffd6a00748d90161034996ab5929",
-    "cpp/simulator/include/constants/Relics.h": "639044d25f699a83de7e8e3c7a88e9519ce8de35977b29e96805184f9f8924c7",
-    "cpp/simulator/src/combat/MonsterGroup.cpp": "c2593242813dc64a1b6fde1eb54d167d052b22f5a01455d2240bedd6446b42e6",
+    "native/simulator/include/constants/CardPools.h": "bae67383f9b6239263a67b0db7ae34f14aaf27ac812be8874f865b7ed10f7073",
+    "native/simulator/include/constants/Cards.h": "2420f04c8d9365361635cd5b3960793b2711cc7dc477ecc421f5d15180f41a75",
+    "native/simulator/include/constants/Events.h": "286a6556f2ef7261f682bcf59752f3fb9dea6dc3b3b24a952295d2db65e69e38",
+    "native/simulator/include/constants/MonsterEncounters.h": "10fd2aaa1c1023c8c5164b257b8559575c99ef1f6f2dce86042c3aae5462f8cb",
+    "native/simulator/include/constants/MonsterIds.h": "7403a5aa94ac3e512a81b6a9d0b54d615cfb2366079dffb9e270b624f2324978",
+    "native/simulator/include/constants/Potions.h": "b038da5278bce6a1ded37d2d40090ec98d8f590c9eee61a3caa490235e46cecb",
+    "native/simulator/include/constants/RelicPools.h": "7a709ee1634065813d62c78fc0676e0551a8ffd6a00748d90161034996ab5929",
+    "native/simulator/include/constants/Relics.h": "639044d25f699a83de7e8e3c7a88e9519ce8de35977b29e96805184f9f8924c7",
+    "native/simulator/src/combat/MonsterGroup.cpp": "c2593242813dc64a1b6fde1eb54d167d052b22f5a01455d2240bedd6446b42e6",
     "src/sls/content/registry.json": "a42159c57de972a45d0d2f9998e1f269daa5d3c8c54ff9fb6f52650fdd1f5c2a"
   }
 }

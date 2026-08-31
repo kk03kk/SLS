@@ -48,9 +48,12 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--rollout-steps", type=int, default=64)
     parser.add_argument(
         "--output", type=Path,
-        default=ROOT / "runs" / "worker-benchmark.json",
+        default=ROOT / "local" / "runs" / "worker-benchmark.json",
     )
-    parser.add_argument("--allow-dirty", action="store_true", help="development/test only")
+    parser.add_argument(
+        "--allow-dirty", action="store_true",
+        help="deprecated; local source digests are authoritative",
+    )
     return parser
 
 
@@ -78,8 +81,6 @@ def main() -> int:
         raise SystemExit("worker benchmark requires one CUDA GPU")
     torch.set_float32_matmul_precision("high")
     repository = git_state()
-    if bool(repository["dirty"]) and not args.allow_dirty:
-        raise ValueError("worker benchmark requires a clean Git worktree")
     source_digest = native_source_digest()
     artifact = native_artifact()
     if artifact is None:

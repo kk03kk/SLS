@@ -1,21 +1,35 @@
 # Repository map
 
-- `cpp/simulator`: native FullRun engine and Python binding.
+## Stable project roots
+
+- `src/sls`: Python application and library code.
+- `native/simulator`: native FullRun engine and Python binding.
+- `configs`: declarative training and runtime configuration.
+- `tools`: build, training, evaluation, audit, export, and live-play commands.
+- `tests`: unit, contract, integration, and simulator tests.
+- `docs`: maintained architecture and operating documentation.
+- `local`: machine-owned state and generated evidence.
+
+## Python package
+
 - `src/sls/contracts`: canonical public observations, semantic actions,
   decisions, and transitions.
 - `src/sls/backends/simulator`: native simulator adapter.
-- `src/sls/backends/original`: minimal CommunicationMod adapter and live
-  session transport.
-- `src/sls/content`: generated content registry, normalization, and the
-  policy-visible Ironclad scope.
-- `src/sls/model`: policy vocabulary, batching, relational Transformer, and GRU.
-- `src/sls/rl`: workers, recurrent rollout math, PPO, evaluation, rewards, episode
-  limits, and exact checkpoints.
-- `src/sls/runtime`: simulator-only policy artifacts and safe live controller.
-- `configs/train`: one canonical self-generated Act 1 -> Act 2 -> FullRun chain.
-- `tools`: native build, training, resume verification, worker benchmark,
-  Slurm submission, policy export, and live play.
-- `tests`: contracts, simulator, model, RL, checkpoint, and live-runtime tests.
+- `src/sls/backends/original`: CommunicationMod adapter and live session transport.
+- `src/sls/content`: generated content registry, normalization, and policy scope.
+- `src/sls/model`: vocabulary, batching, relational Transformer, and GRU.
+- `src/sls/rl`: workers, rollout math, PPO, evaluation, rewards, episode limits,
+  and exact checkpoints.
+- `src/sls/runtime`: policy artifacts and fail-closed live controller.
+- `src/sls/audit` and `src/sls/diagnostics`: simulator/original-game parity evidence.
 
-Generated or locally owned material belongs under ignored directories such as
-`.build`, `external`, `runs`, `logs`, and `validation-results`.
+## Local state
+
+- `local/build`: native build tree and downloaded build tools.
+- `local/runs`: checkpoints, metrics, trajectories, Slurm logs, and crash evidence.
+- `local/external`: user-owned game and mod files.
+- `local/logs`: live policy journals.
+- `local/reports`: generated audit and validation reports.
+
+`local` is not source code. Delete selected regenerable parts only when their
+checkpoints, game assets, or evidence are no longer needed.

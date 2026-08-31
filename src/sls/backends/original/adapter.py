@@ -508,6 +508,16 @@ def _cards(
             _integer(value.get("upgrades")),
             _integer(value.get("cost")),
         ))
+    def current_cost(card: Mapping[str, Any]) -> int:
+        base_cost = _integer(card.get("base_cost", card.get("cost")))
+        if zone != "HAND":
+            # CommunicationMod can briefly retain a card's cost-for-turn after
+            # the card has left the hand (for example after Liquid Memories).
+            # That transient value is neither actionable nor stable and would
+            # otherwise leak protocol timing into recurrent policy state.
+            return base_cost
+        return _integer(card.get("cost_for_turn", card.get("cost", base_cost)))
+
     return tuple(
         Card(
             f"{zone}:{index}" if zone != "DRAW" or visible_order else f"DRAW:HIDDEN:{index}",
@@ -515,7 +525,7 @@ def _cards(
             zone,
             _integer(card.get("upgrades")),
             _integer(card.get("base_cost", card.get("cost"))),
-            _integer(card.get("cost_for_turn", card.get("cost", card.get("base_cost")))),
+            current_cost(card),
             bool(card.get("is_playable", False)) if zone == "HAND" else False,
             index if zone == "DRAW" and visible_order else None,
             (("order_is_visible", True),) if zone == "DRAW" and visible_order else (),

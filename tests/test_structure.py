@@ -17,8 +17,8 @@ def test_legacy_architectures_are_absent() -> None:
 
 def test_canonical_assets_are_present() -> None:
     for relative in (
-        "cpp/simulator/CMakeLists.txt",
-        "cpp/simulator/python/module.cpp",
+        "native/simulator/CMakeLists.txt",
+        "native/simulator/python/module.cpp",
         "src/sls/contracts/decision.py",
         "src/sls/content/scope.json",
         "tools/train_full_run.py",

@@ -27,10 +27,14 @@ C++ FullRun simulator
     -> CommunicationMod live controller
 ```
 
-The native simulator is the training authority. Original-game comparison,
-Oracle instrumentation, teacher policies, and behavior cloning are outside the
-main repository. The pre-cleanup history remains recoverable from the Git tag
-`pre-training-cleanup-20260829`.
+The native simulator is the training authority. Original-game comparison and
+Oracle instrumentation are maintained as a separate validation path under
+`sls.audit`, `sls.diagnostics`, and `tools`; they never provide training input.
+Teacher policies and behavior cloning are outside this project.
+
+Native source provenance is a canonical digest of local source paths and file
+contents. Git metadata is recorded when available, but Git is not required to
+build, test, or run the local project.
 
 Training workers own native environments while model inference is centralized.
 Rollouts remain time-major and are optimized as contiguous recurrent sequences.

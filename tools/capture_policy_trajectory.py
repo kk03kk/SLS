@@ -14,9 +14,31 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from sls.backends.original import OriginalBackend  # noqa: E402
 from sls.backends.simulator import SimulatorBackend  # noqa: E402
-from sls.curriculum import IRONCLAD_A0_FULLRUN  # noqa: E402
+from sls.curriculum import (  # noqa: E402
+    IRONCLAD_A0_ACT1,
+    IRONCLAD_A0_ACT2,
+    IRONCLAD_A0_ACT3,
+    IRONCLAD_A0_FULLRUN,
+    IRONCLAD_A0_HEART,
+    CurriculumProfile,
+)
 from sls.diagnostics import capture_policy_trajectory  # noqa: E402
 from sls.runtime import load_policy_artifact  # noqa: E402
+
+_PROFILES_BY_GOAL = {
+    "ACT1": IRONCLAD_A0_ACT1,
+    "ACT2": IRONCLAD_A0_ACT2,
+    "ACT3": IRONCLAD_A0_ACT3,
+    "FULLRUN": IRONCLAD_A0_FULLRUN,
+    "HEART": IRONCLAD_A0_HEART,
+}
+
+
+def _profile_for_goal(goal: str) -> CurriculumProfile:
+    try:
+        return _PROFILES_BY_GOAL[goal]
+    except KeyError as error:
+        raise ValueError(f"canary artifact goal is unsupported: {goal}") from error
 
 
 def main() -> int:
@@ -37,12 +59,11 @@ def main() -> int:
     signal.signal(signal.SIGINT, stop)
     signal.signal(signal.SIGTERM, stop)
     artifact = load_policy_artifact(args.artifact, device="cpu")
-    if artifact.metadata.goal != "FULLRUN":
-        raise ValueError("canary requires a FULLRUN artifact")
+    profile = _profile_for_goal(artifact.metadata.goal)
     backend = (
-        SimulatorBackend(IRONCLAD_A0_FULLRUN)
+        SimulatorBackend(profile)
         if args.backend == "simulator"
-        else OriginalBackend(profile=IRONCLAD_A0_FULLRUN)
+        else OriginalBackend(profile=profile)
     )
     result = capture_policy_trajectory(
         backend, artifact, backend_name=args.backend, seed=args.seed,

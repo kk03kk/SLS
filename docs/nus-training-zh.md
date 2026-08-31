@@ -32,11 +32,11 @@ native simulator 或执行训练；这些工作全部提交到 compute node。
 
 ~~~bash
 "$TRAIN_PY" tools/submit_slurm.py preflight --python "$TRAIN_PY"
-tail -f runs/slurm-logs/sls-preflight-*.out
+tail -f local/runs/slurm-logs/sls-preflight-*.out
 
 "$TRAIN_PY" tools/submit_slurm.py benchmark --python "$TRAIN_PY"
-tail -f runs/slurm-logs/sls-benchmark-*.out
-"$TRAIN_PY" -c 'import json; p=json.load(open("runs/worker-benchmark.json")); print(p["selected_workers"], p["selected_shards"])'
+tail -f local/runs/slurm-logs/sls-benchmark-*.out
+"$TRAIN_PY" -c 'import json; p=json.load(open("local/runs/worker-benchmark.json")); print(p["selected_workers"], p["selected_shards"])'
 ~~~
 
 Preflight 必须报告 A100、CUDA、native import、Decision invariant、seed 8335、
@@ -45,15 +45,22 @@ GRU forward/backward 和 checkpoint exact-resume 全部通过。Benchmark 会在
 组合，并绑定当前 Git commit、native source digest 和实际二进制 SHA-256。后续任务
 只接受同一个原生二进制。
 
+续接已经采用固定布局的历史训练链时，不得让 benchmark 改变 worker/shard 数量。
+例如续接 `48:16` 的训练链，应改用：
+
+~~~bash
+"$TRAIN_PY" tools/submit_slurm.py benchmark --python "$TRAIN_PY" --benchmark-layouts 48:16
+~~~
+
 ## 3. Smoke：Act 1 课程，累计 500 万环境步
 
 ~~~bash
 "$TRAIN_PY" tools/submit_slurm.py smoke --python "$TRAIN_PY"
-tail -f runs/slurm-logs/sls-smoke-*.out
+tail -f local/runs/slurm-logs/sls-smoke-*.out
 
-"$TRAIN_PY" -c 'import json; p=json.load(open("runs/ironclad-a0-fullrun-v2/run-manifest.json")); print(p["status"], p["environment_steps"], p["cuda_peak_memory_bytes"])'
-tail -n 5 runs/ironclad-a0-fullrun-v2/stages/smoke/metrics.jsonl
-find runs/ironclad-a0-fullrun-v2/crashes -type f 2>/dev/null
+"$TRAIN_PY" -c 'import json; p=json.load(open("local/runs/ironclad-a0-fullrun-v2/run-manifest.json")); print(p["status"], p["environment_steps"], p["cuda_peak_memory_bytes"])'
+tail -n 5 local/runs/ironclad-a0-fullrun-v2/stages/smoke/metrics.jsonl
+find local/runs/ironclad-a0-fullrun-v2/crashes -type f 2>/dev/null
 ~~~
 
 Smoke 默认申请 `gpu-long` 和 24 小时，足够覆盖当前 A100 基准下约 17 小时的
@@ -64,7 +71,7 @@ Smoke 默认申请 `gpu-long` 和 24 小时，足够覆盖当前 A100 基准下�
 compute node 对保存点重复计算两次下一 update：
 
 ~~~bash
-srun --account=allusers --qos=normal --partition=gpu --gres=gpu:a100-40:1 --cpus-per-task=16 --mem=64G --time=03:00:00 "$TRAIN_PY" tools/verify_training_resume.py runs/ironclad-a0-fullrun-v2/latest.pt --device cuda
+srun --account=allusers --qos=normal --partition=gpu --gres=gpu:a100-40:1 --cpus-per-task=16 --mem=64G --time=03:00:00 "$TRAIN_PY" tools/verify_training_resume.py local/runs/ironclad-a0-fullrun-v2/latest.pt --device cuda
 ~~~
 
 输出中的 metrics、model 和 trainer state 三项必须全部为 true。
@@ -74,7 +81,7 @@ srun --account=allusers --qos=normal --partition=gpu --gres=gpu:a100-40:1 --cpus
 在本地 PowerShell 执行：
 
 ~~~powershell
-scp -o ProxyJump=hengzhi@sjump.comp.nus.edu.sg hengzhi@xlogin.comp.nus.edu.sg:~/SLS/runs/ironclad-a0-fullrun-v2/stages/smoke/ironclad-a0-fullrun-v2-smoke.pt D:/SLS/runs/ironclad-a0-fullrun-v2-smoke.pt
+scp -o ProxyJump=hengzhi@sjump.comp.nus.edu.sg hengzhi@xlogin.comp.nus.edu.sg:~/SLS/local/runs/ironclad-a0-fullrun-v2/stages/smoke/ironclad-a0-fullrun-v2-smoke.pt D:/SLS/local/runs/ironclad-a0-fullrun-v2-smoke.pt
 ~~~
 
 该 artifact 的 goal 是 ACT1，不能交给 FullRun 实机控制器。它只用于独立模拟器
@@ -83,8 +90,8 @@ scp -o ProxyJump=hengzhi@sjump.comp.nus.edu.sg hengzhi@xlogin.comp.nus.edu.sg:~/
 ## 5. Pilot：Act 2 课程，累计 2,500 万环境步
 
 ~~~bash
-"$TRAIN_PY" tools/submit_slurm.py pilot --python "$TRAIN_PY"
-tail -f runs/slurm-logs/sls-pilot-*.out
+"$TRAIN_PY" tools/submit_slurm.py pilot --python "$TRAIN_PY" --resume environment-migration
+tail -f local/runs/slurm-logs/sls-pilot-*.out
 ~~~
 
 Pilot 默认申请 `gpu-long` 和 12 小时；它新增约 2000 万步的目标在 3 小时 `gpu` 配额内
@@ -98,7 +105,7 @@ Pilot 默认申请 `gpu-long` 和 12 小时；它新增约 2000 万步的目标�
 
 ~~~bash
 "$TRAIN_PY" tools/submit_slurm.py train --python "$TRAIN_PY"
-tail -f runs/slurm-logs/sls-train-*.out
+tail -f local/runs/slurm-logs/sls-train-*.out
 ~~~
 
 训练每跨过 50 万环境步保存编号 checkpoint，每 500 万步在固定 128 个保留种子
@@ -127,7 +134,7 @@ checkpoint 完成前进入强制终止阶段，只应用于不要求保留本批
 - final-evaluation.json：1,000-seed 最终结果。
 - ironclad-a0-fullrun-v2.pt：本地真实游戏使用的 simulator-only artifact。
 - run-manifest.json、stages/*/metrics.jsonl 和 crashes/：完整运行证据。
-- training-bundle.json：上述文件的 SHA-256 清单；实机 action journal 保留在本地 logs/。
+- training-bundle.json：上述文件的 SHA-256 清单；实机 action journal 保留在 `local/logs/`。
 
 只有 Pilot 晋级门通过后才允许启动正式训练，并先记录 FullRun horizon 的阶段基线。
 只有周期门和独立最终门都通过时才生成根目录 FullRun artifact。最终门要求至少 1%

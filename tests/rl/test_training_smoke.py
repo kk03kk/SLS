@@ -113,6 +113,9 @@ def test_environment_migration_preserves_learning_and_resets_episode_state(
         }
         expected_next_seed = source.next_seed
         path = save_checkpoint(tmp_path / "old.pt", source)
+        payload = torch.load(path, map_location="cpu", weights_only=False)
+        payload["contract"]["content_scope_sha256"] = "old-scope-hash"
+        torch.save(payload, path)
 
     with WorkerPool(IRONCLAD_A0_ACT1, 1) as workers:
         migrated = PPOTrainer(

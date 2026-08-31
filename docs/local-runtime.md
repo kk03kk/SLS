@@ -7,7 +7,7 @@ are local assets and must never be committed.
 Start the game with CommunicationMod configured to launch
 `tools/play_live.py`, or pipe its newline-delimited protocol to that process.
 Begin a fresh Ironclad A0 game, attach while the Neow choice is visible, run
-with `--max-actions 5`, and inspect `logs/live-agent.jsonl` before allowing a
+with `--max-actions 5`, and inspect `local/logs/live-agent.jsonl` before allowing a
 complete run.
 
 The controller validates the artifact's ascension range, FullRun goal and exact

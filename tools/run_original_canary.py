@@ -128,7 +128,7 @@ def main() -> int:
     parser.add_argument("--python", type=Path, default=Path(sys.executable))
     args = parser.parse_args()
 
-    runtime_root = ROOT / "runs" / "canary" / "runtime-backups"
+    runtime_root = ROOT / "local" / "runs" / "canary" / "runtime-backups"
     _recover_pending(runtime_root)
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S.%fZ")
     run_root = runtime_root / stamp
@@ -137,7 +137,7 @@ def main() -> int:
     mod_list = local / "mod_lists.json"
     display = args.game_root / "info.displayconfig"
     mod_dir = args.game_root / "mods"
-    oracle = ROOT / ".build" / "oracle" / "SpirecommParity.jar"
+    oracle = ROOT / "local" / "build" / "oracle" / "SpirecommParity.jar"
     target_oracle = mod_dir / "SpirecommParity.jar"
     mts = args.game_root.parents[1] / "workshop" / "content" / "646570" / "1605060445" / "ModTheSpire.jar"
     required = [args.artifact, args.python, oracle, mts, display]

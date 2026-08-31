@@ -12,7 +12,7 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from sls.rl.training_contract import source_sha256  # noqa: E402
 
-HEADERS = ROOT / "cpp" / "simulator" / "include" / "constants"
+HEADERS = ROOT / "native" / "simulator" / "include" / "constants"
 OUTPUT = ROOT / "src" / "sls" / "content" / "registry.json"
 SOURCES = {
     "characters": ("CharacterClasses.h", "CharacterClass"),
@@ -95,7 +95,7 @@ def main() -> int:
     payload = {
         "schema_version": 1,
         "source": {
-            "simulator_manifest": "cpp/simulator/SLS_VENDOR.json",
+            "simulator_manifest": "native/simulator/SLS_VENDOR.json",
             "header_sha256": hashes,
         },
         "categories": categories,

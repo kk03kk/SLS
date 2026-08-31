@@ -18,7 +18,10 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("artifact", type=Path)
     parser.add_argument("--device", default="cpu")
-    parser.add_argument("--log", type=Path, default=ROOT / "logs" / "live-agent.jsonl")
+    parser.add_argument(
+        "--log", type=Path,
+        default=ROOT / "local" / "logs" / "live-agent.jsonl",
+    )
     parser.add_argument("--low-confidence", type=float, default=0.55)
     parser.add_argument("--max-actions", type=int)
     parser.add_argument("--wait-for-neow", action="store_true")

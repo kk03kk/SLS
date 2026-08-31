@@ -3927,6 +3927,6 @@
       "Potions.h": "b038da5278bce6a1ded37d2d40090ec98d8f590c9eee61a3caa490235e46cecb",
       "Relics.h": "639044d25f699a83de7e8e3c7a88e9519ce8de35977b29e96805184f9f8924c7"
     },
-    "simulator_manifest": "cpp/simulator/SLS_VENDOR.json"
+    "simulator_manifest": "native/simulator/SLS_VENDOR.json"
   }
 }

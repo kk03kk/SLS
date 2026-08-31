@@ -14,7 +14,7 @@ def _artifact_directory() -> Path:
     if configured:
         return Path(configured)
     root = Path(__file__).resolve().parents[4]
-    return root / ".build" / "native" / sys.implementation.cache_tag
+    return root / "local" / "build" / "native" / sys.implementation.cache_tag
 
 
 def _load() -> None:
