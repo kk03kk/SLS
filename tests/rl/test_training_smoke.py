@@ -105,6 +105,7 @@ def test_environment_migration_preserves_learning_and_resets_episode_state(
             Policy(model_config), workers, config, seed=0,
             native_contract_digest="old-native", git_commit="old-git",
             training_config_digest="same-training",
+            training_seed_limit=1_000_000_000_000,
         )
         source.environment_steps = 104_448
         source.update = 51
@@ -125,6 +126,7 @@ def test_environment_migration_preserves_learning_and_resets_episode_state(
             Policy(model_config), workers, config, seed=0,
             native_contract_digest="new-native", git_commit="new-git",
             training_config_digest="approved-new-training-schedule",
+            training_seed_limit=3_000_000_000_000,
         )
         with pytest.raises(ValueError, match="contract does not match"):
             load_checkpoint(path, migrated)

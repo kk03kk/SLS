@@ -196,6 +196,7 @@ def load_checkpoint_environment_migration(
     allowed_changes = {
         "git_commit", "native_source_sha256", "content_scope_sha256",
         "profile", "curriculum_version", "training_config_sha256",
+        "training_seed_limit",
     }
     incompatible = {
         key for key in set(actual) | set(expected)

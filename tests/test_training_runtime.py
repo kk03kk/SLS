@@ -156,6 +156,7 @@ def test_canonical_fullrun_config_freezes_stage_and_recurrent_contract() -> None
     assert payload["stages"]["pilot"]["evaluate_every_steps"] == 500_000
     assert payload["stages"]["pilot"]["minimum_evaluation_episodes"] == 1000
     assert payload["run"]["periodic_evaluation_seed_count"] == 1000
+    assert payload["run"]["periodic_evaluation_seed_start"] == 3_000_000_000_000
     assert payload["stages"]["train"]["target_environment_steps"] == 100_000_000
     assert payload["model"]["architecture"] == "sls-recurrent-relational-policy-v5"
     assert payload["model"]["recurrent_hidden_dim"] == 256
