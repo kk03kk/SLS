@@ -5,6 +5,17 @@ import pytest
 native = pytest.importorskip("sls.backends.simulator.native", exc_type=ImportError)
 
 
+def test_nilrys_codex_exposes_its_skip_choice_control() -> None:
+    battle = native.LightspeedBattle()
+    battle.reset(0, "CULTIST", relics=["NILRYS_CODEX"], replace_relics=True)
+    battle.step("end_turn")
+
+    choice = battle.snapshot()["game_state"]["combat_state"]["choice"]
+
+    assert [option["choice_index"] for option in choice["options"]] == [0, 1, 2]
+    assert choice["controls"] == [{"choice_index": 3, "kind": "SKIP"}]
+
+
 def test_original_compatible_rng_is_seeded_and_advances_exactly() -> None:
     first = native.rng_probe(0)
     second = native.rng_probe(0)

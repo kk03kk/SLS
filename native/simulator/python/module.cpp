@@ -506,8 +506,11 @@ py::dict public_combat_choice_state(const BattleContext &bc) {
     py::list options;
 
     auto append_cards = [&options](const auto &begin, const auto &end, const char *zone) {
-        for (auto it = begin; it != end; ++it) {
-            options.append(public_combat_card(*it, zone, nullptr));
+        int choice_index = 0;
+        for (auto it = begin; it != end; ++it, ++choice_index) {
+            auto value = public_combat_card(*it, zone, nullptr);
+            value["choice_index"] = choice_index;
+            options.append(value);
         }
     };
     switch (task) {
@@ -545,6 +548,7 @@ py::dict public_combat_choice_state(const BattleContext &bc) {
                 auto value = public_combat_card(
                     CardInstance(bc.cardSelectInfo.cards[index]), "GENERATED", nullptr);
                 value["instance_id"] = "combat-choice:" + std::to_string(index);
+                value["choice_index"] = index;
                 options.append(value);
             }
             break;
@@ -553,6 +557,14 @@ py::dict public_combat_choice_state(const BattleContext &bc) {
             break;
     }
     result["options"] = options;
+    py::list controls;
+    if (task == CardSelectTask::CODEX) {
+        py::dict skip;
+        skip["choice_index"] = 3;
+        skip["kind"] = "SKIP";
+        controls.append(skip);
+    }
+    result["controls"] = controls;
     return result;
 }
 
@@ -3997,6 +4009,14 @@ private:
                 break;
         }
         result["options"] = options;
+        py::list controls;
+        if (task == CardSelectTask::CODEX) {
+            py::dict skip;
+            skip["choice_index"] = 3;
+            skip["kind"] = "SKIP";
+            controls.append(skip);
+        }
+        result["controls"] = controls;
         return result;
     }
 

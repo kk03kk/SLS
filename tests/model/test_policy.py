@@ -19,6 +19,7 @@ from sls.model import ModelConfig, Policy, PolicyBatch
 from sls.model.batching import encode_decision
 from sls.model.encoding import (
     NUMERIC_FIELD_IDS,
+    build_policy_vocabulary,
     categorical_token,
     content_token,
     policy_vocabulary,
@@ -44,6 +45,10 @@ def test_policy_scores_the_current_candidate_set() -> None:
     assert output.value.shape == (1,)
     assert batch.action_reference_mask[0, :, 2].tolist() == [True, True]
     assert batch.action_references[0, 0, 2] != batch.action_references[0, 1, 2]
+
+
+def test_committed_policy_vocabulary_matches_native_sources() -> None:
+    assert build_policy_vocabulary() == policy_vocabulary()
 
 
 def _combat_decision(*, reverse_actions: bool = False, reverse_entities: bool = False) -> Decision:

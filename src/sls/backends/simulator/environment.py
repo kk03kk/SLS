@@ -498,10 +498,6 @@ def _semantic_actions(
     progress = raw["progress_state"]
     semantic: list[Action] = []
     mapping: dict[str, int] = {}
-    hand_choice_sources = _hand_choice_sources(raw)
-    hand_choice_index = {
-        source: index for index, source in enumerate(hand_choice_sources)
-    }
     native_target_to_public: dict[int, int] = {}
     for public_index, monster in enumerate(
         (raw.get("public_combat") or {}).get("monsters") or ()
@@ -550,7 +546,7 @@ def _semantic_actions(
             elif action_type == 2:
                 action = Action(
                     ActionKind.SELECT_CARD,
-                    subject_id=f"CHOICE:{hand_choice_index.get(source, source)}",
+                    subject_id=f"CHOICE:{source}",
                 )
             elif action_type == 3:
                 action = Action(ActionKind.CONFIRM, option_id="combat-selection")
@@ -695,17 +691,51 @@ def _screen_entities(raw: Mapping[str, Any]) -> dict[str, tuple[Any, ...]]:
     public_combat = raw.get("public_combat", {})
     actions = raw["legal_actions"]
     if screen is ScreenType.COMBAT and "choice" in public_combat:
-        choice_options = public_combat["choice"]["options"]
+        choice = public_combat["choice"]
+        task = str(choice.get("task") or "UNKNOWN").upper()
+        indexed_options = [
+            (int(option.get("choice_index", index)), option)
+            for index, option in enumerate(choice["options"])
+        ]
+        option_indices = [index for index, _ in indexed_options]
+        if any(index < 0 for index in option_indices) or len(option_indices) != len(set(option_indices)):
+            raise ValueError(f"native {task} choice exposes invalid option indices")
         hand_choice_sources = _hand_choice_sources(raw)
         if hand_choice_sources or _is_incremental_hand_selection(raw):
-            choice_options = [choice_options[index] for index in hand_choice_sources]
-        result["choice"] = tuple(
+            wanted = set(hand_choice_sources)
+            indexed_options = [
+                (index, option) for index, option in indexed_options if index in wanted
+            ]
+        entities = [
             _entity(
                 f"CHOICE:{index}", option["content_id"],
-                upgrades=int(option["upgrades"]), source=str(public_combat["choice"]["source"]),
+                upgrades=int(option["upgrades"]), source=str(choice["source"]),
             )
-            for index, option in enumerate(choice_options)
-        )
+            for index, option in indexed_options
+        ]
+        for control in choice.get("controls", ()):
+            control_index = int(control["choice_index"])
+            if task != "CODEX" or str(control.get("kind") or "").upper() != "SKIP":
+                raise ValueError(f"native {task} choice exposes an unsupported control")
+            entities.append(_entity(
+                f"CHOICE:{control_index}", "OPTION",
+                option_ordinal=control_index, source=str(choice["source"]),
+            ))
+        entity_ids = [entity.instance_id for entity in entities]
+        if len(entity_ids) != len(set(entity_ids)):
+            raise ValueError(f"native {task} choice exposes duplicate policy identities")
+        legal_choice_ids = {
+            f"CHOICE:{int(action['source_index'])}"
+            for action in actions
+            if action.get("domain") == "COMBAT"
+            and int(action.get("action_type", -1)) == 2
+        }
+        missing = legal_choice_ids - set(entity_ids)
+        if missing:
+            raise ValueError(
+                f"native {task} choice actions lack public entities: {sorted(missing)}"
+            )
+        result["choice"] = tuple(entities)
     elif screen in {ScreenType.NEOW, ScreenType.EVENT}:
         event_id = normalize_content_id(raw["public_run"]["current_event_id"])
         if event_id == "MATCH_AND_KEEP":

@@ -8,7 +8,16 @@ from pathlib import Path
 
 import pytest
 
-from sls.contracts import Action, ActionKind
+from sls.contracts import (
+    Action,
+    ActionKind,
+    Decision,
+    Observation,
+    Player,
+    RunContext,
+    ScreenType,
+)
+from sls.model.batching import encode_decision
 
 
 def _terminal_transition(
@@ -32,6 +41,110 @@ def test_native_full_run_reaches_a_canonical_decision() -> None:
     assert not decision.terminal
     assert decision.actions
     assert decision.observation.run.act == 1
+
+
+@pytest.mark.parametrize(
+    ("task", "source", "option_count", "legal_indices", "controls"),
+    (
+        ("CODEX", "GENERATED", 3, (0, 1, 2, 3), ({"choice_index": 3, "kind": "SKIP"},)),
+        ("HEADBUTT", "DISCARD", 6, (0, 1, 2, 3, 4, 5), ()),
+        ("ARMAMENTS", "HAND", 6, (1, 4), ()),
+        ("DISCOVERY", "GENERATED", 3, (0, 1, 2), ()),
+    ),
+)
+def test_combat_choice_actions_always_reference_encoded_entities(
+    task: str,
+    source: str,
+    option_count: int,
+    legal_indices: tuple[int, ...],
+    controls: tuple[dict[str, object], ...],
+) -> None:
+    from sls.backends.simulator.environment import _screen_entities, _semantic_actions
+
+    raw = {
+        "public_run": {"outcome": 1, "screen_state": 9, "current_event_id": ""},
+        "progress_state": {},
+        "public_combat": {
+            "monsters": [],
+            "choice": {
+                "task": task,
+                "source": source,
+                "options": [
+                    {
+                        "choice_index": index,
+                        "content_id": "STRIKE_RED",
+                        "upgrades": 0,
+                    }
+                    for index in range(option_count)
+                ],
+                "controls": list(controls),
+            },
+        },
+        "public_screen": {},
+        "legal_actions": [
+            {
+                "bits": index + 1,
+                "action_type": 2,
+                "source_index": index,
+                "target_index": 0,
+                "domain": "COMBAT",
+                "requires_target": False,
+            }
+            for index in legal_indices
+        ],
+    }
+    actions, _ = _semantic_actions(raw, ())
+    choices = _screen_entities(raw)["choice"]
+    decision = Decision(
+        Observation(
+            Player("IRONCLAD", 80, 80, 0, 3, 3),
+            RunContext(0, 2, 20, 99, False, False, False),
+            ScreenType.COMBAT,
+            choice_options=choices,
+        ),
+        actions,
+    )
+
+    encoded = encode_decision(decision)
+
+    assert [choice.instance_id for choice in choices] == [
+        f"CHOICE:{index}" for index in legal_indices
+    ]
+    assert encoded.action_reference_mask[:, 0].all()
+
+
+def test_combat_choice_contract_rejects_an_unpublished_control() -> None:
+    from sls.backends.simulator.environment import _screen_entities
+
+    raw = {
+        "public_run": {"outcome": 1, "screen_state": 9, "current_event_id": ""},
+        "public_combat": {
+            "choice": {
+                "task": "CODEX",
+                "source": "GENERATED",
+                "options": [
+                    {"choice_index": index, "content_id": "STRIKE_RED", "upgrades": 0}
+                    for index in range(3)
+                ],
+                "controls": [],
+            },
+        },
+        "public_screen": {},
+        "legal_actions": [{
+            "bits": 4,
+            "action_type": 2,
+            "source_index": 3,
+            "target_index": 0,
+            "domain": "COMBAT",
+            "requires_target": False,
+        }],
+    }
+
+    with pytest.raises(
+        ValueError,
+        match=r"native CODEX choice actions lack public entities: \['CHOICE:3'\]",
+    ):
+        _screen_entities(raw)
 
 
 def test_positive_hp_native_loss_is_a_negative_terminal() -> None:

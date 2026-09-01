@@ -82,8 +82,9 @@ _CATEGORY_VALUES = {
     "BURNING_ELITE", "M", "E", "?", "R", "$", "T", "B",
 }
 VOCABULARY_PATH = Path(__file__).with_name("policy_vocabulary_v3.json")
-_CONSTANT_HEADERS = Path(__file__).resolve().parents[3] / "cpp" / "simulator" / "include" / "constants"
-_NATIVE_MODULE = Path(__file__).resolve().parents[3] / "cpp" / "simulator" / "python" / "module.cpp"
+_NATIVE_ROOT = Path(__file__).resolve().parents[3] / "native" / "simulator"
+_CONSTANT_HEADERS = _NATIVE_ROOT / "include" / "constants"
+_NATIVE_MODULE = _NATIVE_ROOT / "python" / "module.cpp"
 
 
 def _cpp_string_array(filename: str, array_name: str) -> set[str]:
