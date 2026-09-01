@@ -121,7 +121,12 @@ def save_checkpoint(path: str | Path, trainer: PPOTrainer) -> Path:
     return target
 
 
-def load_checkpoint(path: str | Path, trainer: PPOTrainer) -> Mapping[str, Any]:
+def _load_checkpoint_exact(
+    path: str | Path,
+    trainer: PPOTrainer,
+    *,
+    allowed_contract_changes: frozenset[str] = frozenset(),
+) -> Mapping[str, Any]:
     # RNG states are CPU ByteTensors even when the trainer runs on CUDA.
     # Loading the whole payload directly onto the trainer device corrupts that
     # contract; model and optimizer loaders already move their own tensors.
@@ -129,7 +134,14 @@ def load_checkpoint(path: str | Path, trainer: PPOTrainer) -> Mapping[str, Any]:
     if payload.get("schema") != CHECKPOINT_SCHEMA:
         raise ValueError("unsupported training checkpoint")
     expected = _contract(trainer)
-    if payload.get("contract") != expected:
+    actual = payload.get("contract")
+    if not isinstance(actual, Mapping):
+        raise ValueError("checkpoint contract is missing")
+    incompatible = {
+        key for key in set(actual) | set(expected)
+        if actual.get(key) != expected.get(key) and key not in allowed_contract_changes
+    }
+    if incompatible:
         raise ValueError("checkpoint contract does not match the current trainer")
     trainer.model.load_state_dict(payload["model"])
     trainer.optimizer.load_state_dict(payload["optimizer"])
@@ -172,6 +184,27 @@ def load_checkpoint(path: str | Path, trainer: PPOTrainer) -> Mapping[str, Any]:
         torch.cuda.set_rng_state_all(payload["cuda_rng"])
     trainer.decisions = trainer.workers.load_checkpoints(payload["environments"])
     return payload
+
+
+def load_checkpoint(path: str | Path, trainer: PPOTrainer) -> Mapping[str, Any]:
+    return _load_checkpoint_exact(path, trainer)
+
+
+def load_checkpoint_runtime_rebind(
+    path: str | Path, trainer: PPOTrainer,
+) -> Mapping[str, Any]:
+    """Exactly resume after an explicitly approved code/native rebuild.
+
+    Only source provenance may be rebound. Model, PPO, curriculum, content,
+    encoding, vocabulary, runtime, worker layout, training schedule, all RNG
+    state, recurrent state, and serialized worker environments remain exact.
+    """
+
+    return _load_checkpoint_exact(
+        path,
+        trainer,
+        allowed_contract_changes=frozenset({"git_commit", "native_source_sha256"}),
+    )
 
 
 def load_checkpoint_environment_migration(

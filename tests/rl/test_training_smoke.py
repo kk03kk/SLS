@@ -9,7 +9,7 @@ import pytest
 torch = pytest.importorskip("torch")
 pytest.importorskip("sls.backends.simulator.native", exc_type=ImportError)
 
-from sls.curriculum import IRONCLAD_A0_ACT1
+from sls.curriculum import IRONCLAD_A0_ACT1, IRONCLAD_A0_ACT2
 from sls.model import ModelConfig, Policy
 from sls.rl import (
     PPOConfig,
@@ -19,8 +19,38 @@ from sls.rl import (
     evaluate,
     load_checkpoint,
     load_checkpoint_environment_migration,
+    load_checkpoint_runtime_rebind,
     save_checkpoint,
 )
+from sls.rl.training_contract import sha256_file
+from tools.train_full_run import _resume_or_migrate_environment
+
+
+def _migration_record(
+    source_payload: dict[str, object], target_payload: dict[str, object], source_sha256: str,
+) -> dict[str, object]:
+    source_contract = source_payload["contract"]
+    target_contract = target_payload["contract"]
+    source_state = source_payload["trainer"]
+    assert isinstance(source_contract, dict)
+    assert isinstance(target_contract, dict)
+    assert isinstance(source_state, dict)
+    return {
+        "schema": "sls-learning-environment-migration-v2",
+        "environment_steps": source_state["environment_steps"],
+        "update": source_state["update"],
+        "source_checkpoint_sha256": source_sha256,
+        "old_profile": source_contract["profile"].profile_id,
+        "new_profile": target_contract["profile"].profile_id,
+        "old_git_commit": source_contract["git_commit"],
+        "new_git_commit": target_contract["git_commit"],
+        "old_native_source_sha256": source_contract["native_source_sha256"],
+        "new_native_source_sha256": target_contract["native_source_sha256"],
+        "old_content_scope_sha256": source_contract["content_scope_sha256"],
+        "new_content_scope_sha256": target_contract["content_scope_sha256"],
+        "old_training_identity_sha256": source_contract["training_config_sha256"],
+        "new_training_identity_sha256": target_contract["training_config_sha256"],
+    }
 
 
 def test_sharded_worker_hosts_multiple_environments_per_process() -> None:
@@ -140,6 +170,163 @@ def test_environment_migration_preserves_learning_and_resets_episode_state(
         assert [limit.steps for limit in migrated.episode_limits] == [0]
         for key, value in migrated.model.state_dict().items():
             assert torch.equal(value, expected_model[key]), key
+
+
+def _create_completed_act2_migration(tmp_path: Path) -> tuple[
+    Path, Path, dict[str, object], PPOConfig, ModelConfig,
+]:
+    config = PPOConfig(
+        rollout_steps=1, recurrent_sequence_length=1,
+        minibatch_sequences=1, epochs=1,
+    )
+    model_config = ModelConfig(
+        embedding_dim=32, transformer_layers=1, attention_heads=4,
+        feedforward_dim=64, recurrent_hidden_dim=64,
+    )
+    latest = tmp_path / "latest.pt"
+    backup = tmp_path / "latest.pre-pilot-migration.pt"
+    with WorkerPool(IRONCLAD_A0_ACT1, 1) as workers:
+        source = PPOTrainer(
+            Policy(model_config), workers, config, seed=17,
+            native_contract_digest="act1-native", git_commit="act1-git",
+            training_config_digest="act1-training", training_seed_limit=10**12,
+        )
+        source.environment_steps = 5_001_216
+        source.update = 407
+        save_checkpoint(latest, source)
+        source_payload = torch.load(latest, map_location="cpu", weights_only=False)
+
+    with WorkerPool(IRONCLAD_A0_ACT2, 1) as workers:
+        target = PPOTrainer(
+            Policy(model_config), workers, config, seed=17,
+            native_contract_digest="act2-native", git_commit="act2-git",
+            training_config_digest="act2-training", training_seed_limit=3 * 10**12,
+        )
+        previous, mode = _resume_or_migrate_environment(
+            latest, backup, target, {"learning_migrations": []},
+        )
+        assert mode == "migration"
+        assert previous is not None
+        save_checkpoint(latest, target)
+        target_payload = torch.load(latest, map_location="cpu", weights_only=False)
+
+    manifest = {"learning_migrations": [
+        _migration_record(source_payload, target_payload, sha256_file(backup)),
+    ]}
+    return latest, backup, manifest, config, model_config
+
+
+def test_first_environment_migration_retains_the_exact_source_backup(
+    tmp_path: Path,
+) -> None:
+    latest, backup, manifest, _, _ = _create_completed_act2_migration(tmp_path)
+    migration = manifest["learning_migrations"][0]
+    assert isinstance(migration, dict)
+    assert sha256_file(backup) == migration["source_checkpoint_sha256"]
+    assert sha256_file(latest) != sha256_file(backup)
+    source = torch.load(backup, map_location="cpu", weights_only=False)
+    assert source["trainer"]["environment_steps"] == 5_001_216
+    assert source["trainer"]["update"] == 407
+
+
+def test_completed_environment_migration_resumes_exactly(tmp_path: Path) -> None:
+    latest, backup, manifest, config, model_config = _create_completed_act2_migration(
+        tmp_path,
+    )
+    with WorkerPool(IRONCLAD_A0_ACT2, 1) as workers:
+        resumed = PPOTrainer(
+            Policy(model_config), workers, config, seed=17,
+            native_contract_digest="act2-native", git_commit="act2-git",
+            training_config_digest="act2-training", training_seed_limit=3 * 10**12,
+        )
+        previous, mode = _resume_or_migrate_environment(
+            latest, backup, resumed, manifest,
+        )
+        assert previous is None
+        assert mode == "exact"
+        assert resumed.environment_steps == 5_001_216
+        assert resumed.update == 407
+
+
+def test_interrupted_act2_training_runtime_rebind_is_an_exact_resume(
+    tmp_path: Path,
+) -> None:
+    latest, backup, manifest, config, model_config = _create_completed_act2_migration(
+        tmp_path,
+    )
+    with WorkerPool(IRONCLAD_A0_ACT2, 1) as workers:
+        running = PPOTrainer(
+            Policy(model_config), workers, config, seed=17,
+            native_contract_digest="act2-native", git_commit="act2-git",
+            training_config_digest="act2-training", training_seed_limit=3 * 10**12,
+        )
+        _resume_or_migrate_environment(latest, backup, running, manifest)
+        running.train_update()
+        save_checkpoint(latest, running)
+        resume_steps = running.environment_steps
+        resume_update = running.update
+        expected_metrics = running.train_update()
+        expected_model = {
+            key: value.detach().clone() for key, value in running.model.state_dict().items()
+        }
+
+    with WorkerPool(IRONCLAD_A0_ACT2, 1) as workers:
+        rebound = PPOTrainer(
+            Policy(model_config), workers, config, seed=17,
+            native_contract_digest="fixed-native", git_commit="fixed-git",
+            training_config_digest="act2-training", training_seed_limit=3 * 10**12,
+        )
+        previous, mode = _resume_or_migrate_environment(
+            latest, backup, rebound, manifest,
+        )
+        assert previous is None
+        assert mode == "runtime-rebind"
+        assert rebound.environment_steps == resume_steps
+        assert rebound.update == resume_update
+        actual_metrics = rebound.train_update()
+        assert actual_metrics == pytest.approx(expected_metrics, rel=0.0, abs=0.0)
+        for key, value in rebound.model.state_dict().items():
+            assert torch.equal(value, expected_model[key]), key
+
+
+def test_completed_migration_rejects_a_tampered_source_backup(tmp_path: Path) -> None:
+    latest, backup, manifest, config, model_config = _create_completed_act2_migration(
+        tmp_path,
+    )
+    with backup.open("r+b") as stream:
+        first = stream.read(1)
+        stream.seek(0)
+        stream.write(bytes([first[0] ^ 0xFF]))
+
+    with WorkerPool(IRONCLAD_A0_ACT2, 1) as workers:
+        resumed = PPOTrainer(
+            Policy(model_config), workers, config, seed=17,
+            native_contract_digest="act2-native", git_commit="act2-git",
+            training_config_digest="act2-training", training_seed_limit=3 * 10**12,
+        )
+        with pytest.raises(
+            FileExistsError,
+            match="backup has no unique recorded source identity",
+        ):
+            _resume_or_migrate_environment(latest, backup, resumed, manifest)
+
+
+def test_runtime_rebind_does_not_relax_policy_or_training_identity(tmp_path: Path) -> None:
+    latest, _, _, config, model_config = _create_completed_act2_migration(tmp_path)
+    payload = torch.load(latest, map_location="cpu", weights_only=False)
+    payload["contract"]["git_commit"] = "old-git"
+    payload["contract"]["native_source_sha256"] = "old-native"
+    payload["contract"]["vocabulary_sha256"] = "tampered-vocabulary"
+    torch.save(payload, latest)
+
+    with WorkerPool(IRONCLAD_A0_ACT2, 1) as workers:
+        resumed = PPOTrainer(
+            Policy(model_config), workers, config, seed=17,
+            native_contract_digest="act2-native", git_commit="act2-git",
+            training_config_digest="act2-training", training_seed_limit=3 * 10**12,
+        )
+        with pytest.raises(ValueError, match="contract does not match"):
+            load_checkpoint_runtime_rebind(latest, resumed)
 
 
 def test_synthetic_step_limit_is_a_failure_terminal() -> None:

@@ -34,6 +34,7 @@ from sls.rl import (
     evaluate,
     load_checkpoint,
     load_checkpoint_environment_migration,
+    load_checkpoint_runtime_rebind,
     save_checkpoint,
 )
 from sls.rl.best_checkpoint import best_checkpoint_record, update_best_checkpoint
@@ -269,6 +270,137 @@ def _append_record(path: Path, record: dict[str, object]) -> None:
     print(json.dumps(record, sort_keys=True), flush=True)
 
 
+def _profile_id(contract: object) -> str | None:
+    if not isinstance(contract, dict):
+        return None
+    profile = contract.get("profile")
+    return getattr(profile, "profile_id", None)
+
+
+def _validate_completed_migration_lineage(
+    latest_payload: dict[str, object],
+    backup: Path,
+    manifest: dict[str, object],
+    *,
+    target_profile: str,
+) -> dict[str, object]:
+    """Prove that a retained backup is the source of the active curriculum chain."""
+
+    if not backup.is_file():
+        raise FileNotFoundError(f"completed environment migration has no backup: {backup}")
+    source_sha256 = sha256_file(backup)
+    migrations = manifest.get("learning_migrations")
+    records = migrations if isinstance(migrations, list) else []
+    matching = [
+        value for value in records
+        if isinstance(value, dict)
+        and value.get("schema") == "sls-learning-environment-migration-v2"
+        and value.get("source_checkpoint_sha256") == source_sha256
+        and value.get("new_profile") == target_profile
+    ]
+    if len(matching) != 1:
+        raise FileExistsError(
+            "environment-migration backup has no unique recorded source identity"
+        )
+    migration = matching[0]
+    # Verify the digest before deserializing the retained source checkpoint.
+    source = torch.load(backup, map_location="cpu", weights_only=False)
+    if source.get("schema") != TRAINING_CHECKPOINT_SCHEMA:
+        raise ValueError("environment-migration backup schema is incompatible")
+    source_contract = source.get("contract")
+    latest_contract = latest_payload.get("contract")
+    if not isinstance(source_contract, dict) or not isinstance(latest_contract, dict):
+        raise ValueError("environment-migration checkpoint contract is missing")
+    if _profile_id(latest_contract) != target_profile:
+        raise ValueError("latest checkpoint is not the recorded migration target")
+    allowed_migration_changes = {
+        "git_commit", "native_source_sha256", "content_scope_sha256",
+        "profile", "curriculum_version", "training_config_sha256",
+        "training_seed_limit",
+    }
+    incompatible_source_fields = {
+        key for key in set(source_contract) | set(latest_contract)
+        if key not in allowed_migration_changes
+        and source_contract.get(key) != latest_contract.get(key)
+    }
+    if incompatible_source_fields:
+        raise ValueError(
+            "environment-migration source contract is incompatible: "
+            + ", ".join(sorted(incompatible_source_fields))
+        )
+    checks = {
+        "old_profile": _profile_id(source_contract),
+        "old_git_commit": source_contract.get("git_commit"),
+        "old_native_source_sha256": source_contract.get("native_source_sha256"),
+        "old_content_scope_sha256": source_contract.get("content_scope_sha256"),
+        "old_training_identity_sha256": source_contract.get("training_config_sha256"),
+        "new_content_scope_sha256": latest_contract.get("content_scope_sha256"),
+        "new_training_identity_sha256": latest_contract.get("training_config_sha256"),
+    }
+    mismatched = [
+        key for key, expected in checks.items() if migration.get(key) != expected
+    ]
+    source_state = source.get("trainer")
+    latest_state = latest_payload.get("trainer")
+    if not isinstance(source_state, dict) or not isinstance(latest_state, dict):
+        raise ValueError("environment-migration trainer state is missing")
+    if (
+        int(migration.get("environment_steps", -1))
+        != int(source_state.get("environment_steps", -2))
+        or int(migration.get("update", -1)) != int(source_state.get("update", -2))
+    ):
+        mismatched.append("source_progress")
+    if (
+        int(latest_state.get("environment_steps", -1))
+        < int(migration.get("environment_steps", 0))
+        or int(latest_state.get("update", -1)) < int(migration.get("update", 0))
+    ):
+        mismatched.append("latest_progress")
+    if mismatched:
+        raise ValueError(
+            "environment-migration lineage is incompatible: "
+            + ", ".join(sorted(set(mismatched)))
+        )
+    return migration
+
+
+def _resume_or_migrate_environment(
+    latest: Path,
+    backup: Path,
+    trainer: PPOTrainer,
+    manifest: dict[str, object],
+) -> tuple[dict[str, object] | None, str]:
+    """Resume a completed migration exactly, or perform the first migration."""
+
+    preview = torch.load(latest, map_location="cpu", weights_only=False)
+    if preview.get("schema") != TRAINING_CHECKPOINT_SCHEMA:
+        raise ValueError("unsupported training checkpoint")
+    actual_profile = _profile_id(preview.get("contract"))
+    target_profile = trainer.workers.profile.profile_id
+    if actual_profile == target_profile:
+        _validate_completed_migration_lineage(
+            preview, backup, manifest, target_profile=target_profile,
+        )
+        try:
+            load_checkpoint(latest, trainer)
+            return None, "exact"
+        except ValueError as error:
+            if str(error) != "checkpoint contract does not match the current trainer":
+                raise
+        load_checkpoint_runtime_rebind(latest, trainer)
+        return None, "runtime-rebind"
+
+    if backup.exists():
+        if sha256_file(backup) != sha256_file(latest):
+            raise FileExistsError(
+                "environment-migration source backup differs from the source checkpoint"
+            )
+    else:
+        shutil.copy2(latest, backup)
+    previous = load_checkpoint_environment_migration(latest, trainer)
+    return dict(previous), "migration"
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--stage", choices=STAGES, required=True)
@@ -413,31 +545,48 @@ def main() -> int:
                 training_seed_limit=periodic_seeds.start,
             )
             if latest.exists():
-                checkpoint_preview = torch.load(latest, map_location="cpu", weights_only=False)
-                previous_profile = checkpoint_preview.get("contract", {}).get("profile")
-                profile_changed = previous_profile != profile
                 loaded_exactly = False
-                if args.resume == "environment-migration":
-                    try:
-                        load_checkpoint(latest, trainer)
-                        loaded_exactly = True
-                    except ValueError:
-                        # The strict migration loader below will distinguish
-                        # approved environment/schedule changes from unsafe
-                        # model, PPO, vocabulary, runtime, or scope changes.
-                        pass
-                if not loaded_exactly and (
-                    args.resume == "environment-migration" or profile_changed
-                ):
+                previous: dict[str, object] | None = None
+                checkpoint_preview = torch.load(
+                    latest, map_location="cpu", weights_only=False,
+                )
+                previous_profile = _profile_id(checkpoint_preview.get("contract"))
+                profile_changed = previous_profile != profile.profile_id
+                if args.resume == "environment-migration" or profile_changed:
                     backup = output / f"latest.pre-{args.stage}-migration.pt"
-                    if backup.exists():
-                        if sha256_file(backup) != sha256_file(latest):
-                            raise FileExistsError(
-                                "environment-migration backup already exists with different data"
-                            )
-                    else:
-                        shutil.copy2(latest, backup)
-                    previous = load_checkpoint_environment_migration(latest, trainer)
+                    previous, resume_mode = _resume_or_migrate_environment(
+                        latest, backup, trainer, manifest,
+                    )
+                    loaded_exactly = previous is None
+                    if resume_mode == "runtime-rebind":
+                        rebind = {
+                            "schema": "sls-exact-runtime-rebind-v1",
+                            "environment_steps": trainer.environment_steps,
+                            "update": trainer.update,
+                            "source_checkpoint_sha256": sha256_file(latest),
+                            "old_git_commit": checkpoint_preview["contract"]["git_commit"],
+                            "new_git_commit": repository["commit"],
+                            "old_native_source_sha256": checkpoint_preview["contract"][
+                                "native_source_sha256"
+                            ],
+                            "new_native_source_sha256": source_digest,
+                        }
+                        print(json.dumps({
+                            **rebind, "resume": "exact-runtime-rebind",
+                        }, sort_keys=True), flush=True)
+                        manifest["git"] = repository
+                        manifest["native_source_sha256"] = source_digest
+                        manifest["native_artifact"] = artifact
+                        rebinds = manifest.setdefault("exact_runtime_rebinds", [])
+                        if not isinstance(rebinds, list):
+                            raise ValueError("runtime rebind manifest history is invalid")
+                        rebinds.append(rebind)
+                        _atomic_json(manifest_path, manifest)
+                else:
+                    load_checkpoint(latest, trainer)
+                    loaded_exactly = True
+                if not loaded_exactly:
+                    assert previous is not None
                     save_checkpoint(latest, trainer)
                     migration = {
                         "schema": "sls-learning-environment-migration-v2",

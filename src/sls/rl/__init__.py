@@ -27,6 +27,7 @@ __all__ = [
     "evaluate",
     "load_checkpoint",
     "load_checkpoint_environment_migration",
+    "load_checkpoint_runtime_rebind",
     "policy_boundary_fingerprint",
     "policy_from_training_checkpoint",
     "save_checkpoint",
@@ -44,6 +45,9 @@ _LAZY_EXPORTS = {
     "load_checkpoint": ("sls.rl.checkpoint", "load_checkpoint"),
     "load_checkpoint_environment_migration": (
         "sls.rl.checkpoint", "load_checkpoint_environment_migration",
+    ),
+    "load_checkpoint_runtime_rebind": (
+        "sls.rl.checkpoint", "load_checkpoint_runtime_rebind",
     ),
     "policy_from_training_checkpoint": (
         "sls.rl.checkpoint", "policy_from_training_checkpoint",
