@@ -10,8 +10,9 @@ torch = pytest.importorskip("torch")
 pytest.importorskip("sls.backends.simulator.native", exc_type=ImportError)
 
 from sls.curriculum import IRONCLAD_A0_ACT1, IRONCLAD_A0_ACT2
-from sls.model import ModelConfig, Policy
+from sls.model import ModelConfig, Policy, vocabulary_hash
 from sls.rl import (
+    CheckpointContractMismatch,
     PPOConfig,
     PPOTrainer,
     ShardedWorkerPool,
@@ -325,8 +326,19 @@ def test_runtime_rebind_does_not_relax_policy_or_training_identity(tmp_path: Pat
             native_contract_digest="act2-native", git_commit="act2-git",
             training_config_digest="act2-training", training_seed_limit=3 * 10**12,
         )
-        with pytest.raises(ValueError, match="contract does not match"):
+        with pytest.raises(CheckpointContractMismatch) as captured:
             load_checkpoint_runtime_rebind(latest, resumed)
+        differences = {
+            item["path"]: item for item in captured.value.differences
+        }
+        assert differences["git_commit"]["runtime_rebind_allowed"] is True
+        assert differences["native_source_sha256"]["runtime_rebind_allowed"] is True
+        assert differences["vocabulary_sha256"] == {
+            "path": "vocabulary_sha256",
+            "checkpoint": "tampered-vocabulary",
+            "current": vocabulary_hash(),
+            "runtime_rebind_allowed": False,
+        }
 
 
 def test_synthetic_step_limit_is_a_failure_terminal() -> None:

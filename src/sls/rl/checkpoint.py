@@ -2,8 +2,11 @@
 
 from __future__ import annotations
 
+import json
 import os
 import random
+from dataclasses import asdict, is_dataclass
+from enum import Enum
 from pathlib import Path
 from typing import Any, Mapping
 
@@ -16,6 +19,17 @@ from sls.rl.ppo import PPOTrainer
 from sls.rl.training_contract import TRAINING_CHECKPOINT_SCHEMA, runtime_contract
 
 CHECKPOINT_SCHEMA = TRAINING_CHECKPOINT_SCHEMA
+
+
+class CheckpointContractMismatch(ValueError):
+    """A checkpoint contract differs from the requested trainer contract."""
+
+    def __init__(self, differences: list[dict[str, object]]) -> None:
+        self.differences = differences
+        super().__init__(
+            "checkpoint contract does not match the current trainer: "
+            + json.dumps(differences, sort_keys=True)
+        )
 
 
 def _require_sha256(value: object, field: str) -> None:
@@ -68,7 +82,7 @@ def policy_from_training_checkpoint(
     return model
 
 
-def _contract(trainer: PPOTrainer) -> dict[str, Any]:
+def checkpoint_contract(trainer: PPOTrainer) -> dict[str, Any]:
     return {
         "model": trainer.model.config.to_dict(),
         "ppo": trainer.config.to_dict(),
@@ -89,13 +103,67 @@ def _contract(trainer: PPOTrainer) -> dict[str, Any]:
     }
 
 
+def _contract_value(value: object) -> object:
+    if is_dataclass(value) and not isinstance(value, type):
+        return _contract_value(asdict(value))
+    if isinstance(value, Mapping):
+        return {str(key): _contract_value(item) for key, item in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [_contract_value(item) for item in value]
+    if isinstance(value, Enum):
+        return value.value
+    return value
+
+
+def checkpoint_contract_diff(
+    checkpoint: Mapping[str, Any],
+    current: Mapping[str, Any],
+    *,
+    allowed_runtime_rebind_fields: frozenset[str] = frozenset(),
+) -> list[dict[str, object]]:
+    """Return deterministic, path-specific contract differences."""
+
+    missing = object()
+    differences: list[dict[str, object]] = []
+
+    def visit(path: str, actual: object, expected: object, top_field: str) -> None:
+        actual = _contract_value(actual)
+        expected = _contract_value(expected)
+        if isinstance(actual, Mapping) and isinstance(expected, Mapping):
+            for key in sorted(set(actual) | set(expected), key=str):
+                child = f"{path}.{key}" if path else str(key)
+                visit(child, actual.get(key, missing), expected.get(key, missing), top_field)
+            return
+        if isinstance(actual, list) and isinstance(expected, list):
+            for index in range(max(len(actual), len(expected))):
+                visit(
+                    f"{path}[{index}]",
+                    actual[index] if index < len(actual) else missing,
+                    expected[index] if index < len(expected) else missing,
+                    top_field,
+                )
+            return
+        if actual == expected:
+            return
+        differences.append({
+            "path": path,
+            "checkpoint": "<MISSING>" if actual is missing else actual,
+            "current": "<MISSING>" if expected is missing else expected,
+            "runtime_rebind_allowed": top_field in allowed_runtime_rebind_fields,
+        })
+
+    for key in sorted(set(checkpoint) | set(current)):
+        visit(str(key), checkpoint.get(key, missing), current.get(key, missing), str(key))
+    return differences
+
+
 def save_checkpoint(path: str | Path, trainer: PPOTrainer) -> Path:
     target = Path(path)
     target.parent.mkdir(parents=True, exist_ok=True)
     temporary = target.with_suffix(target.suffix + ".tmp")
     payload = {
         "schema": CHECKPOINT_SCHEMA,
-        "contract": _contract(trainer),
+        "contract": checkpoint_contract(trainer),
         "model": trainer.model.state_dict(),
         "optimizer": trainer.optimizer.state_dict(),
         "trainer": {
@@ -133,16 +201,17 @@ def _load_checkpoint_exact(
     payload = torch.load(Path(path), map_location="cpu", weights_only=False)
     if payload.get("schema") != CHECKPOINT_SCHEMA:
         raise ValueError("unsupported training checkpoint")
-    expected = _contract(trainer)
+    expected = checkpoint_contract(trainer)
     actual = payload.get("contract")
     if not isinstance(actual, Mapping):
         raise ValueError("checkpoint contract is missing")
-    incompatible = {
-        key for key in set(actual) | set(expected)
-        if actual.get(key) != expected.get(key) and key not in allowed_contract_changes
-    }
-    if incompatible:
-        raise ValueError("checkpoint contract does not match the current trainer")
+    differences = checkpoint_contract_diff(
+        actual,
+        expected,
+        allowed_runtime_rebind_fields=allowed_contract_changes,
+    )
+    if any(not item["runtime_rebind_allowed"] for item in differences):
+        raise CheckpointContractMismatch(differences)
     trainer.model.load_state_dict(payload["model"])
     trainer.optimizer.load_state_dict(payload["optimizer"])
     state = payload["trainer"]
@@ -223,7 +292,7 @@ def load_checkpoint_environment_migration(
     if payload.get("schema") != CHECKPOINT_SCHEMA:
         raise ValueError("unsupported training checkpoint")
     actual = payload.get("contract")
-    expected = _contract(trainer)
+    expected = checkpoint_contract(trainer)
     if not isinstance(actual, Mapping):
         raise ValueError("checkpoint contract is missing")
     allowed_changes = {

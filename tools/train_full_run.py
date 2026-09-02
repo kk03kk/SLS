@@ -28,6 +28,7 @@ from sls.content.scope import IRONCLAD_A0_SCOPE_ID, ironclad_a0_scope_hash
 from sls.curriculum import CURRICULUM_PROFILES_BY_ID
 from sls.model import ENCODING_SCHEMA, ModelConfig, Policy, vocabulary_hash
 from sls.rl import (
+    CheckpointContractMismatch,
     PPOConfig,
     PPOTrainer,
     ShardedWorkerPool,
@@ -384,9 +385,8 @@ def _resume_or_migrate_environment(
         try:
             load_checkpoint(latest, trainer)
             return None, "exact"
-        except ValueError as error:
-            if str(error) != "checkpoint contract does not match the current trainer":
-                raise
+        except CheckpointContractMismatch:
+            pass
         load_checkpoint_runtime_rebind(latest, trainer)
         return None, "runtime-rebind"
 

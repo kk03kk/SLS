@@ -17,6 +17,7 @@ from sls.rl.episode_limit import (
 
 __all__ = [
     "EvaluationResult",
+    "CheckpointContractMismatch",
     "EPISODE_LIMIT_SCHEMA",
     "EpisodeLimitState",
     "PPOConfig",
@@ -24,6 +25,8 @@ __all__ = [
     "ShardedWorkerPool",
     "VectorWorkerPool",
     "WorkerPool",
+    "checkpoint_contract",
+    "checkpoint_contract_diff",
     "evaluate",
     "load_checkpoint",
     "load_checkpoint_environment_migration",
@@ -35,12 +38,17 @@ __all__ = [
 
 
 _LAZY_EXPORTS = {
+    "CheckpointContractMismatch": (
+        "sls.rl.checkpoint", "CheckpointContractMismatch",
+    ),
     "EvaluationResult": ("sls.rl.evaluate", "EvaluationResult"),
     "PPOConfig": ("sls.rl.ppo", "PPOConfig"),
     "PPOTrainer": ("sls.rl.ppo", "PPOTrainer"),
     "ShardedWorkerPool": ("sls.rl.workers", "ShardedWorkerPool"),
     "VectorWorkerPool": ("sls.rl.workers", "VectorWorkerPool"),
     "WorkerPool": ("sls.rl.workers", "WorkerPool"),
+    "checkpoint_contract": ("sls.rl.checkpoint", "checkpoint_contract"),
+    "checkpoint_contract_diff": ("sls.rl.checkpoint", "checkpoint_contract_diff"),
     "evaluate": ("sls.rl.evaluate", "evaluate"),
     "load_checkpoint": ("sls.rl.checkpoint", "load_checkpoint"),
     "load_checkpoint_environment_migration": (
