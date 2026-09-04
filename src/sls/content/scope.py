@@ -43,6 +43,15 @@ def ironclad_a0_scope_hash() -> str:
     return str(load_ironclad_a0_scope()["scope_sha256"])
 
 
+def _source_digest_candidates(path: Path) -> frozenset[str]:
+    """Hash a text source independent of Git's checkout newline policy."""
+
+    raw = path.read_bytes()
+    lf = raw.replace(b"\r\n", b"\n")
+    crlf = lf.replace(b"\n", b"\r\n")
+    return frozenset(hashlib.sha256(value).hexdigest() for value in (raw, lf, crlf))
+
+
 def validate_scope_source_hashes(root: Path | None = None) -> None:
     """Prove the committed scope was derived from the current source inputs."""
 
@@ -56,8 +65,9 @@ def validate_scope_source_hashes(root: Path | None = None) -> None:
         if not path.is_file():
             mismatches.append(f"{relative}=MISSING")
             continue
-        actual = hashlib.sha256(path.read_bytes()).hexdigest()
-        if actual != claimed:
+        candidates = _source_digest_candidates(path)
+        if claimed not in candidates:
+            actual = hashlib.sha256(path.read_bytes()).hexdigest()
             mismatches.append(f"{relative}={actual}")
     if mismatches:
         raise ValueError(

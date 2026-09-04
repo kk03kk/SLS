@@ -7,6 +7,7 @@ from sls.content.scope import (
     IRONCLAD_A0_SCOPE_ID,
     IRONCLAD_A0_SCOPE_PATH,
     UnsupportedContentPolicy,
+    _source_digest_candidates,
     filter_policy_key_acquisitions,
     filter_policy_offers,
     filter_policy_shop,
@@ -78,6 +79,14 @@ def test_scope_file_digest_is_deterministic() -> None:
     assert parsed == load_ironclad_a0_scope()
     assert IRONCLAD_A0_SCOPE_PATH.read_bytes() == first
     validate_scope_source_hashes(ROOT)
+
+
+def test_scope_source_hash_is_portable_across_git_newlines(tmp_path: Path) -> None:
+    lf = tmp_path / "source.h"
+    crlf = tmp_path / "source-crlf.h"
+    lf.write_bytes(b"first\nsecond\n")
+    crlf.write_bytes(b"first\r\nsecond\r\n")
+    assert _source_digest_candidates(lf) == _source_digest_candidates(crlf)
 
 
 def test_shop_filter_hides_prismatic_without_renumbering_or_rewriting_mapping() -> None:
