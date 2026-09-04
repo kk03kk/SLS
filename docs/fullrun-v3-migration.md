@@ -61,19 +61,19 @@ binary. It preserves learning state and RNG while resetting only
 the in-flight environments, episode limits, recurrent memory, episode-start
 mask, previous action, and previous reward.
 
-Run one bounded update on the same v3 chain before submitting the long job:
+Submit the long job directly after migration:
 
 ```bash
-"$TRAIN_PY" tools/train_full_run.py \
-  --stage train \
-  --config configs/train/ironclad_a0_fullrun_10m.toml \
-  --stop-after-additional-steps 1
+"$TRAIN_PY" tools/submit_slurm.py train \
+  --python "$TRAIN_PY" \
+  --constraint xgpg \
+  --time 24:00:00 \
+  --config configs/train/ironclad_a0_fullrun_10m.toml
 ```
 
-This rounds to one complete 12,288-step PPO update, exits with stage status
-`SOAK_COMPLETE`, and keeps `latest.pt`. If metrics, gradients, and safety
-counters are healthy, submit the same command without the bounded-soak flag.
-It exact-resumes the same v3 chain to 10,002,432 cumulative steps (update 814).
+It exact-resumes the v3 chain to 10,002,432 cumulative steps (update 814).
+The first baseline evaluation and first PPO update provide the early health
+check without creating a separate disposable chain or mandatory soak gate.
 
 The train stage records rotating 256-seed diagnostics every 500k, fixed
 1,000-seed selection evaluations every 1M, numbered checkpoints every 500k,
