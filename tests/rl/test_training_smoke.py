@@ -17,14 +17,19 @@ from sls.rl import (
     PPOTrainer,
     ShardedWorkerPool,
     WorkerPool,
-    evaluate,
     load_checkpoint,
     load_checkpoint_environment_migration,
     load_checkpoint_runtime_rebind,
     save_checkpoint,
 )
+from sls.rl.evaluate import evaluate
 from sls.rl.training_contract import sha256_file
+from tools import train_full_run
 from tools.train_full_run import _resume_or_migrate_environment
+
+
+def test_training_entrypoint_binds_evaluate_function_after_submodule_import() -> None:
+    assert callable(train_full_run.evaluate)
 
 
 def _migration_record(

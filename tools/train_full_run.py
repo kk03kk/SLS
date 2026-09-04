@@ -29,17 +29,16 @@ from sls.curriculum import CURRICULUM_PROFILES_BY_ID
 from sls.model import ENCODING_SCHEMA, ModelConfig, Policy, vocabulary_hash
 from sls.rl import (
     CheckpointContractMismatch,
-    EvaluationResult,
     PPOConfig,
     PPOTrainer,
     ShardedWorkerPool,
-    evaluate,
     load_checkpoint,
     load_checkpoint_environment_migration,
     load_checkpoint_runtime_rebind,
     save_checkpoint,
 )
 from sls.rl.best_checkpoint import best_checkpoint_record, update_best_checkpoint
+from sls.rl.evaluate import EvaluationResult, evaluate
 from sls.rl.training_contract import (
     TRAINING_CHECKPOINT_SCHEMA,
     canonical_digest,

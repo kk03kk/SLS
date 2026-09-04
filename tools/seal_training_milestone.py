@@ -28,10 +28,10 @@ from sls.rl import (
     PPOConfig,
     PPOTrainer,
     ShardedWorkerPool,
-    evaluate,
     load_checkpoint,
     save_checkpoint,
 )
+from sls.rl.evaluate import evaluate
 from sls.rl.training_contract import (
     TRAINING_CHECKPOINT_SCHEMA,
     git_state,

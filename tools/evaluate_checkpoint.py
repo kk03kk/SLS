@@ -23,7 +23,8 @@ import torch
 from sls.content.scope import ironclad_a0_scope_hash
 from sls.curriculum import CURRICULUM_PROFILES_BY_ID
 from sls.model import ENCODING_SCHEMA, ModelConfig, Policy, vocabulary_hash
-from sls.rl import evaluate, policy_from_training_checkpoint
+from sls.rl import policy_from_training_checkpoint
+from sls.rl.evaluate import evaluate
 from sls.rl.training_contract import (
     TRAINING_CHECKPOINT_SCHEMA,
     native_artifact,
