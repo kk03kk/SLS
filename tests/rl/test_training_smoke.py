@@ -25,11 +25,45 @@ from sls.rl import (
 from sls.rl.evaluate import evaluate
 from sls.rl.training_contract import sha256_file
 from tools import train_full_run
-from tools.train_full_run import _resume_or_migrate_environment
+from tools.train_full_run import (
+    _load_exact_or_runtime_rebind,
+    _resume_or_migrate_environment,
+)
 
 
 def test_training_entrypoint_binds_evaluate_function_after_submodule_import() -> None:
     assert callable(train_full_run.evaluate)
+
+
+def test_auto_resume_permits_only_safe_runtime_rebind(tmp_path: Path) -> None:
+    checkpoint = tmp_path / "latest.pt"
+    ppo = PPOConfig(
+        rollout_steps=2, recurrent_sequence_length=2, minibatch_sequences=1, epochs=1,
+    )
+    model = ModelConfig(
+        embedding_dim=32, transformer_layers=1, attention_heads=4,
+        feedforward_dim=64, recurrent_hidden_dim=64,
+    )
+    with ShardedWorkerPool(IRONCLAD_A0_ACT2, 2, shard_count=1) as workers:
+        original = PPOTrainer(
+            Policy(model), workers, ppo,
+            device="cpu", seed=31, native_contract_digest="native",
+            git_commit="old-git", training_config_digest="identity",
+        )
+        original.train_update()
+        save_checkpoint(checkpoint, original)
+
+    with ShardedWorkerPool(IRONCLAD_A0_ACT2, 2, shard_count=1) as workers:
+        resumed = PPOTrainer(
+            Policy(model), workers, ppo,
+            device="cpu", seed=31, native_contract_digest="native",
+            git_commit="new-git", training_config_digest="identity",
+        )
+        mode = _load_exact_or_runtime_rebind(checkpoint, resumed)
+
+    assert mode == "runtime-rebind"
+    assert resumed.environment_steps == original.environment_steps
+    assert resumed.update == original.update
 
 
 def _migration_record(

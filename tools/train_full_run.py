@@ -462,13 +462,7 @@ def _resume_or_migrate_environment(
         _validate_completed_migration_lineage(
             preview, backup, manifest, target_profile=target_profile,
         )
-        try:
-            load_checkpoint(latest, trainer)
-            return None, "exact"
-        except CheckpointContractMismatch:
-            pass
-        load_checkpoint_runtime_rebind(latest, trainer)
-        return None, "runtime-rebind"
+        return None, _load_exact_or_runtime_rebind(latest, trainer)
 
     if backup.exists():
         if sha256_file(backup) != sha256_file(latest):
@@ -479,6 +473,17 @@ def _resume_or_migrate_environment(
         shutil.copy2(latest, backup)
     previous = load_checkpoint_environment_migration(latest, trainer)
     return dict(previous), "migration"
+
+
+def _load_exact_or_runtime_rebind(path: Path, trainer: PPOTrainer) -> str:
+    """Load exactly, permitting only the checkpoint module's safe runtime fields."""
+
+    try:
+        load_checkpoint(path, trainer)
+        return "exact"
+    except CheckpointContractMismatch:
+        load_checkpoint_runtime_rebind(path, trainer)
+        return "runtime-rebind"
 
 
 def main() -> int:
@@ -656,39 +661,40 @@ def main() -> int:
                 )
                 previous_profile = _profile_id(checkpoint_preview.get("contract"))
                 profile_changed = previous_profile != profile.profile_id
+                resume_mode = "exact"
                 if args.resume == "environment-migration" or profile_changed:
                     backup = output / f"latest.pre-{args.stage}-migration.pt"
                     previous, resume_mode = _resume_or_migrate_environment(
                         latest, backup, trainer, manifest,
                     )
                     loaded_exactly = previous is None
-                    if resume_mode == "runtime-rebind":
-                        rebind = {
-                            "schema": "sls-exact-runtime-rebind-v1",
-                            "environment_steps": trainer.environment_steps,
-                            "update": trainer.update,
-                            "source_checkpoint_sha256": sha256_file(latest),
-                            "old_git_commit": checkpoint_preview["contract"]["git_commit"],
-                            "new_git_commit": repository["commit"],
-                            "old_native_source_sha256": checkpoint_preview["contract"][
-                                "native_source_sha256"
-                            ],
-                            "new_native_source_sha256": source_digest,
-                        }
-                        print(json.dumps({
-                            **rebind, "resume": "exact-runtime-rebind",
-                        }, sort_keys=True), flush=True)
-                        manifest["git"] = repository
-                        manifest["native_source_sha256"] = source_digest
-                        manifest["native_artifact"] = artifact
-                        rebinds = manifest.setdefault("exact_runtime_rebinds", [])
-                        if not isinstance(rebinds, list):
-                            raise ValueError("runtime rebind manifest history is invalid")
-                        rebinds.append(rebind)
-                        _atomic_json(manifest_path, manifest)
                 else:
-                    load_checkpoint(latest, trainer)
+                    resume_mode = _load_exact_or_runtime_rebind(latest, trainer)
                     loaded_exactly = True
+                if resume_mode == "runtime-rebind":
+                    rebind = {
+                        "schema": "sls-exact-runtime-rebind-v1",
+                        "environment_steps": trainer.environment_steps,
+                        "update": trainer.update,
+                        "source_checkpoint_sha256": sha256_file(latest),
+                        "old_git_commit": checkpoint_preview["contract"]["git_commit"],
+                        "new_git_commit": repository["commit"],
+                        "old_native_source_sha256": checkpoint_preview["contract"][
+                            "native_source_sha256"
+                        ],
+                        "new_native_source_sha256": source_digest,
+                    }
+                    print(json.dumps({
+                        **rebind, "resume": "exact-runtime-rebind",
+                    }, sort_keys=True), flush=True)
+                    manifest["git"] = repository
+                    manifest["native_source_sha256"] = source_digest
+                    manifest["native_artifact"] = artifact
+                    rebinds = manifest.setdefault("exact_runtime_rebinds", [])
+                    if not isinstance(rebinds, list):
+                        raise ValueError("runtime rebind manifest history is invalid")
+                    rebinds.append(rebind)
+                    _atomic_json(manifest_path, manifest)
                 if not loaded_exactly:
                     assert previous is not None
                     save_checkpoint(latest, trainer)
