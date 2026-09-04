@@ -409,6 +409,27 @@ def test_recurrent_evaluation_is_deterministic_for_fixed_seeds() -> None:
     assert first == second
 
 
+def test_sharded_evaluation_matches_serial_seed_order_and_metrics() -> None:
+    torch.manual_seed(31)
+    model = Policy(ModelConfig(
+        embedding_dim=32, transformer_layers=1, attention_heads=4,
+        feedforward_dim=64, recurrent_hidden_dim=64,
+    ))
+    progress: list[tuple[int, int, int]] = []
+    serial = evaluate(model, IRONCLAD_A0_ACT1, (21, 22, 23, 24), max_steps=24)
+    sharded = evaluate(
+        model, IRONCLAD_A0_ACT1, (21, 22, 23, 24), max_steps=24,
+        environment_shards=2,
+        progress_callback=lambda completed, total, decisions: progress.append(
+            (completed, total, decisions)
+        ),
+    )
+
+    assert sharded == serial
+    assert progress
+    assert progress[-1][1:] == (4, int(sharded.mean_steps * sharded.episodes))
+
+
 @pytest.mark.skipif(not torch.cuda.is_available(), reason="CUDA is unavailable")
 def test_cuda_checkpoint_keeps_cpu_rng_state_loadable(tmp_path: Path) -> None:
     model = Policy(ModelConfig(

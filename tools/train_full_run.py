@@ -29,6 +29,7 @@ from sls.curriculum import CURRICULUM_PROFILES_BY_ID
 from sls.model import ENCODING_SCHEMA, ModelConfig, Policy, vocabulary_hash
 from sls.rl import (
     CheckpointContractMismatch,
+    EvaluationResult,
     PPOConfig,
     PPOTrainer,
     ShardedWorkerPool,
@@ -201,6 +202,32 @@ def _baseline_evaluation(path: Path) -> dict[str, object] | None:
         if record.get("baseline") is True and isinstance(record.get("evaluation"), dict):
             return dict(record["evaluation"])
     return None
+
+
+def _evaluation_progress(label: str):
+    """Emit bounded, machine-readable progress during long held-out evaluations."""
+
+    started = time.monotonic()
+    last_report = started - 30.0
+
+    def report(completed: int, total: int, decisions: int) -> None:
+        nonlocal last_report
+        now = time.monotonic()
+        if completed != total and now - last_report < 30.0:
+            return
+        elapsed = max(now - started, 1e-9)
+        print(json.dumps({
+            "schema": "sls-evaluation-progress-v1",
+            "label": label,
+            "completed_episodes": completed,
+            "total_episodes": total,
+            "decisions": decisions,
+            "elapsed_seconds": round(elapsed, 3),
+            "decisions_per_second": round(decisions / elapsed, 3),
+        }, sort_keys=True), flush=True)
+        last_report = now
+
+    return report
 
 
 def _progress_from_baseline(
@@ -729,14 +756,34 @@ def main() -> int:
                     trainer.environment_steps + updates * batch_steps,
                 )
 
-            last_eval = _last_evaluation_step(metrics_path)
-            baseline_evaluation = _baseline_evaluation(metrics_path)
-            if last_eval < 0:
-                baseline = asdict(evaluate(
-                    trainer.model, profile, tuple(periodic_seeds), device=device,
+            def run_evaluation(
+                seed_values: tuple[int, ...], label: str, *, interruptible: bool,
+            ) -> EvaluationResult:
+                print(json.dumps({
+                    "schema": "sls-evaluation-start-v1",
+                    "label": label,
+                    "episodes": len(seed_values),
+                    "environment_shards": shard_count,
+                    "seed_range": [seed_values[0], seed_values[-1] + 1],
+                }, sort_keys=True), flush=True)
+                return evaluate(
+                    trainer.model, profile, seed_values, device=device,
                     max_steps=evaluation_max_steps,
                     max_boundary_visits=ppo.max_boundary_visits,
                     failure_progress_scale=ppo.failure_progress_scale,
+                    stop_requested=(
+                        (lambda: controller.requested) if interruptible else None
+                    ),
+                    environment_shards=shard_count,
+                    crash_dump_dir=output / "evaluation-crashes",
+                    progress_callback=_evaluation_progress(label),
+                )
+
+            last_eval = _last_evaluation_step(metrics_path)
+            baseline_evaluation = _baseline_evaluation(metrics_path)
+            if last_eval < 0:
+                baseline = asdict(run_evaluation(
+                    tuple(periodic_seeds), "baseline", interruptible=False,
                 ))
                 record = {
                     "update": trainer.update,
@@ -786,12 +833,9 @@ def main() -> int:
                     rotation = next_diagnose // diagnose_every - 1
                     start = diagnostic_seed_start + rotation * diagnostic_stride
                     diagnostic_seeds = tuple(range(start, start + diagnostic_seed_count))
-                    record["diagnostic_evaluation"] = asdict(evaluate(
-                        trainer.model, profile, diagnostic_seeds, device=device,
-                        max_steps=evaluation_max_steps,
-                        max_boundary_visits=ppo.max_boundary_visits,
-                        failure_progress_scale=ppo.failure_progress_scale,
-                        stop_requested=lambda: controller.requested,
+                    record["diagnostic_evaluation"] = asdict(run_evaluation(
+                        diagnostic_seeds, f"diagnostic-update-{trainer.update}",
+                        interruptible=True,
                     ))
                     record["diagnostic_seed_range"] = [
                         start, start + diagnostic_seed_count,
@@ -800,12 +844,10 @@ def main() -> int:
                         next_diagnose += diagnose_every
                 if trainer.environment_steps >= next_eval:
                     try:
-                        evaluation = asdict(evaluate(
-                            trainer.model, profile, tuple(periodic_seeds), device=device,
-                            max_steps=evaluation_max_steps,
-                            max_boundary_visits=ppo.max_boundary_visits,
-                            failure_progress_scale=ppo.failure_progress_scale,
-                            stop_requested=lambda: controller.requested,
+                        evaluation = asdict(run_evaluation(
+                            tuple(periodic_seeds),
+                            f"selection-update-{trainer.update}",
+                            interruptible=True,
                         ))
                         record["evaluation"] = evaluation
                         if baseline_evaluation is not None:
@@ -854,11 +896,8 @@ def main() -> int:
                     selected, map_location="cpu", weights_only=False,
                 )
                 trainer.model.load_state_dict(selected_payload["model"])
-                final_result = asdict(evaluate(
-                    trainer.model, profile, tuple(final_seeds), device=device,
-                    max_steps=evaluation_max_steps,
-                    max_boundary_visits=ppo.max_boundary_visits,
-                    failure_progress_scale=ppo.failure_progress_scale,
+                final_result = asdict(run_evaluation(
+                    tuple(final_seeds), "final", interruptible=False,
                 ))
                 final_stage = dict(stage)
                 final_stage["minimum_evaluation_episodes"] = int(

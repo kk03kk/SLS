@@ -59,6 +59,7 @@ class SimulatorBackend:
         self._native = LightspeedRunState()
         self._candidate_bits: dict[str, int] = {}
         self._last_raw: dict[str, Any] | None = None
+        self._last_observation: Observation | None = None
         self._multi_selected: set[int] = set()
         self._validation_action_queue_types: list[str] = []
         self._validation_choice_origin: str | None = None
@@ -79,7 +80,7 @@ class SimulatorBackend:
         # Official run history renders the same 64 bits as a signed Java long,
         # while pybind accepts the native engine's unsigned seed domain.
         self._native.reset(numeric_seed & ((1 << 64) - 1), self.profile.ascension)
-        return self._adapt(self._native.snapshot())
+        return self._adapt(self._fold_non_heart_key_only_boundary(self._native.snapshot()))
 
     def step(
         self, action: Action | str, *, validation_evidence: Mapping[str, Any] | None = None,
@@ -94,9 +95,9 @@ class SimulatorBackend:
                 self._native._set_discovery_retrieval_updates_for_validation(
                     int(validation_evidence["discovery_retrieval_updates"]),
                 )
-        if self._last_raw is None:
+        if self._last_raw is None or self._last_observation is None:
             raise RuntimeError("reset must be called before step")
-        previous_observation = self._adapt(self._last_raw).observation
+        previous_observation = self._last_observation
         candidate_id = action if isinstance(action, str) else action.candidate_id
         try:
             bits = self._candidate_bits[candidate_id]
@@ -151,7 +152,28 @@ class SimulatorBackend:
                 int(validation_evidence["card_soul_cost_reset_count"]),
             )
             raw = self._native.snapshot()
+        raw = self._fold_non_heart_key_only_boundary(raw)
         return self._transition_from_raw(previous_observation, raw)
+
+    def _fold_non_heart_key_only_boundary(
+        self, raw: Mapping[str, Any],
+    ) -> Mapping[str, Any]:
+        """Resolve a forced key-only UI boundary outside the Heart profile.
+
+        Stock can leave Recall as the campfire's sole enabled option (for
+        example, Coffee Dripper plus Fusion Hammer with no other campfire
+        relic).  Non-Heart policies intentionally cannot choose keys.  The
+        boundary is therefore presentation-only for that policy profile, but
+        it still must execute the stock native action so key state, callbacks,
+        and RNG remain canonical.
+        """
+
+        if self.profile.horizon is EpisodeHorizon.HEART:
+            return raw
+        actions = tuple(raw.get("legal_actions") or ())
+        if not _is_forced_recall_boundary(raw, actions):
+            return raw
+        return self._native.step(int(actions[0]["bits"]))
 
     def _transition_from_raw(
         self, previous_observation: Observation, raw: Mapping[str, Any],
@@ -219,7 +241,8 @@ class SimulatorBackend:
             "_validation_choice_origin", None
         )
         self._native.load_state(checkpoint)
-        return self._adapt(self._native.snapshot())
+        raw = self._fold_non_heart_key_only_boundary(self._native.snapshot())
+        return self._adapt(raw)
 
     def _adapt(self, raw: Mapping[str, Any]) -> Decision:
         raw = dict(raw)
@@ -380,11 +403,13 @@ class SimulatorBackend:
                 if combat and screen is not ScreenType.GAME_OVER else ()
             ),
         )
-        return Decision(
+        decision = Decision(
             observation=observation,
             actions=actions,
             terminal=screen is ScreenType.GAME_OVER,
         )
+        self._last_observation = observation
+        return decision
 
     def validation_snapshot(self) -> ValidationSnapshot:
         if self._last_raw is None:
@@ -520,6 +545,21 @@ def _native_terminal_outcome(raw: Mapping[str, Any]) -> TerminalOutcome | None:
     if outcome == 2:
         return TerminalOutcome.PLAYER_VICTORY
     raise ValueError(f"unsupported native game outcome: {outcome}")
+
+
+def _is_forced_recall_boundary(
+    raw: Mapping[str, Any], actions: tuple[Mapping[str, Any], ...],
+) -> bool:
+    """Return whether stock exposes Recall as the only possible campfire action."""
+
+    return bool(
+        int((raw.get("public_run") or {}).get("outcome", 1)) == 1
+        and int((raw.get("public_run") or {}).get("screen_state", 0)) == 7
+        and len(actions) == 1
+        and actions[0].get("domain") != "COMBAT"
+        and not bool(actions[0].get("potion"))
+        and int(actions[0].get("idx1", -1)) == 2
+    )
 
 
 def _semantic_actions(

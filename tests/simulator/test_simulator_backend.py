@@ -55,6 +55,55 @@ def test_signed_official_seed_matches_same_unsigned_native_bits() -> None:
     assert left.actions == right.actions
 
 
+def test_non_heart_forced_recall_is_folded_through_the_native_action() -> None:
+    from sls.backends.simulator import SimulatorBackend
+    from sls.curriculum import IRONCLAD_A0_FULLRUN, IRONCLAD_A0_HEART
+
+    class Native:
+        def __init__(self) -> None:
+            self.bits: list[int] = []
+
+        def step(self, bits: int) -> dict[str, object]:
+            self.bits.append(bits)
+            return {"folded": True}
+
+    raw = {
+        "public_run": {"outcome": 1, "screen_state": 7},
+        "legal_actions": [{
+            "bits": 2, "idx1": 2, "idx2": 0,
+            "potion": False, "reward_type": 0,
+        }],
+    }
+    backend = object.__new__(SimulatorBackend)
+    backend.profile = IRONCLAD_A0_FULLRUN
+    backend._native = Native()
+
+    assert backend._fold_non_heart_key_only_boundary(raw) == {"folded": True}
+    assert backend._native.bits == [2]
+
+    backend.profile = IRONCLAD_A0_HEART
+    assert backend._fold_non_heart_key_only_boundary(raw) is raw
+    assert backend._native.bits == [2]
+
+
+def test_non_heart_recall_is_not_folded_when_another_campfire_choice_exists() -> None:
+    from sls.backends.simulator import SimulatorBackend
+    from sls.curriculum import IRONCLAD_A0_FULLRUN
+
+    raw = {
+        "public_run": {"outcome": 1, "screen_state": 7},
+        "legal_actions": [
+            {"bits": 0, "idx1": 0, "potion": False},
+            {"bits": 2, "idx1": 2, "potion": False},
+        ],
+    }
+    backend = object.__new__(SimulatorBackend)
+    backend.profile = IRONCLAD_A0_FULLRUN
+    backend._native = object()
+
+    assert backend._fold_non_heart_key_only_boundary(raw) is raw
+
+
 @pytest.mark.parametrize(
     ("task", "source", "option_count", "legal_indices", "controls"),
     (

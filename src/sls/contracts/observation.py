@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass, field, is_dataclass
+from collections.abc import Mapping
+from dataclasses import dataclass, field, fields, is_dataclass
 from enum import Enum
-from typing import Any, Mapping
+from typing import Any
 
 OBSERVATION_SCHEMA_VERSION = 1
 
@@ -158,7 +159,10 @@ def _json_value(value: Any) -> Any:
     if isinstance(value, Enum):
         return value.value
     if is_dataclass(value):
-        return {key: _json_value(item) for key, item in asdict(value).items()}
+        return {
+            item.name: _json_value(getattr(value, item.name))
+            for item in fields(value)
+        }
     if isinstance(value, tuple):
         # Property tuples are represented as JSON objects.
         if all(isinstance(item, tuple) and len(item) == 2 for item in value):

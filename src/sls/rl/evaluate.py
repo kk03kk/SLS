@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import statistics
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Callable
 
 import torch
@@ -17,6 +18,7 @@ from sls.rl.reward import (
     DEFAULT_FAILURE_PROGRESS_SCALE,
     curriculum_terminal_reward,
 )
+from sls.rl.workers import ShardedWorkerPool
 
 
 @dataclass(frozen=True, slots=True)
@@ -57,7 +59,7 @@ def _percentile(values: list[int], fraction: float) -> float | None:
 
 
 @torch.no_grad()
-def evaluate(
+def _evaluate_impl(
     model: Policy,
     profile: CurriculumProfile,
     seeds: tuple[int, ...],
@@ -67,13 +69,21 @@ def evaluate(
     max_boundary_visits: int = 4,
     failure_progress_scale: float = DEFAULT_FAILURE_PROGRESS_SCALE,
     stop_requested: Callable[[], bool] | None = None,
+    environment_pool: ShardedWorkerPool | None = None,
+    progress_callback: Callable[[int, int, int], None] | None = None,
 ) -> EvaluationResult:
     model.eval().to(device)
     seed_values = list(seeds)
     if not seed_values:
         raise ValueError("evaluation requires at least one seed")
-    backends = [SimulatorBackend(profile) for _ in seed_values]
-    decisions = [backend.reset(seed) for backend, seed in zip(backends, seed_values)]
+    backends = (
+        [SimulatorBackend(profile) for _ in seed_values]
+        if environment_pool is None else []
+    )
+    decisions = (
+        [backend.reset(seed) for backend, seed in zip(backends, seed_values)]
+        if environment_pool is None else environment_pool.reset(seed_values)
+    )
     memory = model.initial_memory(len(seed_values), device)
     episode_starts = torch.ones(len(seed_values), dtype=torch.bool, device=device)
     previous_action_types = torch.zeros(len(seed_values), dtype=torch.long, device=device)
@@ -118,9 +128,23 @@ def evaluate(
         memory[active] = output.next_memory
         episode_starts[active] = False
         action_indices = output.logits.argmax(dim=1).cpu().tolist()
+        parallel_transitions = None
+        if environment_pool is not None:
+            sparse_actions: list[str | None] = [None] * len(seed_values)
+            for batch_index, index in enumerate(active):
+                sparse_actions[index] = decisions[index].actions[
+                    int(action_indices[batch_index])
+                ].candidate_id
+            try:
+                parallel_transitions = environment_pool.step_sparse(sparse_actions)
+            except Exception as error:
+                active_seeds = [seed_values[index] for index in active]
+                raise RuntimeError(
+                    "parallel canonical evaluation backend failed for active "
+                    f"seed range [{min(active_seeds)}, {max(active_seeds)}]"
+                ) from error
         still_active = []
         for batch_index, index in enumerate(active):
-            backend = backends[index]
             action = decisions[index].actions[int(action_indices[batch_index])]
             observation = decisions[index].observation
             visible_boss = observation.run.visible_boss_id or "UNKNOWN"
@@ -179,7 +203,12 @@ def evaluate(
                     metrics["targeted_card_plays_while_sharp_hide"] += 1
             previous_act = decisions[index].observation.run.act
             try:
-                transition = backend.step(action)
+                if parallel_transitions is None:
+                    transition = backends[index].step(action)
+                else:
+                    transition = parallel_transitions[index]
+                    if transition is None:
+                        raise RuntimeError("active evaluation slot was not stepped")
             except Exception as error:
                 raise RuntimeError(
                     "canonical evaluation backend failed at "
@@ -255,6 +284,12 @@ def evaluate(
                 continue
             still_active.append(index)
         active = still_active
+        if progress_callback is not None:
+            progress_callback(
+                len(seed_values) - len(active),
+                len(seed_values),
+                sum(episode_steps),
+            )
     timeouts = len(active)
     for index in active:
         episode_rewards[index] += -1.0
@@ -262,6 +297,8 @@ def evaluate(
         boss = bosses_by_act[index].get(act, "UNKNOWN")
         boss_results.setdefault(f"ACT_{act}:{boss}", []).append(False)
         failure_floors.append(decisions[index].observation.run.floor)
+    if active and progress_callback is not None:
+        progress_callback(len(seed_values), len(seed_values), sum(episode_steps))
     count = len(seed_values)
     reached_act2 = sum(act >= 2 for act in max_acts)
     reached_act3 = sum(act >= 3 for act in max_acts)
@@ -312,3 +349,50 @@ def evaluate(
             for boss, metrics in sorted(boss_action_counts.items())
         },
     )
+
+
+def evaluate(
+    model: Policy,
+    profile: CurriculumProfile,
+    seeds: tuple[int, ...],
+    *,
+    device: str | torch.device = "cpu",
+    max_steps: int = 512,
+    max_boundary_visits: int = 4,
+    failure_progress_scale: float = DEFAULT_FAILURE_PROGRESS_SCALE,
+    stop_requested: Callable[[], bool] | None = None,
+    environment_shards: int = 0,
+    crash_dump_dir: str | Path | None = None,
+    progress_callback: Callable[[int, int, int], None] | None = None,
+) -> EvaluationResult:
+    """Evaluate deterministically, optionally stepping native states in shards.
+
+    Model inference remains centralized and uses the same active seed order.
+    Sharding changes only where independent native environment transitions are
+    computed, so policy batching and metric reduction stay identical.
+    """
+
+    if not seeds:
+        raise ValueError("evaluation requires at least one seed")
+    if environment_shards < 0:
+        raise ValueError("environment_shards cannot be negative")
+    if environment_shards <= 1:
+        return _evaluate_impl(
+            model, profile, seeds, device=device, max_steps=max_steps,
+            max_boundary_visits=max_boundary_visits,
+            failure_progress_scale=failure_progress_scale,
+            stop_requested=stop_requested,
+            progress_callback=progress_callback,
+        )
+    with ShardedWorkerPool(
+        profile, len(seeds), shard_count=environment_shards,
+        crash_dump_dir=crash_dump_dir,
+    ) as environment_pool:
+        return _evaluate_impl(
+            model, profile, seeds, device=device, max_steps=max_steps,
+            max_boundary_visits=max_boundary_visits,
+            failure_progress_scale=failure_progress_scale,
+            stop_requested=stop_requested,
+            environment_pool=environment_pool,
+            progress_callback=progress_callback,
+        )

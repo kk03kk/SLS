@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import multiprocessing as mp
 import os
+import sys
 import time
 from dataclasses import dataclass, field
 from multiprocessing.connection import Connection
@@ -15,6 +16,26 @@ from sls.contracts import Decision, Transition
 from sls.curriculum import CurriculumProfile
 
 CRASH_DUMP_SCHEMA = "sls-simulator-crash-v1"
+
+
+def _start_importable_worker(process: mp.Process) -> None:
+    """Start an importable worker without re-executing the heavyweight CLI.
+
+    Python's spawn preparation normally imports ``__main__`` in every child.
+    Our targets live in this importable module, so that replay is unnecessary
+    and can otherwise load PyTorch/CUDA once per simulator shard.
+    """
+
+    main = sys.modules["__main__"]
+    previous_file = getattr(main, "__file__", None)
+    previous_spec = getattr(main, "__spec__", None)
+    try:
+        main.__file__ = None
+        main.__spec__ = None
+        process.start()
+    finally:
+        main.__file__ = previous_file
+        main.__spec__ = previous_spec
 
 
 def _semantic_candidates(backend: Any) -> list[Mapping[str, Any] | str]:
@@ -269,6 +290,13 @@ def _vector_worker(
                     execute(index, "step", candidate_id)
                     for index, candidate_id in enumerate(payload)
                 ])
+            elif command == "step_sparse":
+                connection.send([
+                    None if candidate_id is None else execute(
+                        index, "step", candidate_id,
+                    )
+                    for index, candidate_id in enumerate(payload)
+                ])
             elif command == "checkpoint":
                 connection.send([
                     execute(index, "checkpoint", None) for index in range(size)
@@ -323,7 +351,7 @@ class WorkerPool:
                 ),
                 name=f"sls-env-{index}",
             )
-            process.start()
+            _start_importable_worker(process)
             child.close()
             self._connections.append(parent)
             self._processes.append(process)
@@ -549,7 +577,7 @@ class ShardedWorkerPool:
                 ),
                 name=f"sls-vector-shard-{shard}",
             )
-            process.start()
+            _start_importable_worker(process)
             child.close()
             self._connections.append(parent)
             self._processes.append(process)
@@ -596,6 +624,15 @@ class ShardedWorkerPool:
         if len(candidate_ids) != self.size:
             raise ValueError("one action is required per environment")
         return self._all("step", candidate_ids)
+
+    def step_sparse(
+        self, candidate_ids: Sequence[str | None],
+    ) -> list[Transition | None]:
+        """Step selected environments while leaving completed slots untouched."""
+
+        if len(candidate_ids) != self.size:
+            raise ValueError("one action or None is required per environment")
+        return self._all("step_sparse", candidate_ids)
 
     def checkpoints(self) -> list[Mapping[str, Any]]:
         return self._all("checkpoint")

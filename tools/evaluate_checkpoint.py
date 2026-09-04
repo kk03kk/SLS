@@ -22,6 +22,7 @@ import torch
 
 from sls.content.scope import ironclad_a0_scope_hash
 from sls.curriculum import CURRICULUM_PROFILES_BY_ID
+from sls.model import ENCODING_SCHEMA, ModelConfig, Policy, vocabulary_hash
 from sls.rl import evaluate, policy_from_training_checkpoint
 from sls.rl.training_contract import (
     TRAINING_CHECKPOINT_SCHEMA,
@@ -63,7 +64,54 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--device", default="cuda")
     parser.add_argument("--max-steps", type=int, default=4096)
     parser.add_argument("--max-boundary-visits", type=int, default=4)
+    parser.add_argument("--environment-shards", type=int, default=0)
+    parser.add_argument(
+        "--allow-environment-migration", action="store_true",
+        help=(
+            "Allow an older content-scope identity when model shape, encoding, "
+            "and vocabulary are exactly compatible."
+        ),
+    )
     return parser
+
+
+def _migration_compatible_policy(
+    payload: Mapping[str, object], *, device: str,
+) -> Policy:
+    contract = payload.get("contract")
+    state = payload.get("model")
+    if not isinstance(contract, Mapping) or not isinstance(state, Mapping):
+        raise ValueError("checkpoint model contract is missing")
+    if contract.get("encoding_schema") != ENCODING_SCHEMA:
+        raise ValueError("environment migration would change the encoding schema")
+    if contract.get("vocabulary_sha256") != vocabulary_hash():
+        raise ValueError("environment migration would change the vocabulary")
+    config = contract.get("model")
+    if not isinstance(config, Mapping):
+        raise ValueError("checkpoint model config is missing")
+    model = Policy(ModelConfig.from_dict(config))
+    model.load_state_dict(state, strict=True)
+    return model.eval().to(device)
+
+
+def _progress_reporter():
+    started = time.monotonic()
+    last_report = started - 30.0
+
+    def report(completed: int, total: int, decisions: int) -> None:
+        nonlocal last_report
+        now = time.monotonic()
+        if completed != total and now - last_report < 30.0:
+            return
+        print(json.dumps({
+            "completed_episodes": completed,
+            "total_episodes": total,
+            "decisions": decisions,
+            "elapsed_seconds": round(now - started, 3),
+        }, sort_keys=True), flush=True)
+        last_report = now
+
+    return report
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -84,7 +132,11 @@ def main(argv: list[str] | None = None) -> int:
     if not isinstance(contract, Mapping) or not isinstance(model_state, Mapping):
         raise ValueError("checkpoint model contract is missing")
     profile = CURRICULUM_PROFILES_BY_ID[args.profile]
-    model = policy_from_training_checkpoint(payload)
+    artifact = native_artifact()
+    if args.allow_environment_migration:
+        model = _migration_compatible_policy(payload, device="cpu")
+    else:
+        model = policy_from_training_checkpoint(payload)
     torch.use_deterministic_algorithms(True)
     torch.backends.cudnn.benchmark = False
 
@@ -106,8 +158,10 @@ def main(argv: list[str] | None = None) -> int:
             dict(contract.get("ppo") or {}).get("failure_progress_scale", 0.8)
         ),
         stop_requested=lambda: controller.requested,
+        environment_shards=args.environment_shards,
+        crash_dump_dir=args.output.resolve().parent / "evaluation-crashes",
+        progress_callback=_progress_reporter(),
     ))
-    artifact = native_artifact()
     record = {
         "schema": "sls-checkpoint-evaluation-v1",
         "checkpoint": str(checkpoint),
@@ -134,6 +188,7 @@ def main(argv: list[str] | None = None) -> int:
                 torch.cuda.get_device_name(args.device)
                 if args.device.startswith("cuda") else None
             ),
+            "environment_shards": args.environment_shards,
         },
         "elapsed_seconds": time.time() - started,
         "result": result,
