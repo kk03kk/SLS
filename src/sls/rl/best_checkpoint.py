@@ -3,20 +3,42 @@
 from __future__ import annotations
 
 import json
+import math
 import os
 from pathlib import Path
 from typing import Any, Callable, Mapping
 
-BEST_CHECKPOINT_SCHEMA = "sls-best-progress-v3"
+BEST_CHECKPOINT_SCHEMA = "sls-best-progress-v4"
+_LEGACY_BEST_CHECKPOINT_SCHEMAS = {"sls-best-progress-v3"}
 
 
 def evaluation_rank(record: Mapping[str, Any]) -> tuple[float, ...]:
     """Rank progress while penalizing non-progress before reward magnitude."""
 
     failure_floor = record.get("median_failure_floor")
+    rates = dict(record.get("boss_success_rate") or {})
+    successes = dict(record.get("boss_successes") or {})
+    attempts = dict(record.get("boss_attempts") or {})
+
+    def lower_bound(name: str, rate: object) -> float:
+        n = int(attempts.get(name, 0))
+        if n <= 0:
+            return float(rate)
+        p = int(successes.get(name, round(float(rate) * n))) / n
+        z = 1.959963984540054
+        denominator = 1.0 + z * z / n
+        centre = p + z * z / (2.0 * n)
+        margin = z * math.sqrt((p * (1.0 - p) + z * z / (4.0 * n)) / n)
+        return (centre - margin) / denominator
+
+    minimum_boss_lcb = min(
+        (lower_bound(name, rate) for name, rate in rates.items()),
+        default=-1.0,
+    )
     return (
         float(record["successes"]),
         float(record["reached_act3"]),
+        minimum_boss_lcb,
         float(record["reached_act2"]),
         float("inf") if failure_floor is None else float(failure_floor),
         -float(record.get("backend_errors", 0)),
@@ -57,6 +79,24 @@ def best_checkpoint_record(
             str(key): float(value)
             for key, value in sorted(dict(evaluation["boss_success_rate"]).items())
         },
+        "boss_successes": {
+            str(key): int(value)
+            for key, value in sorted(dict(evaluation.get("boss_successes") or {}).items())
+        },
+        "boss_attempts": {
+            str(key): int(value)
+            for key, value in sorted(dict(evaluation.get("boss_attempts") or {}).items())
+        },
+        "minimum_boss_success_rate": min(
+            (float(value) for value in evaluation["boss_success_rate"].values()),
+            default=0.0,
+        ),
+        "boss_action_metrics": {
+            str(key): dict(value)
+            for key, value in sorted(
+                dict(evaluation.get("boss_action_metrics") or {}).items()
+            )
+        },
         "selection_excludes_mean_reward": True,
     }
 
@@ -73,7 +113,9 @@ def update_best_checkpoint(
     metadata_path = output / "best_progress.json"
     if metadata_path.exists():
         existing = json.loads(metadata_path.read_text(encoding="utf-8"))
-        if existing.get("schema") != BEST_CHECKPOINT_SCHEMA:
+        if existing.get("schema") not in {
+            BEST_CHECKPOINT_SCHEMA, *_LEGACY_BEST_CHECKPOINT_SCHEMAS,
+        }:
             raise ValueError("unsupported best-checkpoint metadata")
         if evaluation_rank(record) <= evaluation_rank(existing):
             return False

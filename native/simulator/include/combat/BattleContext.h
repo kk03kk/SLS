@@ -222,6 +222,7 @@ namespace sts {
         void chooseCodexCard(CardId id);
         void chooseDiscardToHandCard(int discardIdx, bool forZeroCost);
         void chooseDiscoveryCard(CardId id);
+        void initializeFreshCard(CardInstance &card) const;
         void chooseDualWieldCard(int handIdx);
         void chooseExhaustOneCard(int handIdx);
         void chooseExhumeCard(int exhaustIdx);

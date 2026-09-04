@@ -16,7 +16,19 @@ from sls.audit.event_parity import audit_event_scenarios
 from sls.audit.mechanism_parity import audit_mechanism_scenarios
 from sls.audit.potion_parity import audit_potion_scenarios
 from sls.audit.relic_parity import audit_relic_scenarios
-from sls.audit.stock_parity import build_stock_parity_manifest
+from sls.audit.stock_parity import (
+    BRANCH_PARTIAL,
+    SEMANTIC_DIFFERENCE,
+    build_stock_parity_manifest,
+)
+
+
+def _legacy_probe_status(statuses: list[str]) -> str:
+    """Legacy probes are branch evidence, never whole-content parity."""
+
+    if any(status == "DIFFERENCE" for status in statuses):
+        return SEMANTIC_DIFFERENCE
+    return BRANCH_PARTIAL
 
 
 def parse_args() -> argparse.Namespace:
@@ -56,11 +68,8 @@ def main() -> int:
         passed = 0
         for row in manifest["categories"]["cards"]:
             statuses = by_card.get(row["content_id"], [])
-            if statuses and all(status == "SCENARIO_MATCH" for status in statuses):
-                row["simulator_parity"] = "SCENARIO_MATCH"
-                passed += 1
-            elif statuses:
-                row["simulator_parity"] = "DIFFERENCE"
+            if statuses:
+                row["simulator_parity"] = _legacy_probe_status(statuses)
         manifest["summary"]["cards"]["simulator_parity_passed"] = passed
     if args.potion_results is not None:
         potion_results = audit_potion_scenarios(args.original_log)
@@ -75,13 +84,8 @@ def main() -> int:
         passed = 0
         for row in manifest["categories"]["potions"]:
             statuses = by_potion.get(row["content_id"], [])
-            if statuses and all(status == "SCENARIO_MATCH" for status in statuses):
-                row["simulator_parity"] = "SCENARIO_MATCH"
-                passed += 1
-            elif "DIFFERENCE" in statuses:
-                row["simulator_parity"] = "DIFFERENCE"
-            elif statuses:
-                row["simulator_parity"] = "TRANSIENT_BOUNDARY"
+            if statuses:
+                row["simulator_parity"] = _legacy_probe_status(statuses)
         manifest["summary"]["potions"]["simulator_parity_passed"] = passed
     if args.relic_results is not None:
         relic_results = audit_relic_scenarios(args.original_log)
@@ -96,13 +100,8 @@ def main() -> int:
         passed = 0
         for row in manifest["categories"]["relics"]:
             statuses = by_relic.get(row["content_id"], [])
-            if statuses and all(status == "SCENARIO_MATCH" for status in statuses):
-                row["simulator_parity"] = "SCENARIO_MATCH"
-                passed += 1
-            elif "DIFFERENCE" in statuses:
-                row["simulator_parity"] = "DIFFERENCE"
-            elif statuses:
-                row["simulator_parity"] = "ADAPTER_BOUNDARY"
+            if statuses:
+                row["simulator_parity"] = _legacy_probe_status(statuses)
         manifest["summary"]["relics"]["simulator_parity_passed"] = passed
     if args.encounter_results is not None:
         encounter_results = audit_encounter_scenarios(args.original_log)
@@ -122,11 +121,8 @@ def main() -> int:
         encounter_passed = 0
         for row in manifest["categories"]["encounters"]:
             statuses = by_encounter.get(row["content_id"], [])
-            if statuses and all(status == "SCENARIO_MATCH" for status in statuses):
-                row["simulator_parity"] = "SCENARIO_MATCH"
-                encounter_passed += 1
-            elif statuses:
-                row["simulator_parity"] = "DIFFERENCE"
+            if statuses:
+                row["simulator_parity"] = _legacy_probe_status(statuses)
         manifest["summary"]["encounters"][
             "simulator_parity_passed"
         ] = encounter_passed
@@ -140,11 +136,7 @@ def main() -> int:
             row["original_evidence"] = "ORIGINAL_SCENARIO_CAPTURED"
             row["original_scenarios"] = monster_scenarios[row["content_id"]]
             monster_captured += 1
-            if all(status == "SCENARIO_MATCH" for status in statuses):
-                row["simulator_parity"] = "SCENARIO_MATCH"
-                monster_passed += 1
-            else:
-                row["simulator_parity"] = "DIFFERENCE"
+            row["simulator_parity"] = _legacy_probe_status(statuses)
         manifest["summary"]["monsters"]["original_captured"] = monster_captured
         manifest["summary"]["monsters"][
             "simulator_parity_passed"
@@ -163,11 +155,8 @@ def main() -> int:
         passed = 0
         for row in manifest["categories"]["events"]:
             status = by_event.get(row["content_id"])
-            if status == "SCENARIO_MATCH":
-                row["simulator_parity"] = "SCENARIO_MATCH"
-                passed += 1
-            elif status is not None:
-                row["simulator_parity"] = "DIFFERENCE"
+            if status is not None:
+                row["simulator_parity"] = _legacy_probe_status([status])
         manifest["summary"]["events"]["simulator_parity_passed"] = passed
     if args.mechanism_results is not None:
         mechanism_results = audit_mechanism_scenarios(args.original_log)

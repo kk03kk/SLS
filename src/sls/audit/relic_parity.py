@@ -16,6 +16,7 @@ from sls.backends.original.adapter import adapt_original
 RELIC_RESULT_SCHEMA = "sls-stock-relic-parity-v1"
 ADAPTER_BOUNDARY = "ADAPTER_BOUNDARY"
 TRANSIENT_BOUNDARY = "TRANSIENT_BOUNDARY"
+BRANCH_PARTIAL = "BRANCH_PARTIAL"
 
 _OBSERVATION_FIELDS = (
     "player", "screen", "hand", "draw_pile", "discard_pile",
@@ -187,8 +188,11 @@ def audit_relic_scenarios(log_paths: Iterable[Path]) -> dict[str, Any]:
         )
         rows[scenario_id] = {
             "relic_id": relic_id,
-            "status": DIFFERENCE if differences else MATCH,
+            # Both legacy payloads pass through adapt_original.  Preserve the
+            # diagnostic diff, but never claim independent semantic parity.
+            "status": DIFFERENCE if differences else BRANCH_PARTIAL,
             "differences": differences,
+            "projection_independence": "COMMON_ADAPTER_LEGACY",
         }
 
     for scenario_id, payloads in sorted(specialized.items()):
@@ -229,6 +233,9 @@ def audit_relic_scenarios(log_paths: Iterable[Path]) -> dict[str, Any]:
             ),
             "transient_boundaries": sum(
                 row["status"] == TRANSIENT_BOUNDARY for row in rows.values()
+            ),
+            "branch_partial": sum(
+                row["status"] == BRANCH_PARTIAL for row in rows.values()
             ),
         },
         "scenarios": rows,

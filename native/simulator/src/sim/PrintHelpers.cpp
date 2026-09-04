@@ -107,7 +107,7 @@ namespace sts {
         os << separator << "monsterRng: " << gc.monsterRng.counter;
         os << separator << "shuffleRng: " << gc.shuffleRng.counter;
         os << separator << "miscRng: " << gc.miscRng.counter;
-        os << separator << "mathUtilRng: " << gc.shuffleRng.counter;
+        os << separator << "mathUtilRng: " << gc.mathUtilRng.counter;
         os << '\n';
     }
 

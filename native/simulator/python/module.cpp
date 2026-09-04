@@ -5476,6 +5476,67 @@ py::dict damage_pipeline_probe() {
         result["buffer_multi_hit"] = value;
     }
 
+    {
+        GameContext gc(CharacterClass::IRONCLAD, 57, 0);
+        BattleContext bc;
+        fresh_battle(gc, bc);
+        auto &monster = bc.monsters.arr[0];
+        monster.buff<MS::INTANGIBLE>(1);
+        CardInstance strike(CardId::STRIKE_RED);
+        result["monster_intangible_calculated_damage"] =
+            bc.calculateCardDamage(strike, 0, 6);
+    }
+
+    return result;
+}
+
+py::dict card_edge_case_probe() {
+    GameContext gc(CharacterClass::IRONCLAD, 58, 0);
+    gc.floorNum = 50;
+    gc.curRoom = Room::MONSTER;
+    gc.miscRng = Random(gc.seed + gc.floorNum);
+
+    BattleContext bc;
+    bc.init(gc, MonsterEncounter::AWAKENED_ONE);
+    auto &awakened = bc.monsters.arr[2];
+    awakened.curHp = 1;
+    awakened.block = 0;
+
+    CardInstance dagger(CardId::RITUAL_DAGGER);
+    bc.curCardQueueItem = CardQueueItem(dagger, 2, bc.player.energy);
+    Actions::RitualDaggerAction(2, dagger.specialData).actFunc(bc);
+
+    py::dict result;
+    result["awakened_one_half_dead"] = awakened.isHalfDead();
+    result["ritual_dagger_special_data"] =
+        bc.curCardQueueItem.card.specialData;
+
+    GameContext run(CharacterClass::IRONCLAD, 59, 0);
+    run.obtainRelic(RelicId::NECRONOMICON);
+    auto necroCount = [&]() {
+        int count = 0;
+        for (const auto &card : run.deck.cards) {
+            count += card.getId() == CardId::NECRONOMICURSE ? 1 : 0;
+        }
+        return count;
+    };
+    int necroIdx = -1;
+    for (int i = 0; i < run.deck.cards.size(); ++i) {
+        if (run.deck.cards[i].getId() == CardId::NECRONOMICURSE) {
+            necroIdx = i;
+            break;
+        }
+    }
+    run.deck.remove(run, necroIdx);
+    result["necronomicurse_after_normal_remove"] = necroCount();
+    run.loseRelic(RelicId::NECRONOMICON);
+    result["necronomicurse_after_relic_loss"] = necroCount();
+
+    CardInstance freshBlood(CardId::BLOOD_FOR_BLOOD);
+    bc.player.timesDamagedThisCombat = 3;
+    bc.initializeFreshCard(freshBlood);
+    result["fresh_blood_for_blood_cost_after_three_hits"] =
+        freshBlood.costForTurn;
     return result;
 }
 
@@ -5972,6 +6033,7 @@ PYBIND11_MODULE(_lightspeed, module) {
     module.def("stance_mechanics_probe", &stance_mechanics_probe);
     module.def("orb_mechanics_probe", &orb_mechanics_probe);
     module.def("damage_pipeline_probe", &damage_pipeline_probe);
+    module.def("card_edge_case_probe", &card_edge_case_probe);
     module.def("curl_up_lethal_probe", &curl_up_lethal_probe);
     module.def("just_applied_probe", &just_applied_probe);
     module.def("retain_ethereal_probe", &retain_ethereal_probe);

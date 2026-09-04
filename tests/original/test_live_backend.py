@@ -69,10 +69,30 @@ def test_live_backend_can_wait_at_the_menu_for_fresh_neow() -> None:
 
     decision = backend.attach()
 
-    assert transport.sent == ["ready", "state"]
+    assert transport.sent == ["ready"]
     assert decision.observation.screen.value == "NEOW"
 
 
 def test_live_backend_rejects_non_positive_wait_timeout() -> None:
     with pytest.raises(ValueError, match="positive"):
         LiveGameBackend(wait_for_neow=True, wait_timeout_seconds=0)
+
+
+def test_curriculum_goal_is_only_available_in_explicit_inspector_mode() -> None:
+    with pytest.raises(ValueError, match="FullRun or Heart"):
+        LiveGameBackend().configure_goal("ACT1")
+    backend = LiveGameBackend(allow_curriculum_goals=True)
+    backend.configure_goal("ACT1")
+    assert backend._curriculum_profile is not None
+    assert backend._curriculum_profile.profile_id == "IRONCLAD_A0_ACT1"
+
+
+def test_curriculum_live_backend_requires_a0() -> None:
+    payload = game_payload(["A", "B", "C", "D"])
+    payload["game_state"]["ascension_level"] = 1
+    backend = LiveGameBackend(
+        OriginalSession(ScriptedTransport([payload])), allow_curriculum_goals=True,
+    )
+    backend.configure_goal("ACT1")
+    with pytest.raises(ValueError, match="requires ascension 0"):
+        backend.attach()

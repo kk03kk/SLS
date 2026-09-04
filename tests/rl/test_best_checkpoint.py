@@ -22,6 +22,8 @@ def _evaluation(**changes: object) -> dict[str, object]:
         "backend_errors": 0,
         "median_failure_floor": 12.0,
         "boss_success_rate": {"HEXAGHOST": 0.1, "SLIME_BOSS": 0.2, "THE_GUARDIAN": 0.05},
+        "boss_action_metrics": {},
+        "boss_successes": {}, "boss_attempts": {},
     }
     value.update(changes)
     return value
@@ -33,6 +35,19 @@ def test_rank_prefers_act_progress_then_failure_floor_and_stability() -> None:
     assert evaluation_rank(progressed) > evaluation_rank(baseline)
     later_floor = _evaluation(median_failure_floor=15.0, step_limits=3)
     assert evaluation_rank(later_floor) > evaluation_rank(baseline)
+
+
+def test_rank_uses_worst_boss_rate_before_speed_on_success_ties() -> None:
+    robust = _evaluation(
+        boss_success_rate={"HEXAGHOST": 0.8, "SLIME_BOSS": 0.8, "THE_GUARDIAN": 0.7},
+        mean_steps=220.0,
+    )
+    faster_but_brittle = _evaluation(
+        boss_success_rate={"HEXAGHOST": 0.9, "SLIME_BOSS": 0.9, "THE_GUARDIAN": 0.6},
+        mean_steps=150.0,
+    )
+
+    assert evaluation_rank(robust) > evaluation_rank(faster_but_brittle)
 
 
 def test_best_checkpoint_keeps_earlier_tie_and_replaces_strict_improvement(tmp_path: Path) -> None:

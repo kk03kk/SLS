@@ -5,8 +5,8 @@ import zipfile
 from pathlib import Path
 
 from sls.audit.stock_parity import (
+    BRANCH_PARTIAL,
     ORIGINAL_CAPTURED,
-    UNREVIEWED,
     build_stock_parity_manifest,
     captured_original_scenarios,
 )
@@ -60,5 +60,5 @@ def test_manifest_inventory_and_evidence_statuses(tmp_path: Path) -> None:
         if row["content_id"] == "ANGER"
     )
     assert anger["original_evidence"] == ORIGINAL_CAPTURED
-    assert anger["simulator_parity"] == UNREVIEWED
+    assert anger["simulator_parity"] == BRANCH_PARTIAL
     assert anger["ironclad_a0_scope"] is True

@@ -43,6 +43,18 @@ def test_native_full_run_reaches_a_canonical_decision() -> None:
     assert decision.observation.run.act == 1
 
 
+def test_signed_official_seed_matches_same_unsigned_native_bits() -> None:
+    from sls.backends.simulator import IRONCLAD_A0_ACT1, SimulatorBackend
+
+    signed = -1466613676819842358
+    unsigned = signed + (1 << 64)
+    left = SimulatorBackend(IRONCLAD_A0_ACT1).reset(signed)
+    right = SimulatorBackend(IRONCLAD_A0_ACT1).reset(unsigned)
+
+    assert left.observation == right.observation
+    assert left.actions == right.actions
+
+
 @pytest.mark.parametrize(
     ("task", "source", "option_count", "legal_indices", "controls"),
     (

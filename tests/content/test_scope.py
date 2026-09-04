@@ -7,11 +7,14 @@ from sls.content.scope import (
     IRONCLAD_A0_SCOPE_ID,
     IRONCLAD_A0_SCOPE_PATH,
     UnsupportedContentPolicy,
+    filter_policy_key_acquisitions,
     filter_policy_offers,
     filter_policy_shop,
     load_ironclad_a0_scope,
+    validate_scope_source_hashes,
 )
 from sls.contracts import Action, ActionKind, PublicEntity, ShopItem
+from sls.model.encoding import policy_vocabulary
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -44,6 +47,29 @@ def test_committed_ironclad_scope_is_current_and_exactly_scoped() -> None:
     assert {"CULTIST", "GREMLIN_NOB", "HEXAGHOST", "THE_GUARDIAN"} <= set(
         scope["monsters"]["act1"]
     )
+    all_encounters = {
+        item for values in scope["encounters"].values() for item in values
+    }
+    assert len(all_encounters) == 61
+    assert {
+        "AUTOMATON", "COLLECTOR", "CHAMP",
+        "AWAKENED_ONE", "TIME_EATER", "DONU_AND_DECA",
+    } <= all_encounters
+    assert {"SHIELD_AND_SPEAR", "THE_HEART"}.isdisjoint(all_encounters)
+    all_monsters = {item for values in scope["monsters"].values() for item in values}
+    assert {
+        "BRONZE_AUTOMATON", "THE_COLLECTOR", "THE_CHAMP",
+        "AWAKENED_ONE", "TIME_EATER", "DONU", "DECA",
+    } <= all_monsters
+    assert {"CORRUPT_HEART", "SPIRE_SHIELD", "SPIRE_SPEAR"}.isdisjoint(
+        all_monsters
+    )
+    vocabulary = set(policy_vocabulary()["content"])
+    for category in ("cards", "potions", "relics", "events", "encounters", "monsters"):
+        scoped_ids = {
+            item for values in scope[category].values() for item in values
+        }
+        assert scoped_ids <= vocabulary, f"{category} has an UNKNOWN vocabulary fallback"
 
 
 def test_scope_file_digest_is_deterministic() -> None:
@@ -51,6 +77,7 @@ def test_scope_file_digest_is_deterministic() -> None:
     parsed = json.loads(first)
     assert parsed == load_ironclad_a0_scope()
     assert IRONCLAD_A0_SCOPE_PATH.read_bytes() == first
+    validate_scope_source_hashes(ROOT)
 
 
 def test_shop_filter_hides_prismatic_without_renumbering_or_rewriting_mapping() -> None:
@@ -102,3 +129,31 @@ def test_reward_filter_is_profile_scoped_and_preserves_other_candidate_identity(
         (shard,), (take_shard,), {take_shard.candidate_id: 11},
         policy=all_content,
     ) == ((shard,), (take_shard,), {take_shard.candidate_id: 11})
+
+
+def test_non_heart_projection_hides_keys_without_changing_other_identities() -> None:
+    emerald = PublicEntity("reward-key:emerald", "EMERALD_KEY")
+    relic = PublicEntity("reward-relic:0", "AKABEKO")
+    take_emerald = Action(ActionKind.TAKE_REWARD, reward_id=emerald.instance_id)
+    take_blue = Action(ActionKind.TAKE_BLUE_KEY, reward_id="reward-key:sapphire")
+    recall = Action(ActionKind.RECALL, option_id="rest-option:2")
+    take_relic = Action(ActionKind.TAKE_REWARD, reward_id=relic.instance_id)
+    mapping = {
+        take_emerald.candidate_id: 1,
+        take_blue.candidate_id: 2,
+        recall.candidate_id: 3,
+        take_relic.candidate_id: 4,
+    }
+
+    items, actions, visible = filter_policy_key_acquisitions(
+        (emerald, relic),
+        (take_emerald, take_blue, recall, take_relic),
+        mapping,
+        allow_keys=False,
+    )
+    assert items == (relic,)
+    assert actions == (take_relic,)
+    assert visible == {take_relic.candidate_id: 4}
+    assert filter_policy_key_acquisitions(
+        (emerald,), (take_emerald,), mapping, allow_keys=True,
+    )[1] == (take_emerald,)

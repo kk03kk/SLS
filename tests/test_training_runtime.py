@@ -9,6 +9,7 @@ import pytest
 
 from tools.train_full_run import (
     StopController,
+    _can_resume_finalization,
     _load_benchmark,
     _positive_int,
     _progress_from_baseline,
@@ -20,6 +21,31 @@ from tools.train_full_run import (
     _validate_existing_manifest,
     _validate_seed_namespaces,
 )
+
+
+@pytest.mark.parametrize("status", ("RUNNING", "INTERRUPTED", None))
+def test_train_can_resume_finalization_after_target(status: object) -> None:
+    assert _can_resume_finalization(
+        stage_name="train",
+        environment_steps=10_002_432,
+        target_steps=10_002_432,
+        manifest_status=status,
+    )
+
+
+def test_completed_or_nontrain_stage_cannot_resume_finalization() -> None:
+    assert not _can_resume_finalization(
+        stage_name="train",
+        environment_steps=10_002_432,
+        target_steps=10_002_432,
+        manifest_status="COMPLETE",
+    )
+    assert not _can_resume_finalization(
+        stage_name="pilot",
+        environment_steps=10_002_432,
+        target_steps=10_002_432,
+        manifest_status="INTERRUPTED",
+    )
 
 
 def test_worker_benchmark_is_bound_to_local_source_and_binary_not_git(
@@ -169,6 +195,42 @@ def test_canonical_fullrun_config_freezes_stage_and_recurrent_contract() -> None
     assert payload["ppo"]["max_episode_steps"] == 4096
 
 
+def test_v3_12m_config_uses_exact_batch_endpoints_and_held_out_sets() -> None:
+    path = Path(__file__).resolve().parents[1] / "configs/train/ironclad_a0_fullrun_12m.toml"
+    with path.open("rb") as stream:
+        payload = tomllib.load(stream)
+    assert payload["run"]["output"] == "local/runs/ironclad-a0-fullrun-v3"
+    assert payload["stages"]["pilot"]["target_environment_steps"] == 7_004_160
+    assert payload["stages"]["train"]["target_environment_steps"] == 12_005_376
+    assert payload["stages"]["train"]["evaluate_every_steps"] == 1_000_000
+    assert payload["stages"]["train"]["diagnose_every_steps"] == 500_000
+    assert payload["run"]["diagnostic_evaluation_seed_count"] == 256
+    assert payload["run"]["periodic_evaluation_seed_count"] == 1000
+    assert payload["run"]["final_evaluation_seed_count"] == 2000
+    assert payload["stages"]["train"]["minimum_evaluation_episodes"] == 1000
+    assert payload["stages"]["train"]["minimum_final_evaluation_episodes"] == 2000
+    assert payload["stages"]["train"]["minimum_success_rate"] == 0.005
+    assert payload["stages"]["train"]["minimum_reached_act2_rate"] == 0.65
+    assert payload["stages"]["train"]["minimum_reached_act3_rate"] == 0.08
+    assert payload["stages"]["train"]["minimum_act1_boss_success_rate"] == 0.60
+
+
+def test_v3_10m_config_preserves_ppo_and_uses_exact_endpoint() -> None:
+    path = Path(__file__).resolve().parents[1] / "configs/train/ironclad_a0_fullrun_10m.toml"
+    with path.open("rb") as stream:
+        payload = tomllib.load(stream)
+    assert payload["run"]["output"] == "local/runs/ironclad-a0-fullrun-v3"
+    assert payload["stages"]["pilot"]["target_environment_steps"] == 7_004_160
+    assert payload["stages"]["train"]["target_environment_steps"] == 10_002_432
+    assert payload["ppo"]["rollout_steps"] == 256
+    assert payload["ppo"]["recurrent_sequence_length"] == 64
+    assert payload["ppo"]["learning_rate"] == pytest.approx(0.00025)
+    assert payload["ppo"]["gamma"] == 1.0
+    assert payload["ppo"]["failure_progress_scale"] == pytest.approx(0.8)
+    assert payload["run"]["periodic_evaluation_seed_count"] == 1000
+    assert payload["run"]["final_evaluation_seed_count"] == 2000
+
+
 def test_progress_report_is_relative_to_update_zero() -> None:
     progress = _progress_from_baseline(
         {"reached_act2_rate": 0.1, "reached_act3_rate": 0.0, "median_failure_floor": 5},
@@ -187,17 +249,22 @@ def test_policy_promotion_requires_quality_and_zero_runtime_failures() -> None:
         "minimum_reached_act2_rate": 0.5,
         "minimum_reached_act3_rate": 0.2,
         "minimum_evaluation_episodes": 100,
+        "minimum_boss_success_rate": 0.3,
     }
     result = {
         "episodes": 128, "success_rate": 0.2,
         "reached_act2_rate": 0.7, "reached_act3_rate": 0.3,
         "backend_errors": 0, "backend_truncations": 0,
         "step_limits": 0, "cycle_limits": 0, "timeouts": 0,
+        "boss_success_rate": {"ACT_1:THE_GUARDIAN": 0.4},
     }
     assert _promotion_passes(result, stage)
     assert not _promotion_passes({**result, "backend_errors": 1}, stage)
     assert not _promotion_passes({**result, "self_loops": 1}, stage)
     assert not _promotion_passes({**result, "success_rate": 0.01}, stage)
+    assert not _promotion_passes({
+        **result, "boss_success_rate": {"ACT_1:THE_GUARDIAN": 0.2},
+    }, stage)
 
 
 def test_curriculum_stage_requires_successful_predecessor_promotion() -> None:

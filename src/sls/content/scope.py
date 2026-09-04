@@ -15,7 +15,7 @@ from pathlib import Path
 from typing import Any, Iterable, Mapping, TypeVar
 
 CONTENT_SCOPE_SCHEMA = "sls-content-scope-v1"
-IRONCLAD_A0_SCOPE_ID = "sls-ironclad-a0-content-v1"
+IRONCLAD_A0_SCOPE_ID = "sls-ironclad-a0-fullrun-content-v2"
 IRONCLAD_A0_SCOPE_PATH = Path(__file__).with_name("scope.json")
 
 
@@ -41,6 +41,28 @@ def load_ironclad_a0_scope() -> dict[str, Any]:
 
 def ironclad_a0_scope_hash() -> str:
     return str(load_ironclad_a0_scope()["scope_sha256"])
+
+
+def validate_scope_source_hashes(root: Path | None = None) -> None:
+    """Prove the committed scope was derived from the current source inputs."""
+
+    repository = root or Path(__file__).resolve().parents[3]
+    expected = load_ironclad_a0_scope().get("source_sha256")
+    if not isinstance(expected, Mapping) or not expected:
+        raise ValueError("Ironclad A0 content scope has no source provenance")
+    mismatches: list[str] = []
+    for relative, claimed in sorted(expected.items()):
+        path = repository / str(relative)
+        if not path.is_file():
+            mismatches.append(f"{relative}=MISSING")
+            continue
+        actual = hashlib.sha256(path.read_bytes()).hexdigest()
+        if actual != claimed:
+            mismatches.append(f"{relative}={actual}")
+    if mismatches:
+        raise ValueError(
+            "Ironclad A0 scope source provenance mismatch: " + ", ".join(mismatches)
+        )
 
 
 def policy_excluded_content_ids() -> frozenset[str]:
@@ -142,4 +164,41 @@ def filter_policy_offers(
         key: value for key, value in action_mapping.items()
         if key in visible_candidate_ids
     }
+    return visible_items, visible_actions, visible_mapping
+
+
+def filter_policy_key_acquisitions(
+    items: Iterable[_ItemT],
+    actions: Iterable[_ActionT],
+    action_mapping: Mapping[str, _MappingT],
+    *,
+    allow_keys: bool,
+) -> tuple[tuple[_ItemT, ...], tuple[_ActionT, ...], dict[str, _MappingT]]:
+    """Hide key-only policy choices outside Heart profiles.
+
+    This is a projection boundary only: native key flags, burning elites,
+    reward construction, RNG consumption, and vocabulary entries are retained.
+    """
+
+    items = tuple(items)
+    actions = tuple(actions)
+    if allow_keys:
+        return items, actions, dict(action_mapping)
+
+    def key_action(action: _ActionT) -> bool:
+        raw_kind = getattr(action, "kind", "")
+        kind = str(getattr(raw_kind, "value", raw_kind))
+        reward_id = str(getattr(action, "reward_id", "") or "")
+        return kind in {"RECALL", "TAKE_BLUE_KEY"} or reward_id.startswith("reward-key:")
+
+    visible_actions = tuple(action for action in actions if not key_action(action))
+    visible_ids = {str(getattr(action, "candidate_id")) for action in visible_actions}
+    visible_mapping = {
+        key: value for key, value in action_mapping.items() if key in visible_ids
+    }
+    visible_items = tuple(
+        item for item in items
+        if "KEY" not in str(getattr(item, "content_id", "")).upper()
+        and not str(getattr(item, "instance_id", "")).startswith("reward-key:")
+    )
     return visible_items, visible_actions, visible_mapping

@@ -18,9 +18,26 @@ from typing import Any, Iterable
 from sls.content.registry import load_content_registry
 from sls.content.scope import load_ironclad_a0_scope
 
-MANIFEST_SCHEMA = "sls-stock-parity-audit-v1"
+MANIFEST_SCHEMA = "sls-stock-parity-audit-v2"
 ORIGINAL_CAPTURED = "ORIGINAL_SCENARIO_CAPTURED"
 UNREVIEWED = "UNREVIEWED"
+BRANCH_PARTIAL = "BRANCH_PARTIAL"
+SEMANTIC_MATCH = "SEMANTIC_MATCH"
+PRESENTATION_ONLY = "PRESENTATION_ONLY"
+SEMANTIC_UI_FOLD = "SEMANTIC_UI_FOLD"
+SEMANTIC_DIFFERENCE = "SEMANTIC_DIFFERENCE"
+
+PARITY_STATUSES = frozenset({
+    UNREVIEWED,
+    BRANCH_PARTIAL,
+    SEMANTIC_MATCH,
+    PRESENTATION_ONLY,
+    SEMANTIC_UI_FOLD,
+    SEMANTIC_DIFFERENCE,
+})
+BLOCKING_PARITY_STATUSES = frozenset({
+    UNREVIEWED, BRANCH_PARTIAL, SEMANTIC_DIFFERENCE,
+})
 
 _ALLOWLIST_MEMBERS = {
     "cards": "spirecomm/parity/scenario-card-allowlist.tsv",
@@ -137,7 +154,9 @@ def build_stock_parity_manifest(
                 "oracle_allowlisted": content_id in oracle_ids,
                 "original_scenarios": scenarios,
                 "original_evidence": ORIGINAL_CAPTURED if scenarios else UNREVIEWED,
-                "simulator_parity": UNREVIEWED,
+                # A stock capture proves only that one scenario ran.  It is
+                # deliberately never promoted to semantic parity here.
+                "simulator_parity": BRANCH_PARTIAL if scenarios else UNREVIEWED,
             })
         categories[category] = rows
 
@@ -157,6 +176,23 @@ def build_stock_parity_manifest(
                 "A controlled scenario was captured from stock desktop-1.0.jar; "
                 "this alone is not a simulator parity result."
             ),
+            BRANCH_PARTIAL: (
+                "At least one branch has independent evidence, but required "
+                "branches, callbacks, or state/RNG comparisons remain open."
+            ),
+            SEMANTIC_MATCH: (
+                "Every declared obligation has independent stock and simulator "
+                "evidence and matches at stable decision boundaries."
+            ),
+            PRESENTATION_ONLY: "The difference changes presentation only.",
+            SEMANTIC_UI_FOLD: (
+                "A UI/protocol boundary is folded and has a proved equivalent "
+                "stable-state transition."
+            ),
+            SEMANTIC_DIFFERENCE: (
+                "A strategy, state, legal-action, callback, reward, or RNG "
+                "difference is present and blocks training."
+            ),
         },
         "categories": categories,
         "summary": {
@@ -165,7 +201,15 @@ def build_stock_parity_manifest(
                 "ironclad_a0_scope": sum(row["ironclad_a0_scope"] for row in rows),
                 "oracle_allowlisted": sum(row["oracle_allowlisted"] for row in rows),
                 "original_captured": sum(bool(row["original_scenarios"]) for row in rows),
-                "simulator_parity_passed": 0,
+                "branch_partial": sum(
+                    row["simulator_parity"] == BRANCH_PARTIAL for row in rows
+                ),
+                "simulator_parity_passed": sum(
+                    row["simulator_parity"] in {
+                        SEMANTIC_MATCH, PRESENTATION_ONLY, SEMANTIC_UI_FOLD,
+                    }
+                    for row in rows
+                ),
             }
             for category, rows in categories.items()
         },

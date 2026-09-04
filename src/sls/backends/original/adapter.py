@@ -5,6 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Mapping, Sequence
 
+from sls.content.energy import canonical_max_energy
 from sls.content.normalize import (
     normalize_card_id,
     normalize_content_id,
@@ -14,7 +15,11 @@ from sls.content.normalize import (
     normalize_power_amount,
     normalize_power_id,
 )
-from sls.content.scope import filter_policy_offers, filter_policy_shop
+from sls.content.scope import (
+    filter_policy_key_acquisitions,
+    filter_policy_offers,
+    filter_policy_shop,
+)
 from sls.contracts import (
     Action,
     ActionKind,
@@ -90,7 +95,35 @@ class AdaptedOriginalDecision:
     commands: Mapping[str, tuple[str, ...]]
 
 
-def adapt_original(payload: Mapping[str, Any]) -> AdaptedOriginalDecision:
+def _maximum_energy(
+    game: Mapping[str, Any], visible_player: Mapping[str, Any],
+    *,
+    in_combat: bool,
+) -> int:
+    """Recover the public energy-per-turn value omitted by CommunicationMod."""
+
+    # Policy ABI v3 uses 3 as a stable non-combat placeholder. Preserve the
+    # projection the current checkpoints were trained on; permanent relic
+    # energy becomes explicit when combat initializes.
+    if not in_combat:
+        return 3
+    relics = {
+        normalize_content_id(item.get("id"))
+        for item in _mappings(game.get("relics"))
+    }
+    room = str(game.get("room_class") or game.get("room_type") or "").upper()
+    explicit = visible_player.get("max_energy") if in_combat else None
+    return canonical_max_energy(
+        relics,
+        combat_value=None if explicit is None else _integer(explicit),
+        room_type=room,
+        in_combat=in_combat,
+    )
+
+
+def adapt_original(
+    payload: Mapping[str, Any], *, allow_key_acquisition: bool = True,
+) -> AdaptedOriginalDecision:
     """Convert one ready CommunicationMod state without exposing wire commands."""
 
     game = _mapping(payload.get("game_state"))
@@ -112,9 +145,18 @@ def adapt_original(payload: Mapping[str, Any]) -> AdaptedOriginalDecision:
     discard = _cards(combat.get("discard_pile"), "DISCARD")
     exhaust = _cards(combat.get("exhaust_pile"), "EXHAUST")
     deck = _cards(game.get("deck"), "DECK", preserve_order=True)
+    relic_ids = {
+        normalize_content_id(item.get("id"))
+        for item in _mappings(game.get("relics"))
+    }
+    hide_intents = "RUNIC_DOME" in relic_ids
     parity_intents = _mappings(payload.get("_monster_intents"))
     enemies = tuple(
-        _enemy(monster, index, parity_intents[index] if index < len(parity_intents) else {})
+        _enemy(
+            monster, index,
+            parity_intents[index] if index < len(parity_intents) else {},
+            hide_intent=hide_intents,
+        )
         for index, monster in enumerate(_mappings(combat.get("monsters")))
     )
     powers = _powers(_mapping(combat.get("player")).get("powers"), "PLAYER_POWER")
@@ -134,6 +176,12 @@ def adapt_original(payload: Mapping[str, Any]) -> AdaptedOriginalDecision:
             options["reward"], actions, commands,
         )
         options["reward"] = rewards
+    reward_items = options["reward"] if screen is ScreenType.COMBAT_REWARD else ()
+    reward_items, actions, commands = filter_policy_key_acquisitions(
+        reward_items, actions, commands, allow_keys=allow_key_acquisition,
+    )
+    if screen is ScreenType.COMBAT_REWARD:
+        options["reward"] = reward_items
     outcome = str(game.get("screen_type") or "").upper()
     terminal = screen is ScreenType.GAME_OVER or outcome in {"DEATH", "VICTORY"}
     if terminal:
@@ -150,7 +198,7 @@ def adapt_original(payload: Mapping[str, Any]) -> AdaptedOriginalDecision:
             _integer(visible_player.get("max_hp", game.get("max_hp"))),
             _integer(visible_player.get("block")),
             _integer(visible_player.get("energy")),
-            _integer(visible_player.get("max_energy", 3)),
+            _maximum_energy(game, visible_player, in_combat=bool(combat)),
         ),
         run=RunContext(
             _integer(game.get("ascension_level", game.get("ascension"))),
@@ -550,7 +598,13 @@ def _powers(values: Any, prefix: str) -> tuple[PublicEntity, ...]:
     )
 
 
-def _enemy(monster: Mapping[str, Any], index: int, parity: Mapping[str, Any]) -> Enemy:
+def _enemy(
+    monster: Mapping[str, Any],
+    index: int,
+    parity: Mapping[str, Any],
+    *,
+    hide_intent: bool = False,
+) -> Enemy:
     monster_id = normalize_monster_id(monster.get("id"))
     gone = bool(monster.get("is_gone", False)) or _integer(monster.get("current_hp")) <= 0
     intent = str(parity.get("intent") or monster.get("intent") or "UNKNOWN").upper()
@@ -563,6 +617,8 @@ def _enemy(monster: Mapping[str, Any], index: int, parity: Mapping[str, Any]) ->
     hits = _integer(parity.get("hits", monster.get("move_hits", monster.get("intent_hits", 1))))
     if gone:
         intent, damage, hits = "UNKNOWN", 0, 0
+    elif hide_intent:
+        intent, damage, hits = "NONE", 0, 0
     elif not is_attack:
         damage, hits = 0, 0
     return Enemy(

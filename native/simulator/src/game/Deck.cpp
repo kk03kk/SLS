@@ -239,6 +239,23 @@ void Deck::removeBottle(CardType bottleType) {
 
 void Deck::remove(GameContext &gc, int idx) {
     const auto c = cards[idx];
+    const bool restoreNecronomicurse =
+        c.getId() == CardId::NECRONOMICURSE
+        && gc.relics.has(RelicId::NECRONOMICON);
+
+    auto restoreNecronomicurseIfNeeded = [&]() {
+        if (!restoreNecronomicurse) {
+            return;
+        }
+        // Necronomicurse.onRemoveFromMasterDeck immediately creates a fresh
+        // copy at the top of the master deck.  This is not a normal card
+        // obtain, so it must not trigger Ceramic Fish, Darkstone Periapt or
+        // Omamori; only the deck bookkeeping undone above is restored.
+        obtainRaw(Card(CardId::NECRONOMICURSE));
+        if (gc.relics.has(RelicId::DU_VU_DOLL)) {
+            ++gc.relics.getRelicValueRef(RelicId::DU_VU_DOLL);
+        }
+    };
 
     if (c.getType() == CardType::CURSE){
         --cardTypeCounts[static_cast<int>(CardType::CURSE)];
@@ -261,6 +278,7 @@ void Deck::remove(GameContext &gc, int idx) {
 
     if (!anyCardBottled()) { // if no bottled cards, can do simple remove
         cards.remove(idx);
+        restoreNecronomicurseIfNeeded();
         return;
     }
 
@@ -279,6 +297,7 @@ void Deck::remove(GameContext &gc, int idx) {
         cards[i] = cards[i+1]; // shift cards to erase remove card
     }
     cards.resize(cards.size()-1);
+    restoreNecronomicurseIfNeeded();
 }
 
 void Deck::upgrade(int idx) {

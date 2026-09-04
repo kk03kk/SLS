@@ -32,6 +32,10 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--account", default="allusers")
     parser.add_argument("--qos", default="normal")
     parser.add_argument("--partition")
+    parser.add_argument(
+        "--constraint",
+        help="Optional Slurm node constraint, for example xgpg for the physical A100 pool.",
+    )
     parser.add_argument("--gpu", default="a100-40")
     parser.add_argument("--cpus", type=int, default=16)
     parser.add_argument("--memory", default="64G")
@@ -122,7 +126,7 @@ def build_sbatch_command(args: argparse.Namespace, *, root: Path = ROOT) -> list
             "--stage", args.task, "--config", str(config), "--resume", args.resume,
         ]
     logs = root / "local" / "runs" / "slurm-logs"
-    return [
+    sbatch = [
         "sbatch", "--parsable", f"--account={args.account}", f"--qos={args.qos}",
         "--export=ALL,CUBLAS_WORKSPACE_CONFIG=:4096:8",
         f"--partition={partition}", f"--gres=gpu:{args.gpu}:1", f"--cpus-per-task={args.cpus}",
@@ -133,6 +137,9 @@ def build_sbatch_command(args: argparse.Namespace, *, root: Path = ROOT) -> list
         # StopController instead of stopping at an intermediate shell process.
         "--wrap", "exec " + shlex.join(command),
     ]
+    if args.constraint:
+        sbatch.insert(sbatch.index(f"--gres=gpu:{args.gpu}:1"), f"--constraint={args.constraint}")
+    return sbatch
 
 
 def main(argv: list[str] | None = None) -> int:

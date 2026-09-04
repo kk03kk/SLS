@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Any, Iterable, Mapping
 
 from sls.audit.card_parity import DIFFERENCE, MATCH, structured_differences
-from sls.audit.relic_parity import _combat_projection
+from sls.audit.relic_parity import BRANCH_PARTIAL, _combat_projection
 from sls.content.normalize import normalize_monster_id
 
 ENCOUNTER_RESULT_SCHEMA = "sls-stock-encounter-parity-v1"
@@ -121,9 +121,10 @@ def audit_encounter_scenarios(log_paths: Iterable[Path]) -> dict[str, Any]:
             "encounter_id": encounter_id,
             "setup_digest": run["setup_digest"],
             "monster_ids": sorted(monsters),
-            "status": DIFFERENCE if differences else MATCH,
+            "status": DIFFERENCE if differences else BRANCH_PARTIAL,
             "boundaries": ["INITIAL", "AFTER_FIRST_MONSTER_TURN"],
             "differences": differences,
+            "projection_independence": "COMMON_ADAPTER_LEGACY",
         }
 
     return {
@@ -141,6 +142,9 @@ def audit_encounter_scenarios(log_paths: Iterable[Path]) -> dict[str, Any]:
                 for monster in row["monster_ids"]
             }),
             "matched": sum(row["status"] == MATCH for row in rows.values()),
+            "branch_partial": sum(
+                row["status"] == BRANCH_PARTIAL for row in rows.values()
+            ),
             "differences": sum(
                 row["status"] == DIFFERENCE for row in rows.values()
             ),

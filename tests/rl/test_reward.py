@@ -13,10 +13,12 @@ from sls.rl.reward import (
 )
 
 
-def _state(floor: int, hp: int) -> Observation:
+def _state(
+    floor: int, hp: int, *, keys: tuple[bool, bool, bool] = (False, False, False),
+) -> Observation:
     return Observation(
         Player("IRONCLAD", hp, 80, 0, 0, 3),
-        RunContext(0, 1, floor, 99, False, False, False),
+        RunContext(0, 1, floor, 99, *keys),
         ScreenType.MAP,
     )
 
@@ -79,4 +81,27 @@ def test_canonical_discount_does_not_reward_delaying_the_same_failure() -> None:
     )
     assert _discounted_failure_return(delay=500, gamma=1.0) == pytest.approx(
         _discounted_failure_return(delay=0, gamma=1.0)
+    )
+
+
+def test_fullrun_failure_and_key_reward_properties_are_fail_closed() -> None:
+    failures = [
+        curriculum_terminal_reward(_state(floor, 1), IRONCLAD_A0_FULLRUN, success=False)
+        for floor in (-10, 0, 1, 25, 49, 50, 500)
+    ]
+    assert all(-1.0 <= reward < 0.0 for reward in failures)
+    assert failures == sorted(failures)
+    no_keys = _state(25, 40)
+    all_keys = _state(25, 40, keys=(True, True, True))
+    assert curriculum_terminal_reward(
+        no_keys, IRONCLAD_A0_FULLRUN, success=False,
+    ) == curriculum_terminal_reward(
+        all_keys, IRONCLAD_A0_FULLRUN, success=False,
+    )
+    assert shape_curriculum_reward(
+        0.0, no_keys, no_keys, IRONCLAD_A0_FULLRUN,
+        gamma=1.0, scale=0.2, terminal=False,
+    ) == shape_curriculum_reward(
+        0.0, all_keys, all_keys, IRONCLAD_A0_FULLRUN,
+        gamma=1.0, scale=0.2, terminal=False,
     )

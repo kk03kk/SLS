@@ -144,7 +144,7 @@ namespace sts {
         static Action BetterDiscardPileToHandAction(int amount, CardSelectTask task);
         static Action ArmamentsAction();
         static Action DualWieldAction(int copyCount);
-        static Action ExhumeAction();
+        static Action ExhumeAction(bool upgrade);
         static Action ForethoughtAction(bool upgraded);
         static Action HeadbuttAction();
         static Action ChooseExhaustOne();

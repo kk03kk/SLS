@@ -140,6 +140,54 @@ def test_combat_card_targets_use_decision_scoped_ids() -> None:
     assert adapted.commands[play.candidate_id] == ("play 1 0",)
 
 
+def test_runic_dome_hides_wire_intent_and_restores_public_max_energy() -> None:
+    payload = {
+        "in_game": True,
+        "ready_for_command": True,
+        "available_commands": ["end"],
+        "_monster_intents": [{"intent": "ATTACK", "damage": 11, "hits": 1}],
+        "game_state": base_game(
+            relics=[{"id": "Runic Dome", "counter": -1}],
+            screen_type="NONE",
+            combat_state={
+                "turn": 1,
+                "player": {"current_hp": 80, "max_hp": 80, "energy": 4},
+                "hand": [], "draw_pile": [], "discard_pile": [],
+                "exhaust_pile": [],
+                "monsters": [{
+                    "id": "JawWorm", "current_hp": 42, "max_hp": 42,
+                    "block": 0, "intent": "ATTACK", "intent_damage": 11,
+                    "intent_hits": 1,
+                }],
+            },
+        ),
+    }
+
+    observation = adapt_original(payload).decision.observation
+
+    assert observation.player.max_energy == 4
+    assert observation.enemies[0].intent == "NONE"
+    assert observation.enemies[0].intent_damage == 0
+    assert observation.enemies[0].intent_hits == 0
+
+
+def test_energy_relic_preserves_trained_noncombat_energy_placeholder() -> None:
+    payload = {
+        "in_game": True,
+        "ready_for_command": True,
+        "available_commands": ["choose"],
+        "game_state": base_game(
+            relics=[{"id": "Runic Dome", "counter": -1}],
+            screen_type="MAP",
+            screen_state={"next_nodes": [{"x": 2, "y": 3}]},
+        ),
+    }
+
+    observation = adapt_original(payload).decision.observation
+
+    assert observation.player.max_energy == 3
+
+
 def test_combat_card_uses_authoritative_cost_for_turn() -> None:
     payload = {
         "in_game": True,

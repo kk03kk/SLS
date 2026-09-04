@@ -1,4 +1,6 @@
 local/
+model/*
+!model/README.md
 .build/
 external/
 artifacts/
@@ -6,6 +8,7 @@ checkpoints/
 runs/
 logs/
 validation-results/
+decompiled/*/source/
 
 __pycache__/
 *.py[cod]

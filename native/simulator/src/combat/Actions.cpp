@@ -282,8 +282,16 @@ Action Actions::PlayTopCardRandomTarget(bool exhausts) {
 // todo fix the arguments are used wrongly all over ? what did this mean
 // todo check for master reality
 Action Actions::MakeTempCardInHand(CardId card, bool upgraded, int amount) {
-    CardInstance c(card, upgraded);
-    return Actions::MakeTempCardInHand(c, amount);
+    return {[=](BattleContext &bc) {
+        CardInstance cardTemplate(card, upgraded);
+        bc.initializeFreshCard(cardTemplate);
+        for (int i = 0; i < amount; ++i) {
+            CardInstance c(cardTemplate);
+            c.uniqueId = bc.cards.nextUniqueCardId++;
+            bc.cards.notifyAddCardToCombat(c);
+            bc.moveToHandHelper(c);
+        }
+    }};
 }
 
 Action Actions::MakeTempCardInHand(CardInstance card, int amount) {
@@ -649,6 +657,7 @@ Action Actions::PutRandomCardsInDrawPile(CardType type, int count) {
 
         for (int i = 0; i < count; ++i) {
             CardInstance card(ids[i], false);
+            bc.initializeFreshCard(card);
             card.cost = 0;
             card.costForTurn = 0;
 
@@ -669,6 +678,7 @@ Action Actions::InfernalBladeAction() {
     return {[=] (BattleContext &bc) {
         const auto cid = getTrulyRandomCardInCombat(bc.cardRandomRng, bc.player.cc, CardType::ATTACK);
         CardInstance c(cid);
+        bc.initializeFreshCard(c);
         c.setCostForTurn(0);
         bc.addToTop( Actions::MakeTempCardInHand(c) );
     }};
@@ -852,7 +862,7 @@ Action Actions::DualWieldAction(int copyCount) {
     }};
 }
 
-Action Actions::ExhumeAction() {
+Action Actions::ExhumeAction(bool upgrade) {
     return {[=] (BattleContext &bc) {
         if (bc.cards.exhaustPile.empty() || bc.cards.cardsInHand == 10) {
             return;
@@ -869,8 +879,11 @@ Action Actions::ExhumeAction() {
 
         if (nonExhumeCards == 0) {
             return;
+        }
 
-        } else if (nonExhumeCards == 1) {
+        bc.cardSelectInfo.data0 = upgrade ? 1 : 0;
+
+        if (nonExhumeCards == 1) {
             bc.chooseExhumeCard(lastNonExhumeIdx);
 
         } else {
@@ -1288,6 +1301,7 @@ Action Actions::RitualDaggerAction(int idx, int damage) {
 
         const bool shouldUpgrade = !m.hasStatus<MS::MINION>()
                                    && !m.isAlive()
+                                   && !m.isHalfDead()
                                    && !(m.hasStatus<MS::REGROW>() && bc.monsters.monstersAlive > 0);
         if (shouldUpgrade) {
             auto &c = bc.curCardQueueItem.card;

@@ -296,7 +296,8 @@ def load_checkpoint_environment_migration(
     if not isinstance(actual, Mapping):
         raise ValueError("checkpoint contract is missing")
     allowed_changes = {
-        "git_commit", "native_source_sha256", "content_scope_sha256",
+        "git_commit", "native_source_sha256", "content_scope_id",
+        "content_scope_sha256",
         "profile", "curriculum_version", "training_config_sha256",
         "training_seed_limit",
     }

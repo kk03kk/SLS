@@ -188,6 +188,29 @@ def test_open_boss_chest_is_folded_into_the_next_act() -> None:
     assert folded["game_state"]["act"] == 2
 
 
+def test_act1_terminates_at_original_boss_reward_before_relic_choice() -> None:
+    map_payload = game_payload(["boss"])
+    map_payload["game_state"].update({
+        "screen_type": "MAP", "floor": 16,
+        "screen_state": {"boss_available": True, "next_nodes": []},
+    })
+    reward = game_payload(["Relic A", "Relic B", "Relic C"])
+    reward["game_state"].update({
+        "screen_type": "BOSS_REWARD", "floor": 17, "act": 1,
+    })
+    transport = ScriptedTransport([reward])
+    backend = OriginalBackend(OriginalSession(transport), IRONCLAD_A0_ACT1)
+    backend.session.payload = map_payload
+    backend._adapted = adapt_original(map_payload)
+
+    transition = backend.step(backend._adapted.decision.actions[0])
+
+    assert transition.terminated
+    assert transition.info["reason"] == "ACT_1_CLEARED"
+    assert transition.decision.actions == ()
+    assert transport.sent == ["choose 0"]
+
+
 def test_terminal_neow_leave_is_folded_into_map() -> None:
     leave = game_payload(["Leave"])
     leave["available_commands"] = ["choose"]
@@ -591,7 +614,7 @@ def test_discovery_timing_is_validation_only_action_evidence() -> None:
     assert backend.last_validation_evidence == {"discovery_retrieval_updates": 15}
 
 
-def test_composite_card_reward_waits_for_each_ui_transition() -> None:
+def test_composite_card_reward_waits_for_each_ui_transition(monkeypatch) -> None:  # type: ignore[no-untyped-def]
     parent = game_payload([])
     parent["game_state"].update({
         "floor": 1, "screen_type": "COMBAT_REWARD", "deck": [],
@@ -622,6 +645,9 @@ def test_composite_card_reward_waits_for_each_ui_transition() -> None:
     session = OriginalSession(transport)
     session.payload = parent
     backend = OriginalBackend(session, IRONCLAD_A0_ACT1)
+    preview_sleeps: list[float] = []
+    monkeypatch.setattr("sls.backends.original.environment.time.sleep", preview_sleeps.append)
+    backend.set_card_reward_preview_seconds(2.5)
     backend._adapted = adapt_original(parent)
     action = next(
         item for item in backend._adapted.decision.actions
@@ -630,6 +656,7 @@ def test_composite_card_reward_waits_for_each_ui_transition() -> None:
     transition = backend.step(action)
     assert [card.card_id for card in transition.decision.observation.deck] == ["ANGER"]
     assert backend.last_executed_commands == ("choose 1", "wait 1", "choose 0", "wait 1")
+    assert preview_sleeps == [2.5]
 
 
 def test_emerald_key_reward_waits_for_stock_obtain_effect() -> None:

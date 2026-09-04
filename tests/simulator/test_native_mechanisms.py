@@ -26,6 +26,46 @@ def test_original_compatible_rng_is_seeded_and_advances_exactly() -> None:
     assert native.shuffle_probe(0) == [4, 8, 9, 6, 3, 5, 2, 1, 7, 0]
 
 
+def test_courier_colored_restock_uses_the_stock_rng_boundaries() -> None:
+    """Stock uses cardRng for rarity, MathUtils for the card, merchantRng for price."""
+
+    run = native.LightspeedRunState()
+    run.reset(123)
+    probe = run.courier_restock_probe("STRIKE_RED")
+
+    changed = {
+        name: (
+            probe["rng_before"][name]["counter"],
+            probe["rng_after"][name]["counter"],
+        )
+        for name in probe["rng_before"]
+        if probe["rng_before"][name]["counter"]
+        != probe["rng_after"][name]["counter"]
+    }
+    assert changed == {
+        "card": (0, 1),
+        "math_util": (0, 1),
+        "merchant": (0, 1),
+    }
+    assert probe["restocked_type"] == probe["purchased_type"] == "ATTACK"
+
+
+def test_full_run_checkpoint_tracks_every_independent_rng_stream() -> None:
+    run = native.LightspeedRunState()
+    run.reset(987654321)
+    before = run.snapshot()["rng"]
+    values = run.advance_all_rng()
+    after = run.snapshot()["rng"]
+
+    assert set(values) == set(before) == set(after)
+    assert set(before) == {
+        "ai", "card_random", "card", "event", "math_util", "merchant",
+        "misc", "monster_hp", "monster", "neow", "potion", "relic",
+        "shuffle", "treasure",
+    }
+    assert all(after[name]["counter"] == before[name]["counter"] + 1 for name in before)
+
+
 def test_red_slaver_post_entangle_stab_threshold_matches_stock() -> None:
     assert native.red_slaver_move_probe() == {
         49: "RED_SLAVER_SCRAPE",
@@ -101,8 +141,18 @@ def test_core_combat_rule_probes() -> None:
 
     damage = native.damage_pipeline_probe()
     assert damage["intangible_damage"] == 1
+    assert damage["monster_intangible_calculated_damage"] == 1
     assert damage["torii_tungsten_five"] == 0
     assert damage["buffer_multi_hit"] == {"buffer": 0, "damage": 7}
+
+    card_edges = native.card_edge_case_probe()
+    assert card_edges == {
+        "awakened_one_half_dead": True,
+        "fresh_blood_for_blood_cost_after_three_hits": 1,
+        "necronomicurse_after_normal_remove": 1,
+        "necronomicurse_after_relic_loss": 0,
+        "ritual_dagger_special_data": 15,
+    }
 
 
 def test_original_payload_intent_damage_reflects_player_intangible() -> None:
@@ -112,6 +162,18 @@ def test_original_payload_intent_damage_reflects_player_intangible() -> None:
     monster = battle.snapshot()["game_state"]["combat_state"]["monsters"][0]
     assert monster["move_base_damage"] == 6
     assert monster["move_adjusted_damage"] == 1
+
+
+@pytest.mark.parametrize("upgraded,expected_upgrades", [(False, 0), (True, 1)])
+def test_exhume_upgrade_branch_matches_stock(
+    upgraded: bool, expected_upgrades: int,
+) -> None:
+    battle = native.LightspeedBattle()
+    battle.reset_card_probe(0, "EXHUME", upgraded)
+    battle.step("play", card_index=1, target_index=0)
+    hand = battle.snapshot()["game_state"]["combat_state"]["hand"]
+    retrieved = next(card for card in hand if card["id"] == "DEFEND_RED")
+    assert retrieved["upgrades"] == expected_upgrades
 
 
 @pytest.mark.parametrize("power", ["DOUBLE_TAP", "DUPLICATION", "ECHO_FORM"])

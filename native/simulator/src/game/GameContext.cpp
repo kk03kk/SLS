@@ -103,7 +103,6 @@ void GameContext::initFromSave(const SaveFile &s) {
     cardRandomRng = Random(seed, s.card_random_seed_count);
     merchantRng = Random(seed, s.merchant_seed_count);
     mathUtilRng = Random(seed, 0);
-    merchantRng = Random(seed, s.merchant_seed_count); // arbitrary
     miscRng = Random(seed+floorNum);
     monsterRng = Random(seed, s.monster_seed_count);
 
@@ -1603,13 +1602,17 @@ void GameContext::loseRelic(RelicId r) {
             deck.removeBottle(CardType::POWER);
             break;
         case RelicId::NECRONOMICON:
+            // Necronomicon.onUnequip removes the curse by string id, which
+            // bypasses AbstractCard.onRemoveFromMasterDeck.  Remove the relic
+            // first so Deck::remove does not recreate Necronomicurse here.
+            relics.remove(r);
             for (int i = 0; i < deck.size(); ++i) {
                 if (deck.cards[i].id == CardId::NECRONOMICURSE) {
                     deck.remove(*this, i);
                     break;
                 }
             }
-            break;
+            return;
         default:
             break;
     }

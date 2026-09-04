@@ -40,6 +40,9 @@ class EvaluationResult:
     failure_floor_p25: float | None
     failure_floor_p75: float | None
     boss_success_rate: dict[str, float]
+    boss_successes: dict[str, int]
+    boss_attempts: dict[str, int]
+    boss_action_metrics: dict[str, dict[str, int | float]]
 
 
 def _percentile(values: list[int], fraction: float) -> float | None:
@@ -94,6 +97,8 @@ def evaluate(
     failure_floors: list[int] = []
     max_acts = [decision.observation.run.act for decision in decisions]
     boss_results: dict[str, list[bool]] = {}
+    boss_action_counts: dict[str, dict[str, int]] = {}
+    entered_bosses: list[set[str]] = [set() for _ in seed_values]
     for _ in range(max_steps):
         if stop_requested is not None and stop_requested():
             raise InterruptedError("evaluation interrupted at a safe inference boundary")
@@ -117,6 +122,61 @@ def evaluate(
         for batch_index, index in enumerate(active):
             backend = backends[index]
             action = decisions[index].actions[int(action_indices[batch_index])]
+            observation = decisions[index].observation
+            visible_boss = observation.run.visible_boss_id or "UNKNOWN"
+            fighting_boss = (
+                observation.screen.value == "COMBAT"
+                and any(enemy.monster_id == visible_boss for enemy in observation.enemies)
+            )
+            if fighting_boss:
+                boss_key = f"ACT_{observation.run.act}:{visible_boss}"
+                metrics = boss_action_counts.setdefault(boss_key, {
+                    "entries": 0,
+                    "potions_at_entry": 0,
+                    "decisions": 0,
+                    "play_card_actions": 0,
+                    "defend_red_actions": 0,
+                    "use_potion_actions": 0,
+                    "discard_potion_actions": 0,
+                    "block_deficit_decisions": 0,
+                    "defend_red_on_block_deficit": 0,
+                    "targeted_card_plays_while_sharp_hide": 0,
+                })
+                if boss_key not in entered_bosses[index]:
+                    entered_bosses[index].add(boss_key)
+                    metrics["entries"] += 1
+                    metrics["potions_at_entry"] += len(observation.potions)
+                metrics["decisions"] += 1
+                selected_card = next(
+                    (
+                        card for card in observation.hand
+                        if card.instance_id == action.subject_id
+                    ),
+                    None,
+                )
+                if action.kind.value == "PLAY_CARD":
+                    metrics["play_card_actions"] += 1
+                if selected_card is not None and selected_card.card_id == "DEFEND_RED":
+                    metrics["defend_red_actions"] += 1
+                if action.kind.value == "USE_POTION":
+                    metrics["use_potion_actions"] += 1
+                if action.kind.value == "DISCARD_POTION":
+                    metrics["discard_potion_actions"] += 1
+                incoming = sum(
+                    enemy.intent_damage * enemy.intent_hits
+                    for enemy in observation.enemies if enemy.current_hp > 0
+                )
+                block_deficit = incoming > observation.player.block
+                if block_deficit:
+                    metrics["block_deficit_decisions"] += 1
+                    if selected_card is not None and selected_card.card_id == "DEFEND_RED":
+                        metrics["defend_red_on_block_deficit"] += 1
+                if (
+                    action.kind.value == "PLAY_CARD"
+                    and action.target_id is not None
+                    and any(power.content_id == "SHARP_HIDE" for power in observation.powers)
+                ):
+                    metrics["targeted_card_plays_while_sharp_hide"] += 1
             previous_act = decisions[index].observation.run.act
             try:
                 transition = backend.step(action)
@@ -229,5 +289,26 @@ def evaluate(
         boss_success_rate={
             boss: sum(results) / len(results)
             for boss, results in sorted(boss_results.items())
+        },
+        boss_successes={
+            boss: sum(results) for boss, results in sorted(boss_results.items())
+        },
+        boss_attempts={
+            boss: len(results) for boss, results in sorted(boss_results.items())
+        },
+        boss_action_metrics={
+            boss: {
+                **metrics,
+                "mean_potions_at_entry": (
+                    metrics["potions_at_entry"] / metrics["entries"]
+                    if metrics["entries"] else 0.0
+                ),
+                "defend_red_on_block_deficit_rate": (
+                    metrics["defend_red_on_block_deficit"]
+                    / metrics["block_deficit_decisions"]
+                    if metrics["block_deficit_decisions"] else 0.0
+                ),
+            }
+            for boss, metrics in sorted(boss_action_counts.items())
         },
     )

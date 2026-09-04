@@ -7,14 +7,16 @@ import pytest
 from sls.contracts import (
     Action,
     ActionKind,
+    Card,
     Decision,
+    Enemy,
     Observation,
     Player,
     RunContext,
     ScreenType,
     Transition,
 )
-from sls.curriculum import IRONCLAD_A0_FULLRUN
+from sls.curriculum import IRONCLAD_A0_ACT1, IRONCLAD_A0_FULLRUN
 from sls.model import ModelConfig, Policy
 
 
@@ -139,3 +141,54 @@ def test_evaluation_rejects_success_before_act_three(
     monkeypatch.setattr(module, "SimulatorBackend", PrematureVictory)
     with pytest.raises(RuntimeError, match="without a real Act 3 victory"):
         module.evaluate(_model(), IRONCLAD_A0_FULLRUN, (10**12,), max_steps=1)
+
+
+def test_evaluation_records_boss_tactical_metrics(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    module = importlib.import_module("sls.rl.evaluate")
+    defend = Card("HAND:0", "DEFEND_RED", "HAND", 0, 1, 1, True)
+    guardian = Enemy(
+        "MONSTER:0", "THE_GUARDIAN", 200, 250, 0, "ATTACK", 8, 2,
+    )
+    boss_observation = Observation(
+        player=Player("IRONCLAD", 40, 80, 0, 3, 3),
+        run=RunContext(
+            0, 1, 16, 99, False, False, False, "THE_GUARDIAN",
+        ),
+        screen=ScreenType.COMBAT,
+        hand=(defend,),
+        enemies=(guardian,),
+    )
+
+    class BossBackend:
+        def __init__(self, _profile: object) -> None:
+            pass
+
+        def reset(self, _seed: int) -> Decision:
+            return Decision(
+                boss_observation,
+                (Action(ActionKind.PLAY_CARD, subject_id=defend.instance_id),),
+            )
+
+        def step(self, _action: Action) -> Transition:
+            terminal = Observation(
+                player=Player("IRONCLAD", 0, 80, 0, 0, 3),
+                run=boss_observation.run,
+                screen=ScreenType.GAME_OVER,
+            )
+            return Transition(
+                Decision(terminal, (), True), -1.0, True,
+                info={"reason": "DEATH", "success": False},
+            )
+
+    monkeypatch.setattr(module, "SimulatorBackend", BossBackend)
+    result = module.evaluate(_model(), IRONCLAD_A0_ACT1, (7,), max_steps=1)
+    metrics = result.boss_action_metrics["ACT_1:THE_GUARDIAN"]
+
+    assert metrics["entries"] == 1
+    assert metrics["decisions"] == 1
+    assert metrics["play_card_actions"] == 1
+    assert metrics["defend_red_actions"] == 1
+    assert metrics["block_deficit_decisions"] == 1
+    assert metrics["defend_red_on_block_deficit_rate"] == 1.0

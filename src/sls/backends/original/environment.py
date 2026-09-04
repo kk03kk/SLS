@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import time
 from typing import Any
 
 from sls.backends.original.adapter import AdaptedOriginalDecision, adapt_original
@@ -12,9 +13,30 @@ from sls.contracts.continuation import continuation_original
 from sls.curriculum import (
     IRONCLAD_A0_HEART,
     CurriculumProfile,
+    EpisodeHorizon,
     completed_act_between,
     evaluate_horizon,
 )
+
+
+def _completed_curriculum_act(
+    profile: CurriculumProfile, payload: dict[str, Any], decision: Decision,
+) -> int | None:
+    """Recognize a public Original boss-clear boundary before boss rewards."""
+
+    if profile.horizon not in {
+        EpisodeHorizon.ACT_1, EpisodeHorizon.ACT_2, EpisodeHorizon.ACT_3,
+    }:
+        return None
+    game = payload.get("game_state") or {}
+    current_act = int(decision.observation.run.act)
+    if decision.observation.screen.value == "BOSS_REWARD":
+        return current_act
+    room_class = str(game.get("room_class") or game.get("room_type") or "")
+    room_phase = str(game.get("room_phase") or "").upper()
+    if room_class.endswith("MonsterRoomBoss") and room_phase == "COMPLETE":
+        return current_act
+    return None
 
 
 class OriginalBackend:
@@ -32,12 +54,27 @@ class OriginalBackend:
         self._adapted: AdaptedOriginalDecision | None = None
         self._last_executed_commands: tuple[str, ...] = ()
         self._last_validation_evidence: dict[str, Any] = {}
+        self._card_reward_preview_seconds = 0.0
+
+    def set_card_reward_preview_seconds(self, seconds: float) -> None:
+        """Delay the second half of a folded card-reward UI transaction."""
+
+        value = float(seconds)
+        if not 0.0 <= value <= 10.0:
+            raise ValueError("card reward preview must be between zero and ten seconds")
+        self._card_reward_preview_seconds = value
 
     @property
     def raw_payload(self) -> dict[str, Any]:
         if self.session.payload is None:
             raise RuntimeError("backend has not been reset")
         return self.session.payload
+
+    def _adapt(self, payload: dict[str, Any]) -> AdaptedOriginalDecision:
+        return adapt_original(
+            payload,
+            allow_key_acquisition=self.profile.horizon is EpisodeHorizon.HEART,
+        )
 
     def reset(self, seed: int) -> Decision:
         self._last_validation_evidence = {}
@@ -59,7 +96,7 @@ class OriginalBackend:
         )
         payload = self._wait_for_run_start(payload)
         payload = self._fold_initial_neow_dialog(payload)
-        self._adapted = adapt_original(payload)
+        self._adapted = self._adapt(payload)
         return self._adapted.decision
 
     def resume(self) -> Decision:
@@ -82,7 +119,7 @@ class OriginalBackend:
             payload, fold_single_event=False,
         )
         payload = self._settle_debug_intents(payload)
-        self._adapted = adapt_original(payload)
+        self._adapted = self._adapt(payload)
         return self._adapted.decision
 
     def return_to_menu(self) -> None:
@@ -180,6 +217,18 @@ class OriginalBackend:
             executed.append(command)
             if index + 1 < len(commands):
                 payload = self._settle_reward_intermediate(payload, executed)
+                if (
+                    index == 0
+                    and resolved_action.kind in {
+                        ActionKind.CHOOSE_CARD_REWARD,
+                        ActionKind.TAKE_SINGING_BOWL,
+                    }
+                    and self._card_reward_preview_seconds > 0.0
+                ):
+                    # The policy decision is already fixed.  Sleeping here only
+                    # keeps stock's stable CardRewardScreen visible before the
+                    # second wire command completes the folded transaction.
+                    time.sleep(self._card_reward_preview_seconds)
         if resolved_action.kind in {
             ActionKind.CHOOSE_CARD_REWARD,
             ActionKind.SKIP_CARD_REWARD,
@@ -259,11 +308,14 @@ class OriginalBackend:
             )
             if reset_count:
                 self._last_validation_evidence["card_soul_cost_reset_count"] = reset_count
-        self._adapted = adapt_original(payload)
+        self._adapted = self._adapt(payload)
+        observed_completion = _completed_curriculum_act(
+            self.profile, payload, self._adapted.decision,
+        )
         horizon = evaluate_horizon(
             self.profile,
             self._adapted.decision.observation,
-            act_completed=completed_act_between(
+            act_completed=observed_completion or completed_act_between(
                 previous_observation, self._adapted.decision.observation,
             ),
         )
@@ -674,7 +726,7 @@ class OriginalBackend:
             ).upper() in {"DEATH", "VICTORY", "GAME_OVER", "COMPLETE"}:
                 return payload
             try:
-                adapt_original(payload)
+                self._adapt(payload)
             except ValueError as error:
                 if str(error) != "a non-terminal decision must expose a legal action":
                     raise

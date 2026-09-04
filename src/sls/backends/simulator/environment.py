@@ -5,12 +5,17 @@ from __future__ import annotations
 import json
 from typing import Any, Mapping
 
+from sls.content.energy import canonical_max_energy
 from sls.content.normalize import (
     normalize_content_id,
     normalize_power_amount,
     normalize_power_id,
 )
-from sls.content.scope import filter_policy_offers, filter_policy_shop
+from sls.content.scope import (
+    filter_policy_key_acquisitions,
+    filter_policy_offers,
+    filter_policy_shop,
+)
 from sls.contracts import (
     Action,
     ActionKind,
@@ -31,6 +36,7 @@ from sls.contracts.continuation import continuation_simulator
 from sls.curriculum import (
     IRONCLAD_A0_HEART,
     CurriculumProfile,
+    EpisodeHorizon,
     TerminalOutcome,
     completed_act_between,
     evaluate_horizon,
@@ -67,7 +73,12 @@ class SimulatorBackend:
         self._multi_selected.clear()
         self._validation_action_queue_types.clear()
         self._validation_choice_origin = None
-        self._native.reset(int(seed), self.profile.ascension)
+        numeric_seed = int(seed)
+        if not -(1 << 63) <= numeric_seed < (1 << 64):
+            raise ValueError("seed must fit a signed or unsigned 64-bit integer")
+        # Official run history renders the same 64 bits as a signed Java long,
+        # while pybind accepts the native engine's unsigned seed domain.
+        self._native.reset(numeric_seed & ((1 << 64) - 1), self.profile.ascension)
         return self._adapt(self._native.snapshot())
 
     def step(
@@ -283,6 +294,15 @@ class SimulatorBackend:
                 options["reward"], actions, candidate_bits,
             )
             options["reward"] = rewards
+        reward_items = options["reward"] if screen is ScreenType.COMBAT_REWARD else ()
+        reward_items, actions, candidate_bits = filter_policy_key_acquisitions(
+            reward_items,
+            actions,
+            candidate_bits,
+            allow_keys=self.profile.horizon is EpisodeHorizon.HEART,
+        )
+        if screen is ScreenType.COMBAT_REWARD:
+            options["reward"] = reward_items
         self._candidate_bits = candidate_bits
         map_nodes = tuple(
             MapNode(
@@ -309,7 +329,18 @@ class SimulatorBackend:
             player=Player(
                 "IRONCLAD", int(visible_player["current_hp"]), int(visible_player["max_hp"]),
                 int(visible_player.get("block", 0)), int(visible_player.get("energy", 0)),
-                int(visible_player.get("max_energy", 3)),
+                (
+                    canonical_max_energy(
+                        (str(relic["content_id"]) for relic in inventory["relics"]),
+                        combat_value=(
+                            int(visible_player["max_energy"])
+                            if visible_player.get("max_energy") is not None
+                            else None
+                        ),
+                        in_combat=True,
+                    )
+                    if combat else 3
+                ),
             ),
             run=RunContext(
                 int(public_run["ascension"]), int(public_run["act"]), int(public_run["floor"]),

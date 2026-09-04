@@ -20,6 +20,7 @@ minimum_success_rate = 0.20
 minimum_reached_act2_rate = 0.0
 minimum_reached_act3_rate = 0.0
 minimum_evaluation_episodes = 128
+minimum_boss_success_rate = 0.50
 
 [stages.pilot]
 profile = "IRONCLAD_A0_ACT2"

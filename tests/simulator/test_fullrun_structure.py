@@ -88,6 +88,35 @@ def test_act_two_horizon_ends_at_boss_defeat_before_reward_choices() -> None:
     assert decision.actions == ()
 
 
+def test_non_heart_fullrun_hides_key_choices_and_stops_after_act_three() -> None:
+    pytest.importorskip("sls.backends.simulator.native", exc_type=ImportError)
+    from sls.backends.simulator import SimulatorBackend
+    from sls.curriculum import IRONCLAD_A0_FULLRUN
+
+    backend = SimulatorBackend(IRONCLAD_A0_FULLRUN)
+    decision = backend.reset(17)
+    backend._native._set_skip_battles_for_testing(True)
+    last_transition = None
+    for _ in range(220):
+        assert all(
+            action.kind not in {ActionKind.TAKE_BLUE_KEY, ActionKind.RECALL}
+            and action.reward_id not in {"reward-key:emerald", "reward-key:sapphire"}
+            for action in decision.actions
+        )
+        if decision.terminal:
+            break
+        last_transition = backend.step(_structural_action(decision))
+        decision = last_transition.decision
+    else:
+        pytest.fail("non-Heart FullRun structural route did not terminate")
+
+    assert last_transition is not None
+    assert last_transition.info["success"] is True
+    assert last_transition.info["reason"] in {"ACT_3_CLEARED", "GAME_VICTORY"}
+    assert decision.observation.run.act == 3
+    assert decision.actions == ()
+
+
 @pytest.mark.parametrize("ascension", (0, 20))
 def test_policy_visible_route_structurally_reaches_and_defeats_heart(ascension: int) -> None:
     pytest.importorskip("sls.backends.simulator.native", exc_type=ImportError)

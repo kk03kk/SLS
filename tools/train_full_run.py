@@ -70,6 +70,22 @@ def _positive_int(mapping: dict[str, object], key: str) -> int:
     return value
 
 
+def _can_resume_finalization(
+    *,
+    stage_name: str,
+    environment_steps: int,
+    target_steps: int,
+    manifest_status: object,
+) -> bool:
+    """Allow a train job to finish evaluation/export after reaching its step target."""
+
+    return (
+        stage_name == "train"
+        and environment_steps >= target_steps
+        and manifest_status != "COMPLETE"
+    )
+
+
 def _seed_range(start: int, count: int) -> range:
     if start < 0 or count <= 0:
         raise ValueError("seed ranges require a non-negative start and positive count")
@@ -113,6 +129,15 @@ def _training_identity(
     payload: dict[str, object], *, workers: int, shards: int,
 ) -> str:
     run = dict(payload["run"])
+    diagnostic = {
+        key: int(run[key])
+        for key in (
+            "diagnostic_evaluation_seed_start",
+            "diagnostic_evaluation_seed_count",
+            "diagnostic_rotation_stride",
+        )
+        if key in run
+    }
     return canonical_digest({
         "profile": run["profile"],
         "seed": int(run["seed"]),
@@ -123,6 +148,7 @@ def _training_identity(
         "periodic_evaluation_seed_count": int(run["periodic_evaluation_seed_count"]),
         "final_evaluation_seed_start": int(run["final_evaluation_seed_start"]),
         "final_evaluation_seed_count": int(run["final_evaluation_seed_count"]),
+        "diagnostic_evaluation": diagnostic,
         "model": payload["model"],
         "ppo": payload["ppo"],
         "stages": payload["stages"],
@@ -204,6 +230,17 @@ def _promotion_passes(evaluation: dict[str, object], stage: dict[str, object]) -
         + int(evaluation.get("self_loops", 0))
         + int(evaluation.get("timeouts", 0))
     )
+    boss_rates = dict(evaluation.get("boss_success_rate") or {})
+    minimum_boss_success = min(
+        (float(value) for value in boss_rates.values()), default=0.0,
+    )
+    act1_bosses = {
+        "ACT_1:HEXAGHOST", "ACT_1:SLIME_BOSS", "ACT_1:THE_GUARDIAN",
+    }
+    minimum_act1_boss_success = min(
+        (float(boss_rates.get(name, 0.0)) for name in act1_bosses),
+        default=0.0,
+    )
     return (
         failures == 0
         and float(evaluation["success_rate"]) >= float(stage["minimum_success_rate"])
@@ -212,6 +249,10 @@ def _promotion_passes(evaluation: dict[str, object], stage: dict[str, object]) -
         and float(evaluation["reached_act3_rate"])
         >= float(stage.get("minimum_reached_act3_rate", 0.0))
         and episodes >= int(stage.get("minimum_evaluation_episodes", 1))
+        and minimum_boss_success
+        >= float(stage.get("minimum_boss_success_rate", 0.0))
+        and minimum_act1_boss_success
+        >= float(stage.get("minimum_act1_boss_success_rate", 0.0))
     )
 
 
@@ -220,6 +261,18 @@ def _require_predecessor_promotion(
 ) -> None:
     predecessor = {"pilot": "smoke", "train": "pilot"}.get(stage_name)
     if predecessor is None:
+        return
+    initialization = manifest.get("initialization")
+    if (
+        stage_name == "train"
+        and isinstance(initialization, dict)
+        and initialization.get("schema") in {
+            "sls-audited-training-migration-v1",
+            "sls-training-migration-v2",
+        }
+        and initialization.get("target_stage") == "train"
+        and initialization.get("validation_passed") is True
+    ):
         return
     stages = manifest.get("stages")
     previous = stages.get(predecessor) if isinstance(stages, dict) else None
@@ -315,7 +368,8 @@ def _validate_completed_migration_lineage(
     if _profile_id(latest_contract) != target_profile:
         raise ValueError("latest checkpoint is not the recorded migration target")
     allowed_migration_changes = {
-        "git_commit", "native_source_sha256", "content_scope_sha256",
+        "git_commit", "native_source_sha256", "content_scope_id",
+        "content_scope_sha256",
         "profile", "curriculum_version", "training_config_sha256",
         "training_seed_limit",
     }
@@ -412,6 +466,13 @@ def main() -> int:
         "--config", type=Path,
         default=ROOT / "configs" / "train" / "ironclad_a0_fullrun.toml",
     )
+    parser.add_argument(
+        "--stop-after-additional-steps", type=int,
+        help=(
+            "Run a bounded soak on the same exact-resume chain. The stop is "
+            "rounded up to a whole PPO update and is not a training identity change."
+        ),
+    )
     args = parser.parse_args()
     if torch.cuda.is_available():
         torch.set_float32_matmul_precision("high")
@@ -421,6 +482,18 @@ def main() -> int:
     run = dict(payload["run"])
     stage = dict(payload["stages"][args.stage])
     periodic_seeds, final_seeds = _validate_seed_namespaces(run)
+    diagnostic_seed_start = int(run.get("diagnostic_evaluation_seed_start", 0))
+    diagnostic_seed_count = int(run.get("diagnostic_evaluation_seed_count", 0))
+    diagnostic_stride = int(run.get("diagnostic_rotation_stride", diagnostic_seed_count))
+    if bool(diagnostic_seed_start) != bool(diagnostic_seed_count):
+        raise ValueError("diagnostic evaluation seed start/count must be configured together")
+    if diagnostic_seed_count and diagnostic_stride < diagnostic_seed_count:
+        raise ValueError("diagnostic seed rotation stride would reuse seeds")
+    if diagnostic_seed_count:
+        diagnostic_first = _seed_range(diagnostic_seed_start, diagnostic_seed_count)
+        for held_out in (periodic_seeds, final_seeds):
+            if diagnostic_first.stop > held_out.start and held_out.stop > diagnostic_first.start:
+                raise ValueError("diagnostic and selection/final evaluation seeds overlap")
     repository = git_state()
     source_digest = native_source_digest()
     artifact = native_artifact()
@@ -453,6 +526,8 @@ def main() -> int:
     model = Policy(ModelConfig(**payload["model"]))
     ppo = PPOConfig(**payload["ppo"])
     target_steps = _positive_int(stage, "target_environment_steps")
+    if args.stop_after_additional_steps is not None and args.stop_after_additional_steps <= 0:
+        raise ValueError("--stop-after-additional-steps must be positive")
     evaluate_every = _positive_int(stage, "evaluate_every_steps")
     evaluation_max_steps = int(run["evaluation_max_steps"])
     output = ROOT / str(run["output"])
@@ -510,6 +585,9 @@ def main() -> int:
             "shards": shard_count,
             "periodic_evaluation_seeds": [periodic_seeds.start, periodic_seeds.stop],
             "final_evaluation_seeds": [final_seeds.start, final_seeds.stop],
+            "diagnostic_evaluation_seed_start": diagnostic_seed_start or None,
+            "diagnostic_evaluation_seed_count": diagnostic_seed_count or None,
+            "diagnostic_rotation_stride": diagnostic_stride or None,
             "created_unix": started,
             "stages": {},
         }
@@ -634,8 +712,22 @@ def main() -> int:
                     _atomic_json(manifest_path, manifest)
                 elif not loaded_exactly:
                     load_checkpoint(latest, trainer)
-            if trainer.environment_steps >= target_steps:
+            resume_finalization = _can_resume_finalization(
+                stage_name=args.stage,
+                environment_steps=trainer.environment_steps,
+                target_steps=target_steps,
+                manifest_status=manifest.get("status"),
+            )
+            if trainer.environment_steps >= target_steps and not resume_finalization:
                 raise ValueError(f"stage target already reached: {trainer.environment_steps}")
+            run_until = target_steps
+            if args.stop_after_additional_steps is not None:
+                batch_steps = workers_count * ppo.rollout_steps
+                updates = math.ceil(args.stop_after_additional_steps / batch_steps)
+                run_until = min(
+                    target_steps,
+                    trainer.environment_steps + updates * batch_steps,
+                )
 
             last_eval = _last_evaluation_step(metrics_path)
             baseline_evaluation = _baseline_evaluation(metrics_path)
@@ -653,15 +745,26 @@ def main() -> int:
                     "baseline": True,
                 }
                 update_best_checkpoint(
-                    selection_output, best_checkpoint_record(baseline, update=0),
+                    selection_output,
+                    best_checkpoint_record(baseline, update=trainer.update),
                     save=lambda path: save_checkpoint(path, trainer),
                 )
                 _append_record(metrics_path, record)
                 baseline_evaluation = baseline
 
-            next_save = ((trainer.environment_steps // 500_000) + 1) * 500_000
+            checkpoint_every = int(stage.get("checkpoint_every_steps", 500_000))
+            if checkpoint_every <= 0:
+                raise ValueError("checkpoint_every_steps must be positive")
+            next_save = (
+                (trainer.environment_steps // checkpoint_every) + 1
+            ) * checkpoint_every
             next_eval = ((trainer.environment_steps // evaluate_every) + 1) * evaluate_every
-            while trainer.environment_steps < target_steps and not controller.requested:
+            diagnose_every = int(stage.get("diagnose_every_steps", 0))
+            next_diagnose = (
+                ((trainer.environment_steps // diagnose_every) + 1) * diagnose_every
+                if diagnose_every else 0
+            )
+            while trainer.environment_steps < run_until and not controller.requested:
                 update_started = time.perf_counter()
                 metrics = trainer.train_update()
                 non_finite = {
@@ -679,6 +782,22 @@ def main() -> int:
                     "decisions_per_second": workers_count * ppo.rollout_steps / elapsed,
                     **metrics,
                 }
+                if diagnose_every and trainer.environment_steps >= next_diagnose:
+                    rotation = next_diagnose // diagnose_every - 1
+                    start = diagnostic_seed_start + rotation * diagnostic_stride
+                    diagnostic_seeds = tuple(range(start, start + diagnostic_seed_count))
+                    record["diagnostic_evaluation"] = asdict(evaluate(
+                        trainer.model, profile, diagnostic_seeds, device=device,
+                        max_steps=evaluation_max_steps,
+                        max_boundary_visits=ppo.max_boundary_visits,
+                        failure_progress_scale=ppo.failure_progress_scale,
+                        stop_requested=lambda: controller.requested,
+                    ))
+                    record["diagnostic_seed_range"] = [
+                        start, start + diagnostic_seed_count,
+                    ]
+                    while next_diagnose <= trainer.environment_steps:
+                        next_diagnose += diagnose_every
                 if trainer.environment_steps >= next_eval:
                     try:
                         evaluation = asdict(evaluate(
@@ -709,7 +828,7 @@ def main() -> int:
                     )
                     save_checkpoint(latest, trainer)
                     while next_save <= trainer.environment_steps:
-                        next_save += 500_000
+                        next_save += checkpoint_every
 
             save_checkpoint(latest, trainer)
             completed = trainer.environment_steps >= target_steps
@@ -720,7 +839,10 @@ def main() -> int:
                 best_record_path = selection_output / "best_progress.json"
                 best_record = json.loads(best_record_path.read_text(encoding="utf-8"))
                 promoted = _promotion_passes(best_record, stage)
-                if promoted:
+                # FullRun artifacts are exported only after the never-used
+                # final seed set passes below. Smoke/pilot keep their stage
+                # artifacts for curriculum diagnostics.
+                if promoted and args.stage != "train":
                     goal = {"smoke": "ACT1", "pilot": "ACT2", "train": "FULLRUN"}[args.stage]
                     export_policy_artifact(
                         selected, stage_output / f"{output.name}-{args.stage}.pt",
@@ -738,7 +860,11 @@ def main() -> int:
                     max_boundary_visits=ppo.max_boundary_visits,
                     failure_progress_scale=ppo.failure_progress_scale,
                 ))
-                final_promoted = _promotion_passes(final_result, stage)
+                final_stage = dict(stage)
+                final_stage["minimum_evaluation_episodes"] = int(
+                    stage.get("minimum_final_evaluation_episodes", 1)
+                )
+                final_promoted = _promotion_passes(final_result, final_stage)
                 _atomic_json(output / "final-evaluation.json", {
                     "schema": "sls-final-evaluation-v2",
                     "checkpoint": selected.name,
@@ -751,9 +877,18 @@ def main() -> int:
                         selected, output / f"{output.name}.pt",
                         ascension_min=0, ascension_max=0, goal="FULLRUN",
                     )
-                promoted = promoted and final_promoted
+                promoted = final_promoted
 
-        status = "INTERRUPTED" if controller.requested else "COMPLETE"
+        soak_complete = (
+            args.stop_after_additional_steps is not None
+            and trainer.environment_steps < target_steps
+            and not controller.requested
+        )
+        status = (
+            "INTERRUPTED" if controller.requested
+            else "SOAK_COMPLETE" if soak_complete
+            else "COMPLETE"
+        )
         manifest["stages"][args.stage] = {
             "status": status,
             "target_environment_steps": target_steps,

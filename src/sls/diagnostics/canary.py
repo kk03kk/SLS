@@ -11,10 +11,11 @@ import torch
 
 from sls.contracts import Action, Decision, Transition
 from sls.model import PolicyBatch
+from sls.model.encoding import ACTION_TYPE_IDS
 from sls.runtime.artifact import LoadedPolicyArtifact
 
-TRAJECTORY_SCHEMA = "sls-policy-trajectory-v1"
-COMPARISON_SCHEMA = "sls-policy-trajectory-comparison-v1"
+TRAJECTORY_SCHEMA = "sls-policy-trajectory-v2"
+COMPARISON_SCHEMA = "sls-policy-trajectory-comparison-v2"
 
 
 class PolicyBackend(Protocol):
@@ -41,9 +42,16 @@ def tensor_hash(value: torch.Tensor) -> str:
     return hashlib.sha256(_tensor_bytes(tensor)).hexdigest()
 
 
-def policy_input_hash(batch: PolicyBatch, memory: torch.Tensor) -> str:
+def policy_input_hash(
+    batch: PolicyBatch,
+    memory: torch.Tensor,
+    previous_action_types: torch.Tensor,
+    previous_rewards: torch.Tensor,
+) -> str:
     digest = hashlib.sha256()
-    for tensor in (*batch.model_inputs(), memory):
+    for tensor in (
+        *batch.model_inputs(), memory, previous_action_types, previous_rewards,
+    ):
         canonical = tensor.detach().cpu().contiguous()
         digest.update(str(canonical.dtype).encode("ascii"))
         digest.update(_json_bytes(list(canonical.shape)))
@@ -70,12 +78,15 @@ def _metadata(
         },
         "selection": "DETERMINISTIC_ARGMAX",
         "initial_memory": "ZERO",
+        "recurrent_context": "PREVIOUS_ACTION_AND_REWARD",
     }
 
 
 def _boundary_record(
     *, step: int, decision: Decision, reward: float, reason: str | None,
     success: bool, memory: torch.Tensor, artifact: LoadedPolicyArtifact,
+    previous_action_types: torch.Tensor,
+    previous_rewards: torch.Tensor,
 ) -> tuple[dict[str, object], Action | None, torch.Tensor]:
     observation = decision.observation.to_dict()
     actions = sorted((action.to_dict() for action in decision.actions), key=_json_bytes)
@@ -93,6 +104,8 @@ def _boundary_record(
         "observation_sha256": stable_hash(observation),
         "candidate_actions_sha256": stable_hash(actions),
         "memory_input_sha256": memory_input,
+        "previous_action_type": int(previous_action_types[0].item()),
+        "previous_reward": float(previous_rewards[0].item()),
         "terminal": decision.terminal,
         "terminal_reason": reason,
         "success": bool(success),
@@ -105,9 +118,15 @@ def _boundary_record(
         })
         return base, None, memory
     batch = PolicyBatch.from_decisions((decision,), artifact.model.config).to(memory.device)
-    base["policy_input_sha256"] = policy_input_hash(batch, memory)
+    base["policy_input_sha256"] = policy_input_hash(
+        batch, memory, previous_action_types, previous_rewards,
+    )
     with torch.no_grad():
-        output = artifact.model(*batch.model_inputs(), memory=memory)
+        output = artifact.model(
+            *batch.model_inputs(), memory=memory,
+            previous_action_types=previous_action_types,
+            previous_rewards=previous_rewards,
+        )
     action_index = int(output.logits[0].argmax().item())
     action = decision.actions[action_index]
     next_memory = output.next_memory.detach()
@@ -149,6 +168,8 @@ def capture_policy_trajectory(
     ):
         raise RuntimeError("canary must begin at the fresh Neow boundary")
     memory = artifact.model.initial_memory(1, "cpu")
+    previous_action_types = torch.zeros(1, dtype=torch.long)
+    previous_rewards = torch.zeros(1, dtype=torch.float32)
     reward = 0.0
     reason: str | None = None
     success = False
@@ -161,6 +182,8 @@ def capture_policy_trajectory(
             record, action, next_memory = _boundary_record(
                 step=boundaries, decision=decision, reward=reward, reason=reason,
                 success=success, memory=memory, artifact=artifact,
+                previous_action_types=previous_action_types,
+                previous_rewards=previous_rewards,
             )
             stream.write(json.dumps(record, sort_keys=True) + "\n")
             stream.flush()
@@ -179,6 +202,8 @@ def capture_policy_trajectory(
                 "chosen_action": action.to_dict(),
                 "memory_input_sha256": record["memory_input_sha256"],
                 "memory_output_sha256": record["memory_output_sha256"],
+                "previous_action_type": record["previous_action_type"],
+                "previous_reward": record["previous_reward"],
             }
             if journal_path is not None:
                 with journal_path.open("a", encoding="utf-8") as journal_stream:
@@ -190,6 +215,10 @@ def capture_policy_trajectory(
             reason = str(transition.info.get("reason") or "") or None
             success = bool(transition.info.get("success"))
             memory = next_memory
+            previous_action_types = torch.tensor(
+                [ACTION_TYPE_IDS[action.kind.value] + 1], dtype=torch.long,
+            )
+            previous_rewards = torch.tensor([reward], dtype=torch.float32)
             actions_taken += 1
             if journal_path is not None:
                 ack = {
@@ -313,12 +342,27 @@ def compare_trajectories(
             "original": original[min(len(sim), len(original))] if len(original) > len(sim) else None,
             "policy_visible": True,
         }
+    bosses = sorted({
+        f"ACT_{int(boundary['observation']['run']['act'])}:"
+        f"{boundary['observation']['run']['visible_boss_id']}"
+        for boundary in sim
+        if boundary.get("observation", {}).get("screen") == "COMBAT"
+        and boundary.get("observation", {}).get("run", {}).get("visible_boss_id")
+        and any(
+            enemy.get("monster_id")
+            == boundary["observation"]["run"]["visible_boss_id"]
+            for enemy in boundary.get("observation", {}).get("enemies", [])
+        )
+    })
+    passed = contract_match and seed_match and divergence is None
     return {
         "schema": COMPARISON_SCHEMA,
+        "passed": passed,
         "contract_match": contract_match,
         "seed_match": seed_match,
         "simulator_boundaries": len(sim),
         "original_boundaries": len(original),
         "matched_boundaries": matched,
         "first_divergence": divergence,
+        "bosses": bosses,
     }

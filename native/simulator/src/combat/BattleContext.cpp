@@ -1388,7 +1388,7 @@ void BattleContext::useSkillCard() {
             break;
 
         case CardId::EXHUME:
-            addToBot( Actions::ExhumeAction() );
+            addToBot( Actions::ExhumeAction(up) );
             break;
 
         case CardId::FINESSE:
@@ -2885,7 +2885,11 @@ int BattleContext::calculateCardDamage(const CardInstance &card, int targetIdx, 
     }
 
     if (monster.hasStatus<MS::INTANGIBLE>()) {
-        damage = std::max(damage, 1.0f);
+        // Stock AbstractMonster.damage caps positive incoming damage at one
+        // before block/relic post-processing.  Monster::attacked applies the
+        // same defensive cap as a final guard, but calculateCardDamage must
+        // also expose the correct value to card-specific actions.
+        damage = std::min(damage, 1.0f);
     }
 
     return std::max(0, static_cast<int>(damage));
@@ -3099,6 +3103,7 @@ void BattleContext::chooseArmamentsCard(int handIdx) {
 
 void BattleContext::chooseCodexCard(CardId id) {
     CardInstance c(id);
+    initializeFreshCard(c);
     c.uniqueId = static_cast<std::int16_t>(cards.nextUniqueCardId++);
     cards.notifyAddCardToCombat(c);
     cards.shuffleIntoDrawPile(cardRandomRng, c);
@@ -3201,6 +3206,7 @@ void BattleContext::chooseDiscoveryCard(CardId id) {
         }
     }
     CardInstance c(id);
+    initializeFreshCard(c);
     c.setCostForTurn(0);
 
     for (int i = 0; i < discoveryAmount; ++i) {
@@ -3224,12 +3230,28 @@ void BattleContext::chooseExhaustOneCard(int handIdx) {
 
 
 void BattleContext::chooseExhumeCard(int exhaustIdx) {
-    // todo game handles corruption here
     auto c = cards.exhaustPile[exhaustIdx];
     cards.removeFromExhaustPile(exhaustIdx);
     cards.notifyAddCardToCombat(c);
 
+    if (cardSelectInfo.data0 && c.canUpgrade()) {
+        c.upgrade();
+    }
+
     moveToHandHelper(c);
+}
+
+void BattleContext::initializeFreshCard(CardInstance &card) const {
+    // Blood for Blood.makeCopy (and Masterful Stab outside this profile)
+    // derives its combat cost from damage events that happened before the
+    // card was created. Existing cards are updated at each hpWasLost event;
+    // freshly generated cards must replay that same count exactly once.
+    if (!card.isBloodCard()) {
+        return;
+    }
+    for (int i = 0; i < player.timesDamagedThisCombat; ++i) {
+        card.tookDamage();
+    }
 }
 
 void BattleContext::chooseForethoughtCard(int handIdx) {
