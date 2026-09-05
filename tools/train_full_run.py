@@ -43,6 +43,7 @@ from sls.rl.training_contract import (
     TRAINING_CHECKPOINT_SCHEMA,
     canonical_digest,
     git_state,
+    local_source_digest,
     native_artifact,
     native_source_digest,
     sha256_file,
@@ -149,6 +150,8 @@ def _training_identity(
         "final_evaluation_seed_start": int(run["final_evaluation_seed_start"]),
         "final_evaluation_seed_count": int(run["final_evaluation_seed_count"]),
         "diagnostic_evaluation": diagnostic,
+        **({"selection_progress_guard": bool(run["selection_progress_guard"])}
+           if "selection_progress_guard" in run else {}),
         "model": payload["model"],
         "ppo": payload["ppo"],
         "stages": payload["stages"],
@@ -201,6 +204,22 @@ def _baseline_evaluation(path: Path) -> dict[str, object] | None:
         if record.get("baseline") is True and isinstance(record.get("evaluation"), dict):
             return dict(record["evaluation"])
     return None
+
+
+def _validate_baseline_retention(evaluation: dict[str, object], stage: dict[str, object]) -> None:
+    """Block warm-start compute if its fixed-seed baseline loses basic capability."""
+    configured = any(key.startswith("baseline_minimum_") for key in stage)
+    if not configured:
+        return
+    if int(evaluation["episodes"]) < int(stage["minimum_evaluation_episodes"]):
+        raise ValueError("warm-start baseline has too few evaluation episodes")
+    for field in ("backend_errors", "backend_truncations", "cycle_limits", "step_limits"):
+        if int(evaluation.get(field, 0)):
+            raise ValueError(f"warm-start baseline failed health check: {field}")
+    for field in ("reached_act2_rate", "reached_act3_rate"):
+        threshold = stage.get("baseline_minimum_" + field)
+        if threshold is not None and float(evaluation[field]) < float(threshold):
+            raise ValueError(f"warm-start capability retention gate failed: {field}; inspect before training")
 
 
 def _evaluation_progress(label: str):
@@ -295,10 +314,21 @@ def _require_predecessor_promotion(
         and initialization.get("schema") in {
             "sls-audited-training-migration-v1",
             "sls-training-migration-v2",
+            "sls-model-input-migration-v1",
         }
         and initialization.get("target_stage") == "train"
         and initialization.get("validation_passed") is True
     ):
+        if initialization.get("schema") == "sls-model-input-migration-v1":
+            if initialization.get("production_ready") is not True:
+                raise ValueError("local migration verification does not authorize production training")
+            if initialization.get("source_tree_sha256") != local_source_digest(("src", "tools", "configs")):
+                raise ValueError("training sources changed after migration validation; revalidate")
+            current_artifact = native_artifact()
+            if (initialization.get("native_source_sha256") != native_source_digest()
+                    or not current_artifact
+                    or (initialization.get("native_artifact") or {}).get("sha256") != current_artifact["sha256"]):
+                raise ValueError("native environment changed after migration validation")
         return
     stages = manifest.get("stages")
     previous = stages.get(predecessor) if isinstance(stages, dict) else None
@@ -570,6 +600,12 @@ def main() -> int:
         _validate_existing_manifest(
             manifest, identity=identity, resume=args.resume,
         )
+        initialization = manifest.get("initialization") or {}
+        if initialization.get("schema") == "sls-model-input-migration-v1":
+            initial_checkpoint = output / "initial-10m.pt"
+            if (not initial_checkpoint.is_file()
+                    or sha256_file(initial_checkpoint) != initialization.get("initial_checkpoint_sha256")):
+                raise ValueError("validated warm-start checkpoint is missing or changed")
     else:
         manifest = None
     if args.stage == "smoke":
@@ -623,6 +659,13 @@ def main() -> int:
             "stages": {},
         }
     _require_predecessor_promotion(manifest, args.stage)
+    previous_manifest_status = manifest.get("status")
+    completed_stage = manifest.get("stages", {}).get(args.stage, {})
+    if (
+        completed_stage.get("status") == "COMPLETE"
+        and int(completed_stage.get("completed_environment_steps", 0)) >= target_steps
+    ):
+        raise ValueError("stage target already completed; refusing to repeat finalization")
     manifest.update({
         "status": "RUNNING",
         "active_stage": args.stage,
@@ -635,6 +678,12 @@ def main() -> int:
         "deterministic_algorithms": torch.are_deterministic_algorithms_enabled(),
         "slurm": _slurm_environment(),
     })
+    # Keep historical failures without falsely presenting them as the current
+    # RUNNING attempt's error (the archived 10M manifest had exactly this shape).
+    if "error" in manifest:
+        manifest.setdefault("previous_failures", []).append({
+            key: manifest.pop(key) for key in ("error", "error_type", "failed_unix") if key in manifest
+        })
     _atomic_json(manifest_path, manifest)
     if device.startswith("cuda"):
         torch.cuda.reset_peak_memory_stats(device)
@@ -651,7 +700,8 @@ def main() -> int:
                 native_contract_digest=source_digest,
                 git_commit=str(repository["commit"]),
                 training_config_digest=identity,
-                training_seed_limit=periodic_seeds.start,
+                training_seed_limit=min(periodic_seeds.start, final_seeds.start,
+                                        diagnostic_seed_start or periodic_seeds.start),
             )
             if latest.exists():
                 loaded_exactly = False
@@ -742,13 +792,11 @@ def main() -> int:
                     ]
                     manifest.setdefault("learning_migrations", []).append(migration)
                     _atomic_json(manifest_path, manifest)
-                elif not loaded_exactly:
-                    load_checkpoint(latest, trainer)
             resume_finalization = _can_resume_finalization(
                 stage_name=args.stage,
                 environment_steps=trainer.environment_steps,
                 target_steps=target_steps,
-                manifest_status=manifest.get("status"),
+                manifest_status=previous_manifest_status,
             )
             if trainer.environment_steps >= target_steps and not resume_finalization:
                 raise ValueError(f"stage target already reached: {trainer.environment_steps}")
@@ -804,6 +852,8 @@ def main() -> int:
                 _append_record(metrics_path, record)
                 baseline_evaluation = baseline
 
+            _validate_baseline_retention(baseline_evaluation or {}, stage)
+
             checkpoint_every = int(stage.get("checkpoint_every_steps", 500_000))
             if checkpoint_every <= 0:
                 raise ValueError("checkpoint_every_steps must be positive")
@@ -838,16 +888,19 @@ def main() -> int:
                     rotation = next_diagnose // diagnose_every - 1
                     start = diagnostic_seed_start + rotation * diagnostic_stride
                     diagnostic_seeds = tuple(range(start, start + diagnostic_seed_count))
-                    record["diagnostic_evaluation"] = asdict(run_evaluation(
-                        diagnostic_seeds, f"diagnostic-update-{trainer.update}",
-                        interruptible=True,
-                    ))
+                    try:
+                        record["diagnostic_evaluation"] = asdict(run_evaluation(
+                            diagnostic_seeds, f"diagnostic-update-{trainer.update}",
+                            interruptible=True,
+                        ))
+                    except InterruptedError:
+                        record["diagnostic_evaluation_interrupted"] = True
                     record["diagnostic_seed_range"] = [
                         start, start + diagnostic_seed_count,
                     ]
                     while next_diagnose <= trainer.environment_steps:
                         next_diagnose += diagnose_every
-                if trainer.environment_steps >= next_eval:
+                if trainer.environment_steps >= next_eval and not controller.requested:
                     try:
                         evaluation = asdict(run_evaluation(
                             tuple(periodic_seeds),
@@ -862,6 +915,7 @@ def main() -> int:
                         record["best_checkpoint_updated"] = update_best_checkpoint(
                             selection_output, best_checkpoint_record(evaluation, update=trainer.update),
                             save=lambda path: save_checkpoint(path, trainer),
+                            progress_guard=bool(run.get("selection_progress_guard", False)),
                         )
                         while next_eval <= trainer.environment_steps:
                             next_eval += evaluate_every
@@ -912,6 +966,8 @@ def main() -> int:
                 _atomic_json(output / "final-evaluation.json", {
                     "schema": "sls-final-evaluation-v2",
                     "checkpoint": selected.name,
+                    "checkpoint_sha256": sha256_file(selected),
+                    "checkpoint_environment_steps": selected_payload["trainer"]["environment_steps"],
                     "seeds": [final_seeds.start, final_seeds.stop],
                     "result": final_result,
                     "promotion_passed": final_promoted,

@@ -140,37 +140,29 @@ void CardInstance::setUniqueId(int _uniqueId) {
 
 void CardInstance::upgrade() {
 
-    // todo assert not upgraded here?
-    // not sure where this is used
-
     switch (id) {
         case CardId::SEARING_BLOW:
             ++specialData;
             break;
 
-        case CardId::BLOOD_FOR_BLOOD: // the game upgrades the cost to 3 if the cost is over 4 but would it ever be higher?
-            if (!isUpgraded() && cost < 4 && cost > 0) {
-                upgradeBaseCost(cost-1);
-            }
-            break;
-
-        case CardId::BLIND:
-        case CardId::TRIP:
+        case CardId::BLOOD_FOR_BLOOD:
             if (!isUpgraded()) {
-                // todo change card target here when caching of card info is implemented
+                // Stock upgrades the mutable combat cost, including damage
+                // discounts. Do not overwrite it with the static upgraded cost.
+                upgradeBaseCost(cost < 4 ? cost - 1 : 3);
+                cost = static_cast<int8_t>(std::max(0, static_cast<int>(cost)));
+                upgraded = true;
             }
-            break;
-
+            return;
 
         default:
             break;
     }
     if (!isUpgraded()) {
         upgraded = true;
-        // TODO(dmz) is this logic right?
         int newcost = getEnergyCost(id, true);
         if (getEnergyCost(id, false) != newcost) {
-            cost = costForTurn = newcost;
+            upgradeBaseCost(newcost);
         }
     }
 }

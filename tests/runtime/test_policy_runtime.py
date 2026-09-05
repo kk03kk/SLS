@@ -118,6 +118,12 @@ def test_boundary_id_is_candidate_order_independent() -> None:
     assert boundary_id(decision) == boundary_id(reordered)
 
 
+@pytest.mark.parametrize("encoding", ["sls-policy-input-v2", "sls-policy-input-v3"])
+def test_artifact_rejects_pre_ownership_encoding(encoding: str) -> None:
+    with pytest.raises(ValueError, match="encoding schema is incompatible"):
+        replace(_runtime_artifact().metadata, encoding_schema=encoding).validate()
+
+
 def test_disconnect_before_send_never_blindly_retries_same_boundary(tmp_path: Path) -> None:
     first, second = _two_boundaries()
     backend = _DisconnectBackend(first, second, "before")

@@ -205,6 +205,7 @@ def encode_decision(decision: Decision, config: object | None = None) -> Encoded
     for kind, values in (
         ("POWER", observation.powers), ("RELIC", observation.relics),
         ("POTION", observation.potions), ("CHOICE", observation.choice_options),
+        ("CHOICE", observation.selected_cards),
         ("REWARD", observation.reward_options), ("EVENT_OPTION", observation.event_options),
         ("REST_OPTION", observation.rest_options), ("BOSS_RELIC", observation.boss_relic_options),
     ):
@@ -255,6 +256,8 @@ def encode_decision(decision: Decision, config: object | None = None) -> Encoded
         category_rows.append(categories)
 
     adjacency = torch.zeros(len(rows), len(rows), dtype=torch.bool)
+    for power in observation.powers:
+        adjacency[references[power.instance_id], references[power.owner_id]] = True
     for node in observation.map_nodes:
         source = references[node.node_id]
         for outgoing in node.outgoing_node_ids:

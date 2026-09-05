@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib
+from dataclasses import replace
 
 import pytest
 
@@ -192,3 +193,60 @@ def test_evaluation_records_boss_tactical_metrics(
     assert metrics["defend_red_actions"] == 1
     assert metrics["block_deficit_decisions"] == 1
     assert metrics["defend_red_on_block_deficit_rate"] == 1.0
+
+
+@pytest.mark.parametrize(("encounter", "monster"), (
+    ("AUTOMATON", "BRONZE_AUTOMATON"),
+    ("CHAMP", "THE_CHAMP"),
+    ("COLLECTOR", "THE_COLLECTOR"),
+    ("DONU_AND_DECA", "DONU"),
+    ("DONU_AND_DECA", "DECA"),
+))
+def test_boss_metrics_resolve_encounter_to_monster(monkeypatch, encounter, monster):
+    module = importlib.import_module("sls.rl.evaluate")
+
+    class BossBackend(_VictoryBackend):
+        def reset(self, _seed):
+            observation = _observation(2, ScreenType.COMBAT)
+            return Decision(replace(
+                observation,
+                run=replace(observation.run, visible_boss_id=encounter),
+                enemies=(Enemy("MONSTER:0", monster, 100, 100, 0, "ATTACK", 8, 1),),
+            ), (Action(ActionKind.END_TURN),))
+
+    monkeypatch.setattr(module, "SimulatorBackend", BossBackend)
+    result = module.evaluate(_model(), IRONCLAD_A0_FULLRUN, (7,), max_steps=1)
+    assert result.boss_action_metrics[f"ACT_2:{encounter}"]["entries"] == 1
+
+
+@pytest.mark.parametrize("boss_started", (False, True))
+def test_slime_split_metrics_require_a_boss_entry(monkeypatch, boss_started):
+    module = importlib.import_module("sls.rl.evaluate")
+
+    class SlimeBackend(_VictoryBackend):
+        def decision(self, monster):
+            observation = _observation(1, ScreenType.COMBAT)
+            return Decision(replace(
+                observation,
+                run=replace(observation.run, visible_boss_id="SLIME_BOSS"),
+                enemies=(Enemy("MONSTER:0", monster, 20, 40, 0, "ATTACK", 8, 1),),
+            ), (Action(ActionKind.END_TURN),))
+
+        def reset(self, _seed):
+            self.steps = 0
+            return self.decision("SLIME_BOSS" if boss_started else "ACID_SLIME_L")
+
+        def step(self, action):
+            self.steps += 1
+            if self.steps == 1:
+                return Transition(self.decision("ACID_SLIME_L"), 0.0, False)
+            return super().step(action)
+
+    monkeypatch.setattr(module, "SimulatorBackend", SlimeBackend)
+    result = module.evaluate(_model(), IRONCLAD_A0_FULLRUN, (7,), max_steps=2)
+    if boss_started:
+        metrics = result.boss_action_metrics["ACT_1:SLIME_BOSS"]
+        assert metrics["entries"] == 1
+        assert metrics["decisions"] == 2
+    else:
+        assert "ACT_1:SLIME_BOSS" not in result.boss_action_metrics

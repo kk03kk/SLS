@@ -5,6 +5,10 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Mapping, Sequence
 
+from sls.content.card_features import (
+    public_card_option_properties,
+    public_card_properties,
+)
 from sls.content.energy import canonical_max_energy
 from sls.content.normalize import (
     normalize_card_id,
@@ -14,6 +18,7 @@ from sls.content.normalize import (
     normalize_potion_id,
     normalize_power_amount,
     normalize_power_id,
+    normalize_relic_counter,
 )
 from sls.content.scope import (
     filter_policy_key_acquisitions,
@@ -221,7 +226,7 @@ def adapt_original(
         relics=tuple(
             PublicEntity(
                 f"RELIC:{index}", normalize_content_id(item.get("id")),
-                (("counter", max(0, _integer(item.get("counter", 0)))),),
+                (("counter", normalize_relic_counter(item.get("counter", 0))),),
             )
             for index, item in enumerate(_mappings(game.get("relics")))
         ),
@@ -235,6 +240,7 @@ def adapt_original(
         ),
         map_nodes=_map_nodes(game, parity_run),
         choice_options=options["choice"],
+        selected_cards=_selected_cards(game, screen_state, options["choice"]) if not terminal else (),
         reward_options=options["reward"],
         shop_items=options["shop"],
         event_options=options["event"],
@@ -242,10 +248,61 @@ def adapt_original(
         boss_relic_options=options["boss"],
         public_context=(
             (("turn", _integer(combat.get("turn"))),)
-            if combat and not terminal else ()
+            if combat and not terminal else (
+                (("attempts_remaining", _integer(screen_state["attempts_remaining"])),)
+                if screen is ScreenType.EVENT and payload.get("_match_slots")
+                and "attempts_remaining" in screen_state else ()
+            )
         ),
     )
     return AdaptedOriginalDecision(Decision(observation, actions, terminal), commands)
+
+
+def _combat_choice_source(game: Mapping[str, Any], combat: Mapping[str, Any]) -> str:
+    card_in_play = combat.get("card_in_play") or {}
+    explicit_source = str(
+        _mapping(combat.get("card_select")).get("source") or ""
+    ).upper().removesuffix("_PILE")
+    choice_source = explicit_source
+    if choice_source not in {"HAND", "DRAW", "DISCARD", "EXHAUST", "GENERATED"}:
+        # These are visible selection sources, not generated card offers.
+        # Card/action identity describes the UI operation; never infer it
+        # from private queue contents or hidden draw-pile order.
+        choice_source = {
+            "EXHUME": "EXHAUST",
+            "SECRET_TECHNIQUE": "DRAW", "SECRET_WEAPON": "DRAW", "SEEK": "DRAW",
+            "HEADBUTT": "DISCARD", "HOLOGRAM": "DISCARD",
+        }.get(normalize_card_id(card_in_play.get("id")), "GENERATED")
+        action_name = str(game.get("current_action") or "").rsplit(".", 1)[-1]
+        choice_source = {
+            "ExhumeAction": "EXHAUST",
+            "SecretTechniqueAction": "DRAW", "SecretWeaponAction": "DRAW", "SeekAction": "DRAW",
+            "HeadbuttAction": "DISCARD", "BetterDiscardPileToHandAction": "DISCARD",
+        }.get(action_name, choice_source)
+    return choice_source
+
+
+def _selected_cards(game: Mapping[str, Any], state: Mapping[str, Any],
+                    choices: tuple[PublicEntity, ...]) -> tuple[PublicEntity, ...]:
+    screen = str(game.get("screen_type") or "").upper()
+    if screen not in {"HAND_SELECT", "GRID"}:
+        return ()
+    cards = _mappings(state.get("selected" if screen == "HAND_SELECT" else "selected_cards"))
+    source = "HAND" if screen == "HAND_SELECT" else (
+        str(dict(choices[0].properties).get("source", "GENERATED")) if choices else (
+            _combat_choice_source(game, _mapping(game.get("combat_state")))
+            if game.get("combat_state") else "MASTER_DECK"
+        )
+    )
+    return tuple(
+        PublicEntity(
+            f"SELECTED:{order}", normalize_card_id(card.get("id")),
+            tuple(sorted({
+                **dict(public_card_option_properties(normalize_card_id(card.get("id")), card)),
+                "source": source, "selected": True, "selected_order": order,
+            }.items())),
+        ) for order, card in enumerate(cards)
+    )
 
 
 def _actions(
@@ -366,6 +423,8 @@ def _actions(
                     Action(
                         ActionKind.CHOOSE_EVENT_OPTION,
                         option_id=f"match-pair:{left_slot}:{right_slot}",
+                        subject_id=f"match-slot:{left_slot}",
+                        target_id=f"match-slot:{right_slot}",
                     ),
                     f"parity_match {left_slot} {right_slot}",
                     "wait 120",
@@ -555,6 +614,7 @@ def _cards(
             normalize_card_id(value.get("id")),
             _integer(value.get("upgrades")),
             _integer(value.get("cost")),
+            public_card_properties(normalize_card_id(value.get("id")), value),
         ))
     def current_cost(card: Mapping[str, Any]) -> int:
         base_cost = _integer(card.get("base_cost", card.get("cost")))
@@ -576,7 +636,9 @@ def _cards(
             current_cost(card),
             bool(card.get("is_playable", False)) if zone == "HAND" else False,
             index if zone == "DRAW" and visible_order else None,
-            (("order_is_visible", True),) if zone == "DRAW" and visible_order else (),
+            tuple(sorted(public_card_properties(normalize_card_id(card.get("id")), card)
+                         + ((("order_is_visible", True),)
+                            if zone == "DRAW" and visible_order else ()))),
         )
         for index, card in enumerate(cards)
     )
@@ -593,6 +655,7 @@ def _powers(values: Any, prefix: str) -> tuple[PublicEntity, ...]:
         PublicEntity(
             f"{prefix}:{index}", normalize_power_id(value.get("id")),
             (("amount", normalize_power_amount(value.get("id"), value.get("amount"))),),
+            owner_id="player" if prefix == "PLAYER_POWER" else prefix.removesuffix(":POWER"),
         )
         for index, value in enumerate(visible)
     )
@@ -700,37 +763,28 @@ def _screen_entities(
         result["choice"] = tuple(
             PublicEntity(
                 f"CHOICE:{index}", normalize_card_id(card.get("id")),
-                (("source", "HAND"), ("upgrades", _integer(card.get("upgrades")))),
+                tuple(sorted((
+                    ("source", "HAND"),
+                    *public_card_option_properties(normalize_card_id(card.get("id")), card),
+                ))),
             )
             for index, card in enumerate(_mappings(combat.get("hand")))
         )
     elif combat and choices:
         screen_cards = _mappings(state.get("cards"))
-        card_in_play = combat.get("card_in_play") or {}
-        discard_selection = (
-            normalize_card_id(card_in_play.get("id")) == "HEADBUTT"
-            or str(game.get("current_action") or "").endswith(
-                "BetterDiscardPileToHandAction"
-            )
-        )
-        native_selection_source = str(
-            _mapping(combat.get("card_select")).get("source") or ""
-        ).upper()
-        choice_source = (
-            native_selection_source
-            if native_selection_source in {"HAND", "DISCARD", "GENERATED"}
-            else "DISCARD" if discard_selection else "GENERATED"
-        )
+        choice_source = _combat_choice_source(game, combat)
         result["choice"] = tuple(
             PublicEntity(
                 f"CHOICE:{index}",
                 normalize_card_id(screen_cards[index].get("id"))
                 if index < len(screen_cards)
                 else normalize_content_id(_choice_id(value)),
-                (
+                tuple(sorted((
                     ("source", choice_source),
-                    ("upgrades", _integer(screen_cards[index].get("upgrades"))),
-                ) if index < len(screen_cards) else (),
+                    *public_card_option_properties(
+                        normalize_card_id(screen_cards[index].get("id")), screen_cards[index],
+                    ),
+                ))) if index < len(screen_cards) else (),
             )
             for index, value in enumerate(choices)
         )
@@ -792,7 +846,7 @@ def _screen_entities(
                     PublicEntity(
                         f"reward-card:{index}:{card_index}",
                         normalize_card_id(card.get("id")),
-                        (("upgrades", _integer(card.get("upgrades"))),),
+                        public_card_option_properties(normalize_card_id(card.get("id")), card),
                     )
                     for card_index, card in enumerate(cards)
                 )
@@ -832,13 +886,11 @@ def _screen_entities(
         result["reward"] = tuple(
             PublicEntity(
                 f"select-card:{index}", normalize_card_id(card.get("id")),
-                (
-                    (
-                        ("deck_index", deck_index_by_uuid.get(str(card.get("uuid")), index)),
-                        ("upgrades", _integer(card.get("upgrades"))),
-                    )
-                    if is_grid else (("upgrades", _integer(card.get("upgrades"))),)
-                ),
+                tuple(sorted((
+                    *public_card_option_properties(normalize_card_id(card.get("id")), card),
+                    *((("deck_index", deck_index_by_uuid.get(str(card.get("uuid")), index)),)
+                      if is_grid else ()),
+                ))),
             )
             for index, card in enumerate(_mappings(state.get("cards")))
         )
@@ -850,6 +902,7 @@ def _screen_entities(
                 items.append(ShopItem(
                     f"shop-{kind.lower()}:{index}", content, kind,
                     _integer(item.get("price")), bool(item.get("sold", False)),
+                    public_card_option_properties(content, item) if kind == "CARD" else (),
                 ))
         result["shop"] = tuple(items)
     return result

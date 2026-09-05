@@ -20,9 +20,25 @@ from sls.rl.reward import (
 )
 from sls.rl.workers import ShardedWorkerPool
 
+_BOSS_MONSTERS = {
+    "AUTOMATON": frozenset({"BRONZE_AUTOMATON"}),
+    "CHAMP": frozenset({"THE_CHAMP"}),
+    "COLLECTOR": frozenset({"THE_COLLECTOR"}),
+    "DONU_AND_DECA": frozenset({"DONU", "DECA"}),
+    # The encounter continues after the large slime splits.
+    "SLIME_BOSS": frozenset({
+        "SLIME_BOSS", "ACID_SLIME_L", "SPIKE_SLIME_L", "ACID_SLIME_M", "SPIKE_SLIME_M",
+    }),
+}
+
 
 @dataclass(frozen=True, slots=True)
 class EvaluationResult:
+    """boss_* rates group act completion by scheduled boss, including earlier deaths.
+
+    They are not conditional win rates given entry into the boss combat. Actual
+    combat entries are recorded separately in boss_action_metrics[*].entries.
+    """
     episodes: int
     successes: int
     success_rate: float
@@ -150,7 +166,15 @@ def _evaluate_impl(
             visible_boss = observation.run.visible_boss_id or "UNKNOWN"
             fighting_boss = (
                 observation.screen.value == "COMBAT"
-                and any(enemy.monster_id == visible_boss for enemy in observation.enemies)
+                and any(
+                    enemy.monster_id in _BOSS_MONSTERS.get(visible_boss, {visible_boss})
+                    for enemy in observation.enemies
+                )
+                and (
+                    visible_boss != "SLIME_BOSS"
+                    or any(enemy.monster_id == "SLIME_BOSS" for enemy in observation.enemies)
+                    or f"ACT_{observation.run.act}:{visible_boss}" in entered_bosses[index]
+                )
             )
             if fighting_boss:
                 boss_key = f"ACT_{observation.run.act}:{visible_boss}"

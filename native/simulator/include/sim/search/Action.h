@@ -58,6 +58,7 @@ namespace sts::search {
 
 
         static std::vector<Action> enumerateCardSelectActions(const BattleContext &bc);
+        static Action orderedHandSelection(const std::vector<int> &indices);
     };
 
 }

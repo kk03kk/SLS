@@ -13,12 +13,13 @@ This directory is the single model source for the live-game inspector.
 List all currently testable models:
 
 ```powershell
-D:\Anaconda\python.exe tools\play_live_inspector.py --list-models
+conda activate DL
+python tools\play_live_inspector.py --list-models
 ```
 
 Export a training checkpoint into this library (output defaults here):
 
 ```powershell
-D:\Anaconda\python.exe tools\export_policy.py <checkpoint> `
+python tools\export_policy.py <checkpoint> `
   --goal ACT1 --ascension-min 0 --ascension-max 0
 ```

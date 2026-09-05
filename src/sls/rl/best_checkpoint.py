@@ -12,6 +12,36 @@ BEST_CHECKPOINT_SCHEMA = "sls-best-progress-v4"
 _LEGACY_BEST_CHECKPOINT_SCHEMAS = {"sls-best-progress-v3"}
 
 
+def _wilson_interval(k: int, n: int) -> tuple[float, float]:
+    if not 0 <= k <= n or n <= 0:
+        raise ValueError("invalid checkpoint selection counts")
+    z = 1.959963984540054
+    p = k / n
+    centre = p + z * z / (2 * n)
+    margin = z * math.sqrt(p * (1 - p) / n + z * z / (4 * n * n))
+    denominator = 1 + z * z / n
+    return (centre - margin) / denominator, (centre + margin) / denominator
+
+
+def passes_progress_guard(candidate: Mapping[str, Any], incumbent: Mapping[str, Any]) -> bool:
+    """Conservative marginal-interval guard, not a paired significance test.
+
+    One extra rare win must not mask an unambiguous collapse in act reach.
+    All snapshots remain saved even when this guard rejects best promotion.
+    """
+    n = int(candidate["episodes"])
+    if n != int(incumbent["episodes"]):
+        raise ValueError("guarded checkpoint selection requires the same fixed seed count")
+    if any(int(candidate.get(k, 0)) for k in ("backend_errors", "backend_truncations")):
+        return False
+    def interval(record, field):
+        return _wilson_interval(int(record[field]), n)
+    if interval(candidate, "successes")[0] > interval(incumbent, "successes")[1]:
+        return True
+    return all(interval(candidate, field)[1] >= interval(incumbent, field)[0]
+               for field in ("reached_act2", "reached_act3"))
+
+
 def evaluation_rank(record: Mapping[str, Any]) -> tuple[float, ...]:
     """Rank progress while penalizing non-progress before reward magnitude."""
 
@@ -106,6 +136,7 @@ def update_best_checkpoint(
     record: Mapping[str, Any],
     *,
     save: Callable[[Path], object],
+    progress_guard: bool = False,
 ) -> bool:
     """Save only a strict deterministic-evaluation improvement."""
 
@@ -117,6 +148,8 @@ def update_best_checkpoint(
             BEST_CHECKPOINT_SCHEMA, *_LEGACY_BEST_CHECKPOINT_SCHEMAS,
         }:
             raise ValueError("unsupported best-checkpoint metadata")
+        if progress_guard and not passes_progress_guard(record, existing):
+            return False
         if evaluation_rank(record) <= evaluation_rank(existing):
             return False
     save(output / "best_progress.pt")

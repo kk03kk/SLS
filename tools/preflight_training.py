@@ -25,6 +25,7 @@ def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser()
     parser.add_argument("--allow-cpu", action="store_true")
     parser.add_argument("--skip-build", action="store_true")
+    parser.add_argument("--output", type=Path, default=ROOT / "local/runs/preflight.json")
     parser.add_argument(
         "--allow-dirty", action="store_true",
         help="deprecated; local source digests are authoritative",
@@ -73,8 +74,8 @@ def main() -> int:
         )
 
         repository = git_state()
-        if ENCODING_SCHEMA != "sls-policy-input-v3":
-            raise RuntimeError("preflight requires the policy v3 encoding contract")
+        if ENCODING_SCHEMA != "sls-policy-input-v4":
+            raise RuntimeError("preflight requires the policy v4 encoding contract")
         decision = SimulatorBackend(IRONCLAD_A0_FULLRUN).reset(0)
         if decision.terminal or not decision.actions:
             raise RuntimeError("simulator smoke produced an invalid Decision")
@@ -137,6 +138,10 @@ def main() -> int:
     except Exception as error:
         checks = {"schema": "sls-linux-training-preflight-v1", "ok": False, "error": str(error), "error_type": type(error).__name__}
     print(json.dumps(checks, indent=2, sort_keys=True))
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    temporary = args.output.with_suffix(".tmp")
+    temporary.write_text(json.dumps(checks, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    temporary.replace(args.output)
     return 0 if checks["ok"] else 1
 
 

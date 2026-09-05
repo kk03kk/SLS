@@ -7,6 +7,7 @@ from sls.rl.best_checkpoint import (
     BEST_CHECKPOINT_SCHEMA,
     best_checkpoint_record,
     evaluation_rank,
+    passes_progress_guard,
     update_best_checkpoint,
 )
 
@@ -35,6 +36,15 @@ def test_rank_prefers_act_progress_then_failure_floor_and_stability() -> None:
     assert evaluation_rank(progressed) > evaluation_rank(baseline)
     later_floor = _evaluation(median_failure_floor=15.0, step_limits=3)
     assert evaluation_rank(later_floor) > evaluation_rank(baseline)
+
+
+def test_one_extra_win_does_not_hide_observed_7m_to_10m_act_regression():
+    old = _evaluation(episodes=1000, successes=2, reached_act2=751, reached_act3=87)
+    new = _evaluation(episodes=1000, successes=3, reached_act2=655, reached_act3=61)
+    assert evaluation_rank(new) > evaluation_rank(old)  # Old selection would promote it.
+    assert not passes_progress_guard(new, old)
+    assert passes_progress_guard({**new, "successes": 40}, old)
+    assert not passes_progress_guard({**old, "backend_errors": 1}, old)
 
 
 def test_rank_uses_worst_boss_rate_before_speed_on_success_ties() -> None:

@@ -241,7 +241,7 @@ void BattleContext::initRelics(const GameContext &gc) {
                 break;
 
             case R::ANCIENT_TEA_SET:
-                if (gc.lastRoom == Room::REST) {
+                if (r.data > 0) {
                     p.gainEnergy(2);
                 }
                 break;
@@ -549,6 +549,9 @@ void BattleContext::updateRelicsOnExit(GameContext &g) const {
     const int hpAtVictory = g.curHp;
     for (auto &r : g.relics.relics) {
         switch (r.id) {
+            case RelicId::ANCIENT_TEA_SET:
+                r.data = 0;
+                break;
             case RelicId::HAPPY_FLOWER:
                 r.data = player.happyFlowerCounter;
                 break;
@@ -3174,11 +3177,15 @@ void BattleContext::chooseDiscardToHandCard(int discardIdx, bool forZeroCost) {
 void BattleContext::chooseDiscardToHandCards(
         const fixed_list<int, 10> &idxs, bool forZeroCost) {
     fixed_list<CardInstance, 10> selected;
+    fixed_list<int, 10> removed;
     for (const int idx : idxs) {
+        if (cards.cardsInHand + selected.size() >= CardManager::MAX_HAND_SIZE) break;
         selected.push_back(cards.discardPile[idx]);
+        removed.push_back(idx);
     }
-    for (int i = idxs.size() - 1; i >= 0; --i) {
-        cards.removeFromDiscard(idxs[i]);
+    std::sort(removed.begin(), removed.end(), std::greater<int>());
+    for (const int idx : removed) {
+        cards.removeFromDiscard(idx);
     }
     for (auto card : selected) {
         if (cards.cardsInHand >= CardManager::MAX_HAND_SIZE) {
@@ -3275,7 +3282,7 @@ void BattleContext::chooseForethoughtCards(const fixed_list<int, 10> &idxs) {
         cards.removeFromHandAtIdx(handIdx);
     }
 
-    // HandCardSelectScreen preserves hand order. CardGroup.moveToBottomOfDeck
+    // HandCardSelectScreen preserves click order. CardGroup.moveToBottomOfDeck
     // inserts each selected card at index zero in that order.
     for (auto card : selected) {
         if (card.cost > 0) {
@@ -3321,15 +3328,13 @@ void BattleContext::chooseExhaustCards(const fixed_list<int, 10> &idxs) {
     // Java's HandCardSelectScreen retains the selected-card group order and
     // ExhaustSpecificCardAction appends cards to the exhaust pile in that
     // order.  Native indices still have to be removed from the hand in
-    // descending order, so capture the public ascending order first instead
+    // descending order, so capture the selected click order first instead
     // of letting removal order leak into the exhaust pile.
-    auto ascending = idxs;
-    std::sort(ascending.begin(), ascending.end());
     fixed_list<CardInstance, 10> selectedCards;
-    for (const auto handIdx : ascending) {
+    for (const auto handIdx : idxs) {
         selectedCards.push_back(cards.hand[handIdx]);
     }
-    auto descending = ascending;
+    auto descending = idxs;
     std::sort(descending.begin(), descending.end(), [](auto a, auto b) { return b < a; });
     for (const auto handIdx : descending) {
         cards.removeFromHandAtIdx(handIdx);
@@ -3343,13 +3348,11 @@ void BattleContext::chooseGambleCards(const fixed_list<int, 10> &idxs) {
     if (idxs.empty()) {
         return;
     }
-    auto ascending = idxs;
-    std::sort(ascending.begin(), ascending.end());
     fixed_list<CardInstance, 10> selectedCards;
-    for (const auto handIdx : ascending) {
+    for (const auto handIdx : idxs) {
         selectedCards.push_back(cards.hand[handIdx]);
     }
-    auto descending = ascending;
+    auto descending = idxs;
     std::sort(descending.begin(), descending.end(), [](auto a, auto b) { return b < a; });
 
     addToTop(Actions::DrawCards(selectedCards.size()));
@@ -3359,7 +3362,7 @@ void BattleContext::chooseGambleCards(const fixed_list<int, 10> &idxs) {
     // HandCardSelectScreen preserves click/visible order in selectedCards;
     // GamblingChipAction iterates that group in the same order. Removal must
     // be descending for index safety, but discard/manual-trigger order must
-    // remain ascending rather than being accidentally reversed.
+    // retain click order rather than being sorted by original hand position.
     for (const auto &c : selectedCards) {
         cards.moveToDiscardPile(c);
         onManualDiscard(c);

@@ -214,3 +214,9 @@ def normalize_encounter_id(value: object) -> str:
         "3LOUSE": "THREE_LOUSE",
         "2FUNGIBEASTS": "TWO_FUNGI_BEASTS",
     }.get(compact, _encounter_aliases().get(compact, normalize_content_id(value)))
+
+
+def normalize_relic_counter(value: object) -> int:
+    """Only -1 is a neutral hidden counter; -2 carries visible relic state."""
+    counter = int(value or 0)
+    return 0 if counter == -1 else counter

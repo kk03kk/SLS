@@ -1484,6 +1484,12 @@ bool GameContext::obtainRelic(RelicId r) {
             break;
         }
 
+        case RelicId::LIZARD_TAIL: {
+            // Native stores availability as a boolean, not stock's -1/-2 counter.
+            relicData = 1;
+            break;
+        }
+
         case RelicId::OMAMORI: {
             relicData = 2;
             break;
@@ -1741,6 +1747,9 @@ void GameContext::relicsOnEnterRoom(Room room) {
 
     switch (room) {
         case Room::REST:
+            if (hasRelic(RelicId::ANCIENT_TEA_SET)) {
+                relics.getRelicValueRef(RelicId::ANCIENT_TEA_SET) = 1;
+            }
             if (hasRelic(RelicId::ETERNAL_FEATHER)) {
                 playerHeal(deck.size() / 5 * 3);
             }

@@ -47,13 +47,24 @@ Smoke, pilot and train are cumulative Act 1, Act 2 and FullRun horizons in one
 learning chain rather than three initializations. Horizon migrations preserve
 learning/RNG state and reset environments, belief memory, previous experience
 and episode limits together. Ordinary checkpoints restore all fields exactly.
-Periodic and final evaluation use separate high seed namespaces that training
-cannot enter.
+Periodic and final evaluation use separate high seed namespaces. The current
+trainer bounds training seeds against the periodic namespace only; see the
+2026-09-05 audit for the missing bound against earlier final/diagnostic seeds.
 
 PPO normalizes advantages independently for combat, run and choice decisions,
 and normalizes entropy by legal-candidate count. Evaluation aborts on backend
-errors. A checkpoint becomes an artifact only after a configured milestone gate;
-the final live artifact also requires a passing independent 1,000-seed run.
+errors. The training entrypoint exports artifacts after configured milestone
+gates; its final export uses the configured final seed count and thresholds.
+The standalone export command can export weights without those training gates.
+
+Observation schema 2 / policy input v4 carries power-to-owner edges and mutable
+card damage, cost and retention fields, including action-referenced card offers.
+Pre-v4 model artifacts and training contracts are incompatible and are rejected;
+historical checkpoints remain unchanged. The combat-upgrade cost discrepancy
+reported against the earlier baseline has a native fix and regression coverage.
+The [repair ledger](observation-simulator-work.md) separates verified repairs
+from the remaining public-field and simulator-rule audit. These changes do not
+constitute a full stock parity certificate.
 
 Live play uses the same observation, previous-experience input, action encoder,
 recurrent model and candidate scorer. Restart is allowed only at an acknowledged

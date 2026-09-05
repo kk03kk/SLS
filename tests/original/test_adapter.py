@@ -394,8 +394,16 @@ def test_match_and_keep_exposes_pair_actions_with_stable_click_commands() -> Non
     assert len(adapted.decision.actions) == 66
     first = adapted.decision.actions[0]
     assert first.option_id == "match-pair:0:1"
+    assert first.subject_id == "match-slot:0"
+    assert first.target_id == "match-slot:1"
     assert adapted.commands[first.candidate_id] == (
         "parity_match 0 1", "wait 120",
     )
     assert len(adapted.decision.observation.event_options) == 12
     assert adapted.decision.observation.event_options[0].content_id == "HIDDEN_CARD"
+    # Legacy evidence has no counter; do not manufacture a value for it.
+    assert "attempts_remaining" not in dict(adapted.decision.observation.public_context)
+    for remaining in (5, 2, 1):
+        payload["game_state"]["screen_state"]["attempts_remaining"] = remaining
+        current = adapt_original(payload).decision.observation
+        assert dict(current.public_context)["attempts_remaining"] == remaining

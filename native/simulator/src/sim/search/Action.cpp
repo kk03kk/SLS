@@ -25,6 +25,21 @@ bool search::Action::operator==(const search::Action &rhs) const {
 //    return actionType == rhs.actionType && idx1 == rhs.idx1 && idx2 == rhs.idx2;
 }
 
+search::Action search::Action::orderedHandSelection(const std::vector<int> &indices) {
+    if (indices.size() > 10) throw std::invalid_argument("Too many hand selections");
+    constexpr unsigned factorial[] = {1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880};
+    std::vector<int> remaining{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+    unsigned rank = 0;
+    for (unsigned i = 0; i < indices.size(); ++i) {
+        const auto found = std::find(remaining.begin(), remaining.end(), indices[i]);
+        if (found == remaining.end()) throw std::invalid_argument("Invalid or duplicate hand selection");
+        rank += (found - remaining.begin()) * factorial[9 - i];
+        remaining.erase(found);
+    }
+    return Action(static_cast<std::uint32_t>(
+        (3U << 29) | (1U << 28) | (indices.size() << 24) | rank));
+}
+
 bool search::Action::operator!=(const search::Action &rhs) const {
     return !(rhs == *this);
 }
@@ -51,6 +66,22 @@ int search::Action::getSelectIdx() const {
 
 fixed_list<int, 10> search::Action::getSelectedIdxs() const {
     fixed_list<int,10> ret;
+    if (bits & (1U << 28)) {
+        const unsigned count = (bits >> 24) & 0xF;
+        unsigned rank = bits & 0xFFFFFF;
+        constexpr unsigned factorial[] = {1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880};
+        if (count > 10) throw std::invalid_argument("Invalid ordered selection count");
+        std::vector<int> remaining{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+        for (unsigned i = 0; i < count; ++i) {
+            const unsigned digit = rank / factorial[9 - i];
+            rank %= factorial[9 - i];
+            if (digit >= remaining.size()) throw std::invalid_argument("Invalid ordered selection rank");
+            ret.push_back(remaining[digit]);
+            remaining.erase(remaining.begin() + digit);
+        }
+        if (rank != 0) throw std::invalid_argument("Noncanonical ordered selection rank");
+        return ret;
+    }
     int i = 0;
     int bitsCopy = bits & 0x3FF;
     while (bitsCopy) {
@@ -143,10 +174,13 @@ bool isValidSingleCardSelectAction(const BattleContext &bc, const search::Action
             return a.getSelectIdx() >= 0 && a.getSelectIdx() < 3;
 
         case CardSelectTask::HOLOGRAM:
-        case CardSelectTask::LIQUID_MEMORIES_POTION:
         case CardSelectTask::HEADBUTT:
         case CardSelectTask::MEDITATE:
             return a.getSelectIdx() >= 0 && a.getSelectIdx() < bc.cards.discardPile.size();
+
+        case CardSelectTask::LIQUID_MEMORIES_POTION:
+            return bc.cardSelectInfo.pickCount == 1 && a.getSelectIdx() >= 0 &&
+                a.getSelectIdx() < bc.cards.discardPile.size();
 
         case CardSelectTask::EXHUME:
             if (a.getSelectIdx() < 0 || a.getSelectIdx() >= bc.cards.exhaustPile.size()) {
@@ -226,6 +260,13 @@ bool isValidMultiCardSelectAction(const BattleContext &bc, const search::Action 
                 }
             }
             return true;
+        }
+
+        case sts::CardSelectTask::LIQUID_MEMORIES_POTION: {
+            return bc.cardSelectInfo.pickCount == 2 &&
+                a.getSourceIdx() != a.getTargetIdx() &&
+                a.getSourceIdx() < bc.cards.discardPile.size() &&
+                a.getTargetIdx() < bc.cards.discardPile.size();
         }
 
         case sts::CardSelectTask::FORETHOUGHT: {
@@ -454,6 +495,14 @@ void executeMultiCardSelectActionHelper(BattleContext &bc, search::Action a) {
             bc.chooseForethoughtCards(a.getSelectedIdxs());
             break;
 
+        case sts::CardSelectTask::LIQUID_MEMORIES_POTION: {
+            fixed_list<int, 10> selected;
+            selected.push_back(a.getSourceIdx());
+            selected.push_back(a.getTargetIdx());
+            bc.chooseDiscardToHandCards(selected, true);
+            break;
+        }
+
         default:
             break;
     }
@@ -578,8 +627,17 @@ std::vector<search::Action> search::Action::enumerateCardSelectActions(const Bat
             break;
 
         case CardSelectTask::HEADBUTT:
-        case CardSelectTask::LIQUID_MEMORIES_POTION:
             setupCardOptionsHelper(actions, bc.cards.discardPile.begin(), bc.cards.discardPile.end());
+            break;
+
+        case CardSelectTask::LIQUID_MEMORIES_POTION:
+            if (bc.cardSelectInfo.pickCount > 1) {
+                // FullRun expands this exact multi-selection into incremental
+                // policy choices. Keep a valid representative for the native API.
+                actions.push_back(search::Action(search::ActionType::MULTI_CARD_SELECT, 0, 1));
+            } else {
+                setupCardOptionsHelper(actions, bc.cards.discardPile.begin(), bc.cards.discardPile.end());
+            }
             break;
 
         case CardSelectTask::SECRET_TECHNIQUE:

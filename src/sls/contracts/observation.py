@@ -7,7 +7,7 @@ from dataclasses import dataclass, field, fields, is_dataclass
 from enum import Enum
 from typing import Any
 
-OBSERVATION_SCHEMA_VERSION = 1
+OBSERVATION_SCHEMA_VERSION = 2
 
 
 class ScreenType(str, Enum):
@@ -57,6 +57,7 @@ class PublicEntity:
     instance_id: str
     content_id: str
     properties: tuple[tuple[str, PublicScalar], ...] = ()
+    owner_id: str | None = None
 
     def __post_init__(self) -> None:
         keys = [key for key, _ in self.properties]
@@ -134,6 +135,7 @@ class Observation:
     potions: tuple[PublicEntity, ...] = ()
     map_nodes: tuple[MapNode, ...] = ()
     choice_options: tuple[PublicEntity, ...] = ()
+    selected_cards: tuple[PublicEntity, ...] = ()
     reward_options: tuple[PublicEntity, ...] = ()
     shop_items: tuple[ShopItem, ...] = ()
     event_options: tuple[PublicEntity, ...] = ()
@@ -143,6 +145,10 @@ class Observation:
     schema_version: int = field(default=OBSERVATION_SCHEMA_VERSION, init=False)
 
     def __post_init__(self) -> None:
+        owners = {"player", *(enemy.instance_id for enemy in self.enemies)}
+        for power in self.powers:
+            if power.owner_id not in owners:
+                raise ValueError(f"power {power.instance_id} has no valid public owner")
         _assert_public_tree(self.to_dict())
 
     def to_dict(self) -> dict[str, Any]:

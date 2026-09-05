@@ -3,13 +3,19 @@
 from __future__ import annotations
 
 import json
+import math
 from typing import Any, Mapping
 
+from sls.content.card_features import (
+    public_card_option_properties,
+    public_card_properties,
+)
 from sls.content.energy import canonical_max_energy
 from sls.content.normalize import (
     normalize_content_id,
     normalize_power_amount,
     normalize_power_id,
+    normalize_relic_counter,
 )
 from sls.content.scope import (
     filter_policy_key_acquisitions,
@@ -60,7 +66,7 @@ class SimulatorBackend:
         self._candidate_bits: dict[str, int] = {}
         self._last_raw: dict[str, Any] | None = None
         self._last_observation: Observation | None = None
-        self._multi_selected: set[int] = set()
+        self._multi_selected: list[int] = []
         self._validation_action_queue_types: list[str] = []
         self._validation_choice_origin: str | None = None
 
@@ -112,14 +118,18 @@ class SimulatorBackend:
         queued_type = _queued_potion_action_type(self._last_raw or {}, semantic_action)
         pending_queue = tuple(self._validation_action_queue_types)
         if bits < 0:
-            self._multi_selected.add(-bits - 1)
+            self._multi_selected.append(-bits - 1)
             raw = self._native.snapshot()
         else:
             raw = self._native.step(bits)
-            self._multi_selected.clear()
         current_choice = str(
             (raw.get("public_combat") or {}).get("choice", {}).get("task") or ""
         )
+        if bits >= 0 and not (
+            previous_choice and current_choice == previous_choice
+            and semantic_action.kind in {ActionKind.USE_POTION, ActionKind.DISCARD_POTION}
+        ):
+            self._multi_selected.clear()
         if previous_choice and current_choice == previous_choice and queued_type:
             self._validation_action_queue_types.append(queued_type)
         elif current_choice != previous_choice:
@@ -220,7 +230,7 @@ class SimulatorBackend:
             raise RuntimeError("reset must be called before checkpoint")
         checkpoint = self._native.snapshot()
         if self._multi_selected:
-            checkpoint["_policy_multi_selection"] = sorted(self._multi_selected)
+            checkpoint["_policy_multi_selection"] = list(self._multi_selected)
         if self._validation_action_queue_types:
             checkpoint["_validation_action_queue_types"] = list(
                 self._validation_action_queue_types
@@ -231,9 +241,11 @@ class SimulatorBackend:
 
     def load_checkpoint(self, state: Mapping[str, Any]) -> Decision:
         checkpoint = dict(state)
-        self._multi_selected = {
+        self._multi_selected = [
             int(value) for value in checkpoint.pop("_policy_multi_selection", ())
-        }
+        ]
+        if len(self._multi_selected) != len(set(self._multi_selected)):
+            raise ValueError("checkpoint contains duplicate pending selections")
         self._validation_action_queue_types = list(
             checkpoint.pop("_validation_action_queue_types", ())
         )
@@ -248,7 +260,7 @@ class SimulatorBackend:
         raw = dict(raw)
         raw["legal_actions"] = _effective_combat_actions(raw, self._multi_selected)
         if self._multi_selected:
-            raw["_policy_multi_selection"] = sorted(self._multi_selected)
+            raw["_policy_multi_selection"] = list(self._multi_selected)
         if self._validation_action_queue_types:
             raw["_validation_action_queue_types"] = list(
                 self._validation_action_queue_types
@@ -267,6 +279,7 @@ class SimulatorBackend:
             Card(
                 f"DECK:{index}", str(card["content_id"]), "DECK",
                 int(card["upgrades"]), int(card["base_cost"]), int(card["current_cost"]),
+                properties=public_card_properties(str(card["content_id"]), card),
             )
             for index, card in enumerate(inventory["deck"])
         )
@@ -382,7 +395,7 @@ class SimulatorBackend:
             relics=tuple(
                 _entity(
                     f"RELIC:{index}", value["content_id"],
-                    counter=max(0, int(value["counter"])),
+                    counter=normalize_relic_counter(value["counter"]),
                 )
                 for index, value in enumerate(inventory["relics"])
             ),
@@ -393,6 +406,15 @@ class SimulatorBackend:
             ),
             map_nodes=map_nodes,
             choice_options=options["choice"],
+            selected_cards=tuple(
+                _entity(
+                    f"SELECTED:{order}", option["content_id"],
+                    **dict(public_card_option_properties(option["content_id"], option)),
+                    source=str(combat["choice"]["source"]), selected=True, selected_order=order,
+                )
+                for order, index in enumerate(self._multi_selected)
+                for option in (combat["choice"]["options"][index],)
+            ),
             reward_options=options["reward"],
             shop_items=options["shop"],
             event_options=options["event"],
@@ -400,7 +422,10 @@ class SimulatorBackend:
             boss_relic_options=options["boss"],
             public_context=(
                 (("turn", int(combat["turn"])),)
-                if combat and screen is not ScreenType.GAME_OVER else ()
+                if combat and screen is not ScreenType.GAME_OVER else (
+                    (("attempts_remaining", int(raw["public_screen"]["attempts_remaining"])),)
+                    if screen is ScreenType.EVENT and raw["public_screen"].get("match_slots") else ()
+                )
             ),
         )
         decision = Decision(
@@ -454,6 +479,7 @@ def _combat_cards(
             key=lambda value: (
                 str(value["content_id"]), int(value["upgrades"]),
                 int(value["base_cost"]), int(value["cost"]),
+                public_card_properties(str(value["content_id"]), value),
             ),
         )
     return tuple(
@@ -467,8 +493,9 @@ def _combat_cards(
             int(card["upgrades"]), int(card["base_cost"]), int(card["cost"]),
             bool(card["is_playable"]) if zone == "HAND" else False,
             index if zone == "DRAW" and draw_order_visible else None,
-            (("order_is_visible", True),)
-            if zone == "DRAW" and draw_order_visible else (),
+            tuple(sorted(public_card_properties(str(card["content_id"]), card)
+                         + ((("order_is_visible", True),)
+                            if zone == "DRAW" and draw_order_visible else ()))),
         )
         for index, card in enumerate(ordered)
     )
@@ -482,9 +509,10 @@ def _powers(values: Any, prefix: str) -> tuple[PublicEntity, ...]:
         normalize_power_id(value["id"]), int(value["amount"]),
     ))
     return tuple(
-        _entity(
+        PublicEntity(
             f"{prefix}:{index}", normalize_power_id(value["id"]),
-            amount=normalize_power_amount(value["id"], value["amount"]),
+            (("amount", normalize_power_amount(value["id"], value["amount"])),),
+            owner_id="player" if prefix == "PLAYER_POWER" else prefix.removesuffix(":POWER"),
         )
         for index, value in enumerate(visible)
     )
@@ -670,6 +698,8 @@ def _run_action(
             return Action(
                 ActionKind.CHOOSE_EVENT_OPTION,
                 option_id=f"match-pair:{idx1}:{idx2}",
+                subject_id=f"match-slot:{idx1}",
+                target_id=f"match-slot:{idx2}",
             )
         return Action(
             ActionKind.CHOOSE_NEOW_OPTION if screen is ScreenType.NEOW else ActionKind.CHOOSE_EVENT_OPTION,
@@ -780,7 +810,8 @@ def _screen_entities(raw: Mapping[str, Any]) -> dict[str, tuple[Any, ...]]:
         entities = [
             _entity(
                 f"CHOICE:{index}", option["content_id"],
-                upgrades=int(option["upgrades"]), source=str(choice["source"]),
+                **dict(public_card_option_properties(option["content_id"], option)),
+                source=str(choice["source"]),
             )
             for index, option in indexed_options
         ]
@@ -840,7 +871,7 @@ def _screen_entities(raw: Mapping[str, Any]) -> dict[str, tuple[Any, ...]]:
             for card_index, card in enumerate(group):
                 entities.append(_entity(
                     f"reward-card:{group_index}:{card_index}", card["content_id"],
-                    upgrades=int(card["upgrades"]),
+                    **dict(public_card_option_properties(card["content_id"], card)),
                 ))
         for index, amount in enumerate(rewards["gold"]):
             entities.append(_entity(f"reward-gold:{index}", "GOLD", amount=int(amount)))
@@ -858,7 +889,7 @@ def _screen_entities(raw: Mapping[str, Any]) -> dict[str, tuple[Any, ...]]:
             result["reward"] = tuple(
                 _entity(
                     f"select-card:{index}", option["content_id"],
-                    upgrades=int(option["upgrades"]),
+                    **dict(public_card_option_properties(option["content_id"], option)),
                 )
                 for index, option in enumerate(public_screen["card_rewards"][0])
             )
@@ -866,7 +897,8 @@ def _screen_entities(raw: Mapping[str, Any]) -> dict[str, tuple[Any, ...]]:
             result["reward"] = tuple(
                 _entity(
                     option["instance_id"], option["content_id"],
-                    upgrades=int(option["upgrades"]), deck_index=int(option["deck_index"]),
+                    **dict(public_card_option_properties(option["content_id"], option)),
+                    deck_index=int(option["deck_index"]),
                 )
                 for option in public_screen.get("card_options", ())
             )
@@ -880,6 +912,7 @@ def _screen_entities(raw: Mapping[str, Any]) -> dict[str, tuple[Any, ...]]:
             items.append(ShopItem(
                 f"shop-card:{visible_index}", card["content_id"], "CARD",
                 int(shop["prices"][index]), False,
+                public_card_option_properties(card["content_id"], card),
             ))
             visible_index += 1
         visible_index = 0
@@ -919,19 +952,35 @@ def _hand_choice_sources(raw: Mapping[str, Any]) -> tuple[int, ...]:
 
 def _is_incremental_hand_selection(raw: Mapping[str, Any]) -> bool:
     choice = (raw.get("public_combat") or {}).get("choice") or {}
-    return str(choice.get("task") or "").upper() in {
-        "EXHAUST_MANY", "GAMBLE", "RETAIN_CARDS",
-    }
+    return str(choice.get("source") or "").upper() == "HAND" and _is_incremental_selection(raw)
+
+
+def _is_incremental_selection(raw: Mapping[str, Any]) -> bool:
+    choice = (raw.get("public_combat") or {}).get("choice") or {}
+    task = str(choice.get("task") or "").upper()
+    if task in {"EXHAUST_MANY", "GAMBLE", "RETAIN_CARDS"}:
+        return True
+    internal = _selection_contract(raw)
+    return (
+        task == "FORETHOUGHT" and bool(internal.get("can_pick_any_number"))
+        or task == "LIQUID_MEMORIES_POTION" and int(internal.get("pick_count", 1)) > 1
+    )
+
+
+def _selection_contract(raw: Mapping[str, Any]) -> Mapping[str, Any]:
+    checkpoint = raw.get("combat_checkpoint") or {}
+    game = checkpoint.get("game_state") or {}
+    return ((game.get("combat_state") or {}).get("_internal") or {}).get("choice") or {}
 
 
 def _effective_combat_actions(
-    raw: Mapping[str, Any], selected: set[int],
+    raw: Mapping[str, Any], selected: list[int],
 ) -> list[dict[str, Any]]:
     """Expose stock-like incremental candidates for optional hand selection.
 
-    The native search action is an atomic bitset.  Policy/Original boundaries
+    The native search action commits the whole selection. Policy/Original boundaries
     select one card at a time and then confirm, so negative private candidate
-    codes accumulate the bitset in :class:`SimulatorBackend` without changing
+    codes accumulate ordered indices in :class:`SimulatorBackend` without changing
     native combat state.  The final confirm executes the native atomic action.
     """
 
@@ -939,22 +988,16 @@ def _effective_combat_actions(
     combat = raw.get("public_combat") or {}
     choice = combat.get("choice") or {}
     task = str(choice.get("task") or "").upper()
-    if task not in {"EXHAUST_MANY", "GAMBLE", "RETAIN_CARDS"}:
+    if not _is_incremental_selection(raw):
         return legal
-    checkpoint = raw.get("combat_checkpoint") or {}
-    game = checkpoint.get("game_state") or {}
-    internal = ((game.get("combat_state") or {}).get("_internal") or {}).get("choice") or {}
+    internal = _selection_contract(raw)
     limit = int(internal.get("pick_count", len(choice.get("options") or ())) or 0)
     option_count = len(choice.get("options") or ())
     if any(index < 0 or index >= option_count for index in selected):
         raise ValueError("checkpoint contains an invalid pending multi-selection")
-    base = next(
-        (
-            int(value["bits"]) for value in legal
-            if value.get("domain") == "COMBAT" and int(value.get("action_type", -1)) == 3
-        ),
-        3 << 29,
-    )
+    if len(selected) > limit:
+        raise ValueError("checkpoint exceeds the pending selection limit")
+    base = 3 << 29
     result = []
     if len(selected) < limit:
         for index in range(option_count):
@@ -971,13 +1014,34 @@ def _effective_combat_actions(
         or len(selected) >= limit
     )
     if can_confirm:
-        bits = base | sum(1 << index for index in selected)
+        if task == "LIQUID_MEMORIES_POTION":
+            if len(selected) != 2:
+                raise ValueError("Sacred Bark Liquid Memories requires exactly two cards")
+            first, second = selected
+            # Discard piles may exceed the ten-card hand bitset. Encode the
+            # two pile indices in the native action's source/target slots.
+            bits = base | first | (second << 16)
+        else:
+            # Partial permutation rank fits within 24 bits for ten hand slots.
+            # Keep the native legacy bitset decoder for historical replay, but
+            # mark new ordered selections with bit 28 and a four-bit count.
+            remaining = list(range(10))
+            rank = 0
+            for position, index in enumerate(selected):
+                digit = remaining.index(index)
+                rank += digit * math.factorial(9 - position)
+                remaining.pop(digit)
+            bits = base | (1 << 28) | (len(selected) << 24) | rank
         result.append({
             "bits": bits, "action_type": 3,
             "source_index": 0, "target_index": 0,
             "domain": "COMBAT", "requires_target": False,
-            "selected_indices": sorted(selected),
+            "selected_indices": list(selected),
         })
+    # Replacing native subset actions must not hide potion actions. Stock
+    # consumes/discards the potion while keeping the current selection open.
+    result.extend(value for value in legal if value.get("domain") == "COMBAT"
+                  and int(value.get("action_type", -1)) == 1)
     return result
 
 

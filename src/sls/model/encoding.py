@@ -12,7 +12,7 @@ from typing import Any
 from sls.content import load_content_registry
 from sls.contracts import ActionKind, ScreenType
 
-ENCODING_SCHEMA = "sls-policy-input-v3"
+ENCODING_SCHEMA = "sls-policy-input-v4"
 ENTITY_TYPES = (
     "PLAYER", "RUN", "CARD", "ENEMY", "POWER", "RELIC", "POTION",
     "MAP_NODE", "CHOICE", "REWARD", "SHOP_ITEM", "EVENT_OPTION",
@@ -27,6 +27,10 @@ NUMERIC_FIELDS = (
     "intent_damage", "intent_hits", "is_gone", "amount", "counter", "slot",
     "x", "y", "reachable", "price", "sold", "turn", "deck_index", "known",
     "removed", "order_is_visible", "outgoing_count", "option_ordinal",
+    "base_damage", "free_to_play_once", "retain", "self_retain",
+    "bottled_flame", "bottled_lightning", "bottled_tornado",
+    "attempts_remaining",
+    "selected", "selected_order",
 )
 NUMERIC_FIELD_IDS = {name: index for index, name in enumerate(NUMERIC_FIELDS)}
 CATEGORICAL_FIELDS = ("screen", "zone", "intent", "item_type", "source", "visible_boss")
@@ -81,7 +85,7 @@ _CATEGORY_VALUES = {
     "MONSTER", "ELITE", "EVENT", "REST", "SHOP", "TREASURE", "BOSS",
     "BURNING_ELITE", "M", "E", "?", "R", "$", "T", "B",
 }
-VOCABULARY_PATH = Path(__file__).with_name("policy_vocabulary_v3.json")
+VOCABULARY_PATH = Path(__file__).with_name("policy_vocabulary_v4.json")
 _NATIVE_ROOT = Path(__file__).resolve().parents[3] / "native" / "simulator"
 _CONSTANT_HEADERS = _NATIVE_ROOT / "include" / "constants"
 _NATIVE_MODULE = _NATIVE_ROOT / "python" / "module.cpp"
@@ -128,6 +132,7 @@ def build_policy_vocabulary() -> dict[str, Any]:
         "action_types": list(ACTION_TYPE_IDS),
         "reference_roles": ["subject", "target", "option", "node", "reward"],
         "screen_groups": list(SCREEN_GROUPS),
+        "entity_relations": ["map_outgoing", "power_owner"],
     }
     encoded = json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
     payload["sha256"] = hashlib.sha256(encoded).hexdigest()

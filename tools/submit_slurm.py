@@ -26,7 +26,7 @@ def _absolute_without_symlink_resolution(path: Path) -> str:
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "task", choices=("preflight", "benchmark", "evaluate", "smoke", "pilot", "train"),
+        "task", choices=("preflight", "benchmark", "warm-start", "evaluate", "smoke", "pilot", "train"),
     )
     parser.add_argument("--python", type=Path, default=Path(sys.executable))
     parser.add_argument("--account", default="allusers")
@@ -49,6 +49,9 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--evaluation-output", type=Path)
     parser.add_argument("--evaluation-episodes", type=int, default=1000)
     parser.add_argument("--evaluation-seed-start", type=int, default=3_000_000_000_000)
+    parser.add_argument("--evaluation-profile", default="IRONCLAD_A0_ACT1")
+    parser.add_argument("--evaluation-shards", type=int, default=16)
+    parser.add_argument("--benchmark-output", type=Path)
     parser.add_argument(
         "--resume", choices=("auto", "environment-migration"), default="auto",
     )
@@ -74,10 +77,12 @@ def build_sbatch_command(args: argparse.Namespace, *, root: Path = ROOT) -> list
             )
     if args.task != "benchmark" and args.benchmark_layouts is not None:
         raise ValueError("--benchmark-layouts is only valid for benchmark")
-    if args.task != "evaluate" and (
-        args.checkpoint is not None or args.evaluation_output is not None
-    ):
+    if args.task not in {"evaluate", "warm-start"} and args.checkpoint is not None:
+        raise ValueError("checkpoint path is only valid for evaluate/warm-start")
+    if args.task != "evaluate" and args.evaluation_output is not None:
         raise ValueError("evaluation paths are only valid for evaluate")
+    if args.task != "benchmark" and args.benchmark_output is not None:
+        raise ValueError("benchmark output is only valid for benchmark")
     python = _absolute_without_symlink_resolution(args.python)
     if args.task in {"smoke", "pilot", "train"}:
         partition, walltime = "gpu-long", "3-00:00:00"
@@ -100,6 +105,15 @@ def build_sbatch_command(args: argparse.Namespace, *, root: Path = ROOT) -> list
         ]
         if args.benchmark_layouts is not None:
             command.extend(("--layouts", *args.benchmark_layouts))
+        if args.benchmark_output is not None:
+            command.extend(("--output", str(args.benchmark_output.resolve())))
+    elif args.task == "warm-start":
+        if args.resume != "auto":
+            raise ValueError("warm-start is explicit model migration, not environment-migration")
+        if args.checkpoint is None or args.config is None:
+            raise ValueError("warm-start requires --checkpoint and --config")
+        command = [str(python), str(root / "tools/prepare_model_warm_start.py"),
+                   "--source", str(args.checkpoint.resolve()), "--config", str(args.config.resolve())]
     elif args.task == "evaluate":
         checkpoint = (
             args.checkpoint
@@ -112,10 +126,11 @@ def build_sbatch_command(args: argparse.Namespace, *, root: Path = ROOT) -> list
         command = [
             str(python), str(root / "tools" / "evaluate_checkpoint.py"),
             str(checkpoint), "--output", str(evaluation_output),
-            "--profile", "IRONCLAD_A0_ACT1",
+            "--profile", args.evaluation_profile,
             "--episodes", str(args.evaluation_episodes),
             "--seed-start", str(args.evaluation_seed_start),
             "--device", "cuda",
+            "--environment-shards", str(args.evaluation_shards),
         ]
     else:
         config = (args.config or root / TRAIN_CONFIG).resolve()

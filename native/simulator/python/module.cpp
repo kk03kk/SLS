@@ -421,9 +421,14 @@ py::dict card_dict(const CardInstance &card, const BattleContext *bc = nullptr) 
     result["base_cost"] = static_cast<int>(card.cost);
     result["upgrades"] = card.getUpgradeCount();
     result["special_data"] = card.specialData;
+    if (card.id == CardId::RAMPAGE) result["base_damage"] = 8 + card.specialData;
+    else if (card.id == CardId::RITUAL_DAGGER) result["base_damage"] = card.specialData;
     result["free_to_play_once"] = card.freeToPlayOnce;
     result["retain"] = card.retain;
     result["self_retain"] = card.hasSelfRetain();
+    result["bottled_flame"] = (card.bottleFlags & 1) != 0;
+    result["bottled_lightning"] = (card.bottleFlags & 2) != 0;
+    result["bottled_tornado"] = (card.bottleFlags & 4) != 0;
     result["ethereal"] = card.isEthereal();
     result["has_target"] = card.requiresTarget();
     result["exhausts"] = card.doesExhaust();
@@ -441,9 +446,15 @@ py::dict card_dict(const CardInstance &card, const BattleContext *bc = nullptr) 
     return result;
 }
 
-py::dict public_run_card(const Card &card, const std::string &instance_id) {
-    const CardInstance instance(card);
-    py::dict result;
+py::dict public_run_card(const Card &card, const std::string &instance_id,
+        const Deck *deck = nullptr, int deck_index = -1) {
+    CardInstance instance(card);
+    if (deck != nullptr && deck_index >= 0) {
+        for (int bottle = 0; bottle < 3; ++bottle) {
+            if (deck->bottleIdxs[bottle] == deck_index) instance.bottleFlags |= 1U << bottle;
+        }
+    }
+    auto result = card_dict(instance);
     result["instance_id"] = instance_id;
     result["content_id"] = getCardEnumName(card.id);
     result["upgrades"] = card.getUpgraded();
@@ -738,9 +749,27 @@ py::dict rng_state(const Random &rng) {
     return result;
 }
 
+int persistent_relic_counter(const RelicInstance &relic) {
+    switch (relic.id) {
+        case RelicId::ANCIENT_TEA_SET:
+            return relic.data > 0 ? -2 : -1;
+        case RelicId::LIZARD_TAIL:
+        case RelicId::MAW_BANK:
+            return relic.data > 0 ? -1 : -2;
+        case RelicId::MATRYOSHKA:
+        case RelicId::NLOTHS_HUNGRY_FACE:
+        case RelicId::NEOWS_LAMENT:
+            return relic.data <= 0 ? -2 : relic.data;
+        default: return relic.data;
+    }
+}
+
 int relic_counter(const RelicInstance &relic, const BattleContext &battle) {
     const auto &player = battle.player;
     switch (relic.id) {
+        case RelicId::ANCIENT_TEA_SET:
+            // Consumed at the first turn; persistent state syncs on combat exit.
+            return -1;
         case RelicId::BURNING_BLOOD: return -1;
         case RelicId::CAPTAINS_WHEEL:
             return battle.turn >= 2 ? -1 : battle.turn + 1;
@@ -755,13 +784,15 @@ int relic_counter(const RelicInstance &relic, const BattleContext &battle) {
             return player.attacksPlayedThisTurn % 3;
         case RelicId::LETTER_OPENER: return player.skillsPlayedThisTurn % 3;
         // Native uses one as the active sentinel; stock exposes a neutral
-        // zero counter until the bank is spent, then -2.
-        case RelicId::MAW_BANK: return relic.data == -2 ? -2 : 0;
+        // -1 counter until the bank is spent, then -2.
+        case RelicId::MAW_BANK: return persistent_relic_counter(relic);
+        case RelicId::LIZARD_TAIL:
+            return player.hasRelic<RelicId::LIZARD_TAIL>() ? -1 : -2;
         // Stock decrements Neow's Lament as the battle begins, before the
         // first policy-visible combat boundary. GameContext keeps the
         // pre-battle value until BattleContext::updateRelicsOnExit, so project
         // the active value here without changing checkpoint/gameplay state.
-        case RelicId::NEOWS_LAMENT: return std::max(0, relic.data - 1);
+        case RelicId::NEOWS_LAMENT: return relic.data > 1 ? relic.data - 1 : -2;
         case RelicId::NUNCHAKU: return player.nunchakuCounter;
         // Native uses -1 internally while the tenth-attack power is armed;
         // stock keeps the relic's policy-visible counter at 9 until that
@@ -773,7 +804,7 @@ int relic_counter(const RelicInstance &relic, const BattleContext &battle) {
         // based at policy boundaries.
         case RelicId::STONE_CALENDAR: return battle.turn + 1;
         case RelicId::SUNDIAL: return player.sundialCounter;
-        default: return relic.data;
+        default: return persistent_relic_counter(relic);
     }
 }
 
@@ -939,13 +970,13 @@ py::dict public_inventory_state(
         // active combat value so the public FullRun boundary matches Original.
         value["counter"] = battle != nullptr
             ? relic_counter(relic, *battle)
-            : relic.data;
+            : persistent_relic_counter(relic);
         relics.append(value);
     }
     result["relics"] = relics;
     py::list deck;
     for (std::size_t i = 0; i < gc.deck.cards.size(); ++i) {
-        deck.append(public_run_card(gc.deck.cards[i], "deck:" + std::to_string(i)));
+        deck.append(public_run_card(gc.deck.cards[i], "deck:" + std::to_string(i), &gc.deck, i));
     }
     result["deck"] = deck;
     return result;
@@ -1166,10 +1197,8 @@ py::dict public_screen_state(const GameContext &gc) {
         py::list options;
         for (int index = 0; index < gc.info.toSelectCards.size(); ++index) {
             const auto &option = gc.info.toSelectCards[index];
-            py::dict value;
-            value["instance_id"] = "select-card:" + std::to_string(index);
-            value["content_id"] = getCardEnumName(option.card.id);
-            value["upgrades"] = option.card.getUpgraded();
+            auto value = public_run_card(option.card, "select-card:" + std::to_string(index),
+                &gc.deck, option.deckIdx);
             value["deck_index"] = option.deckIdx;
             options.append(value);
         }
@@ -1180,9 +1209,8 @@ py::dict public_screen_state(const GameContext &gc) {
         for (int group = 0; group < rewards.cardRewardCount; ++group) {
             py::list cards;
             for (const auto &card : rewards.cardRewards[group]) {
-                py::dict value;
-                value["content_id"] = getCardEnumName(card.id);
-                value["upgrades"] = card.getUpgraded();
+                auto value = public_run_card(card, "reward-card:" + std::to_string(group)
+                    + ":" + std::to_string(cards.size()));
                 cards.append(value);
             }
             card_rewards.append(cards);
@@ -1207,9 +1235,7 @@ py::dict public_screen_state(const GameContext &gc) {
         const auto &shop = gc.info.shop;
         py::list cards;
         for (const auto &card : shop.cards) {
-            py::dict value;
-            value["content_id"] = getCardEnumName(card.id);
-            value["upgrades"] = card.getUpgraded();
+            auto value = public_run_card(card, "shop-card:" + std::to_string(cards.size()));
             cards.append(value);
         }
         result["cards"] = cards;
@@ -3106,6 +3132,11 @@ public:
                     multi_select_indices_.push_back(value.cast<int>());
                 }
             }
+            if (multi_select_indices_.empty()) {
+                for (int index = 0; index < 10; ++index) {
+                    if (multi_select_bits_ & (1U << index)) multi_select_indices_.push_back(index);
+                }
+            }
         } else {
             multi_select_bits_ = 0;
             multi_select_indices_.clear();
@@ -3169,9 +3200,8 @@ public:
                 selected_count() >= bc_->cardSelectInfo.pickCount) {
                 throw std::invalid_argument("Multi-select card limit reached");
             }
-            if (task == CardSelectTask::LIQUID_MEMORIES_POTION) {
-                multi_select_indices_.push_back(choice_index);
-            } else {
+            multi_select_indices_.push_back(choice_index);
+            if (task != CardSelectTask::LIQUID_MEMORIES_POTION) {
                 multi_select_bits_ |= 1U << choice_index;
             }
             return;
@@ -3219,9 +3249,7 @@ public:
                 throw std::invalid_argument("Liquid Memories requires the full card selection");
             }
             fixed_list<int, 10> selected;
-            auto sorted = multi_select_indices_;
-            std::sort(sorted.begin(), sorted.end());
-            for (const int index : sorted) selected.push_back(index);
+            for (const int index : multi_select_indices_) selected.push_back(index);
             bc_->chooseDiscardToHandCards(selected, true);
             bc_->inputState = InputState::EXECUTING_ACTIONS;
             bc_->executeActions();
@@ -3233,9 +3261,7 @@ public:
             }
             return;
         } else if (kind == "proceed" && multi_select) {
-            action = search::Action(
-                search::ActionType::MULTI_CARD_SELECT,
-                static_cast<int>(multi_select_bits_));
+            action = search::Action::orderedHandSelection(multi_select_indices_);
         } else if (kind == "end_turn") {
             action = search::Action(search::ActionType::END_TURN);
         } else {
@@ -3292,6 +3318,7 @@ public:
             value["id"] = relicIds[static_cast<int>(relic.id)];
             value["name"] = getRelicName(relic.id);
             value["counter"] = relic_counter(relic, *bc_);
+            value["_internal_data"] = relic.data;
             relics.append(value);
         }
         game["relics"] = relics;
@@ -3441,6 +3468,12 @@ private:
         card.specialData = value["special_data"].cast<int>();
         card.freeToPlayOnce = value["free_to_play_once"].cast<bool>();
         card.retain = value["retain"].cast<bool>();
+        const char *bottle_keys[] = {"bottled_flame", "bottled_lightning", "bottled_tornado"};
+        for (int bottle = 0; bottle < 3; ++bottle) {
+            if (value.contains(bottle_keys[bottle]) && value[bottle_keys[bottle]].cast<bool>()) {
+                card.bottleFlags |= 1U << bottle;
+            }
+        }
         return card;
     }
 
@@ -3452,7 +3485,15 @@ private:
             const auto id = parse_relic(value["id"].cast<std::string>());
             const int counter = value.contains("counter")
                 ? value["counter"].cast<int>() : -1;
-            gc_->relics.add(RelicInstance{id, counter});
+            int data = counter;
+            if (value.contains("_internal_data")) {
+                data = value["_internal_data"].cast<int>();
+            } else if (id == RelicId::LIZARD_TAIL || id == RelicId::MAW_BANK) {
+                data = counter == -2 ? 0 : counter == -1 ? 1 : counter;
+            } else if (id == RelicId::ANCIENT_TEA_SET) {
+                data = counter == -2 ? 1 : 0;
+            }
+            gc_->relics.add(RelicInstance{id, data});
         }
     }
 

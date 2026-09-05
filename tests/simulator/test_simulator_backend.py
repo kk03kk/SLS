@@ -443,7 +443,8 @@ def test_checkpoint_restore_rederives_legal_actions() -> None:
     assert restored_decision.actions == expected_actions
 
 
-def test_optional_multi_select_checkpoint_preserves_pending_cards() -> None:
+@pytest.mark.parametrize("selected", [(0,), (1, 0)])
+def test_optional_multi_select_checkpoint_preserves_pending_cards(selected) -> None:
     pytest.importorskip("sls.backends.simulator.native", exc_type=ImportError)
     from sls.backends.simulator import IRONCLAD_A0_HEART, SimulatorBackend
 
@@ -461,12 +462,15 @@ def test_optional_multi_select_checkpoint_preserves_pending_cards() -> None:
     assert [action.kind for action in decision.actions] == [
         ActionKind.SELECT_CARD, ActionKind.SELECT_CARD, ActionKind.CONFIRM,
     ]
-    decision = simulator.step(decision.actions[0]).decision
-    assert [action.kind for action in decision.actions] == [
-        ActionKind.SELECT_CARD, ActionKind.CONFIRM,
-    ]
+    for index in selected:
+        decision = simulator.step(next(
+            action for action in decision.actions if action.subject_id == f"CHOICE:{index}"
+        )).decision
+    assert [action.kind for action in decision.actions] == (
+        [ActionKind.SELECT_CARD] * (2 - len(selected)) + [ActionKind.CONFIRM]
+    )
     checkpoint = json.loads(json.dumps(simulator.checkpoint()))
-    assert checkpoint["_policy_multi_selection"] == [0]
+    assert checkpoint["_policy_multi_selection"] == list(selected)
     restored = SimulatorBackend(IRONCLAD_A0_HEART)
     restored_decision = restored.load_checkpoint(checkpoint)
     assert restored_decision == decision

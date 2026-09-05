@@ -1,0 +1,304 @@
+{
+  "schema": "sls-independent-repository-audit-20260905",
+  "git_commit": "6aeaa9f6c5fda8c8e1b6479b54af440e4bf92f51",
+  "working_tree_status": [
+    " M README.md",
+    " M docs/architecture.md",
+    " M docs/repository-map.md",
+    " M model/README.md",
+    " M src/sls/rl/evaluate.py",
+    " M tests/rl/test_evaluation_semantics.py",
+    " M tools/train_full_run.py",
+    "?? AGENTS.md",
+    "?? docs/audits/",
+    "?? tests/test_training_entrypoint_audit.py"
+  ],
+  "inputs": {
+    "D:\\SLS\\runs\\9m\\checkpoint-steps-000009007104.pt": "6c692e57e105741246333449f505246bca6b9a9e505d5823b6079cf970d3ebe6",
+    "D:\\SLS\\runs\\9m\\sls-train-820787.out": "b578440ee8a485c7c531418e656ae988c2638aef0f61fe2cb16f37a47b5eef94",
+    "D:\\SLS\\runs\\9m\\sls-train-820787.err": "cde705947a4ffa892bfe08eae2574b515e3e228ad7f449ef7c449cb7a63b09e3",
+    "D:\\SLS\\local\\external\\original-game\\desktop-1.0.jar": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673"
+  },
+  "native_source_sha256": "68aad8e2cbf65eb6c91221956d53c52353bab123996a42b4cba3b65c3552dba9",
+  "checkpoint_schema": "sls-full-run-ppo-v5",
+  "contract": {
+    "model": {
+      "embedding_dim": 128,
+      "transformer_layers": 4,
+      "attention_heads": 4,
+      "feedforward_dim": 256,
+      "recurrent_hidden_dim": 256,
+      "recurrent_layers": 1,
+      "dropout": 0.0,
+      "architecture": "sls-recurrent-relational-policy-v5",
+      "encoding_schema": "sls-policy-input-v3",
+      "vocabulary_hash": "b2d70dce56bb325046e906f9028b2b17d128403f211bf66b238b5491d3eee437"
+    },
+    "ppo": {
+      "rollout_steps": 256,
+      "recurrent_sequence_length": 64,
+      "minibatch_sequences": 16,
+      "learning_rate": 0.00025,
+      "gamma": 1.0,
+      "gae_lambda": 0.98,
+      "clip_ratio": 0.2,
+      "value_coefficient": 0.5,
+      "entropy_coefficient": 0.02,
+      "entropy_final": 0.002,
+      "entropy_decay_steps": 40000000,
+      "target_kl": 0.02,
+      "value_clip_ratio": 0.2,
+      "max_gradient_norm": 0.5,
+      "epochs": 2,
+      "potential_shaping": true,
+      "potential_scale": 0.2,
+      "failure_progress_scale": 0.8,
+      "reward_schema": "sls-curriculum-progress-v3",
+      "episode_limit_schema": "sls-fullrun-episode-limit-v2",
+      "max_episode_steps": 4096,
+      "max_boundary_visits": 4,
+      "limit_failure_reward": -1.0
+    },
+    "profile": {
+      "profile_id": "IRONCLAD_A0_FULLRUN",
+      "character_id": "IRONCLAD",
+      "ascension": 0,
+      "horizon": 5,
+      "start_distribution": "NATURAL_RUN_START",
+      "version": 3
+    },
+    "curriculum_version": 3,
+    "workers": 48,
+    "worker_shards": 16,
+    "encoding_schema": "sls-policy-input-v3",
+    "vocabulary_sha256": "b2d70dce56bb325046e906f9028b2b17d128403f211bf66b238b5491d3eee437",
+    "content_scope_id": "sls-ironclad-a0-fullrun-content-v2",
+    "content_scope_sha256": "1d39119aca1f1f8b59590a8509a2dbc3c3324ca6a13d8f65363764a9af78bddf",
+    "native_source_sha256": "68aad8e2cbf65eb6c91221956d53c52353bab123996a42b4cba3b65c3552dba9",
+    "runtime": {
+      "python_cache_tag": "cpython-312",
+      "torch": "2.6.0+cu124",
+      "cuda": "12.4",
+      "cudnn": 90100,
+      "cuda_device_count": 1,
+      "cuda_device": "NVIDIA A100-PCIE-40GB",
+      "deterministic_algorithms": true
+    },
+    "simulator_only": true,
+    "git_commit": "6aeaa9f6c5fda8c8e1b6479b54af440e4bf92f51",
+    "training_config_sha256": "785bc3d4dca1b7bf7574c034c73007e7db4055f8608eb1974f48d212fb470f93",
+    "training_seed_limit": 3000000000000
+  },
+  "trainer": {
+    "update": 733,
+    "environment_steps": 9007104,
+    "episodes": 45083,
+    "next_seed": 10045227,
+    "termination_counts": {
+      "success": 15155,
+      "death": 29928,
+      "backend_truncated": 0,
+      "step_limit": 0,
+      "cycle_limit": 0
+    }
+  },
+  "model_finite": true,
+  "optimizer_finite": true,
+  "recurrent_memory_finite": true,
+  "inventory_groups": {
+    ".gitattributes": 1,
+    ".github": 1,
+    ".gitignore": 1,
+    "README.md": 1,
+    "configs": 3,
+    "decompiled": 2,
+    "docs": 6,
+    "model": 1,
+    "native": 85,
+    "pyproject.toml": 1,
+    "requirements": 2,
+    "src": 58,
+    "tests": 50,
+    "tools": 30
+  },
+  "probes": {
+    "power_owner_different_but_all_encoded_tensors_equal": true,
+    "ritual_dagger_different_damage_but_equal_public_cards": true,
+    "blood_for_blood": {
+      "before": {
+        "id": "BLOOD_FOR_BLOOD",
+        "name": "Blood for Blood",
+        "uuid": "2",
+        "cost": 3,
+        "base_cost": 3,
+        "upgrades": 0,
+        "special_data": 0,
+        "free_to_play_once": false,
+        "retain": false,
+        "self_retain": false,
+        "ethereal": false,
+        "has_target": true,
+        "exhausts": false,
+        "is_playable": true,
+        "playable_targets": [
+          0
+        ]
+      },
+      "after": {
+        "id": "BLOOD_FOR_BLOOD",
+        "name": "Blood for Blood",
+        "uuid": "2",
+        "cost": 3,
+        "base_cost": 3,
+        "upgrades": 1,
+        "special_data": 0,
+        "free_to_play_once": false,
+        "retain": false,
+        "self_retain": false,
+        "ethereal": false,
+        "has_target": true,
+        "exhausts": false,
+        "is_playable": true,
+        "playable_targets": [
+          0
+        ]
+      },
+      "stock_expected_upgraded_cost": 2
+    }
+  },
+  "verification": {
+    "baseline_existing_tests": 326,
+    "baseline_new_regressions_failed": 7,
+    "final_tests_passed": 335,
+    "ruff": "PASS",
+    "diff_check": "PASS",
+    "cuda_9m_evaluation_run": false,
+    "original_game_run": false,
+    "worker_checks": 48,
+    "all_worker_checks_pass": true
+  },
+  "log": {
+    "updates": 194,
+    "update_gaps": [],
+    "non_finite": [],
+    "non_json_lines": [],
+    "termination_totals": {
+      "terminations_backend_truncated": 0.0,
+      "terminations_cycle_limit": 0.0,
+      "terminations_death": 8718.0,
+      "terminations_step_limit": 0.0,
+      "terminations_success": 4.0
+    },
+    "epochs_histogram": {
+      "2.0": 186,
+      "1.0": 8
+    },
+    "kl_flagged_updates": 122.0,
+    "means": {
+      "entropy": 0.3296059014026037,
+      "approx_kl_final": 0.02143208704232434,
+      "decisions_per_second": 77.01866857121804,
+      "value_explained_variance": 0.5578493829240504
+    },
+    "evaluations": [
+      {
+        "line": 56,
+        "environment_steps": 7004160,
+        "kind": "evaluation",
+        "episodes": 1000,
+        "successes": 2,
+        "success_rate": 0.002,
+        "reached_act2": 751,
+        "reached_act3": 87,
+        "median_failure_floor": 28.0,
+        "step_limits": 0,
+        "cycle_limits": 0,
+        "backend_errors": 0
+      },
+      {
+        "line": 114,
+        "environment_steps": 7507968,
+        "kind": "diagnostic_evaluation",
+        "episodes": 256,
+        "successes": 1,
+        "success_rate": 0.00390625,
+        "reached_act2": 176,
+        "reached_act3": 19,
+        "median_failure_floor": 24,
+        "step_limits": 0,
+        "cycle_limits": 0,
+        "backend_errors": 0
+      },
+      {
+        "line": 225,
+        "environment_steps": 8011776,
+        "kind": "evaluation",
+        "episodes": 1000,
+        "successes": 0,
+        "success_rate": 0.0,
+        "reached_act2": 720,
+        "reached_act3": 66,
+        "median_failure_floor": 25.0,
+        "step_limits": 0,
+        "cycle_limits": 0,
+        "backend_errors": 0
+      },
+      {
+        "line": 225,
+        "environment_steps": 8011776,
+        "kind": "diagnostic_evaluation",
+        "episodes": 256,
+        "successes": 0,
+        "success_rate": 0.0,
+        "reached_act2": 185,
+        "reached_act3": 13,
+        "median_failure_floor": 25.0,
+        "step_limits": 0,
+        "cycle_limits": 0,
+        "backend_errors": 0
+      },
+      {
+        "line": 281,
+        "environment_steps": 8503296,
+        "kind": "diagnostic_evaluation",
+        "episodes": 256,
+        "successes": 0,
+        "success_rate": 0.0,
+        "reached_act2": 154,
+        "reached_act3": 9,
+        "median_failure_floor": 23.0,
+        "step_limits": 0,
+        "cycle_limits": 0,
+        "backend_errors": 0
+      },
+      {
+        "line": 398,
+        "environment_steps": 9007104,
+        "kind": "evaluation",
+        "episodes": 1000,
+        "successes": 2,
+        "success_rate": 0.002,
+        "reached_act2": 732,
+        "reached_act3": 71,
+        "median_failure_floor": 25.0,
+        "step_limits": 0,
+        "cycle_limits": 0,
+        "backend_errors": 0
+      },
+      {
+        "line": 398,
+        "environment_steps": 9007104,
+        "kind": "diagnostic_evaluation",
+        "episodes": 256,
+        "successes": 0,
+        "success_rate": 0.0,
+        "reached_act2": 188,
+        "reached_act3": 27,
+        "median_failure_floor": 25.0,
+        "step_limits": 0,
+        "cycle_limits": 0,
+        "backend_errors": 0
+      }
+    ]
+  }
+}

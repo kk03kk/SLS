@@ -53,12 +53,12 @@ void CardManager::init(const sts::GameContext &gc, BattleContext &bc) {
         const int deckIdx = idxs[i];
         const auto &deckCard = gc.deck.cards[deckIdx];
 
-        if (isInnateMemo[i]) {
-            createDeckCardInstanceInDrawPile(deckCard, deckIdx, innateIdx);
-            ++innateIdx;
-        } else {
-            createDeckCardInstanceInDrawPile(deckCard, deckIdx, normalIdx);
-            ++normalIdx;
+        const int drawIdx = isInnateMemo[i] ? innateIdx++ : normalIdx++;
+        createDeckCardInstanceInDrawPile(deckCard, deckIdx, drawIdx);
+        for (int bottle = 0; bottle < 3; ++bottle) {
+            if (gc.deck.bottleIdxs[bottle] == deckIdx) {
+                drawPile[drawIdx].bottleFlags |= 1U << bottle;
+            }
         }
     }
 

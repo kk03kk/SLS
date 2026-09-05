@@ -59,6 +59,7 @@ def test_nus_command_matrix(
             str((root / "local" / "runs" / "evaluations" / "latest-act1-current-sim-1000.json").resolve()),
             "--profile", "IRONCLAD_A0_ACT1", "--episodes", "1000",
             "--seed-start", "3000000000000", "--device", "cuda",
+            "--environment-shards", "16",
         ]
     elif stage is not None:
         expected += [
@@ -121,3 +122,19 @@ def test_pilot_forwards_explicit_environment_migration(tmp_path: Path) -> None:
     args = _parser().parse_args(["pilot", "--resume", "environment-migration"])
     wrapped = _wrapped(build_sbatch_command(args, root=tmp_path / "SLS"))
     assert wrapped[-2:] == ["--resume", "environment-migration"]
+
+
+def test_model_warm_start_submission_requires_source_and_config(tmp_path: Path) -> None:
+    args = _parser().parse_args(["warm-start"])
+    with pytest.raises(ValueError, match="requires"):
+        build_sbatch_command(args)
+    args = _parser().parse_args(["warm-start", "--checkpoint", "ten.pt", "--config", "fifteen.toml"])
+    wrapped = _wrapped(build_sbatch_command(args, root=tmp_path))
+    assert "--source" in wrapped and "--config" in wrapped
+    assert wrapped[1].endswith("prepare_model_warm_start.py")
+
+
+def test_evaluation_can_explicitly_select_fullrun(tmp_path: Path) -> None:
+    args = _parser().parse_args(["evaluate", "--evaluation-profile", "IRONCLAD_A0_FULLRUN"])
+    wrapped = _wrapped(build_sbatch_command(args, root=tmp_path))
+    assert wrapped[wrapped.index("--profile") + 1] == "IRONCLAD_A0_FULLRUN"

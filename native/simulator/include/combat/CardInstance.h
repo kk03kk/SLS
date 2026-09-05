@@ -34,6 +34,7 @@ namespace sts {
         bool upgraded = false;
         bool freeToPlayOnce = false;
         bool retain = false;
+        std::uint8_t bottleFlags = 0;
 
         CardInstance() = default;
         CardInstance(CardId id, bool upgraded=false);
