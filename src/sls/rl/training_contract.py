@@ -130,8 +130,27 @@ def validate_training_sources(report: dict[str, object], *, root: Path = ROOT) -
     for transition in transitions:
         if (transition.get("from_source_tree_sha256") == legacy
                 and transition.get("to_training_validation_sha256") == current):
+            required_commit = transition.get("from_git_commit")
+            if required_commit is not None:
+                report_git = report.get("git") or {}
+                if (report_git.get("commit") != required_commit
+                        or report_git.get("dirty") is not False):
+                    continue
             return "reviewed-transition: " + str(transition["reason"])
-    raise ValueError("training implementation changed after validation; revalidate or review the code transition")
+    raise ValueError(
+        "training validation evidence does not match current sources or a reviewed transition: "
+        + json.dumps({
+            "reported_source_tree_sha256": legacy,
+            "reported_training_validation_sha256": report.get("training_validation_sha256"),
+            "reported_git": report.get("git"),
+            "current_training_validation_sha256": current,
+            "known_old_sources_for_current_code": [
+                item.get("from_source_tree_sha256") for item in transitions
+                if item.get("to_training_validation_sha256") == current
+            ],
+        }, sort_keys=True)
+        + "; run tools/check_training_sources.py on the login node before submitting another job"
+    )
 
 
 def native_artifact() -> dict[str, str] | None:

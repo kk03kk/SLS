@@ -1,5 +1,43 @@
 # Training contracts：job 821775 恢复审查
 
+## job 821880：真实服务器验证摘要修正
+
+821880 被源码验证复用门槛拒绝，尚未进入checkpoint恢复、baseline或update。
+已通过用户在xlogin读取的实际manifest确认：
+
+- 服务器旧 `source_tree_sha256` 为 `8be318932c332ad8a7fba2eb7408b7ed80623176ace76636aea1ac0ec530c1e2`。
+- 旧报告来自干净的 `8a34674fe185cbb77c228d129df8993386675305` 提交，没有新式训练实现摘要。
+- 服务器当前实现摘要 `9e524657…` 与上一版批准的目标完全相同。
+
+上一修复错误地只登记了本地CPU报告的 `4e7938…` 旧摘要，未登记实际服务器报告。
+这是证据映射遗漏，不能据此认定服务器PPO/环境发生变化。旧算法也包含安装生成文件，
+本地没有egg-info；这解释了一种可能的跨环境摘要差异，但没有逐文件服务器证据时不宣称
+已确认具体是哪一个文件导致不同。
+
+现在额外登记真实服务器报告，绑定其旧摘要、干净Git提交和本次修订后的准确目标摘要。
+本次代码只增加报告匹配条件和错误诊断，没有改变执行语义；不修改旧manifest或checkpoint。
+已有preflight、benchmark、warm-start可以复用。未知旧摘要、错误revision或后续相关源码变化
+仍会拒绝。回归测试直接使用以上NUS元数据，不再仅使用本地生成的合成摘要测试。
+
+更新代码后，在xlogin先用下面的纯文件检查确认source gate，再提交。检查不导入Torch/native，
+不加载模型、不分配GPU，不会改写任何训练产物；只有source gate成功才继续提交：
+
+```bash
+cd /home/h/hengzhi/SLS
+git pull --ff-only
+export SLS_PY=/home/h/hengzhi/venvs/sls/bin/python
+export CUBLAS_WORKSPACE_CONFIG=:4096:8
+$SLS_PY tools/check_training_sources.py && \
+$SLS_PY tools/submit_slurm.py train --python "$SLS_PY" \
+  --config configs/train/ironclad_a0_fullrun_15m.toml \
+  --resume auto --partition gpu-long --time 2-00:00:00
+```
+
+`check_training_sources.py`只表示源码验证记录可复用；正式入口其余native、checkpoint、
+runtime、identity和baseline门槛保持不变。
+
+## job 821775 审查记录
+
 基于当前实现及用户提供的失败信息：821775 运行8秒，FAILED / 1:0，
 在 baseline 和 update 前因 `runtime.cuda_device` 不同被拒绝。
 源设备为 `NVIDIA A100 80GB PCIe MIG 3g.40gb`，目标为 `NVIDIA A100-PCIE-40GB`。

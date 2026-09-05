@@ -1,8 +1,15 @@
 [
   {
     "from_source_tree_sha256": "4e7938b40612b42fc29dba0e3c194d09c87f579f15fe2e5cc7c610d46108bb34",
-    "to_training_validation_sha256": "9e52465706d732a7d4bc06881c2c4d735f54651d68eab2b02ec8ec90780148eb",
+    "to_training_validation_sha256": "9434d6002559ee138421d914f4bfa6ffcec3e5819521dd66f025acee76a32724",
     "reason": "Reviewed job 821775 recovery: leaf-level hardware rebind and validation-gate corrections only; model, observation, native environment, PPO update/reward and production precision unchanged. Legacy numerical metadata is unknown and recorded as such. No checkpoint state reset or migration replay.",
+    "review": "docs/training-runtime-contracts.md"
+  },
+  {
+    "from_source_tree_sha256": "8be318932c332ad8a7fba2eb7408b7ed80623176ace76636aea1ac0ec530c1e2",
+    "from_git_commit": "8a34674fe185cbb77c228d129df8993386675305",
+    "to_training_validation_sha256": "9434d6002559ee138421d914f4bfa6ffcec3e5819521dd66f025acee76a32724",
+    "reason": "Actual NUS production warm-start report supplied after job 821880: clean 8a34674 source revision. Same reviewed runtime/gate fix as the local report, plus source-evidence diagnostics. Model, native, PPO, configuration and production precision remain unchanged; retain original validated checkpoints and native-binary gate.",
     "review": "docs/training-runtime-contracts.md"
   }
 ]
