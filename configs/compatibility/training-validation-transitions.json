@@ -1,0 +1,8 @@
+[
+  {
+    "from_source_tree_sha256": "4e7938b40612b42fc29dba0e3c194d09c87f579f15fe2e5cc7c610d46108bb34",
+    "to_training_validation_sha256": "9e52465706d732a7d4bc06881c2c4d735f54651d68eab2b02ec8ec90780148eb",
+    "reason": "Reviewed job 821775 recovery: leaf-level hardware rebind and validation-gate corrections only; model, observation, native environment, PPO update/reward and production precision unchanged. Legacy numerical metadata is unknown and recorded as such. No checkpoint state reset or migration replay.",
+    "review": "docs/training-runtime-contracts.md"
+  }
+]

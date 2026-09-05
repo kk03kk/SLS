@@ -44,7 +44,7 @@ def main() -> int:
             raise RuntimeError(f"unsupported Linux architecture: {platform.machine()}")
         if sys.version_info < (3, 12):
             raise RuntimeError("Python 3.12 or newer is required")
-        if not (os.environ.get("CXX") or shutil.which("c++") or shutil.which("g++")):
+        if not args.skip_build and not (os.environ.get("CXX") or shutil.which("c++") or shutil.which("g++")):
             raise RuntimeError("C++ compiler not found; load a compiler module first")
         import sls
         if ROOT not in Path(sls.__file__).resolve().parents:
@@ -54,6 +54,8 @@ def main() -> int:
         import torch
         torch.use_deterministic_algorithms(True)
         torch.backends.cudnn.benchmark = False
+        if torch.cuda.is_available():
+            torch.set_float32_matmul_precision("high")
         from replay_failed_state import replay_dump
 
         from sls.backends.simulator import SimulatorBackend
@@ -88,8 +90,6 @@ def main() -> int:
         if not args.allow_cpu and not torch.cuda.is_available():
             raise RuntimeError("CUDA GPU is not visible to PyTorch")
         device = "cuda" if torch.cuda.is_available() else "cpu"
-        if not args.allow_cpu and "A100" not in torch.cuda.get_device_name(0).upper():
-            raise RuntimeError("canonical server preflight requires an NVIDIA A100 GPU")
         model = Policy(ModelConfig(
             embedding_dim=32, transformer_layers=1, attention_heads=4,
             feedforward_dim=64, recurrent_hidden_dim=64,

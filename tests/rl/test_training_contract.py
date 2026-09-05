@@ -21,6 +21,7 @@ class _UnavailableCuda:
 
 
 class _UnavailableCudnn:
+    benchmark = False
     @staticmethod
     def version() -> int:
         raise AssertionError("CPU-only provenance must not initialize cuDNN")
@@ -33,6 +34,7 @@ def test_cpu_runtime_contract_does_not_initialize_cuda_libraries() -> None:
         cuda=_UnavailableCuda(),
         backends=SimpleNamespace(cudnn=_UnavailableCudnn()),
         are_deterministic_algorithms_enabled=lambda: True,
+        get_float32_matmul_precision=lambda: "highest",
     )
 
     contract = runtime_contract(torch)

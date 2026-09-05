@@ -130,6 +130,19 @@ def test_completed_stage_rejected_without_overwriting_manifest(fake_run):
     assert path.read_bytes() == before
 
 
+@pytest.mark.parametrize("setting", ["evaluation_max_steps = 9", "deterministic = false",
+                                     "evaluation_max_steps = 5\ndevice = 'cuda'"])
+def test_legacy_identity_cannot_hide_evaluation_or_determinism_change(fake_run, setting):
+    path, _, saved = fake_run
+    # Current fake run has max_steps=5 and deterministic defaults to true.
+    (path.parent / "training-config.toml").write_text(
+        "[run]\n" + setting + "\n", encoding="utf-8",
+    )
+    with pytest.raises(ValueError, match="validated training configuration"):
+        cli.main()
+    assert not saved
+
+
 def test_diagnostic_signal_saves_latest_and_marks_interrupted(fake_run, monkeypatch):
     path, controller, saved = fake_run
     calls = []
@@ -146,3 +159,19 @@ def test_diagnostic_signal_saves_latest_and_marks_interrupted(fake_run, monkeypa
     assert json.loads(path.read_text())["status"] == "INTERRUPTED"
     record = json.loads((path.parent / "stages/train/metrics.jsonl").read_text())
     assert record["diagnostic_evaluation_interrupted"] is True
+
+
+def test_runtime_rebind_manifest_does_not_claim_cross_device_exactness(fake_run, monkeypatch):
+    path, controller, _ = fake_run
+    controller.requested = True
+    monkeypatch.setattr(cli, "_load_exact_or_runtime_rebind", lambda *a: "runtime-rebind")
+    cli.PPOTrainer.checkpoint_rebind_differences = [{"path": "runtime.cuda_device"}]
+    monkeypatch.setattr(cli.torch, "load", lambda *a, **kw: {
+        "contract": {"profile": IRONCLAD_A0_FULLRUN, "git_commit": "old",
+                     "native_source_sha256": "native", "runtime": {"cuda_device": "MIG"}},
+    })
+    assert cli.main() == 0
+    record = json.loads(path.read_text())["runtime_rebinds"][0]
+    assert record["bitwise_replay_guaranteed"] is False
+    assert record["old_runtime"]["cuda_device"] == "MIG"
+    assert record["differences"] == [{"path": "runtime.cuda_device"}]

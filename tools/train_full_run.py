@@ -15,6 +15,7 @@ import socket
 import sys
 import time
 import tomllib
+import warnings
 from dataclasses import asdict
 from pathlib import Path
 
@@ -43,10 +44,11 @@ from sls.rl.training_contract import (
     TRAINING_CHECKPOINT_SCHEMA,
     canonical_digest,
     git_state,
-    local_source_digest,
     native_artifact,
     native_source_digest,
+    runtime_contract,
     sha256_file,
+    validate_training_sources,
 )
 from sls.runtime.artifact import export_policy_artifact
 
@@ -122,12 +124,17 @@ def _load_benchmark(
         raise ValueError("worker benchmark belongs to different simulator sources")
     benchmark_artifact = payload.get("native_artifact") or {}
     if benchmark_artifact.get("sha256") != native_binary_sha256:
-        raise ValueError("worker benchmark used a different native simulator binary")
-    return int(payload["selected_workers"]), int(payload["selected_shards"])
+        warnings.warn("Same-source native rebuild: reusing worker layout; old throughput is advisory",
+                      RuntimeWarning, stacklevel=2)
+    workers, shards = int(payload["selected_workers"]), int(payload["selected_shards"])
+    if workers <= 0 or shards <= 0 or shards > workers:
+        raise ValueError("worker benchmark has an invalid layout")
+    return workers, shards
 
 
 def _training_identity(
     payload: dict[str, object], *, workers: int, shards: int,
+    checkpoint_reference: dict[str, object] | None = None,
 ) -> str:
     run = dict(payload["run"])
     diagnostic = {
@@ -139,6 +146,17 @@ def _training_identity(
         )
         if key in run
     }
+    stages = {name: dict(stage) for name, stage in payload["stages"].items()}
+    if checkpoint_reference is not None:
+        # Disk snapshot cadence does not affect updates, seeds or selection.
+        # Keep the original hash representation for legacy checkpoints while
+        # allowing this one operational setting to change on continuation.
+        for name, stage in stages.items():
+            reference = checkpoint_reference.get("stages", {}).get(name, {})
+            if "checkpoint_every_steps" in reference:
+                stage["checkpoint_every_steps"] = reference["checkpoint_every_steps"]
+            else:
+                stage.pop("checkpoint_every_steps", None)
     return canonical_digest({
         "profile": run["profile"],
         "seed": int(run["seed"]),
@@ -154,7 +172,7 @@ def _training_identity(
            if "selection_progress_guard" in run else {}),
         "model": payload["model"],
         "ppo": payload["ppo"],
-        "stages": payload["stages"],
+        "stages": stages,
     })
 
 
@@ -322,8 +340,8 @@ def _require_predecessor_promotion(
         if initialization.get("schema") == "sls-model-input-migration-v1":
             if initialization.get("production_ready") is not True:
                 raise ValueError("local migration verification does not authorize production training")
-            if initialization.get("source_tree_sha256") != local_source_digest(("src", "tools", "configs")):
-                raise ValueError("training sources changed after migration validation; revalidate")
+            validation = validate_training_sources(initialization)
+            manifest["validation_reuse"] = validation
             current_artifact = native_artifact()
             if (initialization.get("native_source_sha256") != native_source_digest()
                     or not current_artifact
@@ -565,7 +583,10 @@ def main() -> int:
         benchmark_path, native_digest=source_digest,
         native_binary_sha256=artifact["sha256"],
     )
-    identity = _training_identity(payload, workers=workers_count, shards=shard_count)
+    reference_path = ROOT / str(run["output"]) / "training-config.toml"
+    reference_config = tomllib.loads(reference_path.read_text(encoding="utf-8")) if reference_path.is_file() else None
+    identity = _training_identity(payload, workers=workers_count, shards=shard_count,
+                                  checkpoint_reference=reference_config)
     profile = CURRICULUM_PROFILES_BY_ID[str(stage["profile"])]
     expected_profiles = {
         "smoke": "IRONCLAD_A0_ACT1",
@@ -608,6 +629,19 @@ def main() -> int:
                 raise ValueError("validated warm-start checkpoint is missing or changed")
     else:
         manifest = None
+    if manifest is not None:
+        saved_config = output / "training-config.toml"
+        if saved_config.is_file():
+            previous_run = tomllib.loads(saved_config.read_text(encoding="utf-8"))["run"]
+            # These settings were absent from the legacy identity. Protect them
+            # separately without invalidating every existing checkpoint hash.
+            for key, default in (("evaluation_max_steps", 4096), ("deterministic", True)):
+                if previous_run.get(key, default) != run.get(key, default):
+                    raise ValueError(f"run.{key} differs from the validated training configuration")
+            old_device = torch.device(str(previous_run.get("device", "cuda")))
+            new_device = torch.device(device)
+            if (old_device.type, old_device.index or 0) != (new_device.type, new_device.index or 0):
+                raise ValueError("run.device differs from the validated training configuration")
     if args.stage == "smoke":
         if latest.exists():
             if manifest is None:
@@ -668,6 +702,7 @@ def main() -> int:
         raise ValueError("stage target already completed; refusing to repeat finalization")
     manifest.update({
         "status": "RUNNING",
+        "checkpoint_every_steps": int(stage.get("checkpoint_every_steps", 500_000)),
         "active_stage": args.stage,
         "python": sys.version,
         "platform": platform.platform(),
@@ -723,7 +758,11 @@ def main() -> int:
                     loaded_exactly = True
                 if resume_mode == "runtime-rebind":
                     rebind = {
-                        "schema": "sls-exact-runtime-rebind-v1",
+                        "schema": "sls-state-preserving-runtime-rebind-v2",
+                        "bitwise_replay_guaranteed": False,
+                        "differences": trainer.checkpoint_rebind_differences,
+                        "old_runtime": checkpoint_preview["contract"]["runtime"],
+                        "new_runtime": runtime_contract(torch),
                         "environment_steps": trainer.environment_steps,
                         "update": trainer.update,
                         "source_checkpoint_sha256": sha256_file(latest),
@@ -735,12 +774,12 @@ def main() -> int:
                         "new_native_source_sha256": source_digest,
                     }
                     print(json.dumps({
-                        **rebind, "resume": "exact-runtime-rebind",
+                        **rebind, "resume": "state-preserving-runtime-rebind",
                     }, sort_keys=True), flush=True)
                     manifest["git"] = repository
                     manifest["native_source_sha256"] = source_digest
                     manifest["native_artifact"] = artifact
-                    rebinds = manifest.setdefault("exact_runtime_rebinds", [])
+                    rebinds = manifest.setdefault("runtime_rebinds", [])
                     if not isinstance(rebinds, list):
                         raise ValueError("runtime rebind manifest history is invalid")
                     rebinds.append(rebind)

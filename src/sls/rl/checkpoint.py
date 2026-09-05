@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import os
 import random
+import warnings
 from dataclasses import asdict, is_dataclass
 from enum import Enum
 from pathlib import Path
@@ -19,6 +20,11 @@ from sls.rl.ppo import PPOTrainer
 from sls.rl.training_contract import TRAINING_CHECKPOINT_SCHEMA, runtime_contract
 
 CHECKPOINT_SCHEMA = TRAINING_CHECKPOINT_SCHEMA
+RUNTIME_REBIND_FIELDS = frozenset({"git_commit", "runtime.cuda_device"})
+LEGACY_UNRECORDED_RUNTIME_FIELDS = frozenset({
+    "runtime.float32_matmul_precision", "runtime.cudnn_benchmark",
+    "runtime.cublas_workspace_config",
+})
 
 
 class CheckpointContractMismatch(ValueError):
@@ -149,7 +155,14 @@ def checkpoint_contract_diff(
             "path": path,
             "checkpoint": "<MISSING>" if actual is missing else actual,
             "current": "<MISSING>" if expected is missing else expected,
-            "runtime_rebind_allowed": top_field in allowed_runtime_rebind_fields,
+            "runtime_rebind_allowed": (
+                (top_field in allowed_runtime_rebind_fields or path in allowed_runtime_rebind_fields)
+                and actual is not missing and expected is not missing
+            ) or (
+                bool(allowed_runtime_rebind_fields)
+                and path in LEGACY_UNRECORDED_RUNTIME_FIELDS
+                and actual is missing and expected is not missing
+            ),
         })
 
     for key in sorted(set(checkpoint) | set(current)):
@@ -252,6 +265,13 @@ def _load_checkpoint_exact(
     if torch.cuda.is_available() and payload.get("cuda_rng") is not None:
         torch.cuda.set_rng_state_all(payload["cuda_rng"])
     trainer.decisions = trainer.workers.load_checkpoints(payload["environments"])
+    trainer.checkpoint_rebind_differences = differences
+    if differences:
+        warnings.warn(
+            "Checkpoint state preserved with runtime/provenance rebind; cross-runtime bitwise "
+            "replay is not guaranteed: " + json.dumps(differences, sort_keys=True),
+            RuntimeWarning, stacklevel=2,
+        )
     return payload
 
 
@@ -262,17 +282,18 @@ def load_checkpoint(path: str | Path, trainer: PPOTrainer) -> Mapping[str, Any]:
 def load_checkpoint_runtime_rebind(
     path: str | Path, trainer: PPOTrainer,
 ) -> Mapping[str, Any]:
-    """Exactly resume after an explicitly approved code/native rebuild.
+    """Restore all training state across recorded hardware/provenance differences.
 
-    Only source provenance may be rebound. Model, PPO, curriculum, content,
-    encoding, vocabulary, runtime, worker layout, training schedule, all RNG
-    state, recurrent state, and serialized worker environments remain exact.
+    GPU marketing names and Git commits do not define training semantics.
+    Native sources, software stack, deterministic mode, CUDA RNG topology,
+    model, PPO, curriculum, worker layout and training identity remain strict.
+    This preserves state, but makes no cross-device bitwise replay promise.
     """
 
     return _load_checkpoint_exact(
         path,
         trainer,
-        allowed_contract_changes=frozenset({"git_commit", "native_source_sha256"}),
+        allowed_contract_changes=RUNTIME_REBIND_FIELDS,
     )
 
 
@@ -296,15 +317,16 @@ def load_checkpoint_environment_migration(
     if not isinstance(actual, Mapping):
         raise ValueError("checkpoint contract is missing")
     allowed_changes = {
-        "git_commit", "native_source_sha256", "content_scope_id",
+        "git_commit", "native_source_sha256",
         "content_scope_sha256",
         "profile", "curriculum_version", "training_config_sha256",
         "training_seed_limit",
     }
-    incompatible = {
-        key for key in set(actual) | set(expected)
-        if key not in allowed_changes and actual.get(key) != expected.get(key)
-    }
+    differences = checkpoint_contract_diff(
+        actual, expected,
+        allowed_runtime_rebind_fields=frozenset(allowed_changes) | RUNTIME_REBIND_FIELDS,
+    )
+    incompatible = {str(item["path"]) for item in differences if not item["runtime_rebind_allowed"]}
     if incompatible:
         raise ValueError(
             "environment migration checkpoint has incompatible contract fields: "

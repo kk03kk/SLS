@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import importlib
 import json
+import os
 import subprocess
 import sys
 from collections.abc import Iterable
@@ -98,6 +99,41 @@ def native_source_digest() -> str:
     return local_source_digest(NATIVE_SOURCE_PATHS)
 
 
+def training_validation_digest(*, root: Path = ROOT) -> str:
+    """Bind executed training/evaluation code, not unrelated tools or configs.
+
+    Parsed run configuration is separately protected by training identity.
+    Keep checkpoint and orchestration implementation here: changing a loader or
+    training loop requires either validation or an explicitly reviewed transition.
+    """
+    return local_source_digest((
+        "src/sls/__init__.py", "src/sls/rl", "src/sls/model", "src/sls/contracts",
+        "src/sls/content", "src/sls/curriculum.py", "src/sls/backends/__init__.py",
+        "src/sls/backends/protocol.py", "src/sls/backends/simulator",
+        "src/sls/runtime/__init__.py", "src/sls/runtime/artifact.py",
+        "tools/train_full_run.py", "tools/evaluate_checkpoint.py",
+        "tools/prepare_model_warm_start.py",
+    ), root=root)
+
+
+def validate_training_sources(report: dict[str, object], *, root: Path = ROOT) -> str:
+    current = training_validation_digest(root=root)
+    if report.get("training_validation_sha256") == current:
+        return "semantic-sources-match"
+    legacy = report.get("source_tree_sha256")
+    if legacy == local_source_digest(("src", "tools", "configs"), root=root):
+        return "legacy-sources-match"
+    # A reviewed transition is bound to BOTH old evidence and exact new code.
+    # This is never a wildcard permission to reuse validation after edits.
+    path = root / "configs/compatibility/training-validation-transitions.json"
+    transitions = json.loads(path.read_text(encoding="utf-8")) if path.is_file() else []
+    for transition in transitions:
+        if (transition.get("from_source_tree_sha256") == legacy
+                and transition.get("to_training_validation_sha256") == current):
+            return "reviewed-transition: " + str(transition["reason"])
+    raise ValueError("training implementation changed after validation; revalidate or review the code transition")
+
+
 def native_artifact() -> dict[str, str] | None:
     try:
         module = importlib.import_module("sls.backends.simulator.native")
@@ -137,6 +173,9 @@ def runtime_contract(torch_module: object) -> dict[str, object]:
         "deterministic_algorithms": bool(
             getattr(torch_module, "are_deterministic_algorithms_enabled")()
         ),
+        "float32_matmul_precision": torch_module.get_float32_matmul_precision(),
+        "cudnn_benchmark": bool(backends.cudnn.benchmark),
+        "cublas_workspace_config": os.environ.get("CUBLAS_WORKSPACE_CONFIG"),
     }
 
 

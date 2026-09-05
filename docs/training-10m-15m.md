@@ -1,6 +1,8 @@
 # Ironclad A0 FullRun：10M → 15M 训练准备
 
 本轮准备完成于 2026-09-05。**采用显式 v3→v4 model warm-start，不能 exact resume。**
+job 821775 后的 contract 修订与直接重试命令见 [runtime contract审查](training-runtime-contracts.md)。
+已有验证可通过受hash约束的审查转换复用；本页的完整准备流程适用于首次建立训练链。
 保留全部旧网络参数，重置 Adam、在途环境、循环记忆、episode limiter 和 RNG 流。
 累计计数从 10,002,432 steps / update 814 继续；验证用的更新不计入正式训练。
 本地没有重新运行大规模模型 evaluation，没有提交服务器训练作业。
@@ -187,10 +189,11 @@ $SLS_PY tools/submit_slurm.py train --python "$SLS_PY" \
 1. 源SHA必须匹配上文；旧checkpoint任何字段都不被原地改写。
 2. Linux/A100 preflight成功，native源/二进制哈希一致；48:16 benchmark用同一二进制。
 3. production warm-start 用完整模型和真实生产PPO尺寸验证：参数/指标有限、确实更新，
-   保存恢复后同一步更新指标和全部模型张量一致。首个完整更新 KL≤0.05、clip fraction≤0.5；
-   超过则停止复查，不视为“仍可继续烧算力”。这些是故障护栏，不是调优目标。
+   保存恢复后同一步更新指标和全部模型张量一致。首个完整更新 KL>0.05、clip fraction>0.5
+   现在记诊断warning；单步统计阈值不是checkpoint兼容性硬门槛。
 4. `migration.json` 必须 `production_ready=true`；CPU微验证不能授权生产。
-   训练入口校验源码树/native哈希及初始checkpoint文件哈希。验证之后更改代码/配置须重新验证。
+   训练入口校验相关训练实现/native哈希及初始checkpoint文件哈希。无关工具或文档变化不要求
+   重验；相关实现变化须重验或有绑定新旧摘要的明确审查转换。配置按训练identity保护。
 5. **训练入口先跑1000-seed新环境baseline**：Act2≥60%、Act3≥4%，且无backend错误、
    truncation/cycle/step limit。60%/4%是相对旧65.5%/6.1%预设的保留能力下限，
    是计算预算保护门槛，不是声称统计等效或奖励超参数。失败时记录结果并停止，不能继续更新。

@@ -313,7 +313,7 @@ def test_interrupted_act2_training_runtime_rebind_is_an_exact_resume(
     with WorkerPool(IRONCLAD_A0_ACT2, 1) as workers:
         rebound = PPOTrainer(
             Policy(model_config), workers, config, seed=17,
-            native_contract_digest="fixed-native", git_commit="fixed-git",
+            native_contract_digest="act2-native", git_commit="fixed-git",
             training_config_digest="act2-training", training_seed_limit=3 * 10**12,
         )
         previous, mode = _resume_or_migrate_environment(
@@ -371,13 +371,48 @@ def test_runtime_rebind_does_not_relax_policy_or_training_identity(tmp_path: Pat
             item["path"]: item for item in captured.value.differences
         }
         assert differences["git_commit"]["runtime_rebind_allowed"] is True
-        assert differences["native_source_sha256"]["runtime_rebind_allowed"] is True
+        assert differences["native_source_sha256"]["runtime_rebind_allowed"] is False
         assert differences["vocabulary_sha256"] == {
             "path": "vocabulary_sha256",
             "checkpoint": "tampered-vocabulary",
             "current": vocabulary_hash(),
             "runtime_rebind_allowed": False,
         }
+
+
+def test_gpu_name_rebind_preserves_optimizer_rng_workers_and_next_update(tmp_path: Path, monkeypatch) -> None:
+    from sls.rl import checkpoint as checkpoint_module
+
+    latest, _, _, config, model_config = _create_completed_act2_migration(tmp_path)
+    with WorkerPool(IRONCLAD_A0_ACT2, 1) as workers:
+        trainer = PPOTrainer(Policy(model_config), workers, config, seed=17,
+                             native_contract_digest="act2-native", git_commit="act2-git",
+                             training_config_digest="act2-training", training_seed_limit=3 * 10**12)
+        load_checkpoint(latest, trainer)
+        trainer.train_update()  # Populate Adam moments before testing restoration.
+        save_checkpoint(latest, trainer)
+        expected = trainer.train_update()
+        weights = {k: v.clone() for k, v in trainer.model.state_dict().items()}
+        payload = torch.load(latest, weights_only=False, map_location="cpu")
+        payload["contract"]["runtime"]["cuda_device"] = "NVIDIA A100 80GB PCIe MIG 3g.40gb"
+        torch.save(payload, latest)
+        original_runtime = checkpoint_module.runtime_contract
+        monkeypatch.setattr(checkpoint_module, "runtime_contract", lambda module: {
+            **original_runtime(module), "cuda_device": "NVIDIA A100-PCIE-40GB",
+        })
+        with pytest.warns(RuntimeWarning, match="bitwise"):
+            assert _load_exact_or_runtime_rebind(latest, trainer) == "runtime-rebind"
+        assert trainer.environment_steps == payload["trainer"]["environment_steps"]
+        assert trainer.train_update() == expected
+        assert all(torch.equal(v, weights[k]) for k, v in trainer.model.state_dict().items())
+        # A native source mismatch must reject before mutating any learning state.
+        payload["contract"]["native_source_sha256"] = "different-environment"
+        torch.save(payload, latest)
+        steps = trainer.environment_steps
+        with pytest.raises(CheckpointContractMismatch):
+            _load_exact_or_runtime_rebind(latest, trainer)
+        assert trainer.environment_steps == steps
+        assert all(torch.equal(v, weights[k]) for k, v in trainer.model.state_dict().items())
 
 
 def test_synthetic_step_limit_is_a_failure_terminal() -> None:
