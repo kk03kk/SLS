@@ -10,9 +10,11 @@ from pathlib import Path
 from typing import Any
 
 from sls.content import load_content_registry
+from sls.content.event_options import EVENT_NUMERIC_FIELDS
+from sls.content.neow import NEOW_NUMERIC_FIELDS
 from sls.contracts import ActionKind, ScreenType
 
-ENCODING_SCHEMA = "sls-policy-input-v4"
+ENCODING_SCHEMA = "sls-policy-input-v5"
 ENTITY_TYPES = (
     "PLAYER", "RUN", "CARD", "ENEMY", "POWER", "RELIC", "POTION",
     "MAP_NODE", "CHOICE", "REWARD", "SHOP_ITEM", "EVENT_OPTION",
@@ -30,7 +32,7 @@ NUMERIC_FIELDS = (
     "base_damage", "free_to_play_once", "retain", "self_retain",
     "bottled_flame", "bottled_lightning", "bottled_tornado",
     "attempts_remaining",
-    "selected", "selected_order",
+    "selected", "selected_order", *NEOW_NUMERIC_FIELDS, *EVENT_NUMERIC_FIELDS,
 )
 NUMERIC_FIELD_IDS = {name: index for index, name in enumerate(NUMERIC_FIELDS)}
 CATEGORICAL_FIELDS = ("screen", "zone", "intent", "item_type", "source", "visible_boss")
@@ -85,7 +87,7 @@ _CATEGORY_VALUES = {
     "MONSTER", "ELITE", "EVENT", "REST", "SHOP", "TREASURE", "BOSS",
     "BURNING_ELITE", "M", "E", "?", "R", "$", "T", "B",
 }
-VOCABULARY_PATH = Path(__file__).with_name("policy_vocabulary_v4.json")
+VOCABULARY_PATH = Path(__file__).with_name("policy_vocabulary_v5.json")
 _NATIVE_ROOT = Path(__file__).resolve().parents[3] / "native" / "simulator"
 _CONSTANT_HEADERS = _NATIVE_ROOT / "include" / "constants"
 _NATIVE_MODULE = _NATIVE_ROOT / "python" / "module.cpp"

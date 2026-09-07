@@ -25,7 +25,11 @@ def game_payload(choices: list[str]) -> dict:
             "class": "IRONCLAD", "ascension_level": 0, "act": 1, "floor": 0,
             "gold": 99, "current_hp": 80, "max_hp": 80, "deck": [],
             "relics": [], "potions": [], "map": [], "screen_type": "EVENT",
-            "screen_state": {}, "choice_list": choices, "_parity_run": {},
+            "screen_state": {"neow_options": [
+                {"bonus": "HUNDRED_GOLD", "drawback": "NONE"}
+                for _ in choices
+            ]} if len(choices) in {2, 4} else {},
+            "choice_list": choices, "_parity_run": {},
         },
     }
 

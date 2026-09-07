@@ -10,6 +10,8 @@ from sls.content.card_features import (
     public_card_properties,
 )
 from sls.content.energy import canonical_max_energy
+from sls.content.event_options import project_event_options, require_event_details
+from sls.content.neow import neow_properties
 from sls.content.normalize import (
     normalize_card_id,
     normalize_content_id,
@@ -60,6 +62,10 @@ def _event_option_indices(
     phase = str(continuation.get("event_phase") or "")
     if event_id == "GOLDEN_IDOL" and phase == "1":
         return tuple(range(2, 2 + count))
+    if event_id == "FALLING" and phase == "CHOICE" and count == 1 and state.get("event_option_details") == {}:
+        # With no eligible cards stock renders one Leave row at physical 0;
+        # native reserves semantic option 3 for precisely this case.
+        return (3,)
     # CommunicationMod's choice_list removes disabled dialog rows, while the
     # native simulator retains stock's physical event option index.  Oracle's
     # screen_state preserves the full rows, so recover the physical indices
@@ -71,7 +77,11 @@ def _event_option_indices(
         for index, row in enumerate(rows) if not bool(row.get("disabled"))
     )
     if rows and len(enabled) == count:
+        if event_id == "KNOWING_SKULL" and count == 4:
+            return tuple({0: 2, 1: 0, 2: 1, 3: 3}[index] for index in enabled)
         return enabled
+    if event_id == "KNOWING_SKULL" and count == 4:
+        return (2, 0, 1, 3)
     return tuple(range(count))
 
 
@@ -171,6 +181,9 @@ def adapt_original(
 
     actions, commands = _actions(payload, game, combat, screen_state, screen, hand)
     options = _screen_entities(payload, game, combat, screen_state, screen)
+    actions, commands = project_event_options(
+        options, actions, commands, screen_state.get("event_option_details"),
+    )
     if screen is ScreenType.SHOP:
         shop, actions, commands = filter_policy_shop(
             options["shop"], actions, commands,
@@ -795,6 +808,7 @@ def _screen_entities(
             or "EVENT"
         )
         match_slots = _mappings(payload.get("_match_slots"))
+        require_event_details(event_id, state)
         if event_id == "MATCH_AND_KEEP" and match_slots:
             result["event"] = tuple(
                 PublicEntity(
@@ -813,9 +827,19 @@ def _screen_entities(
             tuple(range(len(choices))) if screen is ScreenType.NEOW
             else _event_option_indices(payload, game, state, len(choices))
         )
+        neow_offers = (
+            state.get("neow_options")
+            if screen is ScreenType.NEOW and len(choices) in {2, 4} else None
+        )
+        if screen is ScreenType.NEOW and len(choices) in {2, 4}:
+            if not isinstance(neow_offers, list) or len(neow_offers) != len(choices):
+                raise ValueError("public Neow offers missing; update the observation oracle")
         result["event"] = tuple(
             PublicEntity(
-                f"event-option:{semantic_index}", f"{event_id}:OPTION:{semantic_index}"
+                f"event-option:{semantic_index}", f"{event_id}:OPTION:{semantic_index}",
+                neow_properties(neow_offers[semantic_index]["bonus"],
+                                neow_offers[semantic_index]["drawback"])
+                if neow_offers is not None else (),
             )
             for semantic_index in semantic_indices
         )

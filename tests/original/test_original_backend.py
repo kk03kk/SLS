@@ -41,7 +41,10 @@ def game_payload(choices: list[str]) -> dict:
             "potions": [],
             "map": [],
             "screen_type": "EVENT",
-            "screen_state": {},
+            "screen_state": {"neow_options": [
+                {"bonus": "HUNDRED_GOLD", "drawback": "NONE"}
+                for _ in choices
+            ]} if len(choices) in {2, 4} else {},
             "choice_list": choices,
             "_parity_run": {},
         },

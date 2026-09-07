@@ -1,4 +1,4 @@
-"""Explicit v3 -> v4 parameter transfer; never an exact training resume."""
+"""Explicit legacy input parameter transfer; never an exact training resume."""
 
 from __future__ import annotations
 
@@ -18,17 +18,29 @@ MIGRATION_SCHEMA = "sls-model-input-migration-v1"
 LEGACY_VOCABULARY = Path(__file__).resolve().parents[1] / "model/policy_vocabulary_v3.json"
 
 
-def read_legacy_vocabulary() -> dict[str, Any]:
-    value = json.loads(LEGACY_VOCABULARY.read_text(encoding="utf-8"))
+def read_legacy_vocabulary(version: int = 3) -> dict[str, Any]:
+    if version not in {3, 4}:
+        raise ValueError("unsupported legacy input version")
+    path = LEGACY_VOCABULARY.with_name(f"policy_vocabulary_v{version}.json")
+    value = json.loads(path.read_text(encoding="utf-8"))
     unsigned = dict(value)
     claimed = unsigned.pop("sha256")
     actual = hashlib.sha256(json.dumps(unsigned, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
-    if actual != claimed or value["schema"] != "sls-policy-input-v3":
+    if actual != claimed or value["schema"] != f"sls-policy-input-v{version}":
         raise ValueError("legacy vocabulary provenance is invalid")
     return value
 
 
 def migrate_v3_policy(payload: Mapping[str, Any]) -> tuple[Policy, dict[str, Any]]:
+    return _migrate_policy(payload, version=3)
+
+
+def migrate_v4_policy(payload: Mapping[str, Any]) -> tuple[Policy, dict[str, Any]]:
+    """Preserve the 13M actor/critic/memory weights; zero Neow feature columns."""
+    return _migrate_policy(payload, version=4)
+
+
+def _migrate_policy(payload: Mapping[str, Any], *, version: int) -> tuple[Policy, dict[str, Any]]:
     """Copy every old parameter by semantic field/token, zero new input columns.
 
     Numeric values and presence masks are separate blocks: simply appending
@@ -37,7 +49,7 @@ def migrate_v3_policy(payload: Mapping[str, Any]) -> tuple[Policy, dict[str, Any
     is promised only for the old input subspace, not for the corrected MDP.
     Adam moments and in-flight episode state are deliberately not transferred.
     """
-    old, new = read_legacy_vocabulary(), policy_vocabulary()
+    old, new = read_legacy_vocabulary(version), policy_vocabulary()
     if payload.get("schema") != TRAINING_CHECKPOINT_SCHEMA:
         raise ValueError("unsupported source checkpoint schema")
     contract = payload.get("contract", {})
@@ -46,7 +58,7 @@ def migrate_v3_policy(payload: Mapping[str, Any]) -> tuple[Policy, dict[str, Any
             or contract.get("vocabulary_sha256") != old["sha256"]
             or config.pop("encoding_schema", None) != old["schema"]
             or config.pop("vocabulary_hash", None) != old["sha256"]):
-        raise ValueError("source checkpoint is not the audited v3 input contract")
+        raise ValueError(f"source checkpoint is not the audited v{version} input contract")
     if set(config) != {f.name for f in fields(ModelConfig)}:
         raise ValueError("unsupported model configuration")
     for key in ("categorical_fields", "reference_roles", "screen_groups", "action_types", "entity_types"):

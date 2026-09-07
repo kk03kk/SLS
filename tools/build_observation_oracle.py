@@ -22,7 +22,7 @@ def main() -> int:
     parser.add_argument("--game-libs", type=Path,
                         default=ROOT / "local/external/original-game")
     parser.add_argument("--output", type=Path,
-                        default=ROOT / "local/build/oracle/SpirecommParity-observation-v2.jar")
+                        default=ROOT / "local/build/oracle/SpirecommParity-observation-v4.jar")
     args = parser.parse_args()
     if args.source.resolve() == args.output.resolve():
         parser.error("--output must be a new path, separate from the source Oracle")

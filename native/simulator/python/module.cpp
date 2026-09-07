@@ -1160,7 +1160,85 @@ py::dict shop_state(const Shop &shop) {
 
 py::dict public_screen_state(const GameContext &gc) {
     py::dict result;
-    if (gc.screenState == ScreenState::EVENT_SCREEN && gc.curEvent == Event::GOLDEN_IDOL) {
+    if (gc.screenState == ScreenState::EVENT_SCREEN) {
+        py::dict details;
+        auto subject = [&](int option, const char *zone, int index) {
+            if (index < 0) return;
+            py::dict row;
+            row["subject_id"] = std::string(zone) + ":" + std::to_string(index);
+            details[py::str(std::to_string(option))] = row;
+        };
+        auto props = [&](int option, const py::dict &properties) {
+            auto key = py::str(std::to_string(option));
+            py::dict row = details.contains(key) ? details[key].cast<py::dict>() : py::dict();
+            row["properties"] = properties;
+            details[key] = row;
+        };
+        switch (gc.curEvent) {
+            case Event::FALLING:
+                subject(0, "DECK", gc.info.skillCardDeckIdx);
+                subject(1, "DECK", gc.info.powerCardDeckIdx);
+                subject(2, "DECK", gc.info.attackCardDeckIdx);
+                break;
+            case Event::WE_MEET_AGAIN: {
+                subject(0, "POTION", gc.info.potionIdx);
+                subject(2, "DECK", gc.info.cardIdx);
+                if (gc.info.gold >= 0) { py::dict p; p["gold_loss"] = gc.info.gold; props(1, p); }
+                break;
+            }
+            case Event::NLOTH:
+                subject(0, "RELIC", gc.info.relicIdx0);
+                subject(1, "RELIC", gc.info.relicIdx1);
+                break;
+            case Event::NOTE_FOR_YOURSELF: {
+                py::dict row;
+                row["card"] = public_run_card(gc.noteForYourselfCard, "event-preview:0");
+                details["0"] = row;
+                break;
+            }
+            case Event::WORLD_OF_GOOP: {
+                py::dict p; p["gold_loss"] = gc.info.goldLoss; props(1, p);
+                py::dict take; take["hp_loss"] = 11; take["gold_gain"] = 75; props(0, take);
+                break;
+            }
+            case Event::DEAD_ADVENTURER: {
+                py::dict p;
+                p["displayed_chance"] = (gc.ascension >= 15 ? 35 : 25) + 25 * gc.info.phase;
+                p["hint_sentries"] = gc.info.encounter == MonsterEncounter::THREE_SENTRIES;
+                p["hint_nob"] = gc.info.encounter == MonsterEncounter::GREMLIN_NOB;
+                p["hint_lagavulin"] = gc.info.encounter == MonsterEncounter::LAGAVULIN_EVENT;
+                props(0, p); break;
+            }
+            case Event::SCRAP_OOZE: {
+                py::dict p;
+                p["hp_loss"] = (gc.ascension >= 15 ? 5 : 3) + gc.info.eventData;
+                p["displayed_chance"] = 25 + 10 * gc.info.eventData;
+                props(0, p); break;
+            }
+            case Event::KNOWING_SKULL: {
+                const int costs[] = {gc.info.hpAmount0, gc.info.hpAmount1, gc.info.hpAmount2, 6};
+                for (int i = 0; i < 4; ++i) {
+                    py::dict p; p["hp_loss"] = costs[i];
+                    if (i == 0) p["gold_gain"] = 90;
+                    props(i, p);
+                }
+                break;
+            }
+            default: break;
+        }
+        result["event_option_details"] = details;
+    }
+    if (gc.screenState == ScreenState::EVENT_SCREEN && gc.curEvent == Event::NEOW) {
+        // These are the displayed offer types, never the unrevealed outcomes.
+        py::list options;
+        for (const auto &option : gc.info.neowRewards) {
+            py::dict value;
+            value["bonus"] = static_cast<int>(option.r);
+            value["drawback"] = static_cast<int>(option.d);
+            options.append(value);
+        }
+        result["neow_options"] = options;
+    } else if (gc.screenState == ScreenState::EVENT_SCREEN && gc.curEvent == Event::GOLDEN_IDOL) {
         result["phase"] = gc.hasRelic(RelicId::GOLDEN_IDOL) ? 1 : 0;
     } else if (gc.screenState == ScreenState::EVENT_SCREEN && gc.curEvent == Event::THE_CLERIC) {
         result["phase"] = 0;
@@ -4165,11 +4243,17 @@ public:
     void reset(
         std::uint64_t seed,
         int ascension = 0,
-        const py::object &math_seed = py::none()) {
+        const py::object &math_seed = py::none(),
+        const std::string &note_card = "IRON_WAVE",
+        bool portal_eligible = true) {
         if (ascension < 0 || ascension > 20) {
             throw std::invalid_argument("Ascension must be between 0 and 20");
         }
         gc_ = std::make_unique<GameContext>(CharacterClass::IRONCLAD, seed, ascension);
+        gc_->noteForYourselfCard = parse_card(note_card);
+        gc_->speedrunPace = !portal_eligible;
+        note_card_ = note_card;
+        portal_eligible_ = portal_eligible;
         battle_.reset();
         battle_action_count_ = 0;
         action_history_.clear();
@@ -4184,8 +4268,10 @@ public:
     void reset_event_probe(
         std::uint64_t seed,
         const std::string &event_id,
-        const py::dict &rng) {
-        reset(seed, 0);
+        const py::dict &rng,
+        const std::string &note_card = "IRON_WAVE",
+        bool portal_eligible = true) {
+        reset(seed, 0, py::none(), note_card, portal_eligible);
         restore_full_run_rng(*gc_, rng);
         gc_->act = 1;
         gc_->floorNum = 1;
@@ -4195,6 +4281,12 @@ public:
         gc_->maxHp = 80;
         gc_->gold = 99;
         gc_->screenState = ScreenState::EVENT_SCREEN;
+        // Match a natural event room's continuation so option-effect probes
+        // can finish as well as inspect the constructor boundary.
+        gc_->regainControlAction = [](GameContext &gc) {
+            gc.screenState = ScreenState::MAP_SCREEN;
+            gc.regainControlAction = nullptr;
+        };
         if (gc_->curEvent == Event::NLOTH) {
             gc_->relics.add({RelicId::ANCHOR, -1});
             gc_->relics.add({RelicId::BAG_OF_MARBLES, -1});
@@ -4229,6 +4321,10 @@ public:
         py::dict run_state;
         run_state["seed"] = gc_->seed;
         run_state["math_seed"] = math_seed_;
+        py::dict event_context;
+        event_context["note_card"] = note_card_;
+        event_context["portal_eligible"] = portal_eligible_;
+        run_state["event_start_context"] = event_context;
         run_state["ascension"] = gc_->ascension;
         run_state["act"] = gc_->act;
         run_state["floor"] = gc_->floorNum;
@@ -4364,6 +4460,12 @@ public:
 
     void load_state(const py::dict &state) {
         const auto run = state["run_state"].cast<py::dict>();
+        const auto event_context = run.contains("event_start_context")
+            ? run["event_start_context"].cast<py::dict>() : py::dict();
+        const auto note_card = event_context.contains("note_card")
+            ? event_context["note_card"].cast<std::string>() : "IRON_WAVE";
+        const bool portal_eligible = !event_context.contains("portal_eligible")
+            || event_context["portal_eligible"].cast<bool>();
         const auto requested_history = state.contains("replay_actions")
             ? state["replay_actions"].cast<py::list>() : py::list();
         const bool replay_required = state.contains("replay_required") &&
@@ -4404,7 +4506,7 @@ public:
             reset(
                 run["seed"].cast<std::uint64_t>(),
                 run["ascension"].cast<int>(),
-                py::int_(run["math_seed"].cast<std::uint64_t>()));
+                py::int_(run["math_seed"].cast<std::uint64_t>()), note_card, portal_eligible);
             for (const auto item : requested_history) step(item.cast<std::uint32_t>());
             const auto replayed = snapshot();
             if (legacyUnsettledVictory) {
@@ -4471,7 +4573,7 @@ public:
         reset(
             run["seed"].cast<std::uint64_t>(),
             run["ascension"].cast<int>(),
-            py::int_(run["math_seed"].cast<std::uint64_t>()));
+            py::int_(run["math_seed"].cast<std::uint64_t>()), note_card, portal_eligible);
         gc_->act = run["act"].cast<int>();
         gc_->floorNum = run["floor"].cast<int>();
         gc_->monsterListOffset = run["monster_list_offset"].cast<int>();
@@ -4787,6 +4889,8 @@ private:
     std::array<MMID, 7> terminal_display_moves_ {};
     bool has_terminal_display_moves_ = false;
     std::uint64_t math_seed_ = 0;
+    std::string note_card_ = "IRON_WAVE";
+    bool portal_eligible_ = true;
     bool map_assign_burning_elite_ = true;
 
     void require_reset() const {
@@ -6166,9 +6270,11 @@ PYBIND11_MODULE(_lightspeed, module) {
         .def(py::init<>())
         .def("reset", &LightspeedRunState::reset,
              py::arg("seed"), py::arg("ascension") = 0,
-             py::arg("math_seed") = py::none())
+             py::arg("math_seed") = py::none(),
+             py::arg("note_card") = "IRON_WAVE", py::arg("portal_eligible") = true)
         .def("reset_event_probe", &LightspeedRunState::reset_event_probe,
-             py::arg("seed"), py::arg("event_id"), py::arg("rng"))
+             py::arg("seed"), py::arg("event_id"), py::arg("rng"),
+             py::arg("note_card") = "IRON_WAVE", py::arg("portal_eligible") = true)
         .def("snapshot", &LightspeedRunState::snapshot)
         .def("load_state", &LightspeedRunState::load_state, py::arg("state"))
         .def("legal_actions", &LightspeedRunState::legal_actions)

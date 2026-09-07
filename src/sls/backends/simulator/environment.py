@@ -11,6 +11,8 @@ from sls.content.card_features import (
     public_card_properties,
 )
 from sls.content.energy import canonical_max_energy
+from sls.content.event_options import project_event_options, require_event_details
+from sls.content.neow import neow_properties
 from sls.content.normalize import (
     normalize_content_id,
     normalize_power_amount,
@@ -85,7 +87,11 @@ class SimulatorBackend:
             raise ValueError("seed must fit a signed or unsigned 64-bit integer")
         # Official run history renders the same 64 bits as a signed Java long,
         # while pybind accepts the native engine's unsigned seed domain.
-        self._native.reset(numeric_seed & ((1 << 64) - 1), self.profile.ascension)
+        self._native.reset(
+            numeric_seed & ((1 << 64) - 1), self.profile.ascension,
+            note_card=self.profile.note_for_yourself_card,
+            portal_eligible=self.profile.secret_portal_eligible,
+        )
         return self._adapt(self._fold_non_heart_key_only_boundary(self._native.snapshot()))
 
     def step(
@@ -241,6 +247,12 @@ class SimulatorBackend:
 
     def load_checkpoint(self, state: Mapping[str, Any]) -> Decision:
         checkpoint = dict(state)
+        context = checkpoint["run_state"].get("event_start_context", {
+            "note_card": "IRON_WAVE", "portal_eligible": True,
+        })
+        if context != {"note_card": self.profile.note_for_yourself_card,
+                       "portal_eligible": self.profile.secret_portal_eligible}:
+            raise ValueError("checkpoint event start context differs from curriculum profile")
         self._multi_selected = [
             int(value) for value in checkpoint.pop("_policy_multi_selection", ())
         ]
@@ -320,6 +332,9 @@ class SimulatorBackend:
 
         actions, candidate_bits = _semantic_actions(raw, card_zones["HAND"])
         options = _screen_entities(raw)
+        actions, candidate_bits = project_event_options(
+            options, actions, candidate_bits, raw["public_screen"].get("event_option_details"),
+        )
         if screen is ScreenType.SHOP:
             shop, actions, candidate_bits = filter_policy_shop(
                 options["shop"], actions, candidate_bits,
@@ -840,7 +855,23 @@ def _screen_entities(raw: Mapping[str, Any]) -> dict[str, tuple[Any, ...]]:
         result["choice"] = tuple(entities)
     elif screen in {ScreenType.NEOW, ScreenType.EVENT}:
         event_id = normalize_content_id(raw["public_run"]["current_event_id"])
-        if event_id == "MATCH_AND_KEEP":
+        require_event_details(event_id, public_screen)
+        if screen is ScreenType.NEOW:
+            offers = public_screen.get("neow_options")
+            if not isinstance(offers, (list, tuple)) or len(offers) != 4:
+                raise ValueError("native Neow public offers missing; rebuild the simulator")
+            result["event"] = tuple(
+                _entity(
+                    f"event-option:{int(action['idx1'])}",
+                    f"NEOW:OPTION:{int(action['idx1'])}",
+                    **dict(neow_properties(
+                        offers[int(action["idx1"])]["bonus"],
+                        offers[int(action["idx1"])]["drawback"],
+                    )),
+                )
+                for action in actions if not action.get("potion")
+            )
+        elif event_id == "MATCH_AND_KEEP":
             result["event"] = tuple(
                 _entity(
                     slot["instance_id"], slot["content_id"],

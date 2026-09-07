@@ -7,12 +7,16 @@ import torch
 from sls.backends.simulator import SimulatorBackend
 from sls.model import ModelConfig, Policy, PolicyBatch
 from sls.model.encoding import policy_vocabulary
-from sls.rl.model_migration import migrate_v3_policy, read_legacy_vocabulary
+from sls.rl.model_migration import (
+    migrate_v3_policy,
+    migrate_v4_policy,
+    read_legacy_vocabulary,
+)
 from sls.rl.training_contract import TRAINING_CHECKPOINT_SCHEMA
 
 
-def legacy_payload():
-    old = read_legacy_vocabulary()
+def legacy_payload(version=3):
+    old = read_legacy_vocabulary(version)
     config = ModelConfig(embedding_dim=32, transformer_layers=1, attention_heads=4,
                          feedforward_dim=64, recurrent_hidden_dim=64)
     state = Policy(config).state_dict()
@@ -28,11 +32,12 @@ def legacy_payload():
     }}
 
 
-def test_transfer_preserves_old_projection_including_presence_mask_offset():
-    payload = legacy_payload()
+@pytest.mark.parametrize("version", [3, 4])
+def test_transfer_preserves_old_projection_including_presence_mask_offset(version):
+    payload = legacy_payload(version)
     before = deepcopy(payload)
-    model, report = migrate_v3_policy(payload)
-    old, new = read_legacy_vocabulary(), policy_vocabulary()
+    model, report = (migrate_v3_policy if version == 3 else migrate_v4_policy)(payload)
+    old, new = read_legacy_vocabulary(version), policy_vocabulary()
     old_count, new_count = len(old["numeric_fields"]), len(new["numeric_fields"])
     x = torch.randn(9, old_count * 2)
     expanded = torch.randn(9, new_count * 2)  # New fields may be present at initialization.
@@ -51,11 +56,12 @@ def test_transfer_preserves_old_projection_including_presence_mask_offset():
     assert report["exact_resume"] is False
 
 
-def test_full_actor_critic_and_recurrent_output_preserved_on_old_input_subspace():
-    payload = legacy_payload()
-    migrated, _ = migrate_v3_policy(payload)
+@pytest.mark.parametrize("version", [3, 4])
+def test_full_actor_critic_and_recurrent_output_preserved_on_old_input_subspace(version):
+    payload = legacy_payload(version)
+    migrated, _ = (migrate_v3_policy if version == 3 else migrate_v4_policy)(payload)
     reference = deepcopy(migrated)
-    old = read_legacy_vocabulary()["numeric_fields"]
+    old = read_legacy_vocabulary(version)["numeric_fields"]
     indices = [policy_vocabulary()["numeric_fields"].index(name) for name in old]
     for name in ("entity_numeric", "action_numeric"):
         layer = torch.nn.Linear(len(old) * 2, reference.config.embedding_dim)

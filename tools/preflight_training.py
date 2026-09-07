@@ -76,8 +76,8 @@ def main() -> int:
         )
 
         repository = git_state()
-        if ENCODING_SCHEMA != "sls-policy-input-v4":
-            raise RuntimeError("preflight requires the policy v4 encoding contract")
+        if ENCODING_SCHEMA != "sls-policy-input-v5":
+            raise RuntimeError("preflight requires the policy v5 encoding contract")
         decision = SimulatorBackend(IRONCLAD_A0_FULLRUN).reset(0)
         if decision.terminal or not decision.actions:
             raise RuntimeError("simulator smoke produced an invalid Decision")

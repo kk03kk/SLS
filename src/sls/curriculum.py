@@ -42,6 +42,9 @@ class CurriculumProfile:
     horizon: EpisodeHorizon
     start_distribution: str = "NATURAL_RUN_START"
     version: int = 3
+    # Independent episodes have no implicit account history or hardware clock.
+    note_for_yourself_card: str = "IRON_WAVE"
+    secret_portal_eligible: bool = True
 
 
 IRONCLAD_A0_ACT1 = CurriculumProfile("IRONCLAD_A0_ACT1", "IRONCLAD", 0, EpisodeHorizon.ACT_1)

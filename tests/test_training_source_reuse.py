@@ -17,8 +17,18 @@ NUS_REPORT = {
 }
 
 
-def test_real_nus_validation_report_is_reusable():
+def test_real_nus_validation_report_was_reusable_for_reviewed_code(monkeypatch):
+    transitions = json.loads((Path(__file__).parents[1] /
+        "configs/compatibility/training-validation-transitions.json").read_text())
+    reviewed = next(t for t in transitions if t['from_source_tree_sha256'] == NUS_REPORT['source_tree_sha256'])
+    monkeypatch.setattr('sls.rl.training_contract.training_validation_digest',
+                        lambda **kwargs: reviewed['to_training_validation_sha256'])
     assert validate_training_sources(NUS_REPORT).startswith("reviewed-transition:")
+
+
+def test_old_validation_cannot_authorize_new_neow_encoding():
+    with pytest.raises(ValueError, match='does not match'):
+        validate_training_sources(NUS_REPORT)
 
 
 @pytest.mark.parametrize("git_change", [{"dirty": True}, {"commit": "unknown"}])
@@ -40,6 +50,6 @@ def test_source_diagnosis_does_not_modify_manifest(tmp_path: Path):
     manifest.write_text(json.dumps({"initialization": NUS_REPORT}), encoding="utf-8")
     original = manifest.read_bytes()
     result = diagnose(manifest)
-    assert result["ok"] is True
+    assert result["ok"] is False  # New observation semantics require new validation.
     assert result["old_source_tree_sha256"] == NUS_REPORT["source_tree_sha256"]
     assert manifest.read_bytes() == original

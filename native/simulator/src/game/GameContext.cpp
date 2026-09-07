@@ -2844,6 +2844,11 @@ void GameContext::chooseEventOption(int idx) {
                     }
 
                     ++info.phase;
+                    if (info.phase == 3) {
+                        // Stock closes the search after the final reward.
+                        // Do not offer a fourth search with 100% encounter risk.
+                        regainControl();
+                    }
                 }
 
             } else if (idx == 1) {
@@ -2864,6 +2869,7 @@ void GameContext::chooseEventOption(int idx) {
                     break;
 
                 case 1:
+                    loseGold(unfavorable ? 50 : 40);
                     deck.upgradeRandomCards(miscRng, 2);
                     regainControl();
                     break;
