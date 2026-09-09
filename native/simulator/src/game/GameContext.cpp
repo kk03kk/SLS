@@ -379,7 +379,12 @@ bool GameContext::relicCanSpawn(RelicId relic, bool shopRoom) const {
 bool GameContext::canAddOneTimeEvent(Event shrine) const {
     switch (shrine) {
         case Event::THE_DIVINE_FOUNTAIN:
-            return deck.hasCurse();
+            // AbstractPlayer.isCursed excludes the three unremovable curses.
+            return std::any_of(deck.cards.begin(), deck.cards.end(), [](const Card &card) {
+                const auto id = card.getId();
+                return card.getType() == CardType::CURSE && id != CardId::ASCENDERS_BANE
+                    && id != CardId::CURSE_OF_THE_BELL && id != CardId::NECRONOMICURSE;
+            });
 
         case Event::DESIGNER_IN_SPIRE:
             return  (act == 2 || act == 3) && gold >= 75;
@@ -1420,6 +1425,12 @@ bool GameContext::obtainRelic(RelicId r) {
 
         case RelicId::CALLING_BELL: {
             deck.obtain(*this, CardId::CURSE_OF_THE_BELL);
+            if (floorNum == 0) {
+                // Stock opens CombatRewardScreen in NeowRoom before clearing
+                // its rewards. The discarded card roll still advances RNG
+                // and rare-card pity state; it must never be offered here.
+                (void)createCardReward(Room::MONSTER);
+            }
             Rewards reward;
             reward.addRelic(returnRandomScreenlessRelic(RelicTier::COMMON));
             reward.addRelic(returnRandomScreenlessRelic(RelicTier::UNCOMMON));

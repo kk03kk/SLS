@@ -153,7 +153,7 @@ namespace sts {
 
         static constexpr bool disableColosseum = false;
         static constexpr bool disableMatchAndKeep = false;
-        static constexpr bool disablePrismaticShard = true;
+        static constexpr bool disablePrismaticShard = false;
         bool skipBattles = false;
 
         // ********* hidden from player *********

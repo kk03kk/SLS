@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import pickle
 import threading
 import time
 from collections import deque
@@ -51,7 +52,7 @@ def discover_policy_artifacts(
                 continue
             metadata = PolicyArtifactMetadata(**dict(raw))
             metadata.validate()
-        except (OSError, RuntimeError, TypeError, ValueError):
+        except (OSError, RuntimeError, TypeError, ValueError, pickle.UnpicklingError):
             continue
         identifier = hashlib.sha256(str(path).encode("utf-8")).hexdigest()
         manifest: dict[str, Any] = {}

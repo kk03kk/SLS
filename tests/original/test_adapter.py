@@ -62,7 +62,7 @@ def test_prismatic_shard_is_policy_hidden_without_shifting_shop_commands() -> No
 
     adapted = adapt_original(payload)
     assert [item.content_id for item in adapted.decision.observation.shop_items] == [
-        "AKABEKO",
+        "PRISMATIC_SHARD", "AKABEKO",
     ]
     purchases = [
         action for action in adapted.decision.actions

@@ -71,7 +71,7 @@ print("后续合法动作数：", len(decision.actions))
 
 仓库不附带预训练权重。`local/runs/` 保存训练 checkpoint，`model/` 保存导出的独立策略，两者均被 Git 忽略。
 
-**当前输入编码为 `sls-policy-input-v5`。旧 13M / 15M 等历史模型不能直接当作当前模型加载，也不能靠改版本号绕过检查。** 后续计划是从零训练。以下示例要求已有当前编码兼容、目标匹配的 checkpoint；请替换为自己的路径。
+**当前输入编码为 `sls-policy-input-v5`。旧 13M / 15M 等历史模型不能直接当作当前模型加载，也不能靠改版本号绕过检查。** 本轮从零训练；Act1 环境规则版本为 4，编码仍为 v5。以下示例要求已有当前编码兼容、目标匹配的 checkpoint；请替换为自己的路径。
 
 导出 A0 Act1 策略：
 
@@ -103,7 +103,7 @@ python tools/play_live_inspector.py --list-models
 python tools/build_observation_oracle.py --javac /path/to/jdk/bin/javac --source /path/to/SpirecommParity.jar --game-libs /path/to/game-libs
 ```
 
-将路径换成实际路径。`game-libs` 需包含 `desktop-1.0.jar`、`CommunicationMod.jar`、`ModTheSpire.jar`；JDK 需支持 `--release 8`。输出默认为 `local/build/oracle/SpirecommParity-observation-v4.jar`。在 Mod 环境中使用更新后的 Oracle，避免同时加载重复版本。当前补丁已完成编译验证，新增事件信息尚未完成新一轮实机联机验证。
+将路径换成实际路径。`game-libs` 需包含 `desktop-1.0.jar`、`CommunicationMod.jar`、`ModTheSpire.jar`；JDK 需支持 `--release 8`。输出默认为 `local/build/oracle/SpirecommParity-observation-v4.jar`。在 Mod 环境中使用更新后的 Oracle，避免同时加载重复版本。当前补丁已完成编译和重点事件实机对照；覆盖范围及开训条件见 [Act1 环境收尾验证](docs/act1-environment-closeout.md)。
 
 Windows 下，先让 CommunicationMod 生成配置，再在激活的 Python 环境中执行：
 
@@ -135,9 +135,40 @@ python -m ruff check src tools tests
 python tools/generate_policy_vocabulary.py --check
 ```
 
-正式训练入口是 `tools/train_full_run.py`，配套工具包括 preflight、worker benchmark、checkpoint 兼容性检查、评估和 Slurm 提交。接口见各工具的 `--help`。
+当前从零 Act1 实验使用 `configs/train/ironclad_a0_act1_5m.toml`，预算 5M steps。它是独立单阶段训练，不需要历史 FullRun checkpoint、warm-start 或 smoke/pilot 晋级。
 
-`configs/train/` 和 [10M→15M 训练方案](docs/training-10m-15m.md) 对应历史 FullRun 实验，**不是新版从零 Act1 训练的一键配置**。新实验需要准备目标与当前编码一致的配置，并在新 native 环境完成 preflight；需要时重新做 worker benchmark。NUS 操作见 [服务器指南](docs/nus-training-zh.md)。
+### NUS：拉取后提交一次
+
+```bash
+cd ~/SLS
+git pull --ff-only origin main
+/home/h/hengzhi/venvs/sls/bin/python tools/submit_slurm.py train \
+  --config configs/train/ironclad_a0_act1_5m.toml --prepare
+```
+
+入口会在 Slurm compute node 检查 native、需要时构建，运行实际网络 preflight、短 benchmark 和 worker 保存/恢复验证，然后开始训练。默认 1×A100 40GB、16 CPUs、64GB RAM。不要在 xlogin 上运行构建、评估或训练。首次缺少 PyTorch 时准备入口会安装模型锁定依赖；已有环境不会为 GPU 名称变化强制升级依赖。
+
+benchmark 比较 32/64/128 个环境的完整“采样＋PPO 更新”耗时，选择接近最快的较小配置并固定。中断后执行**同一条提交命令**恢复；有效准备结果自动复用。训练配置、Observation、PPO 或环境语义不兼容仍会拒绝恢复，不能删除旧 checkpoint 后假装续训。运行目录需保持完整。
+
+结果在 `local/runs/ironclad-a0-act1-v4-5m/`：
+
+- `stages/train/metrics.jsonl`：训练指标、固定 seeds 评估、逐 seed 胜负变化和失败摘要。
+- `latest.pt`、`checkpoint-steps-*.pt`、`final.pt`：恢复 checkpoint；约每 0.25M 保存一次。
+- `stages/train/selection/best_progress.pt`：每 0.5M、固定 512 seeds 按通关数选择的 best，同分保留更早模型。
+- `final-evaluation.json`：best 的独立 1024 seeds 结果。
+- `ironclad-a0-act1-v4-5m.pt`：实验完成后的独立策略，可复制到本地 `model/` 使用。导出不要求高胜率；模型质量以评估结果为准。
+
+间隔与 5M 目标均在完整 PPO update 边界执行，因此实际 step 数可能略高于标称值。配置、完整步骤与失败处理见 [Act1 训练说明](docs/training-act1-5m.md)。历史 FullRun 配置与 [旧服务器指南](docs/nus-training-zh.md) 保留供追溯，不作为本轮启动流程。
+
+### 与普通原版局的区别
+
+- Act1 Boss 击败立即结束；使用指定 seed 的完整 Neow 开局。
+- 棱彩碎片照常生成、展示，禁止购买/领取；不替换、不重抽。
+- 给自己的纸条照常出现，但自动选择离开，不读写训练 worker 的跨局存牌。
+- 钥匙可正常选择并支付真实代价；Act1 不提供额外钥匙奖励。
+- 折叠纯确认 UI，因此模型决策步数不等于鼠标点击数。
+
+没有为了提高胜率简化战斗、路线或其他事件。当前验证是针对 Act1 的源码、回归与实机对照，**不代表所有 seed、所有分支已获得完全 parity 证明**。详见 [环境收尾证据](docs/act1-environment-closeout.md)。
 
 ## 项目结构
 

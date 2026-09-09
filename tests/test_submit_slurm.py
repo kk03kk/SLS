@@ -97,7 +97,7 @@ def test_node_constraint_is_forwarded_to_slurm(tmp_path: Path) -> None:
 
 
 def test_nontraining_jobs_reject_training_config() -> None:
-    args = _parser().parse_args(["benchmark", "--config", "custom.toml"])
+    args = _parser().parse_args(["evaluate", "--config", "custom.toml"])
     with pytest.raises(ValueError, match="does not accept"):
         build_sbatch_command(args)
 

@@ -105,10 +105,10 @@ def test_shop_filter_hides_prismatic_without_renumbering_or_rewriting_mapping() 
         (shard, akabeko), (buy_shard, buy_akabeko, leave), mapping,
     )
 
-    assert items == (akabeko,)
+    assert items == (shard, akabeko)
     assert actions == (buy_akabeko, leave)
     assert filtered == {buy_akabeko.candidate_id: 222, leave.candidate_id: 333}
-    assert items[0].instance_id == "shop-relic:1"
+    assert items[1].instance_id == "shop-relic:1"
 
 
 def test_reward_filter_is_profile_scoped_and_preserves_other_candidate_identity() -> None:
@@ -126,10 +126,10 @@ def test_reward_filter_is_profile_scoped_and_preserves_other_candidate_identity(
     items, actions, filtered = filter_policy_offers(
         (shard, akabeko), (take_shard, take_akabeko, skip), mapping,
     )
-    assert items == (akabeko,)
+    assert items == (shard, akabeko)
     assert actions == (take_akabeko, skip)
     assert filtered == {take_akabeko.candidate_id: 22, skip.candidate_id: 33}
-    assert items[0].instance_id == "reward-relic:1"
+    assert items[1].instance_id == "reward-relic:1"
 
     # A future character scope can explicitly support the relic without
     # changing registries, native pools, or this filtering primitive.

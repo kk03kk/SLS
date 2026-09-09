@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from dataclasses import asdict
 from pathlib import Path
 from unittest.mock import patch
 
@@ -71,6 +72,7 @@ def test_capture_uses_same_recurrent_context_as_live_runtime(tmp_path: Path) -> 
             training_config_sha256="config",
             model_sha256=model_state_sha256(model.state_dict()),
             recurrent_memory_size=32, ascension_min=0, ascension_max=0, goal="ACT1",
+            environment_profile=asdict(IRONCLAD_A0_ACT1),
         ),
     )
     trajectory = tmp_path / "trajectory.jsonl"

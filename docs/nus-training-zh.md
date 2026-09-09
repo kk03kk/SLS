@@ -1,3 +1,5 @@
+> 历史 FullRun 流程。当前从零 Warrior A0 Act1 5M 实验请使用 [Act1 训练说明](training-act1-5m.md)，不要执行本文的三阶段晋级流程。
+
 # NUS 战士 A0 FullRun 训练手册
 
 本流程从随机权重训练一个 Ironclad A0 普通三幕 FullRun，不使用旧模型或专家轨迹。

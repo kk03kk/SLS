@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import json
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any, Mapping
@@ -51,6 +52,8 @@ class PolicyArtifactMetadata:
     goal: str = "ACT1"
     excluded_content_ids: tuple[str, ...] = ("PRISMATIC_SHARD",)
 
+    environment_profile: Mapping[str, Any] | None = None
+
     def validate(self) -> None:
         if self.simulator_only is not True:
             raise ValueError("policy artifacts must declare simulator-only provenance")
@@ -74,6 +77,13 @@ class PolicyArtifactMetadata:
             raise ValueError("policy artifact ascension range is invalid")
         if self.goal not in {"ACT1", "ACT2", "ACT3", "FULLRUN", "HEART"}:
             raise ValueError("policy artifact goal is invalid")
+        if self.environment_profile is not None:
+            from sls.curriculum import CURRICULUM_PROFILES_BY_ID
+            current = CURRICULUM_PROFILES_BY_ID.get(str(self.environment_profile.get("profile_id")))
+            if current is None or asdict(current) != dict(self.environment_profile):
+                raise ValueError("policy artifact environment rules are incompatible")
+        elif self.goal == "ACT1":
+            raise ValueError("Act1 artifact lacks explicit environment rules; export a current checkpoint")
         if set(self.excluded_content_ids) != set(policy_excluded_content_ids()):
             raise ValueError("policy artifact excluded-content contract is incompatible")
 
@@ -102,6 +112,7 @@ def _metadata(
         ascension_min=ascension_min,
         ascension_max=ascension_max,
         goal=goal,
+        environment_profile=(json.loads(json.dumps(asdict(provenance["profile"]))) if provenance.get("profile") is not None else None),
         excluded_content_ids=tuple(sorted(policy_excluded_content_ids())),
     )
 

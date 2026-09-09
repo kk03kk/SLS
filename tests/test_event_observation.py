@@ -117,6 +117,27 @@ def test_stale_oracle_and_native_fail_instead_of_silently_dropping_details():
         adapt_original(payload)
 
 
+def test_note_preview_has_same_public_field_presence_with_aligned_account_context():
+    # Stock account in the live closeout stored Doubt, not the training default
+    # Iron Wave. Match that context before comparing the two observations.
+    card = {'content_id': 'Doubt', 'upgrades': 0, 'base_cost': -2,
+            'cost_for_turn': -2, 'current_cost': -2, 'base_damage': -1,
+            'free_to_play_once': False, 'retain': False, 'self_retain': False,
+            'bottled_flame': False, 'bottled_lightning': False, 'bottled_tornado': False}
+    payload = {'in_game': True, 'ready_for_command': True, 'available_commands': ['choose'],
+        'game_state': base_game(screen_type='EVENT', choice_list=['trade', 'leave'],
+            screen_state={'event_id': 'NoteForYourself',
+                          'event_option_details': {'0': {'card': card}}})}
+    original = adapt_original(payload).decision
+    backend = SimulatorBackend()
+    backend.reset(8)
+    backend._native.reset_event_probe(8, 'NOTE_FOR_YOURSELF', backend.raw_state['rng'],
+                                     note_card='DOUBT')
+    native = backend._adapt(backend._native.snapshot())
+    assert original.observation.choice_options == native.observation.choice_options
+    assert original.actions == native.actions
+
+
 def test_nloth_action_identifies_the_relic_actually_traded():
     backend, decision = event_probe(8, 'NLOTH')
     action = next(a for a in decision.actions if a.option_id == 'event-option:0')
@@ -139,6 +160,10 @@ def test_falling_no_eligible_card_uses_canonical_leave_without_remapping_intro()
     assert adapted.commands[action.candidate_id] == ('choose 0',)
     payload['_continuation']['event_phase'] = 'INTRO'
     assert adapt_original(payload).decision.actions[0].option_id == 'event-option:0'
+    # Live generic Oracle may report inherited screenNum=0 instead of CHOICE.
+    payload['_continuation']['event_phase'] = '0'
+    payload['game_state']['screen_state']['event_choice_phase'] = 'CHOICE'
+    assert adapt_original(payload).decision.actions[0].option_id == 'event-option:3'
 
 
 def test_dead_adventurer_risk_increases_after_safe_search():

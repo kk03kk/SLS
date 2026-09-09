@@ -76,8 +76,8 @@ def test_death_takes_precedence_over_completed_act() -> None:
 
 
 def test_profile_contract_version_changed() -> None:
-    assert IRONCLAD_A0_ACT1.version == 3
-    assert replace(IRONCLAD_A0_ACT1).version == 3
+    assert IRONCLAD_A0_ACT1.version == 4
+    assert replace(IRONCLAD_A0_ACT1).version == 4
 
 
 def test_fullrun_and_heart_have_distinct_terminal_goals() -> None:

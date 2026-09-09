@@ -89,8 +89,8 @@ def policy_content_is_visible(content_id: str) -> bool:
 class UnsupportedContentPolicy:
     """Single policy boundary for content intentionally outside training.
 
-    Excluded content stays in stock/native internal pools when required for RNG
-    fidelity, but it may not be offered to a policy.  Attaching after excluded
+    Excluded content remains visible in offers and stays in native pools for RNG
+    fidelity, but it may not be acquired by a policy.  Attaching after excluded
     content was already acquired is rejected because the resulting observation
     and reward pools are outside the supported MDP.
     """
@@ -129,7 +129,7 @@ def filter_policy_shop(
     action_mapping: Mapping[str, _MappingT],
     *, policy: UnsupportedContentPolicy | None = None,
 ) -> tuple[tuple[_ItemT, ...], tuple[_ActionT, ...], dict[str, _MappingT]]:
-    """Hide excluded shop content without changing native/raw slot identities."""
+    """Disable excluded purchases without changing visible offers or slot IDs."""
 
     return filter_policy_offers(
         shop_items, actions, action_mapping, policy=policy,
@@ -144,8 +144,8 @@ def filter_policy_offers(
 ) -> tuple[tuple[_ItemT, ...], tuple[_ActionT, ...], dict[str, _MappingT]]:
     """Filter unsupported acquisitions while preserving every raw identity.
 
-    Content remains in registries and backend RNG pools.  Only policy-visible
-    offers and actions that reference those exact offer instances are hidden.
+    Content remains in registries, visible offers and backend RNG pools. Only
+    actions that acquire those exact offer instances are hidden.
     Supplying a policy explicitly keeps this usable by future character scopes.
     """
 
@@ -156,9 +156,7 @@ def filter_policy_offers(
         for item in items
         if not content_policy.supports(str(getattr(item, "content_id")))
     }
-    visible_items = tuple(
-        item for item in items if str(getattr(item, "instance_id")) not in hidden_instances
-    )
+    visible_items = items
     visible_actions = tuple(
         action for action in actions
         if not hidden_instances.intersection({

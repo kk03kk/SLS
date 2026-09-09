@@ -1,5 +1,10 @@
 # Event observation repairs — 2026-09-07
 
+Follow-up: the targeted live-game closeout was completed on 2026-09-09; see
+[Act1 environment closeout](act1-environment-closeout.md) for results, additional
+fixes and remaining coverage limits. The validation notes below describe the
+original September 7 checkpoint of this work.
+
 This change closes the concrete gaps found in the 64-seed Act1 diagnostic and
 the subsequent stock-bytecode event audit. It is not a claim of complete game
 parity. Evidence came from the local original-game JAR, native implementation,

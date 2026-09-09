@@ -45,9 +45,18 @@ class CurriculumProfile:
     # Independent episodes have no implicit account history or hardware clock.
     note_for_yourself_card: str = "IRON_WAVE"
     secret_portal_eligible: bool = True
+    allow_key_acquisition: bool | None = None
+    note_for_yourself_policy: str = "INTERACTIVE"
+
+    @property
+    def allows_keys(self) -> bool:
+        return self.horizon is EpisodeHorizon.HEART if self.allow_key_acquisition is None else self.allow_key_acquisition
 
 
-IRONCLAD_A0_ACT1 = CurriculumProfile("IRONCLAD_A0_ACT1", "IRONCLAD", 0, EpisodeHorizon.ACT_1)
+IRONCLAD_A0_ACT1 = CurriculumProfile(
+    "IRONCLAD_A0_ACT1", "IRONCLAD", 0, EpisodeHorizon.ACT_1,
+    version=4, allow_key_acquisition=True, note_for_yourself_policy="AUTO_LEAVE",
+)
 IRONCLAD_A0_ACT2 = CurriculumProfile("IRONCLAD_A0_ACT2", "IRONCLAD", 0, EpisodeHorizon.ACT_2)
 IRONCLAD_A0_ACT3 = CurriculumProfile("IRONCLAD_A0_ACT3", "IRONCLAD", 0, EpisodeHorizon.ACT_3)
 IRONCLAD_A0_HEART = CurriculumProfile("IRONCLAD_A0_HEART", "IRONCLAD", 0, EpisodeHorizon.HEART)

@@ -20,6 +20,7 @@ from sls.content.normalize import (
     normalize_relic_counter,
 )
 from sls.content.scope import (
+    UnsupportedContentPolicy,
     filter_policy_key_acquisitions,
     filter_policy_offers,
     filter_policy_shop,
@@ -44,7 +45,6 @@ from sls.contracts.continuation import continuation_simulator
 from sls.curriculum import (
     IRONCLAD_A0_HEART,
     CurriculumProfile,
-    EpisodeHorizon,
     TerminalOutcome,
     completed_act_between,
     evaluate_horizon,
@@ -71,6 +71,7 @@ class SimulatorBackend:
         self._multi_selected: list[int] = []
         self._validation_action_queue_types: list[str] = []
         self._validation_choice_origin: str | None = None
+        self.last_automatic_actions: list[str] = []
 
     @property
     def raw_state(self) -> dict[str, Any]:
@@ -79,6 +80,7 @@ class SimulatorBackend:
         return self._last_raw
 
     def reset(self, seed: int) -> Decision:
+        self.last_automatic_actions.clear()
         self._multi_selected.clear()
         self._validation_action_queue_types.clear()
         self._validation_choice_origin = None
@@ -97,6 +99,7 @@ class SimulatorBackend:
     def step(
         self, action: Action | str, *, validation_evidence: Mapping[str, Any] | None = None,
     ) -> Transition:
+        self.last_automatic_actions.clear()
         if validation_evidence:
             unknown = set(validation_evidence) - {
                 "discovery_retrieval_updates", "card_soul_cost_reset_count",
@@ -184,7 +187,15 @@ class SimulatorBackend:
         and RNG remain canonical.
         """
 
-        if self.profile.horizon is EpisodeHorizon.HEART:
+        if (self.profile.note_for_yourself_policy == "AUTO_LEAVE"
+                and normalize_content_id(str(raw["public_run"].get("current_event_id", ""))) == "NOTE_FOR_YOURSELF"
+                and _screen_type(raw) is ScreenType.EVENT):
+            leave = [a for a in raw.get("legal_actions", ()) if int(a.get("idx1", -1)) == 1]
+            if len(leave) != 1:
+                raise RuntimeError("Note for Yourself must expose exactly one leave action")
+            raw = self._native.step(int(leave[0]["bits"]))
+            self.last_automatic_actions.append("NOTE_FOR_YOURSELF:LEAVE")
+        if self.profile.allows_keys:
             return raw
         actions = tuple(raw.get("legal_actions") or ())
         if not _is_forced_recall_boundary(raw, actions):
@@ -221,6 +232,8 @@ class SimulatorBackend:
             terminated=decision.terminated,
             truncated=False,
             info={
+                **({"automatic_actions": list(self.last_automatic_actions)}
+                   if self.last_automatic_actions else {}),
                 "reason": decision.reason,
                 "success": decision.success,
                 "terminal_outcome": (
@@ -246,6 +259,7 @@ class SimulatorBackend:
         return checkpoint
 
     def load_checkpoint(self, state: Mapping[str, Any]) -> Decision:
+        self.last_automatic_actions.clear()
         checkpoint = dict(state)
         context = checkpoint["run_state"].get("event_start_context", {
             "note_card": "IRON_WAVE", "portal_eligible": True,
@@ -350,7 +364,7 @@ class SimulatorBackend:
             reward_items,
             actions,
             candidate_bits,
-            allow_keys=self.profile.horizon is EpisodeHorizon.HEART,
+            allow_keys=self.profile.allows_keys,
         )
         if screen is ScreenType.COMBAT_REWARD:
             options["reward"] = reward_items
@@ -448,6 +462,7 @@ class SimulatorBackend:
             actions=actions,
             terminal=screen is ScreenType.GAME_OVER,
         )
+        UnsupportedContentPolicy.ironclad().validate_observation(observation)
         self._last_observation = observation
         return decision
 

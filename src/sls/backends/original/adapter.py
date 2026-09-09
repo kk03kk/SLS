@@ -59,7 +59,7 @@ def _event_option_indices(
     event_id = normalize_event_id(
         state.get("event_id") or game.get("event_id") or continuation.get("event_id")
     )
-    phase = str(continuation.get("event_phase") or "")
+    phase = str(state.get("event_choice_phase") or continuation.get("event_phase") or "")
     if event_id == "GOLDEN_IDOL" and phase == "1":
         return tuple(range(2, 2 + count))
     if event_id == "FALLING" and phase == "CHOICE" and count == 1 and state.get("event_option_details") == {}:

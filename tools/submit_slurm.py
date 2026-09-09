@@ -45,6 +45,7 @@ def _parser() -> argparse.ArgumentParser:
         help="Forward an explicit layout set to benchmark_workers.py.",
     )
     parser.add_argument("--config", type=Path)
+    parser.add_argument("--prepare", action="store_true")
     parser.add_argument("--checkpoint", type=Path)
     parser.add_argument("--evaluation-output", type=Path)
     parser.add_argument("--evaluation-episodes", type=int, default=1000)
@@ -66,7 +67,7 @@ def build_sbatch_command(args: argparse.Namespace, *, root: Path = ROOT) -> list
         raise ValueError("--cpus must be positive")
     if args.task in {"preflight", "benchmark", "evaluate"}:
         unsupported = []
-        if args.config is not None:
+        if args.config is not None and args.task == "evaluate":
             unsupported.append("--config")
         if args.resume != "auto":
             unsupported.append("--resume")
@@ -83,6 +84,8 @@ def build_sbatch_command(args: argparse.Namespace, *, root: Path = ROOT) -> list
         raise ValueError("evaluation paths are only valid for evaluate")
     if args.task != "benchmark" and args.benchmark_output is not None:
         raise ValueError("benchmark output is only valid for benchmark")
+    if args.prepare and (args.task != "train" or args.resume != "auto"):
+        raise ValueError("--prepare requires train with --resume auto")
     python = _absolute_without_symlink_resolution(args.python)
     if args.task in {"smoke", "pilot", "train"}:
         partition, walltime = "gpu-long", "3-00:00:00"
@@ -140,6 +143,10 @@ def build_sbatch_command(args: argparse.Namespace, *, root: Path = ROOT) -> list
             str(python), str(root / "tools" / "train_full_run.py"),
             "--stage", args.task, "--config", str(config), "--resume", args.resume,
         ]
+    if args.task in {"preflight", "benchmark"} and args.config is not None:
+        command.extend(("--config", str(args.config.resolve())))
+    if args.prepare:
+        command = [str(python), str(root / "tools/prepare_and_train.py"), "--config", str(config)]
     logs = root / "local" / "runs" / "slurm-logs"
     sbatch = [
         "sbatch", "--parsable", f"--account={args.account}", f"--qos={args.qos}",

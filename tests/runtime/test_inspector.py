@@ -71,6 +71,7 @@ def _artifact() -> LoadedPolicyArtifact:
         source_git_commit="test", native_source_sha256="native",
         training_config_sha256="config", model_sha256=model_state_sha256(model.state_dict()),
         recurrent_memory_size=32, ascension_min=0, ascension_max=0, goal="ACT1",
+            environment_profile=json.loads(json.dumps(asdict(IRONCLAD_A0_ACT1))),
     )
     return LoadedPolicyArtifact(model, metadata)
 
@@ -284,7 +285,8 @@ def test_discovery_lists_only_exported_policy_artifacts(tmp_path: Path) -> None:
         "metadata": asdict(artifact.metadata),
         "model": artifact.model.state_dict(),
     }, model_path)
-    torch.save({"schema": "training-checkpoint"}, model_path.with_name("not-policy.pt"))
+    torch.save({"schema": "training-checkpoint", "profile": IRONCLAD_A0_ACT1},
+               model_path.with_name("not-policy.pt"))
 
     models = discover_policy_artifacts([tmp_path])
 

@@ -7,6 +7,7 @@ from typing import Any
 
 from sls.backends.original.adapter import AdaptedOriginalDecision, adapt_original
 from sls.backends.original.session import OriginalSession
+from sls.content.normalize import normalize_content_id
 from sls.content.seed import long_to_seed_string
 from sls.contracts import Action, ActionKind, Decision, Transition, ValidationSnapshot
 from sls.contracts.continuation import continuation_original
@@ -71,9 +72,17 @@ class OriginalBackend:
         return self.session.payload
 
     def _adapt(self, payload: dict[str, Any]) -> AdaptedOriginalDecision:
+        game = payload.get("game_state") or {}
+        event_id = normalize_content_id(str(
+            (game.get("screen_state") or {}).get("event_id")
+            or continuation_original(payload).get("event_id") or ""
+        ))
+        if (self.profile.note_for_yourself_policy == "AUTO_LEAVE"
+                and game.get("screen_type") == "EVENT" and event_id == "NOTE_FOR_YOURSELF"):
+            payload = self._fold_protocol_only_boundaries(payload, fold_single_event=False)
         return adapt_original(
             payload,
-            allow_key_acquisition=self.profile.horizon is EpisodeHorizon.HEART,
+            allow_key_acquisition=self.profile.allows_keys,
         )
 
     def reset(self, seed: int) -> Decision:
@@ -570,6 +579,21 @@ class OriginalBackend:
             choices = game.get("choice_list")
             screen = str(game.get("screen_type") or "").upper()
             room_class = str(game.get("room_class") or game.get("room_type") or "")
+            event_id = normalize_content_id(str(
+                (game.get("screen_state") or {}).get("event_id")
+                or continuation_original(payload).get("event_id") or ""
+            ))
+            if (self.profile.note_for_yourself_policy == "AUTO_LEAVE"
+                    and screen == "EVENT" and event_id == "NOTE_FOR_YOURSELF"
+                    and "choose" in available and choices):
+                if len(choices) not in {1, 2}:
+                    raise RuntimeError("unexpected Note for Yourself choice boundary")
+                command = "choose 1" if len(choices) == 2 else "choose 0"
+                payload = self.session.execute(command)
+                if executed is not None:
+                    executed.append(command)
+                folded = True
+                continue
             chest_state = game.get("screen_state") or {}
             if (
                 screen == "CHEST"

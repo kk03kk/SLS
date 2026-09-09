@@ -3,7 +3,8 @@
 from __future__ import annotations
 
 import statistics
-from dataclasses import dataclass
+from collections import Counter, deque
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Callable
 
@@ -61,6 +62,11 @@ class EvaluationResult:
     boss_successes: dict[str, int]
     boss_attempts: dict[str, int]
     boss_action_metrics: dict[str, dict[str, int | float]]
+    success_rate_ci95: tuple[float, float] = (0.0, 1.0)
+    boss_entry_success_rate: dict[str, float] = field(default_factory=dict)
+    death_floor_distribution: dict[str, int] = field(default_factory=dict)
+    seed_results: list[dict] = field(default_factory=list)
+    failure_traces: list[dict] = field(default_factory=list)
 
 
 def _percentile(values: list[int], fraction: float) -> float | None:
@@ -113,6 +119,11 @@ def _evaluate_impl(
     active = list(range(len(seed_values)))
     episode_rewards = [0.0] * len(seed_values)
     episode_steps = [0] * len(seed_values)
+    won = [False] * len(seed_values)
+    reasons = ["timeout"] * len(seed_values)
+    contexts = [{} for _ in seed_values]
+    routes = [[] for _ in seed_values]
+    traces = [deque(maxlen=32) for _ in seed_values]
     successes = 0
     self_loops = 0
     timeouts = 0
@@ -163,6 +174,15 @@ def _evaluate_impl(
         for batch_index, index in enumerate(active):
             action = decisions[index].actions[int(action_indices[batch_index])]
             observation = decisions[index].observation
+            if observation.enemies:
+                contexts[index] = {"enemy_ids": [e.monster_id for e in observation.enemies]}
+            elif observation.screen.value == "EVENT":
+                contexts[index] = {"event_options": [e.content_id for e in observation.event_options]}
+            if action.kind.value == "CHOOSE_MAP_NODE":
+                routes[index].append(action.node_id)
+            traces[index].append({"step": episode_steps[index], "floor": observation.run.floor,
+                                  "hp": observation.player.current_hp, "screen": observation.screen.value,
+                                  "action": action.to_dict()})
             visible_boss = observation.run.visible_boss_id or "UNKNOWN"
             fighting_boss = (
                 observation.screen.value == "COMBAT"
@@ -240,6 +260,8 @@ def _evaluate_impl(
                     f"action={action.candidate_id}"
                 ) from error
             episode_steps[index] += 1
+            if transition.info.get("automatic_actions"):
+                traces[index][-1]["automatic_actions"] = transition.info["automatic_actions"]
             previous_action_types[index] = ACTION_TYPE_IDS[action.kind.value] + 1
             previous_rewards[index] = float(transition.reward)
             decisions[index] = transition.decision
@@ -281,6 +303,8 @@ def _evaluate_impl(
                     raise RuntimeError(
                         "FullRun backend reported success without a real Act 3 victory"
                     )
+                won[index] = success
+                reasons[index] = str(transition.info.get("reason") or "backend_truncation")
                 successes += int(success)
                 backend_truncations += int(transition.truncated and not transition.terminated)
                 if success and current_act == previous_act:
@@ -298,6 +322,7 @@ def _evaluate_impl(
                 max_boundary_visits=max_boundary_visits,
             )
             if limit_reason is not None:
+                reasons[index] = limit_reason
                 episode_rewards[index] += -1.0
                 step_limits += int(limit_reason == "step_limit")
                 cycle_limits += int(limit_reason == "cycle_limit")
@@ -326,7 +351,32 @@ def _evaluate_impl(
     count = len(seed_values)
     reached_act2 = sum(act >= 2 for act in max_acts)
     reached_act3 = sum(act >= 3 for act in max_acts)
+    from sls.rl.best_checkpoint import _wilson_interval
+    seed_results = [
+        {"seed": seed, "success": won[i], "reason": reasons[i], "steps": episode_steps[i],
+         "floor": decisions[i].observation.run.floor, "bosses": bosses_by_act[i],
+         "entered_bosses": sorted(entered_bosses[i]), "last_context": contexts[i],
+         "route": routes[i], "deck": [c.card_id for c in decisions[i].observation.deck]}
+        for i, seed in enumerate(seed_values)
+    ]
+    sampled = set()
+    failure_traces = []
+    for i, row in enumerate(seed_results):
+        key = str(row["last_context"]) + str(row["reason"])
+        if not row["success"] and key not in sampled and len(failure_traces) < 16:
+            sampled.add(key)
+            failure_traces.append({"seed": row["seed"], "tail": list(traces[i])})
     return EvaluationResult(
+        success_rate_ci95=_wilson_interval(successes, count),
+        boss_entry_success_rate={
+            boss: sum(won[i] and boss in entered_bosses[i] for i in range(count)) / metrics["entries"]
+            for boss, metrics in boss_action_counts.items() if metrics["entries"]
+        } if profile.horizon is EpisodeHorizon.ACT_1 else {},
+        death_floor_distribution=dict(sorted(Counter(
+            str(decisions[i].observation.run.floor) for i in range(count)
+            if not won[i] and reasons[i] == "DEATH"
+        ).items())),
+        seed_results=seed_results, failure_traces=failure_traces,
         episodes=count,
         successes=successes,
         success_rate=successes / count,

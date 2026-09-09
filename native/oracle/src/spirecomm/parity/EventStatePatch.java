@@ -82,6 +82,9 @@ public class EventStatePatch {
             preview.put("base_cost", card.cost);
             preview.put("current_cost", card.costForTurn);
             preview.put("base_damage", card.baseDamage);
+            // Use the same public fields as every other card projection,
+            // including explicit false flags (presence is part of model input).
+            CardStatePatch.AddDynamicFields.Postfix(preview, card);
             HashMap<String, Object> row = new HashMap<>();
             row.put("card", preview);
             details.put("0", row);
@@ -95,6 +98,12 @@ public class EventStatePatch {
         public static HashMap<String, Object> Postfix(HashMap<String, Object> result) {
             try {
                 result.put("event_option_details", eventDetails(AbstractDungeon.getCurrRoom().event));
+                Object event = AbstractDungeon.getCurrRoom().event;
+                if (event.getClass().getSimpleName().equals("Falling")) {
+                    // The older generic continuation reader can find inherited
+                    // screenNum=0 before the event's actual private screen.
+                    result.put("event_choice_phase", field(event, "screen").toString());
+                }
             } catch (ReflectiveOperationException error) {
                 throw new IllegalStateException("Cannot project displayed event choices", error);
             }

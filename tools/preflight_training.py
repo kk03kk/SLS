@@ -11,6 +11,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+from dataclasses import replace
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -23,6 +24,8 @@ SEED_8335_SHA256 = "bbd6fa5644223ebee07681849d5e2654466cc21e27affbd69cf688a0404e
 
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser()
+    parser.add_argument("--config", type=Path)
+    parser.add_argument("--benchmark", type=Path)
     parser.add_argument("--allow-cpu", action="store_true")
     parser.add_argument("--skip-build", action="store_true")
     parser.add_argument("--output", type=Path, default=ROOT / "local/runs/preflight.json")
@@ -38,7 +41,7 @@ def main() -> int:
     args = _parser().parse_args()
     checks: dict[str, object] = {}
     try:
-        if platform.system() != "Linux":
+        if platform.system() != "Linux" and not args.allow_cpu:
             raise RuntimeError("server preflight requires Linux")
         if platform.machine().lower() not in {"x86_64", "amd64"}:
             raise RuntimeError(f"unsupported Linux architecture: {platform.machine()}")
@@ -60,15 +63,16 @@ def main() -> int:
 
         from sls.backends.simulator import SimulatorBackend
         from sls.content.scope import IRONCLAD_A0_SCOPE_ID, ironclad_a0_scope_hash
-        from sls.curriculum import IRONCLAD_A0_FULLRUN
+        from sls.curriculum import CURRICULUM_PROFILES_BY_ID, IRONCLAD_A0_FULLRUN
         from sls.model import ENCODING_SCHEMA, ModelConfig, Policy, PolicyBatch
         from sls.rl import (
             PPOConfig,
             PPOTrainer,
-            VectorWorkerPool,
+            ShardedWorkerPool,
             load_checkpoint,
             save_checkpoint,
         )
+        from sls.rl.preparation import read_config, workload_contract
         from sls.rl.training_contract import (
             git_state,
             native_artifact,
@@ -78,7 +82,10 @@ def main() -> int:
         repository = git_state()
         if ENCODING_SCHEMA != "sls-policy-input-v5":
             raise RuntimeError("preflight requires the policy v5 encoding contract")
-        decision = SimulatorBackend(IRONCLAD_A0_FULLRUN).reset(0)
+        payload = read_config(args.config) if args.config else None
+        torch.use_deterministic_algorithms(bool(payload["run"].get("deterministic", True)) if payload else True)
+        profile = CURRICULUM_PROFILES_BY_ID[payload["run"]["profile"]] if payload else IRONCLAD_A0_FULLRUN
+        decision = SimulatorBackend(profile).reset(0)
         if decision.terminal or not decision.actions:
             raise RuntimeError("simulator smoke produced an invalid Decision")
         if hashlib.sha256(SEED_8335_DUMP.read_bytes()).hexdigest() != SEED_8335_SHA256:
@@ -90,16 +97,21 @@ def main() -> int:
         if not args.allow_cpu and not torch.cuda.is_available():
             raise RuntimeError("CUDA GPU is not visible to PyTorch")
         device = "cuda" if torch.cuda.is_available() else "cpu"
-        model = Policy(ModelConfig(
+        model_config = ModelConfig(**payload["model"]) if payload else ModelConfig(
             embedding_dim=32, transformer_layers=1, attention_heads=4,
             feedforward_dim=64, recurrent_hidden_dim=64,
-        )).to(device)
-        with VectorWorkerPool(IRONCLAD_A0_FULLRUN, 1) as workers:
+        )
+        ppo = PPOConfig(**payload["ppo"]) if payload else PPOConfig(
+            rollout_steps=1, recurrent_sequence_length=1, minibatch_sequences=1, epochs=1,
+        )
+        layout = json.loads(args.benchmark.read_text()) if args.benchmark else {}
+        if payload and not args.benchmark:
+            ppo = replace(ppo, rollout_steps=ppo.recurrent_sequence_length)
+        model = Policy(model_config).to(device)
+        with ShardedWorkerPool(profile, int(layout.get("selected_workers", 1)),
+                               shard_count=int(layout.get("selected_shards", 1))) as workers:
             trainer = PPOTrainer(
-                model, workers, PPOConfig(
-                    rollout_steps=1, recurrent_sequence_length=1,
-                    minibatch_sequences=1, epochs=1,
-                ),
+                model, workers, ppo,
                 device=device, seed=918273,
                 training_seed_limit=1_000_000_000_000,
                 native_contract_digest=native_source_digest(),
@@ -110,16 +122,21 @@ def main() -> int:
             batch = PolicyBatch.from_decisions((decision,), model.config).to(device)
             loss = model(*batch.model_inputs()).logits.sum() + model(*batch.model_inputs()).value.sum()
             loss.backward()
-            with tempfile.TemporaryDirectory(prefix="sls-preflight-") as directory:
+            args.output.parent.mkdir(parents=True, exist_ok=True)
+            with tempfile.TemporaryDirectory(prefix="sls-preflight-", dir=args.output.parent) as directory:
+                trainer.train_update()
                 checkpoint = save_checkpoint(Path(directory) / "micro.pt", trainer)
                 expected = trainer.train_update()
+                expected_model = {k: v.detach().clone() for k, v in trainer.model.state_dict().items()}
                 load_checkpoint(checkpoint, trainer)
                 actual = trainer.train_update()
-                if actual != expected:
+                if actual != expected or any(not torch.equal(v, expected_model[k]) for k, v in trainer.model.state_dict().items()):
                     raise RuntimeError("checkpoint exact-resume micro-test failed")
         checks = {
             "schema": "sls-linux-training-preflight-v1", "ok": True,
             "simulator_only": True,
+            "workload_contract": workload_contract(payload) if payload else None,
+            "exact_resume": "PASS",
             "python": sys.version, "executable": sys.executable,
             "platform": platform.platform(), "git": git_state(),
             "seed_8335_regression": "PASS",

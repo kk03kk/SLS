@@ -95,6 +95,7 @@ class LiveGameBackend(OriginalBackend):
             self.profile = ironclad_fullrun_profile(
                 ascension, require_heart=self.require_heart,
             )
+        adapted = self._adapt(payload)
         self._adapted = adapted
         self._last_executed_commands = ()
         self._last_validation_evidence = {}

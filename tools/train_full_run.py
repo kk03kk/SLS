@@ -170,6 +170,7 @@ def _training_identity(
         "diagnostic_evaluation": diagnostic,
         **({"selection_progress_guard": bool(run["selection_progress_guard"])}
            if "selection_progress_guard" in run else {}),
+        **({"workflow": run["workflow"]} if "workflow" in run else {}),
         "model": payload["model"],
         "ppo": payload["ppo"],
         "stages": stages,
@@ -395,7 +396,22 @@ def _append_record(path: Path, record: dict[str, object]) -> None:
         stream.write(json.dumps(record, sort_keys=True) + "\n")
         stream.flush()
         os.fsync(stream.fileno())
-    print(json.dumps(record, sort_keys=True), flush=True)
+    summary = dict(record)
+    for key in ("evaluation", "diagnostic_evaluation"):
+        if isinstance(summary.get(key), dict):
+            summary[key] = {k: v for k, v in summary[key].items()
+                            if k not in {"seed_results", "failure_traces"}}
+    print(json.dumps(summary, sort_keys=True), flush=True)
+
+
+def _paired_seed_changes(previous: dict, current: dict) -> dict[str, int]:
+    old = {row["seed"]: row["success"] for row in previous.get("seed_results", ())}
+    new = {row["seed"]: row["success"] for row in current.get("seed_results", ())}
+    if not old or old.keys() != new.keys():
+        return {}
+    return {"compared_seeds": len(old),
+            "loss_to_win": sum(not old[k] and new[k] for k in old),
+            "win_to_loss": sum(old[k] and not new[k] for k in old)}
 
 
 def _profile_id(contract: object) -> str | None:
@@ -559,6 +575,10 @@ def main() -> int:
     config_bytes = args.config.read_bytes()
     payload = tomllib.loads(config_bytes.decode("utf-8"))
     run = dict(payload["run"])
+    single_stage = run.get("workflow") == "single-stage"
+    if single_stage and (args.stage != "train" or set(payload["stages"]) != {"train"}
+                         or run["profile"] != "IRONCLAD_A0_ACT1" or args.resume != "auto"):
+        raise ValueError("single-stage requires fresh/exact Act1 train workflow")
     stage = dict(payload["stages"][args.stage])
     periodic_seeds, final_seeds = _validate_seed_namespaces(run)
     diagnostic_seed_start = int(run.get("diagnostic_evaluation_seed_start", 0))
@@ -593,6 +613,8 @@ def main() -> int:
         "pilot": "IRONCLAD_A0_ACT2",
         "train": "IRONCLAD_A0_FULLRUN",
     }
+    if single_stage:
+        expected_profiles["train"] = "IRONCLAD_A0_ACT1"
     if profile.profile_id != expected_profiles[args.stage]:
         raise ValueError(
             f"{args.stage} must use curriculum profile {expected_profiles[args.stage]}"
@@ -605,6 +627,9 @@ def main() -> int:
     device = str(run["device"])
     if device.startswith("cuda") and not torch.cuda.is_available():
         raise RuntimeError("training config requires CUDA but CUDA is unavailable")
+    if single_stage:
+        from sls.rl.preparation import require_preparation
+        require_preparation(payload, torch)
     model = Policy(ModelConfig(**payload["model"]))
     ppo = PPOConfig(**payload["ppo"])
     target_steps = _positive_int(stage, "target_environment_steps")
@@ -653,7 +678,11 @@ def main() -> int:
             )
     if args.stage == "smoke" and args.resume != "auto":
         raise ValueError("smoke cannot use environment migration")
-    if args.stage != "smoke" and not latest.exists():
+    if single_stage and latest.exists() and manifest is None:
+        raise FileExistsError("checkpoint has no matching run manifest")
+    if single_stage and output_existed and not latest.exists() and manifest is None:
+        raise FileExistsError("refusing an unrecognized existing training directory")
+    if args.stage != "smoke" and not single_stage and not latest.exists():
         raise FileNotFoundError(f"{args.stage} requires the smoke/pilot checkpoint: {latest}")
     output.mkdir(parents=True, exist_ok=True)
     stage_output = output / "stages" / args.stage
@@ -692,7 +721,13 @@ def main() -> int:
             "created_unix": started,
             "stages": {},
         }
-    _require_predecessor_promotion(manifest, args.stage)
+    if not single_stage:
+        _require_predecessor_promotion(manifest, args.stage)
+    else:
+        manifest["workflow"] = "single-stage"
+        manifest["environment_profile"] = asdict(profile)
+    if not reference_path.exists():
+        reference_path.write_bytes(config_bytes)
     previous_manifest_status = manifest.get("status")
     completed_stage = manifest.get("stages", {}).get(args.stage, {})
     if (
@@ -871,8 +906,17 @@ def main() -> int:
                     progress_callback=_evaluation_progress(label),
                 )
 
+            def selection_record(evaluation):
+                result = best_checkpoint_record(evaluation, update=trainer.update)
+                result["environment_steps"] = trainer.environment_steps
+                if single_stage:
+                    result["selection_objective"] = "ACT1_CLEAR_COUNT"
+                return result
+
             last_eval = _last_evaluation_step(metrics_path)
             baseline_evaluation = _baseline_evaluation(metrics_path)
+            if single_stage and not latest.exists():
+                save_checkpoint(latest, trainer)
             if last_eval < 0:
                 baseline = asdict(run_evaluation(
                     tuple(periodic_seeds), "baseline", interruptible=False,
@@ -885,12 +929,19 @@ def main() -> int:
                 }
                 update_best_checkpoint(
                     selection_output,
-                    best_checkpoint_record(baseline, update=trainer.update),
+                    selection_record(baseline),
                     save=lambda path: save_checkpoint(path, trainer),
                 )
                 _append_record(metrics_path, record)
                 baseline_evaluation = baseline
+                last_eval = trainer.environment_steps
 
+            previous_evaluation = baseline_evaluation or {}
+            if metrics_path.exists():
+                for line in metrics_path.read_text(encoding="utf-8").splitlines():
+                    entry = json.loads(line)
+                    if "evaluation" in entry:
+                        previous_evaluation = entry["evaluation"]
             _validate_baseline_retention(baseline_evaluation or {}, stage)
 
             checkpoint_every = int(stage.get("checkpoint_every_steps", 500_000))
@@ -899,12 +950,35 @@ def main() -> int:
             next_save = (
                 (trainer.environment_steps // checkpoint_every) + 1
             ) * checkpoint_every
-            next_eval = ((trainer.environment_steps // evaluate_every) + 1) * evaluate_every
+            next_eval = ((max(last_eval, 0) // evaluate_every) + 1) * evaluate_every
             diagnose_every = int(stage.get("diagnose_every_steps", 0))
             next_diagnose = (
                 ((trainer.environment_steps // diagnose_every) + 1) * diagnose_every
                 if diagnose_every else 0
             )
+            # An interrupted evaluation is not an evaluated checkpoint. Finish
+            # the due fixed-seed comparison before taking another PPO update,
+            # including when only finalization remains after a time limit.
+            if trainer.environment_steps >= next_eval and not controller.requested:
+                try:
+                    evaluation = asdict(run_evaluation(
+                        tuple(periodic_seeds), "selection-resumed", interruptible=True,
+                    ))
+                    record = {
+                        "environment_steps": trainer.environment_steps, "update": trainer.update,
+                        "evaluation": evaluation,
+                        "paired_seed_changes": _paired_seed_changes(previous_evaluation, evaluation),
+                        "best_checkpoint_updated": update_best_checkpoint(
+                            selection_output, selection_record(evaluation),
+                            save=lambda path: save_checkpoint(path, trainer),
+                            progress_guard=bool(run.get("selection_progress_guard", False)),
+                        ),
+                    }
+                    _append_record(metrics_path, record)
+                    previous_evaluation = evaluation
+                    next_eval = ((trainer.environment_steps // evaluate_every) + 1) * evaluate_every
+                except InterruptedError:
+                    controller.requested = True
             while trainer.environment_steps < run_until and not controller.requested:
                 update_started = time.perf_counter()
                 metrics = trainer.train_update()
@@ -947,12 +1021,14 @@ def main() -> int:
                             interruptible=True,
                         ))
                         record["evaluation"] = evaluation
+                        record["paired_seed_changes"] = _paired_seed_changes(previous_evaluation, evaluation)
+                        previous_evaluation = evaluation
                         if baseline_evaluation is not None:
                             record["progress_from_baseline"] = _progress_from_baseline(
                                 baseline_evaluation, evaluation,
                             )
                         record["best_checkpoint_updated"] = update_best_checkpoint(
-                            selection_output, best_checkpoint_record(evaluation, update=trainer.update),
+                            selection_output, selection_record(evaluation),
                             save=lambda path: save_checkpoint(path, trainer),
                             progress_guard=bool(run.get("selection_progress_guard", False)),
                         )
@@ -1001,7 +1077,11 @@ def main() -> int:
                 final_stage["minimum_evaluation_episodes"] = int(
                     stage.get("minimum_final_evaluation_episodes", 1)
                 )
-                final_promoted = _promotion_passes(final_result, final_stage)
+                final_promoted = (
+                    int(final_result["episodes"]) >= int(final_stage["minimum_evaluation_episodes"])
+                    and int(final_result["backend_errors"]) == 0
+                    and int(final_result["backend_truncations"]) == 0
+                ) if single_stage else _promotion_passes(final_result, final_stage)
                 _atomic_json(output / "final-evaluation.json", {
                     "schema": "sls-final-evaluation-v2",
                     "checkpoint": selected.name,
@@ -1014,7 +1094,7 @@ def main() -> int:
                 if final_promoted:
                     export_policy_artifact(
                         selected, output / f"{output.name}.pt",
-                        ascension_min=0, ascension_max=0, goal="FULLRUN",
+                        ascension_min=0, ascension_max=0, goal="ACT1" if single_stage else "FULLRUN",
                     )
                 promoted = final_promoted
 
@@ -1051,6 +1131,7 @@ def main() -> int:
         _atomic_json(manifest_path, manifest)
         if args.stage == "train" and status == "COMPLETE":
             bundle_paths = [
+                output / "training-config.toml",
                 output / "run-manifest.json", output / "latest.pt",
                 output / "final.pt", output / "final-evaluation.json",
                 output / f"{output.name}.pt",
