@@ -190,7 +190,11 @@ class SimulatorBackend:
         if (self.profile.note_for_yourself_policy == "AUTO_LEAVE"
                 and normalize_content_id(str(raw["public_run"].get("current_event_id", ""))) == "NOTE_FOR_YOURSELF"
                 and _screen_type(raw) is ScreenType.EVENT):
-            leave = [a for a in raw.get("legal_actions", ()) if int(a.get("idx1", -1)) == 1]
+            # idx1 is local to an action family: potion slot 1 is not event option 1.
+            leave = [a for a in raw.get("legal_actions", ())
+                     if not a.get("potion", False)
+                     and not a.get("potion_discard", False)
+                     and int(a.get("idx1", -1)) == 1]
             if len(leave) != 1:
                 raise RuntimeError("Note for Yourself must expose exactly one leave action")
             raw = self._native.step(int(leave[0]["bits"]))

@@ -120,11 +120,12 @@ def _load_benchmark(
     payload = json.loads(path.read_text(encoding="utf-8"))
     if payload.get("schema") != BENCHMARK_SCHEMA:
         raise ValueError("worker benchmark schema is incompatible")
-    if payload.get("native_source_sha256") != native_digest:
+    from sls.rl.training_contract import state_preserving_source_transition
+    if not state_preserving_source_transition(payload.get("native_source_sha256"), native_digest):
         raise ValueError("worker benchmark belongs to different simulator sources")
     benchmark_artifact = payload.get("native_artifact") or {}
     if benchmark_artifact.get("sha256") != native_binary_sha256:
-        warnings.warn("Same-source native rebuild: reusing worker layout; old throughput is advisory",
+        warnings.warn("Reviewed compatible native rebuild: reusing worker layout; old throughput is advisory",
                       RuntimeWarning, stacklevel=2)
     workers, shards = int(payload["selected_workers"]), int(payload["selected_shards"])
     if workers <= 0 or shards <= 0 or shards > workers:
@@ -539,8 +540,30 @@ def _resume_or_migrate_environment(
     return dict(previous), "migration"
 
 
+def _archive_uncheckpointed_metrics(path: Path, environment_steps: int) -> None:
+    """Keep crash history without treating rolled-back updates as current training."""
+    if not path.exists():
+        return
+    original = path.read_bytes()
+    lines = original.splitlines(keepends=True)
+    retained = [line for line in lines
+                if int(json.loads(line).get("environment_steps", 0)) <= environment_steps]
+    if len(retained) == len(lines):
+        return
+    # Content-addressed backup is immutable and retries are idempotent.
+    backup = path.with_name(f"metrics.before-resume-{hashlib.sha256(original).hexdigest()[:16]}.jsonl")
+    if not backup.exists():
+        backup.write_bytes(original)
+    temporary = path.with_suffix(".tmp")
+    temporary.write_bytes(b"".join(retained))
+    temporary.replace(path)
+    print(json.dumps({"resume_metrics_archive": str(backup),
+                      "restored_environment_steps": environment_steps,
+                      "rolled_back_records": len(lines) - len(retained)}), flush=True)
+
+
 def _load_exact_or_runtime_rebind(path: Path, trainer: PPOTrainer) -> str:
-    """Load exactly, permitting only the checkpoint module's safe runtime fields."""
+    """Load exactly, or record a safe runtime/reviewed state-preserving rebind."""
 
     try:
         load_checkpoint(path, trainer)
@@ -913,6 +936,7 @@ def main() -> int:
                     result["selection_objective"] = "ACT1_CLEAR_COUNT"
                 return result
 
+            _archive_uncheckpointed_metrics(metrics_path, trainer.environment_steps)
             last_eval = _last_evaluation_step(metrics_path)
             baseline_evaluation = _baseline_evaluation(metrics_path)
             if single_stage and not latest.exists():

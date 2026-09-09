@@ -1,0 +1,7 @@
+[
+  {
+    "from": "8ac099425f0bf2a4ecc1282cef2a10d4551386e8086f577425528879e5bb7ceb",
+    "to": "a0da97e6fd694b9cf9074726d48a6d6d649d2554de2229ce78af8b8628122045",
+    "reason": "Job 833382: exclude potion actions from Note for Yourself auto-leave selection. Previously successful transitions are unchanged; the formerly crashing boundary now executes native Leave. No model, PPO, reward, RNG, saved-state or layout changes."
+  }
+]

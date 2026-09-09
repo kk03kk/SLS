@@ -52,7 +52,10 @@ def main() -> int:
     import torch
 
     from sls.rl.preparation import preparation_contract, require_preparation
-    from sls.rl.training_contract import native_source_digest
+    from sls.rl.training_contract import (
+        native_source_digest,
+        state_preserving_source_transition,
+    )
     torch.use_deterministic_algorithms(bool(config["run"].get("deterministic", True)))
     torch.backends.cudnn.benchmark = False
     torch.set_float32_matmul_precision("high")
@@ -61,7 +64,7 @@ def main() -> int:
     latest = ROOT / config["run"]["output"] / "latest.pt"
     if latest.exists():
         saved = torch.load(latest, map_location="cpu", weights_only=False)
-        if saved["contract"]["native_source_sha256"] != native_source_digest():
+        if not state_preserving_source_transition(saved["contract"]["native_source_sha256"], native_source_digest()):
             raise ValueError("existing run uses different environment semantics; no automatic migration")
         del saved
     try:
@@ -73,7 +76,7 @@ def main() -> int:
                  "--output", benchmark.with_name("preflight.json"))
         layout = json.loads(benchmark.read_text()) if benchmark.exists() else {}
         reusable = (layout.get("workload_contract") == workload_contract(config)
-                    and layout.get("native_source_sha256") == native_source_digest())
+                    and state_preserving_source_transition(layout.get("native_source_sha256"), native_source_digest()))
         if not reusable:
             if latest.exists():
                 raise ValueError("existing training layout cannot be replaced; recover its benchmark record")

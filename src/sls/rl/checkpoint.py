@@ -285,16 +285,23 @@ def load_checkpoint_runtime_rebind(
     """Restore all training state across recorded hardware/provenance differences.
 
     GPU marketing names and Git commits do not define training semantics.
-    Native sources, software stack, deterministic mode, CUDA RNG topology,
+    Native sources (except exact reviewed state-preserving fixes), software stack, deterministic mode, CUDA RNG topology,
     model, PPO, curriculum, worker layout and training identity remain strict.
     This preserves state, but makes no cross-device bitwise replay promise.
     """
 
-    return _load_checkpoint_exact(
-        path,
-        trainer,
-        allowed_contract_changes=RUNTIME_REBIND_FIELDS,
-    )
+    from sls.rl.training_contract import state_preserving_source_transition
+    payload = torch.load(Path(path), map_location="cpu", weights_only=False)
+    previous = payload.get("contract", {}).get("native_source_sha256")
+    changes = RUNTIME_REBIND_FIELDS
+    if previous != trainer.native_contract_digest:
+        reason = state_preserving_source_transition(previous, trainer.native_contract_digest)
+        if reason is not None:
+            changes = changes | {"native_source_sha256"}
+            warnings.warn("Reviewed state-preserving source fix: " + reason,
+                          RuntimeWarning, stacklevel=2)
+    del payload
+    return _load_checkpoint_exact(path, trainer, allowed_contract_changes=frozenset(changes))
 
 
 def load_checkpoint_environment_migration(

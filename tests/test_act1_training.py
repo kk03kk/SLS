@@ -283,3 +283,72 @@ def test_prepare_failure_never_executes_training(tmp_path, monkeypatch, failed_t
     with pytest.raises(RuntimeError, match="injected preparation failure"):
         prepare.main()
     assert calls[-1] == failed_tool
+
+
+def test_job_833382_note_leave_does_not_alias_second_potion_slot():
+    # Natural server trajectory, seed 10004912; no fabricated event state.
+    backend = SimulatorBackend(replace(IRONCLAD_A0_ACT1, note_for_yourself_policy="INTERACTIVE"))
+    backend.reset(10004912)
+    for bits in [1, 402653184, 402653185, 805306368, 0, 0, 3, 537264129, 536870912, 536870914]:
+        backend._native.step(bits)
+    before = backend._native.snapshot()
+    manual = SimulatorBackend(backend.profile)
+    decision = manual.load_checkpoint(before)
+    enter = next(a for a in decision.actions if a.kind is ActionKind.CHOOSE_MAP_NODE)
+    event = manual.step(enter).decision
+    event_checkpoint = manual.checkpoint()
+    assert event.observation.screen is ScreenType.EVENT
+    assert sum(a['idx1'] == 1 for a in manual.raw_state['legal_actions']) == 2
+    expected = manual.step(next(a for a in event.actions if a.option_id == 'event-option:1'))
+    automatic = SimulatorBackend(IRONCLAD_A0_ACT1)
+    automatic.load_checkpoint(before)
+    transition = automatic.step(enter)
+    assert transition.decision == expected.decision
+    assert transition.info['automatic_actions'] == ['NOTE_FOR_YOURSELF:LEAVE']
+    assert automatic.raw_state['player_state']['potions'] == before['player_state']['potions']
+    assert automatic.raw_state['rng'] == manual.raw_state['rng']
+    restored = SimulatorBackend(IRONCLAD_A0_ACT1)
+    assert restored.load_checkpoint(event_checkpoint) == expected.decision
+    assert restored.load_checkpoint(automatic.checkpoint()) == expected.decision
+
+
+def test_reviewed_source_fix_is_exact_directional_pair_only():
+    from sls.rl.training_contract import (
+        native_source_digest,
+        state_preserving_source_transition,
+    )
+    previous = '8ac099425f0bf2a4ecc1282cef2a10d4551386e8086f577425528879e5bb7ceb'
+    current = native_source_digest()
+    assert state_preserving_source_transition(previous, current)
+    assert state_preserving_source_transition(current, previous) is None
+    assert state_preserving_source_transition(previous, 'unreviewed') is None
+    assert state_preserving_source_transition('unreviewed', current) is None
+
+
+def test_resume_archives_updates_after_checkpoint_without_losing_history(tmp_path):
+    from tools.train_full_run import _archive_uncheckpointed_metrics
+    path = tmp_path / 'metrics.jsonl'
+    original = ''.join(json.dumps({'environment_steps': n}) + '\n' for n in [0, 16, 32])
+    path.write_text(original)
+    _archive_uncheckpointed_metrics(path, 16)
+    assert [json.loads(line)['environment_steps'] for line in path.read_text().splitlines()] == [0, 16]
+    assert next(tmp_path.glob('metrics.before-resume-*.jsonl')).read_text() == original
+    _archive_uncheckpointed_metrics(path, 16)
+    assert len(list(tmp_path.glob('metrics.before-resume-*.jsonl'))) == 1
+
+
+def test_reviewed_note_fix_reuses_layout_but_rejects_unknown_environment(tmp_path):
+    from sls.rl.training_contract import native_source_digest
+    from tools.train_full_run import _load_benchmark
+    path = tmp_path / 'benchmark.json'
+    data = {'schema': 'sls-worker-benchmark-v2', 'selected_workers': 64,
+            'selected_shards': 8, 'native_artifact': {'sha256': 'old-binary'},
+            'native_source_sha256': '8ac099425f0bf2a4ecc1282cef2a10d4551386e8086f577425528879e5bb7ceb'}
+    path.write_text(json.dumps(data))
+    with pytest.warns(RuntimeWarning, match='Reviewed compatible'):
+        assert _load_benchmark(path, native_digest=native_source_digest(),
+                               native_binary_sha256='rebuilt') == (64, 8)
+    data['native_source_sha256'] = 'unreviewed'
+    path.write_text(json.dumps(data))
+    with pytest.raises(ValueError, match='different simulator'):
+        _load_benchmark(path, native_digest=native_source_digest(), native_binary_sha256='rebuilt')

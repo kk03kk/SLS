@@ -99,6 +99,23 @@ def native_source_digest() -> str:
     return local_source_digest(NATIVE_SOURCE_PATHS)
 
 
+def state_preserving_source_transition(previous: object, current: str) -> str | None:
+    """Allow only reviewed, directional bug fixes that preserve saved episode state.
+
+    This is not an environment migration or a wildcard source-hash exemption.
+    New preparation still runs; the record only permits restoring state and
+    retaining an existing worker layout across the exact reviewed source pair.
+    """
+    if previous == current:
+        return "same-source"
+    path = ROOT / "configs/compatibility/state-preserving-source-transitions.json"
+    records = json.loads(path.read_text(encoding="utf-8")) if path.exists() else []
+    for record in records:
+        if (record["from"] == previous and record["to"] == current):
+            return str(record["reason"])
+    return None
+
+
 def training_validation_digest(*, root: Path = ROOT) -> str:
     """Bind executed training/evaluation code, not unrelated tools or configs.
 

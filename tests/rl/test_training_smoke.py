@@ -519,3 +519,32 @@ def test_cuda_checkpoint_keeps_cpu_rng_state_loadable(tmp_path: Path) -> None:
         path = save_checkpoint(tmp_path / "cuda.pt", trainer)
         load_checkpoint(path, trainer)
         assert trainer.device.type == "cuda"
+
+
+def test_reviewed_note_fix_preserves_optimizer_workers_and_next_update(tmp_path):
+    from sls.rl.training_contract import native_source_digest
+    config = PPOConfig(rollout_steps=2, recurrent_sequence_length=1,
+                       minibatch_sequences=2, epochs=1)
+    model = Policy(ModelConfig(embedding_dim=32, transformer_layers=1,
+                              attention_heads=4, feedforward_dim=64))
+    with WorkerPool(IRONCLAD_A0_ACT1, 1) as workers:
+        trainer = PPOTrainer(model, workers, config, seed=17,
+                             native_contract_digest=native_source_digest())
+        trainer.train_update()
+        path = tmp_path / 'checkpoint.pt'
+        save_checkpoint(path, trainer)
+        expected = trainer.train_update()
+        weights = {k: v.clone() for k, v in trainer.model.state_dict().items()}
+        payload = torch.load(path, weights_only=False, map_location='cpu')
+        payload['contract']['native_source_sha256'] = '8ac099425f0bf2a4ecc1282cef2a10d4551386e8086f577425528879e5bb7ceb'
+        torch.save(payload, path)
+        with pytest.raises(CheckpointContractMismatch):
+            load_checkpoint(path, trainer)
+        with pytest.warns(RuntimeWarning):
+            assert _load_exact_or_runtime_rebind(path, trainer) == 'runtime-rebind'
+        assert trainer.train_update() == expected
+        assert all(torch.equal(v, weights[k]) for k, v in trainer.model.state_dict().items())
+        payload['contract']['ppo']['gamma'] = 0.5
+        torch.save(payload, path)
+        with pytest.warns(RuntimeWarning), pytest.raises(CheckpointContractMismatch):
+            _load_exact_or_runtime_rebind(path, trainer)
