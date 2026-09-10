@@ -161,6 +161,8 @@ def _training_identity(
     return canonical_digest({
         "profile": run["profile"],
         "seed": int(run["seed"]),
+        **({"training_seed_limit": int(run["training_seed_limit"])}
+           if "training_seed_limit" in run else {}),
         "worker_backend": run["worker_backend"],
         "workers": workers,
         "shards": shards,
@@ -788,13 +790,13 @@ def main() -> int:
             profile, workers_count, shard_count=shard_count,
             crash_dump_dir=output / "crashes",
         ) as workers:
+            from sls.rl.preparation import training_seed_limit
             trainer = PPOTrainer(
                 model, workers, ppo, device=device, seed=seed,
                 native_contract_digest=source_digest,
                 git_commit=str(repository["commit"]),
                 training_config_digest=identity,
-                training_seed_limit=min(periodic_seeds.start, final_seeds.start,
-                                        diagnostic_seed_start or periodic_seeds.start),
+                training_seed_limit=training_seed_limit(run),
             )
             if latest.exists():
                 loaded_exactly = False

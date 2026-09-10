@@ -1,0 +1,63 @@
+[run]
+workflow = "single-stage"
+profile = "IRONCLAD_A0_ACT1"
+seed = 10000000
+training_seed_limit = 2000000000000
+device = "cuda"
+deterministic = true
+worker_backend = "sharded-vector"
+benchmark = "local/runs/preparation/ironclad-a0-act1-v4-5m/benchmark.json"
+output = "local/runs/ironclad-a0-act1-v4-10m"
+continuation_from = "local/runs/ironclad-a0-act1-v4-5m"
+continuation_checkpoint_sha256 = "e0a86734786b520ad50d23ff05bed9241e4a4d7cc8442d6372c8fa5a47645b73"
+periodic_evaluation_seed_start = 3000000000000
+periodic_evaluation_seed_count = 512
+final_evaluation_seed_start = 2000000001024
+final_evaluation_seed_count = 1024
+evaluation_max_steps = 4096
+
+[stages.train]
+profile = "IRONCLAD_A0_ACT1"
+target_environment_steps = 10000000
+evaluate_every_steps = 250000
+checkpoint_every_steps = 250000
+minimum_success_rate = 0.0
+minimum_reached_act2_rate = 0.0
+minimum_reached_act3_rate = 0.0
+minimum_evaluation_episodes = 512
+minimum_final_evaluation_episodes = 1024
+
+[model]
+embedding_dim = 128
+transformer_layers = 4
+attention_heads = 4
+feedforward_dim = 256
+recurrent_hidden_dim = 256
+recurrent_layers = 1
+dropout = 0.0
+architecture = "sls-recurrent-relational-policy-v5"
+
+[ppo]
+rollout_steps = 256
+recurrent_sequence_length = 64
+minibatch_sequences = 16
+learning_rate = 0.000125
+gamma = 1.0
+gae_lambda = 0.98
+clip_ratio = 0.2
+value_coefficient = 0.5
+entropy_coefficient = 0.02
+entropy_final = 0.002
+entropy_decay_steps = 40000000
+target_kl = 0.02
+value_clip_ratio = 0.2
+max_gradient_norm = 0.5
+epochs = 2
+potential_shaping = true
+potential_scale = 0.2
+failure_progress_scale = 0.8
+reward_schema = "sls-curriculum-progress-v3"
+episode_limit_schema = "sls-fullrun-episode-limit-v2"
+max_episode_steps = 4096
+max_boundary_visits = 4
+limit_failure_reward = -1.0

@@ -2,7 +2,7 @@
 
 SLS 的目标是训练一个能够自主游玩 **Slay the Spire 1** 的智能体，也让人通过观察它的决策理解它学到了什么。项目使用 C++ 模拟器生成游戏交互，使用带循环记忆的策略网络和 PPO 训练，并提供连接本地游戏的模型观察界面。
 
-**当前开发目标：战士（Ironclad）A0 Act1，从全新模型训练，击败第一幕 Boss 即结束并计为胜利。** 模拟器也支持更长的流程；这不代表目前已得到成熟的高胜率通关模型。
+**当前目标：战士（Ironclad）A0 Act1，击败第一幕 Boss 即胜利。** 从零开始的 5M 实验已完成，best 在独立 1024 seeds 上为 75.10%。下一轮是从已审计 best 继续到累计 10M 的半学习率分支，尚未达到接近 100% 的目标。
 
 没有游戏、GPU 或 checkpoint 也能运行模拟器。观察已训练模型需要另外准备兼容的模型文件；连接真实游戏还需要自己的游戏和 Mod 环境。
 
@@ -71,7 +71,7 @@ print("后续合法动作数：", len(decision.actions))
 
 仓库不附带预训练权重。`local/runs/` 保存训练 checkpoint，`model/` 保存导出的独立策略，两者均被 Git 忽略。
 
-**当前输入编码为 `sls-policy-input-v5`。旧 13M / 15M 等历史模型不能直接当作当前模型加载，也不能靠改版本号绕过检查。** 本轮从零训练；Act1 环境规则版本为 4，编码仍为 v5。以下示例要求已有当前编码兼容、目标匹配的 checkpoint；请替换为自己的路径。
+**当前输入编码为 `sls-policy-input-v5`。旧 13M / 15M 等历史模型不能直接当作当前模型加载，也不能靠改版本号绕过检查。** 5M 实验从零训练完成；Act1 环境规则版本为 4，编码仍为 v5。以下示例要求已有当前编码兼容、目标匹配的 checkpoint；请替换为自己的路径。
 
 导出 A0 Act1 策略：
 
@@ -159,6 +159,17 @@ benchmark 比较 32/64/128 个环境的完整“采样＋PPO 更新”耗时，�
 - `ironclad-a0-act1-v4-5m.pt`：实验完成后的独立策略，可复制到本地 `model/` 使用。导出不要求高胜率；模型质量以评估结果为准。
 
 间隔与 5M 目标均在完整 PPO update 边界执行，因此实际 step 数可能略高于标称值。配置、完整步骤与失败处理见 [Act1 训练说明](docs/training-act1-5m.md)。历史 FullRun 配置与 [旧服务器指南](docs/nus-training-zh.md) 保留供追溯，不作为本轮启动流程。
+
+### 已完成 5M 实验后的续训
+
+[5M 审计、100-seed 完整诊断与下一轮方案](docs/act1-v4-5m-audit.md) 指定了 4,505,600-step best。已有对应服务器产物时，可提交：
+
+```bash
+/home/h/hengzhi/venvs/sls/bin/python tools/submit_slurm.py train \
+  --config configs/train/ironclad_a0_act1_10m.toml --prepare
+```
+
+这份配置绑定该 best 的 SHA256，并在新目录创建半学习率分支；原模型、Adam moments、RNG 和 worker 状态保留，旧实验不修改。准备阶段验证实际恢复 checkpoint，复用原 worker 布局。它不是任意 checkpoint 的通用迁移命令，也不是重新训练一个独立 10M。新终评 seeds 与本次诊断集合不重叠。
 
 ### 与普通原版局的区别
 

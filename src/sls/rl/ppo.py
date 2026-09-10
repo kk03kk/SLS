@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import math
 import random
 from dataclasses import asdict, dataclass
 
@@ -206,6 +207,10 @@ class PPOTrainer:
         previous_action_steps: list[torch.Tensor] = []
         previous_reward_steps: list[torch.Tensor] = []
         collect_terminations = {reason: 0 for reason in TERMINATION_REASONS}
+        neow_count = 0
+        neow_swap_probability = 0.0
+        neow_entropy = 0.0
+        neow_choices = [0, 0, 0, 0]
         self.model.eval()
         for _ in range(self.config.rollout_steps):
             encoded = tuple(encode_decision(value) for value in self.decisions)
@@ -227,6 +232,21 @@ class PPOTrainer:
                 decision.actions[int(index)].candidate_id
                 for decision, index in zip(self.decisions, actions.cpu())
             ]
+            # Observe rare initial choices separately; never change sampling or loss.
+            neow_indices = [i for i, d in enumerate(self.decisions)
+                            if d.observation.screen.value == "NEOW"]
+            if neow_indices:
+                probabilities = distribution.probs[neow_indices].cpu().tolist()
+                for i, row in zip(neow_indices, probabilities):
+                    decision = self.decisions[i]
+                    neow_count += 1
+                    neow_entropy += -sum(p * math.log(p) for p in row if p > 0) / math.log(max(2, len(decision.actions)))
+                    for j, action in enumerate(decision.actions):
+                        if action.option_id == "event-option:3":
+                            neow_swap_probability += row[j]
+                        if action.candidate_id == candidate_ids[i] and action.option_id in {
+                                f"event-option:{k}" for k in range(4)}:
+                            neow_choices[int(action.option_id.rsplit(":", 1)[1])] += 1
             transitions = self.workers.step(candidate_ids)
             encoded_steps.append(encoded)
             action_steps.append(actions.cpu())
@@ -313,6 +333,13 @@ class PPOTrainer:
             previous_rewards=self.previous_rewards,
         ).value.cpu()
         values = torch.stack(value_steps)
+        self.last_collect_neow = {"neow_decisions": float(neow_count),
+            **{f"neow_option_{i}_count": float(n) for i, n in enumerate(neow_choices)}}
+        if neow_count:
+            self.last_collect_neow.update({
+                "neow_mean_swap_probability": neow_swap_probability / neow_count,
+                "neow_mean_normalized_entropy": neow_entropy / neow_count,
+            })
         advantages, returns = generalized_advantage_estimate(
             torch.stack(reward_steps),
             values,
@@ -543,4 +570,5 @@ class PPOTrainer:
     def train_update(self) -> dict[str, float]:
         metrics = self.optimize(self.collect())
         metrics.update({f"terminations_{key}": float(value) for key, value in self.last_collect_terminations.items()})
+        metrics.update(self.last_collect_neow)
         return metrics

@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
 
-from sls.rl.preparation import read_config, workload_contract
+from sls.rl.preparation import benchmark_matches_workload, read_config
 
 
 def run_tool(name: str, *arguments: object) -> None:
@@ -61,6 +61,8 @@ def main() -> int:
     torch.set_float32_matmul_precision("high")
     if not torch.cuda.is_available():
         raise RuntimeError("CUDA is unavailable on allocated compute node")
+    if config["run"].get("continuation_from"):
+        run_tool("initialize_act1_continuation.py", "--config", args.config)
     latest = ROOT / config["run"]["output"] / "latest.pt"
     if latest.exists():
         saved = torch.load(latest, map_location="cpu", weights_only=False)
@@ -75,7 +77,7 @@ def main() -> int:
         run_tool("preflight_training.py", "--skip-build", "--config", args.config,
                  "--output", benchmark.with_name("preflight.json"))
         layout = json.loads(benchmark.read_text()) if benchmark.exists() else {}
-        reusable = (layout.get("workload_contract") == workload_contract(config)
+        reusable = (benchmark_matches_workload(config, layout)
                     and state_preserving_source_transition(layout.get("native_source_sha256"), native_source_digest()))
         if not reusable:
             if latest.exists():
@@ -83,8 +85,10 @@ def main() -> int:
             run_tool("benchmark_workers.py", "--config", args.config, "--layouts",
                      "32:4", "64:8", "128:8", "--output", benchmark)
             layout = json.loads(benchmark.read_text())
+        checkpoint_arguments = ("--checkpoint", latest) if latest.exists() else ()
         run_tool("preflight_training.py", "--skip-build", "--config", args.config,
-                 "--benchmark", benchmark, "--output", benchmark.with_name("worker-resume.json"))
+                 "--benchmark", benchmark, *checkpoint_arguments,
+                 "--output", benchmark.with_name("worker-resume.json"))
         report = {"ok": True, "contract": preparation_contract(config, torch),
                   "layout": [layout["selected_workers"], layout["selected_shards"]],
                   "gpu": torch.cuda.get_device_name(0)}

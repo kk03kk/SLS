@@ -26,6 +26,8 @@ def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=Path)
     parser.add_argument("--benchmark", type=Path)
+    parser.add_argument("--checkpoint", type=Path,
+                        help="Verify an actual resume checkpoint with the full configured worker layout")
     parser.add_argument("--allow-cpu", action="store_true")
     parser.add_argument("--skip-build", action="store_true")
     parser.add_argument("--output", type=Path, default=ROOT / "local/runs/preflight.json")
@@ -41,6 +43,8 @@ def main() -> int:
     args = _parser().parse_args()
     checks: dict[str, object] = {}
     try:
+        if args.checkpoint and not (args.config and args.benchmark):
+            raise ValueError("checkpoint preflight requires --config and --benchmark")
         if platform.system() != "Linux" and not args.allow_cpu:
             raise RuntimeError("server preflight requires Linux")
         if platform.machine().lower() not in {"x86_64", "amd64"}:
@@ -118,13 +122,24 @@ def main() -> int:
                 git_commit=str(repository["commit"]),
                 training_config_digest="PREFLIGHT_MICRO_RESUME",
             )
+            if args.checkpoint:
+                from sls.rl.checkpoint import load_checkpoint_runtime_rebind
+                from tools.train_full_run import _training_identity
+                trainer.training_config_digest = _training_identity(
+                    payload, workers=workers.size, shards=workers.shard_count,
+                    checkpoint_reference=read_config(args.checkpoint.parent / "training-config.toml"),
+                )
+                from sls.rl.preparation import training_seed_limit
+                trainer.training_seed_limit = training_seed_limit(payload["run"])
+                load_checkpoint_runtime_rebind(args.checkpoint, trainer)
             decision = trainer.decisions[0]
             batch = PolicyBatch.from_decisions((decision,), model.config).to(device)
             loss = model(*batch.model_inputs()).logits.sum() + model(*batch.model_inputs()).value.sum()
             loss.backward()
             args.output.parent.mkdir(parents=True, exist_ok=True)
             with tempfile.TemporaryDirectory(prefix="sls-preflight-", dir=args.output.parent) as directory:
-                trainer.train_update()
+                if not args.checkpoint:
+                    trainer.train_update()
                 checkpoint = save_checkpoint(Path(directory) / "micro.pt", trainer)
                 expected = trainer.train_update()
                 expected_model = {k: v.detach().clone() for k, v in trainer.model.state_dict().items()}
@@ -137,6 +152,9 @@ def main() -> int:
             "simulator_only": True,
             "workload_contract": workload_contract(payload) if payload else None,
             "exact_resume": "PASS",
+            "source_checkpoint_sha256": (
+                hashlib.sha256(args.checkpoint.read_bytes()).hexdigest() if args.checkpoint else None
+            ),
             "python": sys.version, "executable": sys.executable,
             "platform": platform.platform(), "git": git_state(),
             "seed_8335_regression": "PASS",
