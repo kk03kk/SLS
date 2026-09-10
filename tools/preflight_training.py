@@ -15,6 +15,7 @@ from dataclasses import replace
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "src"))
 os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
 
@@ -63,8 +64,6 @@ def main() -> int:
         torch.backends.cudnn.benchmark = False
         if torch.cuda.is_available():
             torch.set_float32_matmul_precision("high")
-        from replay_failed_state import replay_dump
-
         from sls.backends.simulator import SimulatorBackend
         from sls.content.scope import IRONCLAD_A0_SCOPE_ID, ironclad_a0_scope_hash
         from sls.curriculum import CURRICULUM_PROFILES_BY_ID, IRONCLAD_A0_FULLRUN
@@ -82,6 +81,7 @@ def main() -> int:
             native_artifact,
             native_source_digest,
         )
+        from tools.replay_failed_state import replay_dump
 
         repository = git_state()
         if ENCODING_SCHEMA != "sls-policy-input-v5":

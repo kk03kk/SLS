@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import json
+import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -23,7 +25,7 @@ def test_continuation_preserves_learning_and_refuses_unreviewed_changes(
     monkeypatch.setattr(torch.cuda, "is_available", lambda: False)
     torch.use_deterministic_algorithms(True)
     torch.backends.cudnn.benchmark = False
-    torch.set_float32_matmul_precision("high")
+    torch.set_float32_matmul_precision("highest")
     root = Path(__file__).resolve().parents[2]
     text = (root / "configs/train/ironclad_a0_act1_5m.toml").read_text()
     source = tmp_path / "parent"
@@ -77,12 +79,18 @@ def test_continuation_preserves_learning_and_refuses_unreviewed_changes(
         )
         path = tmp_path / "config.toml"
         path.write_text(child_text, encoding="utf-8")
-        marker = initialize(path)
+        # Use the actual preparation launcher, with no inherited Python path.
+        # In-process imports previously masked the direct-script bootstrap bug.
+        from tools.prepare_and_train import run_tool
+
+        monkeypatch.delenv("PYTHONPATH", raising=False)
+        monkeypatch.setenv("PYTHONUTF8", "1")
+        monkeypatch.setenv("CUDA_VISIBLE_DEVICES", "-1")
+        run_tool("initialize_act1_continuation.py", "--config", path)
+        marker = json.loads((target / "continuation.json").read_text(encoding="utf-8"))
         assert marker["parent_environment_steps"] == 2
         assert sha256_file(parent) == digest
         assert initialize(path) == marker
-        import sys
-
         import tools.preflight_training as preflight
 
         monkeypatch.syspath_prepend(str(root / "tools"))
@@ -108,6 +116,17 @@ def test_continuation_preserves_learning_and_refuses_unreviewed_changes(
         assert json.loads(report.read_text())[
             "source_checkpoint_sha256"
         ] == sha256_file(target / "latest.pt")
+        run_tool(
+            "preflight_training.py", "--allow-cpu", "--skip-build",
+            "--config", path, "--benchmark", benchmark,
+            "--checkpoint", target / "latest.pt", "--output", report,
+        )
+        assert json.loads(report.read_text())["exact_resume"] == "PASS"
+        # Re-entry must not rewrite the existing latest checkpoint.
+        child_sha = sha256_file(target / "latest.pt")
+        run_tool("initialize_act1_continuation.py", "--config", path)
+        assert sha256_file(target / "latest.pt") == child_sha
+        assert sha256_file(parent) == digest
         child = read_config(path)
         trainer.training_config_digest = _training_identity(child, workers=1, shards=1)
         load_checkpoint(target / "latest.pt", trainer)
@@ -121,6 +140,22 @@ def test_continuation_preserves_learning_and_refuses_unreviewed_changes(
         ).replace("learning_rate = 0.00025", "learning_rate = 0.000125")
         half_path = tmp_path / "half.toml"
         half_path.write_text(half_text, encoding="utf-8")
+        # An interruption before publication cannot leave a partial target.
+        def fail_publish(*args):
+            raise OSError("simulated publication interruption")
+
+        with monkeypatch.context() as interrupted:
+            interrupted.setattr("tools.initialize_act1_continuation.os.rename", fail_publish)
+            with pytest.raises(OSError, match="publication interruption"):
+                initialize(half_path)
+        assert not (tmp_path / "half-lr").exists()
+        assert sha256_file(parent) == digest
+        # Also exclude cwd/environment path injection and user site packages.
+        subprocess.run(
+            [sys.executable, "-I", "-X", "utf8",
+             str(root / "tools/initialize_act1_continuation.py"),
+             "--config", str(half_path)], cwd=root, check=True,
+        )
         half_marker = initialize(half_path)
         assert half_marker["old_learning_rate"] == 0.00025
         assert half_marker["new_learning_rate"] == 0.000125
@@ -180,3 +215,11 @@ def test_neow_metrics_count_decisions_without_changing_objective():
         assert sum(metrics[f"neow_option_{i}_count"] for i in range(4)) == 1
         assert 0 <= metrics["neow_mean_swap_probability"] <= 1
         assert 0 <= metrics["neow_mean_normalized_entropy"] <= 1
+
+
+def test_contract_diagnostic_direct_script_bootstrap():
+    root = Path(__file__).resolve().parents[2]
+    subprocess.run(
+        [sys.executable, "-I", str(root / "tools/diagnose_checkpoint_contract.py"),
+         "--help"], cwd=root, check=True, capture_output=True,
+    )
