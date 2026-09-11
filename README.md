@@ -2,7 +2,7 @@
 
 SLS 的目标是训练一个能够自主游玩 **Slay the Spire 1** 的智能体，也让人通过观察它的决策理解它学到了什么。项目使用 C++ 模拟器生成游戏交互，使用带循环记忆的策略网络和 PPO 训练，并提供连接本地游戏的模型观察界面。
 
-**当前目标：战士（Ironclad）A0 Act1，击败第一幕 Boss 即胜利。** 从零开始的 5M 实验已完成，best 在独立 1024 seeds 上为 75.10%。下一轮是从已审计 best 继续到累计 10M 的半学习率分支，尚未达到接近 100% 的目标。
+**当前目标：战士（Ironclad）A0 Act1，击败第一幕 Boss 即胜利。** 10M 阶段已完成，7,766,016-step champion 在新 1024 held-out seeds 上为 83.01%。下一轮从该 champion 继续到累计 20M，尚未达到接近 100% 的目标。
 
 没有游戏、GPU 或 checkpoint 也能运行模拟器。观察已训练模型需要另外准备兼容的模型文件；连接真实游戏还需要自己的游戏和 Mod 环境。
 
@@ -170,6 +170,19 @@ benchmark 比较 32/64/128 个环境的完整“采样＋PPO 更新”耗时，�
 ```
 
 这份配置绑定该 best 的 SHA256，并在新目录创建半学习率分支；原模型、Adam moments、RNG 和 worker 状态保留，旧实验不修改。准备阶段验证实际恢复 checkpoint，复用原 worker 布局。它不是任意 checkpoint 的通用迁移命令，也不是重新训练一个独立 10M。新终评 seeds 与本次诊断集合不重叠。
+
+### 已完成 10M：继续到累计 20M
+
+使用 7,766,016-step champion（不是 final），LR 从 `0.000125` 减半到 `0.0000625`，其他 PPO、网络和奖励不变。固定 512-seed 评估约每 1M 一次；best 最终使用新的 1024 held-out seeds。模型、Adam、RNG、worker 状态和历史 best 保留，输出到独立的 `local/runs/ironclad-a0-act1-v4-20m/`。
+
+```bash
+cd ~/SLS
+git pull --ff-only origin main
+/home/h/hengzhi/venvs/sls/bin/python tools/submit_slurm.py train \
+  --config configs/train/ironclad_a0_act1_20m.toml --prepare
+```
+
+保留原 5M/10M 目录及准备目录中的 benchmark。入口先验证 champion 和恢复链路，通过后才开训；已有合法 20M latest 时恢复。参数依据、seed 范围和验证说明见 [20M continuation](docs/act1-v4-20m-continuation.md)。
 
 ### 与普通原版局的区别
 

@@ -47,13 +47,21 @@ def benchmark_matches_workload(config: dict, layout: dict) -> bool:
     # Changing Adam's scalar LR does not change tensor shapes or update work.
     # Retain the measured report verbatim; never relabel it as a fresh benchmark.
     parent = config["run"].get("continuation_from")
-    if not parent:
-        return False
-    original = read_config(ROOT / parent / "training-config.toml")
-    comparable = {**config, "ppo": {**config["ppo"],
-                                  "learning_rate": original["ppo"]["learning_rate"]}}
-    return (workload_contract(comparable) == workload_contract(original)
-            and layout.get("workload_contract") == workload_contract(original))
+    visited: set[Path] = set()
+    while parent:
+        path = (ROOT / parent / "training-config.toml").resolve()
+        if path in visited:
+            return False
+        visited.add(path)
+        original = read_config(path)
+        comparable = {**config, "ppo": {**config["ppo"],
+                                      "learning_rate": original["ppo"]["learning_rate"]}}
+        if workload_contract(comparable) != workload_contract(original):
+            return False
+        if layout.get("workload_contract") == workload_contract(original):
+            return True
+        parent = original["run"].get("continuation_from")
+    return False
 
 
 def preparation_contract(config: dict, torch_module: object) -> str:
