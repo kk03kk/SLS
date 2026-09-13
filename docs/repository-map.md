@@ -10,6 +10,23 @@
 - `docs`: maintained architecture and operating documentation.
 - `local`: machine-owned state and generated evidence.
 
+## Current work and local artifacts
+
+- Current A20 proposal: [A20 Act1 local plan](a20-act1-local-plan.md).
+- Current config: `configs/train/ironclad_a20_act1_30m.toml`.
+- Downloaded server archives: `runs/archives/` (Git-ignored).
+- Active training/checkpoints: `local/runs/`; older downloaded extraction:
+  `runs/local/`. Existing paths are retained.
+- Audit extractions and validation evidence: `local/audits/`.
+- Historical development/build/test logs: `local/logs/development/`.
+- Exported policies: `model/`; native build/runtime dependencies:
+  `local/build/`, `local/external/`.
+- Local reorganization manifest: `local/organization-20260913.json`, containing
+  original/destination paths and SHA256 for all moved files. Nothing was deleted.
+
+Do not treat old audit documents or A0 launch examples as the current A20
+configuration. Do not move checkpoint/build paths merely for cosmetic cleanup.
+
 ## Python package
 
 - `src/sls/contracts`: canonical public observations, semantic actions,

@@ -20,7 +20,7 @@ os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
 
 import torch
 
-from sls.content.scope import ironclad_a0_scope_hash
+from sls.content.scope import ironclad_scope_contract
 from sls.curriculum import CURRICULUM_PROFILES_BY_ID
 from sls.model import ENCODING_SCHEMA, ModelConfig, Policy, vocabulary_hash
 from sls.rl import policy_from_training_checkpoint
@@ -173,7 +173,7 @@ def main(argv: list[str] | None = None) -> int:
         "simulator": {
             "native_source_sha256": native_source_digest(),
             "native_artifact": artifact,
-            "content_scope_sha256": ironclad_a0_scope_hash(),
+            **ironclad_scope_contract(profile.ascension),
         },
         "checkpoint_environment": {
             "native_source_sha256": contract.get("native_source_sha256"),

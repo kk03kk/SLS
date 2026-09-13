@@ -17,6 +17,7 @@ from typing import Any, Iterable, Mapping, TypeVar
 CONTENT_SCOPE_SCHEMA = "sls-content-scope-v1"
 IRONCLAD_A0_SCOPE_ID = "sls-ironclad-a0-fullrun-content-v2"
 IRONCLAD_A0_SCOPE_PATH = Path(__file__).with_name("scope.json")
+IRONCLAD_ASCENSION_SCOPE_ID = "sls-ironclad-ascension-content-v1"
 
 
 def canonical_scope_digest(value: Mapping[str, Any]) -> str:
@@ -41,6 +42,31 @@ def load_ironclad_a0_scope() -> dict[str, Any]:
 
 def ironclad_a0_scope_hash() -> str:
     return str(load_ironclad_a0_scope()["scope_sha256"])
+
+
+def ironclad_scope(ascension: int) -> dict[str, Any]:
+    """Keep legacy A0 identity; higher ascensions also expose Ascender's Bane.
+
+    This catalog does not alter any RNG pool or event availability. The native
+    ascension rules and profile remain authoritative for actual generation.
+    """
+    if not 0 <= ascension <= 20:
+        raise ValueError("ascension must be between 0 and 20")
+    scope = load_ironclad_a0_scope()
+    if ascension == 0:
+        return scope
+    scope.pop("ascension")
+    scope["ascension_range"] = [1, 20]
+    scope["scope_id"] = IRONCLAD_ASCENSION_SCOPE_ID
+    for category in ("ids", "curses"):
+        scope["cards"][category] = sorted(set(scope["cards"][category]) | {"ASCENDERS_BANE"})
+    scope["scope_sha256"] = canonical_scope_digest(scope)
+    return scope
+
+
+def ironclad_scope_contract(ascension: int) -> dict[str, str]:
+    scope = ironclad_scope(ascension)
+    return {"content_scope_id": scope["scope_id"], "content_scope_sha256": scope["scope_sha256"]}
 
 
 def _source_digest_candidates(path: Path) -> frozenset[str]:

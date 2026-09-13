@@ -74,6 +74,7 @@ def preparation_contract(config: dict, torch_module: object) -> str:
         "native": native_source_digest(),
         "training": training_validation_digest(),
         "continuation_parent": config["run"].get("continuation_checkpoint_sha256"),
+        **({"warm_start": config["warm_start"]} if "warm_start" in config else {}),
         "tools": local_source_digest((
             "tools/prepare_and_train.py", "tools/preflight_training.py",
             "tools/benchmark_workers.py",

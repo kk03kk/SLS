@@ -984,6 +984,10 @@ def _screen_entities(raw: Mapping[str, Any]) -> dict[str, tuple[Any, ...]]:
             ))
             visible_index += 1
         result["shop"] = tuple(items)
+        if int(shop.get("remove_cost", -1)) >= 0:
+            result["choice"] = (PublicEntity(
+                "shop-remove", "SHOP", (("price", int(shop["remove_cost"])),),
+            ),)
     return result
 
 

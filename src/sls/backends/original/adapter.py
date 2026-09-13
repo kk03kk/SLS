@@ -929,6 +929,10 @@ def _screen_entities(
                     public_card_option_properties(content, item) if kind == "CARD" else (),
                 ))
         result["shop"] = tuple(items)
+        if state.get("purge_available") and state.get("purge_cost") is not None:
+            result["choice"] = (PublicEntity(
+                "shop-remove", "SHOP", (("price", _integer(state["purge_cost"])),),
+            ),)
     return result
 
 

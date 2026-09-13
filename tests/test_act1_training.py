@@ -25,7 +25,7 @@ CONFIG = ROOT / "configs/train/ironclad_a0_act1_5m.toml"
 
 def test_note_auto_leave_matches_manual_leave_and_restores_without_policy_step():
     manual = SimulatorBackend(replace(IRONCLAD_A0_ACT1, note_for_yourself_policy="INTERACTIVE"))
-    fixture = json.loads((ROOT / "tests/fixtures/regressions/act1-note-seed-3000000000047.json").read_text())
+    fixture = json.loads((ROOT / "tests/fixtures/regressions/act1-note-seed-3000000000047.json").read_text(encoding="utf-8"))
     decision = manual.reset(fixture["seed"])
     automatic_run = SimulatorBackend(IRONCLAD_A0_ACT1)
     automatic_run.reset(fixture["seed"])
@@ -78,7 +78,7 @@ def test_act1_keys_have_real_opportunity_cost_and_no_reward_bonus():
 
 
 def test_calling_bell_discarded_reward_roll_and_fountain_eligibility_match_stock():
-    fixture = json.loads((ROOT / "tests/fixtures/regressions/act1-note-seed-3000000000025.json").read_text())
+    fixture = json.loads((ROOT / "tests/fixtures/regressions/act1-note-seed-3000000000025.json").read_text(encoding="utf-8"))
     backend = SimulatorBackend(IRONCLAD_A0_ACT1)
     backend.reset(fixture["seed"])
     for i, raw in enumerate(fixture["actions"]):
@@ -95,12 +95,12 @@ def test_calling_bell_discarded_reward_roll_and_fountain_eligibility_match_stock
 
 
 def test_prismatic_only_in_shop_pool_and_owned_state_rejected():
-    source = (ROOT / "native/simulator/include/constants/RelicPools.h").read_text()
+    source = (ROOT / "native/simulator/include/constants/RelicPools.h").read_text(encoding="utf-8")
     source = re.sub(r"//[^\n]*", "", source)
     pools = re.findall(r"(\w+RelicPool)\s*=\s*\{([^}]+)\}", source)
     containing = [name for name, contents in pools if "PRISMATIC_SHARD" in contents]
     assert containing and set(containing) == {"shopRelicPool"}
-    game = (ROOT / "native/simulator/src/game/GameContext.cpp").read_text()
+    game = (ROOT / "native/simulator/src/game/GameContext.cpp").read_text(encoding="utf-8")
     assert not re.search(r"obtainRelic\(\s*RelicId::PRISMATIC_SHARD", game)
     from sls.content.scope import UnsupportedContentPolicy
     observation = SimulatorBackend(IRONCLAD_A0_ACT1).reset(0).observation
@@ -178,7 +178,8 @@ def test_preparation_ignores_gpu_label_but_protects_workload(monkeypatch):
 
 
 @pytest.mark.parametrize("interrupt_evaluation", [False, True])
-def test_single_stage_real_ppo_soak_resume_and_finalization(tmp_path, monkeypatch, interrupt_evaluation):
+@pytest.mark.parametrize("warm_start", [False, True])
+def test_single_stage_real_ppo_soak_resume_and_finalization(tmp_path, monkeypatch, interrupt_evaluation, warm_start):
     import sys
 
     import torch
@@ -186,7 +187,7 @@ def test_single_stage_real_ppo_soak_resume_and_finalization(tmp_path, monkeypatc
     import sls.rl.preparation as preparation
     import tools.train_full_run as train
     from sls.rl.training_contract import native_artifact, native_source_digest
-    config_text = CONFIG.read_text().replace('device = "cuda"', 'device = "cpu"')
+    config_text = CONFIG.read_text(encoding="utf-8").replace('device = "cuda"', 'device = "cpu"')
     replacements = {
         '"local/runs/preparation/ironclad-a0-act1-v4-5m/benchmark.json"': '"benchmark.json"',
         '"local/runs/ironclad-a0-act1-v4-5m"': '"run"',
@@ -204,6 +205,24 @@ def test_single_stage_real_ppo_soak_resume_and_finalization(tmp_path, monkeypatc
     }
     for old, new in replacements.items():
         config_text = config_text.replace(old, new)
+    offset = 16 if warm_start else 0
+    if warm_start:
+        import tomllib
+
+        from sls.model import ModelConfig, Policy
+        from sls.rl import PPOConfig, PPOTrainer, WorkerPool, save_checkpoint
+        from sls.rl.training_contract import sha256_file
+        small = tomllib.loads(config_text)
+        source = tmp_path / "parent" / "best.pt"
+        with WorkerPool(IRONCLAD_A0_ACT1, 1) as workers:
+            parent = PPOTrainer(Policy(ModelConfig(**small["model"])), workers,
+                                PPOConfig(**small["ppo"]), seed=9)
+            parent.environment_steps = offset
+            save_checkpoint(source, parent)
+        config_text = config_text.replace("IRONCLAD_A0_ACT1", "IRONCLAD_A20_ACT1")
+        config_text = config_text.replace("target_environment_steps = 8", "target_environment_steps = 24")
+        config_text += ('\n[warm_start]\ncheckpoint = "parent/best.pt"\n'
+                        f'checkpoint_sha256 = "{sha256_file(source)}"\nparent_environment_steps = 16\n')
     config_path = tmp_path / "config.toml"
     config_path.write_text(config_text)
     (tmp_path / "benchmark.json").write_text(json.dumps({
@@ -233,22 +252,27 @@ def test_single_stage_real_ppo_soak_resume_and_finalization(tmp_path, monkeypatc
     monkeypatch.setattr(sys, "argv", [*argv, "--stop-after-additional-steps", "4"])
     assert train.main() == 0
     output = tmp_path / "run"
-    manifest = json.loads((output / "run-manifest.json").read_text())
+    manifest = json.loads((output / "run-manifest.json").read_text(encoding="utf-8"))
     assert manifest["status"] == ("INTERRUPTED" if interrupt_evaluation else "SOAK_COMPLETE")
-    assert manifest["environment_steps"] == 4
-    assert (output / "training-config.toml").read_text() == config_text
+    assert manifest["environment_steps"] == offset + 4
+    assert (output / "training-config.toml").read_text(encoding="utf-8") == config_text
     monkeypatch.setattr(sys, "argv", argv)
     assert train.main() == 0
-    manifest = json.loads((output / "run-manifest.json").read_text())
-    assert manifest["status"] == "COMPLETE" and manifest["environment_steps"] == 8
+    manifest = json.loads((output / "run-manifest.json").read_text(encoding="utf-8"))
+    assert manifest["status"] == "COMPLETE" and manifest["environment_steps"] == offset + 8
+    if warm_start:
+        assert manifest["initialization"]["parent_environment_steps"] == offset
+        assert not manifest["initialization"]["exact_resume_of_parent_experiment"]
     assert (output / "final.pt").exists() and (output / "final-evaluation.json").exists()
     from sls.runtime.artifact import load_policy_artifact
     assert load_policy_artifact(output / "run.pt").metadata.goal == "ACT1"
+    final_metadata = load_policy_artifact(output / "run.pt").metadata
+    assert final_metadata.ascension_min == final_metadata.ascension_max == (20 if warm_start else 0)
     saved = torch.load(output / "latest.pt", weights_only=False)
-    assert saved["trainer"]["environment_steps"] == 8
-    records = [json.loads(line) for line in (output / "stages/train/metrics.jsonl").read_text().splitlines()]
+    assert saved["trainer"]["environment_steps"] == offset + 8
+    records = [json.loads(line) for line in (output / "stages/train/metrics.jsonl").read_text(encoding="utf-8").splitlines()]
     assert records[-1]["paired_seed_changes"]["compared_seeds"] == 2
-    assert [r["environment_steps"] for r in records if "evaluation" in r] == [0, 4, 8]
+    assert [r["environment_steps"] for r in records if "evaluation" in r] == [offset, offset + 4, offset + 8]
     with pytest.raises(ValueError, match="already completed"):
         train.main()
 
@@ -318,8 +342,10 @@ def test_reviewed_source_fix_is_exact_directional_pair_only():
         state_preserving_source_transition,
     )
     previous = '8ac099425f0bf2a4ecc1282cef2a10d4551386e8086f577425528879e5bb7ceb'
-    current = native_source_digest()
+    current = 'a0da97e6fd694b9cf9074726d48a6d6d649d2554de2229ce78af8b8628122045'
     assert state_preserving_source_transition(previous, current)
+    # The A20/shop correction is a new environment, outside this old approval.
+    assert state_preserving_source_transition(previous, native_source_digest()) is None
     assert state_preserving_source_transition(current, previous) is None
     assert state_preserving_source_transition(previous, 'unreviewed') is None
     assert state_preserving_source_transition('unreviewed', current) is None
@@ -331,8 +357,8 @@ def test_resume_archives_updates_after_checkpoint_without_losing_history(tmp_pat
     original = ''.join(json.dumps({'environment_steps': n}) + '\n' for n in [0, 16, 32])
     path.write_text(original)
     _archive_uncheckpointed_metrics(path, 16)
-    assert [json.loads(line)['environment_steps'] for line in path.read_text().splitlines()] == [0, 16]
-    assert next(tmp_path.glob('metrics.before-resume-*.jsonl')).read_text() == original
+    assert [json.loads(line)['environment_steps'] for line in path.read_text(encoding="utf-8").splitlines()] == [0, 16]
+    assert next(tmp_path.glob('metrics.before-resume-*.jsonl')).read_text(encoding="utf-8") == original
     _archive_uncheckpointed_metrics(path, 16)
     assert len(list(tmp_path.glob('metrics.before-resume-*.jsonl'))) == 1
 
@@ -346,7 +372,7 @@ def test_reviewed_note_fix_reuses_layout_but_rejects_unknown_environment(tmp_pat
             'native_source_sha256': '8ac099425f0bf2a4ecc1282cef2a10d4551386e8086f577425528879e5bb7ceb'}
     path.write_text(json.dumps(data))
     with pytest.warns(RuntimeWarning, match='Reviewed compatible'):
-        assert _load_benchmark(path, native_digest=native_source_digest(),
+        assert _load_benchmark(path, native_digest='a0da97e6fd694b9cf9074726d48a6d6d649d2554de2229ce78af8b8628122045',
                                native_binary_sha256='rebuilt') == (64, 8)
     data['native_source_sha256'] = 'unreviewed'
     path.write_text(json.dumps(data))

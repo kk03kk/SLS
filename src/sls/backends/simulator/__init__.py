@@ -6,6 +6,7 @@ from sls.curriculum import (
     IRONCLAD_A0_ACT2,
     IRONCLAD_A0_ACT3,
     IRONCLAD_A0_HEART,
+    IRONCLAD_A20_ACT1,
     CurriculumProfile,
     EpisodeHorizon,
 )
@@ -17,5 +18,6 @@ __all__ = [
     "IRONCLAD_A0_ACT2",
     "IRONCLAD_A0_ACT3",
     "IRONCLAD_A0_HEART",
+    "IRONCLAD_A20_ACT1",
     "SimulatorBackend",
 ]

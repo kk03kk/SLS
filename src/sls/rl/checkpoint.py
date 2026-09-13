@@ -13,7 +13,11 @@ from typing import Any, Mapping
 
 import torch
 
-from sls.content.scope import IRONCLAD_A0_SCOPE_ID, ironclad_a0_scope_hash
+from sls.content.scope import (
+    IRONCLAD_A0_SCOPE_ID,
+    IRONCLAD_ASCENSION_SCOPE_ID,
+    ironclad_scope_contract,
+)
 from sls.model import ModelConfig, Policy
 from sls.model.encoding import ENCODING_SCHEMA, vocabulary_hash
 from sls.rl.ppo import PPOTrainer
@@ -53,8 +57,9 @@ def policy_from_training_checkpoint(
     """Load policy weights after strict checkpoint and input-identity validation.
 
     Native/content version hashes may describe an older approved environment,
-    but must be present and valid. Input meanings and content-scope identity
-    remain exact, which is the compatibility boundary for evaluation/migration.
+    but must be present and valid. Encoding/vocabulary and weight shapes remain
+    exact; known Ironclad scope families support explicit weight transfer.
+    This does not establish exact environment-resume compatibility.
     """
 
     if payload.get("schema") != CHECKPOINT_SCHEMA:
@@ -66,12 +71,13 @@ def policy_from_training_checkpoint(
     expected = {
         "encoding_schema": ENCODING_SCHEMA,
         "vocabulary_sha256": vocabulary_hash(),
-        "content_scope_id": IRONCLAD_A0_SCOPE_ID,
         "simulator_only": True,
     }
     incompatible = [
         key for key, value in expected.items() if contract.get(key) != value
     ]
+    if contract.get("content_scope_id") not in {IRONCLAD_A0_SCOPE_ID, IRONCLAD_ASCENSION_SCOPE_ID}:
+        incompatible.append("content_scope_id")
     if incompatible:
         raise ValueError(
             "training checkpoint policy identity is incompatible: "
@@ -98,8 +104,7 @@ def checkpoint_contract(trainer: PPOTrainer) -> dict[str, Any]:
         "worker_shards": getattr(trainer.workers, "shard_count", 1),
         "encoding_schema": ENCODING_SCHEMA,
         "vocabulary_sha256": vocabulary_hash(),
-        "content_scope_id": IRONCLAD_A0_SCOPE_ID,
-        "content_scope_sha256": ironclad_a0_scope_hash(),
+        **ironclad_scope_contract(trainer.workers.profile.ascension),
         "native_source_sha256": trainer.native_contract_digest,
         "runtime": runtime_contract(torch),
         "simulator_only": True,

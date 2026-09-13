@@ -4270,8 +4270,8 @@ public:
         const std::string &event_id,
         const py::dict &rng,
         const std::string &note_card = "IRON_WAVE",
-        bool portal_eligible = true) {
-        reset(seed, 0, py::none(), note_card, portal_eligible);
+        bool portal_eligible = true, int ascension = 0) {
+        reset(seed, ascension, py::none(), note_card, portal_eligible);
         restore_full_run_rng(*gc_, rng);
         gc_->act = 1;
         gc_->floorNum = 1;
@@ -6274,7 +6274,8 @@ PYBIND11_MODULE(_lightspeed, module) {
              py::arg("note_card") = "IRON_WAVE", py::arg("portal_eligible") = true)
         .def("reset_event_probe", &LightspeedRunState::reset_event_probe,
              py::arg("seed"), py::arg("event_id"), py::arg("rng"),
-             py::arg("note_card") = "IRON_WAVE", py::arg("portal_eligible") = true)
+             py::arg("note_card") = "IRON_WAVE", py::arg("portal_eligible") = true,
+             py::arg("ascension") = 0)
         .def("snapshot", &LightspeedRunState::snapshot)
         .def("load_state", &LightspeedRunState::load_state, py::arg("state"))
         .def("legal_actions", &LightspeedRunState::legal_actions)

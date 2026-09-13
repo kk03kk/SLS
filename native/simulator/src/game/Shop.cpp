@@ -15,7 +15,9 @@ void Shop::setup(GameContext &gc) {
     setupPotions(gc);
 
     if (gc.ascension >= 16) {
-        applyDiscount(0.80f);
+        // Stock ShopScreen.init applies the A16 markup to inventory only.
+        // Courier replacement prices intentionally omit it in the original.
+        applyDiscount(1.10f);
     }
     if (gc.hasRelic(RelicId::THE_COURIER)) {
         applyDiscount(0.80f);
@@ -134,8 +136,9 @@ void Shop::buyRelic(GameContext &gc, int idx) {
 
     if (r == RelicId::MEMBERSHIP_CARD) {
         applyDiscount(MEMBERSHIP_CARD_FACTOR);
-        removeCost = static_cast<int>(std::round(static_cast<float>(removeCost) * MEMBERSHIP_CARD_FACTOR));
+        if (removeCost >= 0) removeCost = getRemoveCost(gc);
     }
+    if (r == RelicId::SMILING_MASK && removeCost >= 0) removeCost = SMILING_MASK_PRICE;
 
     if (gc.hasRelic(RelicId::THE_COURIER)) {
         relics[idx] = gc.returnRandomRelic(rollRelicTier(gc.merchantRng), true, false);
@@ -234,19 +237,17 @@ int Shop::getNewPrice(GameContext &gc, int basePrice) {
 int Shop::getRemoveCost(const GameContext &gc) {
     int cost;
     if (gc.hasRelic(RelicId::SMILING_MASK)) {
-        cost = SMILING_MASK_PRICE;
+        return SMILING_MASK_PRICE;
     } else {
         cost = BASE_REMOVE_PRICE+(REMOVE_PRICE_INCREASE*gc.shopRemoveCount);
     }
 
-    if (gc.hasRelic(RelicId::THE_COURIER) && gc.hasRelic(RelicId::MEMBERSHIP_CARD)) {
-        cost = std::round(static_cast<float>(cost) * COURIER_FACTOR * MEMBERSHIP_CARD_FACTOR);
-
+    // ShopScreen.applyDiscount uses the base purgeCost, not the previous
+    // actualPurgeCost: Membership Card is applied last when entering a shop.
+    if (gc.hasRelic(RelicId::MEMBERSHIP_CARD)) {
+        cost = std::round(static_cast<float>(cost) * MEMBERSHIP_CARD_FACTOR);
     } else if (gc.hasRelic(RelicId::THE_COURIER)) {
         cost = std::round(static_cast<float>(cost) * COURIER_FACTOR);
-
-    } else if (gc.hasRelic(RelicId::MEMBERSHIP_CARD)) {
-        cost = std::round(static_cast<float>(cost) * MEMBERSHIP_CARD_FACTOR);
     }
     return cost;
 }

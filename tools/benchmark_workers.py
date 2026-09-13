@@ -18,7 +18,7 @@ os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
 
 import torch
 
-from sls.content.scope import IRONCLAD_A0_SCOPE_ID, ironclad_a0_scope_hash
+from sls.content.scope import ironclad_scope_contract
 from sls.curriculum import CURRICULUM_PROFILES_BY_ID, IRONCLAD_A0_FULLRUN
 from sls.model import ENCODING_SCHEMA, ModelConfig, Policy, vocabulary_hash
 from sls.rl import PPOConfig, PPOTrainer, ShardedWorkerPool
@@ -189,8 +189,7 @@ def main() -> int:
         "encoding_schema": ENCODING_SCHEMA,
         "vocabulary_sha256": vocabulary_hash(),
         "benchmark_config_sha256": benchmark_digest,
-        "content_scope_id": IRONCLAD_A0_SCOPE_ID,
-        "content_scope_sha256": ironclad_a0_scope_hash(),
+        **ironclad_scope_contract(profile.ascension),
         "native_source_sha256": source_digest,
         "native_artifact": artifact,
         "torch": torch.__version__,

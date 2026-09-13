@@ -65,7 +65,7 @@ def main() -> int:
         if torch.cuda.is_available():
             torch.set_float32_matmul_precision("high")
         from sls.backends.simulator import SimulatorBackend
-        from sls.content.scope import IRONCLAD_A0_SCOPE_ID, ironclad_a0_scope_hash
+        from sls.content.scope import ironclad_scope_contract
         from sls.curriculum import CURRICULUM_PROFILES_BY_ID, IRONCLAD_A0_FULLRUN
         from sls.model import ENCODING_SCHEMA, ModelConfig, Policy, PolicyBatch
         from sls.rl import (
@@ -112,6 +112,7 @@ def main() -> int:
         if payload and not args.benchmark:
             ppo = replace(ppo, rollout_steps=ppo.recurrent_sequence_length)
         model = Policy(model_config).to(device)
+        transfer = None
         with ShardedWorkerPool(profile, int(layout.get("selected_workers", 1)),
                                shard_count=int(layout.get("selected_shards", 1))) as workers:
             trainer = PPOTrainer(
@@ -132,6 +133,9 @@ def main() -> int:
                 from sls.rl.preparation import training_seed_limit
                 trainer.training_seed_limit = training_seed_limit(payload["run"])
                 load_checkpoint_runtime_rebind(args.checkpoint, trainer)
+            elif payload and "warm_start" in payload:
+                from sls.rl.act1_transfer import initialize_a20_weights
+                transfer = initialize_a20_weights(trainer, payload, root=ROOT)
             decision = trainer.decisions[0]
             batch = PolicyBatch.from_decisions((decision,), model.config).to(device)
             loss = model(*batch.model_inputs()).logits.sum() + model(*batch.model_inputs()).value.sum()
@@ -152,6 +156,7 @@ def main() -> int:
             "simulator_only": True,
             "workload_contract": workload_contract(payload) if payload else None,
             "exact_resume": "PASS",
+            "weight_transfer": transfer,
             "source_checkpoint_sha256": (
                 hashlib.sha256(args.checkpoint.read_bytes()).hexdigest() if args.checkpoint else None
             ),
@@ -159,8 +164,7 @@ def main() -> int:
             "platform": platform.platform(), "git": git_state(),
             "seed_8335_regression": "PASS",
             "decision_invariant": "PASS",
-            "content_scope_id": IRONCLAD_A0_SCOPE_ID,
-            "content_scope_sha256": ironclad_a0_scope_hash(),
+            **ironclad_scope_contract(profile.ascension),
             "native_source_sha256": native_source_digest(), "native_artifact": native_artifact(),
             "torch": torch.__version__, "cuda": torch.version.cuda,
             "gpu": torch.cuda.get_device_name(0) if torch.cuda.is_available() else None,

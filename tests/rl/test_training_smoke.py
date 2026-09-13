@@ -522,14 +522,13 @@ def test_cuda_checkpoint_keeps_cpu_rng_state_loadable(tmp_path: Path) -> None:
 
 
 def test_reviewed_note_fix_preserves_optimizer_workers_and_next_update(tmp_path):
-    from sls.rl.training_contract import native_source_digest
     config = PPOConfig(rollout_steps=2, recurrent_sequence_length=1,
                        minibatch_sequences=2, epochs=1)
     model = Policy(ModelConfig(embedding_dim=32, transformer_layers=1,
                               attention_heads=4, feedforward_dim=64))
     with WorkerPool(IRONCLAD_A0_ACT1, 1) as workers:
         trainer = PPOTrainer(model, workers, config, seed=17,
-                             native_contract_digest=native_source_digest())
+                             native_contract_digest='a0da97e6fd694b9cf9074726d48a6d6d649d2554de2229ce78af8b8628122045')
         trainer.train_update()
         path = tmp_path / 'checkpoint.pt'
         save_checkpoint(path, trainer)

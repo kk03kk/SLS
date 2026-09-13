@@ -25,7 +25,7 @@ os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
 
 import torch
 
-from sls.content.scope import IRONCLAD_A0_SCOPE_ID, ironclad_a0_scope_hash
+from sls.content.scope import ironclad_a0_scope_hash, ironclad_scope_contract
 from sls.curriculum import CURRICULUM_PROFILES_BY_ID
 from sls.model import ENCODING_SCHEMA, ModelConfig, Policy, vocabulary_hash
 from sls.rl import (
@@ -175,6 +175,7 @@ def _training_identity(
            if "selection_progress_guard" in run else {}),
         **({"workflow": run["workflow"]} if "workflow" in run else {}),
         "model": payload["model"],
+        **({"warm_start": payload["warm_start"]} if "warm_start" in payload else {}),
         "ppo": payload["ppo"],
         "stages": stages,
     })
@@ -602,7 +603,7 @@ def main() -> int:
     run = dict(payload["run"])
     single_stage = run.get("workflow") == "single-stage"
     if single_stage and (args.stage != "train" or set(payload["stages"]) != {"train"}
-                         or run["profile"] != "IRONCLAD_A0_ACT1" or args.resume != "auto"):
+                         or run["profile"] not in {"IRONCLAD_A0_ACT1", "IRONCLAD_A20_ACT1"} or args.resume != "auto"):
         raise ValueError("single-stage requires fresh/exact Act1 train workflow")
     stage = dict(payload["stages"][args.stage])
     periodic_seeds, final_seeds = _validate_seed_namespaces(run)
@@ -639,7 +640,7 @@ def main() -> int:
         "train": "IRONCLAD_A0_FULLRUN",
     }
     if single_stage:
-        expected_profiles["train"] = "IRONCLAD_A0_ACT1"
+        expected_profiles["train"] = run["profile"]
     if profile.profile_id != expected_profiles[args.stage]:
         raise ValueError(
             f"{args.stage} must use curriculum profile {expected_profiles[args.stage]}"
@@ -731,8 +732,7 @@ def main() -> int:
             "native_artifact": artifact,
             "encoding_schema": ENCODING_SCHEMA,
             "vocabulary_sha256": vocabulary_hash(),
-            "content_scope_id": IRONCLAD_A0_SCOPE_ID,
-            "content_scope_sha256": ironclad_a0_scope_hash(),
+            **ironclad_scope_contract(profile.ascension),
             "checkpoint_schema": TRAINING_CHECKPOINT_SCHEMA,
             "model": model.config.to_dict(),
             "ppo": ppo.to_dict(),
@@ -798,6 +798,14 @@ def main() -> int:
                 training_config_digest=identity,
                 training_seed_limit=training_seed_limit(run),
             )
+            if "warm_start" in payload and not latest.exists():
+                from sls.rl.act1_transfer import initialize_a20_weights
+                if not single_stage or run.get("continuation_from"):
+                    raise ValueError("A20 weight transfer requires a new single-stage run")
+                transfer = initialize_a20_weights(trainer, payload, root=ROOT)
+                manifest["initialization"] = transfer
+                _atomic_json(manifest_path, manifest)
+                save_checkpoint(latest, trainer)
             if latest.exists():
                 loaded_exactly = False
                 previous: dict[str, object] | None = None
@@ -1088,7 +1096,7 @@ def main() -> int:
                     goal = {"smoke": "ACT1", "pilot": "ACT2", "train": "FULLRUN"}[args.stage]
                     export_policy_artifact(
                         selected, stage_output / f"{output.name}-{args.stage}.pt",
-                        ascension_min=0, ascension_max=0, goal=goal,
+                        ascension_min=profile.ascension, ascension_max=profile.ascension, goal=goal,
                     )
             if args.stage == "train" and completed and not controller.requested:
                 save_checkpoint(output / "final.pt", trainer)
@@ -1120,7 +1128,7 @@ def main() -> int:
                 if final_promoted:
                     export_policy_artifact(
                         selected, output / f"{output.name}.pt",
-                        ascension_min=0, ascension_max=0, goal="ACT1" if single_stage else "FULLRUN",
+                        ascension_min=profile.ascension, ascension_max=profile.ascension, goal="ACT1" if single_stage else "FULLRUN",
                     )
                 promoted = final_promoted
 
