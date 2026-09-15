@@ -135,6 +135,7 @@ def _boundary_record(
         "chosen_action_sha256": stable_hash(action.to_dict()),
         "memory_output_sha256": tensor_hash(next_memory),
         "argmax_logit": float(output.logits[0, action_index].item()),
+        "chosen_action_probability": float(output.logits[0].softmax(-1)[action_index].item()),
         "value": float(output.value[0].item()),
     })
     return base, action, next_memory
@@ -150,6 +151,7 @@ def capture_policy_trajectory(
     max_actions: int | None = None,
     journal: str | Path | None = None,
     stop_requested: Callable[[], bool] | None = None,
+    diagnostic_state: bool = False,
 ) -> dict[str, object]:
     """Run one zero-memory argmax policy and durably record every boundary."""
 
@@ -185,6 +187,15 @@ def capture_policy_trajectory(
                 previous_action_types=previous_action_types,
                 previous_rewards=previous_rewards,
             )
+            if diagnostic_state:
+                # For offline parity only; never included in Decision or model inputs.
+                checkpoint = getattr(backend, "checkpoint", None)
+                record["diagnostic_state"] = (
+                    checkpoint() if callable(checkpoint) else getattr(backend, "raw_payload", None)
+                )
+                snapshot = getattr(backend, "validation_snapshot", None)
+                if callable(snapshot):
+                    record["diagnostic_rng"] = dict(snapshot().rng_streams)
             stream.write(json.dumps(record, sort_keys=True) + "\n")
             stream.flush()
             boundaries += 1

@@ -123,7 +123,9 @@ def main() -> int:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--action-journal", type=Path, required=True)
     parser.add_argument("--max-actions", type=int)
+    parser.add_argument("--diagnostic-state", action="store_true")
     parser.add_argument("--timeout", type=int, default=1800)
+    parser.add_argument("--oracle", type=Path, default=ROOT / "local/build/oracle/SpirecommParity.jar")
     parser.add_argument("--game-root", type=Path, default=Path(r"D:\Steam\steamapps\common\SlayTheSpire"))
     parser.add_argument("--python", type=Path, default=Path(sys.executable))
     args = parser.parse_args()
@@ -137,7 +139,7 @@ def main() -> int:
     mod_list = local / "mod_lists.json"
     display = args.game_root / "info.displayconfig"
     mod_dir = args.game_root / "mods"
-    oracle = ROOT / "local" / "build" / "oracle" / "SpirecommParity.jar"
+    oracle = args.oracle
     target_oracle = mod_dir / "SpirecommParity.jar"
     mts = args.game_root.parents[1] / "workshop" / "content" / "646570" / "1605060445" / "ModTheSpire.jar"
     required = [args.artifact, args.python, oracle, mts, display]
@@ -167,6 +169,8 @@ def main() -> int:
         ]
         if args.max_actions is not None:
             command.extend(("--max-actions", str(args.max_actions)))
+        if args.diagnostic_state:
+            command.append("--diagnostic-state")
         config.parent.mkdir(parents=True, exist_ok=True)
         config.write_text(
             "command=" + " ".join(command).replace(":", "\\:")

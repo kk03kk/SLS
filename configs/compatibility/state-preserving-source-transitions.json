@@ -3,5 +3,10 @@
     "from": "8ac099425f0bf2a4ecc1282cef2a10d4551386e8086f577425528879e5bb7ceb",
     "to": "a0da97e6fd694b9cf9074726d48a6d6d649d2554de2229ce78af8b8628122045",
     "reason": "Job 833382: exclude potion actions from Note for Yourself auto-leave selection. Previously successful transitions are unchanged; the formerly crashing boundary now executes native Leave. No model, PPO, reward, RNG, saved-state or layout changes."
+  },
+  {
+    "from": "c12c37033675c41bf91a35c13a143bc0530ee67adcbca31c257ca4b8f4457a3d",
+    "to": "653181e0795c44734fb8f17de1c1a7981869737c1cc3c2868c8f420ff6afbcc6",
+    "reason": "A20 30M audit: simulator loader rejects cross-ascension imports before mutation. Valid same-profile gameplay, observation, RNG and serialization unchanged; all 64 champion worker states round-trip unchanged. New preparation required; Original-only rest option IDs do not change simulator training semantics."
   }
 ]

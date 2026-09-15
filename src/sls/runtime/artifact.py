@@ -82,6 +82,8 @@ class PolicyArtifactMetadata:
             current = CURRICULUM_PROFILES_BY_ID.get(str(self.environment_profile.get("profile_id")))
             if current is None or asdict(current) != dict(self.environment_profile):
                 raise ValueError("policy artifact environment rules are incompatible")
+            if not self.ascension_min <= current.ascension <= self.ascension_max:
+                raise ValueError("artifact ascension range excludes its environment profile")
         elif self.goal == "ACT1":
             raise ValueError("Act1 artifact lacks explicit environment rules; export a current checkpoint")
         if set(self.excluded_content_ids) != set(policy_excluded_content_ids()):

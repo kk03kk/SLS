@@ -38,7 +38,11 @@ from sls.rl import (
     load_checkpoint_runtime_rebind,
     save_checkpoint,
 )
-from sls.rl.best_checkpoint import best_checkpoint_record, update_best_checkpoint
+from sls.rl.best_checkpoint import (
+    best_checkpoint_record,
+    recover_best_checkpoint,
+    update_best_checkpoint,
+)
 from sls.rl.evaluate import EvaluationResult, evaluate
 from sls.rl.training_contract import (
     TRAINING_CHECKPOINT_SCHEMA,
@@ -715,6 +719,7 @@ def main() -> int:
     stage_output.mkdir(parents=True, exist_ok=True)
     metrics_path = stage_output / "metrics.jsonl"
     selection_output = stage_output / "selection"
+    recover_best_checkpoint(selection_output)
     started = time.time()
     if manifest is None:
         manifest = {

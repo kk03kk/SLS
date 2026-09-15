@@ -25,15 +25,22 @@ sys.path.insert(0, str(ROOT / "src"))
 def initialize(config_path: Path, *, root: Path = ROOT):
     import torch
 
-    from sls.curriculum import IRONCLAD_A0_ACT1
+    from sls.curriculum import CURRICULUM_PROFILES_BY_ID, EpisodeHorizon
     from sls.model import ModelConfig
     from sls.rl.ppo import PPOConfig
     from sls.rl.preparation import read_config, training_seed_limit
-    from sls.rl.training_contract import native_source_digest, sha256_file
+    from sls.rl.training_contract import (
+        native_source_digest,
+        sha256_file,
+        state_preserving_source_transition,
+    )
     from tools.train_full_run import MANIFEST_SCHEMA, _training_identity
 
     config = read_config(config_path)
     run = config["run"]
+    profile = CURRICULUM_PROFILES_BY_ID[run["profile"]]
+    if profile.horizon != EpisodeHorizon.ACT_1:
+        raise ValueError("continuation requires an Act1 environment")
     source = (root / run["continuation_from"]).resolve()
     target = (root / run["output"]).resolve()
     if (
@@ -43,6 +50,8 @@ def initialize(config_path: Path, *, root: Path = ROOT):
     ):
         raise ValueError("continuation must use a separate sibling run directory")
     path = source / "stages/train/selection/best_progress.pt"
+    if path.with_name("best_progress.pending.json").exists():
+        raise ValueError("parent best promotion is incomplete; recover the parent run first")
     digest = sha256_file(path)
     if digest != run["continuation_checkpoint_sha256"]:
         raise ValueError("parent best checkpoint does not match the pinned SHA256")
@@ -90,8 +99,8 @@ def initialize(config_path: Path, *, root: Path = ROOT):
     contract = payload["contract"]
     workers, shards = contract["workers"], contract["worker_shards"]
     if (
-        contract["native_source_sha256"] != native_source_digest()
-        or contract["profile"] != IRONCLAD_A0_ACT1
+        not state_preserving_source_transition(contract["native_source_sha256"], native_source_digest())
+        or contract["profile"] != profile
         or contract["model"] != ModelConfig(**config["model"]).to_dict()
         or contract["ppo"] != PPOConfig(**original["ppo"]).to_dict()
         or contract["training_config_sha256"]
@@ -174,9 +183,9 @@ def initialize(config_path: Path, *, root: Path = ROOT):
         selection = staging / "stages/train/selection"
         selection.mkdir(parents=True)
         shutil.copy2(staging / "latest.pt", selection / "best_progress.pt")
-        shutil.copy2(
-            source / "stages/train/selection/best_progress.json",
-            selection / "best_progress.json",
+        (selection / "best_progress.json").write_text(
+            json.dumps({**best_record, "checkpoint_sha256": sha256_file(selection / "best_progress.pt")}, indent=2)
+            + "\n", encoding="utf-8",
         )
         manifest = {
             "schema": MANIFEST_SCHEMA,

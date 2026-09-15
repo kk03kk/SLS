@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import time
+from dataclasses import asdict
 
 from sls.backends.original.adapter import adapt_original
 from sls.backends.original.environment import OriginalBackend
@@ -12,6 +13,7 @@ from sls.contracts import Decision
 from sls.curriculum import (
     CURRICULUM_PROFILES_BY_ID,
     IRONCLAD_A0_HEART,
+    EpisodeHorizon,
     ironclad_fullrun_profile,
 )
 
@@ -53,6 +55,20 @@ class LiveGameBackend(OriginalBackend):
         if goal not in {"FULLRUN", "HEART"}:
             raise ValueError("live backend requires a FullRun or Heart artifact")
         self._curriculum_profile = None
+        self.require_heart = goal == "HEART"
+
+    def configure_environment(self, profile: dict, goal: str) -> None:
+        current = CURRICULUM_PROFILES_BY_ID.get(str(profile.get("profile_id")))
+        if current is None or asdict(current) != profile:
+            raise ValueError("live artifact environment profile is incompatible")
+        expected = {
+            EpisodeHorizon.ACT_1: "ACT1", EpisodeHorizon.ACT_2: "ACT2",
+            EpisodeHorizon.ACT_3: "ACT3", EpisodeHorizon.HEART: "HEART",
+            EpisodeHorizon.FULL_RUN: "FULLRUN",
+        }
+        if expected.get(current.horizon) != goal:
+            raise ValueError("artifact goal and environment horizon disagree")
+        self._curriculum_profile = current
         self.require_heart = goal == "HEART"
 
     def attach(self) -> Decision:

@@ -193,7 +193,10 @@ class AgentRuntime:
 
         metadata = self.artifact.metadata
         configure_goal = getattr(self.backend, "configure_goal", None)
-        if configure_goal is not None:
+        configure_environment = getattr(self.backend, "configure_environment", None)
+        if configure_environment is not None and metadata.environment_profile is not None:
+            configure_environment(dict(metadata.environment_profile), metadata.goal)
+        elif configure_goal is not None:
             configure_goal(metadata.goal)
         decision = self.backend.attach()
         ascension = decision.observation.run.ascension

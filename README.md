@@ -2,7 +2,7 @@
 
 SLS 的目标是训练一个能够自主游玩 **Slay the Spire 1** 的智能体，也让人通过观察它的决策理解它学到了什么。项目使用 C++ 模拟器生成游戏交互，使用带循环记忆的策略网络和 PPO 训练，并提供连接本地游戏的模型观察界面。
 
-**当前目标：战士（Ironclad）A20 Act1，击败第一幕 Boss 即胜利。** A0 的 20M 实验已完成：17,006,592-step champion 的独立 1024-seed 胜率为 89.65%。下一阶段从该模型迁移到 A20、累计训练至 30M。配置与验证边界见 [A20 训练方案](docs/a20-act1-local-plan.md)。
+**当前目标：战士（Ironclad）A20 Act1，击败第一幕 Boss 即胜利。** A20 30M 阶段已完成：27,000,832-step champion 的独立 1024-seed 胜率为 54.10%。下一轮建议从该 champion 保留训练状态、减半 LR，续训至累计 40M。结果、同 seed 原版验证和方案见 [A20 30M 审计](docs/a20-30m-audit.md)。
 
 找文件时先看 [项目目录索引](docs/repository-map.md)：下载的服务器压缩包统一放在 `runs/archives/`，运行中的 checkpoint 放在 `local/runs/`，开发验证记录放在 `local/audits/` 和 `local/logs/development/`。这些本地产物不提交 Git。
 
@@ -139,16 +139,16 @@ python tools/generate_policy_vocabulary.py --check
 
 ### 当前 A20：发布后在 NUS 操作
 
-先确保服务器已拉取包含 A20 配置的提交，且 `local/runs/ironclad-a0-act1-v4-20m/stages/train/selection/best_progress.pt` 存在。入口会验证其 SHA256；不要用 final 替代。
+先确保服务器已拉取包含 A20 配置的提交，且原 30M run、`local/runs/ironclad-a20-act1-v1-30m/stages/train/selection/best_progress.pt` 及原 preparation benchmark 存在。入口会验证其 SHA256；不要用 final 替代。
 
 ```bash
 cd ~/SLS
 git pull --ff-only origin main
 /home/h/hengzhi/venvs/sls/bin/python tools/submit_slurm.py train \
-  --config configs/train/ironclad_a20_act1_30m.toml --prepare
+  --config configs/train/ironclad_a20_act1_40m.toml --prepare
 ```
 
-准备流程在 compute node 构建 native、验证实际 champion 权重迁移、测量 worker 布局并检查保存恢复，全部通过才训练。新输出目录为 `local/runs/ironclad-a20-act1-v1-30m/`；保留旧 A0 目录。初始化只继承网络权重，A20 的 Adam、RNG、workers 和 best 重新建立。
+准备流程在 compute node 构建 native、验证环境兼容和保存恢复，全部通过才训练。保留已测量的 64 workers / 8 shards。新输出目录为 `local/runs/ironclad-a20-act1-v1-40m/`；保留旧实验。初始化继承 champion 的网络、Adam、RNG、worker 状态和 best，LR 改为 0.00003125。这是新的 continuation 分支，不是原 30M 实验的 exact resume。
 
 ### 历史 A0 流程
 

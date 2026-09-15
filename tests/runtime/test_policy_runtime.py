@@ -215,3 +215,36 @@ def test_live_backend_uses_artifact_fullrun_goal_instead_of_forcing_heart() -> N
     assert backend.require_heart is False
     backend.configure_goal("HEART")
     assert backend.require_heart is True
+
+def test_explicit_live_environment_binds_a20_act1():
+    from dataclasses import asdict
+
+    from sls.curriculum import IRONCLAD_A20_ACT1
+    backend = LiveGameBackend()
+    backend.configure_environment(asdict(IRONCLAD_A20_ACT1), 'ACT1')
+    assert backend._curriculum_profile == IRONCLAD_A20_ACT1
+    assert not backend.require_heart
+    with pytest.raises(ValueError, match='horizon'):
+        backend.configure_environment(asdict(IRONCLAD_A20_ACT1), 'HEART')
+
+
+def test_artifact_profile_must_fit_declared_ascension_range():
+    from dataclasses import asdict
+    artifact = _runtime_artifact()
+    metadata = replace(artifact.metadata, goal='ACT1', ascension_min=20,
+                       environment_profile=asdict(IRONCLAD_A0_ACT1))
+    with pytest.raises(ValueError, match='ascension'):
+        metadata.validate()
+
+
+def test_simulator_restore_rejects_cross_ascension_before_mutation():
+    from sls.curriculum import IRONCLAD_A20_ACT1
+    source = SimulatorBackend(IRONCLAD_A0_ACT1)
+    source.reset(0)
+    target = SimulatorBackend(IRONCLAD_A20_ACT1)
+    target.reset(0)
+    before = target.checkpoint()
+    with pytest.raises(ValueError, match='ascension'):
+        target.load_checkpoint(source.checkpoint())
+    assert target.checkpoint() == before
+    target.load_checkpoint(before)

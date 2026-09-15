@@ -263,6 +263,8 @@ class SimulatorBackend:
         return checkpoint
 
     def load_checkpoint(self, state: Mapping[str, Any]) -> Decision:
+        if int(state["run_state"]["ascension"]) != self.profile.ascension:
+            raise ValueError("checkpoint ascension differs from curriculum profile")
         self.last_automatic_actions.clear()
         checkpoint = dict(state)
         context = checkpoint["run_state"].get("event_start_context", {

@@ -112,11 +112,14 @@ def test_prismatic_only_in_shop_pool_and_owned_state_rejected():
 
 def test_act1_best_ties_keep_earlier_and_seed_changes_are_paired(tmp_path):
     saved = []
+    def save(path):
+        saved.append(path)
+        path.write_bytes(b"weights")
     record = {"schema": "sls-best-progress-v4", "selection_objective": "ACT1_CLEAR_COUNT",
               "successes": 10, "mean_reward": 0}
-    assert update_best_checkpoint(tmp_path, record, save=saved.append)
-    assert not update_best_checkpoint(tmp_path, {**record, "mean_reward": 100}, save=saved.append)
-    assert update_best_checkpoint(tmp_path, {**record, "successes": 11}, save=saved.append)
+    assert update_best_checkpoint(tmp_path, record, save=save)
+    assert not update_best_checkpoint(tmp_path, {**record, "mean_reward": 100}, save=save)
+    assert update_best_checkpoint(tmp_path, {**record, "successes": 11}, save=save)
     assert len(saved) == 2
     assert _paired_seed_changes(
         {"seed_results": [{"seed": 1, "success": True}, {"seed": 2, "success": False}]},

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import math
 import os
@@ -10,6 +11,34 @@ from typing import Any, Callable, Mapping
 
 BEST_CHECKPOINT_SCHEMA = "sls-best-progress-v4"
 _LEGACY_BEST_CHECKPOINT_SCHEMAS = {"sls-best-progress-v3"}
+
+
+def _digest(path: Path) -> str:
+    with path.open("rb") as stream:
+        return hashlib.file_digest(stream, "sha256").hexdigest()
+
+
+def recover_best_checkpoint(output: Path) -> None:
+    """Roll forward an interrupted promotion before reading either public file.
+
+    A single training writer owns this directory. The pending record is published
+    only after its staged weights are complete; removing it commits the pair.
+    """
+    pending = output / "best_progress.pending.json"
+    if not pending.exists():
+        return
+    transaction = json.loads(pending.read_text(encoding="utf-8"))
+    staged = output / "best_progress.staged.pt"
+    checkpoint = output / "best_progress.pt"
+    source = staged if staged.exists() else checkpoint
+    if _digest(source) != transaction["checkpoint_sha256"]:
+        raise ValueError("interrupted best checkpoint has invalid weights")
+    if staged.exists():
+        os.replace(staged, checkpoint)
+    temporary = output / "best_progress.json.tmp"
+    temporary.write_text(json.dumps(transaction["record"], indent=2) + "\n", encoding="utf-8")
+    os.replace(temporary, output / "best_progress.json")
+    pending.unlink()
 
 
 def _wilson_interval(k: int, n: int) -> tuple[float, float]:
@@ -143,6 +172,7 @@ def update_best_checkpoint(
     """Save only a strict deterministic-evaluation improvement."""
 
     output.mkdir(parents=True, exist_ok=True)
+    recover_best_checkpoint(output)
     metadata_path = output / "best_progress.json"
     if metadata_path.exists():
         existing = json.loads(metadata_path.read_text(encoding="utf-8"))
@@ -154,11 +184,16 @@ def update_best_checkpoint(
             return False
         if evaluation_rank(record) <= evaluation_rank(existing):
             return False
-    save(output / "best_progress.pt")
-    temporary = metadata_path.with_suffix(metadata_path.suffix + ".tmp")
+    staged = output / "best_progress.staged.pt"
+    save(staged)
+    digest = _digest(staged)
+    pending = output / "best_progress.pending.json"
+    temporary = pending.with_suffix(".tmp")
     temporary.write_text(
-        json.dumps(record, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+        json.dumps({"checkpoint_sha256": digest,
+                    "record": {**record, "checkpoint_sha256": digest}}, indent=2) + "\n",
         encoding="utf-8",
     )
-    os.replace(temporary, metadata_path)
+    os.replace(temporary, pending)
+    recover_best_checkpoint(output)
     return True

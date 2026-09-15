@@ -37,3 +37,13 @@ def test_canary_uses_the_artifact_curriculum_horizon() -> None:
     assert _profile_for_goal("ACT3").horizon is EpisodeHorizon.ACT_3
     assert _profile_for_goal("FULLRUN").horizon is EpisodeHorizon.FULL_RUN
     assert _profile_for_goal("HEART").horizon is EpisodeHorizon.HEART
+
+def test_canary_uses_explicit_a20_profile_instead_of_a0_goal_default():
+    from dataclasses import asdict
+    from types import SimpleNamespace
+
+    from sls.curriculum import IRONCLAD_A20_ACT1
+    from tools.capture_policy_trajectory import _profile_for_artifact
+
+    metadata = SimpleNamespace(goal='ACT1', environment_profile=asdict(IRONCLAD_A20_ACT1))
+    assert _profile_for_artifact(metadata) == IRONCLAD_A20_ACT1

@@ -407,3 +407,14 @@ def test_match_and_keep_exposes_pair_actions_with_stable_click_commands() -> Non
         payload["game_state"]["screen_state"]["attempts_remaining"] = remaining
         current = adapt_original(payload).decision.observation
         assert dict(current.public_context)["attempts_remaining"] == remaining
+
+def test_rest_choice_ids_survive_missing_smith():
+    payload = {'in_game': True, 'ready_for_command': True,
+               'available_commands': ['choose'],
+               'game_state': base_game(screen_type='REST', choice_list=['rest', 'recall'],
+                                       screen_state={})}
+    adapted = adapt_original(payload)
+    recall = next(a for a in adapted.decision.actions if a.kind is ActionKind.RECALL)
+    assert recall.option_id == 'rest-option:2'
+    assert adapted.commands[recall.candidate_id] == ('choose 1',)
+    assert adapted.decision.observation.rest_options[1].instance_id == 'rest-option:2'

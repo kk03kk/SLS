@@ -15,6 +15,7 @@ sys.path.insert(0, str(ROOT / "src"))
 from sls.backends.original import OriginalBackend  # noqa: E402
 from sls.backends.simulator import SimulatorBackend  # noqa: E402
 from sls.curriculum import (  # noqa: E402
+    CURRICULUM_PROFILES_BY_ID,
     IRONCLAD_A0_ACT1,
     IRONCLAD_A0_ACT2,
     IRONCLAD_A0_ACT3,
@@ -24,6 +25,7 @@ from sls.curriculum import (  # noqa: E402
 )
 from sls.diagnostics import capture_policy_trajectory  # noqa: E402
 from sls.runtime import load_policy_artifact  # noqa: E402
+from sls.runtime.artifact import PolicyArtifactMetadata  # noqa: E402
 
 _PROFILES_BY_GOAL = {
     "ACT1": IRONCLAD_A0_ACT1,
@@ -41,6 +43,12 @@ def _profile_for_goal(goal: str) -> CurriculumProfile:
         raise ValueError(f"canary artifact goal is unsupported: {goal}") from error
 
 
+def _profile_for_artifact(metadata: PolicyArtifactMetadata) -> CurriculumProfile:
+    if metadata.environment_profile:
+        return CURRICULUM_PROFILES_BY_ID[metadata.environment_profile["profile_id"]]
+    return _profile_for_goal(metadata.goal)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("backend", choices=("simulator", "original"))
@@ -49,6 +57,7 @@ def main() -> int:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--journal", type=Path)
     parser.add_argument("--max-actions", type=int)
+    parser.add_argument("--diagnostic-state", action="store_true")
     args = parser.parse_args()
     stopped = False
 
@@ -59,7 +68,7 @@ def main() -> int:
     signal.signal(signal.SIGINT, stop)
     signal.signal(signal.SIGTERM, stop)
     artifact = load_policy_artifact(args.artifact, device="cpu")
-    profile = _profile_for_goal(artifact.metadata.goal)
+    profile = _profile_for_artifact(artifact.metadata)
     backend = (
         SimulatorBackend(profile)
         if args.backend == "simulator"
@@ -69,6 +78,7 @@ def main() -> int:
         backend, artifact, backend_name=args.backend, seed=args.seed,
         output=args.output, journal=args.journal,
         max_actions=args.max_actions, stop_requested=lambda: stopped,
+        diagnostic_state=args.diagnostic_state,
     )
     completion = os.environ.get("SLS_RUN_COMPLETION")
     if completion:

@@ -10,7 +10,7 @@ from pathlib import Path
 import pytest
 import torch
 
-from sls.curriculum import IRONCLAD_A0_ACT1
+from sls.curriculum import IRONCLAD_A0_ACT1, IRONCLAD_A20_ACT1
 from sls.model import ModelConfig, Policy
 from sls.rl import PPOConfig, PPOTrainer, WorkerPool, load_checkpoint, save_checkpoint
 from sls.rl.preparation import read_config
@@ -19,8 +19,9 @@ from tools.initialize_act1_continuation import initialize
 from tools.train_full_run import _training_identity
 
 
+@pytest.mark.parametrize("profile", [IRONCLAD_A0_ACT1, IRONCLAD_A20_ACT1])
 def test_continuation_preserves_learning_and_refuses_unreviewed_changes(
-    tmp_path, monkeypatch
+    tmp_path, monkeypatch, profile
 ):
     monkeypatch.setattr(torch.cuda, "is_available", lambda: False)
     torch.use_deterministic_algorithms(True)
@@ -40,9 +41,10 @@ def test_continuation_preserves_learning_and_refuses_unreviewed_changes(
         .replace("recurrent_sequence_length = 64", "recurrent_sequence_length = 1")
         .replace("epochs = 2", "epochs = 1")
     )
+    text = text.replace("IRONCLAD_A0_ACT1", profile.profile_id)
     (source / "training-config.toml").write_text(text)
     config = read_config(source / "training-config.toml")
-    with WorkerPool(IRONCLAD_A0_ACT1, 1) as workers:
+    with WorkerPool(profile, 1) as workers:
         trainer = PPOTrainer(
             Policy(ModelConfig(**config["model"])),
             workers,

@@ -52,6 +52,13 @@ ROOM_SYMBOLS = {
 }
 
 
+def _rest_option_index(label: str) -> int:
+    # Native actions use stable option kinds; CommunicationMod numbers only the
+    # currently available choices (e.g. Fusion Hammer removes Smith).
+    return {"REST": 0, "SMITH": 1, "RECALL": 2, "LIFT": 3,
+            "TOKE": 4, "DIG": 5, "PROCEED": 6}[label]
+
+
 def _event_option_indices(
     payload: Mapping[str, Any], game: Mapping[str, Any], state: Mapping[str, Any], count: int,
 ) -> tuple[int, ...]:
@@ -568,7 +575,8 @@ def _actions(
                 "TOKE": ActionKind.CONFIRM,
                 "DIG": ActionKind.DIG,
             }.get(label, ActionKind.PROCEED)
-            add(Action(kind, option_id=f"rest-option:{index}"), f"choose {index}")
+            semantic_index = _rest_option_index(label)
+            add(Action(kind, option_id=f"rest-option:{semantic_index}"), f"choose {index}")
     elif screen is ScreenType.TREASURE:
         if "choose" in available:
             add(Action(ActionKind.OPEN_CHEST), "choose 0")
@@ -845,7 +853,10 @@ def _screen_entities(
         )
     elif screen is ScreenType.REST:
         result["rest"] = tuple(
-            PublicEntity(f"rest-option:{index}", normalize_content_id(_choice_id(value)))
+            PublicEntity(
+                f"rest-option:{_rest_option_index(normalize_content_id(_choice_id(value)))}",
+                normalize_content_id(_choice_id(value)),
+            )
             for index, value in enumerate(choices)
         )
     elif screen is ScreenType.BOSS_REWARD:

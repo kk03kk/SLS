@@ -80,8 +80,12 @@ def test_capture_uses_same_recurrent_context_as_live_runtime(tmp_path: Path) -> 
         result = capture_policy_trajectory(
             SimulatorBackend(IRONCLAD_A0_ACT1), artifact,
             backend_name="simulator", seed=7, output=trajectory, max_actions=2,
+            diagnostic_state=True,
         )
     metadata, boundaries = read_trajectory(trajectory)
+    assert boundaries[0]["diagnostic_state"]["run_state"]["ascension"] == 0
+    assert boundaries[0]["diagnostic_rng"]
+    assert 0 < boundaries[0]["chosen_action_probability"] <= 1
 
     assert metadata["recurrent_context"] == "PREVIOUS_ACTION_AND_REWARD"
     assert result["actions"] == 2
