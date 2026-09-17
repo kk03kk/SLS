@@ -15,8 +15,50 @@ from sls.model import ModelConfig, Policy
 from sls.rl import PPOConfig, PPOTrainer, WorkerPool, load_checkpoint, save_checkpoint
 from sls.rl.preparation import read_config
 from sls.rl.training_contract import native_source_digest, sha256_file
-from tools.initialize_act1_continuation import initialize
+from tools.initialize_act1_continuation import _validate_parent_selection, initialize
 from tools.train_full_run import _training_identity
+
+
+def test_interrupted_parent_requires_explicit_complete_periodic_evidence(tmp_path) -> None:
+    digest = "a" * 64
+    original = {"stages": {"train": {"minimum_evaluation_episodes": 512}}}
+    record = {
+        "schema": "sls-best-progress-v4",
+        "checkpoint_sha256": digest,
+        "selection_objective": "ACT1_CLEAR_COUNT",
+        "episodes": 512,
+        "successes": 374,
+        "success_rate": 374 / 512,
+        "step_limits": 0,
+        "cycle_limits": 0,
+        "self_loops": 0,
+        "timeouts": 0,
+        "backend_truncations": 0,
+        "backend_errors": 0,
+    }
+    with pytest.raises(ValueError, match="explicitly use"):
+        _validate_parent_selection(tmp_path, {}, original, digest, record)
+    assert _validate_parent_selection(
+        tmp_path,
+        {"continuation_selection_evidence": "periodic-best"},
+        original,
+        digest,
+        record,
+    ) == "periodic-best"
+    with pytest.raises(ValueError, match="runtime failures"):
+        _validate_parent_selection(
+            tmp_path,
+            {"continuation_selection_evidence": "periodic-best"},
+            original,
+            digest,
+            {**record, "backend_errors": 1},
+        )
+    (tmp_path / "final-evaluation.json").write_text(
+        json.dumps({"checkpoint_sha256": digest}), encoding="utf-8",
+    )
+    assert _validate_parent_selection(
+        tmp_path, {}, original, digest, record,
+    ) == "final-evaluation"
 
 
 @pytest.mark.parametrize("profile", [IRONCLAD_A0_ACT1, IRONCLAD_A20_ACT1])
@@ -303,3 +345,29 @@ def test_20m_plan_keeps_learning_contract_and_disjoint_heldout():
     assert new["run"]["final_evaluation_seed_count"] == 1024
     assert new["run"]["final_evaluation_seed_start"] >= old["run"]["final_evaluation_seed_start"] + 1024
     assert new["run"]["training_seed_limit"] == old["run"]["training_seed_limit"]
+
+
+def test_a20_50m_plan_uses_verified_periodic_best_and_one_variable() -> None:
+    root = Path(__file__).resolve().parents[2]
+    old = read_config(root / "configs/train/ironclad_a20_act1_40m.toml")
+    new = read_config(root / "configs/train/ironclad_a20_act1_50m.toml")
+    assert new["run"]["continuation_from"] == old["run"]["output"]
+    assert new["run"]["output"] != old["run"]["output"]
+    assert new["run"]["continuation_checkpoint_sha256"] == (
+        "802cc83e6e2fa16a00ebea44a72a46bb2f48ee6295a2eefc5d0375faffd4b3a5"
+    )
+    assert new["run"]["continuation_selection_evidence"] == "periodic-best"
+    assert new["stages"]["train"]["target_environment_steps"] == 50_000_000
+    assert new["stages"]["train"]["evaluate_every_steps"] == 1_000_000
+    assert new["stages"]["train"]["checkpoint_every_steps"] == 250_000
+    assert new["model"] == old["model"]
+    assert new["ppo"] == old["ppo"]
+    assert new["run"]["periodic_evaluation_seed_start"] == old["run"][
+        "periodic_evaluation_seed_start"
+    ]
+    assert new["run"]["periodic_evaluation_seed_count"] == 512
+    assert new["run"]["final_evaluation_seed_count"] == 1024
+    assert new["run"]["final_evaluation_seed_start"] >= (
+        old["run"]["final_evaluation_seed_start"]
+        + old["run"]["final_evaluation_seed_count"]
+    )

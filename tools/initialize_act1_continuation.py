@@ -22,6 +22,54 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "src"))
 
 
+def _validate_parent_selection(
+    source: Path,
+    run: dict,
+    original: dict,
+    digest: str,
+    best_record: dict,
+) -> str:
+    """Validate the evaluation evidence which selected the pinned parent best."""
+
+    mode = run.get("continuation_selection_evidence", "final-evaluation")
+    if mode == "final-evaluation":
+        path = source / "final-evaluation.json"
+        if not path.is_file():
+            raise ValueError(
+                "parent best has no final evaluation; an audited interrupted parent must "
+                "explicitly use continuation_selection_evidence = 'periodic-best'"
+            )
+        final = json.loads(path.read_text(encoding="utf-8"))
+        if final.get("checkpoint_sha256") != digest:
+            raise ValueError("parent best has no matching final evaluation")
+        return mode
+    if mode != "periodic-best":
+        raise ValueError("unsupported continuation selection evidence: " + str(mode))
+
+    required = {
+        "schema": "sls-best-progress-v4",
+        "checkpoint_sha256": digest,
+        "selection_objective": "ACT1_CLEAR_COUNT",
+    }
+    for key, value in required.items():
+        if best_record.get(key) != value:
+            raise ValueError(f"parent periodic best has invalid {key}")
+    minimum = int(original["stages"]["train"]["minimum_evaluation_episodes"])
+    episodes = int(best_record.get("episodes", 0))
+    successes = int(best_record.get("successes", -1))
+    if episodes < minimum or not 0 <= successes <= episodes:
+        raise ValueError("parent periodic best evaluation is incomplete")
+    if abs(float(best_record.get("success_rate", -1.0)) - successes / episodes) > 1e-12:
+        raise ValueError("parent periodic best success rate is inconsistent")
+    unsafe = (
+        "step_limits", "cycle_limits", "self_loops", "timeouts",
+        "backend_truncations", "backend_errors",
+    )
+    if any(int(best_record.get(key, -1)) != 0 for key in unsafe):
+        raise ValueError("parent periodic best evaluation contains runtime failures")
+    return mode
+
+
 def initialize(config_path: Path, *, root: Path = ROOT):
     import torch
 
@@ -56,14 +104,20 @@ def initialize(config_path: Path, *, root: Path = ROOT):
     if digest != run["continuation_checkpoint_sha256"]:
         raise ValueError("parent best checkpoint does not match the pinned SHA256")
     original = read_config(source / "training-config.toml")
-    final = json.loads((source / "final-evaluation.json").read_text(encoding="utf-8"))
-    if final["checkpoint_sha256"] != digest:
-        raise ValueError("parent best has no matching final evaluation")
+    best_record = json.loads(
+        (source / "stages/train/selection/best_progress.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    selection_evidence = _validate_parent_selection(
+        source, run, original, digest, best_record,
+    )
     allowed_run = {
         "output",
         "benchmark",
         "continuation_from",
         "continuation_checkpoint_sha256",
+        "continuation_selection_evidence",
         "final_evaluation_seed_start",
         "final_evaluation_seed_count",
         "training_seed_limit",
@@ -111,11 +165,6 @@ def initialize(config_path: Path, *, root: Path = ROOT):
     if [layout["selected_workers"], layout["selected_shards"]] != [workers, shards]:
         raise ValueError("continuation must retain the original worker layout")
     steps = int(payload["trainer"]["environment_steps"])
-    best_record = json.loads(
-        (source / "stages/train/selection/best_progress.json").read_text(
-            encoding="utf-8"
-        )
-    )
     if (
         best_record["environment_steps"] != steps
         or best_record["update"] != payload["trainer"]["update"]
@@ -132,6 +181,7 @@ def initialize(config_path: Path, *, root: Path = ROOT):
         "parent_checkpoint_sha256": digest,
         "parent_environment_steps": steps,
         "parent_update": payload["trainer"]["update"],
+        "parent_selection_evidence": selection_evidence,
         "parent_path": str(path),
         "config_sha256": config_sha,
         "old_training_identity": contract["training_config_sha256"],
