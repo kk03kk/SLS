@@ -38,11 +38,19 @@ def analyze(run: Path, stdout: Path, stderr: Path) -> dict:
                                 "success_wilson_95": wilson(result["successes"], result["episodes"])})
     fields = ("entropy", "entropy_coefficient", "approx_kl_final", "clip_fraction", "gradient_norm",
               "value_explained_variance", "decisions_per_second", "kl_early_stop")
+    optional_fields = tuple(
+        key for key in ("learning_rate", "gradient_clip_fraction")
+        if all(key in row for row in updates)
+    )
+    timing_fields = tuple(
+        key for key in ("update_seconds", "collect_seconds", "optimize_seconds")
+        if all(key in row for row in updates)
+    )
     windows = {}
     for name, rows in (("first50", updates[:50]), ("last50", updates[-50:]), ("all", updates)):
         windows[name] = {key: {"mean": statistics.mean(r[key] for r in rows),
                               "min": min(r[key] for r in rows), "max": max(r[key] for r in rows)}
-                         for key in fields}
+                         for key in (*fields, *optional_fields, *timing_fields)}
     parsed, other = [], []
     for line in stdout.read_text().splitlines():
         try:
@@ -51,7 +59,7 @@ def analyze(run: Path, stdout: Path, stderr: Path) -> dict:
             other.append(line)
     manifest = json.loads((run / "run-manifest.json").read_text())
     return {
-        "schema": "sls-training-history-analysis-v1", "updates": len(updates),
+        "schema": "sls-training-history-analysis-v2", "updates": len(updates),
         "first_update": updates[0]["update"], "last_update": updates[-1]["update"],
         "last_steps": updates[-1]["environment_steps"],
         "continuous_updates": all(b["update"] == a["update"] + 1 for a, b in zip(updates, updates[1:])),

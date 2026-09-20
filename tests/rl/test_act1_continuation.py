@@ -287,6 +287,10 @@ def test_neow_metrics_count_decisions_without_changing_objective():
                                       minibatch_sequences=1,epochs=1), seed=7)
         metrics = trainer.train_update()
         assert metrics["neow_decisions"] == 1
+        assert 0.0 <= metrics["gradient_clip_fraction"] <= 1.0
+        assert metrics["learning_rate"] == trainer.config.learning_rate
+        assert trainer.last_collect_seconds >= 0.0
+        assert trainer.last_optimize_seconds >= 0.0
         assert sum(metrics[f"neow_option_{i}_count"] for i in range(4)) == 1
         assert 0 <= metrics["neow_mean_swap_probability"] <= 1
         assert 0 <= metrics["neow_mean_normalized_entropy"] <= 1

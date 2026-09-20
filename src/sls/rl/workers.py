@@ -285,6 +285,11 @@ def _vector_worker(
             elif command == "reset_one":
                 index, seed = payload
                 connection.send(execute(int(index), "reset", seed))
+            elif command == "reset_sparse":
+                connection.send([
+                    None if seed is None else execute(index, "reset", seed)
+                    for index, seed in enumerate(payload)
+                ])
             elif command == "step":
                 connection.send([
                     execute(index, "step", candidate_id)
@@ -394,6 +399,17 @@ class WorkerPool:
     def reset_one(self, index: int, seed: int) -> Decision:
         self._connections[index].send(("reset", int(seed)))
         return self._collect((index,))[0]
+
+    def reset_many(
+        self, indices: Sequence[int], seeds: Sequence[int],
+    ) -> list[Decision]:
+        if len(indices) != len(seeds) or len(set(indices)) != len(indices):
+            raise ValueError("reset indices and seeds must be unique and aligned")
+        if any(not 0 <= index < self.size for index in indices):
+            raise IndexError("reset index is outside the worker pool")
+        for index, seed in zip(indices, seeds):
+            self._connections[index].send(("reset", int(seed)))
+        return self._collect(indices)
 
     def step(self, candidate_ids: Sequence[str]) -> list[Transition]:
         if len(candidate_ids) != self.size:
@@ -512,6 +528,18 @@ class VectorWorkerPool:
     def reset_one(self, index: int, seed: int) -> Decision:
         return self._execute(index, "reset", seed)
 
+    def reset_many(
+        self, indices: Sequence[int], seeds: Sequence[int],
+    ) -> list[Decision]:
+        if len(indices) != len(seeds) or len(set(indices)) != len(indices):
+            raise ValueError("reset indices and seeds must be unique and aligned")
+        if any(not 0 <= index < self.size for index in indices):
+            raise IndexError("reset index is outside the worker pool")
+        return [
+            self._execute(index, "reset", seed)
+            for index, seed in zip(indices, seeds)
+        ]
+
     def step(self, candidate_ids: Sequence[str]) -> list[Transition]:
         if len(candidate_ids) != self.size:
             raise ValueError("one action is required per environment")
@@ -619,6 +647,21 @@ class ShardedWorkerPool:
         shard, local = self._locate(index)
         self._connections[shard].send(("reset_one", (local, int(seed))))
         return self._receive(shard)
+
+    def reset_many(
+        self, indices: Sequence[int], seeds: Sequence[int],
+    ) -> list[Decision]:
+        if len(indices) != len(seeds) or len(set(indices)) != len(indices):
+            raise ValueError("reset indices and seeds must be unique and aligned")
+        if any(not 0 <= index < self.size for index in indices):
+            raise IndexError("reset index is outside the worker pool")
+        if not indices:
+            return []
+        sparse: list[int | None] = [None] * self.size
+        for index, seed in zip(indices, seeds):
+            sparse[index] = int(seed)
+        reset = self._all("reset_sparse", sparse)
+        return [reset[index] for index in indices]
 
     def step(self, candidate_ids: Sequence[str]) -> list[Transition]:
         if len(candidate_ids) != self.size:

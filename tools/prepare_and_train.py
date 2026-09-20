@@ -16,6 +16,8 @@ os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
 
 from sls.rl.preparation import benchmark_matches_workload, read_config
 
+PRODUCTION_LAYOUTS = ("32:4", "64:8", "64:16", "128:8", "128:16")
+
 
 def run_tool(name: str, *arguments: object) -> None:
     command = [sys.executable, str(ROOT / "tools" / name), *map(str, arguments)]
@@ -83,7 +85,7 @@ def main() -> int:
             if latest.exists():
                 raise ValueError("existing training layout cannot be replaced; recover its benchmark record")
             run_tool("benchmark_workers.py", "--config", args.config, "--layouts",
-                     "32:4", "64:8", "128:8", "--output", benchmark)
+                     *PRODUCTION_LAYOUTS, "--output", benchmark)
             layout = json.loads(benchmark.read_text())
         checkpoint_arguments = ("--checkpoint", latest) if latest.exists() else ()
         run_tool("preflight_training.py", "--skip-build", "--config", args.config,

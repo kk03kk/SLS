@@ -163,6 +163,40 @@ def test_a20_transfer_preserves_weights_only_and_can_resume(tmp_path):
     assert sha256_file(source) == digest
 
 
+def test_same_profile_transfer_is_an_explicit_optimization_experiment(tmp_path):
+    from sls.model import ModelConfig, Policy
+    from sls.rl.act1_transfer import initialize_act1_weights
+    from sls.rl.training_contract import sha256_file
+
+    model_config = ModelConfig(embedding_dim=32, transformer_layers=1,
+                               attention_heads=4, feedforward_dim=64)
+    ppo = PPOConfig(rollout_steps=1, recurrent_sequence_length=1, epochs=1)
+    source = tmp_path / "parent" / "best.pt"
+    with WorkerPool(IRONCLAD_A20_ACT1, 1) as workers:
+        parent = PPOTrainer(Policy(model_config), workers, ppo, seed=8)
+        parent.environment_steps = 46_006_272
+        save_checkpoint(source, parent)
+    config = {
+        "run": {"output": "child"},
+        "stages": {"train": {"target_environment_steps": 60_000_000}},
+        "warm_start": {
+            "checkpoint": "parent/best.pt",
+            "checkpoint_sha256": sha256_file(source),
+            "parent_environment_steps": 46_006_272,
+        },
+    }
+    with WorkerPool(IRONCLAD_A20_ACT1, 1) as workers:
+        trainer = PPOTrainer(Policy(model_config), workers, ppo, seed=50_000_000)
+        with pytest.raises(ValueError, match="transfer_kind"):
+            initialize_act1_weights(trainer, config, root=tmp_path)
+        config["warm_start"]["transfer_kind"] = "optimization-experiment"
+        record = initialize_act1_weights(trainer, config, root=tmp_path)
+        assert record["source_profile"] == "IRONCLAD_A20_ACT1"
+        assert record["schema"] == "sls-act1-weight-transfer-v2"
+        assert trainer.environment_steps == 46_006_272
+        assert trainer.update == 0 and not trainer.optimizer.state
+
+
 def _event(event, ascension):
     backend = SimulatorBackend(replace(IRONCLAD_A20_ACT1, ascension=ascension))
     backend.reset(8)

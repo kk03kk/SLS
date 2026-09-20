@@ -804,10 +804,10 @@ def main() -> int:
                 training_seed_limit=training_seed_limit(run),
             )
             if "warm_start" in payload and not latest.exists():
-                from sls.rl.act1_transfer import initialize_a20_weights
+                from sls.rl.act1_transfer import initialize_act1_weights
                 if not single_stage or run.get("continuation_from"):
                     raise ValueError("A20 weight transfer requires a new single-stage run")
-                transfer = initialize_a20_weights(trainer, payload, root=ROOT)
+                transfer = initialize_act1_weights(trainer, payload, root=ROOT)
                 manifest["initialization"] = transfer
                 _atomic_json(manifest_path, manifest)
                 save_checkpoint(latest, trainer)
@@ -1036,6 +1036,9 @@ def main() -> int:
                     "decisions_per_second": workers_count * ppo.rollout_steps / elapsed,
                     **metrics,
                 }
+                if hasattr(trainer, "last_collect_seconds"):
+                    record["collect_seconds"] = trainer.last_collect_seconds
+                    record["optimize_seconds"] = trainer.last_optimize_seconds
                 if diagnose_every and trainer.environment_steps >= next_diagnose:
                     rotation = next_diagnose // diagnose_every - 1
                     start = diagnostic_seed_start + rotation * diagnostic_stride

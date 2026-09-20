@@ -8,11 +8,28 @@ torch = pytest.importorskip("torch")
 
 from sls.rl.ppo import (
     PPOConfig,
+    _coalesced_cpu,
     clipped_policy_loss,
     normalize_advantages,
     normalize_advantages_by_domain,
     policy_distance_metrics,
 )
+
+
+def test_coalesced_cpu_preserves_tensor_order_shape_dtype_and_values() -> None:
+    values = (
+        torch.tensor([[1, 2]], dtype=torch.long),
+        torch.tensor([3.5], dtype=torch.float32),
+        torch.tensor([True, False]),
+        torch.tensor([4.5, 5.5], dtype=torch.float32),
+    )
+    moved = _coalesced_cpu(values)
+    assert len(moved) == len(values)
+    for actual, expected in zip(moved, values):
+        assert actual.device.type == "cpu"
+        assert actual.shape == expected.shape
+        assert actual.dtype == expected.dtype
+        assert torch.equal(actual, expected)
 
 
 def test_advantages_are_normalized_once_over_the_complete_rollout() -> None:

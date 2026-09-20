@@ -8,6 +8,7 @@ import pytest
 from sls.curriculum import IRONCLAD_A0_ACT1
 from sls.rl.workers import (
     CRASH_DUMP_SCHEMA,
+    ShardedWorkerPool,
     VectorWorkerPool,
     WorkerPool,
     _crash_payload,
@@ -37,6 +38,18 @@ def test_worker_pool_fails_fast_when_worker_exits_without_a_response() -> None:
 
     with pytest.raises(TimeoutError, match="worker 0 exited with code 23"):
         pool._collect((0,))
+
+
+def test_sharded_reset_many_preserves_requested_index_and_seed_order() -> None:
+    with ShardedWorkerPool(IRONCLAD_A0_ACT1, 4, shard_count=2) as pool:
+        pool.reset((10, 11, 12, 13))
+        decisions = pool.reset_many((3, 1), (103, 101))
+        checkpoints = pool.checkpoints()
+    assert len(decisions) == 2
+    assert checkpoints[0]["run_state"]["seed"] == 10
+    assert checkpoints[1]["run_state"]["seed"] == 101
+    assert checkpoints[2]["run_state"]["seed"] == 12
+    assert checkpoints[3]["run_state"]["seed"] == 103
 
 
 class _DiagnosticBackend:

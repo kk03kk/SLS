@@ -1,4 +1,4 @@
-"""Explicit A0 -> A20 weight transfer; never restore old environment state."""
+"""Explicit Act1 weight transfer; never restore old optimizer/environment state."""
 
 from pathlib import Path
 
@@ -9,7 +9,7 @@ from sls.rl.checkpoint import policy_from_training_checkpoint
 from sls.rl.training_contract import sha256_file
 
 
-def initialize_a20_weights(trainer, config: dict, *, root: Path) -> dict:
+def initialize_act1_weights(trainer, config: dict, *, root: Path) -> dict:
     spec = config["warm_start"]
     source = (root / spec["checkpoint"]).resolve()
     output = (root / config["run"]["output"]).resolve()
@@ -23,8 +23,14 @@ def initialize_a20_weights(trainer, config: dict, *, root: Path) -> dict:
     if digest != spec["checkpoint_sha256"]:
         raise ValueError("warm-start checkpoint SHA256 mismatch")
     payload = torch.load(source, map_location="cpu", weights_only=False)
-    if payload["contract"]["profile"] != IRONCLAD_A0_ACT1:
-        raise ValueError("warm-start parent must be the A0 Act1 profile")
+    source_profile = payload["contract"]["profile"]
+    if source_profile not in {IRONCLAD_A0_ACT1, IRONCLAD_A20_ACT1}:
+        raise ValueError("warm-start parent must be an Act1 profile")
+    same_profile = source_profile == IRONCLAD_A20_ACT1
+    if same_profile and spec.get("transfer_kind") != "optimization-experiment":
+        raise ValueError(
+            "same-profile warm start requires transfer_kind = optimization-experiment"
+        )
     steps = int(payload["trainer"]["environment_steps"])
     if steps != int(spec["parent_environment_steps"]):
         raise ValueError("warm-start parent step count mismatch")
@@ -39,10 +45,11 @@ def initialize_a20_weights(trainer, config: dict, *, root: Path) -> dict:
     trainer.model.load_state_dict(policy.state_dict(), strict=True)
     trainer.environment_steps = steps
     return {
-        "schema": "sls-a0-a20-act1-weight-transfer-v1",
+        "schema": "sls-act1-weight-transfer-v2",
         "parent_checkpoint_sha256": digest,
         "parent_environment_steps": steps,
         "parent_checkpoint": str(source),
+        "source_profile": source_profile.profile_id,
         "target_profile": IRONCLAD_A20_ACT1.profile_id,
         "preserved": "all model weights, including value head",
         "reset": "Adam, RNG, workers, recurrent state, update count and best selection",
@@ -50,3 +57,9 @@ def initialize_a20_weights(trainer, config: dict, *, root: Path) -> dict:
         "entropy_clock": "cumulative environment steps",
         "exact_resume_of_parent_experiment": False,
     }
+
+
+def initialize_a20_weights(trainer, config: dict, *, root: Path) -> dict:
+    """Compatibility wrapper for callers using the original function name."""
+
+    return initialize_act1_weights(trainer, config, root=root)

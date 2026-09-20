@@ -12,8 +12,10 @@
 
 ## Current work and local artifacts
 
-- Current A20 proposal: [A20 Act1 local plan](a20-act1-local-plan.md).
-- Current config: `configs/train/ironclad_a20_act1_30m.toml`.
+- Current completed result: [A20 Act1 50M audit](a20-50m-audit.md).
+- Latest completed config: `configs/train/ironclad_a20_act1_50m.toml`.
+- Current next experiment: [A20 Act1 60M optimization](a20-60m-optimization-plan.md),
+  using `configs/train/ironclad_a20_act1_60m_optimization.toml`.
 - Downloaded server archives: `runs/archives/` (Git-ignored).
 - Active training/checkpoints: `local/runs/`; older downloaded extraction:
   `runs/local/`. Existing paths are retained.

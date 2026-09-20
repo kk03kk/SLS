@@ -122,6 +122,7 @@ def main() -> int:
     })
     rows: list[dict[str, float | int]] = []
     failures = []
+    weight_transfer = None
     for workers_count, shards in layouts:
         print(json.dumps({"starting_layout": [workers_count, shards]}), flush=True)
         random.seed(918273)
@@ -137,6 +138,11 @@ def main() -> int:
                     training_config_digest=benchmark_digest,
                     training_seed_limit=1_000_000_000_000,
                 )
+                if payload and "warm_start" in payload:
+                    from sls.rl.act1_transfer import initialize_act1_weights
+                    weight_transfer = initialize_act1_weights(
+                        trainer, payload, root=ROOT,
+                    )
                 trainer.train_update()
                 torch.cuda.synchronize()
                 started = time.perf_counter()
@@ -183,6 +189,7 @@ def main() -> int:
         "results": rows,
         "failures": failures,
         "measurement": "collect-and-ppo-update",
+        "weight_transfer": weight_transfer,
         "workload_contract": workload_contract(payload) if payload else None,
         "git": repository,
         "profile": profile.profile_id,

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import math
 import random
+import time
 from dataclasses import asdict, dataclass
 
 import torch
@@ -76,6 +77,25 @@ def policy_distance_metrics(
     approximate_kl = (-log_ratio).mean()
     clip_fraction = ((ratios - 1.0).abs() > clip_ratio).to(ratios.dtype).mean()
     return approximate_kl, clip_fraction
+
+
+def _coalesced_cpu(values: tuple[torch.Tensor, ...]) -> tuple[torch.Tensor, ...]:
+    """Copy small CUDA tensors in one contiguous transfer per dtype."""
+
+    if not values or values[0].device.type != "cuda":
+        return tuple(value.cpu() for value in values)
+    moved: list[torch.Tensor | None] = [None] * len(values)
+    positions_by_dtype: dict[torch.dtype, list[int]] = {}
+    for index, value in enumerate(values):
+        positions_by_dtype.setdefault(value.dtype, []).append(index)
+    for positions in positions_by_dtype.values():
+        packed = torch.cat([values[index].reshape(-1) for index in positions]).cpu()
+        offset = 0
+        for index in positions:
+            count = values[index].numel()
+            moved[index] = packed[offset:offset + count].view(values[index].shape)
+            offset += count
+    return tuple(value for value in moved if value is not None)
 
 
 @dataclass(frozen=True, slots=True)
@@ -215,10 +235,6 @@ class PPOTrainer:
         for _ in range(self.config.rollout_steps):
             encoded = tuple(encode_decision(value) for value in self.decisions)
             batch = PolicyBatch.from_encoded(encoded).to(self.device)
-            episode_start_steps.append(self.episode_starts.cpu())
-            memory_steps.append(self.memory.cpu())
-            previous_action_steps.append(self.previous_action_types.cpu())
-            previous_reward_steps.append(self.previous_rewards.cpu())
             output = self.model(
                 *batch.model_inputs(),
                 memory=self.memory,
@@ -228,9 +244,29 @@ class PPOTrainer:
             )
             distribution = Categorical(logits=output.logits)
             actions = distribution.sample()
+            # Materialize rollout outputs before entering the serial native
+            # simulator step.  Reusing actions_cpu also avoids transferring
+            # the sampled actions twice on CUDA.
+            log_probabilities = distribution.log_prob(actions)
+            (
+                actions_cpu,
+                log_probabilities_cpu,
+                values_cpu,
+                episode_starts_cpu,
+                memory_cpu,
+                previous_actions_cpu,
+                previous_rewards_cpu,
+            ) = _coalesced_cpu((
+                actions, log_probabilities, output.value, self.episode_starts,
+                self.memory, self.previous_action_types, self.previous_rewards,
+            ))
+            episode_start_steps.append(episode_starts_cpu)
+            memory_steps.append(memory_cpu)
+            previous_action_steps.append(previous_actions_cpu)
+            previous_reward_steps.append(previous_rewards_cpu)
             candidate_ids = [
                 decision.actions[int(index)].candidate_id
-                for decision, index in zip(self.decisions, actions.cpu())
+                for decision, index in zip(self.decisions, actions_cpu)
             ]
             # Observe rare initial choices separately; never change sampling or loss.
             neow_indices = [i for i, d in enumerate(self.decisions)
@@ -249,9 +285,9 @@ class PPOTrainer:
                             neow_choices[int(action.option_id.rsplit(":", 1)[1])] += 1
             transitions = self.workers.step(candidate_ids)
             encoded_steps.append(encoded)
-            action_steps.append(actions.cpu())
-            log_probability_steps.append(distribution.log_prob(actions).cpu())
-            value_steps.append(output.value.cpu())
+            action_steps.append(actions_cpu)
+            log_probability_steps.append(log_probabilities_cpu)
+            value_steps.append(values_cpu)
             rewards = []
             terminals = []
             next_decisions = [item.decision for item in transitions]
@@ -307,9 +343,12 @@ class PPOTrainer:
                 [float(item.reward) for item in transitions],
                 dtype=torch.float32, device=self.device,
             )
-            for index in reset_indices:
-                next_decisions[index] = self._reset_worker(index)
-                self.episode_limits[index] = EpisodeLimitState.initial(next_decisions[index])
+            reset_decisions = self.workers.reset_many(
+                reset_indices, self._take_seeds(len(reset_indices)),
+            ) if reset_indices else []
+            for index, decision in zip(reset_indices, reset_decisions):
+                next_decisions[index] = decision
+                self.episode_limits[index] = EpisodeLimitState.initial(decision)
                 next_memory[index].zero_()
                 next_episode_starts[index] = True
                 next_previous_actions[index] = 0
@@ -366,9 +405,15 @@ class PPOTrainer:
         normalized_advantages = normalize_advantages_by_domain(
             rollout.advantages, rollout.encoded_decisions,
         )
+        metric_names = (
+            "policy", "value", "entropy", "loss", "approx_kl", "gradient_norm",
+            "gradient_clip_fraction",
+        )
+        # Keep metric reduction on-device.  Calling float() for every metric in
+        # every minibatch serialized CUDA six times per optimizer step.
         totals = {
-            "policy": 0.0, "value": 0.0, "entropy": 0.0, "loss": 0.0,
-            "approx_kl": 0.0, "gradient_norm": 0.0, "epochs_completed": 0.0,
+            key: torch.zeros((), dtype=torch.float32, device=self.device)
+            for key in metric_names
         }
         updates = 0
         self.model.train()
@@ -430,22 +475,26 @@ class PPOTrainer:
                     ("entropy", entropy), ("loss", loss),
                     ("approx_kl", approximate_kl),
                     ("gradient_norm", gradient_norm),
+                    (
+                        "gradient_clip_fraction",
+                        (gradient_norm > self.config.max_gradient_norm).to(torch.float32),
+                    ),
                 ):
-                    totals[key] += float(value.detach())
+                    totals[key] = totals[key] + value.detach().to(torch.float32)
                 updates += 1
             epoch_kl, epoch_clip_fraction = self._policy_diagnostics(rollout)
-            totals["epochs_completed"] = float(epoch + 1)
+            epochs_completed = float(epoch + 1)
             epoch_diagnostics[f"approx_kl_epoch_{epoch + 1}"] = epoch_kl
             epoch_diagnostics["approx_kl_final"] = epoch_kl
             epoch_diagnostics["clip_fraction"] = epoch_clip_fraction
             if epoch_kl > self.config.target_kl:
                 break
         self.update += 1
-        result = {
-            key: (value if key == "epochs_completed" else value / updates)
-            for key, value in totals.items()
-        }
+        reduced = torch.stack(tuple(totals[key] for key in metric_names)).div(updates)
+        result = dict(zip(metric_names, reduced.detach().cpu().tolist()))
+        result["epochs_completed"] = epochs_completed
         result["entropy_coefficient"] = entropy_coefficient
+        result["learning_rate"] = float(self.optimizer.param_groups[0]["lr"])
         result["kl_early_stop"] = float(
             epoch_diagnostics.get("approx_kl_final", 0.0) > self.config.target_kl
         )
@@ -479,21 +528,32 @@ class PPOTrainer:
         tensor: torch.Tensor,
         chunks: list[tuple[int, int]],
     ) -> torch.Tensor:
-        length = self.config.recurrent_sequence_length
-        return torch.stack([
-            tensor[start:start + length, environment]
-            for start, environment in chunks
-        ]).flatten()
+        time_indices, environment_indices = self._sequence_indices(chunks)
+        return tensor[time_indices, environment_indices].flatten()
+
+    def _sequence_indices(
+        self,
+        chunks: list[tuple[int, int]],
+    ) -> tuple[torch.Tensor, torch.Tensor]:
+        starts = torch.tensor([start for start, _ in chunks], dtype=torch.long)
+        environments = torch.tensor(
+            [environment for _, environment in chunks], dtype=torch.long,
+        )
+        offsets = torch.arange(self.config.recurrent_sequence_length)
+        return starts[:, None] + offsets[None, :], environments[:, None].expand(
+            -1, self.config.recurrent_sequence_length,
+        )
 
     def _evaluate_sequences(
         self,
         rollout: RolloutBatch,
         chunks: list[tuple[int, int]],
     ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
-        memory = torch.stack([
-            rollout.input_memories[start, environment]
-            for start, environment in chunks
-        ]).to(self.device)
+        starts = torch.tensor([start for start, _ in chunks], dtype=torch.long)
+        environments = torch.tensor(
+            [environment for _, environment in chunks], dtype=torch.long,
+        )
+        memory = rollout.input_memories[starts, environments].to(self.device)
         log_probabilities: list[torch.Tensor] = []
         values: list[torch.Tensor] = []
         entropies: list[torch.Tensor] = []
@@ -503,27 +563,24 @@ class PPOTrainer:
                 for start, environment in chunks
             )
             batch = PolicyBatch.from_encoded(encoded).to(self.device)
-            starts = torch.tensor([
-                bool(rollout.episode_starts[start + offset, environment])
-                for start, environment in chunks
-            ], dtype=torch.bool, device=self.device)
+            time_indices = starts + offset
+            episode_starts = rollout.episode_starts[
+                time_indices, environments
+            ].to(self.device)
             output = self.model(
-                *batch.model_inputs(), memory=memory, episode_start_mask=starts,
-                previous_action_types=torch.tensor([
-                    int(rollout.previous_action_types[start + offset, environment])
-                    for start, environment in chunks
-                ], dtype=torch.long, device=self.device),
-                previous_rewards=torch.tensor([
-                    float(rollout.previous_rewards[start + offset, environment])
-                    for start, environment in chunks
-                ], dtype=torch.float32, device=self.device),
+                *batch.model_inputs(), memory=memory, episode_start_mask=episode_starts,
+                previous_action_types=rollout.previous_action_types[
+                    time_indices, environments
+                ].to(self.device),
+                previous_rewards=rollout.previous_rewards[
+                    time_indices, environments
+                ].to(self.device),
             )
             memory = output.next_memory
             distribution = Categorical(logits=output.logits)
-            actions = torch.tensor([
-                int(rollout.action_indices[start + offset, environment])
-                for start, environment in chunks
-            ], dtype=torch.long, device=self.device)
+            actions = rollout.action_indices[
+                time_indices, environments
+            ].to(self.device)
             log_probabilities.append(distribution.log_prob(actions))
             values.append(output.value)
             legal = (~batch.action_padding).sum(dim=1).to(output.logits.dtype)
@@ -539,17 +596,14 @@ class PPOTrainer:
             for items in (log_probabilities, values, entropies)
         )  # type: ignore[return-value]
 
-    def _reset_worker(self, index: int):  # type: ignore[no-untyped-def]
-        return self.workers.reset_one(index, self._take_seeds(1)[0])
-
     @torch.no_grad()
     def _policy_diagnostics(self, rollout: RolloutBatch) -> tuple[float, float]:
         """Measure the current policy on the complete fixed rollout."""
 
         chunks = self._sequence_chunks(rollout)
         count = rollout.action_indices.numel()
-        kl_total = 0.0
-        clipped_total = 0.0
+        kl_parts: list[torch.Tensor] = []
+        clipped_parts: list[torch.Tensor] = []
         was_training = self.model.training
         self.model.eval()
         for start in range(0, len(chunks), self.config.minibatch_sequences):
@@ -562,13 +616,21 @@ class PPOTrainer:
                 old_log_probabilities, new_log_probabilities, self.config.clip_ratio,
             )
             weight = len(new_log_probabilities)
-            kl_total += float(approximate_kl) * weight
-            clipped_total += float(clip_fraction) * weight
+            kl_parts.append(approximate_kl * weight)
+            clipped_parts.append(clip_fraction * weight)
         self.model.train(was_training)
-        return kl_total / count, clipped_total / count
+        diagnostics = torch.stack((
+            torch.stack(kl_parts).sum(), torch.stack(clipped_parts).sum(),
+        )).div(count).detach().cpu().tolist()
+        return diagnostics[0], diagnostics[1]
 
     def train_update(self) -> dict[str, float]:
-        metrics = self.optimize(self.collect())
+        started = time.perf_counter()
+        rollout = self.collect()
+        self.last_collect_seconds = time.perf_counter() - started
+        optimize_started = time.perf_counter()
+        metrics = self.optimize(rollout)
+        self.last_optimize_seconds = time.perf_counter() - optimize_started
         metrics.update({f"terminations_{key}": float(value) for key, value in self.last_collect_terminations.items()})
         metrics.update(self.last_collect_neow)
         return metrics

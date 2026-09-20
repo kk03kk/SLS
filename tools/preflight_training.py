@@ -134,8 +134,8 @@ def main() -> int:
                 trainer.training_seed_limit = training_seed_limit(payload["run"])
                 load_checkpoint_runtime_rebind(args.checkpoint, trainer)
             elif payload and "warm_start" in payload:
-                from sls.rl.act1_transfer import initialize_a20_weights
-                transfer = initialize_a20_weights(trainer, payload, root=ROOT)
+                from sls.rl.act1_transfer import initialize_act1_weights
+                transfer = initialize_act1_weights(trainer, payload, root=ROOT)
             decision = trainer.decisions[0]
             batch = PolicyBatch.from_decisions((decision,), model.config).to(device)
             loss = model(*batch.model_inputs()).logits.sum() + model(*batch.model_inputs()).value.sum()
