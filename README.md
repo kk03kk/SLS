@@ -2,7 +2,7 @@
 
 SLS 的目标是训练一个能够自主游玩 **Slay the Spire 1** 的智能体，也让人通过观察它的决策理解它学到了什么。项目使用 C++ 模拟器生成游戏交互，使用带循环记忆的策略网络和 PPO 训练，并提供连接本地游戏的模型观察界面。
 
-**当前目标：战士（Ironclad）A20 Act1，击败第一幕 Boss 即胜利。** 50M 训练已完成；46,006,272-step champion 在全新 1,024 seeds 上通关 766 局，胜率 74.80%（95% Wilson CI 72.06%–77.37%），且没有 backend error、truncation、timeout 或 episode-limit failure。归档核验见 [A20 50M 审计](docs/a20-50m-audit.md)；下一轮从 champion 显式重置优化器、恢复学习率并优化训练热路径，见 [60M 优化实验](docs/a20-60m-optimization-plan.md)。
+**当前目标：战士（Ironclad）A20 Act1，击败第一幕 Boss 即胜利。** 50M 训练已完成；46,006,272-step champion 在全新 1,024 seeds 上通关 766 局，胜率 74.80%（95% Wilson CI 72.06%–77.37%），且没有 backend error、truncation、timeout 或 episode-limit failure。归档核验见 [A20 50M 审计](docs/a20-50m-audit.md)。第一次 60M 优化实验在约 48.36M 被主动停止；下一轮仍从 46M champion 开始，采用结构化 PPO 批处理和受控熵重启，见 [54M recovery 实验](docs/a20-54m-recovery-plan.md)。
 
 找文件时先看 [项目目录索引](docs/repository-map.md)：下载的服务器压缩包统一放在 `runs/archives/`，运行中的 checkpoint 放在 `local/runs/`，开发验证记录放在 `local/audits/` 和 `local/logs/development/`。这些本地产物不提交 Git。
 
@@ -143,7 +143,7 @@ python tools/generate_policy_vocabulary.py --check
 
 服务器下载归档保存在 `runs/archives/sls-ironclad-a20-act1-50m-final.tar.gz`，SHA256 为 `02b54727220d61b46c8c7dcb8c22f1af3667d63d0b8155ecbb93b4a8ea77544f`。归档包含 best、final、训练配置、manifest、metrics 和最终评估，但不是完整训练目录的替代品；服务器上的 50M champion 仍是新实验的绑定输入，不可删除。
 
-当前下一轮入口是 `configs/train/ironclad_a20_act1_60m_optimization.toml`。它不是 50M exact resume：只迁移 46,006,272-step champion 的模型权重，显式重置 Adam、worker、RNG 和 recurrent state；学习率恢复为 `0.0000625`，熵下限保持 `0.002`，并使用新的 selection/final seeds。准备阶段会用 champion 实际权重验证并比较 8/16 simulator shards，训练日志分别记录采样、优化耗时及梯度裁剪比例。提交命令、性能改动及停止条件见 [60M 优化实验](docs/a20-60m-optimization-plan.md)。
+当前下一轮入口是 `configs/train/ironclad_a20_act1_54m_recovery.toml`。它不是 50M exact resume，也不继承已停止的 60M 实验：只迁移 46,006,272-step champion 的模型权重，显式重置 Adam、worker、RNG 和 recurrent state。学习率恢复为较稳定的 `0.00003125`；熵系数从 `0.006` 在 4M steps 内退火到 `0.002`。布局固定为服务器已测得最快的 64 workers / 16 shards；训练结构变化后只对这一布局做一次资格 benchmark，不再重复五组布局搜索。提交命令、性能改动及停止条件见 [54M recovery 实验](docs/a20-54m-recovery-plan.md)。
 
 ### 历史 A0 流程
 

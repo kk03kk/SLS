@@ -41,6 +41,24 @@ def workload_contract(config: dict) -> str:
     })
 
 
+def fixed_worker_layout(config: dict) -> tuple[int, int] | None:
+    """Return an explicitly pinned worker layout, if configured."""
+
+    value = config["run"].get("worker_layout")
+    if value is None:
+        return None
+    if (
+        not isinstance(value, list)
+        or len(value) != 2
+        or any(not isinstance(item, int) for item in value)
+    ):
+        raise ValueError("worker_layout must be [workers, shards]")
+    workers, shards = value
+    if workers <= 0 or shards <= 0 or shards > workers:
+        raise ValueError("worker_layout counts are invalid")
+    return workers, shards
+
+
 def benchmark_matches_workload(config: dict, layout: dict) -> bool:
     if layout.get("workload_contract") == workload_contract(config):
         return True
@@ -88,9 +106,12 @@ def require_preparation(config: dict, torch_module: object) -> dict:
     benchmark = ROOT / config["run"]["benchmark"]
     report = json.loads(benchmark.with_name("ready.json").read_text(encoding="utf-8"))
     layout = json.loads(benchmark.read_text(encoding="utf-8"))
+    pinned = fixed_worker_layout(config)
+    selected = (int(layout["selected_workers"]), int(layout["selected_shards"]))
     if (report.get("ok") is not True
             or report.get("contract") != preparation_contract(config, torch_module)
             or report.get("layout") != [layout["selected_workers"], layout["selected_shards"]]
+            or (pinned is not None and selected != pinned)
             or not benchmark_matches_workload(config, layout)):
         raise ValueError("Act1 preparation is missing or stale; submit train --prepare")
     return report

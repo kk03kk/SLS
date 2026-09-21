@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import copy
+
 import pytest
 
 torch = pytest.importorskip("torch")
@@ -15,7 +17,7 @@ from sls.contracts import (
     RunContext,
     ScreenType,
 )
-from sls.model import ModelConfig, Policy, PolicyBatch
+from sls.model import ModelConfig, Policy, PolicyBatch, PolicyFeatures
 from sls.model.batching import encode_decision
 from sls.model.encoding import (
     NUMERIC_FIELD_IDS,
@@ -165,6 +167,103 @@ def test_episode_start_mask_resets_only_selected_memory_rows() -> None:
     )
     assert torch.allclose(masked.next_memory[:1], reset.next_memory)
     assert torch.allclose(masked.next_memory[1:], continued.next_memory)
+
+
+def test_preencoded_features_match_regular_forward() -> None:
+    torch.manual_seed(37)
+    config = ModelConfig(
+        embedding_dim=32, transformer_layers=1, attention_heads=4,
+        recurrent_hidden_dim=64,
+    )
+    policy = Policy(config).eval()
+    decision = _combat_decision()
+    batch = PolicyBatch.from_decisions((decision, decision))
+    memory = torch.randn(2, 64)
+    starts = torch.tensor([True, False])
+    previous_actions = torch.tensor([0, 2])
+    previous_rewards = torch.tensor([0.0, -0.25])
+
+    regular = policy(
+        *batch.model_inputs(), memory=memory, episode_start_mask=starts,
+        previous_action_types=previous_actions, previous_rewards=previous_rewards,
+    )
+    features = policy.encode_features(*batch.model_inputs())
+    preencoded = policy.forward_features(
+        features, memory=memory, episode_start_mask=starts,
+        previous_action_types=previous_actions, previous_rewards=previous_rewards,
+    )
+
+    assert torch.equal(preencoded.logits, regular.logits)
+    assert torch.equal(preencoded.value, regular.value)
+    assert torch.equal(preencoded.state, regular.state)
+    assert torch.equal(preencoded.next_memory, regular.next_memory)
+
+
+def test_time_batched_features_preserve_sequence_outputs_and_gradients() -> None:
+    torch.manual_seed(41)
+    config = ModelConfig(
+        embedding_dim=32, transformer_layers=1, attention_heads=4,
+        recurrent_hidden_dim=64,
+    )
+    sequential = Policy(config).eval()
+    batched = copy.deepcopy(sequential)
+    decision = _combat_decision()
+    memory = torch.randn(1, 64)
+    previous_actions = (torch.tensor([0]), torch.tensor([2]))
+    previous_rewards = (torch.tensor([0.0]), torch.tensor([-0.25]))
+
+    sequential_outputs = []
+    sequential_memory = memory
+    for previous_action, previous_reward in zip(previous_actions, previous_rewards):
+        output = sequential(
+            *PolicyBatch.from_decisions((decision,)).model_inputs(),
+            memory=sequential_memory,
+            previous_action_types=previous_action,
+            previous_rewards=previous_reward,
+        )
+        sequential_outputs.append(output)
+        sequential_memory = output.next_memory
+    sequential_loss = sum(
+        output.logits.sum() + output.value.sum() for output in sequential_outputs
+    )
+    sequential_loss.backward()
+
+    batch = PolicyBatch.from_decisions((decision, decision))
+    features = batched.encode_features(*batch.model_inputs())
+    batched_outputs = []
+    batched_memory = memory
+    for offset, (previous_action, previous_reward) in enumerate(zip(
+        previous_actions, previous_rewards,
+    )):
+        step = PolicyFeatures(
+            features.screen_types[offset:offset + 1],
+            features.encoded_state[offset:offset + 1],
+            features.candidates[offset:offset + 1],
+            features.action_padding[offset:offset + 1],
+        )
+        output = batched.forward_features(
+            step, memory=batched_memory,
+            previous_action_types=previous_action,
+            previous_rewards=previous_reward,
+        )
+        batched_outputs.append(output)
+        batched_memory = output.next_memory
+    batched_loss = sum(
+        output.logits.sum() + output.value.sum() for output in batched_outputs
+    )
+    batched_loss.backward()
+
+    for actual, expected in zip(batched_outputs, sequential_outputs):
+        assert torch.allclose(actual.logits, expected.logits, rtol=1e-5, atol=1e-6)
+        assert torch.allclose(actual.value, expected.value, rtol=1e-5, atol=1e-6)
+        assert torch.allclose(actual.next_memory, expected.next_memory, rtol=1e-5, atol=1e-6)
+    for (name, parameter), expected in zip(
+        batched.named_parameters(), sequential.parameters(),
+    ):
+        if parameter.grad is None or expected.grad is None:
+            assert parameter.grad is expected.grad is None, name
+            continue
+        assert torch.allclose(parameter.grad, expected.grad, rtol=1e-4, atol=1e-5), name
 
 
 def test_duplicate_card_instances_resolve_to_distinct_entity_tokens() -> None:

@@ -73,7 +73,8 @@ def test_policy_distance_is_sampled_forward_kl_and_clip_fraction() -> None:
 @pytest.mark.parametrize("field,value", [
     ("learning_rate", 0.0), ("clip_ratio", 0.0),
     ("value_coefficient", -1.0), ("entropy_coefficient", -1.0),
-    ("max_gradient_norm", 0.0),
+    ("max_gradient_norm", 0.0), ("final_kl_samples", 0),
+    ("entropy_schedule_start_steps", -1),
 ])
 def test_invalid_ppo_optimization_parameters_are_rejected(field: str, value: float) -> None:
     with pytest.raises(ValueError):

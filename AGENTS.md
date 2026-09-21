@@ -100,6 +100,14 @@ pool. GPU marketing-name changes are recorded as runtime rebinds, but a
 device-count, software-stack, precision, deterministic-setting, or native-source
 change must not be silently treated as equivalent.
 
+The first 60M optimization experiment used Slurm job `868205` on `xgpg6`.
+At 48,365,568 cumulative steps it measured about 70.6 decisions/s, with roughly
+115 seconds each in collection and optimization. Its new fixed-seed score fell
+from the 46,006,272-step baseline's 383/512 to 371/512 at about 47M and 361/512
+at about 48M. The operator elected to stop it as sufficient negative evidence.
+Do not use that experiment's weights as a continuation source; the next
+experiment is bound to the original 46,006,272-step champion.
+
 Typical training allocation:
 
 ```text
@@ -146,7 +154,10 @@ the setting above, and the expected Torch/CUDA/cuDNN stack.
   Git. Downloaded archives belong under `runs/archives/` locally.
 
 At the 2026-09-20 probe, the server repository was clean on `main` at
-`de2c941f813f3279e925193098dda2f50ffde97e`. Disk usage was approximately:
+`de2c941f813f3279e925193098dda2f50ffde97e`. Before submitting job 868205, the
+operator fast-forwarded the clean server checkout to
+`20bab3b466e77220fd5bb052df491cfae456320f`. Disk usage at the earlier probe was
+approximately:
 
 ```text
 local/   4.6G allocated

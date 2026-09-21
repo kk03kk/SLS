@@ -231,6 +231,39 @@ def test_v3_10m_config_preserves_ppo_and_uses_exact_endpoint() -> None:
     assert payload["run"]["final_evaluation_seed_count"] == 2000
 
 
+def test_a20_54m_recovery_is_bound_to_champion_and_new_seed_sets() -> None:
+    root = Path(__file__).resolve().parents[1]
+    with (root / "configs/train/ironclad_a20_act1_54m_recovery.toml").open("rb") as stream:
+        recovery = tomllib.load(stream)
+    with (root / "configs/train/ironclad_a20_act1_60m_optimization.toml").open("rb") as stream:
+        stopped = tomllib.load(stream)
+
+    assert recovery["run"]["worker_layout"] == [64, 16]
+    assert recovery["run"]["output"] != stopped["run"]["output"]
+    assert recovery["stages"]["train"]["target_environment_steps"] == 54_000_000
+    assert recovery["warm_start"]["parent_environment_steps"] == 46_006_272
+    assert recovery["warm_start"]["checkpoint_sha256"] == (
+        "2db39fde737445b109d31cc522dde42dfe2c7372b34007e108ce702b03acc70d"
+    )
+    assert recovery["ppo"]["learning_rate"] == pytest.approx(0.00003125)
+    assert recovery["ppo"]["entropy_coefficient"] == pytest.approx(0.006)
+    assert recovery["ppo"]["entropy_final"] == pytest.approx(0.002)
+    assert recovery["ppo"]["entropy_decay_steps"] == 4_000_000
+    assert recovery["ppo"]["entropy_schedule_start_steps"] == 46_006_272
+    assert recovery["ppo"]["final_kl_samples"] == 4_096
+    stopped_periodic = _seed_range(
+        stopped["run"]["periodic_evaluation_seed_start"],
+        stopped["run"]["periodic_evaluation_seed_count"],
+    )
+    stopped_final = _seed_range(
+        stopped["run"]["final_evaluation_seed_start"],
+        stopped["run"]["final_evaluation_seed_count"],
+    )
+    periodic, final = _validate_seed_namespaces(recovery["run"])
+    assert periodic.start >= stopped_periodic.stop
+    assert final.start >= stopped_final.stop
+
+
 def test_progress_report_is_relative_to_update_zero() -> None:
     progress = _progress_from_baseline(
         {"reached_act2_rate": 0.1, "reached_act3_rate": 0.0, "median_failure_floor": 5},

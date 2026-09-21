@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from sls.rl.preparation import fixed_worker_layout
 from tools import benchmark_workers
 from tools.prepare_and_train import PRODUCTION_LAYOUTS
 
@@ -23,3 +24,17 @@ def test_layout_selection_uses_smallest_layout_within_95_percent_of_peak() -> No
         {"workers": 32, "shards": 16, "decisions_per_second": 100.0},
     ]
     assert benchmark_workers.select_layout(rows) == (24, 8)
+
+
+def test_fixed_worker_layout_is_explicit_and_validated() -> None:
+    config = {"run": {"worker_layout": [64, 16]}}
+    assert fixed_worker_layout(config) == (64, 16)
+    assert fixed_worker_layout({"run": {}}) is None
+    for invalid in ([64], [16, 64], [0, 0], "64:16"):
+        config["run"]["worker_layout"] = invalid
+        try:
+            fixed_worker_layout(config)
+        except ValueError:
+            pass
+        else:
+            raise AssertionError(f"invalid worker layout accepted: {invalid!r}")

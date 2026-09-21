@@ -1,5 +1,13 @@
 # A20 Act1 60M optimization experiment
 
+Status update, 2026-09-21: superseded and stopped as an experiment. Job 868205
+reached at least 48,365,568 cumulative steps. On the new fixed 512-seed set,
+the 46,006,272 source scored 383/512, while the 47,005,696 and 48,005,120
+evaluations scored 371/512 and 361/512. Throughput improved to about 70.6
+decisions/s, but collect and optimize still each took about 115 seconds per
+update. Its weights are not an input to the next experiment; the audited 46M
+champion remains the parent. See `a20-54m-recovery-plan.md`.
+
 Prepared 2026-09-20 from the completed 50M run. This is a new experiment,
 not an exact continuation of the 50M optimizer trajectory.
 

@@ -12,7 +12,7 @@ from typing import Any
 from sls.model.encoding import ENCODING_SCHEMA, policy_vocabulary, vocabulary_hash
 
 __all__ = [
-    "ENCODING_SCHEMA", "ModelConfig", "Policy", "PolicyBatch", "PolicyOutput",
+    "ENCODING_SCHEMA", "ModelConfig", "Policy", "PolicyBatch", "PolicyFeatures", "PolicyOutput",
     "encode_decision", "policy_vocabulary", "vocabulary_hash",
 ]
 
@@ -21,6 +21,7 @@ _LAZY_EXPORTS = {
     "ModelConfig": ("sls.model.transformer", "ModelConfig"),
     "Policy": ("sls.model.transformer", "Policy"),
     "PolicyBatch": ("sls.model.batching", "PolicyBatch"),
+    "PolicyFeatures": ("sls.model.transformer", "PolicyFeatures"),
     "PolicyOutput": ("sls.model.transformer", "PolicyOutput"),
     "encode_decision": ("sls.model.batching", "encode_decision"),
 }

@@ -14,8 +14,10 @@
 
 - Current completed result: [A20 Act1 50M audit](a20-50m-audit.md).
 - Latest completed config: `configs/train/ironclad_a20_act1_50m.toml`.
-- Current next experiment: [A20 Act1 60M optimization](a20-60m-optimization-plan.md),
-  using `configs/train/ironclad_a20_act1_60m_optimization.toml`.
+- Superseded experiment: [A20 Act1 60M optimization](a20-60m-optimization-plan.md),
+  stopped after its first 2.36M new steps.
+- Current next experiment: [A20 Act1 54M recovery](a20-54m-recovery-plan.md),
+  using `configs/train/ironclad_a20_act1_54m_recovery.toml`.
 - Downloaded server archives: `runs/archives/` (Git-ignored).
 - Active training/checkpoints: `local/runs/`; older downloaded extraction:
   `runs/local/`. Existing paths are retained.

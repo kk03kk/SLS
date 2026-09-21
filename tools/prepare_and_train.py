@@ -14,7 +14,11 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
 
-from sls.rl.preparation import benchmark_matches_workload, read_config
+from sls.rl.preparation import (
+    benchmark_matches_workload,
+    fixed_worker_layout,
+    read_config,
+)
 
 PRODUCTION_LAYOUTS = ("32:4", "64:8", "64:16", "128:8", "128:16")
 
@@ -79,13 +83,23 @@ def main() -> int:
         run_tool("preflight_training.py", "--skip-build", "--config", args.config,
                  "--output", benchmark.with_name("preflight.json"))
         layout = json.loads(benchmark.read_text()) if benchmark.exists() else {}
+        pinned = fixed_worker_layout(config)
         reusable = (benchmark_matches_workload(config, layout)
-                    and state_preserving_source_transition(layout.get("native_source_sha256"), native_source_digest()))
+                    and state_preserving_source_transition(
+                        layout.get("native_source_sha256"), native_source_digest(),
+                    )
+                    and (
+                        pinned is None
+                        or (
+                            layout.get("selected_workers"), layout.get("selected_shards")
+                        ) == pinned
+                    ))
         if not reusable:
             if latest.exists():
                 raise ValueError("existing training layout cannot be replaced; recover its benchmark record")
+            layouts = (f"{pinned[0]}:{pinned[1]}",) if pinned else PRODUCTION_LAYOUTS
             run_tool("benchmark_workers.py", "--config", args.config, "--layouts",
-                     *PRODUCTION_LAYOUTS, "--output", benchmark)
+                     *layouts, "--output", benchmark)
             layout = json.loads(benchmark.read_text())
         checkpoint_arguments = ("--checkpoint", latest) if latest.exists() else ()
         run_tool("preflight_training.py", "--skip-build", "--config", args.config,

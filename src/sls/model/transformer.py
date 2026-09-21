@@ -73,6 +73,16 @@ class PolicyOutput:
     next_memory: torch.Tensor
 
 
+@dataclass(frozen=True, slots=True)
+class PolicyFeatures:
+    """Observation features that do not depend on recurrent memory."""
+
+    screen_types: torch.Tensor
+    encoded_state: torch.Tensor
+    candidates: torch.Tensor
+    action_padding: torch.Tensor
+
+
 class Policy(nn.Module):
     def __init__(self, config: ModelConfig = ModelConfig()) -> None:
         super().__init__()
@@ -127,6 +137,37 @@ class Policy(nn.Module):
         previous_action_types: torch.Tensor | None = None,
         previous_rewards: torch.Tensor | None = None,
     ) -> PolicyOutput:
+        features = self.encode_features(
+            screen_types, entity_numeric, entity_numeric_present, entity_types,
+            entity_content, entity_categories, entity_adjacency, entity_padding,
+            action_numeric, action_numeric_present, action_types,
+            action_references, action_reference_mask, action_padding,
+        )
+        return self.forward_features(
+            features,
+            memory=memory,
+            episode_start_mask=episode_start_mask,
+            previous_action_types=previous_action_types,
+            previous_rewards=previous_rewards,
+        )
+
+    def encode_features(
+        self, screen_types: torch.Tensor, entity_numeric: torch.Tensor,
+        entity_numeric_present: torch.Tensor,
+        entity_types: torch.Tensor, entity_content: torch.Tensor,
+        entity_categories: torch.Tensor, entity_adjacency: torch.Tensor,
+        entity_padding: torch.Tensor, action_numeric: torch.Tensor,
+        action_numeric_present: torch.Tensor, action_types: torch.Tensor,
+        action_references: torch.Tensor, action_reference_mask: torch.Tensor,
+        action_padding: torch.Tensor,
+    ) -> PolicyFeatures:
+        """Encode a batch independently of its recurrent state.
+
+        PPO can batch every observation in a recurrent minibatch through this
+        expensive path once, then preserve temporal ordering in
+        :meth:`forward_features`.
+        """
+
         batch, entity_count, _ = entity_numeric.shape
         numeric = torch.cat((entity_numeric, entity_numeric_present.to(entity_numeric.dtype)), dim=-1)
         entities = self.entity_numeric(numeric) + self.entity_type(entity_types)
@@ -146,6 +187,37 @@ class Policy(nn.Module):
             src_key_padding_mask=torch.cat((cls_padding, entity_padding), dim=1),
         )
         encoded_state, entity_hidden = hidden[:, 0], hidden[:, 1:]
+        action_values = torch.cat((action_numeric, action_numeric_present.to(action_numeric.dtype)), dim=-1)
+        candidates = self.action_numeric(action_values) + self.action_type(action_types)
+        safe_refs = action_references.clamp(0, max(0, entity_count - 1))
+        expanded = entity_hidden.unsqueeze(1).expand(-1, safe_refs.shape[1], -1, -1)
+        gathered = torch.gather(
+            expanded, 2,
+            safe_refs.unsqueeze(-1).expand(-1, -1, -1, self.config.embedding_dim),
+        )
+        roles = self.reference_role(torch.arange(5, device=entities.device)).view(1, 1, 5, -1)
+        candidates = candidates + (
+            (gathered + roles) * action_reference_mask.unsqueeze(-1)
+        ).sum(dim=2)
+        if torch.any(action_padding.all(dim=1)):
+            raise ValueError("every decision requires at least one legal semantic candidate")
+        return PolicyFeatures(screen_types, encoded_state, candidates, action_padding)
+
+    def forward_features(
+        self,
+        features: PolicyFeatures,
+        memory: torch.Tensor | None = None,
+        episode_start_mask: torch.Tensor | None = None,
+        previous_action_types: torch.Tensor | None = None,
+        previous_rewards: torch.Tensor | None = None,
+    ) -> PolicyOutput:
+        """Advance recurrent state and score pre-encoded action candidates."""
+
+        screen_types = features.screen_types
+        encoded_state = features.encoded_state
+        candidates = features.candidates
+        action_padding = features.action_padding
+        batch = encoded_state.shape[0]
         if memory is None:
             memory = self.initial_memory(batch, encoded_state.device)
         if memory.shape != (batch, self.config.recurrent_hidden_dim):
@@ -167,18 +239,6 @@ class Policy(nn.Module):
             previous_rewards.to(encoded_state.dtype).unsqueeze(1)
         )
         next_memory = self.memory(encoded_state + experience, memory)
-        action_values = torch.cat((action_numeric, action_numeric_present.to(action_numeric.dtype)), dim=-1)
-        candidates = self.action_numeric(action_values) + self.action_type(action_types)
-        safe_refs = action_references.clamp(0, max(0, entity_count - 1))
-        expanded = entity_hidden.unsqueeze(1).expand(-1, safe_refs.shape[1], -1, -1)
-        gathered = torch.gather(
-            expanded, 2,
-            safe_refs.unsqueeze(-1).expand(-1, -1, -1, self.config.embedding_dim),
-        )
-        roles = self.reference_role(torch.arange(5, device=entities.device)).view(1, 1, 5, -1)
-        candidates = candidates + (
-            (gathered + roles) * action_reference_mask.unsqueeze(-1)
-        ).sum(dim=2)
         logits = torch.empty(
             candidates.shape[:2], dtype=candidates.dtype, device=candidates.device,
         )
@@ -197,8 +257,6 @@ class Policy(nn.Module):
         logits = logits.masked_fill(
             action_padding, torch.finfo(logits.dtype).min,
         )
-        if torch.any(action_padding.all(dim=1)):
-            raise ValueError("every decision requires at least one legal semantic candidate")
         return PolicyOutput(
             logits,
             self.value_head(next_memory).squeeze(-1),
