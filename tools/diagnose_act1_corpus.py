@@ -14,6 +14,7 @@ import hashlib
 import importlib
 import json
 import os
+import subprocess
 import sys
 from collections import defaultdict
 from dataclasses import asdict
@@ -60,6 +61,10 @@ def main():
     parser.add_argument("--run", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--device", default="cuda")
+    parser.add_argument(
+        "--analyze", action="store_true",
+        help="Replay and summarize the completed corpus in the same compute job.",
+    )
     args = parser.parse_args()
     import torch
 
@@ -212,6 +217,12 @@ def main():
         encoding="utf-8",
     )
     print(json.dumps({"completed": len(chosen), "differences": len(comparisons)}))
+    if args.analyze:
+        subprocess.run(
+            [sys.executable, str(ROOT / "tools" / "analyze_act1_corpus.py"), str(args.output)],
+            cwd=ROOT,
+            check=True,
+        )
 
 
 if __name__ == "__main__":

@@ -171,7 +171,7 @@ def build_sbatch_command(args: argparse.Namespace, *, root: Path = ROOT) -> list
             str(python), str(root / "tools" / "diagnose_act1_corpus.py"),
             "--run", str(args.diagnostic_run.resolve()),
             "--output", str(args.diagnostic_output.resolve()),
-            "--device", "cuda",
+            "--device", "cuda", "--analyze",
         ]
     else:
         config = (args.config or root / TRAIN_CONFIG).resolve()

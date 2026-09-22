@@ -99,7 +99,7 @@ def test_nus_command_matrix(
             os.path.abspath(str(python)), str(root / "tools" / script),
             "--run", str((root / "run").resolve()),
             "--output", str((root / "corpus").resolve()),
-            "--device", "cuda",
+            "--device", "cuda", "--analyze",
         ]
     elif stage is not None:
         expected += [
