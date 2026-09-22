@@ -237,9 +237,20 @@ class PPOTrainer:
         neow_swap_probability = 0.0
         neow_entropy = 0.0
         neow_choices = [0, 0, 0, 0]
+        profile = {
+            "encode": 0.0,
+            "policy": 0.0,
+            "worker_step": 0.0,
+            "transition": 0.0,
+            "reset": 0.0,
+            "finalize": 0.0,
+        }
         self.model.eval()
         for _ in range(self.config.rollout_steps):
+            phase_started = time.perf_counter()
             encoded = tuple(encode_decision(value) for value in self.decisions)
+            profile["encode"] += time.perf_counter() - phase_started
+            phase_started = time.perf_counter()
             batch = PolicyBatch.from_encoded(encoded).to(self.device)
             output = self.model(
                 *batch.model_inputs(),
@@ -289,7 +300,11 @@ class PPOTrainer:
                         if action.candidate_id == candidate_ids[i] and action.option_id in {
                                 f"event-option:{k}" for k in range(4)}:
                             neow_choices[int(action.option_id.rsplit(":", 1)[1])] += 1
+            profile["policy"] += time.perf_counter() - phase_started
+            phase_started = time.perf_counter()
             transitions = self.workers.step(candidate_ids)
+            profile["worker_step"] += time.perf_counter() - phase_started
+            phase_started = time.perf_counter()
             encoded_steps.append(encoded)
             action_steps.append(actions_cpu)
             log_probability_steps.append(log_probabilities_cpu)
@@ -349,9 +364,12 @@ class PPOTrainer:
                 [float(item.reward) for item in transitions],
                 dtype=torch.float32, device=self.device,
             )
+            reset_started = time.perf_counter()
             reset_decisions = self.workers.reset_many(
                 reset_indices, self._take_seeds(len(reset_indices)),
             ) if reset_indices else []
+            reset_seconds = time.perf_counter() - reset_started
+            profile["reset"] += reset_seconds
             for index, decision in zip(reset_indices, reset_decisions):
                 next_decisions[index] = decision
                 self.episode_limits[index] = EpisodeLimitState.initial(decision)
@@ -365,10 +383,14 @@ class PPOTrainer:
             self.episode_starts = next_episode_starts
             self.previous_action_types = next_previous_actions
             self.previous_rewards = next_previous_rewards
+            profile["transition"] += (
+                time.perf_counter() - phase_started - reset_seconds
+            )
 
         self.last_collect_terminations = collect_terminations
         self.environment_steps += self.config.rollout_steps * self.workers.size
 
+        phase_started = time.perf_counter()
         bootstrap_batch = PolicyBatch.from_decisions(self.decisions, self.model.config).to(self.device)
         bootstrap = self.model(
             *bootstrap_batch.model_inputs(),
@@ -393,6 +415,8 @@ class PPOTrainer:
             self.config.gamma,
             self.config.gae_lambda,
         )
+        profile["finalize"] = time.perf_counter() - phase_started
+        self.last_collect_profile = profile
         return RolloutBatch(
             tuple(encoded_steps),
             torch.stack(action_steps),

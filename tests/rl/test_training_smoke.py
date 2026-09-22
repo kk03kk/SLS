@@ -445,6 +445,10 @@ def test_recurrent_rollout_preserves_time_and_environment_axes() -> None:
         assert rollout.shape == (4, 1)
         assert rollout.episode_starts.shape == (4, 1)
         assert rollout.input_memories.shape == (4, 1, 64)
+        assert set(trainer.last_collect_profile) == {
+            "encode", "policy", "worker_step", "transition", "reset", "finalize",
+        }
+        assert all(value >= 0.0 for value in trainer.last_collect_profile.values())
         metrics = trainer.optimize(rollout)
         assert math.isfinite(metrics["loss"])
 

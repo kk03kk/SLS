@@ -1,8 +1,15 @@
-# A20 Act1 54M recovery experiment
+# A20 Act1 54M recovery experiment (completed)
 
 Prepared 2026-09-21 after stopping the first 60M optimization experiment. This
 run is a fresh weight transfer from the audited 46,006,272-step champion, not a
 resume of either the 50M optimizer state or job 868205.
+
+Completion update, 2026-09-22: job 869386 completed at 54,001,664 steps. Its
+selected checkpoint is 52,002,816 steps, SHA256
+`c71b7c4763c8c0648b42c081fb6a0bed34543a7cf684e83baed1f2a7d6cd997c`, and
+its independent result is 748/1,024 (73.05%). It did not replace the historical
+46M champion. This document is the pre-run design record; the current decision
+and evidence plan are in [the post-54M audit](a20-next-stage-audit.md).
 
 ## Why the previous experiment stopped
 

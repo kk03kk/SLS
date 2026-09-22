@@ -1038,6 +1038,11 @@ def main() -> int:
                 }
                 if hasattr(trainer, "last_collect_seconds"):
                     record["collect_seconds"] = trainer.last_collect_seconds
+                if hasattr(trainer, "last_collect_profile"):
+                    record.update({
+                        f"collect_{key}_seconds": value
+                        for key, value in trainer.last_collect_profile.items()
+                    })
                     record["optimize_seconds"] = trainer.last_optimize_seconds
                 if diagnose_every and trainer.environment_steps >= next_diagnose:
                     rotation = next_diagnose // diagnose_every - 1

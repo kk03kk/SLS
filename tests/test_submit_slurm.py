@@ -16,11 +16,22 @@ def _wrapped(command: list[str]) -> list[str]:
 
 
 @pytest.mark.parametrize(
-    "task", ("preflight", "benchmark", "evaluate", "smoke", "pilot", "train"),
+    "task", ("preflight", "benchmark", "evaluate", "compare", "corpus", "smoke", "pilot", "train"),
 )
 def test_all_tasks_preserve_virtualenv_python_path(tmp_path: Path, task: str) -> None:
     python = tmp_path / "venv" / "bin" / "python"
-    args = _parser().parse_args([task, "--python", str(python)])
+    arguments = [task, "--python", str(python)]
+    if task == "compare":
+        arguments.extend((
+            "--checkpoint", str(tmp_path / "left.pt"),
+            "--comparison-checkpoint", str(tmp_path / "right.pt"),
+        ))
+    elif task == "corpus":
+        arguments.extend((
+            "--diagnostic-run", str(tmp_path / "run"),
+            "--diagnostic-output", str(tmp_path / "corpus"),
+        ))
+    args = _parser().parse_args(arguments)
     wrapped = _wrapped(build_sbatch_command(args, root=tmp_path / "SLS"))
     assert wrapped[0] == os.path.abspath(str(python))
 
@@ -31,6 +42,8 @@ def test_all_tasks_preserve_virtualenv_python_path(tmp_path: Path, task: str) ->
         ("preflight", "preflight_training.py", None, "gpu", "03:00:00"),
         ("benchmark", "benchmark_workers.py", None, "gpu", "03:00:00"),
         ("evaluate", "evaluate_checkpoint.py", None, "gpu", "03:00:00"),
+        ("compare", "compare_checkpoints.py", None, "gpu", "03:00:00"),
+        ("corpus", "diagnose_act1_corpus.py", None, "gpu", "03:00:00"),
         ("smoke", "train_full_run.py", "smoke", "gpu-long", "1-00:00:00"),
         ("pilot", "train_full_run.py", "pilot", "gpu-long", "12:00:00"),
         ("train", "train_full_run.py", "train", "gpu-long", "3-00:00:00"),
@@ -46,7 +59,18 @@ def test_nus_command_matrix(
 ) -> None:
     root = tmp_path / "SLS"
     python = Path("/home/h/hengzhi/venvs/sls/bin/python")
-    args = _parser().parse_args([task, "--python", str(python)])
+    arguments = [task, "--python", str(python)]
+    if task == "compare":
+        arguments.extend((
+            "--checkpoint", str(root / "left.pt"),
+            "--comparison-checkpoint", str(root / "right.pt"),
+        ))
+    elif task == "corpus":
+        arguments.extend((
+            "--diagnostic-run", str(root / "run"),
+            "--diagnostic-output", str(root / "corpus"),
+        ))
+    args = _parser().parse_args(arguments)
     command = build_sbatch_command(args, root=root)
     wrapped = _wrapped(command)
     expected = [os.path.abspath(str(python)), str(root / "tools" / script)]
@@ -60,6 +84,22 @@ def test_nus_command_matrix(
             "--profile", "IRONCLAD_A0_ACT1", "--episodes", "1000",
             "--seed-start", "3000000000000", "--device", "cuda",
             "--environment-shards", "16",
+        ]
+    elif task == "compare":
+        expected = [
+            os.path.abspath(str(python)), str(root / "tools" / script),
+            str((root / "left.pt").resolve()), str((root / "right.pt").resolve()),
+            "--output", str((root / "local/runs/evaluations/paired-checkpoints.json").resolve()),
+            "--profile", "IRONCLAD_A0_ACT1", "--episodes", "1000",
+            "--seed-start", "3000000000000", "--device", "cuda",
+            "--environment-shards", "16",
+        ]
+    elif task == "corpus":
+        expected = [
+            os.path.abspath(str(python)), str(root / "tools" / script),
+            "--run", str((root / "run").resolve()),
+            "--output", str((root / "corpus").resolve()),
+            "--device", "cuda",
         ]
     elif stage is not None:
         expected += [
@@ -138,3 +178,15 @@ def test_evaluation_can_explicitly_select_fullrun(tmp_path: Path) -> None:
     args = _parser().parse_args(["evaluate", "--evaluation-profile", "IRONCLAD_A0_FULLRUN"])
     wrapped = _wrapped(build_sbatch_command(args, root=tmp_path))
     assert wrapped[wrapped.index("--profile") + 1] == "IRONCLAD_A0_FULLRUN"
+
+
+def test_compare_requires_two_checkpoints(tmp_path: Path) -> None:
+    args = _parser().parse_args(["compare", "--checkpoint", "left.pt"])
+    with pytest.raises(ValueError, match="requires"):
+        build_sbatch_command(args, root=tmp_path)
+
+
+def test_corpus_requires_run_and_output(tmp_path: Path) -> None:
+    args = _parser().parse_args(["corpus", "--diagnostic-run", "run"])
+    with pytest.raises(ValueError, match="requires"):
+        build_sbatch_command(args, root=tmp_path)

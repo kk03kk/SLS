@@ -108,6 +108,20 @@ at about 48M. The operator elected to stop it as sufficient negative evidence.
 Do not use that experiment's weights as a continuation source; the next
 experiment is bound to the original 46,006,272-step champion.
 
+The recovery experiment used job `869386` and completed at 54,001,664 steps
+from a fresh transfer of that same 46M champion. Batched recurrent PPO reduced
+late-run optimization to about 49 seconds and total updates to about 165 seconds,
+for roughly 99 decisions/s; collection remained about 116 seconds. Its selected
+52,002,816-step checkpoint has SHA256
+`c71b7c4763c8c0648b42c081fb6a0bed34543a7cf684e83baed1f2a7d6cd997c`.
+The independent result was 748/1,024 (73.05%, CI 70.25%-75.67%) with no runtime
+failures. This does not supersede the 46,006,272-step canonical champion
+(`2db39fde737445b109d31cc522dde42dfe2c7372b34007e108ce702b03acc70d`,
+766/1,024). The server checkout was clean at `99d1990` when these
+completion artifacts were inspected. The 54M files remain server-only unless
+an archive is explicitly transferred; their hashes and summary are
+operator-supplied evidence.
+
 Typical training allocation:
 
 ```text
@@ -219,7 +233,7 @@ under `local/` is Git-ignored.
 
 A native simulator/source change normally requires a new Preflight and, when
 required by the training contract, a new worker Benchmark before long training.
-The established A20 layout is 64 workers and 8 shards, but old throughput is
+The established A20 layout is 64 workers and 16 shards, but old throughput is
 advisory after workload, native, GPU, or software changes.
 
 Training submissions normally request one GPU, 16 CPUs, and 64 GiB. Long jobs

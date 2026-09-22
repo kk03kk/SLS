@@ -61,11 +61,10 @@ def main():
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--device", default="cuda")
     args = parser.parse_args()
-    args.output.mkdir(parents=True, exist_ok=False)
     import torch
 
     from sls.backends.simulator import SimulatorBackend
-    from sls.curriculum import IRONCLAD_A0_ACT1
+    from sls.curriculum import CURRICULUM_PROFILES_BY_ID, EpisodeHorizon
     from sls.rl.checkpoint import policy_from_training_checkpoint
     from sls.rl.training_contract import (
         native_artifact,
@@ -78,10 +77,22 @@ def main():
     final = json.loads((args.run / "final-evaluation.json").read_text(encoding="utf-8"))
     chosen = select_seeds(final["result"]["seed_results"])
     checkpoint = args.run / "stages/train/selection/best_progress.pt"
-    assert sha256_file(checkpoint) == final["checkpoint_sha256"]
+    if sha256_file(checkpoint) != final["checkpoint_sha256"]:
+        raise ValueError("selected checkpoint does not match final evaluation")
     payload = torch.load(checkpoint, map_location="cpu", weights_only=False)
-    assert payload["contract"]["native_source_sha256"] == native_source_digest()
-    assert payload["contract"]["profile"] == IRONCLAD_A0_ACT1
+    saved_profile = payload["contract"]["profile"]
+    profile_id = (
+        saved_profile.profile_id
+        if hasattr(saved_profile, "profile_id")
+        else saved_profile["profile_id"]
+    )
+    profile = CURRICULUM_PROFILES_BY_ID[profile_id]
+    if profile.horizon is not EpisodeHorizon.ACT_1:
+        raise ValueError("Act1 corpus capture requires an Act1 checkpoint")
+    if payload["contract"]["native_source_sha256"] != native_source_digest():
+        raise ValueError("checkpoint simulator source differs from current source")
+    if saved_profile != profile:
+        raise ValueError("checkpoint profile contract is not canonical")
     torch.set_num_threads(4)
     torch.use_deterministic_algorithms(True)
     torch.backends.cudnn.benchmark = False
@@ -89,11 +100,13 @@ def main():
         payload["contract"]["runtime"]["float32_matmul_precision"]
     )
     model = policy_from_training_checkpoint(payload)
+    args.output.mkdir(parents=True, exist_ok=False)
     (args.output / "selection.json").write_text(
         json.dumps(
             {
                 "rule": "SHA256(act1-v4-diagnostic-v1:seed) ascending within outcome/boss strata; 40 wins, 40 boss deaths, 20 early deaths; not a win-rate estimator",
                 "seeds": chosen,
+                "profile": profile.profile_id,
                 "checkpoint_sha256": sha256_file(checkpoint),
                 "checkpoint_steps": payload["trainer"]["environment_steps"],
                 "runtime": runtime_contract(torch),
@@ -168,7 +181,7 @@ def main():
         with patch.object(module, "SimulatorBackend", RecordingBackend):
             result = module.evaluate(
                 model,
-                IRONCLAD_A0_ACT1,
+                profile,
                 tuple(r["seed"] for r in chosen),
                 device=args.device,
                 max_steps=4096,

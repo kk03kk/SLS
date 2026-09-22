@@ -1,4 +1,4 @@
-"""Submit one-GPU SLS preflight, benchmark, smoke, pilot, or training jobs."""
+"""Submit one-GPU SLS qualification, evaluation, diagnosis, or training jobs."""
 
 from __future__ import annotations
 
@@ -26,7 +26,10 @@ def _absolute_without_symlink_resolution(path: Path) -> str:
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "task", choices=("preflight", "benchmark", "warm-start", "evaluate", "smoke", "pilot", "train"),
+        "task", choices=(
+            "preflight", "benchmark", "warm-start", "evaluate", "compare", "corpus",
+            "smoke", "pilot", "train",
+        ),
     )
     parser.add_argument("--python", type=Path, default=Path(sys.executable))
     parser.add_argument("--account", default="allusers")
@@ -47,12 +50,15 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--config", type=Path)
     parser.add_argument("--prepare", action="store_true")
     parser.add_argument("--checkpoint", type=Path)
+    parser.add_argument("--comparison-checkpoint", type=Path)
     parser.add_argument("--evaluation-output", type=Path)
     parser.add_argument("--evaluation-episodes", type=int, default=1000)
     parser.add_argument("--evaluation-seed-start", type=int, default=3_000_000_000_000)
     parser.add_argument("--evaluation-profile", default="IRONCLAD_A0_ACT1")
     parser.add_argument("--evaluation-shards", type=int, default=16)
     parser.add_argument("--benchmark-output", type=Path)
+    parser.add_argument("--diagnostic-run", type=Path)
+    parser.add_argument("--diagnostic-output", type=Path)
     parser.add_argument(
         "--resume", choices=("auto", "environment-migration"), default="auto",
     )
@@ -65,9 +71,9 @@ def build_sbatch_command(args: argparse.Namespace, *, root: Path = ROOT) -> list
 
     if args.cpus <= 0:
         raise ValueError("--cpus must be positive")
-    if args.task in {"preflight", "benchmark", "evaluate"}:
+    if args.task in {"preflight", "benchmark", "evaluate", "compare", "corpus"}:
         unsupported = []
-        if args.config is not None and args.task == "evaluate":
+        if args.config is not None and args.task in {"evaluate", "compare", "corpus"}:
             unsupported.append("--config")
         if args.resume != "auto":
             unsupported.append("--resume")
@@ -78,12 +84,18 @@ def build_sbatch_command(args: argparse.Namespace, *, root: Path = ROOT) -> list
             )
     if args.task != "benchmark" and args.benchmark_layouts is not None:
         raise ValueError("--benchmark-layouts is only valid for benchmark")
-    if args.task not in {"evaluate", "warm-start"} and args.checkpoint is not None:
-        raise ValueError("checkpoint path is only valid for evaluate/warm-start")
-    if args.task != "evaluate" and args.evaluation_output is not None:
-        raise ValueError("evaluation paths are only valid for evaluate")
+    if args.task not in {"evaluate", "compare", "warm-start"} and args.checkpoint is not None:
+        raise ValueError("checkpoint path is only valid for evaluate/compare/warm-start")
+    if args.task != "compare" and args.comparison_checkpoint is not None:
+        raise ValueError("--comparison-checkpoint is only valid for compare")
+    if args.task not in {"evaluate", "compare"} and args.evaluation_output is not None:
+        raise ValueError("evaluation paths are only valid for evaluate/compare")
     if args.task != "benchmark" and args.benchmark_output is not None:
         raise ValueError("benchmark output is only valid for benchmark")
+    if args.task != "corpus" and (
+        args.diagnostic_run is not None or args.diagnostic_output is not None
+    ):
+        raise ValueError("diagnostic paths are only valid for corpus")
     if args.prepare and (args.task != "train" or args.resume != "auto"):
         raise ValueError("--prepare requires train with --resume auto")
     python = _absolute_without_symlink_resolution(args.python)
@@ -134,6 +146,32 @@ def build_sbatch_command(args: argparse.Namespace, *, root: Path = ROOT) -> list
             "--seed-start", str(args.evaluation_seed_start),
             "--device", "cuda",
             "--environment-shards", str(args.evaluation_shards),
+        ]
+    elif args.task == "compare":
+        if args.checkpoint is None or args.comparison_checkpoint is None:
+            raise ValueError("compare requires --checkpoint and --comparison-checkpoint")
+        evaluation_output = (
+            args.evaluation_output
+            or root / "local" / "runs" / "evaluations" / "paired-checkpoints.json"
+        ).resolve()
+        command = [
+            str(python), str(root / "tools" / "compare_checkpoints.py"),
+            str(args.checkpoint.resolve()), str(args.comparison_checkpoint.resolve()),
+            "--output", str(evaluation_output),
+            "--profile", args.evaluation_profile,
+            "--episodes", str(args.evaluation_episodes),
+            "--seed-start", str(args.evaluation_seed_start),
+            "--device", "cuda",
+            "--environment-shards", str(args.evaluation_shards),
+        ]
+    elif args.task == "corpus":
+        if args.diagnostic_run is None or args.diagnostic_output is None:
+            raise ValueError("corpus requires --diagnostic-run and --diagnostic-output")
+        command = [
+            str(python), str(root / "tools" / "diagnose_act1_corpus.py"),
+            "--run", str(args.diagnostic_run.resolve()),
+            "--output", str(args.diagnostic_output.resolve()),
+            "--device", "cuda",
         ]
     else:
         config = (args.config or root / TRAIN_CONFIG).resolve()

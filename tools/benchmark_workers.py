@@ -147,6 +147,7 @@ def main() -> int:
                 torch.cuda.synchronize()
                 started = time.perf_counter()
                 collect_seconds = update_seconds = 0.0
+                collect_profile: dict[str, float] = {}
                 rss_samples = []
                 for _ in range(args.rounds):
                     before = time.perf_counter()
@@ -159,11 +160,14 @@ def main() -> int:
                     torch.cuda.synchronize()
                     collect_seconds += middle - before
                     update_seconds += time.perf_counter() - middle
+                    for key, value in trainer.last_collect_profile.items():
+                        collect_profile[key] = collect_profile.get(key, 0.0) + value
                     rss_samples.append(_rss_bytes([os.getpid(), *[p.pid for p in pool._processes]]))
                 elapsed = time.perf_counter() - started
             rows.append({
                 "workers": workers_count, "shards": shards, "seconds": elapsed,
                 "collect_seconds": collect_seconds, "update_seconds": update_seconds,
+                "collect_profile_seconds": collect_profile,
                 "cuda_peak_memory_bytes": torch.cuda.max_memory_allocated(),
                 "sampled_peak_process_rss_bytes": max((v for v in rss_samples if v is not None), default=None),
                 "decisions_per_second": workers_count * config.rollout_steps * args.rounds / elapsed,

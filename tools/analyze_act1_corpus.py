@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 from sls.backends.simulator import SimulatorBackend
 from sls.contracts import Action
-from sls.curriculum import IRONCLAD_A0_ACT1
+from sls.curriculum import CURRICULUM_PROFILES_BY_ID, IRONCLAD_A0_ACT1
 
 
 def load_rows(path):
@@ -25,6 +25,17 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("corpus", type=Path)
     args = parser.parse_args()
+    selection_path = args.corpus / "selection.json"
+    selection = (
+        json.loads(selection_path.read_text(encoding="utf-8"))
+        if selection_path.exists() else {}
+    )
+    profile_id = selection.get("profile")
+    profile = (
+        IRONCLAD_A0_ACT1
+        if profile_id is None
+        else CURRICULUM_PROFILES_BY_ID[profile_id]
+    )
     counters = Counter()
     groups = defaultdict(list)
     examples = defaultdict(list)
@@ -32,7 +43,7 @@ def main():
     for path in sorted(args.corpus.glob("seed-*.jsonl.gz")):
         rows = load_rows(path)
         seed = rows[0]["seed"]
-        backend = SimulatorBackend(IRONCLAD_A0_ACT1)
+        backend = SimulatorBackend(profile)
         decision = backend.reset(seed)
         assert decision.observation.to_dict() == rows[0]["observation"]
         previous = rows[0]["observation"]
@@ -124,7 +135,7 @@ def main():
                             and next_card["card_id"] == "DEFEND_RED"
                             and following["action"]["kind"] == "PLAY_CARD"
                         ):
-                            clone = SimulatorBackend(IRONCLAD_A0_ACT1)
+                            clone = SimulatorBackend(profile)
                             alt = clone.load_checkpoint(backend.checkpoint())
 
                             def by_card(d, name):

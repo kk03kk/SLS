@@ -12,12 +12,14 @@
 
 ## Current work and local artifacts
 
-- Current completed result: [A20 Act1 50M audit](a20-50m-audit.md).
+- Canonical result: [A20 Act1 50M audit](a20-50m-audit.md), whose 46M
+  checkpoint remains champion.
 - Latest completed config: `configs/train/ironclad_a20_act1_50m.toml`.
 - Superseded experiment: [A20 Act1 60M optimization](a20-60m-optimization-plan.md),
   stopped after its first 2.36M new steps.
-- Current next experiment: [A20 Act1 54M recovery](a20-54m-recovery-plan.md),
-  using `configs/train/ironclad_a20_act1_54m_recovery.toml`.
+- Completed non-promoted experiment: [A20 Act1 54M recovery](a20-54m-recovery-plan.md).
+- Current audit and short diagnostic plan: [post-54M audit](a20-next-stage-audit.md).
+  There is no approved long-training configuration.
 - Downloaded server archives: `runs/archives/` (Git-ignored).
 - Active training/checkpoints: `local/runs/`; older downloaded extraction:
   `runs/local/`. Existing paths are retained.
@@ -69,8 +71,8 @@ game assets, journals and captured evidence require a separate retention decisio
 | Local setup and native build | `bootstrap.py`, `build_native.py` |
 | Server launch and qualification | `submit_slurm.py`, `preflight_training.py`, `benchmark_workers.py` |
 | Training and state transfer | `train_full_run.py`, `prepare_training_migration.py`, `prepare_model_warm_start.py`, `verify_training_resume.py`, `diagnose_checkpoint_contract.py` |
-| Archived training analysis | `analyze_training_history.py` |
-| Evaluation and export | `evaluate_checkpoint.py`, `export_policy.py`, `seal_training_milestone.py` |
+| Archived training analysis | `analyze_training_history.py`, `analyze_act1_failures.py`, `analyze_act1_corpus.py` |
+| Evaluation and export | `evaluate_checkpoint.py`, `compare_checkpoints.py`, `diagnose_act1_corpus.py`, `export_policy.py`, `seal_training_milestone.py` |
 | Game interaction | `play_live.py`, `play_live_inspector.py`, `configure_live_inspector.py` |
 | Content and stock comparison | `generate_content_registry.py`, `generate_policy_vocabulary.py`, `audit_stock_bytecode.py`, `audit_stock_parity.py`, `run_original_card_audit.py` |
 | Reproduction and trajectories | `replay_failed_state.py`, `audit_simulator_seeds.py`, `capture_policy_trajectory.py`, `compare_policy_trajectories.py`, `run_original_canary.py` |
