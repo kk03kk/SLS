@@ -27,6 +27,16 @@ def test_paired_comparison_rejects_seed_or_boss_mismatch() -> None:
         compare_seed_results([_row(1, True)], [_row(1, True, "SLIME_BOSS")])
 
 
+def test_paired_comparison_uses_observed_boss_from_either_policy() -> None:
+    unseen = {"seed": 1, "success": False, "bosses": {}}
+    report = compare_seed_results([unseen], [_row(1, True, "SLIME_BOSS")])
+    assert report["all"]["right_only"] == 1
+    assert report["SLIME_BOSS"]["right_only"] == 1
+
+    report = compare_seed_results([unseen], [{**unseen}])
+    assert report["UNOBSERVED"]["both_loss"] == 1
+
+
 def test_exact_mcnemar_is_two_sided_and_bounded() -> None:
     assert _exact_mcnemar(0, 0) == 1.0
     assert _exact_mcnemar(1, 1) == 1.0

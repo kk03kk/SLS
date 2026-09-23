@@ -42,11 +42,15 @@ def compare_seed_results(left: list[dict], right: list[dict]) -> dict:
     groups: dict[str, dict[str, object]] = {}
     for seed in sorted(left_by_seed):
         first, second = left_by_seed[seed], right_by_seed[seed]
-        left_boss = str(first["bosses"]["1"])
-        right_boss = str(second["bosses"]["1"])
-        if left_boss != right_boss:
+        left_boss = first.get("bosses", {}).get("1")
+        right_boss = second.get("bosses", {}).get("1")
+        if left_boss is not None and right_boss is not None and left_boss != right_boss:
             raise ValueError(f"scheduled boss differs for seed {seed}")
-        for group in ("all", left_boss):
+        # A policy can die before the Act 1 map exposes its scheduled boss. The
+        # other policy's observation is still valid for grouping the shared
+        # seed; if neither saw it, retain the pair in an explicit unknown group.
+        boss = str(left_boss or right_boss or "UNOBSERVED")
+        for group in ("all", boss):
             values = groups.setdefault(group, {
                 "both_win": [], "left_only": [], "right_only": [], "both_loss": [],
             })
@@ -91,6 +95,15 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--environment-shards", type=int, default=16)
     parser.add_argument("--max-steps", type=int, default=4_096)
     return parser
+
+
+def _atomic_json(path: Path, payload: object) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_suffix(path.suffix + ".tmp")
+    temporary.write_text(
+        json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8",
+    )
+    temporary.replace(path)
 
 
 def _progress_reporter(label: str):
@@ -174,6 +187,8 @@ def main(argv: list[str] | None = None) -> int:
     signal.signal(signal.SIGINT, stop)
     evaluations = []
     started = time.time()
+    output = args.output.resolve()
+    partial_output = output.with_suffix(output.suffix + ".partial")
     for label, (path, payload, model) in zip(("left", "right"), checkpoints):
         phase_started = time.time()
         print(json.dumps({"paired_phase": label, "checkpoint": str(path)}), flush=True)
@@ -196,6 +211,13 @@ def main(argv: list[str] | None = None) -> int:
             "model_sha256": model_state_sha256(payload["model"]),
             "elapsed_seconds": time.time() - phase_started,
             "result": result,
+        })
+        _atomic_json(partial_output, {
+            "schema": "sls-paired-checkpoint-evaluation-partial-v1",
+            "profile": profile.profile_id,
+            "seed_range": [seeds[0], seeds[-1] + 1],
+            "evaluations": evaluations,
+            "complete": False,
         })
 
     comparison = compare_seed_results(
@@ -224,13 +246,10 @@ def main(argv: list[str] | None = None) -> int:
         },
         "elapsed_seconds": time.time() - started,
     }
-    rendered = json.dumps(record, indent=2, sort_keys=True) + "\n"
-    args.output.parent.mkdir(parents=True, exist_ok=True)
-    temporary = args.output.with_suffix(args.output.suffix + ".tmp")
-    temporary.write_text(rendered, encoding="utf-8")
-    temporary.replace(args.output)
+    _atomic_json(output, record)
+    partial_output.unlink(missing_ok=True)
     print(json.dumps({
-        "output": str(args.output.resolve()),
+        "output": str(output),
         "comparison": comparison["all"],
     }, sort_keys=True))
     return 0
