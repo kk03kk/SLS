@@ -5,6 +5,7 @@ from dataclasses import asdict
 from pathlib import Path
 from unittest.mock import patch
 
+import pytest
 import torch
 
 from sls.backends.simulator import SimulatorBackend
@@ -30,6 +31,7 @@ def _write(path: Path, backend: str, boundaries: list[dict[str, object]]) -> Non
         "policy": {
             "source_git_commit": "abc", "architecture": "v4",
             "encoding_schema": "input", "vocabulary_sha256": "vocab",
+            "model_sha256": "weights",
         },
     }
     path.write_text(
@@ -88,6 +90,14 @@ def test_capture_uses_same_recurrent_context_as_live_runtime(tmp_path: Path) -> 
     assert 0 < boundaries[0]["chosen_action_probability"] <= 1
 
     assert metadata["recurrent_context"] == "PREVIOUS_ACTION_AND_REWARD"
+    assert metadata["policy"]["model_sha256"] == artifact.metadata.model_sha256
+    comparison_copy = tmp_path / "original-copy.jsonl"
+    original_metadata = {**metadata, "backend": "original"}
+    comparison_copy.write_text(
+        "\n".join(json.dumps(row) for row in [original_metadata, *boundaries]) + "\n",
+        encoding="utf-8",
+    )
+    assert compare_trajectories(trajectory, comparison_copy)["passed"] is True
     assert result["actions"] == 2
     assert boundaries[0]["previous_action_type"] == 0
     assert boundaries[1]["previous_action_type"] > 0
@@ -136,3 +146,58 @@ def test_comparator_classifies_transform_result_as_rng(tmp_path: Path) -> None:
     )])
     result = compare_trajectories(simulator, original)
     assert result["first_divergence"]["classification"] == "RNG_DIVERGENCE"
+
+
+def test_empty_trajectories_do_not_pass(tmp_path: Path) -> None:
+    simulator, original = tmp_path / "sim.jsonl", tmp_path / "original.jsonl"
+    _write(simulator, "simulator", [])
+    _write(original, "original", [])
+    assert compare_trajectories(simulator, original)["passed"] is False
+
+
+@pytest.mark.parametrize("field,value", [("model_sha256", "other"), ("model_sha256", None)])
+def test_comparison_requires_same_model_weights(tmp_path: Path, field, value) -> None:
+    simulator, original = tmp_path / "sim.jsonl", tmp_path / "original.jsonl"
+    _write(simulator, "simulator", [_boundary()])
+    _write(original, "original", [_boundary()])
+    lines = original.read_text(encoding="utf-8").splitlines()
+    metadata = json.loads(lines[0])
+    metadata["policy"][field] = value
+    lines[0] = json.dumps(metadata)
+    original.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    assert compare_trajectories(simulator, original)["passed"] is False
+
+
+def test_comparison_rejects_two_simulator_captures(tmp_path: Path) -> None:
+    simulator = tmp_path / "sim.jsonl"
+    _write(simulator, "simulator", [_boundary()])
+    assert compare_trajectories(simulator, simulator)["passed"] is False
+
+
+@pytest.mark.parametrize("field", ["previous_action_type", "previous_reward", "policy_input_sha256"])
+def test_comparison_checks_recurrent_policy_input(tmp_path: Path, field) -> None:
+    simulator, original = tmp_path / "sim.jsonl", tmp_path / "original.jsonl"
+    _write(simulator, "simulator", [_boundary(**{field: 1})])
+    _write(original, "original", [_boundary(**{field: 2})])
+    result = compare_trajectories(simulator, original)
+    assert result["passed"] is False
+    assert result["first_divergence"]["details"]["field"] == field
+
+
+@pytest.mark.parametrize("boss,enemy", [
+    ("AUTOMATON", "BRONZE_AUTOMATON"), ("CHAMP", "THE_CHAMP"),
+    ("COLLECTOR", "THE_COLLECTOR"), ("DONU_AND_DECA", "DONU"),
+    ("THE_HEART", "CORRUPT_HEART"),
+])
+def test_comparison_counts_boss_encounter_aliases(tmp_path: Path, boss, enemy) -> None:
+    simulator, original = tmp_path / "sim.jsonl", tmp_path / "original.jsonl"
+    boundary = _boundary(observation={
+        "screen": "COMBAT", "run": {"act": 2, "visible_boss_id": boss},
+        "enemies": [{"monster_id": enemy}],
+    })
+    _write(simulator, "simulator", [boundary])
+    _write(original, "original", [boundary])
+    result = compare_trajectories(simulator, original)
+    assert result["passed"] is True
+    assert result["bosses"] == [f"ACT_2:{boss}"]
+    assert result["trajectory_complete"] is False

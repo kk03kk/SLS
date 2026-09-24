@@ -26,7 +26,11 @@ os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
 import torch
 
 from sls.content.scope import ironclad_a0_scope_hash, ironclad_scope_contract
-from sls.curriculum import CURRICULUM_PROFILES_BY_ID
+from sls.curriculum import (
+    CURRICULUM_PROFILES_BY_ID,
+    IRONCLAD_A20_CURRICULUM,
+    EpisodeHorizon,
+)
 from sls.model import ENCODING_SCHEMA, ModelConfig, Policy, vocabulary_hash
 from sls.rl import (
     CheckpointContractMismatch,
@@ -607,8 +611,8 @@ def main() -> int:
     run = dict(payload["run"])
     single_stage = run.get("workflow") == "single-stage"
     if single_stage and (args.stage != "train" or set(payload["stages"]) != {"train"}
-                         or run["profile"] not in {"IRONCLAD_A0_ACT1", "IRONCLAD_A20_ACT1"} or args.resume != "auto"):
-        raise ValueError("single-stage requires fresh/exact Act1 train workflow")
+                         or run["profile"] not in {"IRONCLAD_A0_ACT1", *(p.profile_id for p in IRONCLAD_A20_CURRICULUM)} or args.resume != "auto"):
+        raise ValueError("single-stage requires fresh/exact A0 Act1 or A20 curriculum train workflow")
     stage = dict(payload["stages"][args.stage])
     periodic_seeds, final_seeds = _validate_seed_namespaces(run)
     diagnostic_seed_start = int(run.get("diagnostic_evaluation_seed_start", 0))
@@ -948,7 +952,10 @@ def main() -> int:
                 result = best_checkpoint_record(evaluation, update=trainer.update)
                 result["environment_steps"] = trainer.environment_steps
                 if single_stage:
-                    result["selection_objective"] = "ACT1_CLEAR_COUNT"
+                    result["selection_objective"] = (
+                        "ACT1_CLEAR_COUNT" if profile.horizon is EpisodeHorizon.ACT_1
+                        else "HORIZON_CLEAR_COUNT"
+                    )
                 return result
 
             _archive_uncheckpointed_metrics(metrics_path, trainer.environment_steps)
@@ -1141,7 +1148,10 @@ def main() -> int:
                 if final_promoted:
                     export_policy_artifact(
                         selected, output / f"{output.name}.pt",
-                        ascension_min=profile.ascension, ascension_max=profile.ascension, goal="ACT1" if single_stage else "FULLRUN",
+                        ascension_min=profile.ascension, ascension_max=profile.ascension,
+                        goal={EpisodeHorizon.ACT_1: "ACT1", EpisodeHorizon.ACT_2: "ACT2",
+                              EpisodeHorizon.ACT_3: "ACT3", EpisodeHorizon.HEART: "HEART",
+                              EpisodeHorizon.FULL_RUN: "FULLRUN"}[profile.horizon],
                     )
                 promoted = final_promoted
 

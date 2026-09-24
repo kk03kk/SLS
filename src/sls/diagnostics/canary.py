@@ -73,6 +73,7 @@ def _metadata(
             "architecture": metadata.model["architecture"],
             "encoding_schema": metadata.encoding_schema,
             "vocabulary_sha256": metadata.vocabulary_sha256,
+            "model_sha256": metadata.model_sha256,
             "recurrent_memory_size": metadata.recurrent_memory_size,
             "goal": metadata.goal,
         },
@@ -297,11 +298,16 @@ def compare_trajectories(
 ) -> dict[str, object]:
     sim_meta, sim = read_trajectory(simulator_path)
     original_meta, original = read_trajectory(original_path)
-    contract_fields = ("source_git_commit", "architecture", "encoding_schema", "vocabulary_sha256")
+    contract_fields = (
+        "source_git_commit", "architecture", "encoding_schema", "vocabulary_sha256",
+        "model_sha256",
+    )
     contract_match = all(
-        sim_meta["policy"][field] == original_meta["policy"][field]
+        sim_meta["policy"].get(field) is not None
+        and sim_meta["policy"].get(field) == original_meta["policy"].get(field)
         for field in contract_fields
     )
+    backend_match = sim_meta.get("backend") == "simulator" and original_meta.get("backend") == "original"
     seed_match = sim_meta["seed"] == original_meta["seed"]
     matched = 0
     divergence: dict[str, object] | None = None
@@ -309,6 +315,9 @@ def compare_trajectories(
         left, right = sim[index], original[index]
         checks = (
             ("memory_input_sha256", "RECURRENT_MEMORY_DIVERGENCE"),
+            ("previous_action_type", "RECURRENT_MEMORY_DIVERGENCE"),
+            ("previous_reward", "RECURRENT_MEMORY_DIVERGENCE"),
+            ("policy_input_sha256", "POLICY_INPUT_DIVERGENCE"),
             ("observation_sha256", "OBSERVATION_DIVERGENCE"),
             ("candidate_actions_sha256", "LEGAL_ACTION_DIVERGENCE"),
             ("chosen_action_sha256", "POLICY_DIVERGENCE"),
@@ -360,17 +369,30 @@ def compare_trajectories(
         if boundary.get("observation", {}).get("screen") == "COMBAT"
         and boundary.get("observation", {}).get("run", {}).get("visible_boss_id")
         and any(
-            enemy.get("monster_id")
-            == boundary["observation"]["run"]["visible_boss_id"]
+            enemy.get("monster_id") in {
+                "AUTOMATON": {"BRONZE_AUTOMATON"},
+                "CHAMP": {"THE_CHAMP"},
+                "COLLECTOR": {"THE_COLLECTOR"},
+                "DONU_AND_DECA": {"DONU", "DECA"},
+                "THE_HEART": {"CORRUPT_HEART"},
+            }.get(
+                boundary["observation"]["run"]["visible_boss_id"],
+                {boundary["observation"]["run"]["visible_boss_id"]},
+            )
             for enemy in boundary.get("observation", {}).get("enemies", [])
         )
     })
-    passed = contract_match and seed_match and divergence is None
+    passed = bool(sim and original) and backend_match and contract_match and seed_match and divergence is None
     return {
         "schema": COMPARISON_SCHEMA,
         "passed": passed,
         "contract_match": contract_match,
+        "backend_match": backend_match,
         "seed_match": seed_match,
+        "seed": sim_meta["seed"],
+        "trajectory_complete": bool(sim and original and sim[-1].get("terminal") and original[-1].get("terminal")),
+        "simulator_sha256": hashlib.sha256(Path(simulator_path).read_bytes()).hexdigest(),
+        "original_sha256": hashlib.sha256(Path(original_path).read_bytes()).hexdigest(),
         "simulator_boundaries": len(sim),
         "original_boundaries": len(original),
         "matched_boundaries": matched,

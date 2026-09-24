@@ -180,9 +180,13 @@ def test_preparation_ignores_gpu_label_but_protects_workload(monkeypatch):
     assert preparation.preparation_contract(config, None) != before
 
 
-@pytest.mark.parametrize("interrupt_evaluation", [False, True])
-@pytest.mark.parametrize("warm_start", [False, True])
-def test_single_stage_real_ppo_soak_resume_and_finalization(tmp_path, monkeypatch, interrupt_evaluation, warm_start):
+@pytest.mark.parametrize("interrupt_evaluation,warm_start,target", [
+    (False, False, "IRONCLAD_A0_ACT1"), (True, False, "IRONCLAD_A0_ACT1"),
+    (False, True, "IRONCLAD_A20_ACT1"), (True, True, "IRONCLAD_A20_ACT1"),
+    (False, False, "IRONCLAD_A20_ACT2"), (False, False, "IRONCLAD_A20_ACT3"),
+    (False, False, "IRONCLAD_A20_HEART"),
+])
+def test_single_stage_real_ppo_soak_resume_and_finalization(tmp_path, monkeypatch, interrupt_evaluation, warm_start, target):
     import sys
 
     import torch
@@ -226,6 +230,7 @@ def test_single_stage_real_ppo_soak_resume_and_finalization(tmp_path, monkeypatc
         config_text = config_text.replace("target_environment_steps = 8", "target_environment_steps = 24")
         config_text += ('\n[warm_start]\ncheckpoint = "parent/best.pt"\n'
                         f'checkpoint_sha256 = "{sha256_file(source)}"\nparent_environment_steps = 16\n')
+    config_text = config_text.replace("IRONCLAD_A0_ACT1", target)
     config_path = tmp_path / "config.toml"
     config_path.write_text(config_text)
     (tmp_path / "benchmark.json").write_text(json.dumps({
@@ -268,9 +273,9 @@ def test_single_stage_real_ppo_soak_resume_and_finalization(tmp_path, monkeypatc
         assert not manifest["initialization"]["exact_resume_of_parent_experiment"]
     assert (output / "final.pt").exists() and (output / "final-evaluation.json").exists()
     from sls.runtime.artifact import load_policy_artifact
-    assert load_policy_artifact(output / "run.pt").metadata.goal == "ACT1"
+    assert load_policy_artifact(output / "run.pt").metadata.goal == target.rsplit("_", 1)[1]
     final_metadata = load_policy_artifact(output / "run.pt").metadata
-    assert final_metadata.ascension_min == final_metadata.ascension_max == (20 if warm_start else 0)
+    assert final_metadata.ascension_min == final_metadata.ascension_max == (20 if "A20" in target else 0)
     saved = torch.load(output / "latest.pt", weights_only=False)
     assert saved["trainer"]["environment_steps"] == offset + 8
     records = [json.loads(line) for line in (output / "stages/train/metrics.jsonl").read_text(encoding="utf-8").splitlines()]

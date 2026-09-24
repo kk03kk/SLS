@@ -26,6 +26,7 @@ _BOSS_MONSTERS = {
     "CHAMP": frozenset({"THE_CHAMP"}),
     "COLLECTOR": frozenset({"THE_COLLECTOR"}),
     "DONU_AND_DECA": frozenset({"DONU", "DECA"}),
+    "THE_HEART": frozenset({"CORRUPT_HEART"}),
     # The encounter continues after the large slime splits.
     "SLIME_BOSS": frozenset({
         "SLIME_BOSS", "ACID_SLIME_L", "SPIKE_SLIME_L", "ACID_SLIME_M", "SPIKE_SLIME_M",

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import math
 import multiprocessing as mp
 import os
 import sys
@@ -340,7 +341,7 @@ class WorkerPool:
     def __post_init__(self) -> None:
         if self.size <= 0:
             raise ValueError("worker count must be positive")
-        if self.response_timeout_seconds <= 0:
+        if not math.isfinite(self.response_timeout_seconds) or self.response_timeout_seconds <= 0:
             raise ValueError("worker response timeout must be positive")
         context = mp.get_context("spawn")
         self._connections: list[Connection] = []
@@ -356,7 +357,13 @@ class WorkerPool:
                 ),
                 name=f"sls-env-{index}",
             )
-            _start_importable_worker(process)
+            try:
+                _start_importable_worker(process)
+            except BaseException:
+                parent.close()
+                child.close()
+                self.close()
+                raise
             child.close()
             self._connections.append(parent)
             self._processes.append(process)
@@ -397,6 +404,8 @@ class WorkerPool:
         return self._collect(indices)
 
     def reset_one(self, index: int, seed: int) -> Decision:
+        if not 0 <= index < self.size:
+            raise IndexError(index)
         self._connections[index].send(("reset", int(seed)))
         return self._collect((index,))[0]
 
@@ -434,6 +443,8 @@ class WorkerPool:
         return self._collect(indices)
 
     def load_one(self, index: int, state: Mapping[str, Any]) -> Decision:
+        if not 0 <= index < self.size:
+            raise IndexError(index)
         self._connections[index].send(("load", dict(state)))
         return self._collect((index,))[0]
 
@@ -441,7 +452,7 @@ class WorkerPool:
         for connection in getattr(self, "_connections", ()):
             try:
                 connection.send(("close", None))
-            except (BrokenPipeError, EOFError):
+            except (OSError, EOFError):
                 pass
         for process in getattr(self, "_processes", ()):
             process.join(timeout=5)
@@ -450,6 +461,8 @@ class WorkerPool:
                 process.join(timeout=5)
         for connection in getattr(self, "_connections", ()):
             connection.close()
+        self._connections.clear()
+        self._processes.clear()
 
     def __enter__(self) -> "WorkerPool":
         return self
@@ -486,6 +499,8 @@ class VectorWorkerPool:
         self._last_actions = [None] * self.size
 
     def _execute(self, index: int, command: str, payload: Any) -> Any:
+        if not 0 <= index < self.size:
+            raise IndexError(index)
         backend = self._backends[index]
         try:
             if command == "reset":
@@ -508,16 +523,20 @@ class VectorWorkerPool:
             raise RuntimeError(f"unknown vector environment command: {command}")
         except BaseException as error:
             if self.crash_dump_dir is not None:
-                _write_crash_dump(
-                    Path(self.crash_dump_dir),
-                    _crash_payload(
-                        backend, error=error, worker_index=index,
-                        episode_ordinal=self._episode_ordinals[index],
-                        seed=self._seeds[index],
-                        last_semantic_action=self._last_actions[index],
-                        profile=self.profile,
-                    ),
-                )
+                try:
+                    _write_crash_dump(
+                        Path(self.crash_dump_dir),
+                        _crash_payload(
+                            backend, error=error, worker_index=index,
+                            episode_ordinal=self._episode_ordinals[index],
+                            seed=self._seeds[index],
+                            last_semantic_action=self._last_actions[index],
+                            profile=self.profile,
+                        ),
+                    )
+                except BaseException:
+                    # Preserve the simulator error when diagnostics cannot be written.
+                    pass
             raise
 
     def reset(self, seeds: Sequence[int]) -> list[Decision]:
@@ -588,6 +607,8 @@ class ShardedWorkerPool:
     def __post_init__(self) -> None:
         if self.size <= 0 or self.shard_count <= 0:
             raise ValueError("environment and shard counts must be positive")
+        if not math.isfinite(self.response_timeout_seconds) or self.response_timeout_seconds <= 0:
+            raise ValueError("worker response timeout must be positive and finite")
         self.shard_count = min(self.size, self.shard_count)
         base, extra = divmod(self.size, self.shard_count)
         context = mp.get_context("spawn")
@@ -605,7 +626,13 @@ class ShardedWorkerPool:
                 ),
                 name=f"sls-vector-shard-{shard}",
             )
-            _start_importable_worker(process)
+            try:
+                _start_importable_worker(process)
+            except BaseException:
+                parent.close()
+                child.close()
+                self.close()
+                raise
             child.close()
             self._connections.append(parent)
             self._processes.append(process)
@@ -694,7 +721,7 @@ class ShardedWorkerPool:
         for connection in getattr(self, "_connections", ()):
             try:
                 connection.send(("close", None))
-            except (BrokenPipeError, EOFError):
+            except (OSError, EOFError):
                 pass
         for process in getattr(self, "_processes", ()):
             process.join(timeout=5)
@@ -703,6 +730,8 @@ class ShardedWorkerPool:
                 process.join(timeout=5)
         for connection in getattr(self, "_connections", ()):
             connection.close()
+        self._connections.clear()
+        self._processes.clear()
 
     def __enter__(self) -> "ShardedWorkerPool":
         return self

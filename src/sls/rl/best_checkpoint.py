@@ -74,7 +74,7 @@ def passes_progress_guard(candidate: Mapping[str, Any], incumbent: Mapping[str, 
 def evaluation_rank(record: Mapping[str, Any]) -> tuple[float, ...]:
     """Rank progress while penalizing non-progress before reward magnitude."""
 
-    if record.get("selection_objective") == "ACT1_CLEAR_COUNT":
+    if record.get("selection_objective") in {"ACT1_CLEAR_COUNT", "HORIZON_CLEAR_COUNT"}:
         return (float(record["successes"]),)
     failure_floor = record.get("median_failure_floor")
     rates = dict(record.get("boss_success_rate") or {})

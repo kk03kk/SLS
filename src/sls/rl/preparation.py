@@ -113,5 +113,5 @@ def require_preparation(config: dict, torch_module: object) -> dict:
             or report.get("layout") != [layout["selected_workers"], layout["selected_shards"]]
             or (pinned is not None and selected != pinned)
             or not benchmark_matches_workload(config, layout)):
-        raise ValueError("Act1 preparation is missing or stale; submit train --prepare")
+        raise ValueError("curriculum preparation is missing or stale; submit train --prepare")
     return report

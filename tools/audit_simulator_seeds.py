@@ -24,6 +24,8 @@ def _decision_payload(decision: object) -> dict[str, object]:
 
 
 def audit_seeds(start: int, count: int, *, max_actions: int) -> dict[str, object]:
+    if count <= 0 or max_actions <= 0:
+        raise ValueError("seed count and action limit must be positive")
     failures: list[dict[str, object]] = []
     completed = 0
     total_actions = 0
@@ -33,7 +35,7 @@ def audit_seeds(start: int, count: int, *, max_actions: int) -> dict[str, object
         try:
             decision = backend.reset(seed)
             seen: dict[str, int] = {}
-            for step in range(max_actions):
+            for step in range(max_actions + 1):
                 candidate_ids = [action.candidate_id for action in decision.actions]
                 if len(candidate_ids) != len(set(candidate_ids)):
                     raise AssertionError("duplicate candidate identity")
@@ -42,6 +44,8 @@ def audit_seeds(start: int, count: int, *, max_actions: int) -> dict[str, object
                         raise AssertionError("terminal decision exposes actions")
                     completed += 1
                     break
+                if step == max_actions:
+                    raise AssertionError("episode action limit reached")
                 if not decision.actions:
                     raise AssertionError("nonterminal decision has no legal action")
                 signature = json.dumps(_decision_payload(decision), sort_keys=True)

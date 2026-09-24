@@ -2,7 +2,7 @@
 
 SLS 的目标是训练一个能够自主游玩 **Slay the Spire 1** 的智能体，也让人通过观察它的决策理解它学到了什么。项目使用 C++ 模拟器生成游戏交互，使用带循环记忆的策略网络和 PPO 训练，并提供连接本地游戏的模型观察界面。
 
-**当前目标：战士（Ironclad）A20 Act1，击败第一幕 Boss 即胜利。** 历史 Champion 仍是 46,006,272-step checkpoint：全新 1,024 seeds 上通关 766 局，胜率 74.80%（95% Wilson CI 72.06%–77.37%），且没有 runtime failure。54M recovery 已完成，其 52,002,816-step best 在另一组独立 1,024 seeds 上为 748/1,024（73.05%），没有证据替代 Champion。当前不继续堆训练步数；结论与短诊断方案见 [post-54M 审计](docs/a20-next-stage-audit.md)。
+**训练路线：战士（Ironclad）A20 第一幕 → 第二幕 → 第三幕（双 Boss）→ 心脏。** 各阶段从新局开始，逐步延长终止目标，并保留取钥匙选项。当前已有训练结果仍属 Act1：历史 Champion 是 46,006,272-step checkpoint，全新 1,024 seeds 上通关 766 局，胜率 74.80%（95% Wilson CI 72.06%–77.37%），且没有 runtime failure。54M recovery 的 52,002,816-step best 在另一组独立 1,024 seeds 上为 748/1,024（73.05%），没有证据替代 Champion。这些历史成绩不代表本轮修复后环境的重新评估结果。阶段契约与本地审计见 [A20 模拟器审计](docs/a20-simulator-audit-2026-09-23.md)；历史实验分析见 [post-54M 审计](docs/a20-next-stage-audit.md)。
 
 找文件时先看 [项目目录索引](docs/repository-map.md)：下载的服务器压缩包统一放在 `runs/archives/`，运行中的 checkpoint 放在 `local/runs/`，开发验证记录放在 `local/audits/` 和 `local/logs/development/`。这些本地产物不提交 Git。
 
@@ -143,7 +143,7 @@ python tools/generate_policy_vocabulary.py --check
 
 服务器下载归档保存在 `runs/archives/sls-ironclad-a20-act1-50m-final.tar.gz`，SHA256 为 `02b54727220d61b46c8c7dcb8c22f1af3667d63d0b8155ecbb93b4a8ea77544f`。归档包含 best、final、训练配置、manifest、metrics 和最终评估，但不是完整训练目录的替代品；服务器上的 50M champion 仍是新实验的绑定输入，不可删除。
 
-`configs/train/ironclad_a20_act1_54m_recovery.toml` 是已完成实验的复现配置，不是当前启动入口。该实验从 46M Champion 迁移权重、重置优化和采样状态，采用 64 workers / 16 shards 与 batched recurrent PPO；吞吐约从 69 提升到 99 decisions/s，但没有带来历史突破。当前只执行 paired evaluation、完整决策 corpus 和 collection profile 三项短诊断；在它们给出可证伪的学习假设前，不提交新的长训练。详见 [post-54M 审计](docs/a20-next-stage-audit.md)。
+`configs/train/ironclad_a20_act1_54m_recovery.toml` 是已完成实验的复现配置，不是当前启动入口。该实验从 46M Champion 迁移权重、重置优化和采样状态，采用 64 workers / 16 shards 与 batched recurrent PPO；吞吐约从 69 提升到 99 decisions/s，但没有带来历史突破。[post-54M 审计](docs/a20-next-stage-audit.md)记录了当时的诊断方案。当前准备的单次 46M→60M 稳定参数实验使用独立的 `configs/train/ironclad_a20_act1_60m_stable.toml`，启动步骤见 [60M 提交说明](docs/a20-act1-60m-stable-launch.md)。它尚无训练结果，也不预设会突破历史 Champion。
 
 ### 历史 A0 流程
 

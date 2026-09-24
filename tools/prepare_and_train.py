@@ -1,4 +1,4 @@
-"""Prepare a single-stage Act1 run on a Slurm compute node, then exec training."""
+"""Prepare a single-stage curriculum run on a Slurm compute node, then exec training."""
 
 from __future__ import annotations
 
@@ -37,7 +37,7 @@ def main() -> int:
         raise RuntimeError("submit train --prepare to a Slurm GPU compute node")
     config = read_config(args.config)
     if config["run"].get("workflow") != "single-stage":
-        raise ValueError("--prepare requires the single-stage Act1 workflow")
+        raise ValueError("--prepare requires the single-stage curriculum workflow")
     benchmark = ROOT / config["run"]["benchmark"]
     benchmark.parent.mkdir(parents=True, exist_ok=True)
     # The lock lives outside the fresh training directory. Keep it across exec.

@@ -5,6 +5,7 @@ from pathlib import Path
 
 import pytest
 
+import sls.rl.workers as workers_module
 from sls.curriculum import IRONCLAD_A0_ACT1
 from sls.rl.workers import (
     CRASH_DUMP_SCHEMA,
@@ -118,3 +119,86 @@ def test_vector_worker_writes_the_same_replayable_crash_schema(tmp_path: Path) -
     assert payload["worker_index"] == 0
     assert payload["worker_episode_ordinal"] == 6
     assert payload["seed"] == 8335
+
+
+def test_vector_diagnostic_failure_preserves_original_error(tmp_path: Path) -> None:
+    blocked = tmp_path / "not-a-directory"
+    blocked.write_text("occupied", encoding="utf-8")
+    with VectorWorkerPool(IRONCLAD_A0_ACT1, 1, crash_dump_dir=blocked) as pool:
+        pool._backends = [_DiagnosticBackend()]
+        with pytest.raises(AttributeError, match="step"):
+            pool.step(("invalid",))
+
+
+@pytest.mark.parametrize("pool_type", [WorkerPool, ShardedWorkerPool])
+def test_pool_start_failure_closes_pipes_and_started_processes(monkeypatch, pool_type) -> None:
+    connections = []
+    started = []
+
+    class Connection:
+        closed = False
+
+        def close(self):
+            self.closed = True
+
+        def send(self, _message):
+            pass
+
+    class Process:
+        joined = False
+
+        def join(self, timeout):
+            self.joined = True
+
+        def is_alive(self):
+            return False
+
+    class Context:
+        def Pipe(self):
+            pair = (Connection(), Connection())
+            connections.extend(pair)
+            return pair
+
+        def Process(self, **_kwargs):
+            return Process()
+
+    def start(process):
+        if started:
+            raise OSError("spawn failed")
+        started.append(process)
+
+    monkeypatch.setattr(workers_module.mp, "get_context", lambda _method: Context())
+    monkeypatch.setattr(workers_module, "_start_importable_worker", start)
+    with pytest.raises(OSError, match="spawn failed"):
+        pool_type(IRONCLAD_A0_ACT1, 2)
+    assert len(connections) == 4
+    assert all(connection.closed for connection in connections)
+    assert started[0].joined
+
+
+@pytest.mark.parametrize("pool_type", [WorkerPool, ShardedWorkerPool])
+def test_process_pool_close_is_idempotent(pool_type) -> None:
+    pool = pool_type(IRONCLAD_A0_ACT1, 1)
+    pool.close()
+    pool.close()
+    assert not pool._connections
+    assert not pool._processes
+
+
+@pytest.mark.parametrize("pool_type", [WorkerPool, ShardedWorkerPool])
+@pytest.mark.parametrize("timeout", [0.0, -1.0, float("nan"), float("inf")])
+def test_process_pool_rejects_invalid_timeout(pool_type, timeout) -> None:
+    with pytest.raises(ValueError, match="timeout"):
+        pool_type(IRONCLAD_A0_ACT1, 1, response_timeout_seconds=timeout)
+
+
+@pytest.mark.parametrize("pool_type", [WorkerPool, VectorWorkerPool, ShardedWorkerPool])
+def test_negative_single_worker_indices_cannot_mutate_last_environment(pool_type) -> None:
+    with pool_type(IRONCLAD_A0_ACT1, 1) as pool:
+        pool.reset((42,))
+        before = pool.checkpoints()
+        with pytest.raises(IndexError):
+            pool.reset_one(-1, 99)
+        with pytest.raises(IndexError):
+            pool.load_one(-1, before[0])
+        assert pool.checkpoints() == before

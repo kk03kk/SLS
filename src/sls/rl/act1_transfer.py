@@ -1,10 +1,10 @@
-"""Explicit Act1 weight transfer; never restore old optimizer/environment state."""
+"""Explicit curriculum weight transfer; never restore old optimizer/environment state."""
 
 from pathlib import Path
 
 import torch
 
-from sls.curriculum import IRONCLAD_A0_ACT1, IRONCLAD_A20_ACT1
+from sls.curriculum import IRONCLAD_A0_ACT1, IRONCLAD_A20_ACT1, IRONCLAD_A20_CURRICULUM
 from sls.rl.checkpoint import policy_from_training_checkpoint
 from sls.rl.training_contract import sha256_file
 
@@ -17,16 +17,22 @@ def initialize_act1_weights(trainer, config: dict, *, root: Path) -> dict:
         raise ValueError("A20 transfer must use a separate output directory")
     if trainer.environment_steps or trainer.update or trainer.optimizer.state:
         raise ValueError("weight transfer requires a fresh trainer")
-    if trainer.workers.profile != IRONCLAD_A20_ACT1:
-        raise ValueError("weight transfer requires IRONCLAD_A20_ACT1")
+    target_profile = trainer.workers.profile
+    if target_profile not in IRONCLAD_A20_CURRICULUM:
+        raise ValueError("weight transfer requires an A20 curriculum profile")
     digest = sha256_file(source)
     if digest != spec["checkpoint_sha256"]:
         raise ValueError("warm-start checkpoint SHA256 mismatch")
     payload = torch.load(source, map_location="cpu", weights_only=False)
     source_profile = payload["contract"]["profile"]
-    if source_profile not in {IRONCLAD_A0_ACT1, IRONCLAD_A20_ACT1}:
-        raise ValueError("warm-start parent must be an Act1 profile")
-    same_profile = source_profile == IRONCLAD_A20_ACT1
+    target_index = IRONCLAD_A20_CURRICULUM.index(target_profile)
+    if target_index == 0:
+        if source_profile not in {IRONCLAD_A0_ACT1, IRONCLAD_A20_ACT1}:
+            raise ValueError("warm-start parent must be an Act1 profile")
+    elif (source_profile != IRONCLAD_A20_CURRICULUM[target_index - 1]
+          or spec.get("transfer_kind") != "curriculum-stage"):
+        raise ValueError("curriculum-stage transfer requires the immediately preceding A20 profile")
+    same_profile = source_profile == target_profile
     if same_profile and spec.get("transfer_kind") != "optimization-experiment":
         raise ValueError(
             "same-profile warm start requires transfer_kind = optimization-experiment"
@@ -45,12 +51,12 @@ def initialize_act1_weights(trainer, config: dict, *, root: Path) -> dict:
     trainer.model.load_state_dict(policy.state_dict(), strict=True)
     trainer.environment_steps = steps
     return {
-        "schema": "sls-act1-weight-transfer-v2",
+        "schema": "sls-act1-weight-transfer-v2" if target_index == 0 else "sls-curriculum-weight-transfer-v1",
         "parent_checkpoint_sha256": digest,
         "parent_environment_steps": steps,
         "parent_checkpoint": str(source),
         "source_profile": source_profile.profile_id,
-        "target_profile": IRONCLAD_A20_ACT1.profile_id,
+        "target_profile": target_profile.profile_id,
         "preserved": "all model weights, including value head",
         "reset": "Adam, RNG, workers, recurrent state, update count and best selection",
         "step_accounting": "parent steps + new A20 environment steps",

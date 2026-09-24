@@ -3141,7 +3141,7 @@ public:
                 const bool valid_collector_slot = bc_->encounter == MonsterEncounter::COLLECTOR &&
                     (slot == 0 || slot == 1);
                 const bool valid_reptomancer_slot = bc_->encounter == MonsterEncounter::REPTOMANCER &&
-                    (slot == 1 || slot == 4);
+                    (slot == 0 || slot == 1 || slot == 3 || slot == 4);
                 if (!valid_collector_slot && !valid_reptomancer_slot) {
                     throw std::invalid_argument("Reused summon ghost slot is invalid for encounter");
                 }

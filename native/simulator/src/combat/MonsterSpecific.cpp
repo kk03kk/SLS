@@ -496,7 +496,7 @@ void Monster::takeTurn(BattleContext &bc) {     // todo, maybe for monsters that
             attackPlayerHelper(bc, asc4 ? 8 : 7, 2);
             setMove(MMID::BRONZE_AUTOMATON_BOOST);
             ++miscInfo;
-            bc.noOpRollMove();
+            bc.addToBot(Actions::NoOpRollMove());
             break;
 
         case MMID::BRONZE_AUTOMATON_HYPER_BEAM: // 2
@@ -506,7 +506,7 @@ void Monster::takeTurn(BattleContext &bc) {     // todo, maybe for monsters that
             } else {
                 setMove(MMID::BRONZE_AUTOMATON_STUNNED);
             }
-            bc.noOpRollMove();
+            bc.addToBot(Actions::NoOpRollMove());
             break;
 
         case MMID::BRONZE_AUTOMATON_SPAWN_ORBS: // 4
@@ -1335,9 +1335,10 @@ void Monster::takeTurn(BattleContext &bc) {     // todo, maybe for monsters that
             break;
 
         case MMID::THE_COLLECTOR_MEGA_DEBUFF: // 4
-            bc.addToBot( Actions::DebuffPlayer<PS::WEAK>(3, true) );
-            bc.addToBot( Actions::DebuffPlayer<PS::VULNERABLE>(3, true) );
-            bc.addToBot( Actions::DebuffPlayer<PS::FRAIL>(3, true) );
+            // TheCollector.megaDebuffAmt increases at A19, independently of damage.
+            bc.addToBot( Actions::DebuffPlayer<PS::WEAK>(asc19 ? 5 : 3, true) );
+            bc.addToBot( Actions::DebuffPlayer<PS::VULNERABLE>(asc19 ? 5 : 3, true) );
+            bc.addToBot( Actions::DebuffPlayer<PS::FRAIL>(asc19 ? 5 : 3, true) );
             bc.addToBot( Actions::RollMove(idx) );
             break;
 
@@ -1671,8 +1672,9 @@ void Monster::takeTurn(BattleContext &bc) {     // todo, maybe for monsters that
 
         case MMID::TIME_EATER_RIPPLE: // 3
             addBlock(20);
-            bc.player.debuff<PS::WEAK>(1, true);
+            // Stock queues Vulnerable first; Artifact must block that debuff first.
             bc.player.debuff<PS::VULNERABLE>(1, true);
+            bc.player.debuff<PS::WEAK>(1, true);
             if (asc19) {
                 bc.player.debuff<PS::FRAIL>(1, true);
             }
@@ -1683,7 +1685,7 @@ void Monster::takeTurn(BattleContext &bc) {     // todo, maybe for monsters that
             attackPlayerHelper(bc, asc4 ? 12 : 10, 2);
             // Stock enqueues RollMoveAction even though getMove ignores its
             // random argument. Preserve that aiRng draw for exact parity.
-            bc.aiRng.random(0, 99);
+            bc.addToBot(Actions::NoOpRollMove());
             setMove(MonsterMoveId::DONU_CIRCLE_OF_POWER);
             break;
 
@@ -1697,7 +1699,7 @@ void Monster::takeTurn(BattleContext &bc) {     // todo, maybe for monsters that
         case MMID::DECA_BEAM:
             attackPlayerHelper(bc, asc4 ? 12 : 10, 2);
             bc.addToBot( Actions::MakeTempCardInDiscard(CardId::DAZED, 2) );
-            bc.aiRng.random(0, 99);
+            bc.addToBot(Actions::NoOpRollMove());
             setMove(MonsterMoveId::DECA_SQUARE_OF_PROTECTION);
             break;
 
@@ -1779,14 +1781,14 @@ void Monster::takeTurn(BattleContext &bc) {     // todo, maybe for monsters that
             if (bc.player.orbSlots > 0) {
                 bc.addToBot( Actions::SpireShieldDebuff() );
             } else {
-                bc.player.debuff<PS::STRENGTH>(-1);
+                bc.addToBot(Actions::DebuffPlayer<PS::STRENGTH>(-1));
             }
             if (lastMoveBefore(MonsterMoveId::SPIRE_SHIELD_SMASH) || lastMoveBefore(MonsterMoveId::INVALID)) {
                 setMove(MonsterMoveId::SPIRE_SHIELD_FORTIFY);
             } else {
                 setMove(MonsterMoveId::SPIRE_SHIELD_SMASH);
             }
-            bc.noOpRollMove();
+            bc.addToBot(Actions::NoOpRollMove());
             break;
 
 
@@ -1824,7 +1826,7 @@ void Monster::takeTurn(BattleContext &bc) {     // todo, maybe for monsters that
             } else {
                 setMove(MonsterMoveId::SPIRE_SPEAR_SKEWER);
             }
-            bc.noOpRollMove();
+            bc.addToBot(Actions::NoOpRollMove());
             break;
 
         case MMID::SPIRE_SPEAR_PIERCER: // 2
