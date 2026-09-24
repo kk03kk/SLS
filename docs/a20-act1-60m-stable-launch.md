@@ -20,7 +20,12 @@ if [ -n "$(git status --porcelain)" ]; then
   exit 1
 fi
 git fetch origin
-git switch --track origin/codex/a20-act1-60m-stable
+if git show-ref --verify --quiet refs/heads/codex/a20-act1-60m-stable; then
+  git switch codex/a20-act1-60m-stable
+  git merge --ff-only origin/codex/a20-act1-60m-stable
+else
+  git switch --track origin/codex/a20-act1-60m-stable
+fi
 if [ -n "$(git status --porcelain)" ]; then
   echo 'Training branch is dirty; no job submitted.' >&2
   exit 1
