@@ -12,6 +12,10 @@ SLS 用原生模拟器和循环策略网络训练智能体游玩 **Slay the Spir
 
 ## 开始使用
 
+当前修复后环境已有一次开发基线：56M 在新的 512 个开发种子上通关
+375 局（73.24%）；它与历史终评使用不同种子，不能直接归因为环境退步。
+详见[平台期诊断结果](docs/results/act1-plateau-56m-v1/README.md)。
+
 支持 Windows 和 Linux、Python 3.12 及以上。首次构建需联网；Linux 需要 C++ 编译器和 Python 开发头文件。macOS 暂无受支持的原生构建流程。
 
 ```bash

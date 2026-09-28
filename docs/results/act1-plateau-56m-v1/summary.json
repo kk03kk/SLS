@@ -1,0 +1,126 @@
+{
+  "schema": "sls-act1-plateau-report-v1",
+  "checkpoint_sha256": "9555c8608155ba262901757cd57d76f854f1cd76a5b6126375e832fa0a714710",
+  "config_sha256": "884087c1dd8ab659643e2de8be0e541383edda065e9670a9e6f0475f36a335bd",
+  "native_source_sha256": "470acd317f0b3104c3c5de91e346934798414c8f328381555458ebd3ab0bfad9",
+  "native_artifact": {
+    "path": "/home/h/hengzhi/SLS/local/build/native/cpython-312/_lightspeed.cpython-312-x86_64-linux-gnu.so",
+    "sha256": "680149576f2b34a3d9fe13913d0ee05d502bb259ba6932a8bbe73723c096aa97",
+    "source_sha256": "470acd317f0b3104c3c5de91e346934798414c8f328381555458ebd3ab0bfad9",
+    "git_commit": "7816fdb435423d039fd5190229e2087f6e3ac4b0"
+  },
+  "git": {
+    "commit": "7816fdb435423d039fd5190229e2087f6e3ac4b0",
+    "branch": "main",
+    "dirty": false
+  },
+  "training_implementation_sha256": "cfc4a31b0439c4a91b5ded90f6e443c7c567c27a6f35fa2d204ca9826abd3ec6",
+  "boss_entries_stratified": {
+    "THE_GUARDIAN:loss": {
+      "n": 14,
+      "hp": 64.92857142857143,
+      "max_hp": 77.71428571428571,
+      "deck_size": 18.928571428571427,
+      "potions": 1.0714285714285714
+    },
+    "HEXAGHOST:loss": {
+      "n": 13,
+      "hp": 70.61538461538461,
+      "max_hp": 77.53846153846153,
+      "deck_size": 18.692307692307693,
+      "potions": 1.2307692307692308
+    },
+    "SLIME_BOSS:loss": {
+      "n": 13,
+      "hp": 69.15384615384616,
+      "max_hp": 79.92307692307692,
+      "deck_size": 17.846153846153847,
+      "potions": 1.0769230769230769
+    },
+    "SLIME_BOSS:win": {
+      "n": 13,
+      "hp": 73.3076923076923,
+      "max_hp": 78.38461538461539,
+      "deck_size": 19.76923076923077,
+      "potions": 1.5384615384615385
+    },
+    "HEXAGHOST:win": {
+      "n": 13,
+      "hp": 73.53846153846153,
+      "max_hp": 79.07692307692308,
+      "deck_size": 19.46153846153846,
+      "potions": 1.6153846153846154
+    },
+    "THE_GUARDIAN:win": {
+      "n": 14,
+      "hp": 71.42857142857143,
+      "max_hp": 77.35714285714286,
+      "deck_size": 18.5,
+      "potions": 1.7142857142857142
+    }
+  },
+  "capture_reference_differences": 0,
+  "evidence_sha256": {
+    "preflight.json": "e65dfbb6132a6e2e5928c2cde480e259a7fbcc36f43b1463a696e9ae5bd02f1c",
+    "baseline.json": "cb2007b1fd859d6272e10b92b0a32e5b5705194d438896a131e44fdd60c1e23a",
+    "diagnostic-evaluation.json": "987495289af2f8760291363b9208ff64a62bc602f17488847c5bb37b240d26cd",
+    "corpus/selection.json": "2ad64335e53ed36bccac35f2ce1a5343f53a33da2801164a65db5fe006f622db",
+    "corpus/result.json": "19cf6ce361338e10069b8ad00d687acedbe995fa126b2530884550a4a3059c36",
+    "corpus/analysis.json": "bd230a550c4da8862bf1584fe6fea7e99135e9dd7569e5f7183a2e96144e04ce"
+  },
+  "baseline": {
+    "episodes": 512,
+    "successes": 375,
+    "success_rate": 0.732421875,
+    "success_rate_ci95": [
+      0.6924489815710525,
+      0.7689330883077636
+    ],
+    "failures": 137,
+    "boss_floor_deaths": 109,
+    "before_boss_deaths": 28,
+    "boss_entry_success_rate": {
+      "ACT_1:HEXAGHOST": 0.7134502923976608,
+      "ACT_1:SLIME_BOSS": 0.8823529411764706,
+      "ACT_1:THE_GUARDIAN": 0.7375
+    },
+    "qualification": "Last-enemy death counts are not conditional encounter failure rates."
+  },
+  "diagnostic_population": {
+    "episodes": 256,
+    "successes": 189,
+    "success_rate": 0.73828125,
+    "success_rate_ci95": [
+      0.6811957065092896,
+      0.7883213619127559
+    ],
+    "failures": 67,
+    "boss_floor_deaths": 43,
+    "before_boss_deaths": 24,
+    "boss_entry_success_rate": {
+      "ACT_1:HEXAGHOST": 0.8133333333333334,
+      "ACT_1:SLIME_BOSS": 0.8414634146341463,
+      "ACT_1:THE_GUARDIAN": 0.7866666666666666
+    },
+    "qualification": "Last-enemy death counts are not conditional encounter failure rates."
+  },
+  "selected_counters": {
+    "replayed_steps": 15956,
+    "verified_native_snapshots": 1571,
+    "action:CHOOSE_CARD_REWARD": 561,
+    "action:SKIP_CARD_REWARD": 1,
+    "action:SKIP_REWARD": 748,
+    "end_turn_with_playable_card": 153
+  },
+  "provenance": {
+    "source": "Human-pasted server status/report; original baseline and corpus files remain on NUS and have not been downloaded.",
+    "transcript_sha256": "66c5699435e06889229378066f58b3942dd2691533ac178de14a93d4ccc7ce57",
+    "git_blob_hash_matches": {
+      "prepare_act1_plateau.py": true,
+      "diagnose_act1_corpus.py": true,
+      "analyze_act1_corpus.py": true,
+      "config": true
+    },
+    "status": "COMPLETE"
+  }
+}

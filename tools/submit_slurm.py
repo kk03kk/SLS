@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import os
+import re
 import shlex
 import shutil
 import subprocess
@@ -43,6 +44,7 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--cpus", type=int, default=16)
     parser.add_argument("--memory", default="64G")
     parser.add_argument("--time")
+    parser.add_argument("--dependency", help="Run after successful Slurm jobs, e.g. afterok:123456")
     parser.add_argument(
         "--benchmark-layouts", nargs="+", metavar="WORKERS:SHARDS",
         help="Forward an explicit layout set to benchmark_workers.py.",
@@ -71,6 +73,8 @@ def build_sbatch_command(args: argparse.Namespace, *, root: Path = ROOT) -> list
 
     if args.cpus <= 0:
         raise ValueError("--cpus must be positive")
+    if args.dependency is not None and re.fullmatch(r"afterok:[1-9][0-9]*(?::[1-9][0-9]*)*", args.dependency) is None:
+        raise ValueError("--dependency must be afterok:<job-id>[:<job-id>...]")
     if args.task in {"preflight", "benchmark", "evaluate", "compare", "corpus", "plateau"}:
         unsupported = []
         if args.config is not None and args.task in {"evaluate", "compare", "corpus"}:
@@ -204,6 +208,8 @@ def build_sbatch_command(args: argparse.Namespace, *, root: Path = ROOT) -> list
     ]
     if args.constraint:
         sbatch.insert(sbatch.index(f"--gres=gpu:{args.gpu}:1"), f"--constraint={args.constraint}")
+    if args.dependency is not None:
+        sbatch.insert(1, f"--dependency={args.dependency}")
     return sbatch
 
 

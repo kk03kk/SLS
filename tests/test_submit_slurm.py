@@ -190,3 +190,17 @@ def test_corpus_requires_run_and_output(tmp_path: Path) -> None:
     args = _parser().parse_args(["corpus", "--diagnostic-run", "run"])
     with pytest.raises(ValueError, match="requires"):
         build_sbatch_command(args, root=tmp_path)
+
+
+def test_slurm_dependency_preserves_job_order_without_changing_workload(tmp_path: Path) -> None:
+    args = _parser().parse_args(["train", "--dependency", "afterok:123:456"])
+    command = build_sbatch_command(args, root=tmp_path)
+    assert "--dependency=afterok:123:456" in command
+    assert "train_full_run.py" in command[-1]
+
+
+@pytest.mark.parametrize("dependency", ["afterok:0", "afterok:abc", "afterany:123", "afterok:123;echo bad"])
+def test_slurm_dependency_rejects_invalid_or_unsupported_values(tmp_path: Path, dependency: str) -> None:
+    args = _parser().parse_args(["train", "--dependency", dependency])
+    with pytest.raises(ValueError, match="dependency"):
+        build_sbatch_command(args, root=tmp_path)
