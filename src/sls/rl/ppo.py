@@ -19,6 +19,7 @@ from sls.rl.episode_limit import (
 from sls.rl.reward import (
     DEFAULT_FAILURE_PROGRESS_SCALE,
     REWARD_SCHEMA,
+    WIN_REWARD_SCHEMA,
     curriculum_terminal_reward,
     shape_curriculum_reward,
 )
@@ -156,10 +157,13 @@ class PPOConfig:
             raise ValueError("max_gradient_norm must be positive")
         if self.potential_scale < 0.0:
             raise ValueError("potential_scale cannot be negative")
-        if not 0.0 < self.failure_progress_scale < 1.0:
-            raise ValueError("failure_progress_scale must be between zero and one")
-        if self.reward_schema != REWARD_SCHEMA:
+        if self.reward_schema not in {REWARD_SCHEMA, WIN_REWARD_SCHEMA}:
             raise ValueError(f"unsupported reward schema: {self.reward_schema}")
+        if self.reward_schema == WIN_REWARD_SCHEMA:
+            if self.failure_progress_scale != 0.0 or self.gamma != 1.0:
+                raise ValueError("win reward requires failure_progress_scale=0 and gamma=1")
+        elif not 0.0 < self.failure_progress_scale < 1.0:
+            raise ValueError("progress reward requires failure_progress_scale between zero and one")
         if self.episode_limit_schema != EPISODE_LIMIT_SCHEMA:
             raise ValueError(f"unsupported episode limit schema: {self.episode_limit_schema}")
         if not 0.0 <= self.entropy_final <= self.entropy_coefficient:

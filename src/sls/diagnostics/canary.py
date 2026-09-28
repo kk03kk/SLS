@@ -80,6 +80,11 @@ def _metadata(
         "selection": "DETERMINISTIC_ARGMAX",
         "initial_memory": "ZERO",
         "recurrent_context": "PREVIOUS_ACTION_AND_REWARD",
+        "inference_runtime": {
+            "torch": torch.__version__, "cpu_threads": torch.get_num_threads(),
+            "cpu_interop_threads": torch.get_num_interop_threads(),
+            "mkldnn_enabled": torch.backends.mkldnn.enabled,
+        },
     }
 
 
@@ -156,6 +161,7 @@ def capture_policy_trajectory(
     journal: str | Path | None = None,
     stop_requested: Callable[[], bool] | None = None,
     diagnostic_state: bool = False,
+    environment_identity: Mapping[str, object] | None = None,
 ) -> dict[str, object]:
     """Run one zero-memory argmax policy and durably record every boundary."""
 
@@ -182,7 +188,10 @@ def capture_policy_trajectory(
     actions_taken = 0
     boundaries = 0
     with output_path.open("w", encoding="utf-8") as stream:
-        stream.write(json.dumps(_metadata(artifact, backend_name=backend_name, seed=seed)) + "\n")
+        metadata = _metadata(artifact, backend_name=backend_name, seed=seed)
+        if environment_identity is not None:
+            metadata["environment"] = dict(environment_identity)
+        stream.write(json.dumps(metadata) + "\n")
         stream.flush()
         while True:
             record, action, next_memory = _boundary_record(
@@ -304,12 +313,26 @@ def compare_trajectories(
     contract_fields = (
         "source_git_commit", "architecture", "encoding_schema", "vocabulary_sha256",
         "model_sha256",
+        "recurrent_memory_size", "goal",
     )
     contract_match = all(
         sim_meta["policy"].get(field) is not None
         and sim_meta["policy"].get(field) == original_meta["policy"].get(field)
         for field in contract_fields
     )
+    contract_match = contract_match and all(
+        sim_meta.get(field) is not None and sim_meta.get(field) == original_meta.get(field)
+        for field in ("selection", "initial_memory", "recurrent_context")
+    )
+    # Legacy captures did not record inference settings. Keep them usable as
+    # historical evidence, but enforce identical settings when both record it.
+    runtime_match = (
+        sim_meta.get("inference_runtime") == original_meta.get("inference_runtime")
+        if "inference_runtime" in sim_meta and "inference_runtime" in original_meta
+        else None
+    )
+    if runtime_match is False:
+        contract_match = False
     backend_match = sim_meta.get("backend") == "simulator" and original_meta.get("backend") == "original"
     seed_match = sim_meta["seed"] == original_meta["seed"]
     matched = 0
@@ -397,6 +420,7 @@ def compare_trajectories(
         "schema": COMPARISON_SCHEMA,
         "passed": passed,
         "contract_match": contract_match,
+        "inference_runtime_match": runtime_match,
         "backend_match": backend_match,
         "seed_match": seed_match,
         "seed": sim_meta["seed"],

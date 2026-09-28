@@ -148,7 +148,8 @@ def main() -> int:
     speed_mod = args.superfast_mod.resolve() if args.superfast_mod else None
     target_speed_mod = mod_dir / "SuperFastMode.jar"
     mts = args.game_root.parents[1] / "workshop" / "content" / "646570" / "1605060445" / "ModTheSpire.jar"
-    required = [args.artifact, args.python, oracle, mts, display]
+    stock_jar = args.game_root / "desktop-1.0.jar"
+    required = [args.artifact, args.python, oracle, mts, display, stock_jar]
     if speed_mod is not None:
         required.append(speed_mod)
     missing = [str(path) for path in required if not path.is_file()]
@@ -176,6 +177,7 @@ def main() -> int:
             "original", args.artifact.resolve().as_posix(),
             "--seed", str(args.seed), "--output", args.output.resolve().as_posix(),
             "--journal", args.action_journal.resolve().as_posix(),
+            "--stock-jar", stock_jar.resolve().as_posix(),
         ]
         if args.max_actions is not None:
             command.extend(("--max-actions", str(args.max_actions)))

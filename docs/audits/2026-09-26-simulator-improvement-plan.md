@@ -1,21 +1,25 @@
 # A20 Act1 simulator fidelity plan — 2026-09-26
 
 Stage status, 2026-09-28: the user has closed the 46M → 60M training stage and
-paused further simulator audit work. The selected 56M model and measured
+resumed simulator qualification as phase 1 of the next roadmap. The selected 56M model and measured
 server results are recorded in [stage closeout](../results/a20-act1-60m-stable/README.md).
 Unreviewed reachability and semantic obligations below remain open; this
 document must not be read as full Act1 parity certification.
+Current qualification work is recorded in
+[phase 1 evidence and remaining gates](2026-09-28-act1-qualification.md).
 
 ## Decision and evidence baseline
 
 The target is the stock `desktop-1.0.jar` Ironclad A20 Act1 decision process,
 under the project's declared policy restrictions. Stock JAR SHA256:
 `cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673`.
-The current local native source SHA256 is
+The earlier local qualification baseline source SHA256 was
 `c28b45cefa2e2d8529ae21c53bcf722b1ab33efc75693d759887da554b2480a8`;
 the matching Windows artifact SHA256 is
 `bd1623f455195ee655f417601b81d5e21917672ea4c915249fc59ac5a8350e62`.
-These identify the new local build, not the running NUS job. Before the
+These identify that historical local build. The latest transform correction
+and native identity are in the [mechanics batch](2026-09-28-act1-mechanics.md).
+Before the
 event-RNG correction below, the local source/artifact SHA256 pair was
 `95e5b651516bb11c0a87eec2ad08d35435be517fd7520163052c7785c5245bc3` /
 `68416a0c2c15c62251f9fdd07cadbef3cfb5dac3993f79aa73e90a38f7873db5`.

@@ -105,3 +105,48 @@ def test_fullrun_failure_and_key_reward_properties_are_fail_closed() -> None:
         0.0, all_keys, all_keys, IRONCLAD_A0_FULLRUN,
         gamma=1.0, scale=0.2, terminal=False,
     )
+
+
+def test_win_objective_scores_all_real_deaths_equally() -> None:
+    from sls.curriculum import IRONCLAD_A20_ACT1
+
+    for floor in (0, 1, 8, 16):
+        assert curriculum_terminal_reward(
+            _state(floor, 0), IRONCLAD_A20_ACT1,
+            success=False, failure_progress_scale=0.0,
+        ) == -1.0
+    assert curriculum_terminal_reward(
+        _state(16, 1), IRONCLAD_A20_ACT1,
+        success=True, failure_progress_scale=0.0,
+    ) == 1.0
+
+
+def test_reward_objective_requires_explicit_schema_and_undiscounted_wins() -> None:
+    from sls.rl.ppo import PPOConfig
+    from sls.rl.reward import WIN_REWARD_SCHEMA
+
+    PPOConfig(reward_schema=WIN_REWARD_SCHEMA, failure_progress_scale=0.0)
+    for arguments in (
+        {"failure_progress_scale": 0.0},
+        {"reward_schema": WIN_REWARD_SCHEMA},
+        {"reward_schema": WIN_REWARD_SCHEMA, "failure_progress_scale": 0.0, "gamma": 0.99},
+        {"reward_schema": "unknown"},
+    ):
+        with pytest.raises(ValueError):
+            PPOConfig(**arguments)
+
+
+def test_win_shaping_full_return_is_independent_of_intermediate_hp_and_floor() -> None:
+    from sls.curriculum import IRONCLAD_A20_ACT1
+
+    def total(states, success):
+        return sum(shape_curriculum_reward(
+            (1.0 if success else -1.0) if i == len(states) - 2 else 0.0,
+            states[i], states[i + 1], IRONCLAD_A20_ACT1,
+            gamma=1.0, scale=0.2, terminal=i == len(states) - 2,
+        ) for i in range(len(states) - 1))
+
+    short = [_state(0, 80), _state(1, 0)]
+    long = [_state(0, 80), _state(8, 20), _state(12, 60), _state(16, 0)]
+    assert total(short, False) == pytest.approx(total(long, False))
+    assert total(long, True) - total(long, False) == pytest.approx(2.0)

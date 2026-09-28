@@ -123,6 +123,7 @@ def build_obligations(
     return {
         "schema": COVERAGE_SCHEMA,
         "stock_jar_sha256": inventory.get("stock_jar_sha256"),
+        "native_source_sha256": native_source_digest(),
         "scope_id": (
             str(targets["profile_id"]) if targets is not None
             else load_ironclad_a0_scope()["scope_id"]

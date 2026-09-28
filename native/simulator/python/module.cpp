@@ -4938,6 +4938,81 @@ private:
     }
 };
 
+py::dict transform_selection_probe(std::uint64_t seed, const std::string &kind,
+        const std::string &excluded) {
+    Random rng(seed);
+    const auto exclude = parse_card(excluded).getId();
+    const CardId *pool;
+    int size;
+    CardId selected;
+    if (kind == "curse") {
+        pool = curseCardPool; size = curseCardPoolSize;
+        selected = getRandomCurse(rng, exclude);
+    } else if (kind == "colorless") {
+        pool = srcColorlessCardPool; size = srcColorlessCardPoolSize;
+        selected = returnTrulyRandomColorlessCardFromAvailable(rng, exclude);
+    } else if (kind == "colored") {
+        pool = TransformCardPool::getPoolForClass(CharacterClass::IRONCLAD);
+        size = TransformCardPool::getPoolSizeForClass(CharacterClass::IRONCLAD);
+        GameContext context;
+        context.cc = CharacterClass::IRONCLAD;
+        selected = context.returnTrulyRandomCardFromAvailable(rng, exclude);
+    } else {
+        throw std::invalid_argument("unknown transform pool kind");
+    }
+    py::list candidates;
+    for (int i = 0; i < size; ++i) candidates.append(cardEnumStrings[static_cast<int>(pool[i])]);
+    py::dict result;
+    result["pool"] = candidates;
+    result["selected"] = cardEnumStrings[static_cast<int>(selected)];
+    py::dict final;
+    final["counter"] = rng.counter; final["seed0"] = rng.seed0; final["seed1"] = rng.seed1;
+    result["final"] = final;
+    return result;
+}
+
+py::dict act1_gremlin_block_probe(std::uint64_t seed, const std::vector<bool> &alive) {
+    if (alive.empty() || alive.size() > 4 || !alive[0]) throw std::invalid_argument("invalid gremlin group");
+    BattleContext battle; battle.ascension = 20; battle.aiRng = Random(seed);
+    battle.monsters.monsterCount = static_cast<int>(alive.size());
+    for (std::size_t i = 0; i < alive.size(); ++i) {
+        auto &monster = battle.monsters.arr[i];
+        monster.id = i == 0 ? MonsterId::SHIELD_GREMLIN : MonsterId::SNEAKY_GREMLIN;
+        monster.idx = static_cast<int>(i); monster.curHp = alive[i] ? 15 : 0;
+    }
+    Actions::GainBlockRandomEnemy(0, 11).actFunc(battle);
+    py::list blocks;
+    for (std::size_t i = 0; i < alive.size(); ++i) blocks.append(battle.monsters.arr[i].block);
+    py::dict final;
+    final["counter"] = battle.aiRng.counter;
+    final["seed0"] = battle.aiRng.seed0; final["seed1"] = battle.aiRng.seed1;
+    py::dict result; result["blocks"] = blocks; result["final"] = final;
+    return result;
+}
+
+int act1_gremlin_move_probe(const std::string &name, const std::vector<int> &history, int roll) {
+    if (roll < 0 || roll > 99 || history.size() > 2) throw std::invalid_argument("invalid move probe");
+    BattleContext battle; battle.ascension = 20;
+    Monster monster;
+    if (name == "GremlinNob") monster.id = MonsterId::GREMLIN_NOB;
+    else if (name == "GremlinTsundere") monster.id = MonsterId::SHIELD_GREMLIN;
+    else if (name == "GremlinThief") monster.id = MonsterId::SNEAKY_GREMLIN;
+    else throw std::invalid_argument("unsupported Act1 gremlin");
+    for (std::size_t i = 0; i < history.size(); ++i) {
+        const int move = history[history.size() - 1 - i];
+        if (move < 1 || move > 3) throw std::invalid_argument("invalid Nob history");
+        monster.moveHistory[i] = move == 1 ? MMID::GREMLIN_NOB_RUSH :
+            move == 2 ? MMID::GREMLIN_NOB_SKULL_BASH : MMID::GREMLIN_NOB_BELLOW;
+    }
+    int data = 0;
+    const auto selected = monster.getMoveForRoll(battle, data, roll);
+    if (selected == MMID::GREMLIN_NOB_BELLOW) return 3;
+    if (selected == MMID::GREMLIN_NOB_SKULL_BASH) return 2;
+    if (selected == MMID::GREMLIN_NOB_RUSH) return 1;
+    if (selected == MMID::SHIELD_GREMLIN_PROTECT || selected == MMID::SNEAKY_GREMLIN_PUNCTURE) return 1;
+    throw std::logic_error("unexpected gremlin move");
+}
+
 py::dict rng_probe(std::uint64_t seed) {
     Random rng(seed);
     py::dict initial;
@@ -6215,6 +6290,12 @@ PYBIND11_MODULE(_lightspeed, module) {
     module.attr("GIT_COMMIT") = SLS_GIT_COMMIT;
     module.doc() = "Canonical FullRun sts_lightspeed bridge and rule probes";
     module.def("rng_probe", &rng_probe, py::arg("seed"));
+    module.def("transform_selection_probe", &transform_selection_probe,
+        py::arg("seed"), py::arg("kind"), py::arg("excluded"));
+    module.def("act1_gremlin_move_probe", &act1_gremlin_move_probe,
+        py::arg("name"), py::arg("history"), py::arg("roll"));
+    module.def("act1_gremlin_block_probe", &act1_gremlin_block_probe,
+        py::arg("seed"), py::arg("alive"));
     module.def("shuffle_probe", &shuffle_probe, py::arg("seed"));
     module.def("stochastic_distribution_probe", &stochastic_distribution_probe,
         py::arg("base_seed"), py::arg("samples"));

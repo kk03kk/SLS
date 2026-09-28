@@ -71,9 +71,13 @@ def test_ineligible_event_fallback_does_not_advance_global_event_rng() -> None:
     ("DEAD_ADVENTURER", 99, False, "Golden Shrine"),
     ("HYPNOTIZING_COLORED_MUSHROOMS", 99, False, "Golden Shrine"),
     ("THE_CLERIC", 0, False, "Golden Shrine"),
+    ("THE_CLERIC", 34, False, "Golden Shrine"),
+    ("THE_CLERIC", 35, False, "The Cleric"),
     ("THE_CLERIC", 99, False, "The Cleric"),
     ("THE_DIVINE_FOUNTAIN", 99, True, "Golden Shrine"),
     ("THE_WOMAN_IN_BLUE", 0, True, "Golden Shrine"),
+    ("THE_WOMAN_IN_BLUE", 49, True, "Golden Shrine"),
+    ("THE_WOMAN_IN_BLUE", 50, True, "The Woman in Blue"),
 ])
 def test_early_act1_event_eligibility_falls_back_to_shrine(
     only_event: str, gold: int, special: bool, expected: str,
@@ -99,9 +103,15 @@ def test_early_act1_event_eligibility_falls_back_to_shrine(
     checkpoint["ordered_pools"]["events"] = [
         _ordinal("events", "DEAD_ADVENTURER" if special else only_event),
     ]
-    checkpoint["ordered_pools"]["shrines"] = [_ordinal("events", "GOLDEN_SHRINE")]
+    # Place the always-eligible sentinel after the tested one-time event so
+    # this seed selects it only when the tested entry is filtered out. This
+    # forced pool arrangement tests eligibility, not natural pool membership.
+    checkpoint["ordered_pools"]["shrines"] = (
+        [] if special else [_ordinal("events", "GOLDEN_SHRINE")]
+    )
     checkpoint["ordered_pools"]["special_one_time_events"] = (
-        [_ordinal("events", only_event)] if special else []
+        [_ordinal("events", only_event), _ordinal("events", "GOLDEN_SHRINE")]
+        if special else []
     )
     checkpoint["player_state"]["gold"] = gold
     checkpoint["public_run"]["gold"] = gold

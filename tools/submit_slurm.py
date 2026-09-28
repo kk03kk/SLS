@@ -28,7 +28,7 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "task", choices=(
             "preflight", "benchmark", "warm-start", "evaluate", "compare", "corpus",
-            "smoke", "pilot", "train",
+            "smoke", "pilot", "train", "plateau",
         ),
     )
     parser.add_argument("--python", type=Path, default=Path(sys.executable))
@@ -71,7 +71,7 @@ def build_sbatch_command(args: argparse.Namespace, *, root: Path = ROOT) -> list
 
     if args.cpus <= 0:
         raise ValueError("--cpus must be positive")
-    if args.task in {"preflight", "benchmark", "evaluate", "compare", "corpus"}:
+    if args.task in {"preflight", "benchmark", "evaluate", "compare", "corpus", "plateau"}:
         unsupported = []
         if args.config is not None and args.task in {"evaluate", "compare", "corpus"}:
             unsupported.append("--config")
@@ -164,6 +164,11 @@ def build_sbatch_command(args: argparse.Namespace, *, root: Path = ROOT) -> list
             "--device", "cuda",
             "--environment-shards", str(args.evaluation_shards),
         ]
+    elif args.task == "plateau":
+        if args.config is None or not args.config.is_file():
+            raise ValueError("plateau requires an existing diagnostic --config")
+        command = [str(python), str(root / "tools/prepare_act1_plateau.py"),
+                   "--config", str(args.config.resolve())]
     elif args.task == "corpus":
         if args.diagnostic_run is None or args.diagnostic_output is None:
             raise ValueError("corpus requires --diagnostic-run and --diagnostic-output")

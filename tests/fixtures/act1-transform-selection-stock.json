@@ -1,0 +1,42 @@
+{
+  "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "evidence": "StockAct1MechanicsProbe executing stock bytecode; ordered input pools supplied by native probe.",
+  "cases": [
+    {
+      "kind": "colored",
+      "seed": 0,
+      "excluded": "ANGER",
+      "selected": "HEADBUTT"
+    },
+    {
+      "kind": "colored",
+      "seed": 0,
+      "excluded": "BASH",
+      "selected": "IRON_WAVE"
+    },
+    {
+      "kind": "colorless",
+      "seed": 1,
+      "excluded": "APOTHEOSIS",
+      "selected": "GOOD_INSTINCTS"
+    },
+    {
+      "kind": "colorless",
+      "seed": 0,
+      "excluded": "APPARITION",
+      "selected": "TRANSMUTATION"
+    },
+    {
+      "kind": "curse",
+      "seed": 0,
+      "excluded": "REGRET",
+      "selected": "DOUBT"
+    },
+    {
+      "kind": "curse",
+      "seed": 0,
+      "excluded": "ASCENDERS_BANE",
+      "selected": "SHAME"
+    }
+  ]
+}

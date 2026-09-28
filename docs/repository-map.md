@@ -21,6 +21,9 @@ The 46M → 60M stage is complete. The current demonstration model is the select
 
 The [2026-09-26 end-to-end audit](audits/2026-09-26-project-audit.md) records current source checks, fixes, and verification limits.
 The [2026-09-28 closeout audit](audits/2026-09-28-stage-closeout.md) records model import, full automated checks and the archive layout.
+The [Act1 qualification record](audits/2026-09-28-act1-qualification.md) records the current regression corpus, qualification safeguards and remaining environment gates.
+The [Act1 review and training direction](audits/2026-09-28-act1-review-and-training-direction.md) records the maintainer's decision to pause broader parity auditing, the latest real-game demonstration, and the proposed experiments for the performance plateau. Complete semantic qualification remains open.
+The [plateau execution workflow](act1-plateau-workflow.md) provides the prepared one-job baseline/diagnosis path and two budget-limited reward experiment configurations. No new training has been launched.
 
 ## Local and ignored files
 

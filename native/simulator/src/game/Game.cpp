@@ -176,12 +176,24 @@ CardId sts::getRandomCurse(Random &cardRng) {
 }
 
 CardId sts::getRandomCurse(Random &rng, CardId exclude) {
-    int idx = rng.random(curseCardPoolSize-2);
-    if (curseCardPool[idx] == exclude) {
-        return curseCardPool[idx+1];
-    } else {
-        return curseCardPool[idx];
+    return drawCardExcluding(rng, curseCardPool, curseCardPoolSize, exclude);
+}
+
+CardId sts::drawCardExcluding(Random &rng, const CardId *pool, int size, CardId exclude) {
+    // Stock builds a filtered ArrayList before drawing. Preserve its order,
+    // bound and single RNG call, including when the prohibited card is absent.
+    int eligible = 0;
+    for (int i = 0; i < size; ++i) {
+        if (pool[i] != exclude) ++eligible;
     }
+    if (eligible == 0) {
+        throw std::invalid_argument("card draw has no eligible candidates");
+    }
+    int selected = rng.random(eligible - 1);
+    for (int i = 0; i < size; ++i) {
+        if (pool[i] != exclude && selected-- == 0) return pool[i];
+    }
+    throw std::logic_error("filtered card draw index out of range");
 }
 
 CardId sts::getTrulyRandomCard(Random &cardRandomRng, CharacterClass cc) {
@@ -190,12 +202,7 @@ CardId sts::getTrulyRandomCard(Random &cardRandomRng, CharacterClass cc) {
 }
 
 CardId sts::returnTrulyRandomColorlessCardFromAvailable(Random &rng, CardId exclude) {
-    int idx = rng.random(srcColorlessCardPoolSize-2);
-    if (srcColorlessCardPool[idx] == exclude) {
-        return srcColorlessCardPool[idx + 1];
-    } else {
-        return srcColorlessCardPool[idx];
-    }
+    return drawCardExcluding(rng, srcColorlessCardPool, srcColorlessCardPoolSize, exclude);
 }
 
 CardId sts::getTrulyRandomColorlessCardInCombat(Random &cardRandomRng) {

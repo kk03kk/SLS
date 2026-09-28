@@ -1,0 +1,73 @@
+# Budget-limited reward screening from 56M, not an exact resume.
+# Final evaluation here is a development confirmation set, not the untouched 9e12 final set.
+[run]
+workflow = "single-stage"
+profile = "IRONCLAD_A20_ACT1"
+seed = 120000000
+training_seed_limit = 2000000000000
+device = "cuda"
+deterministic = true
+worker_backend = "sharded-vector"
+worker_layout = [64, 16]
+benchmark = "local/runs/preparation/ironclad-a20-act1-plateau-win-2m/benchmark.json"
+output = "local/runs/ironclad-a20-act1-plateau-win-2m"
+selection_progress_guard = true
+periodic_evaluation_seed_start = 8000000000000
+periodic_evaluation_seed_count = 512
+final_evaluation_seed_start = 8000001000000
+final_evaluation_seed_count = 512
+evaluation_max_steps = 4096
+
+[stages.train]
+profile = "IRONCLAD_A20_ACT1"
+target_environment_steps = 58000000
+evaluate_every_steps = 500000
+checkpoint_every_steps = 250000
+minimum_success_rate = 0.0
+minimum_reached_act2_rate = 0.0
+minimum_reached_act3_rate = 0.0
+minimum_evaluation_episodes = 512
+minimum_final_evaluation_episodes = 512
+
+[model]
+embedding_dim = 128
+transformer_layers = 4
+attention_heads = 4
+feedforward_dim = 256
+recurrent_hidden_dim = 256
+recurrent_layers = 1
+dropout = 0.0
+architecture = "sls-recurrent-relational-policy-v5"
+
+[ppo]
+rollout_steps = 256
+recurrent_sequence_length = 64
+minibatch_sequences = 16
+learning_rate = 0.00003125
+gamma = 1.0
+gae_lambda = 0.98
+clip_ratio = 0.2
+value_coefficient = 0.5
+entropy_coefficient = 0.002
+entropy_final = 0.002
+entropy_decay_steps = 4000000
+entropy_schedule_start_steps = 56000512
+target_kl = 0.02
+final_kl_samples = 4096
+value_clip_ratio = 0.2
+max_gradient_norm = 0.5
+epochs = 2
+potential_shaping = true
+potential_scale = 0.2
+failure_progress_scale = 0.0
+reward_schema = "sls-curriculum-win-v1"
+episode_limit_schema = "sls-fullrun-episode-limit-v2"
+max_episode_steps = 4096
+max_boundary_visits = 4
+limit_failure_reward = -1.0
+
+[warm_start]
+checkpoint = "local/runs/ironclad-a20-act1-v4-60m-stable/stages/train/selection/best_progress.pt"
+checkpoint_sha256 = "9555c8608155ba262901757cd57d76f854f1cd76a5b6126375e832fa0a714710"
+parent_environment_steps = 56000512
+transfer_kind = "optimization-experiment"

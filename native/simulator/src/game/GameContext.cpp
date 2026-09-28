@@ -1820,12 +1820,8 @@ CardId GameContext::returnTrulyRandomCardFromAvailable(Random &rng, CardId exclu
     auto color = getCardColor(exclude);
     switch (color) {
         case CardColor::COLORLESS: {
-            int idx = rng.random(static_cast<int>(colorlessCardPool.size()-2));
-            if (colorlessCardPool[idx] == exclude) {
-                return colorlessCardPool[idx + 1];
-            } else {
-                return colorlessCardPool[idx];
-            }
+            return drawCardExcluding(rng, colorlessCardPool.data(),
+                static_cast<int>(colorlessCardPool.size()), exclude);
         }
 
         case CardColor::CURSE: {
@@ -1836,19 +1832,7 @@ CardId GameContext::returnTrulyRandomCardFromAvailable(Random &rng, CardId exclu
             const CardId* pool = TransformCardPool::getPoolForClass(cc);
             int poolSize = TransformCardPool::getPoolSizeForClass(cc);
 
-            bool excludeInPool = cardRarities[static_cast<int>(exclude)] != CardRarity::BASIC &&
-                                 static_cast<CardColor>(cc) == color;
-
-            if (excludeInPool) {
-                int idx = rng.random(poolSize-2);
-                if (pool[idx] == exclude) {
-                    return pool[idx+1];
-                } else {
-                    return pool[idx];
-                }
-            } else {
-                return pool[rng.random(poolSize-1)];
-            }
+            return drawCardExcluding(rng, pool, poolSize, exclude);
         }
     }
 }

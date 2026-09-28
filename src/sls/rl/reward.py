@@ -6,6 +6,7 @@ from sls.contracts import Observation
 from sls.curriculum import CurriculumProfile, EpisodeHorizon
 
 REWARD_SCHEMA = "sls-curriculum-progress-v3"
+WIN_REWARD_SCHEMA = "sls-curriculum-win-v1"
 DEFAULT_FAILURE_PROGRESS_SCALE = 0.8
 
 
@@ -34,8 +35,8 @@ def curriculum_terminal_reward(
 ) -> float:
     """Score one real terminal outcome, ranking farther failures above earlier ones."""
 
-    if not 0.0 < failure_progress_scale < 1.0:
-        raise ValueError("failure progress scale must be between zero and one")
+    if not 0.0 <= failure_progress_scale < 1.0:
+        raise ValueError("failure progress scale must be in [0, 1)")
     if success:
         return 1.0
     return -1.0 + failure_progress_scale * curriculum_floor_progress(

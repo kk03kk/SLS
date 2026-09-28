@@ -1,0 +1,14 @@
+# One compute job: rebuild, preflight, current baseline, diagnostic capture and analysis.
+# No production training, game launch, or policy replacement.
+checkpoint = "local/runs/ironclad-a20-act1-v4-60m-stable/stages/train/selection/best_progress.pt"
+checkpoint_sha256 = "9555c8608155ba262901757cd57d76f854f1cd76a5b6126375e832fa0a714710"
+native_source_sha256 = "470acd317f0b3104c3c5de91e346934798414c8f328381555458ebd3ab0bfad9"
+preflight_config = "configs/train/ironclad_a20_act1_plateau_progress_2m.toml"
+output = "local/runs/act1-plateau-56m-v1"
+profile = "IRONCLAD_A20_ACT1"
+development_seed_start = 8000000000000
+development_episodes = 512
+diagnostic_seed_start = 1000000000
+diagnostic_episodes = 256
+training_seed_limit = 2000000000000
+environment_shards = 16

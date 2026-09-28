@@ -1,0 +1,61 @@
+{
+  "schema": "sls-act1-regression-corpus-v1",
+  "profile_id": "IRONCLAD_A20_ACT1",
+  "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "model_sha256": "69fdb8189da2b49a6714d51e9f85833b0a0dfb381619cc211002da6e1eefbfeb",
+  "evidence_origin": "Historical authorized original-game captures; UI folds documented in 2026-09-26-simulator-improvement-plan.md. Legacy capture headers do not embed the stock JAR hash.",
+  "cases": [
+    {
+      "seed": 20260926,
+      "original_path": "local/reports/act1-full-20260926-original-superfast-ordered.jsonl",
+      "original_sha256": "3a5ede7dcbb93297b1f88ecf90c37e2b26a13683ede3339edda31c1fb820068e"
+    },
+    {
+      "seed": 0,
+      "original_path": "local/reports/act1-final-seed-0-original.jsonl",
+      "original_sha256": "bbc8ea3e3b339f7443154921472ac771fb0c4c023807351d1a02592d2805656b"
+    },
+    {
+      "seed": 3,
+      "original_path": "local/reports/act1-final-seed-3-original.jsonl",
+      "original_sha256": "03d54251c1e47dfca9b9ea89cde05ddb01156b2269a468af31e5761002972219"
+    },
+    {
+      "seed": 4,
+      "original_path": "local/reports/act1-extra-seed-4-original-utf8.jsonl",
+      "original_sha256": "3e57fbedc484881323bdb8ab4d41a54a7f9474c9914f6d0446f7b7cac15cf312"
+    },
+    {
+      "seed": 5,
+      "original_path": "local/reports/act1-final-seed-5-original.jsonl",
+      "original_sha256": "80fca563e502224b3db92d83dec60ec8eeaa66dac0de3512054075670750989d"
+    },
+    {
+      "seed": 6,
+      "original_path": "local/reports/act1-extra-seed-6-original-utf8.jsonl",
+      "original_sha256": "6a70234939a525d6a16b66bb10dea0b066a0abc76b95d9a63df9c16931b67576"
+    },
+    {
+      "seed": 7,
+      "original_path": "local/reports/act1-seed7-original-superfast.jsonl",
+      "original_sha256": "6f704c413f8f4e66bad7a026cdb3855269a11f64761d0ac85e50e2ded8042ab2"
+    },
+    {
+      "seed": 8,
+      "original_path": "local/reports/act1-seed8-original-smoke-folded.jsonl",
+      "original_sha256": "2ef9e561b1f538afc9d30b7ce7950e560e8f6893bc66016b17724e524f60f9c5"
+    },
+    {
+      "seed": 9,
+      "original_path": "local/reports/act1-final-seed-9-original.jsonl",
+      "original_sha256": "1d7b7b99065d77a8d610736deabc1643ac7687e8aa6da87cc22024f2aeb513ce"
+    },
+    {
+      "seed": 10,
+      "original_path": "local/reports/act1-extra-seed-10-original-utf8.jsonl",
+      "original_sha256": "4bc99d3380806efd1d4ce1408d50e44a2a4e103a1769c6706aaa3dca9d3a2066"
+    }
+  ],
+  "cpu_threads": 16,
+  "runtime_note": "Historical workstation default; seed 0 control reproduces 160/160 boundaries at 16 threads. Legacy headers do not embed runtime settings; keep this limitation explicit."
+}

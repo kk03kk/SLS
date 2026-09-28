@@ -32,7 +32,10 @@ def _write(path: Path, backend: str, boundaries: list[dict[str, object]]) -> Non
             "source_git_commit": "abc", "architecture": "v4",
             "encoding_schema": "input", "vocabulary_sha256": "vocab",
             "model_sha256": "weights",
+            "recurrent_memory_size": 256, "goal": "ACT1",
         },
+        "selection": "DETERMINISTIC_ARGMAX", "initial_memory": "ZERO",
+        "recurrent_context": "PREVIOUS_ACTION_AND_REWARD",
     }
     path.write_text(
         "\n".join(json.dumps(record) for record in [metadata, *boundaries]) + "\n",
@@ -173,7 +176,10 @@ def test_empty_trajectories_do_not_pass(tmp_path: Path) -> None:
     assert compare_trajectories(simulator, original)["passed"] is False
 
 
-@pytest.mark.parametrize("field,value", [("model_sha256", "other"), ("model_sha256", None)])
+@pytest.mark.parametrize("field,value", [
+    ("model_sha256", "other"), ("model_sha256", None),
+    ("goal", "ACT2"), ("recurrent_memory_size", 128),
+])
 def test_comparison_requires_same_model_weights(tmp_path: Path, field, value) -> None:
     simulator, original = tmp_path / "sim.jsonl", tmp_path / "original.jsonl"
     _write(simulator, "simulator", [_boundary()])
@@ -184,6 +190,19 @@ def test_comparison_requires_same_model_weights(tmp_path: Path, field, value) ->
     lines[0] = json.dumps(metadata)
     original.write_text("\n".join(lines) + "\n", encoding="utf-8")
     assert compare_trajectories(simulator, original)["passed"] is False
+
+
+def test_comparison_rejects_different_recorded_inference_runtimes(tmp_path: Path) -> None:
+    simulator, original = tmp_path / "sim.jsonl", tmp_path / "original.jsonl"
+    for path, backend, threads in ((simulator, "simulator", 1), (original, "original", 16)):
+        _write(path, backend, [_boundary()])
+        lines = path.read_text(encoding="utf-8").splitlines()
+        metadata = json.loads(lines[0])
+        metadata["inference_runtime"] = {"cpu_threads": threads}
+        path.write_text("\n".join([json.dumps(metadata), *lines[1:]]) + "\n", encoding="utf-8")
+    result = compare_trajectories(simulator, original)
+    assert result["passed"] is False
+    assert result["inference_runtime_match"] is False
 
 
 def test_comparison_rejects_two_simulator_captures(tmp_path: Path) -> None:

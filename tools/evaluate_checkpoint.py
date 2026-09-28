@@ -179,11 +179,16 @@ def main(argv: list[str] | None = None) -> int:
             "native_source_sha256": contract.get("native_source_sha256"),
             "content_scope_sha256": contract.get("content_scope_sha256"),
         },
+        "allow_environment_migration": args.allow_environment_migration,
         "runtime": {
             "python": sys.version,
             "platform": platform.platform(),
             "hostname": socket.gethostname(),
             "torch": torch.__version__,
+            "cpu_threads": torch.get_num_threads(),
+            "cpu_interop_threads": torch.get_num_interop_threads(),
+            "mkldnn_enabled": torch.backends.mkldnn.enabled,
+            "float32_matmul_precision": torch.get_float32_matmul_precision(),
             "cuda": torch.version.cuda,
             "gpu": (
                 torch.cuda.get_device_name(args.device)

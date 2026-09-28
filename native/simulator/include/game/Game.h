@@ -36,6 +36,7 @@ namespace sts {
 
     CardId getRandomCurse(Random &cardRng);
     CardId getRandomCurse(Random &rng, CardId exclude);
+    CardId drawCardExcluding(Random &rng, const CardId *pool, int size, CardId exclude);
 
     CardId getTrulyRandomCard(Random &cardRandomRng, CharacterClass cc);
     CardId returnTrulyRandomColorlessCardFromAvailable(Random &rng, CardId exclude);

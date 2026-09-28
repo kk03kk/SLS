@@ -24,6 +24,7 @@ from sls.curriculum import (  # noqa: E402
     CurriculumProfile,
 )
 from sls.diagnostics import capture_policy_trajectory  # noqa: E402
+from sls.rl.training_contract import native_artifact, sha256_file  # noqa: E402
 from sls.runtime import load_policy_artifact  # noqa: E402
 from sls.runtime.artifact import PolicyArtifactMetadata  # noqa: E402
 
@@ -58,6 +59,7 @@ def main() -> int:
     parser.add_argument("--journal", type=Path)
     parser.add_argument("--max-actions", type=int)
     parser.add_argument("--diagnostic-state", action="store_true")
+    parser.add_argument("--stock-jar", type=Path, help="pin the original game's bytecode identity")
     args = parser.parse_args()
     stopped = False
 
@@ -69,6 +71,15 @@ def main() -> int:
     signal.signal(signal.SIGTERM, stop)
     artifact = load_policy_artifact(args.artifact, device="cpu")
     profile = _profile_for_artifact(artifact.metadata)
+    identity = {"profile_id": profile.profile_id}
+    if args.backend == "simulator":
+        built = native_artifact()
+        if built is None:
+            raise RuntimeError("trajectory requires a current native artifact")
+        identity.update(native_source_sha256=built["source_sha256"],
+                        native_artifact_sha256=built["sha256"])
+    elif args.stock_jar is not None:
+        identity["stock_jar_sha256"] = sha256_file(args.stock_jar)
     backend = (
         SimulatorBackend(profile)
         if args.backend == "simulator"
@@ -79,6 +90,7 @@ def main() -> int:
         output=args.output, journal=args.journal,
         max_actions=args.max_actions, stop_requested=lambda: stopped,
         diagnostic_state=args.diagnostic_state,
+        environment_identity=identity,
     )
     completion = os.environ.get("SLS_RUN_COMPLETION")
     if completion:
