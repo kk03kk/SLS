@@ -1,7 +1,7 @@
 # Ironclad A0 FullRun：10M → 15M 训练准备
 
 本轮准备完成于 2026-09-05。**采用显式 v3→v4 model warm-start，不能 exact resume。**
-job 821775 后的 contract 修订与直接重试命令见 [runtime contract审查](training-runtime-contracts.md)。
+job 821775 后的 contract 修订与直接重试命令见 [runtime contract审查](../training-runtime-contracts.md)。
 已有验证可通过受hash约束的审查转换复用；本页的完整准备流程适用于首次建立训练链。
 保留全部旧网络参数，重置 Adam、在途环境、循环记忆、episode limiter 和 RNG 流。
 累计计数从 10,002,432 steps / update 814 继续；验证用的更新不计入正式训练。

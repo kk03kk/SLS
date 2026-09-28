@@ -10,11 +10,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
+from sls.audit.act1_targets import target_ids  # noqa: E402
 from sls.audit.semantic_coverage import (  # noqa: E402
     COVERAGE_SCHEMA,
     REQUIRED_SYSTEM_OBLIGATIONS,
 )
-from sls.content.scope import load_ironclad_a0_scope  # noqa: E402
+from sls.content.scope import ironclad_scope, load_ironclad_a0_scope  # noqa: E402
+from sls.rl.training_contract import native_source_digest  # noqa: E402
 
 
 def _scope_ids(category: str) -> set[str]:
@@ -27,10 +29,36 @@ def _scope_ids(category: str) -> set[str]:
     return result
 
 
-def build_obligations(inventory: dict[str, object]) -> dict[str, object]:
+def build_obligations(
+    inventory: dict[str, object], *, targets: dict[str, object] | None = None,
+) -> dict[str, object]:
+    if targets is not None:
+        authority = dict(targets.get("authority") or {})
+        if authority.get("stock_jar_sha256") != inventory.get("stock_jar_sha256"):
+            raise ValueError("target and bytecode inventory stock JAR hashes differ")
+        if authority.get("native_source_sha256") != native_source_digest():
+            raise ValueError("A20 target native source hash is stale")
+        if targets.get("scope_sha256") != ironclad_scope(20)["scope_sha256"]:
+            raise ValueError("A20 target scope hash is stale")
+        scoped_ids = {
+            category: target_ids(targets, category)
+            for category in ("cards", "potions", "relics", "events", "encounters", "monsters")
+        }
+    else:
+        scoped_ids = {}
     obligations: list[dict[str, object]] = []
-    for category, raw_rows in dict(inventory.get("categories") or {}).items():
-        scoped = _scope_ids(str(category))
+    inventory_categories = dict(inventory.get("categories") or {})
+    if targets is not None:
+        missing = (set(scoped_ids) - {"encounters"}) - inventory_categories.keys()
+        if missing:
+            raise ValueError(f"bytecode inventory lacks target categories: {sorted(missing)}")
+    for category, raw_rows in inventory_categories.items():
+        scoped = scoped_ids.get(str(category), _scope_ids(str(category)))
+        available = {str(dict(row)["content_id"]) for row in raw_rows}
+        if targets is not None and scoped - available:
+            raise ValueError(
+                f"bytecode inventory lacks {category} targets: {sorted(scoped - available)[:10]}"
+            )
         for raw in raw_rows:
             row = dict(raw)
             content_id = str(row["content_id"])
@@ -70,7 +98,7 @@ def build_obligations(inventory: dict[str, object]) -> dict[str, object]:
                         "simulator_references": row.get("simulator_references") or [],
                         "status": "UNREVIEWED",
                     })
-    for encounter_id in sorted(_scope_ids("encounters")):
+    for encounter_id in sorted(scoped_ids.get("encounters", _scope_ids("encounters"))):
         obligations.append({
             "obligation_id": f"encounters:{encounter_id}:full-state-machine",
             "category": "encounters",
@@ -95,8 +123,15 @@ def build_obligations(inventory: dict[str, object]) -> dict[str, object]:
     return {
         "schema": COVERAGE_SCHEMA,
         "stock_jar_sha256": inventory.get("stock_jar_sha256"),
-        "scope_id": load_ironclad_a0_scope()["scope_id"],
-        "scope_sha256": load_ironclad_a0_scope()["scope_sha256"],
+        "scope_id": (
+            str(targets["profile_id"]) if targets is not None
+            else load_ironclad_a0_scope()["scope_id"]
+        ),
+        "scope_sha256": (
+            str(targets["scope_sha256"]) if targets is not None
+            else load_ironclad_a0_scope()["scope_sha256"]
+        ),
+        "target_inventory_status": targets.get("status") if targets is not None else None,
         "obligations": obligations,
     }
 
@@ -105,8 +140,12 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("inventory", type=Path)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--targets", type=Path, help="A20 Act1 candidate inventory")
     args = parser.parse_args()
-    result = build_obligations(json.loads(args.inventory.read_text(encoding="utf-8")))
+    targets = json.loads(args.targets.read_text(encoding="utf-8")) if args.targets else None
+    result = build_obligations(
+        json.loads(args.inventory.read_text(encoding="utf-8")), targets=targets,
+    )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     temporary = args.output.with_suffix(args.output.suffix + ".tmp")
     temporary.write_text(

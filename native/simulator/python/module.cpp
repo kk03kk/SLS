@@ -799,6 +799,10 @@ int relic_counter(const RelicInstance &relic, const BattleContext &battle) {
         // attack is played and then resets it to 0.
         case RelicId::PEN_NIB:
             return player.penNibCounter == -1 ? 9 : player.penNibCounter;
+        case RelicId::POCKETWATCH:
+            // Stock exposes the number of cards played this turn; native uses
+            // the same count for the next-turn draw but stores it on Player.
+            return player.cardsPlayedThisTurn;
         // Stock resets at battle start and increments atTurnStart. Native
         // BattleContext::turn is zero-based while the visible counter is one-
         // based at policy boundaries.
@@ -4270,7 +4274,8 @@ public:
         const std::string &event_id,
         const py::dict &rng,
         const std::string &note_card = "IRON_WAVE",
-        bool portal_eligible = true, int ascension = 0) {
+        bool portal_eligible = true, int ascension = 0,
+        bool empty_deck = false) {
         reset(seed, ascension, py::none(), note_card, portal_eligible);
         restore_full_run_rng(*gc_, rng);
         gc_->act = 1;
@@ -4280,6 +4285,9 @@ public:
         gc_->curHp = 80;
         gc_->maxHp = 80;
         gc_->gold = 99;
+        if (empty_deck) {
+            gc_->deck = Deck();
+        }
         gc_->screenState = ScreenState::EVENT_SCREEN;
         // Match a natural event room's continuation so option-effect probes
         // can finish as well as inspect the constructor boundary.
@@ -4782,6 +4790,20 @@ public:
         return result;
     }
 
+    py::dict molten_egg_preview_probe() {
+        require_reset();
+        if (!gc_->hasRelic(RelicId::MOLTEN_EGG)) {
+            gc_->obtainRelic(RelicId::MOLTEN_EGG);
+        }
+        Card card(CardId::SEARING_BLOW);
+        const Card first = gc_->previewObtainCard(card);
+        const Card second = gc_->previewObtainCard(first);
+        py::dict result;
+        result["first_upgrade_count"] = first.getUpgraded();
+        result["second_upgrade_count"] = second.getUpgraded();
+        return result;
+    }
+
     py::dict scripted_playout() {
         require_reset();
         search::SimpleAgent agent;
@@ -5001,9 +5023,9 @@ py::dict stochastic_distribution_probe(std::uint64_t base_seed, int samples) {
     return result;
 }
 
-py::dict red_slaver_move_probe() {
+py::dict red_slaver_move_probe(int ascension = 0) {
     BattleContext battle;
-    battle.ascension = 0;
+    battle.ascension = ascension;
     Monster monster;
     monster.id = MonsterId::RED_SLAVER;
     monster.miscInfo = 1;  // Entangle has already been used.
@@ -5021,6 +5043,12 @@ py::dict red_slaver_move_probe() {
 
 py::dict monster_move_parity_probe() {
     py::dict result;
+
+    BattleContext initial_wizard_battle;
+    initial_wizard_battle.ascension = 20;
+    Monster initial_wizard;
+    initial_wizard.construct(initial_wizard_battle, MonsterId::GREMLIN_WIZARD, 0);
+    result["gremlin_wizard_initial_charge"] = initial_wizard.miscInfo;
 
     BattleContext acid_battle;
     acid_battle.ascension = 17;
@@ -5128,7 +5156,7 @@ py::dict monster_move_parity_probe() {
     wizard.idx = 0;
     wizard.curHp = 25;
     wizard.maxHp = 25;
-    wizard.miscInfo = 0;
+    wizard.miscInfo = 1;
     wizard.setMove(MMID::GREMLIN_WIZARD_CHARGING);
     py::list wizard_sequence;
     wizard_sequence.append(
@@ -5338,6 +5366,26 @@ py::dict run_fairy_potion_probe() {
     return result;
 }
 
+py::dict entropic_brew_outside_combat_probe() {
+    auto run = [](bool sozu) {
+        GameContext gc(CharacterClass::IRONCLAD, 37, 0);
+        gc.curRoom = Room::EVENT;
+        gc.potions[0] = Potion::ENTROPIC_BREW;
+        gc.potionCount = 1;
+        if (sozu) gc.relics.add({RelicId::SOZU, 0});
+        const int potion_before = gc.potionRng.counter;
+        gc.drinkPotionAtIdx(0);
+        py::dict state;
+        state["potion_draws"] = gc.potionRng.counter - potion_before;
+        state["potion_count"] = gc.potionCount;
+        return state;
+    };
+    py::dict result;
+    result["normal"] = run(false);
+    result["sozu"] = run(true);
+    return result;
+}
+
 py::dict smoke_bomb_core_probe() {
     GameContext gc(CharacterClass::IRONCLAD, 19, 0);
     gc.floorNum = 1;
@@ -5353,6 +5401,8 @@ py::dict smoke_bomb_core_probe() {
     battle.potionCount = 1;
     search::Action smoke(search::ActionType::POTION, 0, 0);
     const bool normal_legal = smoke.isValidAction(battle);
+    const int treasure_before = gc.treasureRng.counter;
+    const int potion_before = gc.potionRng.counter;
     smoke.execute(battle);
     const bool escaped = battle.outcome == Outcome::PLAYER_ESCAPE;
     battle.exitBattle(gc);
@@ -5397,6 +5447,8 @@ py::dict smoke_bomb_core_probe() {
     result["escaped"] = escaped;
     result["map_screen"] = gc.screenState == ScreenState::MAP_SCREEN;
     result["reward_callback_called"] = reward_callback_called;
+    result["treasure_draws"] = gc.treasureRng.counter - treasure_before;
+    result["potion_draws"] = gc.potionRng.counter - potion_before;
     result["bosses_blocked"] = blocked;
     result["back_attack_blocked"] = !smoke.isValidAction(act4);
     return result;
@@ -6166,7 +6218,7 @@ PYBIND11_MODULE(_lightspeed, module) {
     module.def("shuffle_probe", &shuffle_probe, py::arg("seed"));
     module.def("stochastic_distribution_probe", &stochastic_distribution_probe,
         py::arg("base_seed"), py::arg("samples"));
-    module.def("red_slaver_move_probe", &red_slaver_move_probe);
+    module.def("red_slaver_move_probe", &red_slaver_move_probe, py::arg("ascension") = 0);
     module.def("monster_move_parity_probe", &monster_move_parity_probe);
     module.def("action_queue_probe", &action_queue_probe);
     module.def("card_color_probe", &card_color_probe);
@@ -6174,6 +6226,7 @@ PYBIND11_MODULE(_lightspeed, module) {
     module.def("potion_metadata_probe", &potion_metadata_probe);
     module.def("relic_metadata_probe", &relic_metadata_probe);
     module.def("run_fairy_potion_probe", &run_fairy_potion_probe);
+    module.def("entropic_brew_outside_combat_probe", &entropic_brew_outside_combat_probe);
     module.def("smoke_bomb_core_probe", &smoke_bomb_core_probe);
     module.def("stance_mechanics_probe", &stance_mechanics_probe);
     module.def("orb_mechanics_probe", &orb_mechanics_probe);
@@ -6275,7 +6328,7 @@ PYBIND11_MODULE(_lightspeed, module) {
         .def("reset_event_probe", &LightspeedRunState::reset_event_probe,
              py::arg("seed"), py::arg("event_id"), py::arg("rng"),
              py::arg("note_card") = "IRON_WAVE", py::arg("portal_eligible") = true,
-             py::arg("ascension") = 0)
+             py::arg("ascension") = 0, py::arg("empty_deck") = false)
         .def("snapshot", &LightspeedRunState::snapshot)
         .def("load_state", &LightspeedRunState::load_state, py::arg("state"))
         .def("legal_actions", &LightspeedRunState::legal_actions)
@@ -6292,6 +6345,7 @@ PYBIND11_MODULE(_lightspeed, module) {
         .def("advance_all_rng", &LightspeedRunState::advance_all_rng)
         .def("courier_restock_probe", &LightspeedRunState::courier_restock_probe,
              py::arg("purchased_card"))
+        .def("molten_egg_preview_probe", &LightspeedRunState::molten_egg_preview_probe)
         .def("scripted_playout", &LightspeedRunState::scripted_playout)
         .def("scripted_playout_act1", &LightspeedRunState::scripted_playout_act1)
         .def("scripted_step", &LightspeedRunState::scripted_step)

@@ -201,7 +201,13 @@ class OriginalBackend:
         payload = self.raw_payload
         pending_discard_souls: set[str] = set()
         liquid_memories = False
+        smoke_bomb = False
         if resolved_action.kind is ActionKind.USE_POTION:
+            smoke_bomb = any(
+                potion.instance_id == resolved_action.subject_id
+                and potion.content_id == "SMOKE_BOMB"
+                for potion in self._adapted.decision.observation.potions
+            )
             liquid_memories = any(
                 potion.instance_id == resolved_action.subject_id
                 and potion.content_id == "LIQUID_MEMORIES"
@@ -259,6 +265,8 @@ class OriginalBackend:
             payload = self._wait_for_key_acquisition(
                 payload, key=expected_key, executed=executed,
             )
+        if smoke_bomb:
+            payload = self._settle_smoke_bomb_escape(payload, executed)
         fold_single_event = (
             resolved_action.kind in {ActionKind.CHOOSE_EVENT_OPTION, ActionKind.CHOOSE_NEOW_OPTION}
         )
@@ -671,11 +679,17 @@ class OriginalBackend:
                 == "Match and Keep!"
                 and not (payload.get("_match_slots") or ())
             )
+            forced_reward_intro = bool(
+                screen == "EVENT"
+                and event_id in {"BONFIRE_SPIRITS", "LAB"}
+                and len(choices or ()) == 1
+            )
             if (
                 (
                     screen == "NEOW" or neow_terminal
                     or terminal_event_choice
                     or match_intro
+                    or forced_reward_intro
                     or (fold_single_event and screen == "EVENT")
                 )
                 and len(choices or ()) == 1
@@ -870,3 +884,28 @@ class OriginalBackend:
             if executed is not None:
                 executed.append("wait 30")
         raise RuntimeError("Original combat terminal presentation did not settle")
+
+    def _settle_smoke_bomb_escape(
+        self, payload: dict[str, Any], executed: list[str], *, limit: int = 20,
+    ) -> dict[str, Any]:
+        """Wait through stock Smoke Bomb's delayed escape before policy input."""
+
+        for _ in range(limit):
+            game = payload.get("game_state") or {}
+            available = {str(item).lower() for item in payload.get("available_commands") or ()}
+            if not game.get("combat_state"):
+                state = game.get("screen_state") or {}
+                if (
+                    str(game.get("screen_type") or "").upper() == "COMBAT_REWARD"
+                    and not (state.get("rewards") or ())
+                    and "proceed" in available
+                ):
+                    payload = self.session.execute("proceed")
+                    executed.append("proceed")
+                    continue
+                return payload
+            if "wait" not in available:
+                raise RuntimeError("Smoke Bomb escape has no advertised wait command")
+            payload = self.session.execute("wait 30")
+            executed.append("wait 30")
+        raise RuntimeError("Smoke Bomb did not leave combat within bounded wait")

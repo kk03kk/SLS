@@ -288,6 +288,8 @@ void Shop::assignRandomCardExcluding(GameContext &gc, CardType type, CardId excl
         id = getRandomClassCardOfTypeAndRarity(gc.cardRng, gc.cc, type, outRarity);
     }while (id == excludeId);
 
-    outCard = gc.previewObtainCard(id);
+    // setupCards previews every inventory card once after all draws. Previewing
+    // here would apply Egg callbacks twice to the second attack/skill slot.
+    outCard = Card(id);
 }
 

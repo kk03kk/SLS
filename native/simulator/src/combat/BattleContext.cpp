@@ -529,8 +529,24 @@ void BattleContext::exitBattle(GameContext &g) const {
     if (outcome == Outcome::PLAYER_LOSS) {
         g.outcome = GameOutcome::PLAYER_LOSS;
     } else if (outcome == Outcome::PLAYER_ESCAPE) {
-        // A smoked room completes without combat rewards. Returning through
-        // afterBattle would incorrectly grant the encounter's rewards.
+        // AbstractRoom.update constructs gold and rolls the potion reward
+        // before CombatRewardScreen.openCombat(..., true) hides a smoked
+        // room's rewards. Keep those RNG streams and the potion pity counter
+        // in step without granting anything to the player. Card rewards are
+        // skipped by the smoked reward screen.
+        Rewards discarded;
+        if (g.curRoom == Room::MONSTER) {
+            g.treasureRng.random(10, 20);
+            discarded.addGold(1);
+        } else if (g.curRoom == Room::ELITE) {
+            g.treasureRng.random(25, 35);
+            discarded.addGold(1);
+            discarded.addRelic(g.returnRandomRelic(returnRandomRelicTierElite(g.relicRng)));
+            if (g.hasRelic(RelicId::BLACK_STAR)) {
+                discarded.addRelic(g.returnNonCampfireRelic(returnRandomRelicTierElite(g.relicRng)));
+            }
+        }
+        g.addPotionRewards(discarded);
         g.screenState = ScreenState::MAP_SCREEN;
         g.regainControlAction = nullptr;
     } else {
@@ -572,6 +588,10 @@ void BattleContext::updateRelicsOnExit(GameContext &g) const {
                 if (r.data > 0) {
                     --r.data;
                 }
+                break;
+
+            case RelicId::POCKETWATCH:
+                r.data = -1;
                 break;
 
             case RelicId::NUNCHAKU:
@@ -2082,6 +2102,10 @@ void BattleContext::onAfterUseCard() {
     }
 
     if (item.exhaustOnUse && !spoonProc) {
+        // A played card's turn-only cost is gone by the time stock exposes it
+        // in the exhaust pile. Infernal Blade's free attack is one example;
+        // preserve the base cost for later Exhume-style retrieval.
+        c.costForTurn = c.cost;
         triggerAndMoveToExhaustPile(c);
 
     } else {

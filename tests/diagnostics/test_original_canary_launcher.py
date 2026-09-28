@@ -31,6 +31,15 @@ def test_launcher_pins_only_the_required_mods(tmp_path: Path) -> None:
     assert "SuperFastMode" not in " ".join(command)
 
 
+def test_launcher_can_opt_in_to_speed_mod_for_audit(tmp_path: Path) -> None:
+    command = launcher_command(
+        tmp_path / "game", tmp_path / "ModTheSpire.jar", superfast=True,
+    )
+    assert command[-1] == (
+        "basemod,CommunicationMod,spirecomm-parity,superfastmode"
+    )
+
+
 def test_canary_uses_the_artifact_curriculum_horizon() -> None:
     assert _profile_for_goal("ACT1").horizon is EpisodeHorizon.ACT_1
     assert _profile_for_goal("ACT2").horizon is EpisodeHorizon.ACT_2

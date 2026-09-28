@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import shutil
 import sys
@@ -152,6 +153,44 @@ def restore(config: Path, backup: Path) -> Path:
     return current_backup
 
 
+def _load_mod_list(path: Path) -> tuple[dict, list[str]]:
+    if not path.is_file():
+        raise FileNotFoundError(f"ModTheSpire mod list does not exist: {path}")
+    data = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(data, dict) or not isinstance(data.get("lists"), dict):
+        raise ValueError("ModTheSpire mod list has an unexpected format")
+    selected = data["lists"].get(data.get("defaultList"))
+    if not isinstance(selected, list) or not all(isinstance(item, str) for item in selected):
+        raise ValueError("ModTheSpire default list is missing or invalid")
+    return data, selected
+
+
+def select_required_mods(path: Path) -> Path:
+    """Add the three required Mods to the user's active default list."""
+
+    data, selected = _load_mod_list(path)
+    wanted = ("BaseMod.jar", "CommunicationMod.jar", "SpirecommParity.jar")
+    existing = {name.lower() for name in selected}
+    missing = [name for name in wanted if name.lower() not in existing]
+    if not missing:
+        return path
+    selected.extend(missing)
+    backup = _backup(path)
+    _atomic_write(path, json.dumps(data, ensure_ascii=False, indent=2) + "\n")
+    return backup
+
+
+def restore_mod_list(path: Path, backup: Path) -> Path:
+    if not path.is_file() or not backup.is_file():
+        raise FileNotFoundError("ModTheSpire list or its backup does not exist")
+    data = json.loads(backup.read_text(encoding="utf-8"))
+    if not isinstance(data, dict) or not isinstance(data.get("lists"), dict):
+        raise ValueError("ModTheSpire backup has an unexpected format")
+    safety_backup = _backup(path)
+    _atomic_write(path, backup.read_text(encoding="utf-8"))
+    return safety_backup
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=Path)
@@ -163,13 +202,27 @@ def main() -> int:
     parser.add_argument("--port", type=int, default=8765)
     parser.add_argument("--delay", type=float, default=1.0)
     parser.add_argument("--restore", type=Path)
+    parser.add_argument("--restore-mods", type=Path)
+    parser.add_argument(
+        "--select-mods", action="store_true",
+        help="also add required Mods to the active ModTheSpire list",
+    )
     args = parser.parse_args()
     config = args.config or default_config_path()
-    if args.restore is not None:
-        safety_backup = restore(config, args.restore)
-        print(f"Restored: {config}")
-        print(f"Previous config backup: {safety_backup}")
+    if args.restore is not None or args.restore_mods is not None:
+        if args.restore is not None:
+            safety_backup = restore(config, args.restore)
+            print(f"Restored: {config}")
+            print(f"Previous config backup: {safety_backup}")
+        if args.restore_mods is not None:
+            mod_list = config.parent.parent / "mod_lists.json"
+            safety_backup = restore_mod_list(mod_list, args.restore_mods)
+            print(f"Restored: {mod_list}")
+            print(f"Previous mod list backup: {safety_backup}")
         return 0
+    mod_list = config.parent.parent / "mod_lists.json"
+    if args.select_mods:
+        _load_mod_list(mod_list)
     backup, command = configure(
         config,
         python=args.python,
@@ -180,6 +233,10 @@ def main() -> int:
     print(f"Configured: {config}")
     print(f"Backup: {backup}")
     print(f"Command: {command}")
+    if args.select_mods:
+        mod_backup = select_required_mods(mod_list)
+        print(f"Mod list: {mod_list}")
+        print(f"Mod list backup: {mod_backup}")
     return 0
 
 

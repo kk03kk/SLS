@@ -1,11 +1,17 @@
 from __future__ import annotations
 
+import json
 import sys
 from pathlib import Path
 
 import pytest
 
-from tools.configure_live_inspector import configure, restore
+from tools.configure_live_inspector import (
+    configure,
+    restore,
+    restore_mod_list,
+    select_required_mods,
+)
 
 
 def test_configure_live_inspector_backs_up_preserves_and_restores(tmp_path: Path) -> None:
@@ -52,3 +58,19 @@ def test_default_configuration_defers_model_selection_to_dashboard(tmp_path: Pat
     _backup, command = configure(config, python=Path(sys.executable))
     assert "play_live_inspector.py --device cpu" in command
     assert ".pt" not in command
+
+
+def test_select_required_mods_preserves_other_choices_and_backs_up(tmp_path: Path) -> None:
+    path = tmp_path / "mod_lists.json"
+    original = {"defaultList": "<Default>", "lists": {"<Default>": ["BaseMod.jar", "Other.jar"]}}
+    path.write_text(json.dumps(original), encoding="utf-8")
+
+    backup = select_required_mods(path)
+
+    assert json.loads(backup.read_text(encoding="utf-8")) == original
+    choices = json.loads(path.read_text(encoding="utf-8"))["lists"]["<Default>"]
+    assert choices == ["BaseMod.jar", "Other.jar", "CommunicationMod.jar", "SpirecommParity.jar"]
+    assert select_required_mods(path) == path
+    previous = restore_mod_list(path, backup)
+    assert json.loads(path.read_text(encoding="utf-8")) == original
+    assert json.loads(previous.read_text(encoding="utf-8"))["lists"]["<Default>"] == choices

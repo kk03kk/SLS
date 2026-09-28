@@ -73,6 +73,31 @@ def test_prismatic_shard_is_policy_hidden_without_shifting_shop_commands() -> No
     assert adapted.commands[purchases[0].candidate_id] == ("choose 1",)
 
 
+def test_full_potion_slots_disable_shop_purchases_but_keep_offers_visible() -> None:
+    payload = {
+        "in_game": True,
+        "ready_for_command": True,
+        "available_commands": ["choose", "leave"],
+        "game_state": base_game(
+            gold=500, screen_type="SHOP_SCREEN",
+            potions=[{"id": "Strength Potion"}, {"id": "Block Potion"}],
+            screen_state={
+                "purge_available": False, "cards": [], "relics": [],
+                "potions": [{"id": "Duplication Potion", "price": 80}],
+            },
+        ),
+    }
+
+    adapted = adapt_original(payload)
+
+    assert [item.content_id for item in adapted.decision.observation.shop_items] == [
+        "DUPLICATION_POTION",
+    ]
+    assert [action.kind for action in adapted.decision.actions] == [
+        ActionKind.LEAVE_SHOP,
+    ]
+
+
 def test_stock_out_of_combat_potions_remain_policy_actions() -> None:
     payload = {
         "in_game": True,

@@ -21,6 +21,12 @@ def main() -> int:
                         default=ROOT / "local/build/oracle/SpirecommParity.jar")
     parser.add_argument("--game-libs", type=Path,
                         default=ROOT / "local/external/original-game")
+    parser.add_argument("--game-jar", type=Path,
+                        help="override desktop-1.0.jar from --game-libs")
+    parser.add_argument("--communication-mod", type=Path,
+                        help="override CommunicationMod.jar from --game-libs")
+    parser.add_argument("--mod-the-spire", type=Path,
+                        help="override ModTheSpire.jar from --game-libs")
     parser.add_argument("--output", type=Path,
                         default=ROOT / "local/build/oracle/SpirecommParity-observation-v4.jar")
     args = parser.parse_args()
@@ -29,9 +35,11 @@ def main() -> int:
     java_sources = [ROOT / "native/oracle/src/spirecomm/parity" / name for name in (
         "CardStatePatch.java", "EventStatePatch.java",
     )]
-    dependencies = [args.game_libs / name for name in (
-        "desktop-1.0.jar", "CommunicationMod.jar", "ModTheSpire.jar",
-    )]
+    dependencies = [
+        args.game_jar or args.game_libs / "desktop-1.0.jar",
+        args.communication_mod or args.game_libs / "CommunicationMod.jar",
+        args.mod_the_spire or args.game_libs / "ModTheSpire.jar",
+    ]
     for path in [args.javac, args.source, *java_sources, *dependencies]:
         if not path.is_file():
             raise FileNotFoundError(path)

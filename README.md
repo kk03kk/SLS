@@ -1,53 +1,31 @@
-# SLS — 用强化学习学习《杀戮尖塔》
+# SLS：训练《杀戮尖塔》智能体
 
-SLS 的目标是训练一个能够自主游玩 **Slay the Spire 1** 的智能体，也让人通过观察它的决策理解它学到了什么。项目使用 C++ 模拟器生成游戏交互，使用带循环记忆的策略网络和 PPO 训练，并提供连接本地游戏的模型观察界面。
+SLS 用原生模拟器和循环策略网络训练智能体游玩 **Slay the Spire 1**。项目提供游戏状态与合法动作的统一协议、C++ 模拟器、PPO 训练流程、评估工具，以及在本地游戏中逐步观察模型决策的界面。
 
-**训练路线：战士（Ironclad）A20 第一幕 → 第二幕 → 第三幕（双 Boss）→ 心脏。** 各阶段从新局开始，逐步延长终止目标，并保留取钥匙选项。当前已有训练结果仍属 Act1：历史 Champion 是 46,006,272-step checkpoint，全新 1,024 seeds 上通关 766 局，胜率 74.80%（95% Wilson CI 72.06%–77.37%），且没有 runtime failure。54M recovery 的 52,002,816-step best 在另一组独立 1,024 seeds 上为 748/1,024（73.05%），没有证据替代 Champion。这些历史成绩不代表本轮修复后环境的重新评估结果。阶段契约与本地审计见 [A20 模拟器审计](docs/a20-simulator-audit-2026-09-23.md)；历史实验分析见 [post-54M 审计](docs/a20-next-stage-audit.md)。
+目前研究对象是**战士 A20 第一幕**。后续计划逐步延长至第二幕、第三幕和心脏；这些阶段尚未声称完成。项目还在开发中，模拟器与原版游戏的一致性已有针对性审计，但没有覆盖所有种子与分支。
 
-找文件时先看 [项目目录索引](docs/repository-map.md)：下载的服务器压缩包统一放在 `runs/archives/`，运行中的 checkpoint 放在 `local/runs/`，开发验证记录放在 `local/audits/` 和 `local/logs/development/`。这些本地产物不提交 Git。
+## 当前模型与阶段结果
 
-没有游戏、GPU 或 checkpoint 也能运行模拟器。观察已训练模型需要另外准备兼容的模型文件；连接真实游戏还需要自己的游戏和 Mod 环境。
+本阶段训练已完成至 **60,014,592 步**，当前默认模型为选模留下的 **56,000,512 步 champion**。它在独立的 2,048 个种子上通关 **1,585 局（77.39%）**，无运行错误、截断或超时；95% 置信区间为 75.53%–79.15%。checkpoint SHA256 为 `9555c8608155ba262901757cd57d76f854f1cd76a5b6126375e832fa0a714710`。
 
-## 1. 安装与构建
+固定的 512 个选模种子上，46M、56M、最终 60M 分别通关 363、388、361 局，因此使用 56M。历史 46M 独立评估为 766/1,024（74.80%），与本轮终评使用不同种子，不能作配对比较。**77.39% 是服务器训练模拟器上的成绩；当前本地规则已修复，尚未重新完成独立评估，也不是原版游戏胜率。** [阶段结案与逐 Boss 成绩](docs/results/a20-act1-60m-stable/README.md)保存模型、配置及环境身份。本阶段已结束，未安排下一轮训练。历史实验与审计见 [档案索引](docs/history/README.md)。
 
-支持 **Windows 和 Linux**，建议使用 **64 位 Python 3.12**（项目最低版本为 3.12）。macOS 暂无受支持的 native 构建流程。
+## 开始使用
 
-- 安装 Git 和 Python，或使用 Conda 创建 Python 3.12 环境。
-- Windows 构建脚本会下载固定版本的 Zig、CMake、Ninja 和 pybind11，无需手工配置 Visual Studio 工程。
-- Linux 需要 C++ 编译器和 Python 开发头文件；Ubuntu 可先安装 `build-essential`、`python3.12-dev`、`python3.12-venv`。
-- 首次安装需要联网下载依赖。CPU 可用于开发、测试和少量推理；正式长训练建议使用 GPU。
-
-以下命令均在仓库根目录执行。
-
-### Windows（PowerShell）
-
-```powershell
-git clone https://github.com/kk03kk/SLS.git
-cd SLS
-py -3.12 -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install --upgrade pip
-python tools/bootstrap.py --with-model
-```
-
-若 PowerShell 不允许执行激活脚本，可以直接用 `.\.venv\Scripts\python.exe` 替代后续命令中的 `python`。使用 Conda 时，激活自己的 Python 3.12 环境后执行相同的 bootstrap 命令即可。
-
-### Linux（Bash）
+支持 Windows 和 Linux、Python 3.12 及以上。首次构建需联网；Linux 需要 C++ 编译器和 Python 开发头文件。macOS 暂无受支持的原生构建流程。
 
 ```bash
 git clone https://github.com/kk03kk/SLS.git
 cd SLS
-python3.12 -m venv .venv
-source .venv/bin/activate
-python -m pip install --upgrade pip
+python -m venv .venv
+# Windows PowerShell: .\.venv\Scripts\Activate.ps1
+# Linux: source .venv/bin/activate
 python tools/bootstrap.py --with-model
 ```
 
-bootstrap 会安装锁定依赖、以 editable 方式安装 SLS、构建 native 并运行测试。仅开发模拟器时可省略 `--with-model`；依赖 PyTorch 的测试可能被跳过。`--skip-native` 只适用于已有构建或暂时仅处理 Python 代码的情况。
+Windows 可用 `py -3.12 -m venv .venv` 创建环境。`bootstrap.py` 安装锁定依赖、构建 native 并运行测试；只开发模拟器时可省略 `--with-model`。也可激活自己的 Python 3.12 Conda 环境。若仅需 Python 代码，可查看 `python tools/bootstrap.py --help`。
 
-## 2. 跑通模拟器，不需要模型
-
-将下面代码保存为仓库根目录的 `quickstart.py`，然后执行 `python quickstart.py`：
+无需游戏、GPU 或模型即可运行模拟器。将以下代码保存为 `quickstart.py` 并执行 `python quickstart.py`：
 
 ```python
 from sls.backends.simulator import SimulatorBackend
@@ -55,179 +33,51 @@ from sls.curriculum import IRONCLAD_A0_ACT1
 
 backend = SimulatorBackend(IRONCLAD_A0_ACT1)
 decision = backend.reset(seed=42)
-print("当前界面：", decision.observation.screen.value)
-print("Neow 公开奖励与代价：")
-for option in decision.observation.event_options:
-    print(option.content_id, dict(option.properties))
-
-# 这里只演示执行一个合法动作，并不是智能策略。
-action = decision.actions[0]
-decision = backend.step(action).decision
-print("执行后界面：", decision.observation.screen.value)
-print("后续合法动作数：", len(decision.actions))
+print(decision.observation.screen.value)
+print([action.kind for action in decision.actions])
+decision = backend.step(decision.actions[0]).decision  # 仅演示合法动作
+print(decision.observation.screen.value)
 ```
 
-模型通过结构化 Observation 接收玩家当时可见的信息，并从合法动作中选择。事件里已经展示的目标卡牌、遗物、药水、金额和风险会进入输入；未知奖励和隐藏随机结果不会提前提供。
+策略只接收当时公开的 Observation，并从合法的语义动作中选择。这个示例没有加载智能体；`decision.actions[0]` 不是策略建议。
 
-## 3. 使用模型并保存玩法日志
+## 模型、演示与训练
 
-仓库不附带预训练权重。`local/runs/` 保存训练 checkpoint，`model/` 保存导出的独立策略，两者均被 Git 忽略。
+Git 仓库**不包含预训练权重、游戏文件或 Mod JAR**。`model/` 是唯一的演示模型目录，本地默认文件为 `ironclad-a20-act1-56m-champion.pt`，只包含推理权重和元数据。选中 checkpoint 和原始报告保存在 `local/runs/`，历史归档保存在 `runs/archives/`。朋友 clone 后需另外取得模型，或解压维护者提供的模型分享包；放到 `model/` 后即可被控制窗口识别。[模型发布说明](docs/model-release.md)列出了分享方式。
 
-**当前输入编码为 `sls-policy-input-v5`。旧 13M / 15M 等历史模型不能直接当作当前模型加载，也不能靠改版本号绕过检查。** 5M 实验从零训练完成；Act1 环境规则版本为 4，编码仍为 v5。以下示例要求已有当前编码兼容、目标匹配的 checkpoint；请替换为自己的路径。
-
-导出 A0 Act1 策略：
+拥有与当前 `sls-policy-input-v5` 编码兼容的 A20 Act1 checkpoint 后，可导出并采集一局模拟器轨迹：
 
 ```bash
-python tools/export_policy.py local/runs/my-act1/latest.pt --output model/my-act1.pt --ascension-min 0 --ascension-max 0 --goal ACT1
-```
-
-在模拟器中跑一个 seed 并保存轨迹：
-
-```bash
-python tools/capture_policy_trajectory.py simulator model/my-act1.pt --seed 42 --output local/reports/seed-42.jsonl
-```
-
-首次试用可添加 `--max-actions 20` 限制决策次数。轨迹用于检查决策、Observation 和循环记忆上下文。列出本地导出模型：
-
-```bash
+python tools/capture_policy_trajectory.py simulator model/ironclad-a20-act1-56m-champion.pt --seed 42 --max-actions 20 --output local/reports/seed-42.jsonl
 python tools/play_live_inspector.py --list-models
 ```
 
-## 4. 可选：连接真实游戏，观察智能体
+上述命令需先取得默认模型。旧编码模型不能通过改版本号复用。连接真实游戏需自备游戏、ModTheSpire、BaseMod、CommunicationMod 与 Observation Oracle；Oracle 补丁构建还需要已有的基础 JAR。`python tools/check_live_setup.py` 可以检查本机准备情况；`python tools/configure_live_inspector.py --select-mods` 配好启动命令和 Mod 列表后，游戏会弹出可选模型、自动运行、暂停和单步的独立窗口。[朋友安装速览](docs/friend-quickstart.md)和[本地游戏与观察界面说明](docs/local-runtime.md)列出了前提和操作。朋友仅 clone 仓库不会自动得到模型、游戏或 Oracle。没有这些文件时，可以使用模拟器。
 
-需要自己的 **Slay the Spire 1、ModTheSpire、BaseMod、CommunicationMod**，以及本项目的 Observation Oracle。游戏 JAR、Mod JAR、存档和模型不会随 Git clone 下载。
+已完成实验的配置为 [`ironclad_a20_act1_60m_stable.toml`](configs/train/ironclad_a20_act1_60m_stable.toml)。[提交说明](docs/a20-act1-60m-stable-launch.md)保留为操作记录；配置依赖原 46M checkpoint 和当时的源码环境，不能在修改后的模拟器上声称精确复现原成绩。历史配置保留用于追溯；见 [配置索引](configs/train/README.md)。
 
-目前仓库保存了 Oracle 的观测补丁源码，构建工具还需要已有的基础 `SpirecommParity.jar`；**仅克隆源码尚不能从零构建完整实机 Mod 环境**。没有这些本地文件时，请先使用模拟器流程。
-
-已有基础 Oracle 和游戏依赖时，构建当前补丁：
-
-```bash
-python tools/build_observation_oracle.py --javac /path/to/jdk/bin/javac --source /path/to/SpirecommParity.jar --game-libs /path/to/game-libs
-```
-
-将路径换成实际路径。`game-libs` 需包含 `desktop-1.0.jar`、`CommunicationMod.jar`、`ModTheSpire.jar`；JDK 需支持 `--release 8`。输出默认为 `local/build/oracle/SpirecommParity-observation-v4.jar`。在 Mod 环境中使用更新后的 Oracle，避免同时加载重复版本。当前补丁已完成编译和重点事件实机对照；覆盖范围及开训条件见 [Act1 环境收尾验证](docs/act1-environment-closeout.md)。
-
-Windows 下，先让 CommunicationMod 生成配置，再在激活的 Python 环境中执行：
-
-```powershell
-python tools/configure_live_inspector.py
-```
-
-工具会备份原配置，并让 CommunicationMod 使用当前 Python 环境启动 inspector。非默认配置位置可用 `--config` 指定，其他参数见 `--help`。
-
-随后：
-
-1. 通过 ModTheSpire 启动相应 Mod。CommunicationMod 启动 inspector，浏览器打开本机 `127.0.0.1:8765`。
-2. 选择兼容的导出模型，点击 **Load and connect to game**。
-3. 创建与模型目标匹配的全新战士局，在 Neow 阶段连接。
-4. 使用 **Single step** 逐步观察，或使用 **Run** 连续运行；也可以暂停、调整延迟或手工选择动作。
-
-界面展示合法动作概率和状态价值估计。动作概率不是通关概率，价值头也不是各动作的 Q 值。Act1 模型使用 inspector 路径；普通 `play_live.py` 入口仅接受 FullRun / Heart。项目不支持随意打开中途存档并凭空恢复模型的历史记忆。
-
-日志与更多操作见 [实机运行说明](docs/local-runtime.md)。
-
-## 5. 开发、测试与训练
-
-修改 native 源码或切换 Python 版本后重新构建；内存紧张时降低 `--jobs`：
+## 开发与协作
 
 ```bash
 python tools/build_native.py --jobs 4
 python -m pytest -q
-python -m ruff check src tools tests
+python -m ruff check .
 python tools/generate_policy_vocabulary.py --check
 ```
 
-### 当前 A20 结果
+请先读 [贡献指南](CONTRIBUTING.md) 和 [架构说明](docs/architecture.md)。涉及模拟器规则、公开观测或训练契约的修改，需要说明行为差异与验证证据；已有训练模型不能在语义变化后直接称为同一实验的精确续训。
 
-`configs/train/ironclad_a20_act1_50m.toml` 对应的训练已在 A100 40GB 上完成。训练结束于 50,003,968 environment steps；周期评估选出的 champion 位于 46,006,272 steps，固定 512 seeds 为 388/512（75.78%），最终全新 1,024 seeds 为 766/1024（74.80%）。最终评估使用 champion，不是训练结束时的 `final.pt`。
+本次模型归档、全量检查与项目整理见 [2026-09-28 阶段审核](docs/audits/2026-09-28-stage-closeout.md)；此前端到端代码审计与验证边界见 [2026-09-26 审计记录](docs/audits/2026-09-26-project-audit.md)。
 
-服务器下载归档保存在 `runs/archives/sls-ironclad-a20-act1-50m-final.tar.gz`，SHA256 为 `02b54727220d61b46c8c7dcb8c22f1af3667d63d0b8155ecbb93b4a8ea77544f`。归档包含 best、final、训练配置、manifest、metrics 和最终评估，但不是完整训练目录的替代品；服务器上的 50M champion 仍是新实验的绑定输入，不可删除。
-
-`configs/train/ironclad_a20_act1_54m_recovery.toml` 是已完成实验的复现配置，不是当前启动入口。该实验从 46M Champion 迁移权重、重置优化和采样状态，采用 64 workers / 16 shards 与 batched recurrent PPO；吞吐约从 69 提升到 99 decisions/s，但没有带来历史突破。[post-54M 审计](docs/a20-next-stage-audit.md)记录了当时的诊断方案。当前准备的单次 46M→60M 稳定参数实验使用独立的 `configs/train/ironclad_a20_act1_60m_stable.toml`，启动步骤见 [60M 提交说明](docs/a20-act1-60m-stable-launch.md)。它尚无训练结果，也不预设会突破历史 Champion。
-
-### 历史 A0 流程
-
-下面保留 5M/10M/20M 实验说明用于追溯，不是当前 A20 的启动入口。旧环境 checkpoint 的 exact resume 需要匹配其环境版本，不能在新版代码下绕过 contract。
-
-从零 A0 Act1 实验使用 `configs/train/ironclad_a0_act1_5m.toml`，预算 5M steps。它是独立单阶段训练，不需要历史 FullRun checkpoint、warm-start 或 smoke/pilot 晋级。
-
-### 历史 A0 5M：提交示例
-
-```bash
-cd ~/SLS
-git pull --ff-only origin main
-/home/h/hengzhi/venvs/sls/bin/python tools/submit_slurm.py train \
-  --config configs/train/ironclad_a0_act1_5m.toml --prepare
-```
-
-入口会在 Slurm compute node 检查 native、需要时构建，运行实际网络 preflight、短 benchmark 和 worker 保存/恢复验证，然后开始训练。默认 1×A100 40GB、16 CPUs、64GB RAM。不要在 xlogin 上运行构建、评估或训练。首次缺少 PyTorch 时准备入口会安装模型锁定依赖；已有环境不会为 GPU 名称变化强制升级依赖。
-
-benchmark 比较 32/64/128 个环境的完整“采样＋PPO 更新”耗时，选择接近最快的较小配置并固定。中断后执行**同一条提交命令**恢复；有效准备结果自动复用。训练配置、Observation、PPO 或环境语义不兼容仍会拒绝恢复，不能删除旧 checkpoint 后假装续训。运行目录需保持完整。
-
-结果在 `local/runs/ironclad-a0-act1-v4-5m/`：
-
-- `stages/train/metrics.jsonl`：训练指标、固定 seeds 评估、逐 seed 胜负变化和失败摘要。
-- `latest.pt`、`checkpoint-steps-*.pt`、`final.pt`：恢复 checkpoint；约每 0.25M 保存一次。
-- `stages/train/selection/best_progress.pt`：每 0.5M、固定 512 seeds 按通关数选择的 best，同分保留更早模型。
-- `final-evaluation.json`：best 的独立 1024 seeds 结果。
-- `ironclad-a0-act1-v4-5m.pt`：实验完成后的独立策略，可复制到本地 `model/` 使用。导出不要求高胜率；模型质量以评估结果为准。
-
-间隔与 5M 目标均在完整 PPO update 边界执行，因此实际 step 数可能略高于标称值。配置、完整步骤与失败处理见 [Act1 训练说明](docs/training-act1-5m.md)。历史 FullRun 配置与 [旧服务器指南](docs/nus-training-zh.md) 保留供追溯，不作为本轮启动流程。
-
-### 已完成 5M 实验后的续训
-
-[5M 审计、100-seed 完整诊断与下一轮方案](docs/act1-v4-5m-audit.md) 指定了 4,505,600-step best。已有对应服务器产物时，可提交：
-
-```bash
-/home/h/hengzhi/venvs/sls/bin/python tools/submit_slurm.py train \
-  --config configs/train/ironclad_a0_act1_10m.toml --prepare
-```
-
-这份配置绑定该 best 的 SHA256，并在新目录创建半学习率分支；原模型、Adam moments、RNG 和 worker 状态保留，旧实验不修改。准备阶段验证实际恢复 checkpoint，复用原 worker 布局。它不是任意 checkpoint 的通用迁移命令，也不是重新训练一个独立 10M。新终评 seeds 与本次诊断集合不重叠。
-
-### 已完成 10M：继续到累计 20M
-
-使用 7,766,016-step champion（不是 final），LR 从 `0.000125` 减半到 `0.0000625`，其他 PPO、网络和奖励不变。固定 512-seed 评估约每 1M 一次；best 最终使用新的 1024 held-out seeds。模型、Adam、RNG、worker 状态和历史 best 保留，输出到独立的 `local/runs/ironclad-a0-act1-v4-20m/`。
-
-```bash
-cd ~/SLS
-git pull --ff-only origin main
-/home/h/hengzhi/venvs/sls/bin/python tools/submit_slurm.py train \
-  --config configs/train/ironclad_a0_act1_20m.toml --prepare
-```
-
-保留原 5M/10M 目录及准备目录中的 benchmark。入口先验证 champion 和恢复链路，通过后才开训；已有合法 20M latest 时恢复。参数依据、seed 范围和验证说明见 [20M continuation](docs/act1-v4-20m-continuation.md)。
-
-### 与普通原版局的区别
-
-- Act1 Boss 击败立即结束；使用指定 seed 的完整 Neow 开局。
-- 棱彩碎片照常生成、展示，禁止购买/领取；不替换、不重抽。
-- 给自己的纸条照常出现，但自动选择离开，不读写训练 worker 的跨局存牌。
-- 钥匙可正常选择并支付真实代价；Act1 不提供额外钥匙奖励。
-- 折叠纯确认 UI，因此模型决策步数不等于鼠标点击数。
-
-没有为了提高胜率简化战斗、路线或其他事件。当前验证是针对 Act1 的源码、回归与实机对照，**不代表所有 seed、所有分支已获得完全 parity 证明**。详见 [环境收尾证据](docs/act1-environment-closeout.md)。
-
-## 项目结构
-
-| 目录 | 内容 |
+| 路径 | 用途 |
 | --- | --- |
-| `src/sls/` | 公共协议、环境适配、模型、PPO、实机运行与诊断 |
-| `native/simulator/` | C++ 模拟器和 Python binding |
+| `src/sls/` | 协议、后端、模型、训练与实机运行 |
+| `native/simulator/` | 带上游许可与来源记录的 C++ 模拟器 |
 | `native/oracle/` | 原版游戏公开观测补丁源码 |
-| `configs/` | 训练配置和兼容性记录 |
-| `tools/` | 安装、构建、训练、导出、评估和日志工具 |
-| `tests/` | 自动化回归测试 |
-| `docs/` | 架构、操作说明与审计记录 |
-| `local/` | 本地构建、外部依赖和运行产物，不提交 Git |
-| `model/` | 用户自己的导出策略，不提交模型权重 |
+| `configs/train/` | 当前与历史训练配置 |
+| `tools/` | 构建、训练、评估和导出命令 |
+| `tests/` | 回归与契约测试 |
+| `docs/` | 维护文档；`docs/history/` 保存历史证据 |
+| `local/`、`runs/archives/`、`model/*.pt` | 本机产物与外部文件，不提交 Git |
 
-## 常见问题
-
-- **无法导入 native / 要求 rebuild**：确认使用正确 Python 环境，在仓库根目录重新运行 `python tools/build_native.py`。
-- **模型 schema 不匹配**：使用兼容模型；迁移必须显式验证，不能将旧权重误当作 exact resume。
-- **缺少公开事件信息**：更新模拟器或 Oracle，不能静默丢弃字段继续推理。
-- **找不到 checkpoint / 游戏 JAR**：这些是本地产物或外部依赖，仓库不附带。
-- **只有 CPU 能否使用？** 可以运行模拟器、测试和少量推理；训练速度需在自己的硬件上实测。
-
-进一步阅读：[架构](docs/architecture.md) · [仓库地图](docs/repository-map.md) · [事件修复及验证边界](docs/event-observation-repairs.md)
+更多路径见 [仓库地图](docs/repository-map.md)。项目代码采用 [MIT 许可](LICENSE)；模拟器上游的原始版权声明保留在 [`native/simulator/LICENSE.lightspeed.md`](native/simulator/LICENSE.lightspeed.md)。游戏与 Mod 属于各自权利人，不由本仓库提供。

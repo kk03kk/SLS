@@ -27,6 +27,12 @@ class StdioTransport:
         event_sink: Callable[[str, Any], None] | None = None,
         read_timeout_seconds: float | None = None,
     ) -> None:
+        # CommunicationMod emits UTF-8 JSON. Windows Python may otherwise
+        # decode redirected stdin with the active GBK console code page,
+        # corrupting localized event labels before protocol-only folds run.
+        if hasattr(stdin, "reconfigure") and getattr(stdin, "encoding", None):
+            if str(stdin.encoding).lower().replace("-", "") != "utf8":
+                stdin.reconfigure(encoding="utf-8")
         self.stdin = stdin
         self.stdout = stdout
         self.log_path = log_path

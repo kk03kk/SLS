@@ -1726,6 +1726,11 @@ RelicId GameContext::returnRandomScreenlessRelic(RelicTier tier, bool shopRoom) 
 }
 
 Card GameContext::previewObtainCard(Card card) {
+    // Stock Egg relics upgrade only cards that are not already upgraded.
+    // Searing Blow can upgrade repeatedly, so this guard is observable.
+    if (card.isUpgraded()) {
+        return card;
+    }
     switch (card.getType()) {
         case CardType::ATTACK:
             if (hasRelic(RelicId::MOLTEN_EGG)) {
@@ -2191,7 +2196,9 @@ Event GameContext::getEvent(Random &eventRngCopy) {
     }
 
     if (tempLength == 0) {
-        return getShrine(eventRng);
+        // Stock EventRoom chooses from a duplicate of eventRng. Preserve that
+        // duplicate when an ineligible normal-event pool falls back to a shrine.
+        return getShrine(eventRngCopy);
     }
 
     auto idx = eventRngCopy.random(tempLength-1);
@@ -2363,6 +2370,11 @@ void GameContext::drinkPotion(Potion p) {
             break;
 
         case Potion::ENTROPIC_BREW: {
+            // Stock EntropicBrew.use skips the outside-combat effect entirely
+            // with Sozu. In particular it must not advance potionRng.
+            if (hasRelic(RelicId::SOZU)) {
+                break;
+            }
             Potion randPotions[5];
             for (int i = 0 ; i < potionCapacity; ++i) {
                 randPotions[i] = returnRandomPotion(potionRng, cc);
@@ -2835,8 +2847,8 @@ void GameContext::chooseEventOption(int idx) {
                         if (addRelic) {
                             reward.addRelic(combatRewardRelic);
                         }
-                        reward.addCardReward(createCardReward(Room::EVENT));
                         addPotionRewards(reward);
+                        reward.addCardReward(createCardReward(Room::EVENT));
                         gc.openCombatRewardScreen(reward);
                         gc.regainControlAction = returnToMapAction;
                     };
@@ -3781,9 +3793,21 @@ void GameContext::chooseEventOption(int idx) {
                     regainControl();
                     break;
 
-                case 4:
-                    openCardSelectScreen(CardSelectScreenType::REMOVE, 1);
+                case 4: {
+                    bool hasPurgeableCard = false;
+                    for (int i = 0; i < deck.size(); ++i) {
+                        if (deck.cards[i].canTransform() && !deck.isCardBottled(i)) {
+                            hasPurgeableCard = true;
+                            break;
+                        }
+                    }
+                    if (hasPurgeableCard) {
+                        openCardSelectScreen(CardSelectScreenType::REMOVE, 1);
+                    } else {
+                        regainControl();
+                    }
                     break;
+                }
 
                 case 5:
                 default:

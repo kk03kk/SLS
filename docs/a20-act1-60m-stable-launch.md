@@ -1,5 +1,11 @@
 # A20 Act1 46M → 60M stable run
 
+**Completed.** The run reached 60,014,592 steps and selected the 56,000,512-step
+champion. Independent final evaluation: 1,585/2,048 (77.39%) in the server
+training simulator. See [stage closeout](results/a20-act1-60m-stable/README.md).
+The instructions below are a historical operator record; no new submission is
+scheduled and the current local simulator differs from the training source.
+
 This is a fresh weight-transfer experiment from the 46,006,272-step champion,
 not an exact continuation of its optimizer or environment state. The source
 checkpoint remains untouched. The current native source is rebuilt and qualified

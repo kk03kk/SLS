@@ -52,10 +52,12 @@ from sls.rl.training_contract import (
     TRAINING_CHECKPOINT_SCHEMA,
     canonical_digest,
     git_state,
+    legacy_training_implementation_unchanged,
     native_artifact,
     native_source_digest,
     runtime_contract,
     sha256_file,
+    training_implementation_digest,
     validate_training_sources,
 )
 from sls.runtime.artifact import export_policy_artifact
@@ -75,9 +77,9 @@ def _atomic_json(path: Path, value: object) -> None:
 
 
 def _positive_int(mapping: dict[str, object], key: str) -> int:
-    value = int(mapping[key])
-    if value <= 0:
-        raise ValueError(f"{key} must be positive")
+    value = mapping[key]
+    if isinstance(value, bool) or not isinstance(value, int) or value <= 0:
+        raise ValueError(f"{key} must be a positive integer")
     return value
 
 
@@ -100,6 +102,8 @@ def _can_resume_finalization(
 def _seed_range(start: int, count: int) -> range:
     if start < 0 or count <= 0:
         raise ValueError("seed ranges require a non-negative start and positive count")
+    if start + count > 1 << 64:
+        raise ValueError("evaluation seeds must fit the native unsigned 64-bit domain")
     return range(start, start + count)
 
 
@@ -117,6 +121,51 @@ def _validate_seed_namespaces(run: dict[str, object]) -> tuple[range, range]:
     if periodic.start == 0 or final.start == 0:
         raise ValueError("held-out evaluation seeds overlap the training namespace")
     return periodic, final
+
+
+def _validate_diagnostic_seed_namespaces(
+    run: dict[str, object], stage: dict[str, object],
+    periodic: range, final: range,
+) -> None:
+    """Check every rotating diagnostic range before any training starts."""
+
+    interval = int(stage.get("diagnose_every_steps", 0))
+    count = int(run.get("diagnostic_evaluation_seed_count", 0))
+    if interval < 0 or (interval and not count):
+        raise ValueError("diagnostic evaluation cadence requires a positive seed count")
+    if not interval:
+        return
+    start = int(run["diagnostic_evaluation_seed_start"])
+    stride = int(run.get("diagnostic_rotation_stride", count))
+    if stride < count:
+        raise ValueError("diagnostic seed rotation stride would reuse seeds")
+    target = _positive_int(stage, "target_environment_steps")
+    # Include one extra boundary for complete-update rounding at the target.
+    rotations = target // interval + 1
+    diagnostic = _seed_range(start, (rotations - 1) * stride + count)
+    for held_out in (periodic, final):
+        if diagnostic.start < held_out.stop and held_out.start < diagnostic.stop:
+            raise ValueError("rotating diagnostic and selection/final seeds overlap")
+
+
+def _validate_resume_training_sources(manifest: dict[str, object]) -> None:
+    """Prevent an automatic resume under changed PPO/model implementation."""
+
+    previous = manifest.get("training_implementation_sha256")
+    if previous is None:
+        recorded_git = manifest.get("git")
+        if isinstance(recorded_git, dict) and recorded_git.get("dirty") is False:
+            if not legacy_training_implementation_unchanged(str(recorded_git.get("commit", ""))):
+                raise ValueError(
+                    "legacy training implementation changed since the recorded source commit; "
+                    "automatic checkpoint resume is unsafe"
+                )
+        return
+    if previous != training_implementation_digest():
+        raise ValueError(
+            "training implementation differs from this run's source contract; "
+            "automatic checkpoint resume is unsafe"
+        )
 
 
 def _load_benchmark(
@@ -615,6 +664,7 @@ def main() -> int:
         raise ValueError("single-stage requires fresh/exact A0 Act1 or A20 curriculum train workflow")
     stage = dict(payload["stages"][args.stage])
     periodic_seeds, final_seeds = _validate_seed_namespaces(run)
+    _validate_diagnostic_seed_namespaces(run, stage, periodic_seeds, final_seeds)
     diagnostic_seed_start = int(run.get("diagnostic_evaluation_seed_start", 0))
     diagnostic_seed_count = int(run.get("diagnostic_evaluation_seed_count", 0))
     diagnostic_stride = int(run.get("diagnostic_rotation_stride", diagnostic_seed_count))
@@ -670,7 +720,7 @@ def main() -> int:
     if args.stop_after_additional_steps is not None and args.stop_after_additional_steps <= 0:
         raise ValueError("--stop-after-additional-steps must be positive")
     evaluate_every = _positive_int(stage, "evaluate_every_steps")
-    evaluation_max_steps = int(run["evaluation_max_steps"])
+    evaluation_max_steps = _positive_int(run, "evaluation_max_steps")
     output = ROOT / str(run["output"])
     latest = output / "latest.pt"
     manifest_path = output / "run-manifest.json"
@@ -680,6 +730,8 @@ def main() -> int:
         _validate_existing_manifest(
             manifest, identity=identity, resume=args.resume,
         )
+        if args.resume == "auto":
+            _validate_resume_training_sources(manifest)
         initialization = manifest.get("initialization") or {}
         if initialization.get("schema") == "sls-model-input-migration-v1":
             initial_checkpoint = output / "initial-10m.pt"
@@ -735,6 +787,7 @@ def main() -> int:
                 for name, value in payload["stages"].items()
             },
             "training_identity_sha256": identity,
+            "training_implementation_sha256": training_implementation_digest(),
             "config_sha256": hashlib.sha256(config_bytes).hexdigest(),
             "git": repository,
             "native_source_sha256": source_digest,
@@ -899,6 +952,7 @@ def main() -> int:
                     manifest["native_artifact"] = artifact
                     manifest["content_scope_sha256"] = ironclad_a0_scope_hash()
                     manifest["training_identity_sha256"] = identity
+                    manifest["training_implementation_sha256"] = training_implementation_digest()
                     manifest["config_sha256"] = hashlib.sha256(config_bytes).hexdigest()
                     manifest["periodic_evaluation_seeds"] = [
                         periodic_seeds.start, periodic_seeds.stop,

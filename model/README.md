@@ -1,25 +1,27 @@
-# Local test-model library
+# 演示模型
 
-This directory is the single model source for the live-game inspector.
+本目录只放可供推理和实机控制窗口加载的 `sls-policy-artifact-v5` 模型。
+当前默认模型：**战士 A20 第一幕，56,000,512 步 champion**。
 
-- Put only exported `sls-policy-artifact-v5` `.pt` files here.
-- Do not copy training checkpoints such as `latest.pt` here. They contain
-  optimizer and resume state and must first be exported with
-  `tools/export_policy.py`.
-- Use descriptive names such as `ironclad-a0-act1-5m.pt`.
-- The inspector validates model schema, weight digest, goal, and Ascension
-  range before listing or loading a file.
+| 文件 | 用途 |
+| --- | --- |
+| `ironclad-a20-act1-56m-champion.pt` | 推理权重及模型元数据，约 4.93 MiB |
+| `ironclad-a20-act1-56m-champion.json` | 文件哈希、原 checkpoint 身份、训练步数 |
 
-List all currently testable models:
+模型和清单不提交 Git。朋友需另外下载这两个文件并放入本目录；仅 clone
+仓库不会得到权重。当前独立终评为 1,585/2,048（77.39%），该成绩对应
+服务器训练时的模拟器；当前本地规则已修改，不能直接沿用该成绩。
+完整结果与哈希见[阶段结案](../docs/results/a20-act1-60m-stable/README.md)。
 
 ```powershell
-conda activate DL
 python tools\play_live_inspector.py --list-models
 ```
 
-Export a training checkpoint into this library (output defaults here):
+不要放 `latest.pt`、`final.pt` 或其他带优化器状态的训练 checkpoint。
+旧演示模型已退出此目录，保存在忽略的 `runs/archives/policies/`，其中
+38M 模型仍是已有原版对照轨迹的来源。导出新模型时使用：
 
 ```powershell
-python tools\export_policy.py <checkpoint> `
-  --goal ACT1 --ascension-min 0 --ascension-max 0
+python tools\export_policy.py <checkpoint> --output model\<name>.pt `
+  --goal ACT1 --ascension-min 20 --ascension-max 20
 ```

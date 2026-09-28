@@ -550,7 +550,10 @@ def _actions(
             compact.append(("REMOVE", 0, {}))
         for label, key in (("CARD", "cards"), ("RELIC", "relics"), ("POTION", "potions")):
             for index, item in enumerate(_mappings(state.get(key))):
-                if _integer(item.get("price"), 10**9) <= gold:
+                if (
+                    _integer(item.get("price"), 10**9) <= gold
+                    and (label != "POTION" or _has_empty_potion_slot(game))
+                ):
                     compact.append((label, index, item))
         for choice_index, (label, index, _) in enumerate(compact):
             if label == "CARD":

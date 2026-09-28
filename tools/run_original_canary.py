@@ -84,12 +84,15 @@ class BackupJournal:
             raise RuntimeError("Original runtime recovery failed: " + "; ".join(failures))
 
 
-def launcher_command(game_root: Path, mod_the_spire: Path) -> list[str]:
+def launcher_command(
+    game_root: Path, mod_the_spire: Path, *, superfast: bool = False,
+) -> list[str]:
     return [
         str(game_root / "jre" / "bin" / "javaw.exe"),
         "-Xmx2G", "-Dfile.encoding=UTF-8", "-jar", str(mod_the_spire),
         "--skip-launcher", "--skip-intro", "--mods",
-        "basemod,CommunicationMod,spirecomm-parity",
+        "basemod,CommunicationMod,spirecomm-parity"
+        + (",superfastmode" if superfast else ""),
     ]
 
 
@@ -126,6 +129,7 @@ def main() -> int:
     parser.add_argument("--diagnostic-state", action="store_true")
     parser.add_argument("--timeout", type=int, default=1800)
     parser.add_argument("--oracle", type=Path, default=ROOT / "local/build/oracle/SpirecommParity.jar")
+    parser.add_argument("--superfast-mod", type=Path)
     parser.add_argument("--game-root", type=Path, default=Path(r"D:\Steam\steamapps\common\SlayTheSpire"))
     parser.add_argument("--python", type=Path, default=Path(sys.executable))
     args = parser.parse_args()
@@ -141,8 +145,12 @@ def main() -> int:
     mod_dir = args.game_root / "mods"
     oracle = args.oracle
     target_oracle = mod_dir / "SpirecommParity.jar"
+    speed_mod = args.superfast_mod.resolve() if args.superfast_mod else None
+    target_speed_mod = mod_dir / "SuperFastMode.jar"
     mts = args.game_root.parents[1] / "workshop" / "content" / "646570" / "1605060445" / "ModTheSpire.jar"
     required = [args.artifact, args.python, oracle, mts, display]
+    if speed_mod is not None:
+        required.append(speed_mod)
     missing = [str(path) for path in required if not path.is_file()]
     if missing:
         journal.restore()
@@ -160,6 +168,8 @@ def main() -> int:
         shutil.copy2(oracle, target_oracle)
         for path in extra_mods:
             path.unlink()
+        if speed_mod is not None:
+            shutil.copy2(speed_mod, target_speed_mod)
         command = [
             args.python.resolve().as_posix(),
             (ROOT / "tools" / "capture_policy_trajectory.py").resolve().as_posix(),
@@ -181,6 +191,7 @@ def main() -> int:
             "defaultList": "<Default>",
             "lists": {"<Default>": [
                 "BaseMod.jar", "CommunicationMod.jar", "SpirecommParity.jar",
+                *(["SuperFastMode.jar"] if speed_mod is not None else []),
             ]},
         }, indent=2) + "\n", encoding="utf-8")
         lines = display.read_text(encoding="utf-8").splitlines()
@@ -192,7 +203,8 @@ def main() -> int:
         environment["SLS_RUN_COMPLETION"] = str(completion)
         with stdout_path.open("wb") as stdout, stderr_path.open("wb") as stderr:
             process = subprocess.Popen(
-                launcher_command(args.game_root, mts), cwd=args.game_root,
+                launcher_command(args.game_root, mts, superfast=speed_mod is not None),
+                cwd=args.game_root,
                 env=environment, stdout=stdout, stderr=stderr,
             )
             journal.data["pid"] = process.pid

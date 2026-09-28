@@ -50,6 +50,28 @@ def test_courier_colored_restock_uses_the_stock_rng_boundaries() -> None:
     assert probe["restocked_type"] == probe["purchased_type"] == "ATTACK"
 
 
+def test_molten_egg_does_not_upgrade_an_already_upgraded_searing_blow() -> None:
+    """Stock MoltenEgg2.onObtainCard checks !card.upgraded."""
+
+    run = native.LightspeedRunState()
+    run.reset(0)
+    assert run.molten_egg_preview_probe() == {
+        "first_upgrade_count": 1,
+        "second_upgrade_count": 1,
+    }
+
+
+def test_pocketwatch_counter_tracks_cards_played_during_combat() -> None:
+    """Stock Pocketwatch.onPlayCard increments the visible relic counter."""
+
+    battle = native.LightspeedBattle()
+    battle.reset(0, "CULTIST", relics=["POCKETWATCH"], replace_relics=True)
+    battle.set_card_piles(["Strike_R"], [], [], [])
+    battle.step("play", card_index=1, target_index=0)
+    relic = battle.snapshot()["game_state"]["relics"][0]
+    assert relic["counter"] == 1
+
+
 def test_full_run_checkpoint_tracks_every_independent_rng_stream() -> None:
     run = native.LightspeedRunState()
     run.reset(987654321)
@@ -76,8 +98,19 @@ def test_red_slaver_post_entangle_stab_threshold_matches_stock() -> None:
     }
 
 
+def test_a20_red_slaver_cannot_scrape_twice_consecutively() -> None:
+    assert native.red_slaver_move_probe(20) == {
+        49: "RED_SLAVER_STAB",
+        50: "RED_SLAVER_STAB",
+        54: "RED_SLAVER_STAB",
+        55: "RED_SLAVER_STAB",
+        74: "RED_SLAVER_STAB",
+    }
+
+
 def test_stock_monster_move_edge_cases() -> None:
     probe = native.monster_move_parity_probe()
+    assert probe["gremlin_wizard_initial_charge"] == 1
     assert probe["acid_slime_l_a17_after_two_spits"] in {
         "ACID_SLIME_L_TACKLE",
         "ACID_SLIME_L_LICK",
@@ -104,8 +137,8 @@ def test_stock_monster_move_edge_cases() -> None:
     assert probe["gremlin_wizard_sequence"] == [
         "GREMLIN_WIZARD_CHARGING",
         "GREMLIN_WIZARD_CHARGING",
-        "GREMLIN_WIZARD_CHARGING",
         "GREMLIN_WIZARD_ULTIMATE_BLAST",
+        "GREMLIN_WIZARD_CHARGING",
         "GREMLIN_WIZARD_CHARGING",
     ]
     assert probe["nemesis_initial_move"] == "NEMESIS_ATTACK"
@@ -153,6 +186,13 @@ def test_core_combat_rule_probes() -> None:
         "necronomicurse_after_relic_loss": 0,
         "ritual_dagger_special_data": 15,
     }
+
+
+def test_outside_combat_entropic_brew_respects_sozu_without_rng_draws() -> None:
+    result = native.entropic_brew_outside_combat_probe()
+    assert result["normal"]["potion_count"] == 3
+    assert result["normal"]["potion_draws"] > 0
+    assert result["sozu"] == {"potion_count": 0, "potion_draws": 0}
 
 
 def test_original_payload_intent_damage_reflects_player_intangible() -> None:
@@ -351,6 +391,8 @@ def test_smoke_bomb_restrictions_and_curl_up_lethal_order() -> None:
     smoke = native.smoke_bomb_core_probe()
     assert smoke["normal_legal"] is True
     assert smoke["escaped"] is True
+    assert smoke["treasure_draws"] == 1
+    assert smoke["potion_draws"] >= 1
     assert smoke["back_attack_blocked"] is True
     assert all(smoke["bosses_blocked"].values())
 

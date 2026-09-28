@@ -55,6 +55,139 @@ def test_signed_official_seed_matches_same_unsigned_native_bits() -> None:
     assert left.actions == right.actions
 
 
+def test_shop_actions_follow_original_adapter_policy_order() -> None:
+    from sls.backends.simulator.environment import _semantic_actions
+
+    kinds = ((0, 0), (4, 0), (3, 0), (5, 0), (6, 0))
+    raw = {
+        "public_run": {"outcome": 1, "screen_state": 8},
+        "progress_state": {},
+        "public_screen": {"prices": [10] * 13},
+        "legal_actions": [
+            {"bits": index, "reward_type": reward_type, "idx1": slot,
+             "idx2": 0, "potion": False}
+            for index, (reward_type, slot) in enumerate(kinds)
+        ],
+    }
+
+    actions, mapping = _semantic_actions(raw, ())
+
+    assert [action.kind for action in actions] == [
+        ActionKind.CONFIRM, ActionKind.BUY_CARD, ActionKind.BUY_RELIC,
+        ActionKind.BUY_POTION, ActionKind.LEAVE_SHOP,
+    ]
+    assert mapping[actions[0].candidate_id] == 3
+
+
+def test_full_potion_slots_disable_native_shop_purchase() -> None:
+    from sls.backends.simulator.environment import _semantic_actions
+
+    raw = {
+        "public_run": {"outcome": 1, "screen_state": 8},
+        "progress_state": {},
+        "player_state": {"potion_count": 2, "potion_capacity": 2},
+        "public_screen": {"prices": [80] * 13},
+        "legal_actions": [
+            {"bits": 1, "reward_type": 3, "idx1": 0, "idx2": 0,
+             "potion": False},
+            {"bits": 2, "reward_type": 6, "idx1": 0, "idx2": 0,
+             "potion": False},
+        ],
+    }
+
+    actions, _ = _semantic_actions(raw, ())
+
+    assert [action.kind for action in actions] == [ActionKind.LEAVE_SHOP]
+
+
+def test_reward_potion_discard_follows_parent_proceed_action() -> None:
+    from sls.backends.simulator.environment import _semantic_actions
+
+    raw = {
+        "public_run": {"outcome": 1, "screen_state": 2},
+        "progress_state": {},
+        "public_screen": {},
+        "legal_actions": [
+            {"bits": 1, "reward_type": 1, "idx1": 0, "idx2": 0,
+             "potion": False},
+            {"bits": 2, "reward_type": 6, "idx1": 0, "idx2": 0,
+             "potion": False},
+            {"bits": 3, "reward_type": 0, "idx1": 0, "idx2": 0,
+             "potion": True, "potion_discard": True},
+        ],
+    }
+
+    actions, mapping = _semantic_actions(raw, ())
+
+    assert [action.kind for action in actions] == [
+        ActionKind.TAKE_REWARD, ActionKind.SKIP_REWARD,
+        ActionKind.DISCARD_POTION,
+    ]
+
+
+def test_full_potion_slots_keep_reward_visible_but_disable_collect_action() -> None:
+    from sls.backends.simulator.environment import _semantic_actions
+
+    raw = {
+        "public_run": {"outcome": 1, "screen_state": 2},
+        "progress_state": {},
+        "public_screen": {"potions": ["DUPLICATION_POTION"]},
+        "player_state": {"potion_count": 2, "potion_capacity": 2},
+        "legal_actions": [
+            {"bits": 1, "reward_type": 3, "idx1": 0, "idx2": 0,
+             "potion": False},
+            {"bits": 2, "reward_type": 6, "idx1": 0, "idx2": 0,
+             "potion": False},
+        ],
+    }
+
+    actions, _ = _semantic_actions(raw, ())
+
+    assert [action.kind for action in actions] == [ActionKind.SKIP_REWARD]
+    assert raw["public_screen"]["potions"] == ["DUPLICATION_POTION"]
+
+
+def test_dream_catcher_reward_uses_standalone_card_screen_contract() -> None:
+    from sls.backends.simulator.environment import (
+        _is_completed_standalone_card_reward,
+        _screen_entities,
+        _screen_type,
+        _semantic_actions,
+    )
+
+    raw = {
+        "public_run": {"outcome": 1, "screen_state": 2,
+                       "current_event_id": "INVALID"},
+        "progress_state": {"current_room": 1},
+        "public_screen": {
+            "card_rewards": [[{"content_id": "BODY_SLAM"}]],
+            "gold": [], "relics": [], "potions": [],
+        },
+        "legal_actions": [
+            {"bits": 1, "reward_type": 0, "idx1": 0, "idx2": 0,
+             "potion": False},
+            {"bits": 2, "reward_type": 0, "idx1": 0, "idx2": 6,
+             "potion": False},
+            {"bits": 3, "reward_type": 6, "idx1": 0, "idx2": 0,
+             "potion": False},
+        ],
+    }
+
+    actions, mapping = _semantic_actions(raw, ())
+
+    assert _screen_type(raw) is ScreenType.CARD_REWARD
+    assert [action.kind for action in actions] == [
+        ActionKind.SELECT_CARD, ActionKind.SKIP_CARD_REWARD,
+    ]
+    assert actions[0].subject_id == "select-card:0"
+    assert mapping[actions[1].candidate_id] == 3
+    assert _screen_entities(raw)["reward"][0].instance_id == "select-card:0"
+    completed = deepcopy(raw)
+    completed["public_screen"]["card_rewards"] = []
+    completed["screen_info"] = {"continuation": "map"}
+    assert _is_completed_standalone_card_reward(completed)
+
+
 def test_non_heart_forced_recall_is_folded_through_the_native_action() -> None:
     from sls.backends.simulator import SimulatorBackend
     from sls.curriculum import IRONCLAD_A0_FULLRUN, IRONCLAD_A0_HEART

@@ -130,6 +130,46 @@ def test_completed_stage_rejected_without_overwriting_manifest(fake_run):
     assert path.read_bytes() == before
 
 
+def test_new_run_refuses_automatic_resume_after_training_code_change(fake_run):
+    path, _, saved = fake_run
+    manifest = json.loads(path.read_text())
+    manifest["training_implementation_sha256"] = "different-source"
+    path.write_text(json.dumps(manifest), encoding="utf-8")
+    before = path.read_bytes()
+    with pytest.raises(ValueError, match="training implementation differs"):
+        cli.main()
+    assert path.read_bytes() == before
+    assert not saved
+
+
+def test_clean_legacy_run_refuses_changed_training_code(fake_run, monkeypatch):
+    path, _, saved = fake_run
+    manifest = json.loads(path.read_text())
+    manifest["git"] = {"commit": "a" * 40, "dirty": False}
+    path.write_text(json.dumps(manifest), encoding="utf-8")
+    monkeypatch.setattr(cli, "legacy_training_implementation_unchanged", lambda _: False)
+    before = path.read_bytes()
+    with pytest.raises(ValueError, match="legacy training implementation changed"):
+        cli.main()
+    assert path.read_bytes() == before
+    assert not saved
+
+
+def test_zero_evaluation_action_limit_fails_before_touching_run(fake_run):
+    path, _, saved = fake_run
+    config = path.parent.parent / "config.toml"
+    config.write_text(
+        config.read_text(encoding="utf-8").replace(
+            "evaluation_max_steps = 5", "evaluation_max_steps = 0",
+        ), encoding="utf-8",
+    )
+    before = path.read_bytes()
+    with pytest.raises(ValueError, match="evaluation_max_steps must be a positive integer"):
+        cli.main()
+    assert path.read_bytes() == before
+    assert not saved
+
+
 @pytest.mark.parametrize("setting", ["evaluation_max_steps = 9", "deterministic = false",
                                      "evaluation_max_steps = 5\ndevice = 'cuda'"])
 def test_legacy_identity_cannot_hide_evaluation_or_determinism_change(fake_run, setting):

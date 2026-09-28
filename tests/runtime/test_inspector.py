@@ -231,6 +231,57 @@ def test_inspector_http_api_and_loopback_guard() -> None:
         thread.join(timeout=2)
 
 
+def test_launcher_http_model_selection_pause_and_single_step(tmp_path: Path) -> None:
+    backend = _AttachableSimulator()
+    launcher = InspectorLauncher(
+        ({"model_id": "demo", "name": "demo", "path": str(tmp_path / "demo.pt")},),
+        lambda _path: InteractiveAgentRuntime(
+            backend, _artifact(), delay_seconds=1.0,
+        ),  # type: ignore[arg-type]
+    )
+    server = create_server(launcher, "127.0.0.1", 0)
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    connection = http.client.HTTPConnection("127.0.0.1", server.server_port)
+
+    def request(command: str, **extra):  # type: ignore[no-untyped-def]
+        connection.request(
+            "POST", "/api/control",
+            body=json.dumps({"command": command, **extra}),
+            headers={"Content-Type": "application/json"},
+        )
+        response = connection.getresponse()
+        response.read()
+        assert response.status == 202
+
+    try:
+        request("start", model_id="demo")
+        deadline = time.monotonic() + 3
+        while time.monotonic() < deadline and launcher.state()["status"] != "PAUSED":
+            time.sleep(0.01)
+        initial = launcher.state()
+        assert initial["status"] == "PAUSED"
+        assert initial["selected_model_id"] == "demo"
+        request("resume")
+        request("pause")
+        deadline = time.monotonic() + 3
+        while time.monotonic() < deadline and launcher.state()["revision"] <= initial["revision"]:
+            time.sleep(0.01)
+        assert launcher.state()["status"] == "PAUSED"
+        assert backend.calls == []
+        request("step")
+        deadline = time.monotonic() + 3
+        while time.monotonic() < deadline and len(backend.calls) == 0:
+            time.sleep(0.01)
+        assert len(backend.calls) == 1
+        request("stop")
+    finally:
+        connection.close()
+        server.shutdown()
+        server.server_close()
+        thread.join(timeout=2)
+
+
 def test_pause_requested_during_execution_applies_at_next_boundary() -> None:
     class SlowBackend(_AttachableSimulator):
         def __init__(self) -> None:
@@ -255,6 +306,21 @@ def test_pause_requested_during_execution_applies_at_next_boundary() -> None:
     paused = _wait_status(runtime, "PAUSED", after_revision=executing["revision"])
     assert paused["boundary_id"] != initial["boundary_id"]
     assert len(backend.calls) == 1
+    runtime.submit({"command": "stop"})
+
+
+def test_auto_run_pauses_if_dashboard_disconnects() -> None:
+    backend = _AttachableSimulator()
+    runtime = InteractiveAgentRuntime(
+        backend, _artifact(), delay_seconds=1.0,
+    )  # type: ignore[arg-type]
+    runtime._dashboard_timeout_seconds = 0.05
+    runtime.start()
+    initial = _wait_status(runtime, "PAUSED")
+    runtime.submit({"command": "resume"})
+    paused = _wait_status(runtime, "PAUSED", after_revision=initial["revision"])
+    assert paused["mode"] == "PAUSED"
+    assert backend.calls == []
     runtime.submit({"command": "stop"})
 
 

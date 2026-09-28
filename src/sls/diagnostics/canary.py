@@ -90,7 +90,8 @@ def _boundary_record(
     previous_rewards: torch.Tensor,
 ) -> tuple[dict[str, object], Action | None, torch.Tensor]:
     observation = decision.observation.to_dict()
-    actions = sorted((action.to_dict() for action in decision.actions), key=_json_bytes)
+    ordered_actions = [action.to_dict() for action in decision.actions]
+    actions = sorted(ordered_actions, key=_json_bytes)
     memory_input = tensor_hash(memory)
     base: dict[str, object] = {
         "record_type": "boundary",
@@ -102,8 +103,10 @@ def _boundary_record(
         "reward_from_previous": float(reward),
         "observation": observation,
         "candidate_actions": actions,
+        "ordered_candidate_actions": ordered_actions,
         "observation_sha256": stable_hash(observation),
         "candidate_actions_sha256": stable_hash(actions),
+        "ordered_candidate_actions_sha256": stable_hash(ordered_actions),
         "memory_input_sha256": memory_input,
         "previous_action_type": int(previous_action_types[0].item()),
         "previous_reward": float(previous_rewards[0].item()),
@@ -317,9 +320,13 @@ def compare_trajectories(
             ("memory_input_sha256", "RECURRENT_MEMORY_DIVERGENCE"),
             ("previous_action_type", "RECURRENT_MEMORY_DIVERGENCE"),
             ("previous_reward", "RECURRENT_MEMORY_DIVERGENCE"),
-            ("policy_input_sha256", "POLICY_INPUT_DIVERGENCE"),
             ("observation_sha256", "OBSERVATION_DIVERGENCE"),
             ("candidate_actions_sha256", "LEGAL_ACTION_DIVERGENCE"),
+            *((
+                ("ordered_candidate_actions_sha256", "ACTION_ORDER_DIVERGENCE"),
+            ) if "ordered_candidate_actions_sha256" in left
+               and "ordered_candidate_actions_sha256" in right else ()),
+            ("policy_input_sha256", "POLICY_INPUT_DIVERGENCE"),
             ("chosen_action_sha256", "POLICY_DIVERGENCE"),
             ("memory_output_sha256", "RECURRENT_MEMORY_DIVERGENCE"),
             ("terminal", "EXECUTION_DIVERGENCE"),
@@ -347,6 +354,9 @@ def compare_trajectories(
         elif field == "candidate_actions_sha256":
             details["simulator_actions"] = left["candidate_actions"]
             details["original_actions"] = right["candidate_actions"]
+        elif field == "ordered_candidate_actions_sha256":
+            details["simulator_actions"] = left["ordered_candidate_actions"]
+            details["original_actions"] = right["ordered_candidate_actions"]
         divergence = {
             "index": index, "classification": kind, "details": details,
             "simulator": left, "original": right,

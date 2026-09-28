@@ -136,7 +136,7 @@ class InspectorLauncher:
                 "observation": None,
                 "error": error or (
                     None if self._models else
-                    "No exported policy artifacts were found under the configured model roots."
+                    "未找到可用的导出模型。请将 v5 策略工件放入 model/，然后重新启动游戏。"
                 ),
             }
         return {
@@ -145,6 +145,12 @@ class InspectorLauncher:
             "selected_model_id": selected,
             "selected_model": self._models_by_id.get(str(selected)),
         }
+
+    def dashboard_seen(self) -> None:
+        with self._lock:
+            runtime = self._runtime
+        if runtime is not None:
+            runtime.dashboard_seen()
 
     def submit(self, payload: dict[str, Any]) -> dict[str, Any]:
         command = str(payload.get("command") or "")
@@ -314,6 +320,8 @@ class InteractiveAgentRuntime(AgentRuntime):
         }
         self._done = threading.Event()
         self._thread: threading.Thread | None = None
+        self._dashboard_seen_at = time.monotonic()
+        self._dashboard_timeout_seconds = 10.0
 
     @property
     def done(self) -> threading.Event:
@@ -330,6 +338,10 @@ class InteractiveAgentRuntime(AgentRuntime):
     def state(self) -> dict[str, Any]:
         with self._condition:
             return deepcopy(self._snapshot)
+
+    def dashboard_seen(self) -> None:
+        with self._condition:
+            self._dashboard_seen_at = time.monotonic()
 
     def _publish(
         self,
@@ -510,6 +522,10 @@ class InteractiveAgentRuntime(AgentRuntime):
     ) -> tuple[str, int | None]:
         started = time.monotonic()
         while True:
+            with self._condition:
+                ui_lost = time.monotonic() - self._dashboard_seen_at > self._dashboard_timeout_seconds
+            if ui_lost:
+                return "paused", None
             remaining = max(0.0, self._delay_seconds - (time.monotonic() - started))
             if remaining <= 0.0:
                 return "auto", score.recommended.index
@@ -621,6 +637,9 @@ def make_handler(runtime: Any):  # type: ignore[no-untyped-def]
                 self.end_headers()
                 self.wfile.write(body)
             elif self.path == "/api/state":
+                heartbeat = getattr(runtime, "dashboard_seen", None)
+                if heartbeat is not None:
+                    heartbeat()
                 self._json(HTTPStatus.OK, runtime.state())
             else:
                 self._json(HTTPStatus.NOT_FOUND, {"error": "not found"})
@@ -633,6 +652,9 @@ def make_handler(runtime: Any):  # type: ignore[no-untyped-def]
                 self._json(HTTPStatus.UNSUPPORTED_MEDIA_TYPE, {"error": "JSON required"})
                 return
             try:
+                heartbeat = getattr(runtime, "dashboard_seen", None)
+                if heartbeat is not None:
+                    heartbeat()
                 length = int(self.headers.get("Content-Length", "0"))
                 if length <= 0 or length > 65536:
                     raise ValueError("invalid request size")
@@ -662,34 +684,37 @@ def create_server(
 
 INSPECTOR_HTML = r"""<!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
-<title>SLS 模型检查器</title><style>
-:root{color-scheme:dark;--bg:#11151c;--panel:#1b2230;--line:#354158;--muted:#9eabc0;--accent:#64d6c4;--warn:#ffcf70}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#edf2fa;font:14px system-ui,sans-serif}
-main{max-width:1400px;margin:auto;padding:20px}.bar,.grid{display:flex;gap:12px;flex-wrap:wrap}.bar{align-items:center;background:var(--panel);padding:14px;border-radius:10px;position:sticky;top:0;z-index:2}
-button,input{font:inherit}button{background:#28344a;color:#fff;border:1px solid var(--line);padding:8px 13px;border-radius:7px;cursor:pointer}button.primary{background:#187b70}button:disabled{opacity:.4;cursor:not-allowed}
-.pill{padding:5px 9px;border:1px solid var(--line);border-radius:99px}.muted{color:var(--muted)}.panel{background:var(--panel);padding:16px;border-radius:10px;margin-top:14px}.grid>div{min-width:110px}h2{font-size:16px;margin:0 0 12px}
-table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:9px;border-bottom:1px solid var(--line)}tr.recommended{background:#173933}tr.selected{outline:2px solid var(--warn)}code{font-size:12px}pre{white-space:pre-wrap;overflow:auto;max-height:500px}#error{color:#ff8d8d}input[type=range]{width:220px}
+<title>SLS · 实机控制台</title><style>
+:root{color-scheme:dark;--bg:#0d1119;--panel:#192231;--line:#344154;--muted:#a7b5ca;--accent:#79dfbd;--warn:#ffcf70}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 85% 0%,#23344a 0,#0d1119 45%);color:#edf2fa;font:14px system-ui,"Microsoft YaHei",sans-serif;line-height:1.5}
+main{max-width:1400px;margin:auto;padding:24px}.hero{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:12px 0 20px}.eyebrow{color:var(--accent);font-size:12px;font-weight:700;letter-spacing:.16em}.hero h1{font-size:26px;margin:4px 0}.hero p{margin:0;color:var(--muted)}.bar,.grid{display:flex;gap:12px;flex-wrap:wrap}.bar{align-items:center;background:var(--panel);padding:14px;border-radius:12px}.controls{position:sticky;top:0;z-index:2;border:1px solid var(--line);box-shadow:0 12px 25px #0005}
+button,input,select{font:inherit}button{background:#29394e;color:#fff;border:1px solid var(--line);padding:9px 14px;border-radius:8px;cursor:pointer}button:hover:not(:disabled){border-color:var(--accent)}button.primary{background:#177b67;border-color:#44b69d;font-weight:700}button.danger{background:#683b45}button:disabled{opacity:.42;cursor:not-allowed}
+select{background:#26374b;color:#fff;border:1px solid var(--line);border-radius:7px;padding:9px;max-width:100%;min-width:330px}.pill{padding:6px 11px;border:1px solid var(--line);border-radius:99px;font-weight:700}.pill[data-status="PAUSED"]{color:var(--warn)}.pill[data-status="COUNTDOWN"],.pill[data-status="EXECUTING"]{color:var(--accent)}.pill[data-status="ERROR"],.pill[data-status="SETUP_ERROR"]{color:#ff9999}.muted{color:var(--muted)}.panel{background:var(--panel);padding:20px;border:1px solid var(--line);border-radius:12px;margin-top:16px}.grid>div{min-width:145px;max-width:100%;overflow-wrap:anywhere}.grid code{overflow-wrap:anywhere}h2{font-size:17px;margin:0 0 12px}ol{padding-left:22px}li{margin:6px 0}.hint{color:var(--muted);margin:9px 0 0}
+.scroll{overflow:auto}table{width:100%;border-collapse:collapse;min-width:700px}th,td{text-align:left;padding:10px;border-bottom:1px solid var(--line)}th{color:var(--muted);font-weight:600}tr.recommended{background:#173d38}tr.selected{outline:2px solid var(--warn)}tbody tr{cursor:pointer}tbody tr:hover{background:#304156}code{font-size:12px}pre{white-space:pre-wrap;overflow:auto;max-height:500px}#error{color:#ff9999;margin:10px 2px}input[type=range]{width:145px;vertical-align:middle}.sliders{display:flex;gap:18px;flex-wrap:wrap;margin-top:12px}.sliders label{white-space:nowrap}
+@media(max-width:700px){main{padding:12px}.hero h1{font-size:20px}select{min-width:0;width:100%}.controls{position:static}.bar button{flex-grow:1}}
 </style></head><body><main>
-<section id="setup" class="panel"><h2>开始本地模型测试</h2><p class="muted">选择已导出的策略模型。只有点击“加载并连接游戏”后，检查器才会连接 CommunicationMod；连接完成后仍保持暂停。</p><div class="bar"><label>测试模型 <select id="models"></select></label><button id="start" class="primary">加载并连接游戏</button></div><div id="modelInfo" class="grid"></div><ol><li>先在这里选择模型并点击开始。</li><li>再在游戏中创建与模型匹配的 Ironclad / Ascension 新局。</li><li>页面显示 PAUSED 后用“模型单步”开始检查。</li></ol></section>
-<div class="bar"><span id="status" class="pill">CONNECTING</span><button id="resume" class="primary">运行</button><button id="pause">暂停</button><button id="step">模型单步</button><button id="execute">执行所选动作</button><button id="stop">停止控制器</button><label>出牌延迟 <input id="delay" type="range" min="0" max="10" step="0.1"><b id="delayText"></b></label><label>三选一展示 <input id="rewardPreview" type="range" min="0" max="10" step="0.1"><b id="rewardPreviewText"></b></label><span id="countdown" class="muted"></span></div>
+<header class="hero"><div><div class="eyebrow">SLS / LIVE PLAY</div><h1>杀戮尖塔 · 模型控制台</h1><p>选择模型，连接原版游戏，观察每一步决策。</p></div><span id="status" class="pill">准备中</span></header>
+<section id="setup" class="panel"><h2>01 · 选择模型</h2><p class="muted">只显示已导出的策略工件。选择后开始连接；连接完成时自动暂停，模型不会自行出牌。</p><div class="bar"><label>测试模型 <select id="models" aria-label="测试模型"></select></label><button id="start" class="primary">加载模型并连接游戏</button></div><div id="modelInfo" class="grid"></div><ol><li>在游戏中用 ModTheSpire 启动 BaseMod、CommunicationMod 和 Observation Oracle。</li><li>这里选择模型，再在游戏中开启对应的战士 Ascension 新局。</li><li>状态显示“已暂停”后点击“自动运行”或“模型单步”。</li></ol><p class="hint">切换模型需要开启新局并重新启动控制器，以免复用上一局的循环记忆。</p></section>
+<section class="panel"><h2>02 · 控制游戏</h2><div class="bar controls"><button id="resume" class="primary">▶ 自动运行</button><button id="pause" class="danger">Ⅱ 暂停</button><button id="step">模型单步</button><button id="execute">执行所选动作</button><button id="stop">停止本次控制</button><span id="countdown" class="muted"></span></div><div class="sliders"><label>动作间隔 <input id="delay" type="range" min="0" max="10" step="0.1"><b id="delayText"></b></label><label>卡牌奖励展示 <input id="rewardPreview" type="range" min="0" max="10" step="0.1"><b id="rewardPreviewText"></b></label></div><p class="hint">暂停会在当前游戏动作结束后的安全决策点生效；窗口失联超过 10 秒也会自动暂停。快捷键：空格暂停/继续，句号单步。</p></section>
 <div id="error"></div><section class="panel"><h2>当前状态</h2><div id="summary" class="grid"></div><p>State value：<b id="value">—</b> <span class="muted">（这是状态价值估计，不是动作 Q 值）</span></p></section>
-<section class="panel"><h2>全部合法动作</h2><p id="semanticNote" class="muted">模型单步执行一个语义决策；通常对应一次游戏点击。</p><table><thead><tr><th>选择</th><th>排名</th><th>动作</th><th>概率</th><th>Logit</th><th>执行语义</th></tr></thead><tbody id="actions"></tbody></table></section>
+<section class="panel"><h2>全部合法动作</h2><p id="semanticNote" class="muted">模型单步执行一个语义决策；通常对应一次游戏点击。</p><div class="scroll"><table><thead><tr><th>选择</th><th>排名</th><th>动作</th><th>概率</th><th>Logit</th><th>执行语义</th></tr></thead><tbody id="actions"></tbody></table></div></section>
 <details class="panel"><summary>公开 Observation JSON</summary><pre id="raw"></pre></details>
 </main><script>
 let state=null, selected=null, delayDragging=false, previewDragging=false;
 async function control(command, extra={}){const r=await fetch('/api/control',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({command,...extra})});const x=await r.json();if(!r.ok)throw Error(x.error||r.statusText)}
 function esc(x){return String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function render(s){state=s;document.querySelector('#status').textContent=`${s.status} · ${s.mode}`;document.querySelector('#error').textContent=s.error||'';
+function render(s){state=s;const names={SETUP:'选择模型',SETUP_ERROR:'加载失败',LOADING:'加载模型中',CONNECTING:'等待游戏',PAUSED:'已暂停',COUNTDOWN:'自动运行',EXECUTING:'执行动作中',TERMINAL:'本局结束',STOPPED:'已停止',ERROR:'运行错误'};const badge=document.querySelector('#status');badge.textContent=names[s.status]||s.status;badge.dataset.status=s.status;document.querySelector('#error').textContent=s.error||'';
  const setup=['SETUP','SETUP_ERROR','LOADING'].includes(s.status);document.querySelector('#setup').style.display=setup?'block':'none';const modelSelect=document.querySelector('#models');const wanted=modelSelect.value||s.selected_model_id||'';modelSelect.innerHTML=(s.models||[]).map(m=>`<option value="${esc(m.model_id)}" ${m.model_id===wanted?'selected':''}>${esc(m.name)} · ${esc(m.goal)} · A${m.ascension_min}-${m.ascension_max}</option>`).join('');const chosen=(s.models||[]).find(m=>m.model_id===modelSelect.value);document.querySelector('#modelInfo').innerHTML=chosen?`<div><span class="muted">阶段</span><br><b>${esc(chosen.profile||chosen.goal)}</b></div><div><span class="muted">训练步数</span><br><b>${chosen.environment_steps==null?'未记录':Number(chosen.environment_steps).toLocaleString()}</b></div><div><span class="muted">更新次数</span><br><b>${chosen.updates??'未记录'}</b></div><div><span class="muted">Ascension</span><br><b>${chosen.ascension_min}–${chosen.ascension_max}</b></div><div><span class="muted">权重验证</span><br><b>${chosen.verified_weight_match?'与 latest.pt 一致':'独立工件'}</b></div><div><span class="muted">大小</span><br><b>${chosen.size_mb} MB</b></div><div><span class="muted">模型文件</span><br><code>${esc(chosen.path)}</code></div><div><span class="muted">来源 checkpoint</span><br><code>${esc(chosen.source_checkpoint||'未记录')}</code></div>`:'';document.querySelector('#start').disabled=s.status==='LOADING'||!chosen;
  if(s.delay_seconds!=null){if(!delayDragging)document.querySelector('#delay').value=s.delay_seconds;document.querySelector('#delayText').textContent=` ${Number(s.delay_seconds).toFixed(1)}s`;}document.querySelector('#countdown').textContent=s.countdown_remaining==null?'':`倒计时 ${s.countdown_remaining.toFixed(1)}s`;
  if(s.card_reward_preview_seconds!=null){if(!previewDragging)document.querySelector('#rewardPreview').value=s.card_reward_preview_seconds;document.querySelector('#rewardPreviewText').textContent=` ${Number(s.card_reward_preview_seconds).toFixed(1)}s`;}
- const paused=s.status==='PAUSED';document.querySelector('#resume').disabled=!paused;document.querySelector('#step').disabled=!paused;document.querySelector('#execute').disabled=!paused||!selected;document.querySelector('#pause').disabled=!['PAUSED','COUNTDOWN','EXECUTING'].includes(s.status);
+ const paused=s.status==='PAUSED';document.querySelector('#resume').disabled=!paused;document.querySelector('#step').disabled=!paused;document.querySelector('#execute').disabled=!paused||!selected;document.querySelector('#pause').disabled=!['COUNTDOWN','EXECUTING'].includes(s.status);document.querySelector('#stop').disabled=setup||['TERMINAL','ERROR','STOPPED'].includes(s.status);
  const q=s.summary||{};document.querySelector('#summary').innerHTML=Object.entries(q).map(([k,v])=>`<div><span class="muted">${esc(k)}</span><br><b>${esc(typeof v==='object'?JSON.stringify(v):v)}</b></div>`).join('');document.querySelector('#value').textContent=s.value==null?'—':Number(s.value).toFixed(5);document.querySelector('#raw').textContent=JSON.stringify(s.observation,null,2);
  const hasComposite=s.actions.some(a=>a.composite);document.querySelector('#semanticNote').textContent=hasComposite?'注意：这里的卡牌奖励已经包含三张牌的独立评分。选择卡牌是 1 个模型决策，但会连续执行“打开奖励”和“选择该牌”2 个游戏点击。':'模型单步执行一个语义决策；通常对应一次游戏点击。';
  if(!s.actions.some(a=>a.candidate_id===selected))selected=null;document.querySelector('#actions').innerHTML=s.actions.map(a=>`<tr class="${a.recommended?'recommended ':''}${a.candidate_id===selected?'selected':''}" data-id="${encodeURIComponent(a.candidate_id)}"><td><input type="radio" name="action" ${a.candidate_id===selected?'checked':''}></td><td>${a.rank}${a.recommended?' ★':''}</td><td>${esc(a.label)}</td><td>${(a.probability*100).toFixed(3)}%</td><td>${a.logit.toFixed(5)}</td><td>${esc(a.execution_note)}</td></tr>`).join('');document.querySelectorAll('tbody tr').forEach(tr=>tr.onclick=()=>{selected=decodeURIComponent(tr.dataset.id);render(state)})}
 async function poll(){try{const r=await fetch('/api/state',{cache:'no-store'});render(await r.json())}catch(e){document.querySelector('#error').textContent=e}setTimeout(poll,250)}
 for(const id of ['resume','pause','step','stop'])document.querySelector('#'+id).onclick=()=>control(id).catch(e=>alert(e));document.querySelector('#execute').onclick=()=>control('execute',{boundary_id:state.boundary_id,candidate_id:selected}).catch(e=>alert(e));
 document.querySelector('#start').onclick=()=>control('start',{model_id:document.querySelector('#models').value}).catch(e=>alert(e));document.querySelector('#models').onchange=()=>render(state);
+document.addEventListener('keydown',e=>{if(['INPUT','SELECT','TEXTAREA'].includes(document.activeElement?.tagName)||e.repeat||!state)return;if(e.code==='Space'){e.preventDefault();if(state.status==='PAUSED')control('resume').catch(x=>alert(x));else if(['COUNTDOWN','EXECUTING'].includes(state.status))control('pause').catch(x=>alert(x))}else if(e.code==='Period'&&state.status==='PAUSED')control('step').catch(x=>alert(x))});
 const slider=document.querySelector('#delay');slider.onpointerdown=()=>delayDragging=true;slider.oninput=()=>document.querySelector('#delayText').textContent=` ${Number(slider.value).toFixed(1)}s`;slider.onchange=()=>{delayDragging=false;control('set_delay',{delay_seconds:Number(slider.value)}).catch(e=>alert(e))};
 const preview=document.querySelector('#rewardPreview');preview.onpointerdown=()=>previewDragging=true;preview.oninput=()=>document.querySelector('#rewardPreviewText').textContent=` ${Number(preview.value).toFixed(1)}s`;preview.onchange=()=>{previewDragging=false;control('set_card_reward_preview',{card_reward_preview_seconds:Number(preview.value)}).catch(e=>alert(e))};poll();
 </script></body></html>"""

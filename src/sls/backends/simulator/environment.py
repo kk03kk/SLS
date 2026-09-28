@@ -151,9 +151,9 @@ class SimulatorBackend:
             self._validation_choice_origin = "ELIXIR_POTION"
         elif current_choice != previous_choice:
             self._validation_choice_origin = None
-        if _is_completed_neow_reward(raw):
-            # Stock closes the terminal Neow CardRewardScreen before exposing
-            # the map.  The native engine represents that UI-only close as its
+        if _is_completed_standalone_card_reward(raw):
+            # Stock closes a standalone CardRewardScreen before exposing the
+            # map. The native engine represents that UI-only close as its
             # generic reward skip action, so fold it inside the same semantic
             # transition instead of leaking a spurious SKIP_REWARD boundary.
             fold = [
@@ -163,7 +163,7 @@ class SimulatorBackend:
             ]
             if len(fold) != 1:
                 raise RuntimeError(
-                    "completed Neow reward must expose exactly one native UI fold"
+                    "completed standalone card reward must expose one native UI fold"
                 )
             raw = self._native.step(int(fold[0]["bits"]))
         if validation_evidence and "card_soul_cost_reset_count" in validation_evidence:
@@ -375,6 +375,10 @@ class SimulatorBackend:
         if screen is ScreenType.COMBAT_REWARD:
             options["reward"] = reward_items
         self._candidate_bits = candidate_bits
+        map_action_nodes = {
+            action.node_id for action in actions
+            if action.kind is ActionKind.CHOOSE_MAP_NODE
+        }
         map_nodes = tuple(
             MapNode(
                 str(node["node_id"]), int(node["x"]), int(node["y"]),
@@ -383,7 +387,10 @@ class SimulatorBackend:
                     if node["burning"] and not bool(player_state["green_key"])
                     else str(node["room_type"])
                 ),
-                bool(node["reachable"]), tuple(
+                (
+                    str(node["node_id"]) in map_action_nodes
+                    if screen is ScreenType.MAP else bool(node["reachable"])
+                ), tuple(
                     "map:boss" if str(item).rsplit(":", 1)[-1] == "15" else str(item)
                     for item in node["outgoing_node_ids"]
                 ),
@@ -554,24 +561,40 @@ def _powers(values: Any, prefix: str) -> tuple[PublicEntity, ...]:
     )
 
 
-def _is_neow_card_reward(raw: Mapping[str, Any]) -> bool:
+def _is_standalone_card_reward(raw: Mapping[str, Any]) -> bool:
     public = raw.get("public_run") or {}
     screen = raw.get("public_screen") or {}
+    progress = raw.get("progress_state") or {}
+    source_is_standalone = (
+        str(public.get("current_event_id") or "").upper() == "NEOW"
+        or int(progress.get("current_room", -1)) == 1  # REST: Dream Catcher
+    )
     return bool(
         int(public.get("screen_state", 0) or 0) == 2
-        and str(public.get("current_event_id") or "").upper() == "NEOW"
+        and source_is_standalone
         and len(screen.get("card_rewards") or ()) == 1
         and not any(screen.get(key) for key in ("gold", "relics", "potions"))
     )
 
 
-def _is_completed_neow_reward(raw: Mapping[str, Any]) -> bool:
+def _is_rest_card_reward(raw: Mapping[str, Any]) -> bool:
+    return bool(
+        _is_standalone_card_reward(raw)
+        and int((raw.get("progress_state") or {}).get("current_room", -1)) == 1
+    )
+
+
+def _is_completed_standalone_card_reward(raw: Mapping[str, Any]) -> bool:
     public = raw.get("public_run") or {}
     screen = raw.get("public_screen") or {}
     info = raw.get("screen_info") or {}
+    progress = raw.get("progress_state") or {}
     return bool(
         int(public.get("screen_state", 0) or 0) == 2
-        and str(public.get("current_event_id") or "").upper() == "NEOW"
+        and (
+            str(public.get("current_event_id") or "").upper() == "NEOW"
+            or int(progress.get("current_room", -1)) == 1
+        )
         and str(info.get("continuation") or "").lower() == "map"
         and not any(screen.get(key) for key in (
             "card_rewards", "gold", "relics", "potions", "emerald_key", "sapphire_key",
@@ -584,7 +607,7 @@ def _screen_type(raw: Mapping[str, Any]) -> ScreenType:
     if int(public["outcome"]) != 1:
         return ScreenType.GAME_OVER
     screen = int(public["screen_state"])
-    if _is_neow_card_reward(raw):
+    if _is_standalone_card_reward(raw):
         return ScreenType.CARD_REWARD
     if screen == 1:
         return ScreenType.NEOW if public["current_event_id"] == "NEOW" else ScreenType.EVENT
@@ -641,9 +664,43 @@ def _semantic_actions(
         if instance_id.startswith("monster:") and instance_id[8:].isdigit():
             native_target_to_public[int(instance_id[8:])] = public_index
     for ordinal, native in enumerate(raw["legal_actions"]):
-        if _is_neow_card_reward(raw) and int(native["reward_type"]) == 6:
+        if (
+            screen is ScreenType.SHOP
+            and not native.get("potion")
+            and int(native.get("reward_type", -1)) == 3
+            and "potion_capacity" in raw.get("player_state", {})
+            and int(raw["player_state"]["potion_count"])
+            >= int(raw["player_state"]["potion_capacity"])
+        ):
+            # Stock refuses the purchase while every potion slot is occupied.
+            continue
+        if (
+            screen is ScreenType.COMBAT_REWARD
+            and native.get("domain") != "COMBAT"
+            and not native.get("potion")
+            and int(native.get("reward_type", -1)) == 3
+            and "potion_capacity" in raw.get("player_state", {})
+            and int(raw["player_state"]["potion_count"])
+            >= int(raw["player_state"]["potion_capacity"])
+        ):
+            # Stock leaves the potion RewardItem visible when slots are full,
+            # but CommunicationMod does not expose a collect command.
+            continue
+        if (
+            _is_standalone_card_reward(raw)
+            and not _is_rest_card_reward(raw)
+            and int(native["reward_type"]) == 6
+        ):
             # The native Rewards container has a generic skip-all action that
-            # stock's Neow CardRewardScreen does not expose.
+            # stock's standalone CardRewardScreen does not expose.
+            continue
+        if (
+            _is_rest_card_reward(raw)
+            and int(native.get("reward_type", -1)) == 0
+            and int(native.get("idx2", -1)) == 6
+        ):
+            # Stock's Dream Catcher skip exits the screen; native's child
+            # skip returns to its still-open parent Rewards container.
             continue
         if (
             screen is ScreenType.COMBAT_REWARD
@@ -693,6 +750,18 @@ def _semantic_actions(
             raise RuntimeError(f"native legal actions collapse to one semantic identity: {action.candidate_id}")
         semantic.append(action)
         mapping[action.candidate_id] = int(native["bits"])
+    if screen is ScreenType.SHOP:
+        # CommunicationMod exposes the purge choice before the priced offers.
+        # Keep both backends' policy action tensors in the same order even
+        # though the native engine enumerates purge after cards/relics/potions.
+        shop_order = {
+            ActionKind.CONFIRM: 0,
+            ActionKind.BUY_CARD: 1,
+            ActionKind.BUY_RELIC: 2,
+            ActionKind.BUY_POTION: 3,
+            ActionKind.LEAVE_SHOP: 4,
+        }
+        semantic.sort(key=lambda action: shop_order.get(action.kind, 5))
     if screen is ScreenType.COMBAT_REWARD:
         def reward_order(action: Action) -> tuple[int, str]:
             identity = action.reward_id or action.subject_id or action.option_id or ""
@@ -712,6 +781,8 @@ def _semantic_actions(
                 ActionKind.TAKE_SINGING_BOWL: 5,
                 ActionKind.SKIP_CARD_REWARD: 6,
                 ActionKind.SKIP_REWARD: 7,
+                ActionKind.USE_POTION: 8,
+                ActionKind.DISCARD_POTION: 8,
             }.get(action.kind, 6), identity)
         semantic.sort(key=reward_order)
     return tuple(semantic), mapping
@@ -777,9 +848,11 @@ def _run_action(
             subject_id=f"boss-relic:{idx1}" if idx1 < 3 else None,
         )
     if screen is ScreenType.CARD_REWARD:
-        if _is_neow_card_reward(raw):
+        if _is_standalone_card_reward(raw):
+            if _is_rest_card_reward(raw) and reward_type == 6:
+                return Action(ActionKind.SKIP_CARD_REWARD, option_id="reward-card:0")
             if reward_type != 0:
-                raise RuntimeError(f"unsupported Neow card reward action type: {reward_type}")
+                raise RuntimeError(f"unsupported standalone card reward action type: {reward_type}")
             if idx2 == 6:
                 return Action(ActionKind.SKIP_CARD_REWARD, option_id="reward-card:0")
             return Action(ActionKind.SELECT_CARD, subject_id=f"select-card:{idx2}")
@@ -937,7 +1010,7 @@ def _screen_entities(raw: Mapping[str, Any]) -> dict[str, tuple[Any, ...]]:
             entities.append(_entity("reward-key:sapphire", "SAPPHIRE_KEY"))
         result["reward"] = tuple(sorted(entities, key=lambda item: item.instance_id))
     elif screen is ScreenType.CARD_REWARD:
-        if _is_neow_card_reward(raw):
+        if _is_standalone_card_reward(raw):
             result["reward"] = tuple(
                 _entity(
                     f"select-card:{index}", option["content_id"],

@@ -1,5 +1,6 @@
 import copy
 import json
+import subprocess
 import tomllib
 from pathlib import Path
 
@@ -7,6 +8,8 @@ import pytest
 
 from sls.rl.checkpoint import RUNTIME_REBIND_FIELDS, checkpoint_contract_diff
 from sls.rl.training_contract import (
+    legacy_training_implementation_unchanged,
+    training_implementation_digest,
     training_validation_digest,
     validate_training_sources,
 )
@@ -96,6 +99,44 @@ def test_validation_scope_and_reviewed_transition(tmp_path):
     source.write_text("learning = 2")
     with pytest.raises(ValueError):
         validate_training_sources(old, root=tmp_path)
+
+
+def test_training_implementation_digest_tracks_ppo_without_native_rebuild(tmp_path):
+    implementation = tmp_path / "src/sls/rl/ppo.py"
+    implementation.parent.mkdir(parents=True)
+    implementation.write_text("learning = 1")
+    native = tmp_path / "native/simulator/rules.cpp"
+    native.parent.mkdir(parents=True)
+    native.write_text("rule = 1")
+    original = training_implementation_digest(root=tmp_path)
+    native.write_text("rule = 2")
+    assert training_implementation_digest(root=tmp_path) == original
+    implementation.write_text("learning = 2")
+    assert training_implementation_digest(root=tmp_path) != original
+
+
+def test_clean_legacy_run_rejects_changed_or_new_training_code(tmp_path):
+    implementation = tmp_path / "src/sls/rl/ppo.py"
+    implementation.parent.mkdir(parents=True)
+    implementation.write_text("learning = 1")
+    native = tmp_path / "native/simulator/rules.cpp"
+    native.parent.mkdir(parents=True)
+    native.write_text("rule = 1")
+    subprocess.run(("git", "init", "-q"), cwd=tmp_path, check=True)
+    subprocess.run(("git", "add", "."), cwd=tmp_path, check=True)
+    subprocess.run(("git", "-c", "user.name=Test", "-c", "user.email=test@example.com",
+                    "commit", "-qm", "baseline"), cwd=tmp_path, check=True)
+    commit = subprocess.check_output(("git", "rev-parse", "HEAD"), cwd=tmp_path, text=True).strip()
+    assert legacy_training_implementation_unchanged(commit, root=tmp_path)
+    native.write_text("rule = 2")
+    assert legacy_training_implementation_unchanged(commit, root=tmp_path)
+    implementation.write_text("learning = 2")
+    assert not legacy_training_implementation_unchanged(commit, root=tmp_path)
+    implementation.write_text("learning = 1")
+    new_model = tmp_path / "src/sls/model/new.py"
+    new_model.parent.mkdir(parents=True)
+    new_model.write_text("model = 1")
+    assert not legacy_training_implementation_unchanged(commit, root=tmp_path)
 
 
 def test_benchmark_rebuild_is_advisory_but_environment_and_layout_are_strict(tmp_path):

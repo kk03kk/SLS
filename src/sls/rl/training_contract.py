@@ -19,6 +19,14 @@ NATIVE_SOURCE_PATHS = (
     "src/sls/content",
     "tools/build_native.py",
 )
+TRAINING_IMPLEMENTATION_PATHS = (
+    "src/sls/__init__.py", "src/sls/rl", "src/sls/model",
+    "src/sls/contracts", "src/sls/curriculum.py",
+    "src/sls/backends/__init__.py", "src/sls/backends/protocol.py",
+    "src/sls/runtime/__init__.py", "src/sls/runtime/artifact.py",
+    "tools/train_full_run.py", "tools/evaluate_checkpoint.py",
+    "tools/prepare_model_warm_start.py",
+)
 
 
 def sha256_file(path: Path) -> str:
@@ -131,6 +139,36 @@ def training_validation_digest(*, root: Path = ROOT) -> str:
         "tools/train_full_run.py", "tools/evaluate_checkpoint.py",
         "tools/prepare_model_warm_start.py",
     ), root=root)
+
+
+def training_implementation_digest(*, root: Path = ROOT) -> str:
+    """Bind PPO/model/controller code independently of reviewed native changes."""
+
+    return local_source_digest(TRAINING_IMPLEMENTATION_PATHS, root=root)
+
+
+def legacy_training_implementation_unchanged(
+    commit: str, *, root: Path = ROOT,
+) -> bool:
+    """Audit a clean legacy run against its recorded Git revision."""
+
+    if len(commit) != 40 or any(ch not in "0123456789abcdef" for ch in commit.lower()):
+        raise ValueError("legacy run has an invalid source commit")
+    try:
+        diff = subprocess.run(
+            ("git", "diff", "--quiet", commit, "--", *TRAINING_IMPLEMENTATION_PATHS),
+            cwd=root, capture_output=True, check=False,
+        )
+        untracked = subprocess.run(
+            ("git", "ls-files", "--others", "--exclude-standard", "--",
+             *TRAINING_IMPLEMENTATION_PATHS),
+            cwd=root, capture_output=True, check=True,
+        )
+    except (FileNotFoundError, subprocess.CalledProcessError) as error:
+        raise ValueError("cannot validate legacy training implementation") from error
+    if diff.returncode not in (0, 1):
+        raise ValueError("cannot compare legacy training implementation with its source commit")
+    return diff.returncode == 0 and not untracked.stdout
 
 
 def validate_training_sources(report: dict[str, object], *, root: Path = ROOT) -> str:

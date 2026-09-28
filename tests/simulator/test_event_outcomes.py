@@ -32,3 +32,24 @@ def test_dead_adventurer_third_safe_search_finishes_without_extra_fight():
             assert decision.observation.screen is ScreenType.EVENT
     assert decision.observation.screen is ScreenType.MAP
     assert all(a.option_id != 'event-option:0' for a in decision.actions)
+
+
+def test_wheel_card_removal_with_no_purgeable_cards_returns_to_map():
+    from sls.backends.simulator.native import LightspeedRunState
+
+    baseline = LightspeedRunState()
+    baseline.reset(0, 20)
+    rng = baseline.snapshot()['rng']
+
+    ordinary = LightspeedRunState()
+    ordinary.reset_event_probe(0, 'WHEEL_OF_CHANGE', rng, ascension=20)
+    ordinary_action = ordinary.snapshot()['legal_actions'][0]
+    ordinary_result = ordinary.step(ordinary_action['bits'])
+    assert ordinary_result['public_run']['screen_state'] == 4  # card select
+
+    empty = LightspeedRunState()
+    empty.reset_event_probe(0, 'WHEEL_OF_CHANGE', rng, ascension=20, empty_deck=True)
+    empty_action = empty.snapshot()['legal_actions'][0]
+    empty_result = empty.step(empty_action['bits'])
+    assert empty_result['public_run']['screen_state'] == 5  # map
+    assert empty_result['legal_actions']

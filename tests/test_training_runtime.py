@@ -18,6 +18,7 @@ from tools.train_full_run import (
     _require_predecessor_promotion,
     _seed_range,
     _training_identity,
+    _validate_diagnostic_seed_namespaces,
     _validate_existing_manifest,
     _validate_seed_namespaces,
 )
@@ -125,6 +126,33 @@ def test_evaluation_seed_namespaces_are_disjoint_from_training() -> None:
         })
 
 
+def test_rotating_diagnostic_seeds_cannot_enter_final_namespace() -> None:
+    run = {
+        "periodic_evaluation_seed_start": 1000,
+        "periodic_evaluation_seed_count": 10,
+        "final_evaluation_seed_start": 1100,
+        "final_evaluation_seed_count": 10,
+        "diagnostic_evaluation_seed_start": 1050,
+        "diagnostic_evaluation_seed_count": 10,
+        "diagnostic_rotation_stride": 20,
+    }
+    periodic, final = _validate_seed_namespaces(run)
+    with pytest.raises(ValueError, match="rotating diagnostic"):
+        _validate_diagnostic_seed_namespaces(
+            run, {"diagnose_every_steps": 100, "target_environment_steps": 400},
+            periodic, final,
+        )
+    _validate_diagnostic_seed_namespaces(
+        run, {"diagnose_every_steps": 100, "target_environment_steps": 100},
+        periodic, final,
+    )
+
+
+def test_seed_ranges_must_fit_native_seed_domain() -> None:
+    with pytest.raises(ValueError, match="64-bit"):
+        _seed_range((1 << 64) - 2, 3)
+
+
 def test_curriculum_and_stage_targets_are_part_of_training_identity() -> None:
     payload = {
         "run": {
@@ -166,8 +194,9 @@ def test_manifest_schema_is_never_migrated() -> None:
 
 def test_positive_training_intervals_fail_before_the_training_loop() -> None:
     assert _positive_int({"target": 20}, "target") == 20
-    with pytest.raises(ValueError, match="must be positive"):
-        _positive_int({"target": 0}, "target")
+    for value in (0, -1, 1.5, True, "2"):
+        with pytest.raises(ValueError, match="positive integer"):
+            _positive_int({"target": value}, "target")
 
 
 def test_canonical_fullrun_config_freezes_stage_and_recurrent_contract() -> None:

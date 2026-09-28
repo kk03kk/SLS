@@ -79,3 +79,15 @@ def test_policy_distance_is_sampled_forward_kl_and_clip_fraction() -> None:
 def test_invalid_ppo_optimization_parameters_are_rejected(field: str, value: float) -> None:
     with pytest.raises(ValueError):
         PPOConfig(**{field: value})
+
+
+@pytest.mark.parametrize("field", [
+    "learning_rate", "gamma", "gae_lambda", "clip_ratio", "value_coefficient",
+    "entropy_coefficient", "entropy_final", "target_kl", "value_clip_ratio",
+    "max_gradient_norm", "potential_scale", "failure_progress_scale",
+    "limit_failure_reward",
+])
+@pytest.mark.parametrize("value", [float("nan"), float("inf"), -float("inf")])
+def test_non_finite_ppo_parameters_are_rejected(field: str, value: float) -> None:
+    with pytest.raises(ValueError, match="finite"):
+        PPOConfig(**{field: value})

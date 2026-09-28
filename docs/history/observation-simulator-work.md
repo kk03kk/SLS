@@ -7,7 +7,7 @@ engineering review: fix apparent significant problems and stop when the project
 looks sufficiently sound. This bounded review is complete. The exhaustive
 acceptance table and open items below remain a historical work ledger and future
 backlog; they are not a claim of complete stock parity or instructions to keep
-this task running. See [closeout](audits/2026-09-05/observation-simulator-closeout.md).
+this task running. See [closeout](../audits/2026-09-05/observation-simulator-closeout.md).
 
 Objective: close the supported simulator and public-observation correctness gaps
 systematically, without launching the original game. This work includes native
@@ -181,7 +181,7 @@ rule inventory remain open; the overall objective is not yet complete.
 
 ### Public sources and relic availability follow-up
 
-The [field matrix](audits/2026-09-05/observation-field-matrix.md) now inventories
+The [field matrix](../audits/2026-09-05/observation-field-matrix.md) now inventories
 contract/model paths and marks missing public information explicitly. Original
 DRAW/EXHAUST card selectors no longer fall through to GENERATED; stock pile
 aliases and visible card/action operations have 11 source-specific regressions.

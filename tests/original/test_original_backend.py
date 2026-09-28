@@ -762,6 +762,96 @@ def test_map_action_folds_match_and_keep_intro_and_rules() -> None:
     )
 
 
+def test_bonfire_spirits_intro_folds_before_card_selection() -> None:
+    intro = game_payload(["Offer a card"])
+    intro["game_state"].update({
+        "floor": 2, "screen_type": "EVENT",
+        "screen_state": {"event_id": "Bonfire Spirits"},
+    })
+    grid = game_payload(["Strike", "Defend"])
+    grid["game_state"].update({"floor": 2, "screen_type": "GRID"})
+    transport = ScriptedTransport([grid])
+    session = OriginalSession(transport)
+    session.payload = intro
+    backend = OriginalBackend(session, IRONCLAD_A0_ACT1)
+    executed: list[str] = []
+
+    result = backend._fold_protocol_only_boundaries(
+        intro, executed, fold_single_event=False,
+    )
+
+    assert result["game_state"]["screen_type"] == "GRID"
+    assert executed == ["choose 0"]
+
+
+def test_lab_intro_folds_before_potion_rewards() -> None:
+    intro = game_payload(["Take the potions"])
+    intro["game_state"].update({
+        "floor": 7, "screen_type": "EVENT",
+        "screen_state": {"event_id": "Lab"},
+    })
+    rewards = game_payload([])
+    rewards["game_state"].update({"floor": 7, "screen_type": "COMBAT_REWARD"})
+    transport = ScriptedTransport([rewards])
+    session = OriginalSession(transport)
+    session.payload = intro
+    backend = OriginalBackend(session, IRONCLAD_A0_ACT1)
+    executed: list[str] = []
+
+    result = backend._fold_protocol_only_boundaries(
+        intro, executed, fold_single_event=False,
+    )
+
+    assert result["game_state"]["screen_type"] == "COMBAT_REWARD"
+    assert executed == ["choose 0"]
+
+
+def test_smoke_bomb_escape_waits_until_combat_is_gone() -> None:
+    combat = game_payload([])
+    combat["game_state"].update({
+        "screen_type": "NONE", "combat_state": {"monsters": []},
+    })
+    combat["available_commands"] = ["wait", "state"]
+    escaped = game_payload([])
+    escaped["game_state"].update({"screen_type": "MAP", "combat_state": None})
+    transport = ScriptedTransport([combat, escaped])
+    session = OriginalSession(transport)
+    session.payload = combat
+    backend = OriginalBackend(session, IRONCLAD_A0_ACT1)
+    executed: list[str] = []
+
+    result = backend._settle_smoke_bomb_escape(combat, executed)
+
+    assert result["game_state"]["screen_type"] == "MAP"
+    assert executed == ["wait 30", "wait 30"]
+
+
+def test_smoke_bomb_folds_empty_reward_after_escape() -> None:
+    combat = game_payload([])
+    combat["game_state"].update({
+        "screen_type": "NONE", "combat_state": {"monsters": []},
+    })
+    combat["available_commands"] = ["wait", "state"]
+    empty_reward = game_payload([])
+    empty_reward["game_state"].update({
+        "screen_type": "COMBAT_REWARD", "combat_state": None,
+        "screen_state": {"rewards": []},
+    })
+    empty_reward["available_commands"] = ["proceed", "state"]
+    mapped = game_payload([])
+    mapped["game_state"].update({"screen_type": "MAP", "combat_state": None})
+    transport = ScriptedTransport([empty_reward, mapped])
+    session = OriginalSession(transport)
+    session.payload = combat
+    backend = OriginalBackend(session, IRONCLAD_A0_ACT1)
+    executed: list[str] = []
+
+    result = backend._settle_smoke_bomb_escape(combat, executed)
+
+    assert result["game_state"]["screen_type"] == "MAP"
+    assert executed == ["wait 30", "proceed"]
+
+
 def test_match_completion_folds_internal_cards_and_forced_continue() -> None:
     cleanup = game_payload([f"card{index}" for index in range(12)])
     cleanup["game_state"].update({

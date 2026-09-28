@@ -134,6 +134,24 @@ def test_comparator_detects_memory_before_equal_observation(tmp_path: Path) -> N
     assert result["first_divergence"]["classification"] == "RECURRENT_MEMORY_DIVERGENCE"
 
 
+def test_comparator_identifies_action_order_with_equal_action_set(tmp_path: Path) -> None:
+    simulator, original = tmp_path / "sim.jsonl", tmp_path / "original.jsonl"
+    shared = {"candidate_actions_sha256": "same", "policy_input_sha256": "different"}
+    _write(simulator, "simulator", [_boundary(
+        **shared, ordered_candidate_actions_sha256="left",
+        ordered_candidate_actions=[{"kind": "A"}, {"kind": "B"}],
+    )])
+    _write(original, "original", [_boundary(
+        **shared, ordered_candidate_actions_sha256="right",
+        ordered_candidate_actions=[{"kind": "B"}, {"kind": "A"}],
+    )])
+
+    divergence = compare_trajectories(simulator, original)["first_divergence"]
+
+    assert divergence["classification"] == "ACTION_ORDER_DIVERGENCE"
+    assert divergence["details"]["simulator_actions"][0]["kind"] == "A"
+
+
 def test_comparator_classifies_transform_result_as_rng(tmp_path: Path) -> None:
     simulator, original = tmp_path / "sim.jsonl", tmp_path / "original.jsonl"
     selection = {"kind": "SELECT_CARD", "subject_id": "select-card:4"}

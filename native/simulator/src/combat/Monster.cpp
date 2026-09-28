@@ -135,6 +135,12 @@ void Monster::construct(BattleContext &bc, MonsterId monsterId, int monsterIdx) 
     initHp(bc.monsterHpRng, bc.ascension);
 
     switch (id) {
+        case MonsterId::GREMLIN_WIZARD:
+            // Stock GremlinWizard starts currentCharge at one. Its second
+            // Charging turn therefore exposes Ultimate Blast next.
+            miscInfo = 1;
+            break;
+
         case MonsterId::GREEN_LOUSE:
         case MonsterId::RED_LOUSE:
             if (bc.ascension >= 2) {

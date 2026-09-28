@@ -1,83 +1,29 @@
 # Repository map
 
-## Stable project roots
-
-- `src/sls`: Python application and library code.
-- `native/simulator`: native FullRun engine and Python binding.
-- `configs`: declarative training and runtime configuration.
-- `tools`: build, training, evaluation, audit, export, and live-play commands.
-- `tests`: unit, contract, integration, and simulator tests.
-- `docs`: maintained architecture and operating documentation.
-- `local`: machine-owned state and generated evidence.
-
-## Current work and local artifacts
-
-- Canonical result: [A20 Act1 50M audit](a20-50m-audit.md), whose 46M
-  checkpoint remains champion.
-- Latest completed config: `configs/train/ironclad_a20_act1_50m.toml`.
-- Superseded experiment: [A20 Act1 60M optimization](a20-60m-optimization-plan.md),
-  stopped after its first 2.36M new steps.
-- Completed non-promoted experiment: [A20 Act1 54M recovery](a20-54m-recovery-plan.md).
-- Current audit and short diagnostic plan: [post-54M audit](a20-next-stage-audit.md).
-  There is no approved long-training configuration.
-- Downloaded server archives: `runs/archives/` (Git-ignored).
-- Active training/checkpoints: `local/runs/`; older downloaded extraction:
-  `runs/local/`. Existing paths are retained.
-- Audit extractions and validation evidence: `local/audits/`.
-- Historical development/build/test logs: `local/logs/development/`.
-- Exported policies: `model/`; native build/runtime dependencies:
-  `local/build/`, `local/external/`.
-- Local reorganization manifest: `local/organization-20260913.json`, containing
-  original/destination paths and SHA256 for all moved files. Nothing was deleted.
-
-Do not treat old audit documents or A0 launch examples as the current A20
-configuration. Do not move checkpoint/build paths merely for cosmetic cleanup.
-
-## Python package
-
-- `src/sls/contracts`: canonical public observations, semantic actions,
-  decisions, and transitions.
-- `src/sls/backends/simulator`: native simulator adapter.
-- `src/sls/backends/original`: CommunicationMod adapter and live session transport.
-- `src/sls/content`: generated content registry, normalization, and policy scope.
-- `src/sls/model`: vocabulary, batching, relational Transformer, and GRU.
-- `src/sls/rl`: workers, rollout math, PPO, evaluation, rewards, episode limits,
-  and exact checkpoints.
-- `src/sls/runtime`: policy artifacts and fail-closed live controller.
-- `src/sls/audit` and `src/sls/diagnostics`: simulator/original-game parity evidence.
-
-## Local state
-
-- `local/build`: native build tree and downloaded build tools.
-- `local/runs`: checkpoints, metrics, trajectories, Slurm logs, and crash evidence.
-- `local/external`: user-owned game and mod files.
-- `local/logs`: live policy journals.
-- `local/reports`: generated audit and validation reports.
-- `runs/9m`: existing imported checkpoint and server stdout/stderr evidence.
-- `local/imports`: existing migration input checkpoints.
-- `local/audit`, `local/audits`: existing audit evidence; the 2026-09-05 audit
-  uses `local/audits/repository-20260905`.
-
-These are existing storage locations, not interchangeable copies. Keep imported
-evidence and checkpoint paths stable. New training jobs use `local/runs`; new
-audit summaries live in `docs/audits/<date>` with bulky evidence under
-`local/audits/<audit-id>`. Build and test caches are regenerable; checkpoints,
-game assets, journals and captured evidence require a separate retention decision.
-
-## Command groups
-
-| Purpose | Entry points |
+| Path | Purpose |
 | --- | --- |
-| Local setup and native build | `bootstrap.py`, `build_native.py` |
-| Server launch and qualification | `submit_slurm.py`, `preflight_training.py`, `benchmark_workers.py` |
-| Training and state transfer | `train_full_run.py`, `prepare_training_migration.py`, `prepare_model_warm_start.py`, `verify_training_resume.py`, `diagnose_checkpoint_contract.py` |
-| Archived training analysis | `analyze_training_history.py`, `analyze_act1_failures.py`, `analyze_act1_corpus.py` |
-| Evaluation and export | `evaluate_checkpoint.py`, `compare_checkpoints.py`, `diagnose_act1_corpus.py`, `export_policy.py`, `seal_training_milestone.py` |
-| Game interaction | `play_live.py`, `play_live_inspector.py`, `configure_live_inspector.py` |
-| Content and stock comparison | `generate_content_registry.py`, `generate_policy_vocabulary.py`, `audit_stock_bytecode.py`, `audit_stock_parity.py`, `run_original_card_audit.py` |
-| Reproduction and trajectories | `replay_failed_state.py`, `audit_simulator_seeds.py`, `capture_policy_trajectory.py`, `compare_policy_trajectories.py`, `run_original_canary.py` |
+| `src/sls/contracts/` | Public observations, semantic actions, decisions, transitions |
+| `src/sls/backends/` | Simulator and original-game adapters |
+| `src/sls/content/` | Content registry and policy scope |
+| `src/sls/model/` | Input encoding, relational network, recurrent memory |
+| `src/sls/rl/` | Rollouts, PPO, evaluation, checkpoint and migration contracts |
+| `src/sls/runtime/` | Exported policy artifact and live controller |
+| `src/sls/audit/`, `src/sls/diagnostics/` | Parity checks and failure investigation |
+| `native/simulator/` | Native simulator, binding, upstream attribution |
+| `native/oracle/` | Observation Oracle patch source |
+| `configs/train/` | [Current and historical configurations](../configs/train/README.md) |
+| `tools/` | [Command entry points](../tools/README.md) |
+| `tests/` | Automated tests |
+| `docs/history/` | [Dated audits and old plans](history/README.md) |
+| `docs/results/` | Compact measured results, model identity and stage closeouts |
 
-Names above are under `tools/`. Historical dated audits record findings at a
-particular revision; they are not current acceptance gates. The
-[2026-09-05 independent audit](audits/2026-09-05/report.md) includes unresolved
-findings, actual test coverage, and a read-only evidence collector.
+The 46M → 60M stage is complete. The current demonstration model is the selected 56M A20 Act1 champion; its independent final result is 1,585/2,048 in the server training simulator. See [stage results](results/a20-act1-60m-stable/README.md). Its configuration and [operator instructions](a20-act1-60m-stable-launch.md) are retained for provenance. No new run is scheduled. Historical documents are evidence of earlier decisions, not instructions to launch a current job.
+
+The [2026-09-26 end-to-end audit](audits/2026-09-26-project-audit.md) records current source checks, fixes, and verification limits.
+The [2026-09-28 closeout audit](audits/2026-09-28-stage-closeout.md) records model import, full automated checks and the archive layout.
+
+## Local and ignored files
+
+`local/build/` holds build outputs and downloaded tools. `local/runs/` holds training checkpoints, metrics and Slurm logs. `local/external/` holds user-owned game and Mod files. `local/audits/`, `local/reports/`, and `local/logs/` hold generated evidence and live journals. The ignored stock-game decompilation projection is under `local/audits/stock-decompilation-tree/`; its tracked generation metadata is in [`docs/audits/stock-decompilation/`](audits/stock-decompilation/README.md). `runs/archives/` holds downloaded server archives; `model/` holds exported policies. These paths are ignored by Git, except `model/README.md`. They may contain unique evidence and should not be deleted as part of source cleanup.
+
+A fresh clone therefore contains the source, configs, tests and docs, but no training checkpoint, pretrained policy, game binaries or Mod JARs. The default exported policy and its companion JSON belong in `model/`. Historical exports reside in `runs/archives/policies/`, and old extracted training directories in `runs/archives/extracted-history/`. Follow the [model release instructions](model-release.md) to share the current model.

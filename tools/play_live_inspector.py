@@ -6,7 +6,6 @@ import argparse
 import json
 import signal
 import sys
-import webbrowser
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -20,6 +19,7 @@ from sls.runtime import (  # noqa: E402
     discover_policy_artifacts,
     load_policy_artifact,
 )
+from sls.runtime.window import open_inspector_window  # noqa: E402
 
 
 def main() -> int:
@@ -45,7 +45,10 @@ def main() -> int:
     )
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=8765)
-    parser.add_argument("--no-open-browser", action="store_true")
+    parser.add_argument(
+        "--no-open-browser", action="store_true",
+        help="serve the dashboard without opening a window (legacy option)",
+    )
     parser.add_argument("--wait-for-neow", action="store_true")
     parser.add_argument("--wait-timeout", type=float, default=600.0)
     parser.add_argument(
@@ -96,13 +99,15 @@ def main() -> int:
 
     signal.signal(signal.SIGINT, stop)
     signal.signal(signal.SIGTERM, stop)
-    url = f"http://{args.host}:{args.port}/"
+    address = f"[{args.host}]" if ":" in args.host else args.host
+    url = f"http://{address}:{server.server_port}/"
     print(
         f"SLS live test dashboard: {url} ({len(models)} models; waiting for selection)",
         file=sys.stderr,
     )
     if not args.no_open_browser:
-        webbrowser.open(url)
+        opened_as = open_inspector_window(url)
+        print(f"Opened inspector in {opened_as}: {url}", file=sys.stderr)
     try:
         while not stopped and launcher.state()["status"] != "STOPPED":
             server.handle_request()

@@ -1,73 +1,26 @@
 # Architecture
 
-SLS has one policy boundary:
+SLS separates the policy from game execution at one boundary:
 
 ```text
-Observation + legal semantic Actions
-    -> Policy Decision
-    -> Backend.step(Action)
-    -> Transition
+public Observation + legal semantic Actions
+    → recurrent policy (action probabilities + state value)
+    → Backend.step(Action)
+    → Transition (next decision, reward, terminal state)
 ```
 
-`Observation` contains only information available to a real-game agent.
-Backend action bits, RNG state, hidden draw order, and simulator internals do
-not enter policy input. Candidate actions have stable semantic identities and
-are scored as a variable-size set.
+`src/sls/contracts/` defines the shared data types. `src/sls/backends/simulator/` adapts the native engine; `src/sls/backends/original/` adapts CommunicationMod for live play and comparison. The policy reads public observations and candidate actions. Backend RNG, hidden draw order, and simulator-only state are not policy inputs.
 
-```text
-C++ FullRun simulator
-    -> SimulatorBackend
-    -> canonical contracts
-    -> vector workers
-    -> relational Transformer state encoder
-    -> GRU belief memory (previous action + reward + current observation)
-    -> variable-candidate policy + value heads
-    -> recurrent PPO
-    -> exact checkpoint / simulator-only artifact
-    -> CommunicationMod live controller
-```
+The model in `src/sls/model/` encodes structured observations with relational attention, maintains belief memory with a GRU, and scores the variable-size legal action set. Its current input schema is `sls-policy-input-v5` (`src/sls/model/encoding.py`). `src/sls/rl/` collects sharded rollouts, optimizes recurrent PPO, evaluates on fixed seeds, and validates checkpoint contracts. The native simulator is the training backend; original-game comparison is a separate audit path under `src/sls/audit/` and `src/sls/diagnostics/`.
 
-The native simulator is the training authority. Original-game comparison and
-Oracle instrumentation are maintained as a separate validation path under
-`sls.audit`, `sls.diagnostics`, and `tools`; they never provide training input.
-Teacher policies and behavior cloning are outside this project.
+## Training and reproducibility
 
-Native source provenance is a canonical digest of local source paths and file
-contents. Git metadata is recorded when available, but Git is not required to
-build, test, or run the local project.
+The completed experiment used the single-stage `IRONCLAD_A20_ACT1` profile defined in `src/sls/curriculum.py`; the selected 56M champion is the current demonstration model. Act2, Act3, and Heart profiles exist for future curriculum stages, but defining a profile does not establish a trained result. The [completed configuration](../configs/train/ironclad_a20_act1_60m_stable.toml) transferred the 46M champion's weights into a new training run; optimizer, worker state, loop state, and random streams were rebuilt. This differs from an exact checkpoint resume, which validates and restores the complete contract. See the [result and environment identity](results/a20-act1-60m-stable/README.md).
 
-Training workers own native environments while model inference is centralized.
-Rollouts remain time-major and are optimized as contiguous recurrent sequences.
-Episode-start masks reset only the corresponding GRU row; GAE, memory and
-gradients never cross a terminal boundary. Entropy decay is driven by total
-environment decisions so changing the benchmark-selected worker count does not
-change the schedule.
+Training, periodic selection, and final evaluation use separate seed ranges. `src/sls/rl/preparation.py` bounds training seeds below the configured periodic, final, and diagnostic namespaces. Selection uses a fixed seed set; the final result uses held-out seeds. The job retains the 46M source as a candidate, so a later checkpoint only becomes selected if it wins under the configured selection rule.
 
-Smoke, pilot and train are cumulative Act 1, Act 2 and FullRun horizons in one
-learning chain rather than three initializations. Horizon migrations preserve
-learning/RNG state and reset environments, belief memory, previous experience
-and episode limits together. Ordinary checkpoints restore all fields exactly.
-Periodic and final evaluation use separate high seed namespaces. The current
-trainer bounds training seeds against the periodic namespace only; see the
-2026-09-05 audit for the missing bound against earlier final/diagnostic seeds.
+The checkpoint contract records model and encoding schemas, configuration, native source identity, worker/runtime details, and resume state. Native source provenance uses local source contents; changing rules requires qualification and can invalidate exact resume. A policy artifact is a smaller export for inference and is distinct from a training checkpoint. Live play uses the same model and policy input path, with fail-closed recovery rules for the controller journal.
 
-PPO normalizes advantages independently for combat, run and choice decisions,
-and normalizes entropy by legal-candidate count. Evaluation aborts on backend
-errors. The training entrypoint exports artifacts after configured milestone
-gates; its final export uses the configured final seed count and thresholds.
-The standalone export command can export weights without those training gates.
+## Validation boundary
 
-Observation schema 2 / policy input v4 carries power-to-owner edges and mutable
-card damage, cost and retention fields, including action-referenced card offers.
-Pre-v4 model artifacts and training contracts are incompatible and are rejected;
-historical checkpoints remain unchanged. The combat-upgrade cost discrepancy
-reported against the earlier baseline has a native fix and regression coverage.
-The [repair ledger](observation-simulator-work.md) separates verified repairs
-from the remaining public-field and simulator-rule audit. These changes do not
-constitute a full stock parity certificate.
-
-Live play uses the same observation, previous-experience input, action encoder,
-recurrent model and candidate scorer. Restart is allowed only at an acknowledged
-matching boundary. Policy artifacts bind model weights, vocabulary, source and
-configuration digests and remain marked simulator-trained rather than
-Original-validated.
+Automated tests and targeted stock-game parity audits cover known behavior and regressions. They do not certify every game seed or event branch. The versioned native simulator is based on the MIT-licensed `sts_lightspeed` project; its [source record](../native/simulator/SLS_VENDOR.json) and [upstream license](../native/simulator/LICENSE.lightspeed.md) remain in the tree. See [historical audits](history/README.md) for dated evidence and unresolved questions.

@@ -127,6 +127,14 @@ class PPOConfig:
     limit_failure_reward: float = -1.0
 
     def __post_init__(self) -> None:
+        for field in (
+            "learning_rate", "gamma", "gae_lambda", "clip_ratio",
+            "value_coefficient", "entropy_coefficient", "entropy_final",
+            "target_kl", "value_clip_ratio", "max_gradient_norm",
+            "potential_scale", "failure_progress_scale", "limit_failure_reward",
+        ):
+            if not math.isfinite(getattr(self, field)):
+                raise ValueError(f"{field} must be finite")
         if (
             self.rollout_steps <= 0
             or self.epochs <= 0
