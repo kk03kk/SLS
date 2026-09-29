@@ -855,6 +855,13 @@ def _run_action(
                 raise RuntimeError(f"unsupported standalone card reward action type: {reward_type}")
             if idx2 == 6:
                 return Action(ActionKind.SKIP_CARD_REWARD, option_id="reward-card:0")
+            if idx2 == 5:
+                # Native reward indices 5/6 are operations, not card positions.
+                # This also applies to standalone Neow/Dream Catcher rewards.
+                return Action(ActionKind.TAKE_SINGING_BOWL, option_id="reward-card:0")
+            cards = raw["public_screen"]["card_rewards"][0]
+            if not 0 <= idx2 < len(cards):
+                raise ValueError(f"standalone card reward index outside public options: {idx2}")
             return Action(ActionKind.SELECT_CARD, subject_id=f"select-card:{idx2}")
         select_type = raw["public_screen"].get("select_type")
         kind = {

@@ -2,8 +2,9 @@
 
 | Configuration | Status |
 | --- | --- |
-| `ironclad_a20_act1_plateau_progress_2m.toml` | Prepared 56M reward-screening control; not launched |
-| `ironclad_a20_act1_plateau_win_2m.toml` | Prepared win-objective comparison; not launched; [workflow](../../docs/act1-plateau-workflow.md) |
+| `ironclad_a20_act1_plateau_progress_2m_r1.toml` / `ironclad_a20_act1_plateau_win_2m_r1.toml` | Prepared clean restart after selection encoding fix; preserve original failed run; [recovery](../../docs/audits/2026-09-29-selection-encoding-recovery.md) |
+| `ironclad_a20_act1_plateau_progress_2m.toml` | Job 886247 failed on standalone reward encoding after update 1; evidence retained |
+| `ironclad_a20_act1_plateau_win_2m.toml` | Job 886248 blocked by failed dependency; superseded by r1 recovery config |
 | `ironclad_a20_act1_60m_stable.toml` | Completed; selected 56M champion, 1,585/2,048 final wins; see [results](../../docs/results/a20-act1-60m-stable/README.md) |
 | `ironclad_a20_act1_54m_recovery.toml` | Completed recovery experiment; not promoted |
 | `ironclad_a20_act1_60m_optimization.toml` | Earlier optimization experiment; stopped after regression |

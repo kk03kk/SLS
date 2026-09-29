@@ -23,6 +23,29 @@ SEED_8335_DUMP = ROOT / "tests/fixtures/regressions/nus-worker-23-seed-8335-inva
 SEED_8335_SHA256 = "bbd6fa5644223ebee07681849d5e2654466cc21e27affbd69cf688a0404eb4a7"
 
 
+def check_standalone_reward_encoding(decision) -> None:
+    """Exercise special reward operations before spending time on full evaluation."""
+    from sls.backends.simulator.environment import _screen_entities, _semantic_actions
+    from sls.contracts import ActionKind, Decision, ScreenType
+    from sls.model import encode_decision
+
+    for room, event in ((1, "INVALID"), (0, "NEOW")):
+        raw = {
+            "public_run": {"outcome": 1, "screen_state": 2, "current_event_id": event},
+            "progress_state": {"current_room": room},
+            "public_screen": {"card_rewards": [[{"content_id": "ANGER"}]],
+                              "gold": [], "relics": [], "potions": []},
+            "legal_actions": [{"bits": i + 1, "reward_type": 0, "idx1": 0, "idx2": i,
+                               "potion": False} for i in (0, 5, 6)],
+        }
+        actions, _ = _semantic_actions(raw, ())
+        if not any(a.kind is ActionKind.TAKE_SINGING_BOWL for a in actions):
+            raise RuntimeError("standalone reward bowl is missing")
+        observation = replace(decision.observation, screen=ScreenType.CARD_REWARD,
+                              reward_options=_screen_entities(raw)["reward"])
+        encode_decision(Decision(observation, actions))
+
+
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=Path)
@@ -92,6 +115,7 @@ def main() -> int:
         decision = SimulatorBackend(profile).reset(0)
         if decision.terminal or not decision.actions:
             raise RuntimeError("simulator smoke produced an invalid Decision")
+        check_standalone_reward_encoding(decision)
         if hashlib.sha256(SEED_8335_DUMP.read_bytes()).hexdigest() != SEED_8335_SHA256:
             raise RuntimeError("seed 8335 regression fixture provenance is stale")
         replayed = replay_dump(SEED_8335_DUMP)
@@ -163,6 +187,7 @@ def main() -> int:
             "python": sys.version, "executable": sys.executable,
             "platform": platform.platform(), "git": git_state(),
             "seed_8335_regression": "PASS",
+            "standalone_reward_encoding": "PASS",
             "decision_invariant": "PASS",
             **ironclad_scope_contract(profile.ascension),
             "native_source_sha256": native_source_digest(), "native_artifact": native_artifact(),
