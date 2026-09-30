@@ -65,6 +65,7 @@
 | PPO epoch diagnostics | 两个 epoch 用同一预算，去掉一次全量 diagnostic；采样改为 time-major stride，可能改变 early-stop 判定，因此是实现行为变化，不只是日志变化；固定 stride 也不是随机无偏样本 |
 | selection guard | 原新失败 median veto 被本次改为 clear-count health-only；BEST schema v4→v5，旧元数据只读兼容；新实验重新建立 selection |
 | continuation | 完整 endpoint 需 COMPLETE manifest + bundle 哈希 + checkpoint identity；实现变化必须旧→新 exact digest 配对授权，不能任意恢复旧实验 |
+| single-stage final export | 发现旧终评只检查 backend error/truncation，遗漏 step/cycle/timeout；本次统一健康门禁并加回归，避免有人工限额失败时仍宣称可晋升 |
 | CI / configs | 新增配置与词表检查；本次不声称已在 GitHub 跑完 CI 或 ASan |
 
 同一个 56M checkpoint 的本地真实模型 probe：8 workers×256，生产 model，Win .98，

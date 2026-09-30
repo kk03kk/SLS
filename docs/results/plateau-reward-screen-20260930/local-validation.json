@@ -7,7 +7,7 @@
     "source_sha256": "1e30bb6cfa32f600cd63c59983c14ab8928fac4452c1586d630295d2c6ff9453",
     "git_commit": "c2f315876609f1e9ad72fbcca5f143d18409b280"
   },
-  "final_training_implementation_sha256": "b609693077221be2b74b819b33c33f68d8df26ce20f43b78e4b7044d67626d0e",
+  "final_training_implementation_sha256": "9da7e28c7a2fc83fcbc1e289dade65dddb60d03fdf6a1670c9ad2fb011bc3bbf",
   "real_model_runtime_checks": [
     {
       "file": "baseline-runtime.json",
@@ -291,10 +291,10 @@
   },
   "validation_notes": "Runtime checks are reused development seeds, not model promotion; micro-update is reduced worker/minibatch and not production performance.",
   "pytest": {
-    "passed": 944,
+    "passed": 945,
     "skipped": 1,
     "warnings": 4,
-    "seconds": 67.23
+    "seconds": 65.57
   },
   "static_checks": {
     "ruff": "PASS",

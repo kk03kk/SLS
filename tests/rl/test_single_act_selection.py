@@ -93,3 +93,12 @@ def test_clear_count_guard_rejects_unhealthy_candidate_even_with_many_more_wins(
     incumbent = _single_act()
     assert not passes_progress_guard(_single_act(successes=500, step_limits=1), incumbent)
     assert evaluation_rank(_single_act(successes=500, step_limits=1)) < evaluation_rank(incumbent)
+
+
+def test_single_stage_final_export_requires_complete_healthy_evaluation() -> None:
+    from tools.train_full_run import _single_stage_final_passes
+
+    assert _single_stage_final_passes(_single_act(), 512)
+    assert not _single_stage_final_passes(_single_act(episodes=511), 512)
+    for field in ("backend_errors", "backend_truncations", "step_limits", "cycle_limits", "timeouts"):
+        assert not _single_stage_final_passes(_single_act(**{field: 1}), 512)

@@ -69,7 +69,7 @@ python tools/submit_win70m.py
 ## 本地验证
 
 Python 3.12 Conda DL；全量 pytest、ruff、词表生成一致性、19 个配置结构/种子命名空间校验；
-944 passed、1 skipped（可选旧模型未安装），4 个预期 runtime-rebind warning；Ruff 和 whitespace check 通过。
+945 passed、1 skipped（可选旧模型未安装），4 个预期 runtime-rebind warning；Ruff 和 whitespace check 通过。
 归档 18 个 bundle 登记文件、22 个 checkpoint 及 2 个导出模型权重；真实 endpoint 全恢复
 状态保留；生产尺寸 model 的 2,048-decision 微型 PPO 更新及逐位重放；5×64 开发种子
 运行检查；Neow grouped-CV 与审计统计重算。最终计数与 commit 见本阶段总结。

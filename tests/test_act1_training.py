@@ -272,10 +272,13 @@ def test_single_stage_real_ppo_soak_resume_and_finalization(tmp_path, monkeypatc
         assert manifest["initialization"]["parent_environment_steps"] == offset
         assert not manifest["initialization"]["exact_resume_of_parent_experiment"]
     assert (output / "final.pt").exists() and (output / "final-evaluation.json").exists()
-    from sls.runtime.artifact import load_policy_artifact
-    assert load_policy_artifact(output / "run.pt").metadata.goal == target.rsplit("_", 1)[1]
-    final_metadata = load_policy_artifact(output / "run.pt").metadata
-    assert final_metadata.ascension_min == final_metadata.ascension_max == (20 if "A20" in target else 0)
+    # This deliberately tiny evaluation is capped at eight decisions: it
+    # exercises finalization, but must not qualify a deployable policy.
+    final_evaluation = json.loads((output / "final-evaluation.json").read_text(encoding="utf-8"))
+    assert final_evaluation["result"]["step_limits"] == 2
+    assert not final_evaluation["promotion_passed"]
+    assert not manifest["stages"]["train"]["promotion_passed"]
+    assert not (output / "run.pt").exists()
     saved = torch.load(output / "latest.pt", weights_only=False)
     assert saved["trainer"]["environment_steps"] == offset + 8
     records = [json.loads(line) for line in (output / "stages/train/metrics.jsonl").read_text(encoding="utf-8").splitlines()]

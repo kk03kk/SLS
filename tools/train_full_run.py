@@ -386,6 +386,15 @@ def _promotion_passes(evaluation: dict[str, object], stage: dict[str, object]) -
     )
 
 
+def _single_stage_final_passes(evaluation: dict[str, object], minimum_episodes: int) -> bool:
+    """Require complete, healthy evaluation before exporting a single-stage policy."""
+    return int(evaluation["episodes"]) >= minimum_episodes and not any(
+        int(evaluation.get(field, 0)) for field in (
+            "backend_errors", "backend_truncations", "step_limits", "cycle_limits", "timeouts",
+        )
+    )
+
+
 def _require_predecessor_promotion(
     manifest: dict[str, object], stage_name: str,
 ) -> None:
@@ -1238,10 +1247,8 @@ def main() -> int:
                 final_stage["minimum_evaluation_episodes"] = int(
                     stage.get("minimum_final_evaluation_episodes", 1)
                 )
-                final_promoted = (
-                    int(final_result["episodes"]) >= int(final_stage["minimum_evaluation_episodes"])
-                    and int(final_result["backend_errors"]) == 0
-                    and int(final_result["backend_truncations"]) == 0
+                final_promoted = _single_stage_final_passes(
+                    final_result, int(final_stage["minimum_evaluation_episodes"]),
                 ) if single_stage else _promotion_passes(final_result, final_stage)
                 _atomic_json(output / "final-evaluation.json", {
                     "schema": "sls-final-evaluation-v3",

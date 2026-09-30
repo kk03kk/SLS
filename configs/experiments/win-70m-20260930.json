@@ -1,7 +1,7 @@
 {
   "schema": "sls-win-70m-budget-experiment-v1",
   "config": "configs/train/ironclad_a20_act1_win_70m_continuation.toml",
-  "config_sha256": "c2c27d882ad0078e2c15dcd8c8194fb3e744963afacf5a2cf508b194ff9fa903",
+  "config_sha256": "63a1c55a68aa57edc141e72200ca6e81095a7a8aced87afa3b1e941d34e1efe7",
   "hypothesis": "More training under the fixed Win objective can improve natural-start A20 Act1 full clear probability; no claim that reaching 70M necessarily improves it.",
   "control": "frozen 56M champion evaluated on exactly the same development seeds/runtime",
   "experimental_variable": "additional training budget under Win-only reward; no lambda/normalization/critic/lr/native changes",
