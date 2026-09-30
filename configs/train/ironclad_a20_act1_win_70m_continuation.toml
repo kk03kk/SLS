@@ -75,4 +75,3 @@ episode_limit_schema = "sls-fullrun-episode-limit-v2"
 max_episode_steps = 4096
 max_boundary_visits = 4
 limit_failure_reward = -1.0
-
