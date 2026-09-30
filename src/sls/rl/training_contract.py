@@ -256,3 +256,65 @@ def runtime_contract(torch_module: object) -> dict[str, object]:
 def canonical_digest(value: object) -> str:
     encoded = json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
     return hashlib.sha256(encoded.encode("utf-8")).hexdigest()
+
+
+def training_config_digest(path: Path) -> str:
+    """Digest a parsed run configuration independently of checkout line endings.
+
+    ``sha256_file`` hashes raw bytes, so the same committed configuration hashes
+    differently on a CRLF checkout than on the LF checkout that produced the
+    recorded run. Training identity is a property of the configuration text, not
+    of the working copy's newlines, so normalize before hashing. On an LF
+    checkout this is byte-identical to ``sha256_file`` and therefore does not
+    change any recorded run's identity.
+    """
+
+    return source_sha256(Path(path))
+
+
+def evaluation_identity(
+    *,
+    device: str,
+    environment_shards: int,
+    ascension: int,
+) -> dict[str, object]:
+    """Runtime and simulator identity for one recorded evaluation.
+
+    The project's own qualification work found evaluation outcomes to depend on
+    inference settings (see docs/audits/2026-09-28-act1-qualification.md), so a
+    quoted win rate is only interpretable next to the settings that produced it.
+    """
+
+    import platform
+    import socket
+
+    import torch
+
+    from sls.content.scope import ironclad_scope_contract
+
+    scope = ironclad_scope_contract(ascension)
+    return {
+        "simulator": {
+            "native_source_sha256": native_source_digest(),
+            "native_artifact": native_artifact(),
+            **scope,
+        },
+        "runtime": {
+            "python": sys.version,
+            "platform": platform.platform(),
+            "hostname": socket.gethostname(),
+            "torch": torch.__version__,
+            "cuda": torch.version.cuda,
+            "gpu": (
+                torch.cuda.get_device_name(device)
+                if str(device).startswith("cuda") and torch.cuda.is_available()
+                else None
+            ),
+            "cpu_threads": torch.get_num_threads(),
+            "cpu_interop_threads": torch.get_num_interop_threads(),
+            "mkldnn_enabled": torch.backends.mkldnn.enabled,
+            "float32_matmul_precision": torch.get_float32_matmul_precision(),
+            "deterministic_algorithms": bool(torch.are_deterministic_algorithms_enabled()),
+            "environment_shards": int(environment_shards),
+        },
+    }

@@ -3,6 +3,15 @@ import pytest
 from tools.compare_checkpoints import _exact_mcnemar, compare_seed_results
 
 
+def test_paired_input_rejects_empty_or_non_boolean_outcomes():
+    import pytest
+
+    with pytest.raises(ValueError, match="empty"):
+        compare_seed_results([], [])
+    with pytest.raises(ValueError, match="boolean"):
+        compare_seed_results([{"seed": 1, "success": "false"}], [{"seed": 1, "success": True}])
+
+
 def _row(seed: int, success: bool, boss: str = "HEXAGHOST") -> dict:
     return {"seed": seed, "success": success, "bosses": {"1": boss}}
 

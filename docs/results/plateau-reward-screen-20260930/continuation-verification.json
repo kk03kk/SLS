@@ -1,0 +1,22 @@
+{
+  "schema": "sls-real-endpoint-state-preservation-check-v1",
+  "checks": {
+    "model": true,
+    "optimizer": true,
+    "trainer": true,
+    "python_rng": true,
+    "torch_rng": true,
+    "cuda_rng": true,
+    "environments": true
+  },
+  "next_seed": 120012081,
+  "source_steps": 58015744,
+  "source_update": 123,
+  "source_optimizer_steps": [
+    3936
+  ],
+  "old_training_identity": "620a249a37b2a4c250fe28fbda6ebc46396a54eff7fdb51d2ecb8ffccc332b81",
+  "new_training_identity": "476e45c0fc39187f04072037b8b0f098829eca2f20ae7c6382a6c399f377688e",
+  "source_file_unmodified": true,
+  "training_executed": false
+}

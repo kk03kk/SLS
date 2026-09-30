@@ -43,15 +43,62 @@ def normalize_advantages_by_domain(
     """Normalize combat, run and choice decisions independently."""
 
     result = torch.empty_like(advantages)
-    domains = torch.tensor([
-        [int(getattr(item, "screen_type")) for item in step]
-        for step in encoded_decisions
-    ])
+    domains = decision_domains(encoded_decisions)
     for domain in domains.unique():
         mask = domains == domain
         values = advantages[mask]
         result[mask] = (values - values.mean()) / (values.std(unbiased=False) + 1e-8)
     return result
+
+
+DOMAIN_NAMES = ("combat", "run", "choice")
+
+
+def decision_domains(
+    encoded_decisions: tuple[tuple[object, ...], ...],
+) -> torch.Tensor:
+    """Screen-group index for every decision in a rollout."""
+
+    return torch.tensor([
+        [int(getattr(item, "screen_type")) for item in step]
+        for step in encoded_decisions
+    ])
+
+
+def advantage_domain_diagnostics(
+    advantages: torch.Tensor,
+    normalized_advantages: torch.Tensor,
+    domains: torch.Tensor,
+) -> dict[str, float]:
+    """Per-domain advantage statistics for the normalization actually applied.
+
+    ``normalize_advantages_by_domain`` divides each domain by its own standard
+    deviation, so ``advantage_scale_<domain>`` is exactly the relative gradient
+    reweighting applied between domains. Without these numbers the reweighting is
+    invisible in the produced metrics, even though it changes the objective.
+    """
+
+    metrics: dict[str, float] = {}
+    total = advantages.numel()
+    for domain, name in enumerate(DOMAIN_NAMES):
+        mask = domains == domain
+        count = int(mask.sum())
+        metrics[f"samples_{name}_fraction"] = count / total
+        if not count:
+            metrics[f"advantage_mean_{name}"] = 0.0
+            metrics[f"advantage_std_{name}"] = 0.0
+            metrics[f"advantage_scale_{name}"] = 0.0
+            metrics[f"advantage_normalized_std_{name}"] = 0.0
+            continue
+        values = advantages[mask]
+        std = float(values.std(unbiased=False))
+        metrics[f"advantage_mean_{name}"] = float(values.mean())
+        metrics[f"advantage_std_{name}"] = std
+        metrics[f"advantage_scale_{name}"] = 1.0 / (std + 1e-8)
+        metrics[f"advantage_normalized_std_{name}"] = float(
+            normalized_advantages[mask].std(unbiased=False)
+        )
+    return metrics
 
 
 def clipped_policy_loss(
@@ -529,11 +576,16 @@ class PPOTrainer:
                 ):
                     totals[key] = totals[key] + value.detach().to(torch.float32)
                 updates += 1
-            final_epoch = epoch + 1 == self.config.epochs
+            # Score every epoch with the same diagnostic budget. The previous
+            # behaviour scored the whole rollout for non-final epochs and a
+            # subsample for the final one, so approx_kl_epoch_1 and
+            # approx_kl_epoch_2 measured different estimators and could not be
+            # compared, and epoch 1 paid a second full forward pass over the
+            # rollout for a diagnostic that is never used for early stopping.
             epoch_kl, epoch_clip_fraction, diagnostic_fraction = (
                 self._policy_diagnostics(
                     rollout,
-                    max_samples=self.config.final_kl_samples if final_epoch else None,
+                    max_samples=self.config.final_kl_samples,
                 )
             )
             epochs_completed = float(epoch + 1)
@@ -553,18 +605,23 @@ class PPOTrainer:
         result["kl_early_stop"] = float(
             epoch_diagnostics.get("approx_kl_final", 0.0) > self.config.target_kl
         )
+        # Magnitude of the entropy term relative to the policy-loss term. This is
+        # a loss-value ratio, not a gradient share; it exists so that a schedule
+        # which has become inert is visible in the produced metrics instead of
+        # only in a configuration diff.
+        result["entropy_term"] = entropy_coefficient * result["entropy"]
+        result["entropy_to_policy_loss_ratio"] = abs(result["entropy_term"]) / max(
+            abs(result["policy"]), 1e-12,
+        )
         returns_variance = rollout.returns.var(unbiased=False)
         result["value_explained_variance"] = float(
             1.0 - (rollout.returns - rollout.old_values).var(unbiased=False)
             / returns_variance.clamp_min(1e-8)
         )
-        domains = torch.tensor([
-            [int(item.screen_type) for item in step]
-            for step in rollout.encoded_decisions
-        ])
-        domain_names = ("combat", "run", "choice")
-        for domain, name in enumerate(domain_names):
-            result[f"samples_{name}_fraction"] = float((domains == domain).float().mean())
+        domains = decision_domains(rollout.encoded_decisions)
+        result.update(advantage_domain_diagnostics(
+            rollout.advantages, normalized_advantages, domains,
+        ))
         return {**result, **epoch_diagnostics}
 
     def _sequence_chunks(self, rollout: RolloutBatch) -> list[tuple[int, int]]:
@@ -679,10 +736,13 @@ class PPOTrainer:
         total_count = rollout.action_indices.numel()
         if max_samples is not None and max_samples < total_count:
             chunk_limit = max(1, max_samples // self.config.recurrent_sequence_length)
-            indices = torch.linspace(
-                0, len(chunks) - 1, steps=min(chunk_limit, len(chunks)),
-            ).round().to(torch.long).tolist()
-            chunks = [chunks[index] for index in indices]
+            # _sequence_chunks() is environment-major. Selecting it with a
+            # linspace therefore over-weighted the first and last time blocks
+            # (11/21/21/11 of a 64-sample budget instead of 16/16/16/16). Order
+            # time-major first so a constant stride covers every block evenly.
+            ordered = sorted(chunks, key=lambda item: (item[0], item[1]))
+            stride = max(1, len(ordered) // chunk_limit)
+            chunks = ordered[::stride][:chunk_limit]
         count = len(chunks) * self.config.recurrent_sequence_length
         kl_parts: list[torch.Tensor] = []
         clipped_parts: list[torch.Tensor] = []

@@ -1,0 +1,54 @@
+{
+  "schema": "sls-audit-independent-recheck-v1",
+  "stock_projection_assertions": {
+    "powers_sorted_after_insertion": true,
+    "priority_comparator": true,
+    "default_strength_priority_5": true,
+    "pen_nib_priority_6": true,
+    "weak_priority_99": true
+  },
+  "stock_projection_sha256": {
+    "local/audits/stock-decompilation-tree/desktop-1.0/source/com/megacrit/cardcrawl/actions/common/ApplyPowerAction.java": "f64ce8511f961a1990f1909e2c55654fa6dbf1dc2f4f1f3d3a7156c2ec2a9d47",
+    "local/audits/stock-decompilation-tree/desktop-1.0/source/com/megacrit/cardcrawl/powers/AbstractPower.java": "37a6e97bc1a7a3d0cbfe93fd07e9f809690f7c02f24fd45ec34892466b6e0f9f",
+    "local/audits/stock-decompilation-tree/desktop-1.0/source/com/megacrit/cardcrawl/powers/StrengthPower.java": "20b05040efe9d6ad693dd763a658c86df9db1b1ac365351c4c8d81c7f6ca08c9",
+    "local/audits/stock-decompilation-tree/desktop-1.0/source/com/megacrit/cardcrawl/powers/WeakPower.java": "17072c70ffbf219440dea75069910630d745654c4bf58cf528e937a7d747d973",
+    "local/audits/stock-decompilation-tree/desktop-1.0/source/com/megacrit/cardcrawl/powers/PenNibPower.java": "74e40b63fdb7a000cfa016224a53682cb84f48a841353e9db4acaf5ce400bc0f",
+    "local/audits/stock-decompilation-tree/desktop-1.0/source/com/megacrit/cardcrawl/cards/AbstractCard.java": "bcd472ececfd8ce4150ccd4eb6dd07a2e2dc43e139196fe00de34705cf1a2a61"
+  },
+  "stock_bytecode_executed": false,
+  "unpaired_seed_blocks": {
+    "dev": [
+      375,
+      512
+    ],
+    "current": [
+      1569,
+      2048
+    ],
+    "z": -1.5951465589382514,
+    "fisher_p": 0.118583330400712,
+    "pearson_p": 0.11067946599939942
+  },
+  "same_seed_environment_comparison": {
+    "lost": 49,
+    "gained": 33,
+    "exact_mcnemar_p": 0.09703091129729906
+  },
+  "objective": {
+    "original_terminal_mean": 0.7064453125000001,
+    "original_win_rate": 0.77392578125,
+    "same_return_if_fail_at_floor_0": 0.85322265625,
+    "same_return_if_fail_at_floor_1": 0.8494591346153847,
+    "interpretation": "hypothetical indifference; not observed achievable headroom"
+  },
+  "lambda": {
+    "half_life_at_098": 34.309618491520645,
+    "direct_terminal_weight_at_170": 0.03224280878620575,
+    "interpretation": "direct residual weight only; critic bootstraps can propagate longer credit"
+  },
+  "paired_power_for_3pp_assuming_q_104_over_512": {
+    "512": 0.3252532452435416,
+    "2048": 0.853687676224383,
+    "4096": 0.9892796719421164
+  }
+}

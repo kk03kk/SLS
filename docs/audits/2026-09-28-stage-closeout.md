@@ -24,10 +24,16 @@
 - 当前本地 native 源码与已构建产物身份一致：
   `c28b45cefa2e2d8529ae21c53bcf722b1ab33efc75693d759887da554b2480a8`。
   它不同于服务器训练源码，不能把历史成绩标成当前环境成绩。
+  **后续身份更新（2026-09-29）**：该摘要记录于本批次当时；此后 native 源码
+  已随 transform 选择修复与 standalone 奖励映射修复推进到
+  `470acd31…` 与 `1e30bb6c…`。当前身份与当前环境下的重测成绩见
+  [2026-09-29 独立审计](2026-09-29-independent-audit.md)。
 - 56M 在当前模拟器 seed 42 下完成第一幕：160 个动作、161 个边界。
   这是可用性检查，未启动大规模评估或真实游戏。
 - 全量测试：854 passed、1 skipped（默认模型目录不含可选历史策略）。
   4 个 warning 均来自测试明确覆盖的 checkpoint provenance rebind。
+  **后续计数（2026-09-29）**：同一命令为 934 passed、1 skipped；差异来自此后
+  新增的测试，本行仍是当时记录。
 - Ruff 检查通过；修正两处测试 import 排序，相关 28 项测试再次通过。
 - 词表生成检查通过；所有 README / docs / 模型说明的本地文档链接有效；
   Git whitespace check 在正确识别 Windows CRLF 后通过。

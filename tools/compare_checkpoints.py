@@ -6,9 +6,7 @@ import argparse
 import json
 import math
 import os
-import platform
 import signal
-import socket
 import sys
 import time
 from dataclasses import asdict
@@ -32,6 +30,10 @@ def _exact_mcnemar(left_only: int, right_only: int) -> float:
 
 
 def compare_seed_results(left: list[dict], right: list[dict]) -> dict:
+    if not left or not right:
+        raise ValueError("paired evaluation has empty seed results")
+    if any(type(row["success"]) is not bool for row in (*left, *right)):
+        raise ValueError("paired success outcomes must be boolean")
     left_by_seed = {int(row["seed"]): row for row in left}
     right_by_seed = {int(row["seed"]): row for row in right}
     if len(left_by_seed) != len(left) or len(right_by_seed) != len(right):
@@ -80,6 +82,10 @@ def compare_seed_results(left: list[dict], right: list[dict]) -> dict:
             ),
             "transition_seeds": values,
         }
+        delta = (right_wins - left_wins) / total
+        discordance_rate = (counts["left_only"] + counts["right_only"]) / total
+        se = math.sqrt(max(0.0, discordance_rate - delta * delta) / total)
+        report[group]["paired_delta_ci95_normal"] = [delta - 1.96 * se, delta + 1.96 * se]
     return report
 
 
@@ -94,6 +100,11 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--device", default="cuda")
     parser.add_argument("--environment-shards", type=int, default=16)
     parser.add_argument("--max-steps", type=int, default=4_096)
+    parser.add_argument("--batch-size", type=int, default=0,
+                        help="fixed evaluation seed chunks; 0 evaluates the whole set together")
+    parser.add_argument("--cpu-threads", type=int)
+    parser.add_argument("--allow-environment-migration", action="store_true",
+                        help="evaluate old-source weights in current simulator; never a training resume")
     return parser
 
 
@@ -138,7 +149,7 @@ def main(argv: list[str] | None = None) -> int:
     from sls.rl.evaluate import evaluate
     from sls.rl.training_contract import (
         TRAINING_CHECKPOINT_SCHEMA,
-        native_artifact,
+        evaluation_identity,
         native_source_digest,
         sha256_file,
     )
@@ -157,7 +168,8 @@ def main(argv: list[str] | None = None) -> int:
         contract = payload.get("contract")
         if not isinstance(contract, Mapping):
             raise ValueError(f"checkpoint model contract is missing: {path}")
-        if contract.get("native_source_sha256") != source_digest:
+        if (contract.get("native_source_sha256") != source_digest
+                and not args.allow_environment_migration):
             raise ValueError(f"checkpoint simulator source differs from current source: {path}")
         saved_profile = contract.get("profile")
         if saved_profile != profile:
@@ -176,6 +188,12 @@ def main(argv: list[str] | None = None) -> int:
     torch.use_deterministic_algorithms(True)
     torch.backends.cudnn.benchmark = False
     torch.set_float32_matmul_precision(precisions.pop())
+    if args.cpu_threads is not None:
+        if args.cpu_threads <= 0:
+            raise ValueError("cpu threads must be positive")
+        torch.set_num_threads(args.cpu_threads)
+    if args.batch_size < 0 or args.max_steps <= 0:
+        raise ValueError("invalid evaluation batch size or step limit")
     seeds = tuple(range(args.seed_start, args.seed_start + args.episodes))
     stop_requested = False
 
@@ -192,13 +210,28 @@ def main(argv: list[str] | None = None) -> int:
     for label, (path, payload, model) in zip(("left", "right"), checkpoints):
         phase_started = time.time()
         print(json.dumps({"paired_phase": label, "checkpoint": str(path)}), flush=True)
-        result = asdict(evaluate(
-            model, profile, seeds, device=args.device,
-            max_steps=args.max_steps,
-            environment_shards=args.environment_shards,
-            stop_requested=lambda: stop_requested,
-            progress_callback=_progress_reporter(label),
-        ))
+        results = []
+        batch_size = args.batch_size or len(seeds)
+        for start in range(0, len(seeds), batch_size):
+            results.append(asdict(evaluate(
+                model, profile, seeds[start:start + batch_size], device=args.device,
+                max_steps=args.max_steps,
+                environment_shards=args.environment_shards,
+                failure_progress_scale=float(payload["contract"]["ppo"]["failure_progress_scale"]),
+                stop_requested=lambda: stop_requested,
+                progress_callback=_progress_reporter(f"{label}:chunk-{start // batch_size}"),
+            )))
+        if len(results) == 1:
+            result = results[0]
+        else:
+            # Do not average nonlinear metrics (medians, conditional boss rates).
+            seed_rows = [row for chunk in results for row in chunk["seed_results"]]
+            successes = sum(row["success"] for row in seed_rows)
+            result = {"seed_results": seed_rows, "episodes": len(seed_rows),
+                      "successes": successes, "success_rate": successes / len(seed_rows),
+                      "chunks": results,
+                      **{key: sum(chunk[key] for chunk in results) for key in (
+                          "backend_errors", "backend_truncations", "step_limits", "cycle_limits", "timeouts")}}
         if stop_requested or int(result["episodes"]) != args.episodes:
             raise RuntimeError(
                 f"paired evaluation interrupted during {label}; no comparison was written"
@@ -208,6 +241,8 @@ def main(argv: list[str] | None = None) -> int:
             "checkpoint": str(path),
             "checkpoint_sha256": sha256_file(path),
             "checkpoint_environment_steps": int(payload["trainer"]["environment_steps"]),
+            "checkpoint_native_source_sha256": payload["contract"]["native_source_sha256"],
+            "checkpoint_reward_schema": payload["contract"]["ppo"]["reward_schema"],
             "model_sha256": model_state_sha256(payload["model"]),
             "elapsed_seconds": time.time() - phase_started,
             "result": result,
@@ -225,25 +260,16 @@ def main(argv: list[str] | None = None) -> int:
         evaluations[1]["result"]["seed_results"],
     )
     record = {
-        "schema": "sls-paired-checkpoint-evaluation-v1",
+        "schema": "sls-paired-checkpoint-evaluation-v2",
+        "evaluation_role": "development-confirmation",
+        "allow_environment_migration": args.allow_environment_migration,
+        "inference_batch_size": args.batch_size or args.episodes,
         "profile": profile.profile_id,
         "seed_range": [seeds[0], seeds[-1] + 1],
         "evaluations": evaluations,
         "comparison": comparison,
-        "simulator": {"native_source_sha256": source_digest, "artifact": native_artifact()},
-        "runtime": {
-            "python": sys.version,
-            "platform": platform.platform(),
-            "hostname": socket.gethostname(),
-            "torch": torch.__version__,
-            "cuda": torch.version.cuda,
-            "gpu": (
-                torch.cuda.get_device_name(args.device)
-                if args.device.startswith("cuda") else None
-            ),
-            "float32_matmul_precision": torch.get_float32_matmul_precision(),
-            "environment_shards": args.environment_shards,
-        },
+        **evaluation_identity(device=args.device, environment_shards=args.environment_shards,
+                              ascension=profile.ascension),
         "elapsed_seconds": time.time() - started,
     }
     _atomic_json(output, record)

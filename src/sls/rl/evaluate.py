@@ -11,6 +11,7 @@ from typing import Callable
 import torch
 
 from sls.backends.simulator import SimulatorBackend
+from sls.contracts import Decision
 from sls.curriculum import CurriculumProfile, EpisodeHorizon
 from sls.model import Policy, PolicyBatch
 from sls.model.encoding import ACTION_TYPE_IDS
@@ -40,6 +41,20 @@ class EvaluationResult:
 
     They are not conditional win rates given entry into the boss combat. Actual
     combat entries are recorded separately in boss_action_metrics[*].entries.
+
+    Counter semantics, since selection ranks these fields:
+
+    * ``self_loops`` counts decisions after which no policy-visible state changed.
+    * ``cycle_limits`` counts episodes stopped by the repeated-boundary guard.
+      These are different conditions; the two were previously the same counter.
+    * ``step_limits`` counts episodes stopped by the decision budget.
+    * ``timeouts`` is a hard-bound safety net: it can only be nonzero if an
+      episode survived ``max_steps`` decision-limit checks without the limiter
+      firing, which would indicate a limiter defect.
+    * ``backend_errors`` is always zero today, because a backend failure aborts
+      the evaluation (see the wrapped ``RuntimeError`` sites) instead of being
+      counted. It is retained so that a future recording change cannot silently
+      pass promotion.
     """
     episodes: int
     successes: int
@@ -79,6 +94,55 @@ def _percentile(values: list[int], fraction: float) -> float | None:
     upper = min(len(ordered) - 1, lower + 1)
     weight = position - lower
     return ordered[lower] * (1.0 - weight) + ordered[upper] * weight
+
+
+def _boundary_signature(decision: Decision, *, exhaustive: bool = False) -> tuple:
+    """Policy-visible state used to detect a decision that changed nothing.
+
+    The cheap form is built for every step. The exhaustive form is only built
+    once the cheap form has already matched, so ordinary steps pay one tuple
+    construction while an apparent no-op is confirmed against the full public
+    state before it is counted.
+    """
+
+    observation = decision.observation
+    cheap = (
+        observation.screen.value,
+        observation.run.act,
+        observation.run.floor,
+        observation.player.current_hp,
+        observation.player.block,
+        observation.player.energy,
+        len(observation.hand),
+        len(observation.draw_pile),
+        len(observation.discard_pile),
+        tuple((enemy.monster_id, enemy.current_hp) for enemy in observation.enemies),
+    )
+    if not exhaustive:
+        return cheap
+    return cheap + (
+        tuple(card.instance_id for card in observation.hand),
+        tuple(card.instance_id for card in observation.deck),
+        len(observation.exhaust_pile),
+        len(observation.selected_cards),
+        len(observation.choice_options),
+        len(observation.reward_options),
+        len(observation.shop_items),
+        len(observation.event_options),
+        # Effects that are only visible through powers, relics or potions must be
+        # included, otherwise using a buff potion would be miscounted as a no-op.
+        tuple(
+            (power.instance_id, power.content_id, power.properties)
+            for power in observation.powers
+        ),
+        tuple(
+            (relic.instance_id, relic.content_id, relic.properties)
+            for relic in observation.relics
+        ),
+        tuple(potion.content_id for potion in observation.potions),
+        observation.run.gold,
+        observation.public_context,
+    )
 
 
 @torch.no_grad()
@@ -137,7 +201,11 @@ def _evaluate_impl(
     boss_results: dict[str, list[bool]] = {}
     boss_action_counts: dict[str, dict[str, int]] = {}
     entered_bosses: list[set[str]] = [set() for _ in seed_values]
-    for _ in range(max_steps):
+    # One iteration beyond the step limit. Every live slot is normally removed by
+    # the limiter on the max_steps-th decision, so the extra iteration only runs
+    # when the limiter failed to fire; that path is what makes `timeouts` a real
+    # safety net instead of a counter that cannot become nonzero.
+    for _ in range(max_steps + 1):
         if stop_requested is not None and stop_requested():
             raise InterruptedError("evaluation interrupted at a safe inference boundary")
         if not active:
@@ -175,6 +243,8 @@ def _evaluate_impl(
         for batch_index, index in enumerate(active):
             action = decisions[index].actions[int(action_indices[batch_index])]
             observation = decisions[index].observation
+            previous_decision = decisions[index]
+            previous_signature = _boundary_signature(previous_decision)
             if observation.enemies:
                 contexts[index] = {"enemy_ids": [e.monster_id for e in observation.enemies]}
             elif observation.screen.value == "EVENT":
@@ -266,6 +336,14 @@ def _evaluate_impl(
             previous_action_types[index] = ACTION_TYPE_IDS[action.kind.value] + 1
             previous_rewards[index] = float(transition.reward)
             decisions[index] = transition.decision
+            # A self-loop is a decision after which no policy-visible state
+            # changed. It is distinct from the cycle limit, which counts repeated
+            # boundary fingerprints anywhere in the episode.
+            if _boundary_signature(decisions[index]) == previous_signature and (
+                _boundary_signature(decisions[index], exhaustive=True)
+                == _boundary_signature(previous_decision, exhaustive=True)
+            ):
+                self_loops += 1
             current_act = transition.decision.observation.run.act
             max_acts[index] = max(max_acts[index], current_act)
             bosses_by_act[index][current_act] = (
@@ -327,7 +405,6 @@ def _evaluate_impl(
                 episode_rewards[index] += -1.0
                 step_limits += int(limit_reason == "step_limit")
                 cycle_limits += int(limit_reason == "cycle_limit")
-                self_loops += int(limit_reason == "cycle_limit")
                 failure_floors.append(transition.decision.observation.run.floor)
                 boss = bosses_by_act[index].get(current_act, "UNKNOWN")
                 boss_results.setdefault(f"ACT_{current_act}:{boss}", []).append(False)

@@ -25,3 +25,5 @@ python tools\play_live_inspector.py --list-models
 python tools\export_policy.py <checkpoint> --output model\<name>.pt `
   --goal ACT1 --ascension-min 20 --ascension-max 20
 ```
+
+2026-09-30：Progress / Win 2M 候选已核验，推理产物与原始 checkpoint 保存在各自 `local/runs/ironclad-a20-act1-plateau-*-2m-r1/`。未证明优于历史 champion，默认模型保持不变；见[本轮结果](../docs/results/plateau-reward-screen-20260930/README.md)。

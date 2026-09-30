@@ -51,12 +51,14 @@ from sls.rl.evaluate import EvaluationResult, evaluate
 from sls.rl.training_contract import (
     TRAINING_CHECKPOINT_SCHEMA,
     canonical_digest,
+    evaluation_identity,
     git_state,
     legacy_training_implementation_unchanged,
     native_artifact,
     native_source_digest,
     runtime_contract,
     sha256_file,
+    training_config_digest,
     training_implementation_digest,
     validate_training_sources,
 )
@@ -231,6 +233,9 @@ def _training_identity(
         **({"selection_progress_guard": bool(run["selection_progress_guard"])}
            if "selection_progress_guard" in run else {}),
         **({"workflow": run["workflow"]} if "workflow" in run else {}),
+        **({key: run[key] for key in ("final_evaluation_role", "evaluate_fixed_endpoint",
+                                     "development_reference_checkpoint", "development_reference_sha256")
+            if key in run}),
         "model": payload["model"],
         **({"warm_start": payload["warm_start"]} if "warm_start" in payload else {}),
         "ppo": payload["ppo"],
@@ -788,7 +793,7 @@ def main() -> int:
             },
             "training_identity_sha256": identity,
             "training_implementation_sha256": training_implementation_digest(),
-            "config_sha256": hashlib.sha256(config_bytes).hexdigest(),
+            "config_sha256": training_config_digest(args.config),
             "git": repository,
             "native_source_sha256": source_digest,
             "native_artifact": artifact,
@@ -953,7 +958,7 @@ def main() -> int:
                     manifest["content_scope_sha256"] = ironclad_a0_scope_hash()
                     manifest["training_identity_sha256"] = identity
                     manifest["training_implementation_sha256"] = training_implementation_digest()
-                    manifest["config_sha256"] = hashlib.sha256(config_bytes).hexdigest()
+                    manifest["config_sha256"] = training_config_digest(args.config)
                     manifest["periodic_evaluation_seeds"] = [
                         periodic_seeds.start, periodic_seeds.stop,
                     ]
@@ -1174,6 +1179,54 @@ def main() -> int:
                     )
             if args.stage == "train" and completed and not controller.requested:
                 save_checkpoint(output / "final.pt", trainer)
+                if run.get("development_reference_checkpoint"):
+                    reference = ROOT / str(run["development_reference_checkpoint"])
+                    if sha256_file(reference) != run["development_reference_sha256"]:
+                        raise ValueError("frozen development reference checkpoint hash mismatch")
+                    reference_payload = torch.load(reference, map_location="cpu", weights_only=False)
+                    from sls.rl.checkpoint import policy_from_training_checkpoint
+                    reference_model = policy_from_training_checkpoint(reference_payload)
+                    if (reference_model.config != trainer.model.config
+                            or reference_payload["contract"]["profile"] != profile):
+                        raise ValueError("frozen reference model/profile mismatch")
+                    trainer.model.load_state_dict(reference_model.state_dict())
+                    reference_result = asdict(run_evaluation(
+                        tuple(final_seeds), "frozen-reference-development", interruptible=False,
+                    ))
+                    _atomic_json(output / "reference-evaluation.json", {
+                        "schema": "sls-frozen-reference-evaluation-v1",
+                        "evaluation_role": "development-confirmation",
+                        "checkpoint": str(reference),
+                        "checkpoint_sha256": sha256_file(reference),
+                        "checkpoint_environment_steps": reference_payload["trainer"]["environment_steps"],
+                        "checkpoint_native_source_sha256": reference_payload["contract"]["native_source_sha256"],
+                        "seeds": [final_seeds.start, final_seeds.stop],
+                        **evaluation_identity(device=device, environment_shards=shard_count, ascension=profile.ascension),
+                        "result": reference_result,
+                    })
+                    endpoint_payload = torch.load(output / "final.pt", map_location="cpu", weights_only=False)
+                    trainer.model.load_state_dict(endpoint_payload["model"])
+                    del reference_model, reference_payload, endpoint_payload
+                if run.get("evaluate_fixed_endpoint", False):
+                    # Primary development endpoint, fixed by budget before any
+                    # selection/confirmation results are observed. This leaves
+                    # trainer weights/state intact for the saved final.pt.
+                    endpoint_result = asdict(run_evaluation(
+                        tuple(final_seeds), "fixed-endpoint-development", interruptible=False,
+                    ))
+                    _atomic_json(output / "endpoint-evaluation.json", {
+                        "schema": "sls-fixed-endpoint-evaluation-v1",
+                        "evaluation_role": "development-confirmation",
+                        "checkpoint": "final.pt",
+                        "checkpoint_sha256": sha256_file(output / "final.pt"),
+                        "checkpoint_environment_steps": trainer.environment_steps,
+                        "seeds": [final_seeds.start, final_seeds.stop],
+                        **evaluation_identity(
+                            device=device, environment_shards=shard_count,
+                            ascension=profile.ascension,
+                        ),
+                        "result": endpoint_result,
+                    })
                 selected_payload = torch.load(
                     selected, map_location="cpu", weights_only=False,
                 )
@@ -1191,11 +1244,21 @@ def main() -> int:
                     and int(final_result["backend_truncations"]) == 0
                 ) if single_stage else _promotion_passes(final_result, final_stage)
                 _atomic_json(output / "final-evaluation.json", {
-                    "schema": "sls-final-evaluation-v2",
+                    "schema": "sls-final-evaluation-v3",
+                    "evaluation_role": run.get("final_evaluation_role", "final-holdout"),
                     "checkpoint": selected.name,
                     "checkpoint_sha256": sha256_file(selected),
                     "checkpoint_environment_steps": selected_payload["trainer"]["environment_steps"],
                     "seeds": [final_seeds.start, final_seeds.stop],
+                    # A quoted win rate is only interpretable next to the
+                    # simulator and inference settings that produced it; the
+                    # project's own qualification work found the outcome to
+                    # depend on the CPU thread setting.
+                    **evaluation_identity(
+                        device=device,
+                        environment_shards=shard_count,
+                        ascension=profile.ascension,
+                    ),
                     "result": final_result,
                     "promotion_passed": final_promoted,
                 })
@@ -1245,6 +1308,8 @@ def main() -> int:
                 output / "training-config.toml",
                 output / "run-manifest.json", output / "latest.pt",
                 output / "final.pt", output / "final-evaluation.json",
+                output / "endpoint-evaluation.json",
+                output / "reference-evaluation.json",
                 output / f"{output.name}.pt",
             ]
             for stage_name in STAGES:

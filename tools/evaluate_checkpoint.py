@@ -5,9 +5,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
-import platform
 import signal
-import socket
 import sys
 import time
 from dataclasses import asdict
@@ -27,6 +25,7 @@ from sls.rl import policy_from_training_checkpoint
 from sls.rl.evaluate import evaluate
 from sls.rl.training_contract import (
     TRAINING_CHECKPOINT_SCHEMA,
+    evaluation_identity,
     native_artifact,
     native_source_digest,
     sha256_file,
@@ -180,22 +179,11 @@ def main(argv: list[str] | None = None) -> int:
             "content_scope_sha256": contract.get("content_scope_sha256"),
         },
         "allow_environment_migration": args.allow_environment_migration,
-        "runtime": {
-            "python": sys.version,
-            "platform": platform.platform(),
-            "hostname": socket.gethostname(),
-            "torch": torch.__version__,
-            "cpu_threads": torch.get_num_threads(),
-            "cpu_interop_threads": torch.get_num_interop_threads(),
-            "mkldnn_enabled": torch.backends.mkldnn.enabled,
-            "float32_matmul_precision": torch.get_float32_matmul_precision(),
-            "cuda": torch.version.cuda,
-            "gpu": (
-                torch.cuda.get_device_name(args.device)
-                if args.device.startswith("cuda") else None
-            ),
-            "environment_shards": args.environment_shards,
-        },
+        "runtime": evaluation_identity(
+            device=args.device,
+            environment_shards=args.environment_shards,
+            ascension=profile.ascension,
+        )["runtime"],
         "elapsed_seconds": time.time() - started,
         "result": result,
     }

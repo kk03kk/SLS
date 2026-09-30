@@ -99,27 +99,31 @@ def main() -> int:
         raise ValueError("checkpoint schema is incompatible")
     if not isinstance(contract, Mapping) or not isinstance(state, Mapping):
         raise ValueError("checkpoint contract/trainer state is missing")
-    required = {
-        "environment_steps": (int(state.get("environment_steps", -1)), args.expected_steps),
-        "update": (int(state.get("update", -1)), args.expected_update),
-        "profile": (_profile_id(contract), profile.profile_id),
-        "workers": (int(contract.get("workers", -1)), 48),
-        "worker_shards": (int(contract.get("worker_shards", -1)), 16),
-    }
-    mismatches = [name for name, pair in required.items() if pair[0] != pair[1]]
-    if mismatches:
-        raise ValueError("milestone does not match the requested seal: " + ", ".join(mismatches))
-
     repository = git_state()
     native_digest = native_source_digest()
     artifact = native_artifact()
     if artifact is None:
         raise RuntimeError("seal requires the compiled native simulator")
+    # The run's real layout comes from the benchmark the run recorded, not from
+    # constants. Hardcoding 48/16 here validated a layout the run did not
+    # necessarily use, while the evidence written below recorded the real one.
     workers_count, shards = _load_benchmark(
         ROOT / str(run["benchmark"]),
         native_digest=native_digest,
         native_binary_sha256=str(artifact["sha256"]),
     )
+
+    required = {
+        "environment_steps": (int(state.get("environment_steps", -1)), args.expected_steps),
+        "update": (int(state.get("update", -1)), args.expected_update),
+        "profile": (_profile_id(contract), profile.profile_id),
+        "workers": (int(contract.get("workers", -1)), workers_count),
+        "worker_shards": (int(contract.get("worker_shards", -1)), shards),
+    }
+    mismatches = [name for name, pair in required.items() if pair[0] != pair[1]]
+    if mismatches:
+        raise ValueError("milestone does not match the requested seal: " + ", ".join(mismatches))
+
     identity = _training_identity(config, workers=workers_count, shards=shards)
     seed = int(run["seed"])
     device = str(run["device"])

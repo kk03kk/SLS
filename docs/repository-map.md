@@ -24,6 +24,7 @@ The [2026-09-28 closeout audit](audits/2026-09-28-stage-closeout.md) records mod
 The [Act1 qualification record](audits/2026-09-28-act1-qualification.md) records the current regression corpus, qualification safeguards and remaining environment gates.
 The [Act1 review and training direction](audits/2026-09-28-act1-review-and-training-direction.md) records the maintainer's decision to pause broader parity auditing, the latest real-game demonstration, and the proposed experiments for the performance plateau. Complete semantic qualification remains open.
 The [plateau execution workflow](act1-plateau-workflow.md) provides the prepared one-job baseline/diagnosis path and two budget-limited reward experiment configurations. No new training has been launched.
+The [2026-09-29 independent audit](audits/2026-09-29-independent-audit.md) re-derived the stage result from raw evidence, paired the retired training environment against the current one on the same 2,048 seeds, measured a seed-block effect of about 3.4 percentage points, retracted the "run-level policy is broken" hypothesis after a learnability probe rejected it, and records the fixes staged for the next job.
 
 ## Local and ignored files
 

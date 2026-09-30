@@ -9,8 +9,15 @@ import os
 from pathlib import Path
 from typing import Any, Callable, Mapping
 
-BEST_CHECKPOINT_SCHEMA = "sls-best-progress-v4"
-_LEGACY_BEST_CHECKPOINT_SCHEMAS = {"sls-best-progress-v3"}
+BEST_CHECKPOINT_SCHEMA = "sls-best-progress-v5"
+_LEGACY_BEST_CHECKPOINT_SCHEMAS = {"sls-best-progress-v3", "sls-best-progress-v4"}
+CLEAR_COUNT_OBJECTIVES = frozenset({"ACT1_CLEAR_COUNT", "HORIZON_CLEAR_COUNT"})
+# Failure depth remains a heuristic for legacy multi-act progress selection.
+# Clear-count objectives use health-only protection and never consult it.
+PROGRESS_REGRESSION_FLOOR_MARGIN = 2.0
+_RUNTIME_HEALTH_FIELDS = (
+    "backend_errors", "backend_truncations", "step_limits", "cycle_limits", "timeouts",
+)
 
 
 def _digest(path: Path) -> str:
@@ -52,31 +59,86 @@ def _wilson_interval(k: int, n: int) -> tuple[float, float]:
     return (centre - margin) / denominator, (centre + margin) / denominator
 
 
+def _median_failure_floor(record: Mapping[str, Any]) -> float | None:
+    value = record.get("median_failure_floor")
+    return None if value is None else float(value)
+
+
+def _progress_regressed(candidate: Mapping[str, Any], incumbent: Mapping[str, Any]) -> bool:
+    """Return True only for a regression that is unambiguous without pairing.
+
+    Every input here is either counter-based (a nonzero value is bad on its own)
+    or a two-floor margin on a fixed seed set, so a true result never depends on
+    an unmeasured variance.
+    """
+
+    if any(int(candidate.get(field, 0)) for field in _RUNTIME_HEALTH_FIELDS):
+        return True
+    candidate_floor = _median_failure_floor(candidate)
+    incumbent_floor = _median_failure_floor(incumbent)
+    if candidate_floor is None or incumbent_floor is None:
+        return False
+    return candidate_floor + PROGRESS_REGRESSION_FLOOR_MARGIN <= incumbent_floor
+
+
 def passes_progress_guard(candidate: Mapping[str, Any], incumbent: Mapping[str, Any]) -> bool:
     """Conservative marginal-interval guard, not a paired significance test.
 
-    One extra rare win must not mask an unambiguous collapse in act reach.
-    All snapshots remain saved even when this guard rejects best promotion.
+    Promotion is allowed when the candidate's success lower bound clears the
+    incumbent's upper bound. Otherwise it is allowed only when the candidate
+    shows neither an act-reach collapse (multi-act horizons) nor a failure-depth
+    or runtime-health regression (every horizon). All snapshots remain saved even
+    when this guard rejects best promotion.
+
+    The guard is deliberately not a paired test: both records come from the same
+    fixed seed set, so a paired comparison would be strictly more powerful. This
+    guard is the conservative fallback for when paired per-seed evidence is not
+    available to the selection path.
     """
+
     n = int(candidate["episodes"])
     if n != int(incumbent["episodes"]):
         raise ValueError("guarded checkpoint selection requires the same fixed seed count")
+    if candidate.get("selection_objective") in CLEAR_COUNT_OBJECTIVES:
+        # The remaining failures are a selected subset: rescuing deep failures
+        # can lower their median depth while improving full-run win probability.
+        # Failure depth cannot veto a higher clear count. Health failures can.
+        return not any(int(candidate.get(field, 0)) for field in _RUNTIME_HEALTH_FIELDS)
     if any(int(candidate.get(k, 0)) for k in ("backend_errors", "backend_truncations")):
         return False
+
     def interval(record, field):
         return _wilson_interval(int(record[field]), n)
+
     if interval(candidate, "successes")[0] > interval(incumbent, "successes")[1]:
         return True
-    return all(interval(candidate, field)[1] >= interval(incumbent, field)[0]
-               for field in ("reached_act2", "reached_act3"))
+    # Only consult act reach when at least one side actually reached a later act.
+    # Comparing two structurally-zero intervals is vacuous, and treating it as
+    # agreement is what previously made this guard unable to reject anything.
+    act_fields = ("reached_act2", "reached_act3")
+    if any(
+        int(candidate.get(field, 0)) or int(incumbent.get(field, 0))
+        for field in act_fields
+    ):
+        if all(
+            interval(candidate, field)[1] >= interval(incumbent, field)[0]
+            for field in act_fields
+        ):
+            return True
+    return not _progress_regressed(candidate, incumbent)
 
 
 def evaluation_rank(record: Mapping[str, Any]) -> tuple[float, ...]:
     """Rank progress while penalizing non-progress before reward magnitude."""
 
-    if record.get("selection_objective") in {"ACT1_CLEAR_COUNT", "HORIZON_CLEAR_COUNT"}:
-        return (float(record["successes"]),)
     failure_floor = record.get("median_failure_floor")
+    if record.get("selection_objective") in CLEAR_COUNT_OBJECTIVES:
+        # Keep the earliest checkpoint on equal clear counts. Depth, speed and
+        # boss subgroups are diagnostics, not additional selection objectives.
+        return (
+            -float(any(int(record.get(field, 0)) for field in _RUNTIME_HEALTH_FIELDS)),
+            float(record["successes"]),
+        )
     rates = dict(record.get("boss_success_rate") or {})
     successes = dict(record.get("boss_successes") or {})
     attempts = dict(record.get("boss_attempts") or {})
