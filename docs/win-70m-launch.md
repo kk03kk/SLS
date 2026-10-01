@@ -1,5 +1,9 @@
 # 单作业 Win 58M → 70M
 
+2026-10-02 状态更新：job 891389 已 COMPLETE 到 70,008,832，固定终点通过预注册开发
+判据，见[结案](results/win70m-20261001/README.md)。下一步只推荐[90M 作业](win-90m-launch.md)；
+以下保留提交前的历史设计，勿再次提交 70M。
+
 截至 2026-09-30 已准备、未提交服务器。最终选择是扩大 **Win 本身的训练预算**，不再进行
 Progress vs Win A/B，也不单独排一个“56M vs 56.5M”大评估作业。
 依据与结果见[筛查结案](results/plateau-reward-screen-20260930/README.md)和

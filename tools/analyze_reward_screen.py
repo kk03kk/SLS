@@ -16,8 +16,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT))
 
-from compare_run_arms import _from_seed_results, report, wilson
+from tools.compare_run_arms import _from_seed_results, report, wilson
 
 
 def digest(path: Path) -> str:
@@ -153,7 +154,9 @@ def analyze_run(run: Path) -> tuple[dict, list[dict], dict]:
         "confirmation_seed_range": final_range, "periodic_seed_range": periodic,
         "final_evaluation_has_explicit_runtime": "runtime" in final,
         "exported_weights_match_selected": True,
-        "new_decisions": manifest["environment_steps"] - manifest["initialization"]["parent_environment_steps"],
+        "new_decisions": manifest["environment_steps"] - (
+            manifest.get("initialization") or manifest["continuation"]
+        )["parent_environment_steps"],
         "updates": len(updates), "wall_hours": (manifest["stages"]["train"]["finished_unix"]
                                                  - manifest["created_unix"]) / 3600,
         "timing_seconds": totals, "health": health, "neow_sample_counts": neow,

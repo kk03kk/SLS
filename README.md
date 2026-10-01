@@ -6,7 +6,9 @@ SLS 用原生模拟器和循环策略网络训练智能体游玩 **Slay the Spir
 
 ## 当前模型与阶段结果
 
-本阶段训练已完成至 **60,014,592 步**，当前默认模型为选模留下的 **56,000,512 步 champion**。checkpoint SHA256 为 `9555c8608155ba262901757cd57d76f854f1cd76a5b6126375e832fa0a714710`。**以下数字均登记环境与种子身份；跨测量差异不能直接归因于模型变化。**
+当前 Win 分支已完成 **70,008,832 decisions**。相同 2,048 个新开发确认种子、相同服务器 runtime 下，固定 70M endpoint 为 **1573/2048（76.81%）**，冻结 56M 为 **1516/2048（74.02%）**，净 +57、配对 p=.01263；68M 周期最佳为 1581/2048（77.20%），与 70M 的差异未获确认（p=.736）。完整归档与身份核验见[70M 结案](docs/results/win70m-20261001/README.md)。下一步从完整 70M endpoint 保留学习状态到约 90M，核心 PPO 不变，轮换开发种子并以 70M 为 control；见[90M 执行说明](docs/win-90m-launch.md)。代码统一到 main，服务器提交由人类执行。
+
+68M 是新的开发候选，最终保留集仍封存；历史默认演示模型 **56,000,512 步 champion** 保留，不覆盖。checkpoint SHA256 为 `9555c8608155ba262901757cd57d76f854f1cd76a5b6126375e832fa0a714710`。**以下为历史测量，跨环境、runtime 或种子差异不能直接归因于模型变化。**
 
 | 测量 | 环境（native source SHA256） | 种子 | 结果 |
 | --- | --- | --- | ---: |
@@ -19,7 +21,7 @@ SLS 用原生模拟器和循环策略网络训练智能体游玩 **Slay the Spir
 
 **跨种子块的点估计需要不确定性。** 同一模型的 `[8e12,+512)` 为 375/512（73.24%），`[7e12,+2048)` 为 1,569/2,048（76.61%）。09-29 报告所称“p≈0.0014、8e12 系统更难”经独立复算被纠正：两块没有共享 seed，合法 Fisher p≈0.119（Pearson p≈0.111），尚未证明系统块效应。新服务器基线在同一 8e12 块为 374/512，说明评估 runtime 也要随结果登记。[阶段结果](docs/results/a20-act1-60m-stable/README.md)保留历史身份。
 
-**2026-09-30：两组 2M reward 筛查完成。** Progress 与 Win 所选模型在开发确认集分别 392/512、394/512，配对 p=0.922；Win 的 78.52% 周期峰值没有稳定复现，不据此替换 champion。[完整复算、最佳 checkpoint 与逐 Boss 结果](docs/results/plateau-reward-screen-20260930/README.md)已归档。后续固定 Win objective，不再追加 reward A/B；准备一个从完整 Win 58M endpoint 保留学习状态到 70M 的训练作业，服务器尚未提交。见[执行说明](docs/win-70m-launch.md)。
+**2026-09-30：两组 2M reward 筛查完成。** Progress 与 Win 所选模型在开发确认集分别 392/512、394/512，配对 p=0.922；Win 的 78.52% 周期峰值没有稳定复现，不据此替换 champion。[完整复算、最佳 checkpoint 与逐 Boss 结果](docs/results/plateau-reward-screen-20260930/README.md)已归档。随后固定 Win objective，不再追加 reward A/B；58M→70M 作业现已完成，结论见上方与[70M 结案](docs/results/win70m-20261001/README.md)。
 
 **以上都不是原版游戏胜率**，也不是任何其他环境的成绩。[2026-09-29 独立审计](docs/audits/2026-09-29-independent-audit.md)记录测量方法、环境与种子身份的核对结果、以及尚未修复的问题。
 

@@ -1,4 +1,4 @@
-"""Submit the single preregistered Win-to-70M job; no duplicate submissions."""
+"""Submit one preregistered Win continuation job; no duplicate submissions."""
 
 from __future__ import annotations
 
@@ -13,13 +13,13 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-
-from submit_slurm import _parser, build_sbatch_command
+sys.path.insert(0, str(ROOT))
 
 from sls.rl.training_contract import (
     native_source_digest,
     training_implementation_digest,
 )
+from tools.submit_slurm import _parser, build_sbatch_command
 
 PLAN = ROOT / "configs/experiments/win-70m-20260930.json"
 
@@ -39,6 +39,15 @@ def validate_plan(plan: dict, *, root: Path = ROOT) -> Path:
         raise ValueError("environment semantics changed")
     if manifest["status"] != "COMPLETE":
         raise ValueError("parent Win run is not complete")
+    if manifest["training_implementation_sha256"] != run["continuation_from_training_implementation_sha256"]:
+        raise ValueError("parent implementation differs from the reviewed source")
+    bundle = json.loads((source / "training-bundle.json").read_text(encoding="utf-8"))
+    if bundle["files"].get("latest.pt") != run["continuation_checkpoint_sha256"]:
+        raise ValueError("source bundle does not register the pinned endpoint")
+    for filename in ("run-manifest.json", "training-config.toml"):
+        with (source / filename).open("rb") as stream:
+            if hashlib.file_digest(stream, "sha256").hexdigest() != bundle["files"][filename]:
+                raise ValueError(f"source bundle mismatch: {filename}")
     for path_to_check, expected in (
         (source / "latest.pt", run["continuation_checkpoint_sha256"]),
         (root / run["development_reference_checkpoint"], run["development_reference_sha256"]),
@@ -49,15 +58,19 @@ def validate_plan(plan: dict, *, root: Path = ROOT) -> Path:
     return path
 
 
-def main() -> int:
+def main(*, plan_path: Path = PLAN, receipt_name: str = "win-70m-20260930-submission.json") -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
-    plan = json.loads(PLAN.read_text(encoding="utf-8"))
+    plan = json.loads(plan_path.read_text(encoding="utf-8"))
     path = validate_plan(plan)
+    hours = int(plan["wall_limit_hours"])
+    if not 1 <= hours <= 72:
+        raise ValueError("wall limit must fit the 72-hour training partition")
     command = build_sbatch_command(_parser().parse_args([
         "train", "--config", str(path), "--prepare", "--python", sys.executable,
-        "--constraint", "xgpg", "--cpus", "16", "--memory", "64G", "--time", "2-12:00:00",
+        "--constraint", "xgpg", "--cpus", "16", "--memory", "64G",
+        "--time", f"{hours // 24}-{hours % 24:02d}:00:00",
     ]))
     print(shlex.join(command), flush=True)
     if args.dry_run:
@@ -68,9 +81,11 @@ def main() -> int:
     config = tomllib.loads(path.read_text(encoding="utf-8"))
     if (ROOT / config["run"]["output"]).exists():
         raise FileExistsError("target already exists; inspect/resume explicitly rather than duplicate submission")
-    receipt = ROOT / "local/operator/win-70m-20260930-submission.json"
+    if Path(receipt_name).name != receipt_name:
+        raise ValueError("receipt must be a plain filename")
+    receipt = ROOT / "local/operator" / receipt_name
     receipt.parent.mkdir(parents=True, exist_ok=True)
-    plan_hash = hashlib.sha256(PLAN.read_bytes()).hexdigest()
+    plan_hash = hashlib.sha256(plan_path.read_bytes()).hexdigest()
     # Retain a partial receipt if sbatch fails or returns ambiguous output.
     with receipt.open("x", encoding="utf-8") as stream:
         json.dump({"status": "SUBMITTING", "plan_sha256": plan_hash}, stream)

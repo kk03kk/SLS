@@ -1,0 +1,1596 @@
+{
+  "schema": "sls-win-continuation-analysis-v1",
+  "archive_sha256": "ddfa0afe496912bc3a51897f738cc7790903cf93ce2c3c77f2f0cec38582365d",
+  "server_identity": "SLS Win 58M -> 70M continuation\njob=891389\ndate=2026-10-01\nbranch=codex/win70m-evidence-20260930\ncommit=e0024449e2ef7c5adc3360a283542e5dec6b3a5c\nstatus:\n",
+  "run": {
+    "run": "ironclad-a20-act1-win-70m-continuation",
+    "git": {
+      "branch": "codex/win70m-evidence-20260930",
+      "commit": "e0024449e2ef7c5adc3360a283542e5dec6b3a5c",
+      "dirty": false
+    },
+    "native_source_sha256": "1e30bb6cfa32f600cd63c59983c14ab8928fac4452c1586d630295d2c6ff9453",
+    "training_implementation_sha256": "9da7e28c7a2fc83fcbc1e289dade65dddb60d03fdf6a1670c9ad2fb011bc3bbf",
+    "training_identity_sha256": "476e45c0fc39187f04072037b8b0f098829eca2f20ae7c6382a6c399f377688e",
+    "config_sha256": "63a1c55a68aa57edc141e72200ca6e81095a7a8aced87afa3b1e941d34e1efe7",
+    "config": {
+      "run": {
+        "workflow": "single-stage",
+        "profile": "IRONCLAD_A20_ACT1",
+        "seed": 120000000,
+        "training_seed_limit": 2000000000000,
+        "device": "cuda",
+        "deterministic": true,
+        "worker_backend": "sharded-vector",
+        "worker_layout": [
+          64,
+          16
+        ],
+        "benchmark": "local/runs/preparation/ironclad-a20-act1-win-70m-continuation/benchmark.json",
+        "output": "local/runs/ironclad-a20-act1-win-70m-continuation",
+        "selection_progress_guard": true,
+        "continuation_from": "local/runs/ironclad-a20-act1-plateau-win-2m-r1",
+        "continuation_checkpoint_sha256": "a229b73cbc9d40fceaff9b901d245af1d5d67fb9f36a4c319826bca0f18a2ac5",
+        "continuation_selection_evidence": "completed-endpoint",
+        "final_evaluation_role": "development-confirmation",
+        "evaluate_fixed_endpoint": true,
+        "development_reference_checkpoint": "local/runs/ironclad-a20-act1-v4-60m-stable/stages/train/selection/best_progress.pt",
+        "development_reference_sha256": "9555c8608155ba262901757cd57d76f854f1cd76a5b6126375e832fa0a714710",
+        "continuation_from_training_implementation_sha256": "cfc4a31b0439c4a91b5ded90f6e443c7c567c27a6f35fa2d204ca9826abd3ec6",
+        "continuation_to_training_implementation_sha256": "9da7e28c7a2fc83fcbc1e289dade65dddb60d03fdf6a1670c9ad2fb011bc3bbf",
+        "periodic_evaluation_seed_start": 8000000000000,
+        "periodic_evaluation_seed_count": 512,
+        "final_evaluation_seed_start": 8000002000000,
+        "final_evaluation_seed_count": 2048,
+        "evaluation_max_steps": 4096
+      },
+      "stages": {
+        "train": {
+          "profile": "IRONCLAD_A20_ACT1",
+          "target_environment_steps": 70000000,
+          "evaluate_every_steps": 2000000,
+          "checkpoint_every_steps": 1000000,
+          "minimum_success_rate": 0.0,
+          "minimum_reached_act2_rate": 0.0,
+          "minimum_reached_act3_rate": 0.0,
+          "minimum_evaluation_episodes": 512,
+          "minimum_final_evaluation_episodes": 2048
+        }
+      },
+      "model": {
+        "embedding_dim": 128,
+        "transformer_layers": 4,
+        "attention_heads": 4,
+        "feedforward_dim": 256,
+        "recurrent_hidden_dim": 256,
+        "recurrent_layers": 1,
+        "dropout": 0.0,
+        "architecture": "sls-recurrent-relational-policy-v5"
+      },
+      "ppo": {
+        "rollout_steps": 256,
+        "recurrent_sequence_length": 64,
+        "minibatch_sequences": 16,
+        "learning_rate": 3.125e-05,
+        "gamma": 1.0,
+        "gae_lambda": 0.98,
+        "clip_ratio": 0.2,
+        "value_coefficient": 0.5,
+        "entropy_coefficient": 0.002,
+        "entropy_final": 0.002,
+        "entropy_decay_steps": 4000000,
+        "entropy_schedule_start_steps": 56000512,
+        "target_kl": 0.02,
+        "final_kl_samples": 4096,
+        "value_clip_ratio": 0.2,
+        "max_gradient_norm": 0.5,
+        "epochs": 2,
+        "potential_shaping": true,
+        "potential_scale": 0.2,
+        "failure_progress_scale": 0.0,
+        "reward_schema": "sls-curriculum-win-v1",
+        "episode_limit_schema": "sls-fullrun-episode-limit-v2",
+        "max_episode_steps": 4096,
+        "max_boundary_visits": 4,
+        "limit_failure_reward": -1.0
+      }
+    },
+    "verified_bundle_files": {
+      "endpoint-evaluation.json": "6c6ca4fa2151444fef831c2ee5317bb323d11b9ca7d72863c9577a1d64e940ad",
+      "final-evaluation.json": "800298f0f8a450cc514ee5ef5a2e2d28b73055f4c8a4ae8cb6c637ab0f272a4a",
+      "final.pt": "cb53fee1ae3f47cc906665c903068dabaf38a328be1e07697e6d17c5b21d7d5c",
+      "ironclad-a20-act1-win-70m-continuation.pt": "ec7a9596bdbbd6a8fcc701bb9e4f374113fb86297344cb05256060f500840d9a",
+      "latest.pt": "ec3ca8723ba097649739418c57d944aad31a1efd65fc67222ff52f8b0b47017f",
+      "reference-evaluation.json": "c1fb9e46aa2a22ef2f730f7174210699d771c091d88ab4033a801e4a6c2345eb",
+      "run-manifest.json": "a4f8b03650f437ec196a0ee7d9d189dd75d0d5d075fec02b48eda7e7e43ea864",
+      "stages/train/metrics.jsonl": "d90e01d2b623a093a75cd41f9969d44d29cedfd67c44f896e32c302fc168dde9",
+      "stages/train/selection/best_progress.json": "ed309fe55fb89b585932e96c18b85cced7f9f655c0c6f08120e85fa82ace7b9e",
+      "stages/train/selection/best_progress.pt": "38f931b8386ad801e6c3e842e7f2b884dcc819f5c3ebd328f6590c85cf490eda",
+      "training-config.toml": "63a1c55a68aa57edc141e72200ca6e81095a7a8aced87afa3b1e941d34e1efe7"
+    },
+    "checkpoints": {
+      "checkpoint-steps-000059015168.pt": {
+        "sha256": "95e8e8279d70c1b3f6922da6f0d0ecd53de748dfd784a38329608786dff608bf",
+        "steps": 59015168,
+        "update": 184,
+        "has_resume_state": true
+      },
+      "checkpoint-steps-000060014592.pt": {
+        "sha256": "785164e1bfb9a95bce66392d9c13173f632659d834962cdcc40207d8ff1d717b",
+        "steps": 60014592,
+        "update": 245,
+        "has_resume_state": true
+      },
+      "checkpoint-steps-000061014016.pt": {
+        "sha256": "6ef23cc04c1ef91da248e2e345b588aaf68c5e5334901dad16c7db6394ccb83f",
+        "steps": 61014016,
+        "update": 306,
+        "has_resume_state": true
+      },
+      "checkpoint-steps-000062013440.pt": {
+        "sha256": "0f8cdc43cfc4269f6532eaadceab7e4f3a4c7b082dda09de36a97cfa39d2bb7c",
+        "steps": 62013440,
+        "update": 367,
+        "has_resume_state": true
+      },
+      "checkpoint-steps-000063012864.pt": {
+        "sha256": "bbfb33a817a5624cc568d4c1933e2600a44bdfeae349cf225b0c58ba20bca5f2",
+        "steps": 63012864,
+        "update": 428,
+        "has_resume_state": true
+      },
+      "checkpoint-steps-000064012288.pt": {
+        "sha256": "7598b8b6b7fff20bec53fe4808c6ef709271c3cd8d29ecac08a2248aed3bd0da",
+        "steps": 64012288,
+        "update": 489,
+        "has_resume_state": true
+      },
+      "checkpoint-steps-000065011712.pt": {
+        "sha256": "a37b10c844cacba8d3c73beb65b2a02b0eac92c92689899fffbddcf9112f8b13",
+        "steps": 65011712,
+        "update": 550,
+        "has_resume_state": true
+      },
+      "checkpoint-steps-000066011136.pt": {
+        "sha256": "6d9c2ddde07b863ef18a18c51046eedfac589590017abf94a1677c7047afb532",
+        "steps": 66011136,
+        "update": 611,
+        "has_resume_state": true
+      },
+      "checkpoint-steps-000067010560.pt": {
+        "sha256": "532ef3c602f44eee2f5c71d8bda26fb08fe4eacd0a755ef027fc373089dc1490",
+        "steps": 67010560,
+        "update": 672,
+        "has_resume_state": true
+      },
+      "checkpoint-steps-000068009984.pt": {
+        "sha256": "3761062d6b65f0c4cedf79667758050d151e8a0d0a2ca91ae7cabe9b16efa49c",
+        "steps": 68009984,
+        "update": 733,
+        "has_resume_state": true
+      },
+      "checkpoint-steps-000069009408.pt": {
+        "sha256": "5533ac215681a38b39d01ad2520d2191ef55d090eb8fa4a03bb6dc39ee3a2a32",
+        "steps": 69009408,
+        "update": 794,
+        "has_resume_state": true
+      },
+      "checkpoint-steps-000070008832.pt": {
+        "sha256": "fe6171042fbbff8c464c95bc520255648330a299e5301ead823ce5a773a37f99",
+        "steps": 70008832,
+        "update": 855,
+        "has_resume_state": true
+      },
+      "final.pt": {
+        "sha256": "cb53fee1ae3f47cc906665c903068dabaf38a328be1e07697e6d17c5b21d7d5c",
+        "steps": 70008832,
+        "update": 855,
+        "has_resume_state": true
+      },
+      "latest.pt": {
+        "sha256": "ec3ca8723ba097649739418c57d944aad31a1efd65fc67222ff52f8b0b47017f",
+        "steps": 70008832,
+        "update": 855,
+        "has_resume_state": true
+      },
+      "stages/train/selection/best_progress.pt": {
+        "sha256": "38f931b8386ad801e6c3e842e7f2b884dcc819f5c3ebd328f6590c85cf490eda",
+        "steps": 68009984,
+        "update": 733,
+        "has_resume_state": true
+      }
+    },
+    "periodic_curve": [
+      {
+        "steps": 58015744,
+        "wins": 383,
+        "episodes": 512,
+        "rate": 0.748046875,
+        "ci95": [
+          0.7086901555300428,
+          0.7837091963574333
+        ],
+        "bosses": {
+          "HEXAGHOST": {
+            "wins": 126,
+            "seeds": 179,
+            "entries": 166,
+            "clear_rate": 0.7039106145251397,
+            "entry_win_rate": 0.7590361445783133
+          },
+          "SLIME_BOSS": {
+            "wins": 132,
+            "seeds": 161,
+            "entries": 151,
+            "clear_rate": 0.8198757763975155,
+            "entry_win_rate": 0.8741721854304636
+          },
+          "THE_GUARDIAN": {
+            "wins": 125,
+            "seeds": 172,
+            "entries": 162,
+            "clear_rate": 0.7267441860465116,
+            "entry_win_rate": 0.7716049382716049
+          }
+        },
+        "failure_floor_mean": 14.348837209302326,
+        "failure_floor_median": 16,
+        "mean_steps": 161.05859375,
+        "health": {
+          "backend_errors": 0,
+          "backend_truncations": 0,
+          "step_limits": 0,
+          "cycle_limits": 0,
+          "timeouts": 0
+        }
+      },
+      {
+        "steps": 60014592,
+        "wins": 381,
+        "episodes": 512,
+        "rate": 0.744140625,
+        "ci95": [
+          0.7046240394693286,
+          0.7800209919159826
+        ],
+        "bosses": {
+          "HEXAGHOST": {
+            "wins": 118,
+            "seeds": 179,
+            "entries": 167,
+            "clear_rate": 0.659217877094972,
+            "entry_win_rate": 0.7065868263473054
+          },
+          "SLIME_BOSS": {
+            "wins": 137,
+            "seeds": 161,
+            "entries": 151,
+            "clear_rate": 0.8509316770186336,
+            "entry_win_rate": 0.9072847682119205
+          },
+          "THE_GUARDIAN": {
+            "wins": 126,
+            "seeds": 172,
+            "entries": 161,
+            "clear_rate": 0.7325581395348837,
+            "entry_win_rate": 0.782608695652174
+          }
+        },
+        "failure_floor_mean": 14.51908396946565,
+        "failure_floor_median": 16,
+        "mean_steps": 162.880859375,
+        "health": {
+          "backend_errors": 0,
+          "backend_truncations": 0,
+          "step_limits": 0,
+          "cycle_limits": 0,
+          "timeouts": 0
+        }
+      },
+      {
+        "steps": 62013440,
+        "wins": 379,
+        "episodes": 512,
+        "rate": 0.740234375,
+        "ci95": [
+          0.7005618428507421,
+          0.7763288680324041
+        ],
+        "bosses": {
+          "HEXAGHOST": {
+            "wins": 119,
+            "seeds": 179,
+            "entries": 165,
+            "clear_rate": 0.664804469273743,
+            "entry_win_rate": 0.7212121212121212
+          },
+          "SLIME_BOSS": {
+            "wins": 136,
+            "seeds": 161,
+            "entries": 144,
+            "clear_rate": 0.84472049689441,
+            "entry_win_rate": 0.9444444444444444
+          },
+          "THE_GUARDIAN": {
+            "wins": 124,
+            "seeds": 172,
+            "entries": 164,
+            "clear_rate": 0.7209302325581395,
+            "entry_win_rate": 0.7560975609756098
+          }
+        },
+        "failure_floor_mean": 14.24812030075188,
+        "failure_floor_median": 16,
+        "mean_steps": 163.037109375,
+        "health": {
+          "backend_errors": 0,
+          "backend_truncations": 0,
+          "step_limits": 0,
+          "cycle_limits": 0,
+          "timeouts": 0
+        }
+      },
+      {
+        "steps": 64012288,
+        "wins": 380,
+        "episodes": 512,
+        "rate": 0.7421875,
+        "ci95": [
+          0.7025924548565791,
+          0.7781754162776496
+        ],
+        "bosses": {
+          "HEXAGHOST": {
+            "wins": 125,
+            "seeds": 179,
+            "entries": 168,
+            "clear_rate": 0.6983240223463687,
+            "entry_win_rate": 0.7440476190476191
+          },
+          "SLIME_BOSS": {
+            "wins": 132,
+            "seeds": 161,
+            "entries": 149,
+            "clear_rate": 0.8198757763975155,
+            "entry_win_rate": 0.8859060402684564
+          },
+          "THE_GUARDIAN": {
+            "wins": 123,
+            "seeds": 172,
+            "entries": 163,
+            "clear_rate": 0.7151162790697675,
+            "entry_win_rate": 0.754601226993865
+          }
+        },
+        "failure_floor_mean": 14.348484848484848,
+        "failure_floor_median": 16.0,
+        "mean_steps": 160.73828125,
+        "health": {
+          "backend_errors": 0,
+          "backend_truncations": 0,
+          "step_limits": 0,
+          "cycle_limits": 0,
+          "timeouts": 0
+        }
+      },
+      {
+        "steps": 66011136,
+        "wins": 374,
+        "episodes": 512,
+        "rate": 0.73046875,
+        "ci95": [
+          0.6904231293083547,
+          0.767081780319379
+        ],
+        "bosses": {
+          "HEXAGHOST": {
+            "wins": 130,
+            "seeds": 179,
+            "entries": 170,
+            "clear_rate": 0.7262569832402235,
+            "entry_win_rate": 0.7647058823529411
+          },
+          "SLIME_BOSS": {
+            "wins": 129,
+            "seeds": 161,
+            "entries": 151,
+            "clear_rate": 0.8012422360248447,
+            "entry_win_rate": 0.8543046357615894
+          },
+          "THE_GUARDIAN": {
+            "wins": 115,
+            "seeds": 172,
+            "entries": 161,
+            "clear_rate": 0.6686046511627907,
+            "entry_win_rate": 0.7142857142857143
+          }
+        },
+        "failure_floor_mean": 14.710144927536232,
+        "failure_floor_median": 16.0,
+        "mean_steps": 166.955078125,
+        "health": {
+          "backend_errors": 0,
+          "backend_truncations": 0,
+          "step_limits": 0,
+          "cycle_limits": 0,
+          "timeouts": 0
+        }
+      },
+      {
+        "steps": 68009984,
+        "wins": 405,
+        "episodes": 512,
+        "rate": 0.791015625,
+        "ci95": [
+          0.7536951237380339,
+          0.824001753673257
+        ],
+        "bosses": {
+          "HEXAGHOST": {
+            "wins": 129,
+            "seeds": 179,
+            "entries": 173,
+            "clear_rate": 0.7206703910614525,
+            "entry_win_rate": 0.7456647398843931
+          },
+          "SLIME_BOSS": {
+            "wins": 141,
+            "seeds": 161,
+            "entries": 154,
+            "clear_rate": 0.8757763975155279,
+            "entry_win_rate": 0.9155844155844156
+          },
+          "THE_GUARDIAN": {
+            "wins": 135,
+            "seeds": 172,
+            "entries": 163,
+            "clear_rate": 0.7848837209302325,
+            "entry_win_rate": 0.8282208588957055
+          }
+        },
+        "failure_floor_mean": 14.57943925233645,
+        "failure_floor_median": 16,
+        "mean_steps": 162.947265625,
+        "health": {
+          "backend_errors": 0,
+          "backend_truncations": 0,
+          "step_limits": 0,
+          "cycle_limits": 0,
+          "timeouts": 0
+        }
+      },
+      {
+        "steps": 70008832,
+        "wins": 386,
+        "episodes": 512,
+        "rate": 0.75390625,
+        "ci95": [
+          0.7147968094985838,
+          0.7892340231421399
+        ],
+        "bosses": {
+          "HEXAGHOST": {
+            "wins": 125,
+            "seeds": 179,
+            "entries": 167,
+            "clear_rate": 0.6983240223463687,
+            "entry_win_rate": 0.7485029940119761
+          },
+          "SLIME_BOSS": {
+            "wins": 135,
+            "seeds": 161,
+            "entries": 152,
+            "clear_rate": 0.8385093167701864,
+            "entry_win_rate": 0.8881578947368421
+          },
+          "THE_GUARDIAN": {
+            "wins": 126,
+            "seeds": 172,
+            "entries": 157,
+            "clear_rate": 0.7325581395348837,
+            "entry_win_rate": 0.802547770700637
+          }
+        },
+        "failure_floor_mean": 14.365079365079366,
+        "failure_floor_median": 16.0,
+        "mean_steps": 162.68359375,
+        "health": {
+          "backend_errors": 0,
+          "backend_truncations": 0,
+          "step_limits": 0,
+          "cycle_limits": 0,
+          "timeouts": 0
+        }
+      }
+    ],
+    "selected_steps": 68009984,
+    "selected_sha256": "38f931b8386ad801e6c3e842e7f2b884dcc819f5c3ebd328f6590c85cf490eda",
+    "development_confirmation": {
+      "wins": 1581,
+      "episodes": 2048,
+      "rate": 0.77197265625,
+      "ci95": [
+        0.7533024011492231,
+        0.789624536607594
+      ],
+      "bosses": {
+        "HEXAGHOST": {
+          "wins": 492,
+          "seeds": 674,
+          "entries": 632,
+          "clear_rate": 0.7299703264094956,
+          "entry_win_rate": 0.7784810126582279
+        },
+        "SLIME_BOSS": {
+          "wins": 568,
+          "seeds": 676,
+          "entries": 639,
+          "clear_rate": 0.8402366863905325,
+          "entry_win_rate": 0.8888888888888888
+        },
+        "THE_GUARDIAN": {
+          "wins": 521,
+          "seeds": 698,
+          "entries": 641,
+          "clear_rate": 0.7464183381088825,
+          "entry_win_rate": 0.8127925117004681
+        }
+      },
+      "failure_floor_mean": 14.068522483940043,
+      "failure_floor_median": 16,
+      "mean_steps": 164.4375,
+      "health": {
+        "backend_errors": 0,
+        "backend_truncations": 0,
+        "step_limits": 0,
+        "cycle_limits": 0,
+        "timeouts": 0
+      }
+    },
+    "confirmation_seed_range": [
+      8000002000000,
+      8000002002048
+    ],
+    "periodic_seed_range": [
+      8000000000000,
+      8000000000512
+    ],
+    "final_evaluation_has_explicit_runtime": true,
+    "exported_weights_match_selected": true,
+    "new_decisions": 11993088,
+    "updates": 732,
+    "wall_hours": 35.592937803533346,
+    "timing_seconds": {
+      "update_seconds": 116693.21082744311,
+      "collect_seconds": 85013.51147900283,
+      "optimize_seconds": 31539.79608822806,
+      "collect_encode_seconds": 32609.875940853846,
+      "collect_transition_seconds": 27378.982821295795,
+      "collect_policy_seconds": 8151.09362392762,
+      "collect_worker_step_seconds": 16309.46194241423
+    },
+    "health": {
+      "approx_kl_final": {
+        "mean": 0.003575062230183257,
+        "first_10": 0.002599057147745043,
+        "last_10": 0.00213988529285416
+      },
+      "clip_fraction": {
+        "mean": 0.03505685941769126,
+        "first_10": 0.0375244140625,
+        "last_10": 0.03232421875
+      },
+      "gradient_norm": {
+        "mean": 0.8044849602413959,
+        "first_10": 0.8209212839603424,
+        "last_10": 0.7710754692554473
+      },
+      "gradient_clip_fraction": {
+        "mean": 0.9145321038251366,
+        "first_10": 0.915625,
+        "last_10": 0.878125
+      },
+      "value_explained_variance": {
+        "mean": 0.5699800259428598,
+        "first_10": 0.5621305286884308,
+        "last_10": 0.5236819922924042
+      },
+      "value": {
+        "mean": 0.050991392712225844,
+        "first_10": 0.05126653276383877,
+        "last_10": 0.049697347730398175
+      },
+      "entropy": {
+        "mean": 0.16476574487210624,
+        "first_10": 0.1719519689679146,
+        "last_10": 0.15811072140932084
+      }
+    },
+    "neow_sample_counts": {
+      "option_0": 3226.0,
+      "option_1": 68308.0,
+      "option_2": 1328.0,
+      "option_3": 19.0
+    },
+    "kl_early_stops": 0.0
+  },
+  "reference": {
+    "wins": 1516,
+    "episodes": 2048,
+    "rate": 0.740234375,
+    "ci95": [
+      0.7208055943503859,
+      0.758763621765151
+    ],
+    "bosses": {
+      "HEXAGHOST": {
+        "wins": 476,
+        "seeds": 674,
+        "entries": 612,
+        "clear_rate": 0.7062314540059347,
+        "entry_win_rate": 0.7777777777777778
+      },
+      "SLIME_BOSS": {
+        "wins": 541,
+        "seeds": 676,
+        "entries": 623,
+        "clear_rate": 0.8002958579881657,
+        "entry_win_rate": 0.8683788121990369
+      },
+      "THE_GUARDIAN": {
+        "wins": 499,
+        "seeds": 698,
+        "entries": 634,
+        "clear_rate": 0.7148997134670487,
+        "entry_win_rate": 0.7870662460567823
+      }
+    },
+    "failure_floor_mean": 13.898496240601503,
+    "failure_floor_median": 16.0,
+    "mean_steps": 170.23828125,
+    "health": {
+      "backend_errors": 0,
+      "backend_truncations": 0,
+      "step_limits": 0,
+      "cycle_limits": 0,
+      "timeouts": 0
+    }
+  },
+  "endpoint": {
+    "wins": 1573,
+    "episodes": 2048,
+    "rate": 0.76806640625,
+    "ci95": [
+      0.7492952561579955,
+      0.7858338081660488
+    ],
+    "bosses": {
+      "HEXAGHOST": {
+        "wins": 502,
+        "seeds": 674,
+        "entries": 606,
+        "clear_rate": 0.744807121661721,
+        "entry_win_rate": 0.8283828382838284
+      },
+      "SLIME_BOSS": {
+        "wins": 545,
+        "seeds": 676,
+        "entries": 628,
+        "clear_rate": 0.8062130177514792,
+        "entry_win_rate": 0.8678343949044586
+      },
+      "THE_GUARDIAN": {
+        "wins": 526,
+        "seeds": 698,
+        "entries": 635,
+        "clear_rate": 0.7535816618911175,
+        "entry_win_rate": 0.8283464566929134
+      }
+    },
+    "failure_floor_mean": 13.736842105263158,
+    "failure_floor_median": 16,
+    "mean_steps": 164.03564453125,
+    "health": {
+      "backend_errors": 0,
+      "backend_truncations": 0,
+      "step_limits": 0,
+      "cycle_limits": 0,
+      "timeouts": 0
+    }
+  },
+  "evaluation_identity": {
+    "runtime": {
+      "cpu_interop_threads": 96,
+      "cpu_threads": 16,
+      "cuda": "12.4",
+      "deterministic_algorithms": true,
+      "environment_shards": 16,
+      "float32_matmul_precision": "high",
+      "gpu": "NVIDIA A100-PCIE-40GB",
+      "hostname": "xgpg4",
+      "mkldnn_enabled": true,
+      "platform": "Linux-6.8.0-142-generic-x86_64-with-glibc2.39",
+      "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+      "torch": "2.6.0+cu124"
+    },
+    "simulator": {
+      "content_scope_id": "sls-ironclad-ascension-content-v1",
+      "content_scope_sha256": "e92ab9e347bac50422d148d7e23b505f99c68eb3d515f0b7bcebf8862981490d",
+      "native_artifact": {
+        "git_commit": "4b4028cf5c831bb4c22a5e2edd6b7599e1779730",
+        "path": "/home/h/hengzhi/SLS/local/build/native/cpython-312/_lightspeed.cpython-312-x86_64-linux-gnu.so",
+        "sha256": "f68e8b4fd37c80276aedaa1bd2cf647022a9b5dfdbdf862b61cb28cd11741d14",
+        "source_sha256": "1e30bb6cfa32f600cd63c59983c14ab8928fac4452c1586d630295d2c6ff9453"
+      },
+      "native_source_sha256": "1e30bb6cfa32f600cd63c59983c14ab8928fac4452c1586d630295d2c6ff9453"
+    },
+    "environment": null,
+    "reward": null,
+    "decoding": null
+  },
+  "endpoint_vs_reference": {
+    "schema": "sls-arm-comparison-v1",
+    "arms": [
+      "reference",
+      "candidate"
+    ],
+    "sources": [
+      "fixed-endpoint",
+      "fixed-endpoint"
+    ],
+    "paired_seeds": 2048,
+    "seed_range": [
+      8000002000000,
+      8000002002048
+    ],
+    "results": {
+      "reference": {
+        "wins": 1516,
+        "successes": 1516,
+        "success_rate": 0.740234375,
+        "ci95": [
+          0.7208055943503859,
+          0.758763621765151
+        ]
+      },
+      "candidate": {
+        "wins": 1573,
+        "successes": 1573,
+        "success_rate": 0.76806640625,
+        "ci95": [
+          0.7492952561579955,
+          0.7858338081660488
+        ]
+      }
+    },
+    "discordant": {
+      "reference_win": 224,
+      "candidate_win": 281
+    },
+    "net": 57,
+    "exact_mcnemar_p": 0.012627032889895536,
+    "verdict": "candidate is better (p=0.0126)",
+    "blocks": [
+      {
+        "start": 8000002000000,
+        "n": 512,
+        "left_wins": 395,
+        "right_wins": 397
+      },
+      {
+        "start": 8000002000512,
+        "n": 512,
+        "left_wins": 373,
+        "right_wins": 393
+      },
+      {
+        "start": 8000002001024,
+        "n": 512,
+        "left_wins": 380,
+        "right_wins": 393
+      },
+      {
+        "start": 8000002001536,
+        "n": 512,
+        "left_wins": 368,
+        "right_wins": 390
+      }
+    ],
+    "paired_difference_ci95_normal": [
+      0.00635923614897296,
+      0.04930482635102704
+    ],
+    "boss_pairs": {
+      "HEXAGHOST": {
+        "schema": "sls-arm-comparison-v1",
+        "arms": [
+          "reference",
+          "candidate"
+        ],
+        "sources": [
+          "fixed-endpoint",
+          "fixed-endpoint"
+        ],
+        "paired_seeds": 674,
+        "seed_range": [
+          8000002000000,
+          8000002002048
+        ],
+        "results": {
+          "reference": {
+            "wins": 476,
+            "successes": 476,
+            "success_rate": 0.7062314540059347,
+            "ci95": [
+              0.6707533627830186,
+              0.739372038049889
+            ]
+          },
+          "candidate": {
+            "wins": 502,
+            "successes": 502,
+            "success_rate": 0.744807121661721,
+            "ci95": [
+              0.7105703183871155,
+              0.7762691861987101
+            ]
+          }
+        },
+        "discordant": {
+          "reference_win": 81,
+          "candidate_win": 107
+        },
+        "net": 26,
+        "exact_mcnemar_p": 0.06797106090165464,
+        "verdict": "no significant difference (p=0.0680)",
+        "blocks": [
+          {
+            "start": 8000002000000,
+            "n": 512,
+            "left_wins": 373,
+            "right_wins": 380
+          },
+          {
+            "start": 8000002001561,
+            "n": 162,
+            "left_wins": 103,
+            "right_wins": 122
+          }
+        ],
+        "paired_difference_ci95_normal": [
+          -0.0011904810584199704,
+          0.07834181636999267
+        ]
+      },
+      "SLIME_BOSS": {
+        "schema": "sls-arm-comparison-v1",
+        "arms": [
+          "reference",
+          "candidate"
+        ],
+        "sources": [
+          "fixed-endpoint",
+          "fixed-endpoint"
+        ],
+        "paired_seeds": 676,
+        "seed_range": [
+          8000002000002,
+          8000002002046
+        ],
+        "results": {
+          "reference": {
+            "wins": 541,
+            "successes": 541,
+            "success_rate": 0.8002958579881657,
+            "ci95": [
+              0.7684998747982419,
+              0.8286981847379906
+            ]
+          },
+          "candidate": {
+            "wins": 545,
+            "successes": 545,
+            "success_rate": 0.8062130177514792,
+            "ci95": [
+              0.7747204449882581,
+              0.8342450639969641
+            ]
+          }
+        },
+        "discordant": {
+          "reference_win": 66,
+          "candidate_win": 70
+        },
+        "net": 4,
+        "exact_mcnemar_p": 0.7971023348689007,
+        "verdict": "no significant difference (p=0.7971)",
+        "blocks": [
+          {
+            "start": 8000002000002,
+            "n": 512,
+            "left_wins": 414,
+            "right_wins": 417
+          },
+          {
+            "start": 8000002001521,
+            "n": 164,
+            "left_wins": 127,
+            "right_wins": 128
+          }
+        ],
+        "paired_difference_ci95_normal": [
+          -0.027892518289311708,
+          0.03972683781593893
+        ]
+      },
+      "THE_GUARDIAN": {
+        "schema": "sls-arm-comparison-v1",
+        "arms": [
+          "reference",
+          "candidate"
+        ],
+        "sources": [
+          "fixed-endpoint",
+          "fixed-endpoint"
+        ],
+        "paired_seeds": 698,
+        "seed_range": [
+          8000002000003,
+          8000002002047
+        ],
+        "results": {
+          "reference": {
+            "wins": 499,
+            "successes": 499,
+            "success_rate": 0.7148997134670487,
+            "ci95": [
+              0.6803025072138588,
+              0.7471444556715922
+            ]
+          },
+          "candidate": {
+            "wins": 526,
+            "successes": 526,
+            "success_rate": 0.7535816618911175,
+            "ci95": [
+              0.7202826330816345,
+              0.7841047831231978
+            ]
+          }
+        },
+        "discordant": {
+          "reference_win": 77,
+          "candidate_win": 104
+        },
+        "net": 27,
+        "exact_mcnemar_p": 0.052988888653444234,
+        "verdict": "no significant difference (p=0.0530)",
+        "blocks": [
+          {
+            "start": 8000002000003,
+            "n": 512,
+            "left_wins": 364,
+            "right_wins": 387
+          },
+          {
+            "start": 8000002001497,
+            "n": 186,
+            "left_wins": 135,
+            "right_wins": 139
+          }
+        ],
+        "paired_difference_ci95_normal": [
+          0.0010130156141002628,
+          0.07635088123403727
+        ]
+      }
+    }
+  },
+  "selected_vs_reference": {
+    "schema": "sls-arm-comparison-v1",
+    "arms": [
+      "reference",
+      "candidate"
+    ],
+    "sources": [
+      "selected",
+      "selected"
+    ],
+    "paired_seeds": 2048,
+    "seed_range": [
+      8000002000000,
+      8000002002048
+    ],
+    "results": {
+      "reference": {
+        "wins": 1516,
+        "successes": 1516,
+        "success_rate": 0.740234375,
+        "ci95": [
+          0.7208055943503859,
+          0.758763621765151
+        ]
+      },
+      "candidate": {
+        "wins": 1581,
+        "successes": 1581,
+        "success_rate": 0.77197265625,
+        "ci95": [
+          0.7533024011492231,
+          0.789624536607594
+        ]
+      }
+    },
+    "discordant": {
+      "reference_win": 200,
+      "candidate_win": 265
+    },
+    "net": 65,
+    "exact_mcnemar_p": 0.0029576040263500918,
+    "verdict": "candidate is better (p=0.0030)",
+    "blocks": [
+      {
+        "start": 8000002000000,
+        "n": 512,
+        "left_wins": 395,
+        "right_wins": 385
+      },
+      {
+        "start": 8000002000512,
+        "n": 512,
+        "left_wins": 373,
+        "right_wins": 397
+      },
+      {
+        "start": 8000002001024,
+        "n": 512,
+        "left_wins": 380,
+        "right_wins": 409
+      },
+      {
+        "start": 8000002001536,
+        "n": 512,
+        "left_wins": 368,
+        "right_wins": 390
+      }
+    ],
+    "paired_difference_ci95_normal": [
+      0.01114682454782116,
+      0.05232973795217884
+    ],
+    "boss_pairs": {
+      "HEXAGHOST": {
+        "schema": "sls-arm-comparison-v1",
+        "arms": [
+          "reference",
+          "candidate"
+        ],
+        "sources": [
+          "selected",
+          "selected"
+        ],
+        "paired_seeds": 674,
+        "seed_range": [
+          8000002000000,
+          8000002002048
+        ],
+        "results": {
+          "reference": {
+            "wins": 476,
+            "successes": 476,
+            "success_rate": 0.7062314540059347,
+            "ci95": [
+              0.6707533627830186,
+              0.739372038049889
+            ]
+          },
+          "candidate": {
+            "wins": 492,
+            "successes": 492,
+            "success_rate": 0.7299703264094956,
+            "ci95": [
+              0.6952188744935487,
+              0.7621152055719239
+            ]
+          }
+        },
+        "discordant": {
+          "reference_win": 78,
+          "candidate_win": 94
+        },
+        "net": 16,
+        "exact_mcnemar_p": 0.2526624533075263,
+        "verdict": "no significant difference (p=0.2527)",
+        "blocks": [
+          {
+            "start": 8000002000000,
+            "n": 512,
+            "left_wins": 373,
+            "right_wins": 375
+          },
+          {
+            "start": 8000002001561,
+            "n": 162,
+            "left_wins": 103,
+            "right_wins": 117
+          }
+        ],
+        "paired_difference_ci95_normal": [
+          -0.014357212758830958,
+          0.06183495756595262
+        ]
+      },
+      "SLIME_BOSS": {
+        "schema": "sls-arm-comparison-v1",
+        "arms": [
+          "reference",
+          "candidate"
+        ],
+        "sources": [
+          "selected",
+          "selected"
+        ],
+        "paired_seeds": 676,
+        "seed_range": [
+          8000002000002,
+          8000002002046
+        ],
+        "results": {
+          "reference": {
+            "wins": 541,
+            "successes": 541,
+            "success_rate": 0.8002958579881657,
+            "ci95": [
+              0.7684998747982419,
+              0.8286981847379906
+            ]
+          },
+          "candidate": {
+            "wins": 568,
+            "successes": 568,
+            "success_rate": 0.8402366863905325,
+            "ci95": [
+              0.8107059045812377,
+              0.8659224387356756
+            ]
+          }
+        },
+        "discordant": {
+          "reference_win": 44,
+          "candidate_win": 71
+        },
+        "net": 27,
+        "exact_mcnemar_p": 0.014964671136824323,
+        "verdict": "candidate is better (p=0.0150)",
+        "blocks": [
+          {
+            "start": 8000002000002,
+            "n": 512,
+            "left_wins": 414,
+            "right_wins": 434
+          },
+          {
+            "start": 8000002001521,
+            "n": 164,
+            "left_wins": 127,
+            "right_wins": 134
+          }
+        ],
+        "paired_difference_ci95_normal": [
+          0.008994266356616876,
+          0.07088739044811686
+        ]
+      },
+      "THE_GUARDIAN": {
+        "schema": "sls-arm-comparison-v1",
+        "arms": [
+          "reference",
+          "candidate"
+        ],
+        "sources": [
+          "selected",
+          "selected"
+        ],
+        "paired_seeds": 698,
+        "seed_range": [
+          8000002000003,
+          8000002002047
+        ],
+        "results": {
+          "reference": {
+            "wins": 499,
+            "successes": 499,
+            "success_rate": 0.7148997134670487,
+            "ci95": [
+              0.6803025072138588,
+              0.7471444556715922
+            ]
+          },
+          "candidate": {
+            "wins": 521,
+            "successes": 521,
+            "success_rate": 0.7464183381088825,
+            "ci95": [
+              0.7128544826139691,
+              0.7772847014946813
+            ]
+          }
+        },
+        "discordant": {
+          "reference_win": 78,
+          "candidate_win": 100
+        },
+        "net": 22,
+        "exact_mcnemar_p": 0.11523195131755455,
+        "verdict": "no significant difference (p=0.1152)",
+        "blocks": [
+          {
+            "start": 8000002000003,
+            "n": 512,
+            "left_wins": 364,
+            "right_wins": 383
+          },
+          {
+            "start": 8000002001497,
+            "n": 186,
+            "left_wins": 135,
+            "right_wins": 138
+          }
+        ],
+        "paired_difference_ci95_normal": [
+          -0.0058720316225663385,
+          0.06890928090623397
+        ]
+      }
+    }
+  },
+  "selected_vs_endpoint": {
+    "schema": "sls-arm-comparison-v1",
+    "arms": [
+      "reference",
+      "candidate"
+    ],
+    "sources": [
+      "endpoint-v-selected",
+      "endpoint-v-selected"
+    ],
+    "paired_seeds": 2048,
+    "seed_range": [
+      8000002000000,
+      8000002002048
+    ],
+    "results": {
+      "reference": {
+        "wins": 1573,
+        "successes": 1573,
+        "success_rate": 0.76806640625,
+        "ci95": [
+          0.7492952561579955,
+          0.7858338081660488
+        ]
+      },
+      "candidate": {
+        "wins": 1581,
+        "successes": 1581,
+        "success_rate": 0.77197265625,
+        "ci95": [
+          0.7533024011492231,
+          0.789624536607594
+        ]
+      }
+    },
+    "discordant": {
+      "reference_win": 212,
+      "candidate_win": 220
+    },
+    "net": 8,
+    "exact_mcnemar_p": 0.7363205652998137,
+    "verdict": "no significant difference (p=0.7363)",
+    "blocks": [
+      {
+        "start": 8000002000000,
+        "n": 512,
+        "left_wins": 397,
+        "right_wins": 385
+      },
+      {
+        "start": 8000002000512,
+        "n": 512,
+        "left_wins": 393,
+        "right_wins": 397
+      },
+      {
+        "start": 8000002001024,
+        "n": 512,
+        "left_wins": 393,
+        "right_wins": 409
+      },
+      {
+        "start": 8000002001536,
+        "n": 512,
+        "left_wins": 390,
+        "right_wins": 390
+      }
+    ],
+    "paired_difference_ci95_normal": [
+      -0.01598455152410792,
+      0.02379705152410792
+    ],
+    "boss_pairs": {
+      "HEXAGHOST": {
+        "schema": "sls-arm-comparison-v1",
+        "arms": [
+          "reference",
+          "candidate"
+        ],
+        "sources": [
+          "endpoint-v-selected",
+          "endpoint-v-selected"
+        ],
+        "paired_seeds": 674,
+        "seed_range": [
+          8000002000000,
+          8000002002048
+        ],
+        "results": {
+          "reference": {
+            "wins": 502,
+            "successes": 502,
+            "success_rate": 0.744807121661721,
+            "ci95": [
+              0.7105703183871155,
+              0.7762691861987101
+            ]
+          },
+          "candidate": {
+            "wins": 492,
+            "successes": 492,
+            "success_rate": 0.7299703264094956,
+            "ci95": [
+              0.6952188744935487,
+              0.7621152055719239
+            ]
+          }
+        },
+        "discordant": {
+          "reference_win": 81,
+          "candidate_win": 71
+        },
+        "net": -10,
+        "exact_mcnemar_p": 0.4655089982676943,
+        "verdict": "no significant difference (p=0.4655)",
+        "blocks": [
+          {
+            "start": 8000002000000,
+            "n": 512,
+            "left_wins": 380,
+            "right_wins": 375
+          },
+          {
+            "start": 8000002001561,
+            "n": 162,
+            "left_wins": 122,
+            "right_wins": 117
+          }
+        ],
+        "paired_difference_ci95_normal": [
+          -0.0506716713157942,
+          0.02099808081134316
+        ]
+      },
+      "SLIME_BOSS": {
+        "schema": "sls-arm-comparison-v1",
+        "arms": [
+          "reference",
+          "candidate"
+        ],
+        "sources": [
+          "endpoint-v-selected",
+          "endpoint-v-selected"
+        ],
+        "paired_seeds": 676,
+        "seed_range": [
+          8000002000002,
+          8000002002046
+        ],
+        "results": {
+          "reference": {
+            "wins": 545,
+            "successes": 545,
+            "success_rate": 0.8062130177514792,
+            "ci95": [
+              0.7747204449882581,
+              0.8342450639969641
+            ]
+          },
+          "candidate": {
+            "wins": 568,
+            "successes": 568,
+            "success_rate": 0.8402366863905325,
+            "ci95": [
+              0.8107059045812377,
+              0.8659224387356756
+            ]
+          }
+        },
+        "discordant": {
+          "reference_win": 44,
+          "candidate_win": 67
+        },
+        "net": 23,
+        "exact_mcnemar_p": 0.03630649114131785,
+        "verdict": "candidate is better (p=0.0363)",
+        "blocks": [
+          {
+            "start": 8000002000002,
+            "n": 512,
+            "left_wins": 417,
+            "right_wins": 434
+          },
+          {
+            "start": 8000002001521,
+            "n": 164,
+            "left_wins": 128,
+            "right_wins": 134
+          }
+        ],
+        "paired_difference_ci95_normal": [
+          0.0035843752951688623,
+          0.06446296198293765
+        ]
+      },
+      "THE_GUARDIAN": {
+        "schema": "sls-arm-comparison-v1",
+        "arms": [
+          "reference",
+          "candidate"
+        ],
+        "sources": [
+          "endpoint-v-selected",
+          "endpoint-v-selected"
+        ],
+        "paired_seeds": 698,
+        "seed_range": [
+          8000002000003,
+          8000002002047
+        ],
+        "results": {
+          "reference": {
+            "wins": 526,
+            "successes": 526,
+            "success_rate": 0.7535816618911175,
+            "ci95": [
+              0.7202826330816345,
+              0.7841047831231978
+            ]
+          },
+          "candidate": {
+            "wins": 521,
+            "successes": 521,
+            "success_rate": 0.7464183381088825,
+            "ci95": [
+              0.7128544826139691,
+              0.7772847014946813
+            ]
+          }
+        },
+        "discordant": {
+          "reference_win": 87,
+          "candidate_win": 82
+        },
+        "net": -5,
+        "exact_mcnemar_p": 0.7584219886210963,
+        "verdict": "no significant difference (p=0.7584)",
+        "blocks": [
+          {
+            "start": 8000002000003,
+            "n": 512,
+            "left_wins": 387,
+            "right_wins": 383
+          },
+          {
+            "start": 8000002001497,
+            "n": 186,
+            "left_wins": 139,
+            "right_wins": 138
+          }
+        ],
+        "paired_difference_ci95_normal": [
+          -0.04366375334511193,
+          0.02933710578064202
+        ]
+      }
+    }
+  },
+  "domain_diagnostics": {
+    "advantage_mean_combat": {
+      "mean": -0.006007212339711975,
+      "min": -0.09259410947561264,
+      "median": -0.005795810604467988,
+      "max": 0.07422298938035965
+    },
+    "advantage_std_combat": {
+      "mean": 0.3356374988708991,
+      "min": 0.25112485885620117,
+      "median": 0.3348347693681717,
+      "max": 0.40684396028518677
+    },
+    "advantage_scale_combat": {
+      "mean": 2.9909246834103893,
+      "min": 2.4579447479558976,
+      "median": 2.986547580784377,
+      "max": 3.9820827166767736
+    },
+    "samples_combat_fraction": {
+      "mean": 0.6744807509125256,
+      "min": 0.65313720703125,
+      "median": 0.6744384765625,
+      "max": 0.69842529296875
+    },
+    "advantage_mean_run": {
+      "mean": -0.004126589469803612,
+      "min": -0.09231751412153244,
+      "median": -0.003362042480148375,
+      "max": 0.07729960978031158
+    },
+    "advantage_std_run": {
+      "mean": 0.28633696663249386,
+      "min": 0.20883581042289734,
+      "median": 0.2870919704437256,
+      "max": 0.3413113057613373
+    },
+    "advantage_scale_run": {
+      "mean": 3.508541321636446,
+      "min": 2.9298764905270596,
+      "median": 3.4832042277229522,
+      "max": 4.788450554004466
+    },
+    "samples_run_fraction": {
+      "mean": 0.14130364089715677,
+      "min": 0.12701416015625,
+      "median": 0.1414794921875,
+      "max": 0.15325927734375
+    },
+    "advantage_mean_choice": {
+      "mean": -0.003998806258203485,
+      "min": -0.0730522945523262,
+      "median": -0.0035983751295134425,
+      "max": 0.06804004311561584
+    },
+    "advantage_std_choice": {
+      "mean": 0.2864388105525671,
+      "min": 0.22287854552268982,
+      "median": 0.28679507970809937,
+      "max": 0.3434603810310364
+    },
+    "advantage_scale_choice": {
+      "mean": 3.505788074704371,
+      "min": 2.9115438813718586,
+      "median": 3.4868100921078726,
+      "max": 4.486748389295786
+    },
+    "samples_choice_fraction": {
+      "mean": 0.18421560819031763,
+      "min": 0.17181396484375,
+      "median": 0.1842041015625,
+      "max": 0.195556640625
+    }
+  },
+  "preregistered_development_success": true,
+  "preparation_hashes": {
+    "benchmark.json": "2b463d069a82e1bf4932ab0d9be3c8b464f251dfd2cb11e527979bdb57d08a4d",
+    "preflight.json": "4d6cb446056f7153a4bf37026cd69953e1d820af0e7b03a64a0b51628189be15",
+    "ready.json": "365083204534cab81581344736d5d0d9c1ee8b153c6906b4ecf60efd41bca17c",
+    "run.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "worker-resume.json": "26e9ef0919465012821351ad71a3c802f16e3da225e56db636e34a25f167e57d"
+  },
+  "evidence_hashes": {
+    "SERVER-IDENTITY.txt": "6678bd48e514b2634f7ec5759029a9ecf07b221989559c2833563491155a5c97",
+    "docs/win-70m-launch.md": "d709c86f084b47127cda048e7748fbc2c504cc223461a6f94ebc18e4b135b7a5",
+    "configs/experiments/win-70m-20260930.json": "a6c51412b5d9da45dfc02ec0c5cab6c7fd0aa6de0114f8782deb77a082ae9347",
+    "configs/train/ironclad_a20_act1_win_70m_continuation.toml": "63a1c55a68aa57edc141e72200ca6e81095a7a8aced87afa3b1e941d34e1efe7",
+    "local/runs/slurm-logs/sls-train-891389.err": "6c60096215ca94ad8a2f260f296bb5db8100530ef321f5bd1ed01126bf81d8f9",
+    "local/runs/slurm-logs/sls-train-891389.out": "6e329acb66991b665a2ac4163615020dccfbd20147689226baa3e52ba43ab820"
+  },
+  "inference_limit": "single training seed, simulator and development evidence; no stock-game or reserved-final result"
+}

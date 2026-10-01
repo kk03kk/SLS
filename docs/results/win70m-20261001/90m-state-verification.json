@@ -1,0 +1,27 @@
+{
+  "schema": "sls-90m-local-state-verification-v1",
+  "checks": {
+    "model": true,
+    "optimizer": true,
+    "trainer": true,
+    "python_rng": true,
+    "torch_rng": true,
+    "cuda_rng": true,
+    "environments": true
+  },
+  "source_sha256": "ec3ca8723ba097649739418c57d944aad31a1efd65fc67222ff52f8b0b47017f",
+  "source_unmodified": true,
+  "source_steps": 70008832,
+  "source_update": 855,
+  "next_seed": 120084961,
+  "optimizer_steps": [
+    27360
+  ],
+  "changed_contract_fields": [
+    "training_config_sha256"
+  ],
+  "fixed_control_weights_match_training_endpoint": true,
+  "training_implementation_sha256": "9da7e28c7a2fc83fcbc1e289dade65dddb60d03fdf6a1670c9ad2fb011bc3bbf",
+  "native_source_sha256": "1e30bb6cfa32f600cd63c59983c14ab8928fac4452c1586d630295d2c6ff9453",
+  "local_training_executed": false
+}

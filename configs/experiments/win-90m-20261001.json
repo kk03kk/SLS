@@ -1,0 +1,38 @@
+{
+  "schema": "sls-win-90m-budget-experiment-v1",
+  "config": "configs/train/ironclad_a20_act1_win_90m_continuation.toml",
+  "config_sha256": "fb9ddaafa797697c7d4a50e0988ef5056c62a49af966d12b35c3c9c5a4fa365c",
+  "hypothesis": "The unchanged Win PPO recipe that improved 70M over 56M can produce a further practically useful gain from normal A20 Act1 starts by 90M.",
+  "control": "Frozen complete 70M endpoint, not historical 56M or selected 68M peak; same new development confirmation seeds/runtime as 90M.",
+  "experimental_variable": "19.991168M additional decisions; PPO/model/reward/native/observation/action/worker layout unchanged. Development seeds and evaluation cadence change only.",
+  "source": "Complete 70,008,832 latest.pt; retain Adam, memory, all RNG and next_seed; do not roll back or reset.",
+  "additional_decisions": 19991168,
+  "training_seed": 120000000,
+  "training_seed_handling": "Continue saved next_seed and RNG streams; one training seed, not a multi-seed recipe validation.",
+  "periodic_selection_seeds": [
+    8000004000000,
+    8000004000512
+  ],
+  "development_confirmation_seeds": [
+    8000003000000,
+    8000003002048
+  ],
+  "reserved_final_seeds": [
+    9000000000000,
+    9000000004096
+  ],
+  "primary_endpoint": "Fixed 90M endpoint versus frozen 70M; selected-best is secondary and cannot replace the primary endpoint after seeing confirmation.",
+  "success_rule": "Primary paired gain >= 0.02, exact two-sided McNemar p<0.05, descriptive paired 95% lower interval >0, health counters all zero; selected secondary cannot clearly contradict.",
+  "failure_rule": "Runtime/contract failure requires repair. Both endpoint and selected upper paired 95% intervals <=0 means no improvement. Otherwise inconclusive, not equivalence; a peak alone is not success.",
+  "after_no_improvement": "No automatic 110M. Inspect the new trajectory/domain/critic evidence and choose one lambda or normalization intervention with a matched continuation control.",
+  "estimated_gpu_hours": [
+    58,
+    66
+  ],
+  "wall_limit_hours": 72,
+  "reproducibility": "Training implementation/native/PPO unchanged from server e002444; orchestration identity/seed schedule rebound. State preservation does not guarantee Windows/Linux bitwise replay.",
+  "selection": "Fresh baseline and health-first clear-count selection on unused periodic seeds; retain earliest ties; checkpoints every 1M and evaluation every 4M including final endpoint.",
+  "final_policy": "Do not consume 9e12 in this job. Freeze one candidate/hash/runtime/batch/decoding and analysis before one 4096-seed paired final evaluation; no checkpoint selection on final.",
+  "evidence": "docs/results/win70m-20261001/summary.json",
+  "decision_rationale": "70M primary passed prior preregistered development criterion; 68M vs70M net8/2048 p=.736 is not rollback evidence; raw advantage scaling stable and no diagnosed GAE/critic failure warrants changing core variables."
+}

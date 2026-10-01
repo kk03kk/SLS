@@ -7,7 +7,8 @@ Run these from the repository root with the active Python environment. Use `--he
 | Install dependencies, build native, run tests | `python tools/bootstrap.py --with-model` |
 | Rebuild native | `python tools/build_native.py` |
 | Train on a local machine | `python tools/train_full_run.py --help` |
-| Submit the single pinned Win-to-70M job | `python tools/submit_win70m.py --dry-run` then `python tools/submit_win70m.py` |
+| Submit the single pinned Win 70M-to-90M job | `python tools/submit_win90m.py --dry-run` then `python tools/submit_win90m.py` |
+| Verify completed Win continuation evidence | `python tools/analyze_win_continuation.py --help` |
 | Recompute downloaded reward screen | `python tools/analyze_reward_screen.py --help` |
 | Recheck previous audit statistics | `python tools/recheck_audit_claims.py --help` |
 | Submit an NUS Slurm job | `python tools/submit_slurm.py --help` |
