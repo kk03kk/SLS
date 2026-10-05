@@ -121,3 +121,18 @@
 | [training-runtime-contracts.md](training-runtime-contracts.md) | 指南 / 阶段方案（launch 文档须核对阶段状态） | Training contracts：job 821775 恢复审查 |
 | [win-70m-launch.md](win-70m-launch.md) | 指南 / 阶段方案（launch 文档须核对阶段状态） | 单作业 Win 58M → 70M |
 | [win-90m-launch.md](win-90m-launch.md) | 指南 / 阶段方案（launch 文档须核对阶段状态） | Win 70M → 90M：2026-10-02 决策与执行契约 |
+
+## Act1–2训练前准备补充（2026-10-05）
+
+| 文件 | 类别 | 内容 |
+| --- | --- | --- |
+| [results/act12-preparation-20261005/90m-zero-shot-32-with-diagnostics.json](results/act12-preparation-20261005/90m-zero-shot-32-with-diagnostics.json) | 本地准备证据 / 脚本 | 90M迁移、有限规则资格或32seed诊断；非服务器训练结果 |
+| [results/act12-preparation-20261005/90m-zero-shot-32.json](results/act12-preparation-20261005/90m-zero-shot-32.json) | 本地准备证据 / 脚本 | 90M迁移、有限规则资格或32seed诊断；非服务器训练结果 |
+| [results/act12-preparation-20261005/diagnostic_probe.py](results/act12-preparation-20261005/diagnostic_probe.py) | 本地准备证据 / 脚本 | 90M迁移、有限规则资格或32seed诊断；非服务器训练结果 |
+| [results/act12-preparation-20261005/native-rule-traces.json](results/act12-preparation-20261005/native-rule-traces.json) | 本地准备证据 / 脚本 | 90M迁移、有限规则资格或32seed诊断；非服务器训练结果 |
+| [results/act12-preparation-20261005/README.md](results/act12-preparation-20261005/README.md) | 本地准备证据 / 脚本 | 90M迁移、有限规则资格或32seed诊断；非服务器训练结果 |
+| [results/act12-preparation-20261005/transfer-validation.json](results/act12-preparation-20261005/transfer-validation.json) | 本地准备证据 / 脚本 | 90M迁移、有限规则资格或32seed诊断；非服务器训练结果 |
+| [results/act12-preparation-20261005/transfer_micro_probe.py](results/act12-preparation-20261005/transfer_micro_probe.py) | 本地准备证据 / 脚本 | 90M迁移、有限规则资格或32seed诊断；非服务器训练结果 |
+| [results/act12-preparation-20261005/validation.json](results/act12-preparation-20261005/validation.json) | 验证摘要 | 本地检查、源身份和原始证据SHA |
+
+| [results/act12-preparation-20261005/stock-power-reference.json](results/act12-preparation-20261005/stock-power-reference.json) | 原版身份附件 | Flight/Hex/PainfulStabs字节码SHA；无原版源码 |

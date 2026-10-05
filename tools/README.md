@@ -50,6 +50,8 @@ NUS 登录节点只用于轻量 Git、身份检查和提交；native 构建、pr
 
 | 文件 | 职责 |
 | --- | --- |
+| `audit_act2_pilot_rules.py` | Record six bounded high-impact Act2 scenarios against SHA-identified stock bytecode; no complete parity claim. |
+| `import_act12_parent.py` | Copy only SHA-bound parent evidence into a fresh clone without overwriting or removing the old run. |
 | `prepare_act12_pilot.py` | Bind an Act1-2 pilot to a completed, reviewed 90M parent; never submit a job. |
 | `submit_act12_pilot.py` | Submit one hash-bound Act1-2 pilot after local validation and GitHub push. |
 | `analyze_act12_pilot.py` | Verify a completed Act1-2 pilot and recompute normal-start paired outcomes. |

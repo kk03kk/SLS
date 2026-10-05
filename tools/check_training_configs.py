@@ -79,6 +79,33 @@ def validate_json(path: Path, payload: object) -> list[str]:
     if not isinstance(payload, dict):
         return ["experiment plan is not an object"]
     schema = payload.get("schema")
+    if schema == "sls-act12-bound-plan-v1":
+        # Clean CI clones have no private parent weights; check the portable
+        # bindings here. The submitter additionally verifies actual parent bytes.
+        config = ROOT / payload["config"]
+        recipe_path = ROOT / payload["recipe_path"]
+        for path_key, hash_key in ((config, "config_sha256"),
+                                   (recipe_path, "recipe_sha256")):
+            actual = hashlib.sha256(path_key.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
+            if actual != payload[hash_key]:
+                problems.append(f"bound {hash_key} changed")
+        recipe = json.loads(recipe_path.read_text(encoding="utf-8"))
+        if payload["recipe"] != recipe:
+            problems.append("bound recipe differs from registered recipe")
+        for name, digest in payload.get("operator_sources", {}).items():
+            actual = hashlib.sha256((ROOT / name).read_bytes().replace(b"\r\n", b"\n")).hexdigest()
+            if actual != digest:
+                problems.append(f"bound operator source changed: {name}")
+        problems.extend(validate_json(recipe_path, recipe))
+        run = tomllib.loads(config.read_text(encoding="utf-8"))
+        if (run["warm_start"]["checkpoint_sha256"] != payload["parent"]["sha256"]
+                or run["stages"]["train"]["target_environment_steps"]
+                != payload["parent"]["environment_steps"] + recipe["additional_decisions"]):
+            problems.append("parent or cumulative budget disagrees with bound plan")
+        from sls.rl.training_contract import training_implementation_digest
+        if training_implementation_digest() != payload["target_training_implementation_sha256"]:
+            problems.append("bound implementation changed")
+        return problems
     budget = schema in {"sls-win-70m-budget-experiment-v1", "sls-win-90m-budget-experiment-v1"}
     if not budget and schema != "sls-act12-pilot-recipe-v1":
         return [f"unsupported experiment schema: {schema!r}"]

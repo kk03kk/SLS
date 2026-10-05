@@ -8,6 +8,7 @@ import json
 import os
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -23,6 +24,30 @@ from sls.rl.preparation import (
 PRODUCTION_LAYOUTS = ("32:4", "64:8", "64:16", "128:8", "128:16")
 
 
+def budget_estimate(config: dict, benchmark: dict, *, elapsed: float,
+                    completed_steps: int | None = None) -> dict | None:
+    """Conservative preparation gate, not a guarantee about later Act2 throughput."""
+    run = config["run"]
+    if "preparation_wall_hours" not in run:
+        return None
+    layout = fixed_worker_layout(config)
+    rows = [row for row in benchmark["results"]
+            if (row["workers"], row["shards"]) == layout]
+    if len(rows) != 1 or float(rows[0]["decisions_per_second"]) <= 0:
+        raise ValueError("budget gate requires the measured pinned worker layout")
+    start = (config["warm_start"]["parent_environment_steps"]
+             if completed_steps is None else completed_steps)
+    remaining = max(0, config["stages"]["train"]["target_environment_steps"] - start)
+    rate = float(rows[0]["decisions_per_second"])
+    estimate = (elapsed + remaining / rate * float(run["preparation_safety_factor"])
+                + float(run["preparation_evaluation_reserve_hours"]) * 3600)
+    available = float(run["preparation_wall_hours"]) * 3600
+    return {"schema": "sls-training-wall-estimate-v1", "remaining_decisions": remaining,
+            "benchmark_decisions_per_second": rate, "estimated_seconds": estimate,
+            "available_seconds": available, "fits": estimate <= available,
+            "limitation": "Short measured workload; later state distribution and evaluation costs may differ."}
+
+
 def run_tool(name: str, *arguments: object) -> None:
     command = [sys.executable, str(ROOT / "tools" / name), *map(str, arguments)]
     print(json.dumps({"preparation_command": command}), flush=True)
@@ -30,6 +55,7 @@ def run_tool(name: str, *arguments: object) -> None:
 
 
 def main() -> int:
+    preparation_started = time.monotonic()
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=Path, required=True)
     args = parser.parse_args()
@@ -113,6 +139,19 @@ def main() -> int:
         temporary.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
         temporary.replace(target)
     require_preparation(config, torch)
+    estimate = budget_estimate(
+        config, json.loads(benchmark.read_text()),
+        elapsed=time.monotonic() - preparation_started,
+        completed_steps=(int(torch.load(latest, map_location="cpu", weights_only=False)
+                             ["trainer"]["environment_steps"]) if latest.exists() else None),
+    )
+    if estimate is not None:
+        benchmark.with_name("budget-estimate.json").write_text(
+            json.dumps(estimate, indent=2) + "\n", encoding="utf-8",
+        )
+        print(json.dumps({"budget_estimate": estimate}), flush=True)
+        if not estimate["fits"]:
+            raise ValueError("measured budget does not fit allocated pilot wall time; inspect, do not silently change recipe")
     command = [sys.executable, str(ROOT / "tools/train_full_run.py"),
                "--stage", "train", "--config", str(args.config.resolve())]
     print(json.dumps({"preparation": "PASS", "training_command": command}), flush=True)

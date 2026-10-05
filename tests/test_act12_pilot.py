@@ -39,7 +39,7 @@ def test_build_pilot_has_new_goal_fresh_transfer_and_unchanged_ppo(original, rec
     assert parsed == config
     assert original == initial
     assert config["run"]["profile"] == "IRONCLAD_A20_ACT2"
-    assert config["stages"]["train"]["target_environment_steps"] == 92_013_696
+    assert config["stages"]["train"]["target_environment_steps"] == 94_013_696
     assert "continuation_from" not in config["run"]
     assert config["model"] == original["model"] and config["ppo"] == original["ppo"]
     assert config["warm_start"]["transfer_kind"] == "curriculum-stage"
@@ -176,7 +176,7 @@ def test_parent_gate_rejects_incomplete_or_corrupt_sources(tmp_path, completed_p
         prepare.inspect_parent(folder, "endpoint", root=tmp_path)
 
 
-@pytest.mark.parametrize("seed", [9_000_000_000_000, 8_000_005_000_000, 8_000_004_000_000])
+@pytest.mark.parametrize("seed", [9_000_000_000_000, 8_000_005_000_000, 8_000_004_000_000, 8_000_008_000_000])
 def test_pilot_does_not_consume_reserved_or_exposed_seeds(original, recipe, parent, seed):
     recipe["confirmation_seed_start"] = seed
     with pytest.raises(ValueError, match="overlap"):
@@ -190,10 +190,12 @@ def test_submission_checks_bound_config_and_parent(tmp_path, completed_parent_fi
     path = tmp_path / "pilot.toml"
     path.write_text(prepare.configuration_toml(config), encoding="utf-8")
     monkeypatch.setattr(submit, "training_implementation_digest", lambda **_: "d" * 64)
+    (tmp_path / "recipe.json").write_text(json.dumps(recipe), encoding="utf-8")
     plan = {"schema": "sls-act12-bound-plan-v1", "status": "READY_FOR_LOCAL_VALIDATION",
             "config": "pilot.toml", "config_sha256": prepare.source_sha256(path),
             "target_training_implementation_sha256": "d" * 64,
-            "parent": parent, "recipe": recipe}
+            "parent": parent, "recipe": recipe, "recipe_path": "recipe.json",
+            "recipe_sha256": prepare.source_sha256(tmp_path / "recipe.json")}
     assert submit.validate_plan(plan, root=tmp_path) == path
     path.write_text(path.read_text() + "\n# unregistered change\n")
     with pytest.raises(ValueError, match="configuration changed"):

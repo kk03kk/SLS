@@ -1,18 +1,24 @@
 {
   "schema": "sls-act12-pilot-recipe-v1",
-  "status": "PROVISIONAL_PENDING_90M_ANALYSIS",
+  "status": "FINALIZED_90M_ENDPOINT_4M_PILOT",
   "source_profile": "IRONCLAD_A20_ACT1",
   "target_profile": "IRONCLAD_A20_ACT2",
   "minimum_parent_run_target": 90000000,
-  "additional_decisions": 2000000,
+  "additional_decisions": 4000000,
   "training_seed": 130000000,
   "training_seed_limit": 2000000000000,
-  "worker_layout": [64, 16],
+  "worker_layout": [
+    64,
+    16
+  ],
   "periodic_seed_start": 8000006000000,
   "periodic_seed_count": 256,
   "confirmation_seed_start": 8000007000000,
   "confirmation_seed_count": 1024,
-  "reserved_final_seeds": [9000000000000, 9000000004096],
+  "reserved_final_seeds": [
+    9000000000000,
+    9000000004096
+  ],
   "evaluate_every_steps": 500000,
   "checkpoint_every_steps": 500000,
   "wall_limit_hours": 24,
@@ -20,8 +26,12 @@
   "hypothesis": "Normal-start A20 Act1-2 Win PPO can begin learning second-act survival using the existing architecture and adjacent-stage weight transfer.",
   "control": "Frozen SHA-pinned Act1 parent evaluated from normal starts through Act2 on the same development-confirmation seeds and runtime.",
   "training_changes": "New horizon and fresh stage initialization; retain all model weights, reset Adam/RNG/workers/memory, inherit cumulative steps. Preserve parent PPO scalars and architecture. Bind the reviewed Snecko rule correction; frozen parent and candidate are both evaluated under corrected Act2 semantics.",
-  "success_rule": "Feasibility only: recurring true Act2 training successes and repeated development improvement with zero health errors. Report paired confirmation and intervals; do not claim a universal recipe gain from one training seed.",
-  "failure_rule": "No meaningful learning or almost no successes: inspect exploration, MC critic calibration and natural entry states; no automatic long extension or simultaneous core changes.",
+  "success_rule": "Healthy complete budget; true ACT_2_CLEARED training outcomes in both disjoint late windows [2M,3M) and [3M,4M+rollout]; primary fixed endpoint paired development improvement >=0.02 with approximate paired 95% lower bound >0. One training seed, simulator evidence only.",
+  "failure_rule": "Incomplete budget is INCOMPLETE. Other results are INCONCLUSIVE or NO_DEVELOPMENT_GAIN; inspect true-success windows, natural Act2 entries and value diagnostics before any extension. Greedy evaluation calibration is descriptive, not on-policy critic proof.",
   "final_policy": "Keep final seeds sealed. This pilot's endpoint and selected checkpoint use development confirmation only.",
-  "pending": "Review completed 90M evidence, freeze endpoint or registered selected parent and rationale, qualify high-impact Act2 semantics, then bind hashes and finalize the recipe. This file cannot be submitted as training."
+  "throughput_safety_factor": 1.5,
+  "evaluation_reserve_hours": 4,
+  "selection_candidates": "Only checkpoints actually evaluated on the periodic development block; fixed endpoint is primary and is not implicitly included in periodic selection.",
+  "diagnostics": "Existing termination_success metrics binned into disjoint late windows; evaluation records first decision per act, HP/deck/relic/potions, shaped critic value and potential. No policy-input, action or reward change.",
+  "evidence": "docs/results/act12-preparation-20261005/README.md"
 }

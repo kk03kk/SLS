@@ -43,7 +43,7 @@
 | --- | --- |
 | `experiments/win-70m-20260930.json` | 70M 预注册设计、配置哈希、配对开发评估及保留最终集政策 |
 | `experiments/win-90m-20261001.json` | 90M 预注册设计，固定 70M 对照；不能事后用漂亮峰值替换主终点 |
-| `experiments/act12-win-pilot-recipe.json` | 原先登记的 2M Act1-2 pilot 草案；90M 现已分析，但尚未生成绑定 parent 的新计划，不是提交文件 |
+| `experiments/act12-win-pilot-recipe.json` | 4M正常开局Act1-2正式recipe；实际提交使用绑定90M parent的act12-win-pilot.json |
 | `diagnostics/ironclad_a20_act1_plateau.toml` | 旧 56M checkpoint、旧 native 哈希及 preflight 引用；诊断种子不等同独立最终测试集 |
 | `compatibility/state-preserving-source-transitions.json` | 两个精确 native/source 方向例外，用于保存状态恢复；不是任意版本通行证 |
 | `compatibility/training-validation-transitions.json` | 两个历史验证证据转换，另含 Git 身份条件；不是当前 HEAD 自动复用许可 |

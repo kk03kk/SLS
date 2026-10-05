@@ -2,7 +2,7 @@
 
 当前 Act1 Win 训练已到 90,013,696 decisions。固定 90M 在同一批 2,048 个开发确认种子上为 1640/2048，70M 为 1574/2048；这是模拟器开发结果，最终保留集尚未使用。历史 56M champion 保留，90M 和周期所选 76M 分开保存。见 [90M 结案](results/win90m-20261005/README.md)。
 
-Oracle 已有完整仓库内源码构建路径，仍需用户提供原版游戏及 Mod 依赖，见 [Oracle 说明](../native/oracle/README.md)。Act1-2 资格验证与试训配置已存在，但训练计划尚未绑定、提交；见 [试训说明](act12-pilot-launch.md)。
+Oracle 已有完整仓库内源码构建路径，仍需用户提供原版游戏及 Mod 依赖，见 [Oracle 说明](../native/oracle/README.md)。Act1-2 的4M试训已完成本地准备并绑定90M parent；服务器训练尚未执行；见 [试训说明](act12-pilot-launch.md)。
 
 | 需要了解的内容 | 入口 |
 | --- | --- |

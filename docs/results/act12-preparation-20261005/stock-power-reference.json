@@ -1,0 +1,19 @@
+{
+  "schema": "sls-stock-power-reference-v1",
+  "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "classes": {
+    "FlightPower": {
+      "class_sha256": "851a4852ebf87e0407447e223ed66c182b681f8cf3ad31f6cceccfbe9fb09993",
+      "disassembly_sha256": "047dbf537168c573243cf704045b07664d3ffa7210dcfd861ceae2c8bc31945c"
+    },
+    "HexPower": {
+      "class_sha256": "10b753405d6c0a767edbc4fb699568df0a96f089a06b8907539280239b07e252",
+      "disassembly_sha256": "2e9551c1081f85fe86175185545d9e764a8a0497035767343e3eaf7e7bff1acf"
+    },
+    "PainfulStabsPower": {
+      "class_sha256": "27e984a8be6fb3e7ec12f1cbe54de4ad9f06bd6d8466d288433dc135169acd13",
+      "disassembly_sha256": "d44541a091264d60b494c70beb851596ddbd55b58ec87ff8abb5501b2453fbe6"
+    }
+  },
+  "limitation": "Stock bytecode identity and human review; no stock runtime replay."
+}

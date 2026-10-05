@@ -1,0 +1,62 @@
+{
+  "schema": "sls-act12-local-preparation-validation-v1",
+  "date": "2026-10-05",
+  "role": "local-preparation-not-server-training",
+  "base_git_commit": "720f5dd248d0ed2cdf800e50abe709f631bdac48",
+  "native_source_sha256": "fe354a23c7584d68d0a2b6681b8dfd4e97d98e107b7ddf57c479060d91468f39",
+  "training_implementation_sha256": "03ab4c6e5d823be9a598fec855d1311020060e302e4ab9c2010426e546ac3e97",
+  "training_validation_sha256": "d4c0584fc9bccb8d64bb7d22984e21753ffe45782418f482c1a1918113b6ca70",
+  "config_sha256": "bc2a3f68b06019b5ddf1c514b8b14c3987610c451c38de7e58f4d00ad8929073",
+  "bound_plan_sha256": "29d5a822330482043b36fd06ce2ff5808e24ff382ac51966d09fb0c41f1999d6",
+  "parent_sha256": "274963f4fe32b75003c5a1b4ccd394b5185304156e6ea22a76aee2764d54f1e0",
+  "checks": {
+    "pytest": {
+      "passed": 1068,
+      "skipped": 1,
+      "warnings": 4,
+      "seconds": 196.55,
+      "skip_reason": "historical policy correctly rejected by current encoding",
+      "log_sha256": "15fbb4e1fda13db74e96cc4a12d82ff086566bd40b6ff10b4ad81d47906e2e92"
+    },
+    "ruff": "PASS",
+    "configs": {
+      "valid": 27,
+      "total": 27
+    },
+    "content_registry": "PASS",
+    "policy_vocabulary": "PASS",
+    "submission_dry_run": "PASS; command generated only, no sbatch executed",
+    "parent_migration_and_same_runtime_replay": "PASS; actual 90M parent, 32 new decisions, shortened implementation probe only",
+    "diagnostic_recording_trajectory_equivalence": {
+      "episodes": 32,
+      "decisions": 7484,
+      "equal_existing_result_fields": true
+    },
+    "controlled_act2_rule_scenarios": 6,
+    "AGENTS_unchanged": true
+  },
+  "operator_sources": {
+    "tools/prepare_act12_pilot.py": "b097d17178a14dd0d82c2b3f635b2441b248525f943bf13ae2a1de04e9f32798",
+    "tools/submit_act12_pilot.py": "70dc179a4e04d7049b965f0d3a929fe6d47bd82d09b44dacc8f70632a7d69c0f",
+    "tools/prepare_and_train.py": "aee11520c2398fc29552d1d2f08f97ac33b07ef80adbc0d347a58b17d01d6d3e",
+    "tools/submit_slurm.py": "2e2bfc3251101207bfc9eb74c51ad00a70a5d40d0570890b49ac1743d8b28208",
+    "tools/import_act12_parent.py": "c05a5f29be7ac20394c19e01215547ddbf85aa41d2d5c6c26edb86430b61b44a",
+    "tools/analyze_act12_pilot.py": "713b9201461ee13e5bc5141400a34745545e3d4c7ed262f788bbd3dd50eafad6"
+  },
+  "evidence_sha256": {
+    "90m-zero-shot-32-with-diagnostics.json": "8586083ce1634c973603a3253fbaff6ab399a2bbb6693956bb65ef44a89b3853",
+    "90m-zero-shot-32.json": "199c25d4629c726e184e00d54b539dda8e8d4ca4063b53df3666ad4aca9057c2",
+    "diagnostic_probe.py": "17fbd876ca75f0145be075787af7ce1c596574d7d8e9c44f3be12f5187159af0",
+    "native-rule-traces.json": "75d745f0a03228ed3c1445da501b57108af742d491c9f17f26ccbffa18e4bed2",
+    "README.md": "d3eb30ddd665699d15c8be1297fd3de750ba91b48eaa63aba6c1abad162565d2",
+    "stock-power-reference.json": "78817b0adbc8488164470c299646f9bda5720534104046452efe12278bff67f5",
+    "transfer-validation.json": "b92024a07fc2cac326565d459ede77d3fbf6c15121c1a940a84e010dcb34a691",
+    "transfer_micro_probe.py": "57b3e692b973878fcddf39c4734a0d763024f10ab44fe65760e2d81421d85f67"
+  },
+  "limits": [
+    "No server training executed.",
+    "No A100 Act2 throughput measured locally; the compute-node budget gate is mandatory.",
+    "Bytecode references and bounded native cases do not certify full stock-game Act2 parity.",
+    "Greedy value anchors are descriptive and off-policy; Act1 parent critic is not an Act2 probability."
+  ]
+}

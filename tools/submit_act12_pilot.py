@@ -35,6 +35,13 @@ def validate_plan(plan: dict, *, root: Path = ROOT) -> Path:
         raise ValueError("bound pilot configuration changed")
     if training_implementation_digest(root=root) != plan["target_training_implementation_sha256"]:
         raise ValueError("pilot training implementation changed")
+    for name, digest in plan.get("operator_sources", {}).items():
+        if source_sha256(repository_path(root, name)) != digest:
+            raise ValueError(f"pilot operator source changed: {name}")
+    recipe_path = repository_path(root, plan["recipe_path"])
+    if (source_sha256(recipe_path) != plan["recipe_sha256"]
+            or json.loads(recipe_path.read_text(encoding="utf-8")) != plan["recipe"]):
+        raise ValueError("bound pilot recipe changed")
     original, parent, _ = inspect_parent(
         Path(plan["parent"]["run"]), plan["parent"]["role"], root=root,
         simulator_transition=plan["parent"].get("simulator_transition"),

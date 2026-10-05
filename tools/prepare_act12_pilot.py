@@ -150,6 +150,9 @@ def build_configuration(original: dict, parent: dict, recipe: dict, *, run_name:
         "final_evaluation_seed_start": recipe["confirmation_seed_start"],
         "final_evaluation_seed_count": recipe["confirmation_seed_count"],
         "evaluation_max_steps": original["run"]["evaluation_max_steps"],
+        "preparation_wall_hours": recipe["wall_limit_hours"],
+        "preparation_safety_factor": recipe.get("throughput_safety_factor", 1.5),
+        "preparation_evaluation_reserve_hours": recipe.get("evaluation_reserve_hours", 4),
     }
     config["stages"]["train"] = {
         "profile": "IRONCLAD_A20_ACT2",
@@ -172,7 +175,8 @@ def build_configuration(original: dict, parent: dict, recipe: dict, *, run_name:
                (8_000_002_000_000, 8_000_002_002_048),
                (8_000_003_000_000, 8_000_003_002_048),
                (8_000_004_000_000, 8_000_004_000_512),
-               (8_000_005_000_000, 8_000_005_000_032)]
+               (8_000_005_000_000, 8_000_005_000_032),
+               (8_000_008_000_000, 8_000_008_000_032)]
     for key in ("periodic", "final"):
         start = original["run"][f"{key}_evaluation_seed_start"]
         exposed.append((start, start + original["run"][f"{key}_evaluation_seed_count"]))
@@ -232,7 +236,13 @@ def main() -> int:
             "config": _relative(ROOT, config_path), "config_sha256": source_sha256(config_path),
             "target_training_implementation_sha256": training_implementation_digest(),
             "parent": parent, "recipe": recipe, "recipe_sha256": source_sha256(args.recipe),
+            "recipe_path": _relative(ROOT, args.recipe),
             "decision_note": args.decision_note, "wall_limit_hours": recipe["wall_limit_hours"]}
+    plan["operator_sources"] = {name: source_sha256(ROOT / name) for name in (
+        "tools/prepare_act12_pilot.py", "tools/submit_act12_pilot.py",
+        "tools/prepare_and_train.py", "tools/submit_slurm.py",
+        "tools/import_act12_parent.py", "tools/analyze_act12_pilot.py",
+    )}
     with plan_path.open("x", encoding="utf-8", newline="\n") as stream:
         stream.write(json.dumps(plan, indent=2, ensure_ascii=False) + "\n")
     print(json.dumps({"config": str(config_path), "plan": str(plan_path), "submitted": False}))

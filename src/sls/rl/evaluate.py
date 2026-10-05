@@ -18,6 +18,7 @@ from sls.model.encoding import ACTION_TYPE_IDS
 from sls.rl.episode_limit import EpisodeLimitState
 from sls.rl.reward import (
     DEFAULT_FAILURE_PROGRESS_SCALE,
+    curriculum_potential,
     curriculum_terminal_reward,
 )
 from sls.rl.workers import ShardedWorkerPool
@@ -189,6 +190,9 @@ def _evaluate_impl(
     contexts = [{} for _ in seed_values]
     routes = [[] for _ in seed_values]
     traces = [deque(maxlen=32) for _ in seed_values]
+    # Diagnostics only: one anchor at the first policy decision in each act.
+    # Values predict the stochastic training policy, whereas evaluation is greedy.
+    act_entries = [{} for _ in seed_values]
     successes = 0
     self_loops = 0
     timeouts = 0
@@ -243,6 +247,19 @@ def _evaluate_impl(
         for batch_index, index in enumerate(active):
             action = decisions[index].actions[int(action_indices[batch_index])]
             observation = decisions[index].observation
+            act_key = str(observation.run.act)
+            if act_key not in act_entries[index]:
+                act_entries[index][act_key] = {
+                    "schema": "sls-act-entry-value-diagnostic-v1",
+                    "floor": observation.run.floor, "screen": observation.screen.value,
+                    "hp": observation.player.current_hp, "max_hp": observation.player.max_hp,
+                    "gold": observation.run.gold,
+                    "deck": [c.card_id for c in observation.deck],
+                    "relics": [r.content_id for r in observation.relics],
+                    "potions": [p.content_id for p in observation.potions],
+                    "value_shaped": float(output.value[batch_index].cpu()),
+                    "potential": curriculum_potential(observation, profile),
+                }
             previous_decision = decisions[index]
             previous_signature = _boundary_signature(previous_decision)
             if observation.enemies:
@@ -434,7 +451,8 @@ def _evaluate_impl(
         {"seed": seed, "success": won[i], "reason": reasons[i], "steps": episode_steps[i],
          "floor": decisions[i].observation.run.floor, "bosses": bosses_by_act[i],
          "entered_bosses": sorted(entered_bosses[i]), "last_context": contexts[i],
-         "route": routes[i], "deck": [c.card_id for c in decisions[i].observation.deck]}
+         "route": routes[i], "deck": [c.card_id for c in decisions[i].observation.deck],
+         "act_entries": act_entries[i]}
         for i, seed in enumerate(seed_values)
     ]
     sampled = set()
