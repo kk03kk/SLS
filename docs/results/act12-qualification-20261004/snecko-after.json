@@ -1,0 +1,29 @@
+{
+  "schema": "sls-act12-rule-verification-v1",
+  "date": "2026-10-04",
+  "rule": "Snecko A17+ Tail Whip: Weak before Vulnerable",
+  "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "stock_class_sha256": "8c993b13d8b9b6a221393a286a8ad814c09344767ac3b891255f825cbdb11a1d",
+  "stock_bytecode": {
+    "method": "takeTurn",
+    "weak_new_offset": 345,
+    "vulnerable_new_offset": 375,
+    "command": "D:/java/bin/javap.exe -classpath D:/Steam/steamapps/common/SlayTheSpire/desktop-1.0.jar -c -p com.megacrit.cardcrawl.monsters.city.Snecko",
+    "local_disassembly_sha256": "f30069a7c430081f22bfc59e59cb4ce5760044337e864a58cf2b569e4efd332f"
+  },
+  "native_source_sha256": "fe354a23c7584d68d0a2b6681b8dfd4e97d98e107b7ddf57c479060d91468f39",
+  "native_artifact": {
+    "path": "D:\\SLS\\local\\build\\native\\cpython-312\\_lightspeed.cp312-win_amd64.pyd",
+    "sha256": "d57aa10cc85ce817220fe8ce8d5eefe9004bd6804d96b06e857d9c5706bf0e56",
+    "source_sha256": "fe354a23c7584d68d0a2b6681b8dfd4e97d98e107b7ddf57c479060d91468f39",
+    "git_commit": "cc2c5b25df1cecada739c9de5f3c0d080cf9bc97"
+  },
+  "native_powers": {
+    "VULNERABLE": 2
+  },
+  "native_regressions": {
+    "passed": 19,
+    "command": "python -m pytest tests/simulator/test_a20_late_act_parity.py -q"
+  },
+  "evidence_limit": "Bytecode plus controlled native regression; not a newly executed stock game trajectory or win-rate improvement."
+}

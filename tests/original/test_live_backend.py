@@ -1,0 +1,115 @@
+from __future__ import annotations
+
+import pytest
+
+from sls.backends.original import LiveGameBackend, OriginalSession
+from sls.curriculum import EpisodeHorizon
+
+
+class ScriptedTransport:
+    def __init__(self, payloads: list[dict]) -> None:
+        self.payloads = iter(payloads)
+        self.sent: list[str] = []
+
+    def send(self, command: str) -> None:
+        self.sent.append(command)
+
+    def receive(self) -> dict:
+        return next(self.payloads)
+
+
+def game_payload(choices: list[str]) -> dict:
+    return {
+        "_parity_schema": "spirecomm-parity-v11", "_oracle_contract": "sls-oracle-mode-v1",
+        "_oracle_mode": "production",
+        "in_game": True, "ready_for_command": True, "available_commands": ["choose"],
+        "game_state": {
+            "class": "IRONCLAD", "ascension_level": 0, "act": 1, "floor": 0,
+            "gold": 99, "current_hp": 80, "max_hp": 80, "deck": [],
+            "relics": [], "potions": [], "map": [], "screen_type": "EVENT",
+            "screen_state": {"neow_options": [
+                {"bonus": "HUNDRED_GOLD", "drawback": "NONE"}
+                for _ in choices
+            ]} if len(choices) in {2, 4} else {},
+            "choice_list": choices, "_parity_run": {},
+        },
+    }
+
+
+@pytest.mark.parametrize('change', [{'_oracle_mode': 'validation'}, {'_oracle_contract': None},
+                                  {'_parity_schema': 'spirecomm-parity-v10'}, {'_rng': {}}])
+def test_live_backend_rejects_unsafe_or_unknown_oracle_before_actions(change):
+    payload = {**game_payload(['A', 'B', 'C', 'D']), **change}
+    transport = ScriptedTransport([payload])
+    backend = LiveGameBackend(OriginalSession(transport))
+    with pytest.raises(ValueError, match='production mode'):
+        backend.attach()
+    assert transport.sent == ['ready']
+
+
+def test_live_backend_attaches_without_resetting_or_starting() -> None:
+    payload = game_payload(["A", "B", "C", "D"])
+    payload["game_state"]["ascension_level"] = 17
+    transport = ScriptedTransport([payload])
+    backend = LiveGameBackend(OriginalSession(transport))
+    decision = backend.attach()
+    assert transport.sent == ["ready"]
+    assert decision.observation.run.ascension == 17
+    assert backend.profile.horizon is EpisodeHorizon.HEART
+    assert backend.profile.profile_id == "IRONCLAD_A17_HEART"
+
+
+def test_live_backend_rejects_an_already_owned_prismatic_shard() -> None:
+    payload = game_payload(["A", "B", "C", "D"])
+    payload["game_state"]["relics"] = [{"id": "PrismaticShard", "counter": -1}]
+    backend = LiveGameBackend(OriginalSession(ScriptedTransport([payload])))
+    with pytest.raises(ValueError, match="PRISMATIC_SHARD"):
+        backend.attach()
+
+
+def test_live_backend_requires_an_active_run() -> None:
+    payload = {"in_game": False, "ready_for_command": True, "available_commands": ["start"]}
+    backend = LiveGameBackend(OriginalSession(ScriptedTransport([payload])))
+    with pytest.raises(RuntimeError, match="start or continue"):
+        backend.attach()
+
+
+def test_live_backend_can_wait_at_the_menu_for_fresh_neow() -> None:
+    menu = {
+        "in_game": False, "ready_for_command": True,
+        "available_commands": ["state"],
+    }
+    transport = ScriptedTransport([menu, game_payload(["A", "B", "C", "D"])])
+    backend = LiveGameBackend(
+        OriginalSession(transport), wait_for_neow=True, wait_timeout_seconds=1,
+    )
+
+    decision = backend.attach()
+
+    assert transport.sent == ["ready"]
+    assert decision.observation.screen.value == "NEOW"
+
+
+def test_live_backend_rejects_non_positive_wait_timeout() -> None:
+    with pytest.raises(ValueError, match="positive"):
+        LiveGameBackend(wait_for_neow=True, wait_timeout_seconds=0)
+
+
+def test_curriculum_goal_is_only_available_in_explicit_inspector_mode() -> None:
+    with pytest.raises(ValueError, match="FullRun or Heart"):
+        LiveGameBackend().configure_goal("ACT1")
+    backend = LiveGameBackend(allow_curriculum_goals=True)
+    backend.configure_goal("ACT1")
+    assert backend._curriculum_profile is not None
+    assert backend._curriculum_profile.profile_id == "IRONCLAD_A0_ACT1"
+
+
+def test_curriculum_live_backend_requires_a0() -> None:
+    payload = game_payload(["A", "B", "C", "D"])
+    payload["game_state"]["ascension_level"] = 1
+    backend = LiveGameBackend(
+        OriginalSession(ScriptedTransport([payload])), allow_curriculum_goals=True,
+    )
+    backend.configure_goal("ACT1")
+    with pytest.raises(ValueError, match="requires ascension 0"):
+        backend.attach()

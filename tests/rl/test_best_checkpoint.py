@@ -1,0 +1,108 @@
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
+from sls.rl.best_checkpoint import (
+    BEST_CHECKPOINT_SCHEMA,
+    best_checkpoint_record,
+    evaluation_rank,
+    passes_progress_guard,
+    update_best_checkpoint,
+)
+
+
+def _evaluation(**changes: object) -> dict[str, object]:
+    value: dict[str, object] = {
+        "episodes": 100, "successes": 11, "success_rate": 0.11,
+        "reached_act2": 40, "reached_act3": 20,
+        "reached_act2_rate": 0.4, "reached_act3_rate": 0.2,
+        "mean_reward": -0.5,
+        "mean_steps": 200.0, "self_loops": 1, "timeouts": 0,
+        "step_limits": 2, "cycle_limits": 1, "backend_truncations": 0,
+        "backend_errors": 0,
+        "median_failure_floor": 12.0,
+        "boss_success_rate": {"HEXAGHOST": 0.1, "SLIME_BOSS": 0.2, "THE_GUARDIAN": 0.05},
+        "boss_action_metrics": {},
+        "boss_successes": {}, "boss_attempts": {},
+    }
+    value.update(changes)
+    return value
+
+
+def test_rank_prefers_act_progress_then_failure_floor_and_stability() -> None:
+    baseline = _evaluation()
+    progressed = _evaluation(reached_act3=21, step_limits=99)
+    assert evaluation_rank(progressed) > evaluation_rank(baseline)
+    later_floor = _evaluation(median_failure_floor=15.0, step_limits=3)
+    assert evaluation_rank(later_floor) > evaluation_rank(baseline)
+
+
+def test_one_extra_win_does_not_hide_observed_7m_to_10m_act_regression():
+    old = _evaluation(episodes=1000, successes=2, reached_act2=751, reached_act3=87)
+    new = _evaluation(episodes=1000, successes=3, reached_act2=655, reached_act3=61)
+    assert evaluation_rank(new) > evaluation_rank(old)  # Old selection would promote it.
+    assert not passes_progress_guard(new, old)
+    assert passes_progress_guard({**new, "successes": 40}, old)
+    assert not passes_progress_guard({**old, "backend_errors": 1}, old)
+
+
+def test_rank_uses_worst_boss_rate_before_speed_on_success_ties() -> None:
+    robust = _evaluation(
+        boss_success_rate={"HEXAGHOST": 0.8, "SLIME_BOSS": 0.8, "THE_GUARDIAN": 0.7},
+        mean_steps=220.0,
+    )
+    faster_but_brittle = _evaluation(
+        boss_success_rate={"HEXAGHOST": 0.9, "SLIME_BOSS": 0.9, "THE_GUARDIAN": 0.6},
+        mean_steps=150.0,
+    )
+
+    assert evaluation_rank(robust) > evaluation_rank(faster_but_brittle)
+
+
+def test_best_checkpoint_keeps_earlier_tie_and_replaces_strict_improvement(tmp_path: Path) -> None:
+    saved: list[Path] = []
+    def save(path):
+        saved.append(path)
+        path.write_bytes(b"weights")
+    first = best_checkpoint_record(_evaluation(), update=10)
+    assert update_best_checkpoint(tmp_path, first, save=save)
+    assert saved == [tmp_path / "best_progress.staged.pt"]
+    assert not update_best_checkpoint(
+        tmp_path,
+        best_checkpoint_record(_evaluation(), update=20),
+        save=lambda path: saved.append(path),
+    )
+    improved = best_checkpoint_record(
+        _evaluation(successes=12), update=30,
+    )
+    assert update_best_checkpoint(tmp_path, improved, save=save)
+    stored = json.loads((tmp_path / "best_progress.json").read_text(encoding="utf-8"))
+    assert stored["schema"] == BEST_CHECKPOINT_SCHEMA
+    assert stored["update"] == 30
+    assert stored["mean_reward"] == -0.5
+    assert stored["selection_excludes_mean_reward"] is True
+
+def test_promotion_recovers_after_weights_replace(tmp_path, monkeypatch):
+    import os
+
+    import pytest
+
+    from sls.rl.best_checkpoint import recover_best_checkpoint
+    old = best_checkpoint_record(_evaluation(), update=1)
+    new = best_checkpoint_record(_evaluation(successes=12), update=2)
+    update_best_checkpoint(tmp_path, old, save=lambda p: p.write_bytes(b'old'))
+    replace = os.replace
+    def interrupted(source, destination):
+        if Path(destination).name == 'best_progress.json':
+            raise OSError('simulated interruption')
+        return replace(source, destination)
+    with monkeypatch.context() as patcher:
+        patcher.setattr(os, 'replace', interrupted)
+        with pytest.raises(OSError):
+            update_best_checkpoint(tmp_path, new, save=lambda p: p.write_bytes(b'new'))
+    assert (tmp_path / 'best_progress.pending.json').exists()
+    recover_best_checkpoint(tmp_path)
+    assert (tmp_path / 'best_progress.pt').read_bytes() == b'new'
+    assert json.loads((tmp_path / 'best_progress.json').read_text())['update'] == 2
+    assert not (tmp_path / 'best_progress.pending.json').exists()

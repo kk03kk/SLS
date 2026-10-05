@@ -1,0 +1,25 @@
+{
+  "schema": "sls-result-local-validation-v1",
+  "date": "2026-10-05",
+  "python_environment": "Conda DL / Python 3.12",
+  "pytest": {
+    "command": "python -m pytest tests/test_win_continuation_analysis.py tests/test_compare_run_arms.py tests/test_act12_analysis.py tests/runtime/test_policy_runtime.py tests/test_tool_checks.py -q",
+    "result": "57 passed in 7.95s",
+    "log": "local/reports/win90m-20261005/pytest-final.txt"
+  },
+  "configuration_check": "25/25 configurations valid",
+  "ruff": "All checks passed for tools/analyze_win_continuation.py, tools/check_training_configs.py, tests/test_tool_checks.py",
+  "git_diff_check": "passed",
+  "archive_bundle": "11/11 registered file hashes verified",
+  "training_checkpoints": "23 identities and finite model/Adam/recurrent memory states checked",
+  "raw_updates": "1221 contiguous additional updates; numeric metrics finite",
+  "exports": "two strict policy artifacts load; tensors match source checkpoints; manifests verified",
+  "model_discovery": "existing 56M first, plus distinct 76M and 90M candidates",
+  "independent_statistics": "three overall exact McNemar p values independently recomputed with binomial coefficients",
+  "unchanged_agents_sha256": "90132f3c84221605cf5c5ffc917255e84aa4dd82e60cae9d79c120a5e307d7e7",
+  "new_training_executed": false,
+  "reserved_final_evaluated": false,
+  "stock_game_evaluated": false,
+  "next_experiment_submitted": false,
+  "scope": "archive qualification, paired development analysis and exports; not an end-to-end simulator fidelity audit"
+}

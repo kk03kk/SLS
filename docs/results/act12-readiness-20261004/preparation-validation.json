@@ -1,0 +1,31 @@
+{
+  "schema": "sls-act12-preparation-validation-v1",
+  "date": "2026-10-04",
+  "full_suite": {
+    "passed": 987,
+    "skipped": 1,
+    "warnings": 4,
+    "seconds": 158.93,
+    "scope": "full suite before final parent-selection gate tightening"
+  },
+  "final_targeted_suite": {
+    "passed": 43,
+    "scope": "final parent/recipe/reference/analysis and historical90M regression"
+  },
+  "ruff": "passed",
+  "checked_in_training_configs_valid": 20,
+  "vocabulary_check": "passed",
+  "cli_bootstrap": "three scripts --help passed under python -I",
+  "training_implementation_sha256": "b5c9262187db191be5bdef9c1064981c9022b23d3cff72189041504c6f6a5863",
+  "native_source_sha256": "1e30bb6cfa32f600cd63c59983c14ab8928fac4452c1586d630295d2c6ff9453",
+  "local_micro": "real70M all-weight transfer; fresh optimizer/environment/RNG;32 new decisions; exact-resume metrics match;not90M/NUS/performance evidence",
+  "waiting_for": {
+    "90m_archive": true,
+    "final_parent_selection": true,
+    "bound_configuration": true,
+    "server_submission": true
+  },
+  "unchanged_90m_config_sha256": "fb9ddaafa797697c7d4a50e0988ef5056c62a49af966d12b35c3c9c5a4fa365c",
+  "observed_local_90m_status": "CONTINUATION_READY",
+  "actual_prepared_parent_rejection": "parent training is not complete; a prepared directory is not a 90M result"
+}

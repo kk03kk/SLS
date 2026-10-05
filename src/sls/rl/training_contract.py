@@ -1,0 +1,320 @@
+"""Cross-platform training provenance and source contracts."""
+
+from __future__ import annotations
+
+import hashlib
+import importlib
+import json
+import os
+import subprocess
+import sys
+from collections.abc import Iterable
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[3]
+TRAINING_CHECKPOINT_SCHEMA = "sls-full-run-ppo-v5"
+NATIVE_SOURCE_PATHS = (
+    "native/simulator",
+    "src/sls/backends/simulator",
+    "src/sls/content",
+    "tools/build_native.py",
+)
+TRAINING_IMPLEMENTATION_PATHS = (
+    "src/sls/__init__.py", "src/sls/rl", "src/sls/model",
+    "src/sls/contracts", "src/sls/curriculum.py",
+    "src/sls/backends/__init__.py", "src/sls/backends/protocol.py",
+    "src/sls/runtime/__init__.py", "src/sls/runtime/artifact.py",
+    "tools/train_full_run.py", "tools/evaluate_checkpoint.py",
+    "tools/prepare_model_warm_start.py",
+)
+
+
+def sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as stream:
+        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def source_sha256(path: Path) -> str:
+    """Hash text evidence canonically across LF and CRLF checkouts."""
+
+    payload = path.read_bytes().replace(b"\r\n", b"\n")
+    return hashlib.sha256(payload).hexdigest()
+
+
+def _git(*args: str) -> str:
+    result = subprocess.run(
+        ("git", *args), cwd=ROOT, check=True, capture_output=True, text=True,
+        encoding="utf-8",
+    )
+    return result.stdout.strip()
+
+
+def git_state() -> dict[str, object]:
+    """Return optional Git metadata without making local execution depend on Git."""
+
+    try:
+        return {
+            "commit": _git("rev-parse", "HEAD"),
+            "branch": _git("branch", "--show-current"),
+            "dirty": bool(_git("status", "--porcelain", "--untracked-files=all")),
+        }
+    except (FileNotFoundError, subprocess.CalledProcessError):
+        return {"commit": "LOCAL", "branch": "", "dirty": None}
+
+
+def git_index_digest(paths: Iterable[str]) -> str:
+    """Digest tracked Git blobs, independent of checkout line endings."""
+
+    entries = _git("ls-files", "-s", "--", *tuple(paths)).splitlines()
+    if not entries:
+        raise RuntimeError("training contract contains no tracked files")
+    payload = "\n".join(sorted(entries)) + "\n"
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+
+def local_source_digest(paths: Iterable[str], *, root: Path = ROOT) -> str:
+    """Hash a source tree from local paths, independent of Git and line endings."""
+
+    files: list[Path] = []
+    for relative in paths:
+        target = root / relative
+        if target.is_file():
+            files.append(target)
+        elif target.is_dir():
+            files.extend(
+                path for path in target.rglob("*")
+                if path.is_file()
+                and "__pycache__" not in path.parts
+                and path.suffix not in {".pyc", ".pyo"}
+            )
+    if not files:
+        raise RuntimeError("training contract contains no local source files")
+    digest = hashlib.sha256()
+    for path in sorted(files, key=lambda item: item.relative_to(root).as_posix()):
+        relative = path.relative_to(root).as_posix().encode("utf-8")
+        payload = path.read_bytes().replace(b"\r\n", b"\n")
+        digest.update(len(relative).to_bytes(4, "big"))
+        digest.update(relative)
+        digest.update(len(payload).to_bytes(8, "big"))
+        digest.update(payload)
+    return digest.hexdigest()
+
+
+def native_source_digest() -> str:
+    return local_source_digest(NATIVE_SOURCE_PATHS)
+
+
+def state_preserving_source_transition(previous: object, current: str) -> str | None:
+    """Allow only reviewed, directional bug fixes that preserve saved episode state.
+
+    This is not an environment migration or a wildcard source-hash exemption.
+    New preparation still runs; the record only permits restoring state and
+    retaining an existing worker layout across the exact reviewed source pair.
+    """
+    if previous == current:
+        return "same-source"
+    path = ROOT / "configs/compatibility/state-preserving-source-transitions.json"
+    records = json.loads(path.read_text(encoding="utf-8")) if path.exists() else []
+    for record in records:
+        if (record["from"] == previous and record["to"] == current):
+            return str(record["reason"])
+    return None
+
+
+def training_validation_digest(*, root: Path = ROOT) -> str:
+    """Bind executed training/evaluation code, not unrelated tools or configs.
+
+    Parsed run configuration is separately protected by training identity.
+    Keep checkpoint and orchestration implementation here: changing a loader or
+    training loop requires either validation or an explicitly reviewed transition.
+    """
+    return local_source_digest((
+        "src/sls/__init__.py", "src/sls/rl", "src/sls/model", "src/sls/contracts",
+        "src/sls/content", "src/sls/curriculum.py", "src/sls/backends/__init__.py",
+        "src/sls/backends/protocol.py", "src/sls/backends/simulator",
+        "src/sls/runtime/__init__.py", "src/sls/runtime/artifact.py",
+        "tools/train_full_run.py", "tools/evaluate_checkpoint.py",
+        "tools/prepare_model_warm_start.py",
+    ), root=root)
+
+
+def training_implementation_digest(*, root: Path = ROOT) -> str:
+    """Bind PPO/model/controller code independently of reviewed native changes."""
+
+    return local_source_digest(TRAINING_IMPLEMENTATION_PATHS, root=root)
+
+
+def legacy_training_implementation_unchanged(
+    commit: str, *, root: Path = ROOT,
+) -> bool:
+    """Audit a clean legacy run against its recorded Git revision."""
+
+    if len(commit) != 40 or any(ch not in "0123456789abcdef" for ch in commit.lower()):
+        raise ValueError("legacy run has an invalid source commit")
+    try:
+        diff = subprocess.run(
+            ("git", "diff", "--quiet", commit, "--", *TRAINING_IMPLEMENTATION_PATHS),
+            cwd=root, capture_output=True, check=False,
+        )
+        untracked = subprocess.run(
+            ("git", "ls-files", "--others", "--exclude-standard", "--",
+             *TRAINING_IMPLEMENTATION_PATHS),
+            cwd=root, capture_output=True, check=True,
+        )
+    except (FileNotFoundError, subprocess.CalledProcessError) as error:
+        raise ValueError("cannot validate legacy training implementation") from error
+    if diff.returncode not in (0, 1):
+        raise ValueError("cannot compare legacy training implementation with its source commit")
+    return diff.returncode == 0 and not untracked.stdout
+
+
+def validate_training_sources(report: dict[str, object], *, root: Path = ROOT) -> str:
+    current = training_validation_digest(root=root)
+    if report.get("training_validation_sha256") == current:
+        return "semantic-sources-match"
+    legacy = report.get("source_tree_sha256")
+    if legacy == local_source_digest(("src", "tools", "configs"), root=root):
+        return "legacy-sources-match"
+    # A reviewed transition is bound to BOTH old evidence and exact new code.
+    # This is never a wildcard permission to reuse validation after edits.
+    path = root / "configs/compatibility/training-validation-transitions.json"
+    transitions = json.loads(path.read_text(encoding="utf-8")) if path.is_file() else []
+    for transition in transitions:
+        if (transition.get("from_source_tree_sha256") == legacy
+                and transition.get("to_training_validation_sha256") == current):
+            required_commit = transition.get("from_git_commit")
+            if required_commit is not None:
+                report_git = report.get("git") or {}
+                if (report_git.get("commit") != required_commit
+                        or report_git.get("dirty") is not False):
+                    continue
+            return "reviewed-transition: " + str(transition["reason"])
+    raise ValueError(
+        "training validation evidence does not match current sources or a reviewed transition: "
+        + json.dumps({
+            "reported_source_tree_sha256": legacy,
+            "reported_training_validation_sha256": report.get("training_validation_sha256"),
+            "reported_git": report.get("git"),
+            "current_training_validation_sha256": current,
+            "known_old_sources_for_current_code": [
+                item.get("from_source_tree_sha256") for item in transitions
+                if item.get("to_training_validation_sha256") == current
+            ],
+        }, sort_keys=True)
+        + "; run tools/check_training_sources.py on the login node before submitting another job"
+    )
+
+
+def native_artifact() -> dict[str, str] | None:
+    try:
+        module = importlib.import_module("sls.backends.simulator.native")
+    except ImportError:
+        return None
+    origin = getattr(module, "__file__", None)
+    if origin is None:
+        return None
+    path = Path(origin).resolve()
+    embedded_source = str(getattr(module, "NATIVE_SOURCE_SHA256", ""))
+    expected_source = native_source_digest()
+    if embedded_source != expected_source:
+        raise RuntimeError(
+            "native simulator is stale or has unverified provenance: "
+            f"embedded={embedded_source or 'MISSING'} expected={expected_source}; "
+            "run python tools/build_native.py"
+        )
+    return {
+        "path": str(path),
+        "sha256": sha256_file(path),
+        "source_sha256": embedded_source,
+        "git_commit": str(getattr(module, "GIT_COMMIT", "UNKNOWN")),
+    }
+
+
+def runtime_contract(torch_module: object) -> dict[str, object]:
+    cuda = getattr(torch_module, "cuda")
+    backends = getattr(torch_module, "backends")
+    cuda_available = bool(cuda.is_available())
+    return {
+        "python_cache_tag": sys.implementation.cache_tag,
+        "torch": str(getattr(torch_module, "__version__")),
+        "cuda": getattr(getattr(torch_module, "version"), "cuda"),
+        "cudnn": getattr(backends.cudnn, "version")() if cuda_available else None,
+        "cuda_device_count": cuda.device_count() if cuda_available else 0,
+        "cuda_device": cuda.get_device_name(0) if cuda_available else None,
+        "deterministic_algorithms": bool(
+            getattr(torch_module, "are_deterministic_algorithms_enabled")()
+        ),
+        "float32_matmul_precision": torch_module.get_float32_matmul_precision(),
+        "cudnn_benchmark": bool(backends.cudnn.benchmark),
+        "cublas_workspace_config": os.environ.get("CUBLAS_WORKSPACE_CONFIG"),
+    }
+
+
+def canonical_digest(value: object) -> str:
+    encoded = json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+    return hashlib.sha256(encoded.encode("utf-8")).hexdigest()
+
+
+def training_config_digest(path: Path) -> str:
+    """Digest a parsed run configuration independently of checkout line endings.
+
+    ``sha256_file`` hashes raw bytes, so the same committed configuration hashes
+    differently on a CRLF checkout than on the LF checkout that produced the
+    recorded run. Training identity is a property of the configuration text, not
+    of the working copy's newlines, so normalize before hashing. On an LF
+    checkout this is byte-identical to ``sha256_file`` and therefore does not
+    change any recorded run's identity.
+    """
+
+    return source_sha256(Path(path))
+
+
+def evaluation_identity(
+    *,
+    device: str,
+    environment_shards: int,
+    ascension: int,
+) -> dict[str, object]:
+    """Runtime and simulator identity for one recorded evaluation.
+
+    The project's own qualification work found evaluation outcomes to depend on
+    inference settings (see docs/audits/2026-09-28-act1-qualification.md), so a
+    quoted win rate is only interpretable next to the settings that produced it.
+    """
+
+    import platform
+    import socket
+
+    import torch
+
+    from sls.content.scope import ironclad_scope_contract
+
+    scope = ironclad_scope_contract(ascension)
+    return {
+        "simulator": {
+            "native_source_sha256": native_source_digest(),
+            "native_artifact": native_artifact(),
+            **scope,
+        },
+        "runtime": {
+            "python": sys.version,
+            "platform": platform.platform(),
+            "hostname": socket.gethostname(),
+            "torch": torch.__version__,
+            "cuda": torch.version.cuda,
+            "gpu": (
+                torch.cuda.get_device_name(device)
+                if str(device).startswith("cuda") and torch.cuda.is_available()
+                else None
+            ),
+            "cpu_threads": torch.get_num_threads(),
+            "cpu_interop_threads": torch.get_num_interop_threads(),
+            "mkldnn_enabled": torch.backends.mkldnn.enabled,
+            "float32_matmul_precision": torch.get_float32_matmul_precision(),
+            "deterministic_algorithms": bool(torch.are_deterministic_algorithms_enabled()),
+            "environment_shards": int(environment_shards),
+        },
+    }

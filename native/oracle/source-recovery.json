@@ -1,0 +1,114 @@
+{
+  "schema": "sls-oracle-source-recovery-v1",
+  "source_git_commit": "4848867580b348e32c876b2d53ac278f32c0e463",
+  "removal_commit": "5dd256369eb4f73f50dfa06fa925c5f0d2cfd9e1",
+  "recovered_sources": [
+    {
+      "source_path": "java/oracle-mod/ModTheSpire.json",
+      "target_path": "native/oracle/ModTheSpire.json",
+      "sha256": "dc211130a3ad844b709c5be1d7c24fa6ace0eac17507ad14e21da20e4d6ff3aa"
+    },
+    {
+      "source_path": "java/oracle-mod/src/main/java/spirecomm/parity/BatchResetPatch.java",
+      "target_path": "native/oracle/src/spirecomm/parity/BatchResetPatch.java",
+      "sha256": "3043136356dda0b012ebe72c89aee6f0563f01708f04a9b682cbbae8a6d21ff3"
+    },
+    {
+      "source_path": "java/oracle-mod/src/main/java/spirecomm/parity/CardGroupRngPatch.java",
+      "target_path": "native/oracle/src/spirecomm/parity/CardGroupRngPatch.java",
+      "sha256": "57f2efec32aaf57574cf83658b33ed32c7d6173f7f785a6f10ad3b5d492beadb"
+    },
+    {
+      "source_path": "java/oracle-mod/src/main/java/spirecomm/parity/CommunicationStatePatch.java",
+      "target_path": "native/oracle/src/spirecomm/parity/CommunicationStatePatch.java",
+      "sha256": "90ff2ce1f9830e472f804e3da70cb8d8c8a9182f62b682dfb96553670c16b6ee"
+    },
+    {
+      "source_path": "java/oracle-mod/src/main/java/spirecomm/parity/ContinuePatch.java",
+      "target_path": "native/oracle/src/spirecomm/parity/ContinuePatch.java",
+      "sha256": "e07e97baf701f32673c90b311ff6f0660ebb46a1ff238c9763953be3d01c640f"
+    },
+    {
+      "source_path": "java/oracle-mod/src/main/java/spirecomm/parity/DiscoveryTimingPatch.java",
+      "target_path": "native/oracle/src/spirecomm/parity/DiscoveryTimingPatch.java",
+      "sha256": "c7fa5602c28ac3dcf364f051fc8431c84859238a7d71b3a34538923e00ddcc5b"
+    },
+    {
+      "source_path": "java/oracle-mod/src/main/java/spirecomm/parity/DungeonSeedPatch.java",
+      "target_path": "native/oracle/src/spirecomm/parity/DungeonSeedPatch.java",
+      "sha256": "4c0cbcbae8edf7451f6cb9ebd1ca45faf9105b8399ac132e5c847fbba05c2659"
+    },
+    {
+      "source_path": "java/oracle-mod/src/main/java/spirecomm/parity/MatchInputPatch.java",
+      "target_path": "native/oracle/src/spirecomm/parity/MatchInputPatch.java",
+      "sha256": "8aed60ae1be00db288546f422dfa50e726422aedf07a523d624d7a5f0959b86f"
+    },
+    {
+      "source_path": "java/oracle-mod/src/main/java/spirecomm/parity/OracleScenarioPatch.java",
+      "target_path": "native/oracle/src/spirecomm/parity/OracleScenarioPatch.java",
+      "sha256": "276a00af431c799764d96c0daa13ee0c9a88eae1a3e6f04b7c9b7e4c1bea4f77"
+    },
+    {
+      "source_path": "java/oracle-mod/src/main/java/spirecomm/parity/ParityRng.java",
+      "target_path": "native/oracle/src/spirecomm/parity/ParityRng.java",
+      "sha256": "0648e62723fb42181048f8849bd9ed10f09a6643dd51c35bf6011725fb8d92e1"
+    }
+  ],
+  "resources": [
+    {
+      "path": "native/oracle/resources/spirecomm/parity/scenario-card-allowlist.tsv",
+      "sha256": "a813678054dd40e902744e0bf553d18de70ed0f48f3029999d87e2a7ebf5ad2b"
+    },
+    {
+      "path": "native/oracle/resources/spirecomm/parity/scenario-encounter-allowlist.tsv",
+      "sha256": "506b981ca7e80e992997375f06f509918bc17e354c54d4b8c225821cb6ff2fa7"
+    },
+    {
+      "path": "native/oracle/resources/spirecomm/parity/scenario-event-allowlist.tsv",
+      "sha256": "8c55b9b957d907d7671f8b0a5c78ef38127b5ee7f441cf84a55bff0ef720cf2a"
+    },
+    {
+      "path": "native/oracle/resources/spirecomm/parity/scenario-potion-allowlist.tsv",
+      "sha256": "d651325c7fd1c0b0c4c65a9e3469153b079b90a5e2cd85b195246c6b2a6f6565"
+    },
+    {
+      "path": "native/oracle/resources/spirecomm/parity/scenario-relic-allowlist.tsv",
+      "sha256": "43a4beef9bd9dd9096389dfe3d6f6abf8afb173c41b3ddcf8afb5a49af02c600"
+    }
+  ],
+  "resource_reference_jar_sha256": "d034ed56bf7c93de8c82404ff57aaba62a9256def8402441251481f91c50e191",
+  "reference_class_members": [
+    "spirecomm/parity/BatchResetPatch$Advertise.class",
+    "spirecomm/parity/BatchResetPatch$Execute.class",
+    "spirecomm/parity/BatchResetPatch.class",
+    "spirecomm/parity/CardGroupRngPatch$AnyCard.class",
+    "spirecomm/parity/CardGroupRngPatch$ByRarity.class",
+    "spirecomm/parity/CardGroupRngPatch$ByType.class",
+    "spirecomm/parity/CardGroupRngPatch.class",
+    "spirecomm/parity/CardStatePatch$AddDynamicFields.class",
+    "spirecomm/parity/CardStatePatch$AddRewardPreviews.class",
+    "spirecomm/parity/CardStatePatch.class",
+    "spirecomm/parity/CommunicationStatePatch$AddRngState.class",
+    "spirecomm/parity/CommunicationStatePatch.class",
+    "spirecomm/parity/ContinuePatch$Advertise.class",
+    "spirecomm/parity/ContinuePatch$Execute.class",
+    "spirecomm/parity/ContinuePatch.class",
+    "spirecomm/parity/DiscoveryTimingPatch$CountUpdates.class",
+    "spirecomm/parity/DiscoveryTimingPatch.class",
+    "spirecomm/parity/DungeonSeedPatch$LoadedRun.class",
+    "spirecomm/parity/DungeonSeedPatch$NewRun.class",
+    "spirecomm/parity/DungeonSeedPatch.class",
+    "spirecomm/parity/EventStatePatch$AddMatchAttempts.class",
+    "spirecomm/parity/EventStatePatch.class",
+    "spirecomm/parity/MatchInputPatch$Advertise.class",
+    "spirecomm/parity/MatchInputPatch$Execute.class",
+    "spirecomm/parity/MatchInputPatch.class",
+    "spirecomm/parity/OracleScenarioPatch$Advertise.class",
+    "spirecomm/parity/OracleScenarioPatch$AttestSmokeBombEffect.class",
+    "spirecomm/parity/OracleScenarioPatch$Execute.class",
+    "spirecomm/parity/OracleScenarioPatch.class",
+    "spirecomm/parity/ParityRng$1.class",
+    "spirecomm/parity/ParityRng$RngSnapshot.class",
+    "spirecomm/parity/ParityRng.class"
+  ]
+}

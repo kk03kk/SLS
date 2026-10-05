@@ -1,0 +1,996 @@
+{
+  "schema": "sls-win90m-extra-verification-v1",
+  "config_matches_registered": true,
+  "server_70m_to_90m_training_native_git_diff_empty": true,
+  "native_binary_identical_to_70m": true,
+  "final_latest_model_equal": true,
+  "frozen_70m_reference_hash_verified": true,
+  "all_updates_finite_and_contiguous": true,
+  "earliest_max_clear_selection_verified": true,
+  "checkpoint_checks": [
+    {
+      "file": "checkpoint-steps-000071008256.pt",
+      "steps": 71008256,
+      "update": 916,
+      "model_optimizer_memory_finite": true,
+      "keys": [
+        "contract",
+        "cuda_rng",
+        "environments",
+        "model",
+        "optimizer",
+        "python_rng",
+        "schema",
+        "torch_rng",
+        "trainer"
+      ],
+      "trainer_keys": [
+        "environment_steps",
+        "episode_limits",
+        "episode_starts",
+        "episodes",
+        "memory",
+        "next_seed",
+        "previous_action_types",
+        "previous_rewards",
+        "random",
+        "termination_counts",
+        "update"
+      ]
+    },
+    {
+      "file": "checkpoint-steps-000072007680.pt",
+      "steps": 72007680,
+      "update": 977,
+      "model_optimizer_memory_finite": true,
+      "keys": [
+        "contract",
+        "cuda_rng",
+        "environments",
+        "model",
+        "optimizer",
+        "python_rng",
+        "schema",
+        "torch_rng",
+        "trainer"
+      ],
+      "trainer_keys": [
+        "environment_steps",
+        "episode_limits",
+        "episode_starts",
+        "episodes",
+        "memory",
+        "next_seed",
+        "previous_action_types",
+        "previous_rewards",
+        "random",
+        "termination_counts",
+        "update"
+      ]
+    },
+    {
+      "file": "checkpoint-steps-000073007104.pt",
+      "steps": 73007104,
+      "update": 1038,
+      "model_optimizer_memory_finite": true,
+      "keys": [
+        "contract",
+        "cuda_rng",
+        "environments",
+        "model",
+        "optimizer",
+        "python_rng",
+        "schema",
+        "torch_rng",
+        "trainer"
+      ],
+      "trainer_keys": [
+        "environment_steps",
+        "episode_limits",
+        "episode_starts",
+        "episodes",
+        "memory",
+        "next_seed",
+        "previous_action_types",
+        "previous_rewards",
+        "random",
+        "termination_counts",
+        "update"
+      ]
+    },
+    {
+      "file": "checkpoint-steps-000074006528.pt",
+      "steps": 74006528,
+      "update": 1099,
+      "model_optimizer_memory_finite": true,
+      "keys": [
+        "contract",
+        "cuda_rng",
+        "environments",
+        "model",
+        "optimizer",
+        "python_rng",
+        "schema",
+        "torch_rng",
+        "trainer"
+      ],
+      "trainer_keys": [
+        "environment_steps",
+        "episode_limits",
+        "episode_starts",
+        "episodes",
+        "memory",
+        "next_seed",
+        "previous_action_types",
+        "previous_rewards",
+        "random",
+        "termination_counts",
+        "update"
+      ]
+    },
+    {
+      "file": "checkpoint-steps-000075005952.pt",
+      "steps": 75005952,
+      "update": 1160,
+      "model_optimizer_memory_finite": true,
+      "keys": [
+        "contract",
+        "cuda_rng",
+        "environments",
+        "model",
+        "optimizer",
+        "python_rng",
+        "schema",
+        "torch_rng",
+        "trainer"
+      ],
+      "trainer_keys": [
+        "environment_steps",
+        "episode_limits",
+        "episode_starts",
+        "episodes",
+        "memory",
+        "next_seed",
+        "previous_action_types",
+        "previous_rewards",
+        "random",
+        "termination_counts",
+        "update"
+      ]
+    },
+    {
+      "file": "checkpoint-steps-000076005376.pt",
+      "steps": 76005376,
+      "update": 1221,
+      "model_optimizer_memory_finite": true,
+      "keys": [
+        "contract",
+        "cuda_rng",
+        "environments",
+        "model",
+        "optimizer",
+        "python_rng",
+        "schema",
+        "torch_rng",
+        "trainer"
+      ],
+      "trainer_keys": [
+        "environment_steps",
+        "episode_limits",
+        "episode_starts",
+        "episodes",
+        "memory",
+        "next_seed",
+        "previous_action_types",
+        "previous_rewards",
+        "random",
+        "termination_counts",
+        "update"
+      ]
+    },
+    {
+      "file": "checkpoint-steps-000077004800.pt",
+      "steps": 77004800,
+      "update": 1282,
+      "model_optimizer_memory_finite": true,
+      "keys": [
+        "contract",
+        "cuda_rng",
+        "environments",
+        "model",
+        "optimizer",
+        "python_rng",
+        "schema",
+        "torch_rng",
+        "trainer"
+      ],
+      "trainer_keys": [
+        "environment_steps",
+        "episode_limits",
+        "episode_starts",
+        "episodes",
+        "memory",
+        "next_seed",
+        "previous_action_types",
+        "previous_rewards",
+        "random",
+        "termination_counts",
+        "update"
+      ]
+    },
+    {
+      "file": "checkpoint-steps-000078004224.pt",
+      "steps": 78004224,
+      "update": 1343,
+      "model_optimizer_memory_finite": true,
+      "keys": [
+        "contract",
+        "cuda_rng",
+        "environments",
+        "model",
+        "optimizer",
+        "python_rng",
+        "schema",
+        "torch_rng",
+        "trainer"
+      ],
+      "trainer_keys": [
+        "environment_steps",
+        "episode_limits",
+        "episode_starts",
+        "episodes",
+        "memory",
+        "next_seed",
+        "previous_action_types",
+        "previous_rewards",
+        "random",
+        "termination_counts",
+        "update"
+      ]
+    },
+    {
+      "file": "checkpoint-steps-000079003648.pt",
+      "steps": 79003648,
+      "update": 1404,
+      "model_optimizer_memory_finite": true,
+      "keys": [
+        "contract",
+        "cuda_rng",
+        "environments",
+        "model",
+        "optimizer",
+        "python_rng",
+        "schema",
+        "torch_rng",
+        "trainer"
+      ],
+      "trainer_keys": [
+        "environment_steps",
+        "episode_limits",
+        "episode_starts",
+        "episodes",
+        "memory",
+        "next_seed",
+        "previous_action_types",
+        "previous_rewards",
+        "random",
+        "termination_counts",
+        "update"
+      ]
+    },
+    {
+      "file": "checkpoint-steps-000080003072.pt",
+      "steps": 80003072,
+      "update": 1465,
+      "model_optimizer_memory_finite": true,
+      "keys": [
+        "contract",
+        "cuda_rng",
+        "environments",
+        "model",
+        "optimizer",
+        "python_rng",
+        "schema",
+        "torch_rng",
+        "trainer"
+      ],
+      "trainer_keys": [
+        "environment_steps",
+        "episode_limits",
+        "episode_starts",
+        "episodes",
+        "memory",
+        "next_seed",
+        "previous_action_types",
+        "previous_rewards",
+        "random",
+        "termination_counts",
+        "update"
+      ]
+    },
+    {
+      "file": "checkpoint-steps-000081002496.pt",
+      "steps": 81002496,
+      "update": 1526,
+      "model_optimizer_memory_finite": true,
+      "keys": [
+        "contract",
+        "cuda_rng",
+        "environments",
+        "model",
+        "optimizer",
+        "python_rng",
+        "schema",
+        "torch_rng",
+        "trainer"
+      ],
+      "trainer_keys": [
+        "environment_steps",
+        "episode_limits",
+        "episode_starts",
+        "episodes",
+        "memory",
+        "next_seed",
+        "previous_action_types",
+        "previous_rewards",
+        "random",
+        "termination_counts",
+        "update"
+      ]
+    },
+    {
+      "file": "checkpoint-steps-000082001920.pt",
+      "steps": 82001920,
+      "update": 1587,
+      "model_optimizer_memory_finite": true,
+      "keys": [
+        "contract",
+        "cuda_rng",
+        "environments",
+        "model",
+        "optimizer",
+        "python_rng",
+        "schema",
+        "torch_rng",
+        "trainer"
+      ],
+      "trainer_keys": [
+        "environment_steps",
+        "episode_limits",
+        "episode_starts",
+        "episodes",
+        "memory",
+        "next_seed",
+        "previous_action_types",
+        "previous_rewards",
+        "random",
+        "termination_counts",
+        "update"
+      ]
+    },
+    {
+      "file": "checkpoint-steps-000083001344.pt",
+      "steps": 83001344,
+      "update": 1648,
+      "model_optimizer_memory_finite": true,
+      "keys": [
+        "contract",
+        "cuda_rng",
+        "environments",
+        "model",
+        "optimizer",
+        "python_rng",
+        "schema",
+        "torch_rng",
+        "trainer"
+      ],
+      "trainer_keys": [
+        "environment_steps",
+        "episode_limits",
+        "episode_starts",
+        "episodes",
+        "memory",
+        "next_seed",
+        "previous_action_types",
+        "previous_rewards",
+        "random",
+        "termination_counts",
+        "update"
+      ]
+    },
+    {
+      "file": "checkpoint-steps-000084000768.pt",
+      "steps": 84000768,
+      "update": 1709,
+      "model_optimizer_memory_finite": true,
+      "keys": [
+        "contract",
+        "cuda_rng",
+        "environments",
+        "model",
+        "optimizer",
+        "python_rng",
+        "schema",
+        "torch_rng",
+        "trainer"
+      ],
+      "trainer_keys": [
+        "environment_steps",
+        "episode_limits",
+        "episode_starts",
+        "episodes",
+        "memory",
+        "next_seed",
+        "previous_action_types",
+        "previous_rewards",
+        "random",
+        "termination_counts",
+        "update"
+      ]
+    },
+    {
+      "file": "checkpoint-steps-000085000192.pt",
+      "steps": 85000192,
+      "update": 1770,
+      "model_optimizer_memory_finite": true,
+      "keys": [
+        "contract",
+        "cuda_rng",
+        "environments",
+        "model",
+        "optimizer",
+        "python_rng",
+        "schema",
+        "torch_rng",
+        "trainer"
+      ],
+      "trainer_keys": [
+        "environment_steps",
+        "episode_limits",
+        "episode_starts",
+        "episodes",
+        "memory",
+        "next_seed",
+        "previous_action_types",
+        "previous_rewards",
+        "random",
+        "termination_counts",
+        "update"
+      ]
+    },
+    {
+      "file": "checkpoint-steps-000086016000.pt",
+      "steps": 86016000,
+      "update": 1832,
+      "model_optimizer_memory_finite": true,
+      "keys": [
+        "contract",
+        "cuda_rng",
+        "environments",
+        "model",
+        "optimizer",
+        "python_rng",
+        "schema",
+        "torch_rng",
+        "trainer"
+      ],
+      "trainer_keys": [
+        "environment_steps",
+        "episode_limits",
+        "episode_starts",
+        "episodes",
+        "memory",
+        "next_seed",
+        "previous_action_types",
+        "previous_rewards",
+        "random",
+        "termination_counts",
+        "update"
+      ]
+    },
+    {
+      "file": "checkpoint-steps-000087015424.pt",
+      "steps": 87015424,
+      "update": 1893,
+      "model_optimizer_memory_finite": true,
+      "keys": [
+        "contract",
+        "cuda_rng",
+        "environments",
+        "model",
+        "optimizer",
+        "python_rng",
+        "schema",
+        "torch_rng",
+        "trainer"
+      ],
+      "trainer_keys": [
+        "environment_steps",
+        "episode_limits",
+        "episode_starts",
+        "episodes",
+        "memory",
+        "next_seed",
+        "previous_action_types",
+        "previous_rewards",
+        "random",
+        "termination_counts",
+        "update"
+      ]
+    },
+    {
+      "file": "checkpoint-steps-000088014848.pt",
+      "steps": 88014848,
+      "update": 1954,
+      "model_optimizer_memory_finite": true,
+      "keys": [
+        "contract",
+        "cuda_rng",
+        "environments",
+        "model",
+        "optimizer",
+        "python_rng",
+        "schema",
+        "torch_rng",
+        "trainer"
+      ],
+      "trainer_keys": [
+        "environment_steps",
+        "episode_limits",
+        "episode_starts",
+        "episodes",
+        "memory",
+        "next_seed",
+        "previous_action_types",
+        "previous_rewards",
+        "random",
+        "termination_counts",
+        "update"
+      ]
+    },
+    {
+      "file": "checkpoint-steps-000089014272.pt",
+      "steps": 89014272,
+      "update": 2015,
+      "model_optimizer_memory_finite": true,
+      "keys": [
+        "contract",
+        "cuda_rng",
+        "environments",
+        "model",
+        "optimizer",
+        "python_rng",
+        "schema",
+        "torch_rng",
+        "trainer"
+      ],
+      "trainer_keys": [
+        "environment_steps",
+        "episode_limits",
+        "episode_starts",
+        "episodes",
+        "memory",
+        "next_seed",
+        "previous_action_types",
+        "previous_rewards",
+        "random",
+        "termination_counts",
+        "update"
+      ]
+    },
+    {
+      "file": "checkpoint-steps-000090013696.pt",
+      "steps": 90013696,
+      "update": 2076,
+      "model_optimizer_memory_finite": true,
+      "keys": [
+        "contract",
+        "cuda_rng",
+        "environments",
+        "model",
+        "optimizer",
+        "python_rng",
+        "schema",
+        "torch_rng",
+        "trainer"
+      ],
+      "trainer_keys": [
+        "environment_steps",
+        "episode_limits",
+        "episode_starts",
+        "episodes",
+        "memory",
+        "next_seed",
+        "previous_action_types",
+        "previous_rewards",
+        "random",
+        "termination_counts",
+        "update"
+      ]
+    },
+    {
+      "file": "final.pt",
+      "steps": 90013696,
+      "update": 2076,
+      "model_optimizer_memory_finite": true,
+      "keys": [
+        "contract",
+        "cuda_rng",
+        "environments",
+        "model",
+        "optimizer",
+        "python_rng",
+        "schema",
+        "torch_rng",
+        "trainer"
+      ],
+      "trainer_keys": [
+        "environment_steps",
+        "episode_limits",
+        "episode_starts",
+        "episodes",
+        "memory",
+        "next_seed",
+        "previous_action_types",
+        "previous_rewards",
+        "random",
+        "termination_counts",
+        "update"
+      ]
+    },
+    {
+      "file": "latest.pt",
+      "steps": 90013696,
+      "update": 2076,
+      "model_optimizer_memory_finite": true,
+      "keys": [
+        "contract",
+        "cuda_rng",
+        "environments",
+        "model",
+        "optimizer",
+        "python_rng",
+        "schema",
+        "torch_rng",
+        "trainer"
+      ],
+      "trainer_keys": [
+        "environment_steps",
+        "episode_limits",
+        "episode_starts",
+        "episodes",
+        "memory",
+        "next_seed",
+        "previous_action_types",
+        "previous_rewards",
+        "random",
+        "termination_counts",
+        "update"
+      ]
+    },
+    {
+      "file": "stages/train/selection/best_progress.pt",
+      "steps": 76005376,
+      "update": 1221,
+      "model_optimizer_memory_finite": true,
+      "keys": [
+        "contract",
+        "cuda_rng",
+        "environments",
+        "model",
+        "optimizer",
+        "python_rng",
+        "schema",
+        "torch_rng",
+        "trainer"
+      ],
+      "trainer_keys": [
+        "environment_steps",
+        "episode_limits",
+        "episode_starts",
+        "episodes",
+        "memory",
+        "next_seed",
+        "previous_action_types",
+        "previous_rewards",
+        "random",
+        "termination_counts",
+        "update"
+      ]
+    }
+  ],
+  "phase_diagnostics": [
+    {
+      "steps": [
+        70000000,
+        76000000
+      ],
+      "updates": 365,
+      "value_explained_variance": 0.5544461093536796,
+      "approx_kl_final": 0.0033556644978601333,
+      "gradient_clip_fraction": 0.876027397260274,
+      "entropy": 0.16505829875599848
+    },
+    {
+      "steps": [
+        76000000,
+        82000000
+      ],
+      "updates": 366,
+      "value_explained_variance": 0.5595325216895244,
+      "approx_kl_final": 0.003467260922646898,
+      "gradient_clip_fraction": 0.8867827868852459,
+      "entropy": 0.16749715776554222
+    },
+    {
+      "steps": [
+        82000000,
+        90100000
+      ],
+      "updates": 490,
+      "value_explained_variance": 0.5663650449441404,
+      "approx_kl_final": 0.0032415819618665633,
+      "gradient_clip_fraction": 0.875,
+      "entropy": 0.16844055667823674
+    }
+  ],
+  "raw_detail": {
+    "confirmation": {
+      "reference": {
+        "failure_floors": {
+          "6": 24,
+          "7": 23,
+          "8": 20,
+          "10": 19,
+          "11": 21,
+          "12": 18,
+          "13": 24,
+          "14": 27,
+          "16": 298
+        },
+        "boss_action_metrics": {
+          "ACT_1:HEXAGHOST": {
+            "block_deficit_decisions": 13865,
+            "decisions": 20627,
+            "defend_red_actions": 2234,
+            "defend_red_on_block_deficit": 1780,
+            "defend_red_on_block_deficit_rate": 0.1283808150018031,
+            "discard_potion_actions": 5,
+            "entries": 626,
+            "mean_potions_at_entry": 1.7827476038338659,
+            "play_card_actions": 14282,
+            "potions_at_entry": 1116,
+            "targeted_card_plays_while_sharp_hide": 0,
+            "use_potion_actions": 1152
+          },
+          "ACT_1:SLIME_BOSS": {
+            "block_deficit_decisions": 8735,
+            "decisions": 19291,
+            "defend_red_actions": 1046,
+            "defend_red_on_block_deficit": 821,
+            "defend_red_on_block_deficit_rate": 0.09398969662278191,
+            "discard_potion_actions": 8,
+            "entries": 649,
+            "mean_potions_at_entry": 1.6979969183359014,
+            "play_card_actions": 13543,
+            "potions_at_entry": 1102,
+            "targeted_card_plays_while_sharp_hide": 0,
+            "use_potion_actions": 730
+          },
+          "ACT_1:THE_GUARDIAN": {
+            "block_deficit_decisions": 13959,
+            "decisions": 22943,
+            "defend_red_actions": 4127,
+            "defend_red_on_block_deficit": 3463,
+            "defend_red_on_block_deficit_rate": 0.2480836736155885,
+            "discard_potion_actions": 5,
+            "entries": 597,
+            "mean_potions_at_entry": 1.7068676716917923,
+            "play_card_actions": 15895,
+            "potions_at_entry": 1019,
+            "targeted_card_plays_while_sharp_hide": 2738,
+            "use_potion_actions": 1041
+          }
+        },
+        "neow": {}
+      },
+      "endpoint": {
+        "failure_floors": {
+          "4": 2,
+          "5": 2,
+          "6": 17,
+          "7": 15,
+          "8": 26,
+          "10": 14,
+          "11": 16,
+          "12": 16,
+          "13": 14,
+          "14": 19,
+          "16": 267
+        },
+        "boss_action_metrics": {
+          "ACT_1:HEXAGHOST": {
+            "block_deficit_decisions": 13524,
+            "decisions": 20986,
+            "defend_red_actions": 2418,
+            "defend_red_on_block_deficit": 1964,
+            "defend_red_on_block_deficit_rate": 0.14522330671398995,
+            "discard_potion_actions": 7,
+            "entries": 639,
+            "mean_potions_at_entry": 1.6682316118935838,
+            "play_card_actions": 14526,
+            "potions_at_entry": 1066,
+            "targeted_card_plays_while_sharp_hide": 0,
+            "use_potion_actions": 1122
+          },
+          "ACT_1:SLIME_BOSS": {
+            "block_deficit_decisions": 8079,
+            "decisions": 18925,
+            "defend_red_actions": 873,
+            "defend_red_on_block_deficit": 724,
+            "defend_red_on_block_deficit_rate": 0.08961505136774353,
+            "discard_potion_actions": 5,
+            "entries": 662,
+            "mean_potions_at_entry": 1.6163141993957704,
+            "play_card_actions": 13138,
+            "potions_at_entry": 1070,
+            "targeted_card_plays_while_sharp_hide": 0,
+            "use_potion_actions": 849
+          },
+          "ACT_1:THE_GUARDIAN": {
+            "block_deficit_decisions": 13867,
+            "decisions": 23931,
+            "defend_red_actions": 4366,
+            "defend_red_on_block_deficit": 3571,
+            "defend_red_on_block_deficit_rate": 0.25751784812865075,
+            "discard_potion_actions": 10,
+            "entries": 606,
+            "mean_potions_at_entry": 1.6897689768976898,
+            "play_card_actions": 16432,
+            "potions_at_entry": 1024,
+            "targeted_card_plays_while_sharp_hide": 2558,
+            "use_potion_actions": 1067
+          }
+        },
+        "neow": {}
+      },
+      "selected": {
+        "failure_floors": {
+          "5": 1,
+          "6": 30,
+          "7": 13,
+          "8": 19,
+          "10": 23,
+          "11": 13,
+          "12": 20,
+          "13": 9,
+          "14": 24,
+          "16": 277
+        },
+        "boss_action_metrics": {
+          "ACT_1:HEXAGHOST": {
+            "block_deficit_decisions": 13700,
+            "decisions": 20235,
+            "defend_red_actions": 1988,
+            "defend_red_on_block_deficit": 1583,
+            "defend_red_on_block_deficit_rate": 0.11554744525547445,
+            "discard_potion_actions": 3,
+            "entries": 628,
+            "mean_potions_at_entry": 1.7054140127388535,
+            "play_card_actions": 14019,
+            "potions_at_entry": 1071,
+            "targeted_card_plays_while_sharp_hide": 0,
+            "use_potion_actions": 1122
+          },
+          "ACT_1:SLIME_BOSS": {
+            "block_deficit_decisions": 8150,
+            "decisions": 19198,
+            "defend_red_actions": 1335,
+            "defend_red_on_block_deficit": 800,
+            "defend_red_on_block_deficit_rate": 0.09815950920245399,
+            "discard_potion_actions": 6,
+            "entries": 659,
+            "mean_potions_at_entry": 1.5842185128983308,
+            "play_card_actions": 13512,
+            "potions_at_entry": 1044,
+            "targeted_card_plays_while_sharp_hide": 0,
+            "use_potion_actions": 802
+          },
+          "ACT_1:THE_GUARDIAN": {
+            "block_deficit_decisions": 14382,
+            "decisions": 23590,
+            "defend_red_actions": 4458,
+            "defend_red_on_block_deficit": 3448,
+            "defend_red_on_block_deficit_rate": 0.23974412460019467,
+            "discard_potion_actions": 9,
+            "entries": 609,
+            "mean_potions_at_entry": 1.6929392446633826,
+            "play_card_actions": 16227,
+            "potions_at_entry": 1031,
+            "targeted_card_plays_while_sharp_hide": 2690,
+            "use_potion_actions": 1079
+          }
+        },
+        "neow": {}
+      }
+    },
+    "domains": {
+      "advantage_mean_combat": {
+        "mean": -0.007171699015881511,
+        "min": -0.09677477926015854,
+        "median": -0.005870571825653315,
+        "max": 0.06012745574116707
+      },
+      "advantage_std_combat": {
+        "mean": 0.3209186807018533,
+        "min": 0.25839728116989136,
+        "median": 0.32109832763671875,
+        "max": 0.3890431225299835
+      },
+      "advantage_scale_combat": {
+        "mean": 3.130824895323991,
+        "min": 2.5704090790573977,
+        "median": 3.114310735334204,
+        "max": 3.8700096099015173
+      },
+      "samples_combat_fraction": {
+        "mean": 0.6796800518113995,
+        "min": 0.6568603515625,
+        "median": 0.67938232421875,
+        "max": 0.70526123046875
+      },
+      "advantage_mean_run": {
+        "mean": -0.005076430665525532,
+        "min": -0.09361008554697037,
+        "median": -0.004478510469198227,
+        "max": 0.06244926154613495
+      },
+      "advantage_std_run": {
+        "mean": 0.2714335056941691,
+        "min": 0.18996092677116394,
+        "median": 0.2722465395927429,
+        "max": 0.3315903842449188
+      },
+      "advantage_scale_run": {
+        "mean": 3.7042963023744258,
+        "min": 3.0157689045159173,
+        "median": 3.673141134372181,
+        "max": 5.264240201155925
+      },
+      "samples_run_fraction": {
+        "mean": 0.14005163944128787,
+        "min": 0.12701416015625,
+        "median": 0.14013671875,
+        "max": 0.15093994140625
+      },
+      "advantage_mean_choice": {
+        "mean": -0.005064340968702313,
+        "min": -0.10121994465589523,
+        "median": -0.00464018527418375,
+        "max": 0.06431591510772705
+      },
+      "advantage_std_choice": {
+        "mean": 0.2713430715232087,
+        "min": 0.18737666308879852,
+        "median": 0.2723352015018463,
+        "max": 0.3255334496498108
+      },
+      "advantage_scale_choice": {
+        "mean": 3.7044892967534366,
+        "min": 3.071880847749843,
+        "median": 3.6719453003719296,
+        "max": 5.336843607667729
+      },
+      "samples_choice_fraction": {
+        "mean": 0.18026830874731264,
+        "min": 0.1636962890625,
+        "median": 0.1805419921875,
+        "max": 0.1937255859375
+      }
+    }
+  },
+  "training_decisions_per_second": 102.7788945067391,
+  "whole_job_decisions_per_second": 97.33199292863132,
+  "reserved_final_note": "No 9e12 outcomes in provided periodic/confirmation evidence; not a claim about unprovided external jobs.",
+  "independent_exact_mcnemar_recomputed": true
+}

@@ -1,0 +1,32 @@
+........................................................................ [  7%]
+........................................................................ [ 14%]
+....s................................................................... [ 21%]
+........................................................................ [ 28%]
+........................................................................ [ 35%]
+........................................................................ [ 43%]
+........................................................................ [ 50%]
+........................................................................ [ 57%]
+........................................................................ [ 64%]
+........................................................................ [ 71%]
+........................................................................ [ 78%]
+........................................................................ [ 86%]
+........................................................................ [ 93%]
+...................................................................      [100%]
+============================== warnings summary ===============================
+tests/rl/test_act1_continuation.py::test_continuation_preserves_learning_and_refuses_unreviewed_changes[profile0]
+tests/rl/test_act1_continuation.py::test_continuation_preserves_learning_and_refuses_unreviewed_changes[profile1]
+  D:\SLS\src\sls\rl\checkpoint.py:309: RuntimeWarning: Checkpoint state preserved with runtime/provenance rebind; cross-runtime bitwise replay is not guaranteed: [{"checkpoint": "TEST_OR_UNSPECIFIED", "current": "cc2c5b25df1cecada739c9de5f3c0d080cf9bc97", "path": "git_commit", "runtime_rebind_allowed": true}]
+    return _load_checkpoint_exact(path, trainer, allowed_contract_changes=frozenset(changes))
+
+tests/rl/test_training_smoke.py::test_auto_resume_permits_only_safe_runtime_rebind
+  D:\SLS\src\sls\rl\checkpoint.py:309: RuntimeWarning: Checkpoint state preserved with runtime/provenance rebind; cross-runtime bitwise replay is not guaranteed: [{"checkpoint": "old-git", "current": "new-git", "path": "git_commit", "runtime_rebind_allowed": true}]
+    return _load_checkpoint_exact(path, trainer, allowed_contract_changes=frozenset(changes))
+
+tests/rl/test_training_smoke.py::test_interrupted_act2_training_runtime_rebind_is_an_exact_resume
+  D:\SLS\src\sls\rl\checkpoint.py:309: RuntimeWarning: Checkpoint state preserved with runtime/provenance rebind; cross-runtime bitwise replay is not guaranteed: [{"checkpoint": "act2-git", "current": "fixed-git", "path": "git_commit", "runtime_rebind_allowed": true}]
+    return _load_checkpoint_exact(path, trainer, allowed_contract_changes=frozenset(changes))
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+SKIPPED [1] tests\diagnostics\test_seed_audit.py:16: local exported Act1 policy is unavailable
+1002 passed, 1 skipped, 4 warnings in 113.77s (0:01:53)

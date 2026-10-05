@@ -1,0 +1,88 @@
+# Explicit model warm-start from 10,002,432 steps; not exact resume.
+[run]
+warm_start_source_sha256 = "24b920f81417d0c289c44f8eace4f1f1b466f94bb0817029b17a63128b96749b"
+profile = "IRONCLAD_A0_FULLRUN"
+seed = 10000000
+device = "cuda"
+deterministic = true
+worker_backend = "sharded-vector"
+benchmark = "local/runs/worker-benchmark-15m.json"
+output = "local/runs/ironclad-a0-fullrun-v4-15m"
+periodic_evaluation_seed_start = 3000000000000
+periodic_evaluation_seed_count = 1000
+diagnostic_evaluation_seed_start = 4000000000000
+diagnostic_evaluation_seed_count = 256
+diagnostic_rotation_stride = 256
+final_evaluation_seed_start = 2000000000000
+final_evaluation_seed_count = 2000
+evaluation_max_steps = 4096
+selection_progress_guard = true
+
+[stages.smoke]
+profile = "IRONCLAD_A0_ACT1"
+target_environment_steps = 5000000
+evaluate_every_steps = 500000
+minimum_success_rate = 0.20
+minimum_reached_act2_rate = 0.0
+minimum_reached_act3_rate = 0.0
+minimum_evaluation_episodes = 128
+minimum_boss_success_rate = 0.50
+
+[stages.pilot]
+profile = "IRONCLAD_A0_ACT2"
+target_environment_steps = 7004160
+evaluate_every_steps = 500000
+minimum_success_rate = 0.05
+minimum_reached_act2_rate = 0.50
+minimum_reached_act3_rate = 0.0
+minimum_evaluation_episodes = 1000
+
+[stages.train]
+profile = "IRONCLAD_A0_FULLRUN"
+target_environment_steps = 15000000
+evaluate_every_steps = 1000000
+diagnose_every_steps = 500000
+checkpoint_every_steps = 500000
+minimum_success_rate = 0.005
+minimum_reached_act2_rate = 0.65
+minimum_reached_act3_rate = 0.08
+minimum_evaluation_episodes = 1000
+minimum_final_evaluation_episodes = 2000
+minimum_act1_boss_success_rate = 0.60
+baseline_minimum_reached_act2_rate = 0.60
+baseline_minimum_reached_act3_rate = 0.04
+
+[model]
+embedding_dim = 128
+transformer_layers = 4
+attention_heads = 4
+feedforward_dim = 256
+recurrent_hidden_dim = 256
+recurrent_layers = 1
+dropout = 0.0
+architecture = "sls-recurrent-relational-policy-v5"
+
+[ppo]
+rollout_steps = 256
+recurrent_sequence_length = 64
+minibatch_sequences = 16
+learning_rate = 0.000125
+gamma = 1.0
+gae_lambda = 0.98
+clip_ratio = 0.2
+value_coefficient = 0.5
+entropy_coefficient = 0.02
+entropy_final = 0.002
+entropy_decay_steps = 40000000
+target_kl = 0.02
+value_clip_ratio = 0.2
+max_gradient_norm = 0.5
+epochs = 2
+potential_shaping = true
+potential_scale = 0.2
+failure_progress_scale = 0.8
+reward_schema = "sls-curriculum-progress-v3"
+episode_limit_schema = "sls-fullrun-episode-limit-v2"
+max_episode_steps = 4096
+max_boundary_visits = 4
+limit_failure_reward = -1.0

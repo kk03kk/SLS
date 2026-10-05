@@ -1,0 +1,32 @@
+{
+  "schema": "sls-act1-mechanics-parity-v1",
+  "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "probe_source_sha256": "2bbbd220a79779ed41d5d0b6aae30d2cbb6ae27712eadfcf4a435fb1040b40e8",
+  "native_source_sha256": "470acd317f0b3104c3c5de91e346934798414c8f328381555458ebd3ab0bfad9",
+  "native_artifact_sha256": "cdfa93d00b5ae083e241e2d186a680922fad364b05bf6764e1f325e2c8becc4e",
+  "input_sha256": "67de878c7237910d5c07e3862c6d3e4bdaff0103eead560a157f945b324e6333",
+  "comparisons_sha256": "c2d127bac5e7ec3603a73a1610cb74fa5dce094a8b6fd794e57146fa2eec6d75",
+  "counts": {
+    "rng": 11,
+    "transform": 960,
+    "move": 900,
+    "block": 55
+  },
+  "passed": true,
+  "failed_case_indices": [],
+  "qualification": "Independent stock method execution on supplied test state. Transform pool ordering and full acquisition are not certified; Block targeting uses empty power lists; gremlin constructors, takeTurn, damage/death and hooks are not exercised. RNG checks cover nine mixed operations and Java shuffle, not all stream consumers.",
+  "regression": {
+    "regression_passed": true,
+    "matched_boundaries": 1748,
+    "corpus_sha256": "4a75b8b973f76ff64d7488da1ac44fcacf47276f11c56a1a1e5ca754ed31a0ec",
+    "model_sha256": "69fdb8189da2b49a6714d51e9f85833b0a0dfb381619cc211002da6e1eefbfeb"
+  },
+  "regression_result_sha256": "68ce4ab64ff9c7baec36c3a7848c0aba555ed9937a9294d668bb888a965e5d5e",
+  "acquisition_sha256": "c72b0eb2d8d46905a5145211b1a12349748e8839138f7fdd2b855b99bd9b5248",
+  "reviewed_coverage_sha256": "937efd27d278f8fc994974e1fdb8c32ee7908bc4d2e3a1e3624fb83bd011aca0",
+  "qualification_complete": false,
+  "tests": {
+    "passed": 340,
+    "skipped": 1
+  }
+}

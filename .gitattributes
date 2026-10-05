@@ -1,0 +1,8 @@
+tests/fixtures/regressions/nus-worker-23-seed-8335-invalid-decision.json -text
+# Preserve raw evidence hashes and deterministic Oracle resource bytes on clone.
+docs/results/** -text whitespace=cr-at-eol
+native/oracle/** -text whitespace=cr-at-eol
+docs/results/act12-readiness-20261004/** -text whitespace=cr-at-eol
+docs/results/act12-qualification-20261004/** -text whitespace=cr-at-eol
+docs/results/act2-rule-scenarios-20261004/** -text whitespace=cr-at-eol
+docs/results/act12-analysis-contract-20261004/** -text whitespace=cr-at-eol

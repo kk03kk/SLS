@@ -1,0 +1,2268 @@
+{
+  "schema": "sls-reward-screen-analysis-v1",
+  "archive_sha256": "134a5410d5598729cfa9460b335c0e2bfcc8a70d6ce13444e65b4da4cc6d60d3",
+  "arms": {
+    "progress": {
+      "run": "ironclad-a20-act1-plateau-progress-2m-r1",
+      "git": {
+        "branch": "main",
+        "commit": "4b4028cf5c831bb4c22a5e2edd6b7599e1779730",
+        "dirty": false
+      },
+      "native_source_sha256": "1e30bb6cfa32f600cd63c59983c14ab8928fac4452c1586d630295d2c6ff9453",
+      "training_implementation_sha256": "cfc4a31b0439c4a91b5ded90f6e443c7c567c27a6f35fa2d204ca9826abd3ec6",
+      "training_identity_sha256": "931fb7cf2d04ae963866b3221a9c0494149bf8f0f2cd53448f3ac740bf27eed8",
+      "config_sha256": "b36e98f917b79fe8bb200ddca3266c1afe334b2efa373697ba4920896ee3f036",
+      "config": {
+        "run": {
+          "workflow": "single-stage",
+          "profile": "IRONCLAD_A20_ACT1",
+          "seed": 120000000,
+          "training_seed_limit": 2000000000000,
+          "device": "cuda",
+          "deterministic": true,
+          "worker_backend": "sharded-vector",
+          "worker_layout": [
+            64,
+            16
+          ],
+          "benchmark": "local/runs/preparation/ironclad-a20-act1-plateau-progress-2m-r1/benchmark.json",
+          "output": "local/runs/ironclad-a20-act1-plateau-progress-2m-r1",
+          "selection_progress_guard": true,
+          "periodic_evaluation_seed_start": 8000000000000,
+          "periodic_evaluation_seed_count": 512,
+          "final_evaluation_seed_start": 8000001000000,
+          "final_evaluation_seed_count": 512,
+          "evaluation_max_steps": 4096
+        },
+        "stages": {
+          "train": {
+            "profile": "IRONCLAD_A20_ACT1",
+            "target_environment_steps": 58000000,
+            "evaluate_every_steps": 500000,
+            "checkpoint_every_steps": 250000,
+            "minimum_success_rate": 0.0,
+            "minimum_reached_act2_rate": 0.0,
+            "minimum_reached_act3_rate": 0.0,
+            "minimum_evaluation_episodes": 512,
+            "minimum_final_evaluation_episodes": 512
+          }
+        },
+        "model": {
+          "embedding_dim": 128,
+          "transformer_layers": 4,
+          "attention_heads": 4,
+          "feedforward_dim": 256,
+          "recurrent_hidden_dim": 256,
+          "recurrent_layers": 1,
+          "dropout": 0.0,
+          "architecture": "sls-recurrent-relational-policy-v5"
+        },
+        "ppo": {
+          "rollout_steps": 256,
+          "recurrent_sequence_length": 64,
+          "minibatch_sequences": 16,
+          "learning_rate": 3.125e-05,
+          "gamma": 1.0,
+          "gae_lambda": 0.98,
+          "clip_ratio": 0.2,
+          "value_coefficient": 0.5,
+          "entropy_coefficient": 0.002,
+          "entropy_final": 0.002,
+          "entropy_decay_steps": 4000000,
+          "entropy_schedule_start_steps": 56000512,
+          "target_kl": 0.02,
+          "final_kl_samples": 4096,
+          "value_clip_ratio": 0.2,
+          "max_gradient_norm": 0.5,
+          "epochs": 2,
+          "potential_shaping": true,
+          "potential_scale": 0.2,
+          "failure_progress_scale": 0.8,
+          "reward_schema": "sls-curriculum-progress-v3",
+          "episode_limit_schema": "sls-fullrun-episode-limit-v2",
+          "max_episode_steps": 4096,
+          "max_boundary_visits": 4,
+          "limit_failure_reward": -1.0
+        },
+        "warm_start": {
+          "checkpoint": "local/runs/ironclad-a20-act1-v4-60m-stable/stages/train/selection/best_progress.pt",
+          "checkpoint_sha256": "9555c8608155ba262901757cd57d76f854f1cd76a5b6126375e832fa0a714710",
+          "parent_environment_steps": 56000512,
+          "transfer_kind": "optimization-experiment"
+        }
+      },
+      "verified_bundle_files": {
+        "final-evaluation.json": "cd0e803a83a0387416ebf71a097c6367c188906e398b747d031e9899de39a382",
+        "final.pt": "965325a6c9d084bbc2b2204700e8b4d9f824915988a2f417fbe7c995ebcc74ad",
+        "ironclad-a20-act1-plateau-progress-2m-r1.pt": "c67f5112d2bdaa07014e914b6cdf8a1ae53787cbb095722bbefc02bd441fe313",
+        "latest.pt": "fb675088aa38ccbd7782f9e5aa6335d9bc64b45dc8935225f56bbefc65b18f0c",
+        "run-manifest.json": "bae9b49c50d9873f2733988e2454ba01f0f5a2503da7944c571d6d7fee6aaf47",
+        "stages/train/metrics.jsonl": "45517c5e284942fd3c8a30dc56bfd11a84ed4f27e5a4ae4f313c202f439780b7",
+        "stages/train/selection/best_progress.json": "6894e694e149d4ecffbb2515fb3954b4b91c8f535f2355d8e165864d0a7f7d1b",
+        "stages/train/selection/best_progress.pt": "df701b00879367178873bdb7781120359527c11240c20543df948102de74f508",
+        "training-config.toml": "b36e98f917b79fe8bb200ddca3266c1afe334b2efa373697ba4920896ee3f036"
+      },
+      "checkpoints": {
+        "checkpoint-steps-000056262656.pt": {
+          "sha256": "7e6178833105a69102a872f101ba17e1b49c75cb6fbdb6d41f930c6a8a1bb2ec",
+          "steps": 56262656,
+          "update": 16,
+          "has_resume_state": true
+        },
+        "checkpoint-steps-000056508416.pt": {
+          "sha256": "d8d98a2500fe8118d33b38df1ae9bce391ba49073f5c61ef481f47a98fc532a6",
+          "steps": 56508416,
+          "update": 31,
+          "has_resume_state": true
+        },
+        "checkpoint-steps-000056754176.pt": {
+          "sha256": "2cc4738a5e1172b7924d363412faaf503629832944d77bf3144e464377d7b71f",
+          "steps": 56754176,
+          "update": 46,
+          "has_resume_state": true
+        },
+        "checkpoint-steps-000057016320.pt": {
+          "sha256": "ce6e52a8d59d12796cf39adc6b48d607b75b767bf3650f66706362279edfcce3",
+          "steps": 57016320,
+          "update": 62,
+          "has_resume_state": true
+        },
+        "checkpoint-steps-000057262080.pt": {
+          "sha256": "982ebfaee8fc888e4dcb2c9f6a72db82c70724ff88a95f4317fe0b859595e218",
+          "steps": 57262080,
+          "update": 77,
+          "has_resume_state": true
+        },
+        "checkpoint-steps-000057507840.pt": {
+          "sha256": "7f7f3254beb59a96aad7ea49ddd3f2de568f224dd5a79fee290445170d7af5bb",
+          "steps": 57507840,
+          "update": 92,
+          "has_resume_state": true
+        },
+        "checkpoint-steps-000057753600.pt": {
+          "sha256": "b58b738a987655e492d1e0b35fb3255a7b1c87c0e11a264c5cdefb068426581b",
+          "steps": 57753600,
+          "update": 107,
+          "has_resume_state": true
+        },
+        "checkpoint-steps-000058015744.pt": {
+          "sha256": "388633279a230f0412f8cd7260e7c1dc61fb19b8d134b12c866dc5ef8d795733",
+          "steps": 58015744,
+          "update": 123,
+          "has_resume_state": true
+        },
+        "final.pt": {
+          "sha256": "965325a6c9d084bbc2b2204700e8b4d9f824915988a2f417fbe7c995ebcc74ad",
+          "steps": 58015744,
+          "update": 123,
+          "has_resume_state": true
+        },
+        "latest.pt": {
+          "sha256": "fb675088aa38ccbd7782f9e5aa6335d9bc64b45dc8935225f56bbefc65b18f0c",
+          "steps": 58015744,
+          "update": 123,
+          "has_resume_state": true
+        },
+        "stages/train/selection/best_progress.pt": {
+          "sha256": "df701b00879367178873bdb7781120359527c11240c20543df948102de74f508",
+          "steps": 57507840,
+          "update": 92,
+          "has_resume_state": true
+        }
+      },
+      "periodic_curve": [
+        {
+          "steps": 56000512,
+          "wins": 374,
+          "episodes": 512,
+          "rate": 0.73046875,
+          "ci95": [
+            0.6904231293083547,
+            0.767081780319379
+          ],
+          "bosses": {
+            "HEXAGHOST": {
+              "wins": 122,
+              "seeds": 179,
+              "entries": 171,
+              "clear_rate": 0.6815642458100558,
+              "entry_win_rate": 0.7134502923976608
+            },
+            "SLIME_BOSS": {
+              "wins": 134,
+              "seeds": 161,
+              "entries": 153,
+              "clear_rate": 0.8322981366459627,
+              "entry_win_rate": 0.8758169934640523
+            },
+            "THE_GUARDIAN": {
+              "wins": 118,
+              "seeds": 172,
+              "entries": 160,
+              "clear_rate": 0.686046511627907,
+              "entry_win_rate": 0.7375
+            }
+          },
+          "failure_floor_mean": 14.731884057971014,
+          "failure_floor_median": 16.0,
+          "mean_steps": 169.330078125,
+          "health": {
+            "backend_errors": 0,
+            "backend_truncations": 0,
+            "step_limits": 0,
+            "cycle_limits": 0,
+            "timeouts": 0
+          }
+        },
+        {
+          "steps": 56508416,
+          "wins": 383,
+          "episodes": 512,
+          "rate": 0.748046875,
+          "ci95": [
+            0.7086901555300428,
+            0.7837091963574333
+          ],
+          "bosses": {
+            "HEXAGHOST": {
+              "wins": 123,
+              "seeds": 179,
+              "entries": 171,
+              "clear_rate": 0.6871508379888268,
+              "entry_win_rate": 0.7192982456140351
+            },
+            "SLIME_BOSS": {
+              "wins": 130,
+              "seeds": 161,
+              "entries": 152,
+              "clear_rate": 0.8074534161490683,
+              "entry_win_rate": 0.8552631578947368
+            },
+            "THE_GUARDIAN": {
+              "wins": 130,
+              "seeds": 172,
+              "entries": 166,
+              "clear_rate": 0.7558139534883721,
+              "entry_win_rate": 0.7831325301204819
+            }
+          },
+          "failure_floor_mean": 14.891472868217054,
+          "failure_floor_median": 16,
+          "mean_steps": 163.76953125,
+          "health": {
+            "backend_errors": 0,
+            "backend_truncations": 0,
+            "step_limits": 0,
+            "cycle_limits": 0,
+            "timeouts": 0
+          }
+        },
+        {
+          "steps": 57016320,
+          "wins": 379,
+          "episodes": 512,
+          "rate": 0.740234375,
+          "ci95": [
+            0.7005618428507421,
+            0.7763288680324041
+          ],
+          "bosses": {
+            "HEXAGHOST": {
+              "wins": 121,
+              "seeds": 179,
+              "entries": 165,
+              "clear_rate": 0.6759776536312849,
+              "entry_win_rate": 0.7333333333333333
+            },
+            "SLIME_BOSS": {
+              "wins": 134,
+              "seeds": 161,
+              "entries": 151,
+              "clear_rate": 0.8322981366459627,
+              "entry_win_rate": 0.8874172185430463
+            },
+            "THE_GUARDIAN": {
+              "wins": 124,
+              "seeds": 172,
+              "entries": 164,
+              "clear_rate": 0.7209302325581395,
+              "entry_win_rate": 0.7560975609756098
+            }
+          },
+          "failure_floor_mean": 14.406015037593985,
+          "failure_floor_median": 16,
+          "mean_steps": 163.74609375,
+          "health": {
+            "backend_errors": 0,
+            "backend_truncations": 0,
+            "step_limits": 0,
+            "cycle_limits": 0,
+            "timeouts": 0
+          }
+        },
+        {
+          "steps": 57507840,
+          "wins": 386,
+          "episodes": 512,
+          "rate": 0.75390625,
+          "ci95": [
+            0.7147968094985838,
+            0.7892340231421399
+          ],
+          "bosses": {
+            "HEXAGHOST": {
+              "wins": 120,
+              "seeds": 179,
+              "entries": 168,
+              "clear_rate": 0.6703910614525139,
+              "entry_win_rate": 0.7142857142857143
+            },
+            "SLIME_BOSS": {
+              "wins": 140,
+              "seeds": 161,
+              "entries": 154,
+              "clear_rate": 0.8695652173913043,
+              "entry_win_rate": 0.9090909090909091
+            },
+            "THE_GUARDIAN": {
+              "wins": 126,
+              "seeds": 172,
+              "entries": 162,
+              "clear_rate": 0.7325581395348837,
+              "entry_win_rate": 0.7777777777777778
+            }
+          },
+          "failure_floor_mean": 14.698412698412698,
+          "failure_floor_median": 16.0,
+          "mean_steps": 166.328125,
+          "health": {
+            "backend_errors": 0,
+            "backend_truncations": 0,
+            "step_limits": 0,
+            "cycle_limits": 0,
+            "timeouts": 0
+          }
+        },
+        {
+          "steps": 58015744,
+          "wins": 373,
+          "episodes": 512,
+          "rate": 0.728515625,
+          "ci95": [
+            0.6883982092798265,
+            0.7652295400968246
+          ],
+          "bosses": {
+            "HEXAGHOST": {
+              "wins": 125,
+              "seeds": 179,
+              "entries": 166,
+              "clear_rate": 0.6983240223463687,
+              "entry_win_rate": 0.7530120481927711
+            },
+            "SLIME_BOSS": {
+              "wins": 123,
+              "seeds": 161,
+              "entries": 147,
+              "clear_rate": 0.7639751552795031,
+              "entry_win_rate": 0.8367346938775511
+            },
+            "THE_GUARDIAN": {
+              "wins": 125,
+              "seeds": 172,
+              "entries": 160,
+              "clear_rate": 0.7267441860465116,
+              "entry_win_rate": 0.78125
+            }
+          },
+          "failure_floor_mean": 14.446043165467627,
+          "failure_floor_median": 16,
+          "mean_steps": 165.462890625,
+          "health": {
+            "backend_errors": 0,
+            "backend_truncations": 0,
+            "step_limits": 0,
+            "cycle_limits": 0,
+            "timeouts": 0
+          }
+        }
+      ],
+      "selected_steps": 57507840,
+      "selected_sha256": "df701b00879367178873bdb7781120359527c11240c20543df948102de74f508",
+      "development_confirmation": {
+        "wins": 392,
+        "episodes": 512,
+        "rate": 0.765625,
+        "ci95": [
+          0.7270378376472112,
+          0.8002559565000072
+        ],
+        "bosses": {
+          "HEXAGHOST": {
+            "wins": 135,
+            "seeds": 168,
+            "entries": 160,
+            "clear_rate": 0.8035714285714286,
+            "entry_win_rate": 0.84375
+          },
+          "SLIME_BOSS": {
+            "wins": 141,
+            "seeds": 183,
+            "entries": 166,
+            "clear_rate": 0.7704918032786885,
+            "entry_win_rate": 0.8493975903614458
+          },
+          "THE_GUARDIAN": {
+            "wins": 116,
+            "seeds": 161,
+            "entries": 149,
+            "clear_rate": 0.7204968944099379,
+            "entry_win_rate": 0.7785234899328859
+          }
+        },
+        "failure_floor_mean": 14.108333333333333,
+        "failure_floor_median": 16.0,
+        "mean_steps": 163.361328125,
+        "health": {
+          "backend_errors": 0,
+          "backend_truncations": 0,
+          "step_limits": 0,
+          "cycle_limits": 0,
+          "timeouts": 0
+        }
+      },
+      "confirmation_seed_range": [
+        8000001000000,
+        8000001000512
+      ],
+      "periodic_seed_range": [
+        8000000000000,
+        8000000000512
+      ],
+      "final_evaluation_has_explicit_runtime": false,
+      "exported_weights_match_selected": true,
+      "new_decisions": 2015232,
+      "updates": 123,
+      "wall_hours": 6.6082838532659745,
+      "timing_seconds": {
+        "update_seconds": 20330.184859203524,
+        "collect_seconds": 14252.802570052096,
+        "optimize_seconds": 6054.093667734065,
+        "collect_encode_seconds": 5498.949103524676,
+        "collect_transition_seconds": 4593.490471276571,
+        "collect_policy_seconds": 1304.1185164403869,
+        "collect_worker_step_seconds": 2761.775642306253
+      },
+      "health": {
+        "approx_kl_final": {
+          "mean": 0.0038698803057526884,
+          "first_10": 0.0029006476630456745,
+          "last_10": 0.0032945959945209326
+        },
+        "clip_fraction": {
+          "mean": 0.037649263211382115,
+          "first_10": 0.0364990234375,
+          "last_10": 0.0376953125
+        },
+        "gradient_norm": {
+          "mean": 0.7234093508100122,
+          "first_10": 0.7159119427204133,
+          "last_10": 0.736794376373291
+        },
+        "gradient_clip_fraction": {
+          "mean": 0.8442581300813008,
+          "first_10": 0.8375,
+          "last_10": 0.81875
+        },
+        "value_explained_variance": {
+          "mean": 0.5414386459482394,
+          "first_10": 0.543449205160141,
+          "last_10": 0.5064003884792327
+        },
+        "value": {
+          "mean": 0.022956243890330075,
+          "first_10": 0.021455842629075052,
+          "last_10": 0.021856343001127244
+        },
+        "entropy": {
+          "mean": 0.1690159385524145,
+          "first_10": 0.16743131279945372,
+          "last_10": 0.16849794536828994
+        }
+      },
+      "neow_sample_counts": {
+        "option_0": 394.0,
+        "option_1": 11726.0,
+        "option_2": 83.0,
+        "option_3": 0.0
+      },
+      "kl_early_stops": 0.0
+    },
+    "win": {
+      "run": "ironclad-a20-act1-plateau-win-2m-r1",
+      "git": {
+        "branch": "main",
+        "commit": "4b4028cf5c831bb4c22a5e2edd6b7599e1779730",
+        "dirty": false
+      },
+      "native_source_sha256": "1e30bb6cfa32f600cd63c59983c14ab8928fac4452c1586d630295d2c6ff9453",
+      "training_implementation_sha256": "cfc4a31b0439c4a91b5ded90f6e443c7c567c27a6f35fa2d204ca9826abd3ec6",
+      "training_identity_sha256": "620a249a37b2a4c250fe28fbda6ebc46396a54eff7fdb51d2ecb8ffccc332b81",
+      "config_sha256": "8600f0bea37567581f34dde166af04b870b897481826e8bc81b1d0310815fef3",
+      "config": {
+        "run": {
+          "workflow": "single-stage",
+          "profile": "IRONCLAD_A20_ACT1",
+          "seed": 120000000,
+          "training_seed_limit": 2000000000000,
+          "device": "cuda",
+          "deterministic": true,
+          "worker_backend": "sharded-vector",
+          "worker_layout": [
+            64,
+            16
+          ],
+          "benchmark": "local/runs/preparation/ironclad-a20-act1-plateau-win-2m-r1/benchmark.json",
+          "output": "local/runs/ironclad-a20-act1-plateau-win-2m-r1",
+          "selection_progress_guard": true,
+          "periodic_evaluation_seed_start": 8000000000000,
+          "periodic_evaluation_seed_count": 512,
+          "final_evaluation_seed_start": 8000001000000,
+          "final_evaluation_seed_count": 512,
+          "evaluation_max_steps": 4096
+        },
+        "stages": {
+          "train": {
+            "profile": "IRONCLAD_A20_ACT1",
+            "target_environment_steps": 58000000,
+            "evaluate_every_steps": 500000,
+            "checkpoint_every_steps": 250000,
+            "minimum_success_rate": 0.0,
+            "minimum_reached_act2_rate": 0.0,
+            "minimum_reached_act3_rate": 0.0,
+            "minimum_evaluation_episodes": 512,
+            "minimum_final_evaluation_episodes": 512
+          }
+        },
+        "model": {
+          "embedding_dim": 128,
+          "transformer_layers": 4,
+          "attention_heads": 4,
+          "feedforward_dim": 256,
+          "recurrent_hidden_dim": 256,
+          "recurrent_layers": 1,
+          "dropout": 0.0,
+          "architecture": "sls-recurrent-relational-policy-v5"
+        },
+        "ppo": {
+          "rollout_steps": 256,
+          "recurrent_sequence_length": 64,
+          "minibatch_sequences": 16,
+          "learning_rate": 3.125e-05,
+          "gamma": 1.0,
+          "gae_lambda": 0.98,
+          "clip_ratio": 0.2,
+          "value_coefficient": 0.5,
+          "entropy_coefficient": 0.002,
+          "entropy_final": 0.002,
+          "entropy_decay_steps": 4000000,
+          "entropy_schedule_start_steps": 56000512,
+          "target_kl": 0.02,
+          "final_kl_samples": 4096,
+          "value_clip_ratio": 0.2,
+          "max_gradient_norm": 0.5,
+          "epochs": 2,
+          "potential_shaping": true,
+          "potential_scale": 0.2,
+          "failure_progress_scale": 0.0,
+          "reward_schema": "sls-curriculum-win-v1",
+          "episode_limit_schema": "sls-fullrun-episode-limit-v2",
+          "max_episode_steps": 4096,
+          "max_boundary_visits": 4,
+          "limit_failure_reward": -1.0
+        },
+        "warm_start": {
+          "checkpoint": "local/runs/ironclad-a20-act1-v4-60m-stable/stages/train/selection/best_progress.pt",
+          "checkpoint_sha256": "9555c8608155ba262901757cd57d76f854f1cd76a5b6126375e832fa0a714710",
+          "parent_environment_steps": 56000512,
+          "transfer_kind": "optimization-experiment"
+        }
+      },
+      "verified_bundle_files": {
+        "final-evaluation.json": "1dee59bb87f9fa2e9c85c25866e068a4044ba94414dc6c995a15e8323624fb12",
+        "final.pt": "5d525638ffb1562ddffc14c2d7d72887592f716bec87309043ea8c530f869283",
+        "ironclad-a20-act1-plateau-win-2m-r1.pt": "1fb8dfe2f19df356e3921655bb8d4541f5f77f11869f289cfb83e98e80ccb8f2",
+        "latest.pt": "a229b73cbc9d40fceaff9b901d245af1d5d67fb9f36a4c319826bca0f18a2ac5",
+        "run-manifest.json": "d9ec407e52791c56e6031cf07fe434c0a09f3defe4ab517d730d602aedcdcd58",
+        "stages/train/metrics.jsonl": "d5cfa46085acabb0e01e7427ea59cfadb29a42aafc0b22469f30f89b90520bc8",
+        "stages/train/selection/best_progress.json": "4581ffc2b0634c20aa622c55437322f7c8baa259b5de0f114724b69f3faf812c",
+        "stages/train/selection/best_progress.pt": "e416801c849ba3e339074c05d52a47512fbede65dfee108ef27305edb6477a6b",
+        "training-config.toml": "8600f0bea37567581f34dde166af04b870b897481826e8bc81b1d0310815fef3"
+      },
+      "checkpoints": {
+        "checkpoint-steps-000056262656.pt": {
+          "sha256": "8abeabe81176e60afd5e7b6525ba2a3356c566b112dbf954ff7cb5f47ba1b145",
+          "steps": 56262656,
+          "update": 16,
+          "has_resume_state": true
+        },
+        "checkpoint-steps-000056508416.pt": {
+          "sha256": "330701aafaa57b4dff48038daa654b7833c95c61d6d936549f3d114de6611296",
+          "steps": 56508416,
+          "update": 31,
+          "has_resume_state": true
+        },
+        "checkpoint-steps-000056754176.pt": {
+          "sha256": "f799bcb0924765b00f1a7286f08107ee6e395f3eafcb4503ec86ed310d5ae064",
+          "steps": 56754176,
+          "update": 46,
+          "has_resume_state": true
+        },
+        "checkpoint-steps-000057016320.pt": {
+          "sha256": "1618f7b16f8f4211cb6fcb6d7a6e94f10b43ca2d7469ad64dff014603ce6dce2",
+          "steps": 57016320,
+          "update": 62,
+          "has_resume_state": true
+        },
+        "checkpoint-steps-000057262080.pt": {
+          "sha256": "0cd30286cdeb6ca133230e95d8aeeeb6215a0f05745b01fffafd46bdddccacf4",
+          "steps": 57262080,
+          "update": 77,
+          "has_resume_state": true
+        },
+        "checkpoint-steps-000057507840.pt": {
+          "sha256": "0ba185ef07ac16f56d03a9cb067936468118169caa58ef0cf86c5e2274fa80ba",
+          "steps": 57507840,
+          "update": 92,
+          "has_resume_state": true
+        },
+        "checkpoint-steps-000057753600.pt": {
+          "sha256": "04a58836d50365f0617fbe3b2a1dd28cd01e11c968f56e41b3cfd9568b239e21",
+          "steps": 57753600,
+          "update": 107,
+          "has_resume_state": true
+        },
+        "checkpoint-steps-000058015744.pt": {
+          "sha256": "f5f983b7c6bce8fdae8e5dc5a3c88e713d3ce3cb43cf19545f863964c7d2c534",
+          "steps": 58015744,
+          "update": 123,
+          "has_resume_state": true
+        },
+        "final.pt": {
+          "sha256": "5d525638ffb1562ddffc14c2d7d72887592f716bec87309043ea8c530f869283",
+          "steps": 58015744,
+          "update": 123,
+          "has_resume_state": true
+        },
+        "latest.pt": {
+          "sha256": "a229b73cbc9d40fceaff9b901d245af1d5d67fb9f36a4c319826bca0f18a2ac5",
+          "steps": 58015744,
+          "update": 123,
+          "has_resume_state": true
+        },
+        "stages/train/selection/best_progress.pt": {
+          "sha256": "e416801c849ba3e339074c05d52a47512fbede65dfee108ef27305edb6477a6b",
+          "steps": 56508416,
+          "update": 31,
+          "has_resume_state": true
+        }
+      },
+      "periodic_curve": [
+        {
+          "steps": 56000512,
+          "wins": 374,
+          "episodes": 512,
+          "rate": 0.73046875,
+          "ci95": [
+            0.6904231293083547,
+            0.767081780319379
+          ],
+          "bosses": {
+            "HEXAGHOST": {
+              "wins": 122,
+              "seeds": 179,
+              "entries": 171,
+              "clear_rate": 0.6815642458100558,
+              "entry_win_rate": 0.7134502923976608
+            },
+            "SLIME_BOSS": {
+              "wins": 134,
+              "seeds": 161,
+              "entries": 153,
+              "clear_rate": 0.8322981366459627,
+              "entry_win_rate": 0.8758169934640523
+            },
+            "THE_GUARDIAN": {
+              "wins": 118,
+              "seeds": 172,
+              "entries": 160,
+              "clear_rate": 0.686046511627907,
+              "entry_win_rate": 0.7375
+            }
+          },
+          "failure_floor_mean": 14.731884057971014,
+          "failure_floor_median": 16.0,
+          "mean_steps": 169.330078125,
+          "health": {
+            "backend_errors": 0,
+            "backend_truncations": 0,
+            "step_limits": 0,
+            "cycle_limits": 0,
+            "timeouts": 0
+          }
+        },
+        {
+          "steps": 56508416,
+          "wins": 402,
+          "episodes": 512,
+          "rate": 0.78515625,
+          "ci95": [
+            0.7475262289010062,
+            0.8185391677570372
+          ],
+          "bosses": {
+            "HEXAGHOST": {
+              "wins": 128,
+              "seeds": 179,
+              "entries": 166,
+              "clear_rate": 0.7150837988826816,
+              "entry_win_rate": 0.7710843373493976
+            },
+            "SLIME_BOSS": {
+              "wins": 144,
+              "seeds": 161,
+              "entries": 151,
+              "clear_rate": 0.8944099378881988,
+              "entry_win_rate": 0.9536423841059603
+            },
+            "THE_GUARDIAN": {
+              "wins": 130,
+              "seeds": 172,
+              "entries": 159,
+              "clear_rate": 0.7558139534883721,
+              "entry_win_rate": 0.8176100628930818
+            }
+          },
+          "failure_floor_mean": 13.9,
+          "failure_floor_median": 16.0,
+          "mean_steps": 167.900390625,
+          "health": {
+            "backend_errors": 0,
+            "backend_truncations": 0,
+            "step_limits": 0,
+            "cycle_limits": 0,
+            "timeouts": 0
+          }
+        },
+        {
+          "steps": 57016320,
+          "wins": 381,
+          "episodes": 512,
+          "rate": 0.744140625,
+          "ci95": [
+            0.7046240394693286,
+            0.7800209919159826
+          ],
+          "bosses": {
+            "HEXAGHOST": {
+              "wins": 115,
+              "seeds": 179,
+              "entries": 160,
+              "clear_rate": 0.6424581005586593,
+              "entry_win_rate": 0.71875
+            },
+            "SLIME_BOSS": {
+              "wins": 142,
+              "seeds": 161,
+              "entries": 156,
+              "clear_rate": 0.8819875776397516,
+              "entry_win_rate": 0.9102564102564102
+            },
+            "THE_GUARDIAN": {
+              "wins": 124,
+              "seeds": 172,
+              "entries": 162,
+              "clear_rate": 0.7209302325581395,
+              "entry_win_rate": 0.7654320987654321
+            }
+          },
+          "failure_floor_mean": 14.17557251908397,
+          "failure_floor_median": 16,
+          "mean_steps": 163.24609375,
+          "health": {
+            "backend_errors": 0,
+            "backend_truncations": 0,
+            "step_limits": 0,
+            "cycle_limits": 0,
+            "timeouts": 0
+          }
+        },
+        {
+          "steps": 57507840,
+          "wins": 388,
+          "episodes": 512,
+          "rate": 0.7578125,
+          "ci95": [
+            0.7188729901641424,
+            0.7929121629787461
+          ],
+          "bosses": {
+            "HEXAGHOST": {
+              "wins": 126,
+              "seeds": 179,
+              "entries": 165,
+              "clear_rate": 0.7039106145251397,
+              "entry_win_rate": 0.7636363636363637
+            },
+            "SLIME_BOSS": {
+              "wins": 134,
+              "seeds": 161,
+              "entries": 149,
+              "clear_rate": 0.8322981366459627,
+              "entry_win_rate": 0.8993288590604027
+            },
+            "THE_GUARDIAN": {
+              "wins": 128,
+              "seeds": 172,
+              "entries": 163,
+              "clear_rate": 0.7441860465116279,
+              "entry_win_rate": 0.7852760736196319
+            }
+          },
+          "failure_floor_mean": 14.306451612903226,
+          "failure_floor_median": 16.0,
+          "mean_steps": 164.44921875,
+          "health": {
+            "backend_errors": 0,
+            "backend_truncations": 0,
+            "step_limits": 0,
+            "cycle_limits": 0,
+            "timeouts": 0
+          }
+        },
+        {
+          "steps": 58015744,
+          "wins": 383,
+          "episodes": 512,
+          "rate": 0.748046875,
+          "ci95": [
+            0.7086901555300428,
+            0.7837091963574333
+          ],
+          "bosses": {
+            "HEXAGHOST": {
+              "wins": 126,
+              "seeds": 179,
+              "entries": 166,
+              "clear_rate": 0.7039106145251397,
+              "entry_win_rate": 0.7590361445783133
+            },
+            "SLIME_BOSS": {
+              "wins": 132,
+              "seeds": 161,
+              "entries": 151,
+              "clear_rate": 0.8198757763975155,
+              "entry_win_rate": 0.8741721854304636
+            },
+            "THE_GUARDIAN": {
+              "wins": 125,
+              "seeds": 172,
+              "entries": 162,
+              "clear_rate": 0.7267441860465116,
+              "entry_win_rate": 0.7716049382716049
+            }
+          },
+          "failure_floor_mean": 14.348837209302326,
+          "failure_floor_median": 16,
+          "mean_steps": 161.05859375,
+          "health": {
+            "backend_errors": 0,
+            "backend_truncations": 0,
+            "step_limits": 0,
+            "cycle_limits": 0,
+            "timeouts": 0
+          }
+        }
+      ],
+      "selected_steps": 56508416,
+      "selected_sha256": "e416801c849ba3e339074c05d52a47512fbede65dfee108ef27305edb6477a6b",
+      "development_confirmation": {
+        "wins": 394,
+        "episodes": 512,
+        "rate": 0.76953125,
+        "ci95": [
+          0.7311266452959524,
+          0.8039214693534311
+        ],
+        "bosses": {
+          "HEXAGHOST": {
+            "wins": 125,
+            "seeds": 168,
+            "entries": 157,
+            "clear_rate": 0.7440476190476191,
+            "entry_win_rate": 0.7961783439490446
+          },
+          "SLIME_BOSS": {
+            "wins": 152,
+            "seeds": 183,
+            "entries": 163,
+            "clear_rate": 0.8306010928961749,
+            "entry_win_rate": 0.9325153374233128
+          },
+          "THE_GUARDIAN": {
+            "wins": 117,
+            "seeds": 161,
+            "entries": 150,
+            "clear_rate": 0.7267080745341615,
+            "entry_win_rate": 0.78
+          }
+        },
+        "failure_floor_mean": 13.652542372881356,
+        "failure_floor_median": 16.0,
+        "mean_steps": 167.119140625,
+        "health": {
+          "backend_errors": 0,
+          "backend_truncations": 0,
+          "step_limits": 0,
+          "cycle_limits": 0,
+          "timeouts": 0
+        }
+      },
+      "confirmation_seed_range": [
+        8000001000000,
+        8000001000512
+      ],
+      "periodic_seed_range": [
+        8000000000000,
+        8000000000512
+      ],
+      "final_evaluation_has_explicit_runtime": false,
+      "exported_weights_match_selected": true,
+      "new_decisions": 2015232,
+      "updates": 123,
+      "wall_hours": 6.7331028774711825,
+      "timing_seconds": {
+        "update_seconds": 20740.342042430595,
+        "collect_seconds": 14357.721706549986,
+        "optimize_seconds": 6354.846130085003,
+        "collect_encode_seconds": 5519.734959505731,
+        "collect_transition_seconds": 4607.364666184061,
+        "collect_policy_seconds": 1321.3782163918368,
+        "collect_worker_step_seconds": 2814.2657893688884
+      },
+      "health": {
+        "approx_kl_final": {
+          "mean": 0.003457628276882451,
+          "first_10": 0.002684176282491535,
+          "last_10": 0.003387697390280664
+        },
+        "clip_fraction": {
+          "mean": 0.035882717225609755,
+          "first_10": 0.03720703125,
+          "last_10": 0.036474609375
+        },
+        "gradient_norm": {
+          "mean": 0.7987610697746277,
+          "first_10": 0.7709094643592834,
+          "last_10": 0.8146333694458008
+        },
+        "gradient_clip_fraction": {
+          "mean": 0.926829268292683,
+          "first_10": 0.875,
+          "last_10": 0.9625
+        },
+        "value_explained_variance": {
+          "mean": 0.5494200000918008,
+          "first_10": 0.5241599321365357,
+          "last_10": 0.5812031984329223
+        },
+        "value": {
+          "mean": 0.050781598572081664,
+          "first_10": 0.04686073362827301,
+          "last_10": 0.05018117800354958
+        },
+        "entropy": {
+          "mean": 0.1657588739947575,
+          "first_10": 0.16446170210838318,
+          "last_10": 0.17036522477865218
+        }
+      },
+      "neow_sample_counts": {
+        "option_0": 391.0,
+        "option_1": 11566.0,
+        "option_2": 122.0,
+        "option_3": 1.0
+      },
+      "kl_early_stops": 0.0
+    }
+  },
+  "periodic_pairs": [
+    {
+      "steps": 56000512,
+      "schema": "sls-arm-comparison-v1",
+      "arms": [
+        "progress",
+        "win"
+      ],
+      "sources": [
+        "periodic",
+        "periodic"
+      ],
+      "paired_seeds": 512,
+      "seed_range": [
+        8000000000000,
+        8000000000512
+      ],
+      "results": {
+        "progress": {
+          "wins": 374,
+          "successes": 374,
+          "success_rate": 0.73046875,
+          "ci95": [
+            0.6904231293083547,
+            0.767081780319379
+          ]
+        },
+        "win": {
+          "wins": 374,
+          "successes": 374,
+          "success_rate": 0.73046875,
+          "ci95": [
+            0.6904231293083547,
+            0.767081780319379
+          ]
+        }
+      },
+      "discordant": {
+        "progress_win": 0,
+        "win_win": 0
+      },
+      "net": 0,
+      "exact_mcnemar_p": 1.0,
+      "verdict": "no significant difference (p=1.0000)",
+      "blocks": [
+        {
+          "start": 8000000000000,
+          "n": 512,
+          "left_wins": 374,
+          "right_wins": 374
+        }
+      ],
+      "paired_difference_ci95_normal": [
+        0.0,
+        0.0
+      ],
+      "boss_pairs": {
+        "HEXAGHOST": {
+          "schema": "sls-arm-comparison-v1",
+          "arms": [
+            "progress",
+            "win"
+          ],
+          "sources": [
+            "periodic",
+            "periodic"
+          ],
+          "paired_seeds": 179,
+          "seed_range": [
+            8000000000006,
+            8000000000511
+          ],
+          "results": {
+            "progress": {
+              "wins": 122,
+              "successes": 122,
+              "success_rate": 0.6815642458100558,
+              "ci95": [
+                0.6101153332571297,
+                0.7453839086502708
+              ]
+            },
+            "win": {
+              "wins": 122,
+              "successes": 122,
+              "success_rate": 0.6815642458100558,
+              "ci95": [
+                0.6101153332571297,
+                0.7453839086502708
+              ]
+            }
+          },
+          "discordant": {
+            "progress_win": 0,
+            "win_win": 0
+          },
+          "net": 0,
+          "exact_mcnemar_p": 1.0,
+          "verdict": "no significant difference (p=1.0000)",
+          "blocks": [
+            {
+              "start": 8000000000006,
+              "n": 179,
+              "left_wins": 122,
+              "right_wins": 122
+            }
+          ]
+        },
+        "SLIME_BOSS": {
+          "schema": "sls-arm-comparison-v1",
+          "arms": [
+            "progress",
+            "win"
+          ],
+          "sources": [
+            "periodic",
+            "periodic"
+          ],
+          "paired_seeds": 161,
+          "seed_range": [
+            8000000000001,
+            8000000000510
+          ],
+          "results": {
+            "progress": {
+              "wins": 134,
+              "successes": 134,
+              "success_rate": 0.8322981366459627,
+              "ci95": [
+                0.7669983327086665,
+                0.8821102153804947
+              ]
+            },
+            "win": {
+              "wins": 134,
+              "successes": 134,
+              "success_rate": 0.8322981366459627,
+              "ci95": [
+                0.7669983327086665,
+                0.8821102153804947
+              ]
+            }
+          },
+          "discordant": {
+            "progress_win": 0,
+            "win_win": 0
+          },
+          "net": 0,
+          "exact_mcnemar_p": 1.0,
+          "verdict": "no significant difference (p=1.0000)",
+          "blocks": [
+            {
+              "start": 8000000000001,
+              "n": 161,
+              "left_wins": 134,
+              "right_wins": 134
+            }
+          ]
+        },
+        "THE_GUARDIAN": {
+          "schema": "sls-arm-comparison-v1",
+          "arms": [
+            "progress",
+            "win"
+          ],
+          "sources": [
+            "periodic",
+            "periodic"
+          ],
+          "paired_seeds": 172,
+          "seed_range": [
+            8000000000000,
+            8000000000512
+          ],
+          "results": {
+            "progress": {
+              "wins": 118,
+              "successes": 118,
+              "success_rate": 0.686046511627907,
+              "ci95": [
+                0.6132661068256837,
+                0.7506981165675088
+              ]
+            },
+            "win": {
+              "wins": 118,
+              "successes": 118,
+              "success_rate": 0.686046511627907,
+              "ci95": [
+                0.6132661068256837,
+                0.7506981165675088
+              ]
+            }
+          },
+          "discordant": {
+            "progress_win": 0,
+            "win_win": 0
+          },
+          "net": 0,
+          "exact_mcnemar_p": 1.0,
+          "verdict": "no significant difference (p=1.0000)",
+          "blocks": [
+            {
+              "start": 8000000000000,
+              "n": 172,
+              "left_wins": 118,
+              "right_wins": 118
+            }
+          ]
+        }
+      }
+    },
+    {
+      "steps": 56508416,
+      "schema": "sls-arm-comparison-v1",
+      "arms": [
+        "progress",
+        "win"
+      ],
+      "sources": [
+        "periodic",
+        "periodic"
+      ],
+      "paired_seeds": 512,
+      "seed_range": [
+        8000000000000,
+        8000000000512
+      ],
+      "results": {
+        "progress": {
+          "wins": 383,
+          "successes": 383,
+          "success_rate": 0.748046875,
+          "ci95": [
+            0.7086901555300428,
+            0.7837091963574333
+          ]
+        },
+        "win": {
+          "wins": 402,
+          "successes": 402,
+          "success_rate": 0.78515625,
+          "ci95": [
+            0.7475262289010062,
+            0.8185391677570372
+          ]
+        }
+      },
+      "discordant": {
+        "progress_win": 45,
+        "win_win": 64
+      },
+      "net": 19,
+      "exact_mcnemar_p": 0.08422157489670003,
+      "verdict": "no significant difference (p=0.0842)",
+      "blocks": [
+        {
+          "start": 8000000000000,
+          "n": 512,
+          "left_wins": 383,
+          "right_wins": 402
+        }
+      ],
+      "paired_difference_ci95_normal": [
+        -0.002727948886037987,
+        0.07694669888603799
+      ],
+      "boss_pairs": {
+        "HEXAGHOST": {
+          "schema": "sls-arm-comparison-v1",
+          "arms": [
+            "progress",
+            "win"
+          ],
+          "sources": [
+            "periodic",
+            "periodic"
+          ],
+          "paired_seeds": 179,
+          "seed_range": [
+            8000000000006,
+            8000000000511
+          ],
+          "results": {
+            "progress": {
+              "wins": 123,
+              "successes": 123,
+              "success_rate": 0.6871508379888268,
+              "ci95": [
+                0.6158984947334879,
+                0.7505391853864481
+              ]
+            },
+            "win": {
+              "wins": 128,
+              "successes": 128,
+              "success_rate": 0.7150837988826816,
+              "ci95": [
+                0.6449834531696204,
+                0.7761464180129929
+              ]
+            }
+          },
+          "discordant": {
+            "progress_win": 24,
+            "win_win": 29
+          },
+          "net": 5,
+          "exact_mcnemar_p": 0.5831321542611763,
+          "verdict": "no significant difference (p=0.5831)",
+          "blocks": [
+            {
+              "start": 8000000000006,
+              "n": 179,
+              "left_wins": 123,
+              "right_wins": 128
+            }
+          ]
+        },
+        "SLIME_BOSS": {
+          "schema": "sls-arm-comparison-v1",
+          "arms": [
+            "progress",
+            "win"
+          ],
+          "sources": [
+            "periodic",
+            "periodic"
+          ],
+          "paired_seeds": 161,
+          "seed_range": [
+            8000000000001,
+            8000000000510
+          ],
+          "results": {
+            "progress": {
+              "wins": 130,
+              "successes": 130,
+              "success_rate": 0.8074534161490683,
+              "ci95": [
+                0.7396712252594928,
+                0.8609058425987028
+              ]
+            },
+            "win": {
+              "wins": 144,
+              "successes": 144,
+              "success_rate": 0.8944099378881988,
+              "ci95": [
+                0.8374135521702121,
+                0.9330236964963624
+              ]
+            }
+          },
+          "discordant": {
+            "progress_win": 7,
+            "win_win": 21
+          },
+          "net": 14,
+          "exact_mcnemar_p": 0.012540951371192932,
+          "verdict": "win is better (p=0.0125)",
+          "blocks": [
+            {
+              "start": 8000000000001,
+              "n": 161,
+              "left_wins": 130,
+              "right_wins": 144
+            }
+          ]
+        },
+        "THE_GUARDIAN": {
+          "schema": "sls-arm-comparison-v1",
+          "arms": [
+            "progress",
+            "win"
+          ],
+          "sources": [
+            "periodic",
+            "periodic"
+          ],
+          "paired_seeds": 172,
+          "seed_range": [
+            8000000000000,
+            8000000000512
+          ],
+          "results": {
+            "progress": {
+              "wins": 130,
+              "successes": 130,
+              "success_rate": 0.7558139534883721,
+              "ci95": [
+                0.6864826373097818,
+                0.8139681698558582
+              ]
+            },
+            "win": {
+              "wins": 130,
+              "successes": 130,
+              "success_rate": 0.7558139534883721,
+              "ci95": [
+                0.6864826373097818,
+                0.8139681698558582
+              ]
+            }
+          },
+          "discordant": {
+            "progress_win": 14,
+            "win_win": 14
+          },
+          "net": 0,
+          "exact_mcnemar_p": 1.0,
+          "verdict": "no significant difference (p=1.0000)",
+          "blocks": [
+            {
+              "start": 8000000000000,
+              "n": 172,
+              "left_wins": 130,
+              "right_wins": 130
+            }
+          ]
+        }
+      }
+    },
+    {
+      "steps": 57016320,
+      "schema": "sls-arm-comparison-v1",
+      "arms": [
+        "progress",
+        "win"
+      ],
+      "sources": [
+        "periodic",
+        "periodic"
+      ],
+      "paired_seeds": 512,
+      "seed_range": [
+        8000000000000,
+        8000000000512
+      ],
+      "results": {
+        "progress": {
+          "wins": 379,
+          "successes": 379,
+          "success_rate": 0.740234375,
+          "ci95": [
+            0.7005618428507421,
+            0.7763288680324041
+          ]
+        },
+        "win": {
+          "wins": 381,
+          "successes": 381,
+          "success_rate": 0.744140625,
+          "ci95": [
+            0.7046240394693286,
+            0.7800209919159826
+          ]
+        }
+      },
+      "discordant": {
+        "progress_win": 54,
+        "win_win": 56
+      },
+      "net": 2,
+      "exact_mcnemar_p": 0.9240973917982829,
+      "verdict": "no significant difference (p=0.9241)",
+      "blocks": [
+        {
+          "start": 8000000000000,
+          "n": 512,
+          "left_wins": 379,
+          "right_wins": 381
+        }
+      ],
+      "paired_difference_ci95_normal": [
+        -0.0362420379226134,
+        0.0440545379226134
+      ],
+      "boss_pairs": {
+        "HEXAGHOST": {
+          "schema": "sls-arm-comparison-v1",
+          "arms": [
+            "progress",
+            "win"
+          ],
+          "sources": [
+            "periodic",
+            "periodic"
+          ],
+          "paired_seeds": 179,
+          "seed_range": [
+            8000000000006,
+            8000000000511
+          ],
+          "results": {
+            "progress": {
+              "wins": 121,
+              "successes": 121,
+              "success_rate": 0.6759776536312849,
+              "ci95": [
+                0.6043430706408933,
+                0.740217733053972
+              ]
+            },
+            "win": {
+              "wins": 115,
+              "successes": 115,
+              "success_rate": 0.6424581005586593,
+              "ci95": [
+                0.5699307494564181,
+                0.708999424963235
+              ]
+            }
+          },
+          "discordant": {
+            "progress_win": 25,
+            "win_win": 19
+          },
+          "net": -6,
+          "exact_mcnemar_p": 0.4513808323961257,
+          "verdict": "no significant difference (p=0.4514)",
+          "blocks": [
+            {
+              "start": 8000000000006,
+              "n": 179,
+              "left_wins": 121,
+              "right_wins": 115
+            }
+          ]
+        },
+        "SLIME_BOSS": {
+          "schema": "sls-arm-comparison-v1",
+          "arms": [
+            "progress",
+            "win"
+          ],
+          "sources": [
+            "periodic",
+            "periodic"
+          ],
+          "paired_seeds": 161,
+          "seed_range": [
+            8000000000001,
+            8000000000510
+          ],
+          "results": {
+            "progress": {
+              "wins": 134,
+              "successes": 134,
+              "success_rate": 0.8322981366459627,
+              "ci95": [
+                0.7669983327086665,
+                0.8821102153804947
+              ]
+            },
+            "win": {
+              "wins": 142,
+              "successes": 142,
+              "success_rate": 0.8819875776397516,
+              "ci95": [
+                0.8230373117054378,
+                0.9231341968456538
+              ]
+            }
+          },
+          "discordant": {
+            "progress_win": 8,
+            "win_win": 16
+          },
+          "net": 8,
+          "exact_mcnemar_p": 0.15158963203430176,
+          "verdict": "no significant difference (p=0.1516)",
+          "blocks": [
+            {
+              "start": 8000000000001,
+              "n": 161,
+              "left_wins": 134,
+              "right_wins": 142
+            }
+          ]
+        },
+        "THE_GUARDIAN": {
+          "schema": "sls-arm-comparison-v1",
+          "arms": [
+            "progress",
+            "win"
+          ],
+          "sources": [
+            "periodic",
+            "periodic"
+          ],
+          "paired_seeds": 172,
+          "seed_range": [
+            8000000000000,
+            8000000000512
+          ],
+          "results": {
+            "progress": {
+              "wins": 124,
+              "successes": 124,
+              "success_rate": 0.7209302325581395,
+              "ci95": [
+                0.6496318233992193,
+                0.7825756918801969
+              ]
+            },
+            "win": {
+              "wins": 124,
+              "successes": 124,
+              "success_rate": 0.7209302325581395,
+              "ci95": [
+                0.6496318233992193,
+                0.7825756918801969
+              ]
+            }
+          },
+          "discordant": {
+            "progress_win": 21,
+            "win_win": 21
+          },
+          "net": 0,
+          "exact_mcnemar_p": 1.0,
+          "verdict": "no significant difference (p=1.0000)",
+          "blocks": [
+            {
+              "start": 8000000000000,
+              "n": 172,
+              "left_wins": 124,
+              "right_wins": 124
+            }
+          ]
+        }
+      }
+    },
+    {
+      "steps": 57507840,
+      "schema": "sls-arm-comparison-v1",
+      "arms": [
+        "progress",
+        "win"
+      ],
+      "sources": [
+        "periodic",
+        "periodic"
+      ],
+      "paired_seeds": 512,
+      "seed_range": [
+        8000000000000,
+        8000000000512
+      ],
+      "results": {
+        "progress": {
+          "wins": 386,
+          "successes": 386,
+          "success_rate": 0.75390625,
+          "ci95": [
+            0.7147968094985838,
+            0.7892340231421399
+          ]
+        },
+        "win": {
+          "wins": 388,
+          "successes": 388,
+          "success_rate": 0.7578125,
+          "ci95": [
+            0.7188729901641424,
+            0.7929121629787461
+          ]
+        }
+      },
+      "discordant": {
+        "progress_win": 62,
+        "win_win": 64
+      },
+      "net": 2,
+      "exact_mcnemar_p": 0.9290596866317957,
+      "verdict": "no significant difference (p=0.9291)",
+      "blocks": [
+        {
+          "start": 8000000000000,
+          "n": 512,
+          "left_wins": 386,
+          "right_wins": 388
+        }
+      ],
+      "paired_difference_ci95_normal": [
+        -0.03906301435682912,
+        0.04687551435682912
+      ],
+      "boss_pairs": {
+        "HEXAGHOST": {
+          "schema": "sls-arm-comparison-v1",
+          "arms": [
+            "progress",
+            "win"
+          ],
+          "sources": [
+            "periodic",
+            "periodic"
+          ],
+          "paired_seeds": 179,
+          "seed_range": [
+            8000000000006,
+            8000000000511
+          ],
+          "results": {
+            "progress": {
+              "wins": 120,
+              "successes": 120,
+              "success_rate": 0.6703910614525139,
+              "ci95": [
+                0.5985815616619724,
+                0.7350408038203574
+              ]
+            },
+            "win": {
+              "wins": 126,
+              "successes": 126,
+              "success_rate": 0.7039106145251397,
+              "ci95": [
+                0.6333149471463242,
+                0.7659380476112183
+              ]
+            }
+          },
+          "discordant": {
+            "progress_win": 21,
+            "win_win": 27
+          },
+          "net": 6,
+          "exact_mcnemar_p": 0.4708790136217118,
+          "verdict": "no significant difference (p=0.4709)",
+          "blocks": [
+            {
+              "start": 8000000000006,
+              "n": 179,
+              "left_wins": 120,
+              "right_wins": 126
+            }
+          ]
+        },
+        "SLIME_BOSS": {
+          "schema": "sls-arm-comparison-v1",
+          "arms": [
+            "progress",
+            "win"
+          ],
+          "sources": [
+            "periodic",
+            "periodic"
+          ],
+          "paired_seeds": 161,
+          "seed_range": [
+            8000000000001,
+            8000000000510
+          ],
+          "results": {
+            "progress": {
+              "wins": 140,
+              "successes": 140,
+              "success_rate": 0.8695652173913043,
+              "ci95": [
+                0.8088247383737758,
+                0.9130810300618332
+              ]
+            },
+            "win": {
+              "wins": 134,
+              "successes": 134,
+              "success_rate": 0.8322981366459627,
+              "ci95": [
+                0.7669983327086665,
+                0.8821102153804947
+              ]
+            }
+          },
+          "discordant": {
+            "progress_win": 17,
+            "win_win": 11
+          },
+          "net": -6,
+          "exact_mcnemar_p": 0.34492845088243484,
+          "verdict": "no significant difference (p=0.3449)",
+          "blocks": [
+            {
+              "start": 8000000000001,
+              "n": 161,
+              "left_wins": 140,
+              "right_wins": 134
+            }
+          ]
+        },
+        "THE_GUARDIAN": {
+          "schema": "sls-arm-comparison-v1",
+          "arms": [
+            "progress",
+            "win"
+          ],
+          "sources": [
+            "periodic",
+            "periodic"
+          ],
+          "paired_seeds": 172,
+          "seed_range": [
+            8000000000000,
+            8000000000512
+          ],
+          "results": {
+            "progress": {
+              "wins": 126,
+              "successes": 126,
+              "success_rate": 0.7325581395348837,
+              "ci95": [
+                0.6618587606365909,
+                0.7930965186048999
+              ]
+            },
+            "win": {
+              "wins": 128,
+              "successes": 128,
+              "success_rate": 0.7441860465116279,
+              "ci95": [
+                0.674141568611848,
+                0.8035614745917173
+              ]
+            }
+          },
+          "discordant": {
+            "progress_win": 24,
+            "win_win": 26
+          },
+          "net": 2,
+          "exact_mcnemar_p": 0.887724827340783,
+          "verdict": "no significant difference (p=0.8877)",
+          "blocks": [
+            {
+              "start": 8000000000000,
+              "n": 172,
+              "left_wins": 126,
+              "right_wins": 128
+            }
+          ]
+        }
+      }
+    },
+    {
+      "steps": 58015744,
+      "schema": "sls-arm-comparison-v1",
+      "arms": [
+        "progress",
+        "win"
+      ],
+      "sources": [
+        "periodic",
+        "periodic"
+      ],
+      "paired_seeds": 512,
+      "seed_range": [
+        8000000000000,
+        8000000000512
+      ],
+      "results": {
+        "progress": {
+          "wins": 373,
+          "successes": 373,
+          "success_rate": 0.728515625,
+          "ci95": [
+            0.6883982092798265,
+            0.7652295400968246
+          ]
+        },
+        "win": {
+          "wins": 383,
+          "successes": 383,
+          "success_rate": 0.748046875,
+          "ci95": [
+            0.7086901555300428,
+            0.7837091963574333
+          ]
+        }
+      },
+      "discordant": {
+        "progress_win": 57,
+        "win_win": 67
+      },
+      "net": 10,
+      "exact_mcnemar_p": 0.4190737425166353,
+      "verdict": "no significant difference (p=0.4191)",
+      "blocks": [
+        {
+          "start": 8000000000000,
+          "n": 512,
+          "left_wins": 373,
+          "right_wins": 383
+        }
+      ],
+      "paired_difference_ci95_normal": [
+        -0.0230633608198606,
+        0.0621258608198606
+      ],
+      "boss_pairs": {
+        "HEXAGHOST": {
+          "schema": "sls-arm-comparison-v1",
+          "arms": [
+            "progress",
+            "win"
+          ],
+          "sources": [
+            "periodic",
+            "periodic"
+          ],
+          "paired_seeds": 179,
+          "seed_range": [
+            8000000000006,
+            8000000000511
+          ],
+          "results": {
+            "progress": {
+              "wins": 125,
+              "successes": 125,
+              "success_rate": 0.6983240223463687,
+              "ci95": [
+                0.6274981355696418,
+                0.7608164209753652
+              ]
+            },
+            "win": {
+              "wins": 126,
+              "successes": 126,
+              "success_rate": 0.7039106145251397,
+              "ci95": [
+                0.6333149471463242,
+                0.7659380476112183
+              ]
+            }
+          },
+          "discordant": {
+            "progress_win": 23,
+            "win_win": 24
+          },
+          "net": 1,
+          "exact_mcnemar_p": 1.0,
+          "verdict": "no significant difference (p=1.0000)",
+          "blocks": [
+            {
+              "start": 8000000000006,
+              "n": 179,
+              "left_wins": 125,
+              "right_wins": 126
+            }
+          ]
+        },
+        "SLIME_BOSS": {
+          "schema": "sls-arm-comparison-v1",
+          "arms": [
+            "progress",
+            "win"
+          ],
+          "sources": [
+            "periodic",
+            "periodic"
+          ],
+          "paired_seeds": 161,
+          "seed_range": [
+            8000000000001,
+            8000000000510
+          ],
+          "results": {
+            "progress": {
+              "wins": 123,
+              "successes": 123,
+              "success_rate": 0.7639751552795031,
+              "ci95": [
+                0.6927086213317223,
+                0.8229383561222842
+              ]
+            },
+            "win": {
+              "wins": 132,
+              "successes": 132,
+              "success_rate": 0.8198757763975155,
+              "ci95": [
+                0.7532852509705031,
+                0.8715575570031752
+              ]
+            }
+          },
+          "discordant": {
+            "progress_win": 10,
+            "win_win": 19
+          },
+          "net": 9,
+          "exact_mcnemar_p": 0.13604594767093658,
+          "verdict": "no significant difference (p=0.1360)",
+          "blocks": [
+            {
+              "start": 8000000000001,
+              "n": 161,
+              "left_wins": 123,
+              "right_wins": 132
+            }
+          ]
+        },
+        "THE_GUARDIAN": {
+          "schema": "sls-arm-comparison-v1",
+          "arms": [
+            "progress",
+            "win"
+          ],
+          "sources": [
+            "periodic",
+            "periodic"
+          ],
+          "paired_seeds": 172,
+          "seed_range": [
+            8000000000000,
+            8000000000512
+          ],
+          "results": {
+            "progress": {
+              "wins": 125,
+              "successes": 125,
+              "success_rate": 0.7267441860465116,
+              "ci95": [
+                0.6557384467913617,
+                0.7878429504690917
+              ]
+            },
+            "win": {
+              "wins": 125,
+              "successes": 125,
+              "success_rate": 0.7267441860465116,
+              "ci95": [
+                0.6557384467913617,
+                0.7878429504690917
+              ]
+            }
+          },
+          "discordant": {
+            "progress_win": 24,
+            "win_win": 24
+          },
+          "net": 0,
+          "exact_mcnemar_p": 1.0,
+          "verdict": "no significant difference (p=1.0000)",
+          "blocks": [
+            {
+              "start": 8000000000000,
+              "n": 172,
+              "left_wins": 125,
+              "right_wins": 125
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "selected_confirmation_pair": {
+    "schema": "sls-arm-comparison-v1",
+    "arms": [
+      "progress",
+      "win"
+    ],
+    "sources": [
+      "confirmation",
+      "confirmation"
+    ],
+    "paired_seeds": 512,
+    "seed_range": [
+      8000001000000,
+      8000001000512
+    ],
+    "results": {
+      "progress": {
+        "wins": 392,
+        "successes": 392,
+        "success_rate": 0.765625,
+        "ci95": [
+          0.7270378376472112,
+          0.8002559565000072
+        ]
+      },
+      "win": {
+        "wins": 394,
+        "successes": 394,
+        "success_rate": 0.76953125,
+        "ci95": [
+          0.7311266452959524,
+          0.8039214693534311
+        ]
+      }
+    },
+    "discordant": {
+      "progress_win": 51,
+      "win_win": 53
+    },
+    "net": 2,
+    "exact_mcnemar_p": 0.9219488276264309,
+    "verdict": "no significant difference (p=0.9219)",
+    "blocks": [
+      {
+        "start": 8000001000000,
+        "n": 512,
+        "left_wins": 392,
+        "right_wins": 394
+      }
+    ],
+    "paired_difference_ci95_normal": [
+      -0.035131651800984584,
+      0.042944151800984584
+    ],
+    "boss_pairs": {
+      "HEXAGHOST": {
+        "schema": "sls-arm-comparison-v1",
+        "arms": [
+          "progress",
+          "win"
+        ],
+        "sources": [
+          "confirmation",
+          "confirmation"
+        ],
+        "paired_seeds": 168,
+        "seed_range": [
+          8000001000000,
+          8000001000505
+        ],
+        "results": {
+          "progress": {
+            "wins": 135,
+            "successes": 135,
+            "success_rate": 0.8035714285714286,
+            "ci95": [
+              0.7369971311777509,
+              0.8565732487526864
+            ]
+          },
+          "win": {
+            "wins": 125,
+            "successes": 125,
+            "success_rate": 0.7440476190476191,
+            "ci95": [
+              0.6731168015834916,
+              0.8040672293409776
+            ]
+          }
+        },
+        "discordant": {
+          "progress_win": 22,
+          "win_win": 12
+        },
+        "net": -10,
+        "exact_mcnemar_p": 0.12144948495551944,
+        "verdict": "no significant difference (p=0.1214)",
+        "blocks": [
+          {
+            "start": 8000001000000,
+            "n": 168,
+            "left_wins": 135,
+            "right_wins": 125
+          }
+        ]
+      },
+      "SLIME_BOSS": {
+        "schema": "sls-arm-comparison-v1",
+        "arms": [
+          "progress",
+          "win"
+        ],
+        "sources": [
+          "confirmation",
+          "confirmation"
+        ],
+        "paired_seeds": 183,
+        "seed_range": [
+          8000001000004,
+          8000001000507
+        ],
+        "results": {
+          "progress": {
+            "wins": 141,
+            "successes": 141,
+            "success_rate": 0.7704918032786885,
+            "ci95": [
+              0.7043777278178868,
+              0.8254832603421723
+            ]
+          },
+          "win": {
+            "wins": 152,
+            "successes": 152,
+            "success_rate": 0.8306010928961749,
+            "ci95": [
+              0.7695909118148678,
+              0.8780169626029823
+            ]
+          }
+        },
+        "discordant": {
+          "progress_win": 8,
+          "win_win": 19
+        },
+        "net": 11,
+        "exact_mcnemar_p": 0.052238985896110535,
+        "verdict": "no significant difference (p=0.0522)",
+        "blocks": [
+          {
+            "start": 8000001000004,
+            "n": 183,
+            "left_wins": 141,
+            "right_wins": 152
+          }
+        ]
+      },
+      "THE_GUARDIAN": {
+        "schema": "sls-arm-comparison-v1",
+        "arms": [
+          "progress",
+          "win"
+        ],
+        "sources": [
+          "confirmation",
+          "confirmation"
+        ],
+        "paired_seeds": 161,
+        "seed_range": [
+          8000001000001,
+          8000001000512
+        ],
+        "results": {
+          "progress": {
+            "wins": 116,
+            "successes": 116,
+            "success_rate": 0.7204968944099379,
+            "ci95": [
+              0.646660690263054,
+              0.7840561967867633
+            ]
+          },
+          "win": {
+            "wins": 117,
+            "successes": 117,
+            "success_rate": 0.7267080745341615,
+            "ci95": [
+              0.6531888245967705,
+              0.789660932510788
+            ]
+          }
+        },
+        "discordant": {
+          "progress_win": 21,
+          "win_win": 22
+        },
+        "net": 1,
+        "exact_mcnemar_p": 1.0,
+        "verdict": "no significant difference (p=1.0000)",
+        "blocks": [
+          {
+            "start": 8000001000001,
+            "n": 161,
+            "left_wins": 116,
+            "right_wins": 117
+          }
+        ]
+      }
+    }
+  },
+  "inference_limit": "one training seed, development-only sets, repeated selection; no untouched final test"
+}

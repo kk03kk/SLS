@@ -1,0 +1,596 @@
+{
+  "seed": 3000000000047,
+  "source": "historical 64-seed action prefix; no weights or hidden state",
+  "actions": [
+    {
+      "kind": "CHOOSE_NEOW_OPTION",
+      "metadata": {},
+      "node_id": null,
+      "option_id": "event-option:3",
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": null,
+      "target_id": null
+    },
+    {
+      "kind": "CHOOSE_MAP_NODE",
+      "metadata": {},
+      "node_id": "map:2:0",
+      "option_id": null,
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": null,
+      "target_id": null
+    },
+    {
+      "kind": "PLAY_CARD",
+      "metadata": {},
+      "node_id": null,
+      "option_id": null,
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": "HAND:0",
+      "target_id": "MONSTER:0"
+    },
+    {
+      "kind": "PLAY_CARD",
+      "metadata": {},
+      "node_id": null,
+      "option_id": null,
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": "HAND:0",
+      "target_id": null
+    },
+    {
+      "kind": "PLAY_CARD",
+      "metadata": {},
+      "node_id": null,
+      "option_id": null,
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": "HAND:0",
+      "target_id": "MONSTER:0"
+    },
+    {
+      "kind": "END_TURN",
+      "metadata": {},
+      "node_id": null,
+      "option_id": null,
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": null,
+      "target_id": null
+    },
+    {
+      "kind": "PLAY_CARD",
+      "metadata": {},
+      "node_id": null,
+      "option_id": null,
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": "HAND:1",
+      "target_id": "MONSTER:0"
+    },
+    {
+      "kind": "PLAY_CARD",
+      "metadata": {},
+      "node_id": null,
+      "option_id": null,
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": "HAND:2",
+      "target_id": "MONSTER:0"
+    },
+    {
+      "kind": "PLAY_CARD",
+      "metadata": {},
+      "node_id": null,
+      "option_id": null,
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": "HAND:2",
+      "target_id": "MONSTER:0"
+    },
+    {
+      "kind": "CHOOSE_CARD_REWARD",
+      "metadata": {},
+      "node_id": null,
+      "option_id": null,
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": "reward-card:0:1",
+      "target_id": null
+    },
+    {
+      "kind": "SKIP_REWARD",
+      "metadata": {},
+      "node_id": null,
+      "option_id": null,
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": null,
+      "target_id": null
+    },
+    {
+      "kind": "CHOOSE_MAP_NODE",
+      "metadata": {},
+      "node_id": "map:2:1",
+      "option_id": null,
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": null,
+      "target_id": null
+    },
+    {
+      "kind": "CHOOSE_EVENT_OPTION",
+      "metadata": {},
+      "node_id": null,
+      "option_id": "event-option:2",
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": null,
+      "target_id": null
+    },
+    {
+      "kind": "UPGRADE_CARD",
+      "metadata": {},
+      "node_id": null,
+      "option_id": null,
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": "select-card:0",
+      "target_id": null
+    },
+    {
+      "kind": "CHOOSE_MAP_NODE",
+      "metadata": {},
+      "node_id": "map:3:2",
+      "option_id": null,
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": null,
+      "target_id": null
+    },
+    {
+      "kind": "PLAY_CARD",
+      "metadata": {},
+      "node_id": null,
+      "option_id": null,
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": "HAND:0",
+      "target_id": "MONSTER:0"
+    },
+    {
+      "kind": "PLAY_CARD",
+      "metadata": {},
+      "node_id": null,
+      "option_id": null,
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": "HAND:0",
+      "target_id": "MONSTER:0"
+    },
+    {
+      "kind": "PLAY_CARD",
+      "metadata": {},
+      "node_id": null,
+      "option_id": null,
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": "HAND:0",
+      "target_id": "MONSTER:0"
+    },
+    {
+      "kind": "END_TURN",
+      "metadata": {},
+      "node_id": null,
+      "option_id": null,
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": null,
+      "target_id": null
+    },
+    {
+      "kind": "PLAY_CARD",
+      "metadata": {},
+      "node_id": null,
+      "option_id": null,
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": "HAND:3",
+      "target_id": "MONSTER:0"
+    },
+    {
+      "kind": "PLAY_CARD",
+      "metadata": {},
+      "node_id": null,
+      "option_id": null,
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": "HAND:0",
+      "target_id": "MONSTER:0"
+    },
+    {
+      "kind": "SKIP_REWARD",
+      "metadata": {},
+      "node_id": null,
+      "option_id": null,
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": null,
+      "target_id": null
+    },
+    {
+      "kind": "CHOOSE_MAP_NODE",
+      "metadata": {},
+      "node_id": "map:2:3",
+      "option_id": null,
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": null,
+      "target_id": null
+    },
+    {
+      "kind": "CHOOSE_EVENT_OPTION",
+      "metadata": {},
+      "node_id": null,
+      "option_id": "event-option:0",
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": null,
+      "target_id": null
+    },
+    {
+      "kind": "CHOOSE_EVENT_OPTION",
+      "metadata": {},
+      "node_id": null,
+      "option_id": "event-option:0",
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": null,
+      "target_id": null
+    },
+    {
+      "kind": "CHOOSE_EVENT_OPTION",
+      "metadata": {},
+      "node_id": null,
+      "option_id": "event-option:0",
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": null,
+      "target_id": null
+    },
+    {
+      "kind": "CHOOSE_MAP_NODE",
+      "metadata": {},
+      "node_id": "map:5:4",
+      "option_id": null,
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": null,
+      "target_id": null
+    },
+    {
+      "kind": "OPEN_CHEST",
+      "metadata": {},
+      "node_id": null,
+      "option_id": null,
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": null,
+      "target_id": null
+    },
+    {
+      "kind": "TAKE_REWARD",
+      "metadata": {},
+      "node_id": null,
+      "option_id": null,
+      "reward_id": "reward-relic:0",
+      "schema_version": 1,
+      "subject_id": null,
+      "target_id": null
+    },
+    {
+      "kind": "SKIP_REWARD",
+      "metadata": {},
+      "node_id": null,
+      "option_id": null,
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": null,
+      "target_id": null
+    },
+    {
+      "kind": "CHOOSE_MAP_NODE",
+      "metadata": {},
+      "node_id": "map:5:5",
+      "option_id": null,
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": null,
+      "target_id": null
+    },
+    {
+      "kind": "REST",
+      "metadata": {},
+      "node_id": null,
+      "option_id": "rest-option:0",
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": null,
+      "target_id": null
+    },
+    {
+      "kind": "CHOOSE_MAP_NODE",
+      "metadata": {},
+      "node_id": "map:6:6",
+      "option_id": null,
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": null,
+      "target_id": null
+    },
+    {
+      "kind": "REST",
+      "metadata": {},
+      "node_id": null,
+      "option_id": "rest-option:0",
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": null,
+      "target_id": null
+    },
+    {
+      "kind": "CHOOSE_MAP_NODE",
+      "metadata": {},
+      "node_id": "map:4:7",
+      "option_id": null,
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": null,
+      "target_id": null
+    },
+    {
+      "kind": "REST",
+      "metadata": {},
+      "node_id": null,
+      "option_id": "rest-option:0",
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": null,
+      "target_id": null
+    },
+    {
+      "kind": "CHOOSE_MAP_NODE",
+      "metadata": {},
+      "node_id": "map:3:8",
+      "option_id": null,
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": null,
+      "target_id": null
+    },
+    {
+      "kind": "OPEN_CHEST",
+      "metadata": {},
+      "node_id": null,
+      "option_id": null,
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": null,
+      "target_id": null
+    },
+    {
+      "kind": "TAKE_REWARD",
+      "metadata": {},
+      "node_id": null,
+      "option_id": null,
+      "reward_id": "reward-relic:0",
+      "schema_version": 1,
+      "subject_id": null,
+      "target_id": null
+    },
+    {
+      "kind": "SKIP_REWARD",
+      "metadata": {},
+      "node_id": null,
+      "option_id": null,
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": null,
+      "target_id": null
+    },
+    {
+      "kind": "CHOOSE_MAP_NODE",
+      "metadata": {},
+      "node_id": "map:4:9",
+      "option_id": null,
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": null,
+      "target_id": null
+    },
+    {
+      "kind": "PLAY_CARD",
+      "metadata": {},
+      "node_id": null,
+      "option_id": null,
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": "HAND:1",
+      "target_id": "MONSTER:1"
+    },
+    {
+      "kind": "PLAY_CARD",
+      "metadata": {},
+      "node_id": null,
+      "option_id": null,
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": "HAND:1",
+      "target_id": "MONSTER:1"
+    },
+    {
+      "kind": "PLAY_CARD",
+      "metadata": {},
+      "node_id": null,
+      "option_id": null,
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": "HAND:2",
+      "target_id": "MONSTER:1"
+    },
+    {
+      "kind": "END_TURN",
+      "metadata": {},
+      "node_id": null,
+      "option_id": null,
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": null,
+      "target_id": null
+    },
+    {
+      "kind": "PLAY_CARD",
+      "metadata": {},
+      "node_id": null,
+      "option_id": null,
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": "HAND:3",
+      "target_id": "MONSTER:1"
+    },
+    {
+      "kind": "PLAY_CARD",
+      "metadata": {},
+      "node_id": null,
+      "option_id": null,
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": "HAND:0",
+      "target_id": "MONSTER:0"
+    },
+    {
+      "kind": "PLAY_CARD",
+      "metadata": {},
+      "node_id": null,
+      "option_id": null,
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": "HAND:0",
+      "target_id": "MONSTER:0"
+    },
+    {
+      "kind": "CHOOSE_CARD_REWARD",
+      "metadata": {},
+      "node_id": null,
+      "option_id": null,
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": "reward-card:0:1",
+      "target_id": null
+    },
+    {
+      "kind": "TAKE_REWARD",
+      "metadata": {},
+      "node_id": null,
+      "option_id": null,
+      "reward_id": "reward-potion:0",
+      "schema_version": 1,
+      "subject_id": null,
+      "target_id": null
+    },
+    {
+      "kind": "SKIP_REWARD",
+      "metadata": {},
+      "node_id": null,
+      "option_id": null,
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": null,
+      "target_id": null
+    },
+    {
+      "kind": "CHOOSE_MAP_NODE",
+      "metadata": {},
+      "node_id": "map:3:10",
+      "option_id": null,
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": null,
+      "target_id": null
+    },
+    {
+      "kind": "CHOOSE_EVENT_OPTION",
+      "metadata": {},
+      "node_id": null,
+      "option_id": "event-option:2",
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": null,
+      "target_id": null
+    },
+    {
+      "kind": "CHOOSE_MAP_NODE",
+      "metadata": {},
+      "node_id": "map:4:11",
+      "option_id": null,
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": null,
+      "target_id": null
+    },
+    {
+      "kind": "BUY_CARD",
+      "metadata": {},
+      "node_id": null,
+      "option_id": null,
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": "shop-card:4",
+      "target_id": null
+    },
+    {
+      "kind": "LEAVE_SHOP",
+      "metadata": {},
+      "node_id": null,
+      "option_id": null,
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": null,
+      "target_id": null
+    },
+    {
+      "kind": "CHOOSE_MAP_NODE",
+      "metadata": {},
+      "node_id": "map:4:12",
+      "option_id": null,
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": null,
+      "target_id": null
+    },
+    {
+      "kind": "REST",
+      "metadata": {},
+      "node_id": null,
+      "option_id": "rest-option:0",
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": null,
+      "target_id": null
+    },
+    {
+      "kind": "CHOOSE_MAP_NODE",
+      "metadata": {},
+      "node_id": "map:5:13",
+      "option_id": null,
+      "reward_id": null,
+      "schema_version": 1,
+      "subject_id": null,
+      "target_id": null
+    }
+  ]
+}

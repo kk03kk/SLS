@@ -1,0 +1,31 @@
+{
+  "schema": "sls-win90m-candidate-exports-v1",
+  "historical_56m_unchanged": true,
+  "default_champion_not_promoted": true,
+  "reserved_final_evaluated": false,
+  "stock_game_evaluated": false,
+  "candidates": [
+    {
+      "artifact": "model/ironclad-a20-act1-90m-endpoint.pt",
+      "role": "fixed-endpoint-development-candidate",
+      "artifact_sha256": "656f7395eadeb8b3fddc5142986994f16a14c00da29a2dff60fc6ad2109264fc",
+      "manifest_sha256": "329fd5149f9e705efb2a85758c70adb3930f7400ec143aeac96f67c78c0dd184",
+      "model_sha256": "ed9068343c8d628a13595a3919d8a15c5f9a19840be1042e07e5f12fcc8ca30c",
+      "source_checkpoint": "local/runs/ironclad-a20-act1-win-90m-continuation/final.pt",
+      "source_sha256": "274963f4fe32b75003c5a1b4ccd394b5185304156e6ea22a76aee2764d54f1e0",
+      "environment_steps": 90013696,
+      "weights_identical": true
+    },
+    {
+      "artifact": "model/ironclad-a20-act1-76m-periodic-selected.pt",
+      "role": "periodic-selected-development-candidate",
+      "artifact_sha256": "cb8c48b2d6fd1ae4360497c52da987b49cc025d98ff2c53a02f1727b628944da",
+      "manifest_sha256": "d351d7c6d04ff9fca709318be7bd2e2706084faf557696acd21761c573c7744d",
+      "model_sha256": "6cd8f10b07a89e4498d5e8d2e3bd391da8d1f7472c00df48415f28562e4b6be3",
+      "source_checkpoint": "local/runs/ironclad-a20-act1-win-90m-continuation/stages/train/selection/best_progress.pt",
+      "source_sha256": "cbe71ba361777bdf2329c3ce82b1bb4205cdc63a7ba92335ff2e19fdc52a1971",
+      "environment_steps": 76005376,
+      "weights_identical": true
+    }
+  ]
+}

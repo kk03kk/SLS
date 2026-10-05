@@ -1,0 +1,344 @@
+"""Fork a verified best checkpoint into a new Act1 budget, without resetting learning.
+
+Run budget/evaluation bookkeeping and an explicit half-LR experiment may change.
+Model, other PPO/reward settings, environment and worker layout remain strict.
+The source run is read-only; child creation is atomic.
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import shutil
+import sys
+import tempfile
+import time
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+# Direct script execution puts tools/, not the repository, on sys.path.
+sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / "src"))
+
+
+def _validate_parent_selection(
+    source: Path,
+    run: dict,
+    original: dict,
+    digest: str,
+    best_record: dict,
+) -> str:
+    """Validate the evaluation evidence which selected the pinned parent best."""
+
+    mode = run.get("continuation_selection_evidence", "final-evaluation")
+    if mode == "final-evaluation":
+        path = source / "final-evaluation.json"
+        if not path.is_file():
+            raise ValueError(
+                "parent best has no final evaluation; an audited interrupted parent must "
+                "explicitly use continuation_selection_evidence = 'periodic-best'"
+            )
+        final = json.loads(path.read_text(encoding="utf-8"))
+        if final.get("checkpoint_sha256") != digest:
+            raise ValueError("parent best has no matching final evaluation")
+        return mode
+    if mode != "periodic-best":
+        raise ValueError("unsupported continuation selection evidence: " + str(mode))
+
+    required = {
+        "checkpoint_sha256": digest,
+        "selection_objective": "ACT1_CLEAR_COUNT",
+    }
+    if best_record.get("schema") not in {"sls-best-progress-v4", "sls-best-progress-v5"}:
+        raise ValueError("parent periodic best has invalid schema")
+    for key, value in required.items():
+        if best_record.get(key) != value:
+            raise ValueError(f"parent periodic best has invalid {key}")
+    minimum = int(original["stages"]["train"]["minimum_evaluation_episodes"])
+    episodes = int(best_record.get("episodes", 0))
+    successes = int(best_record.get("successes", -1))
+    if episodes < minimum or not 0 <= successes <= episodes:
+        raise ValueError("parent periodic best evaluation is incomplete")
+    if abs(float(best_record.get("success_rate", -1.0)) - successes / episodes) > 1e-12:
+        raise ValueError("parent periodic best success rate is inconsistent")
+    unsafe = (
+        "step_limits", "cycle_limits", "self_loops", "timeouts",
+        "backend_truncations", "backend_errors",
+    )
+    if any(int(best_record.get(key, -1)) != 0 for key in unsafe):
+        raise ValueError("parent periodic best evaluation contains runtime failures")
+    return mode
+
+
+def initialize(config_path: Path, *, root: Path = ROOT):
+    import torch
+
+    from sls.curriculum import CURRICULUM_PROFILES_BY_ID, EpisodeHorizon
+    from sls.model import ModelConfig
+    from sls.rl.ppo import PPOConfig
+    from sls.rl.preparation import read_config, training_seed_limit
+    from sls.rl.training_contract import (
+        git_state,
+        native_source_digest,
+        sha256_file,
+        state_preserving_source_transition,
+        training_config_digest,
+        training_implementation_digest,
+    )
+    from tools.train_full_run import MANIFEST_SCHEMA, _training_identity
+
+    config = read_config(config_path)
+    run = config["run"]
+    profile = CURRICULUM_PROFILES_BY_ID[run["profile"]]
+    if profile.horizon != EpisodeHorizon.ACT_1:
+        raise ValueError("continuation requires an Act1 environment")
+    source = (root / run["continuation_from"]).resolve()
+    target = (root / run["output"]).resolve()
+    if (
+        source == target
+        or target.is_relative_to(source)
+        or source.is_relative_to(target)
+    ):
+        raise ValueError("continuation must use a separate sibling run directory")
+    endpoint = run.get("continuation_selection_evidence") == "completed-endpoint"
+    path = source / ("latest.pt" if endpoint else "stages/train/selection/best_progress.pt")
+    if path.with_name("best_progress.pending.json").exists():
+        raise ValueError("parent best promotion is incomplete; recover the parent run first")
+    digest = sha256_file(path)
+    if digest != run["continuation_checkpoint_sha256"]:
+        raise ValueError("parent best checkpoint does not match the pinned SHA256")
+    original = read_config(source / "training-config.toml")
+    if endpoint:
+        parent_manifest = json.loads((source / "run-manifest.json").read_text(encoding="utf-8"))
+        bundle = json.loads((source / "training-bundle.json").read_text(encoding="utf-8"))
+        if (parent_manifest.get("status") != "COMPLETE"
+                or parent_manifest["stages"]["train"]["status"] != "COMPLETE"
+                or bundle["files"].get("latest.pt") != digest
+                or sha256_file(source / "run-manifest.json") != bundle["files"]["run-manifest.json"]
+                or sha256_file(source / "training-config.toml") != bundle["files"]["training-config.toml"]):
+            raise ValueError("completed endpoint has incomplete or mismatched bundle evidence")
+        old_implementation = parent_manifest["training_implementation_sha256"]
+        new_implementation = training_implementation_digest()
+        if old_implementation != new_implementation and (
+            run.get("continuation_from_training_implementation_sha256") != old_implementation
+            or run.get("continuation_to_training_implementation_sha256") != new_implementation
+        ):
+            raise ValueError("endpoint continuation requires an exact reviewed implementation transition")
+        best_record = None
+        selection_evidence = "completed-endpoint"
+    else:
+        best_record = json.loads(
+            (source / "stages/train/selection/best_progress.json").read_text(encoding="utf-8")
+        )
+        selection_evidence = _validate_parent_selection(source, run, original, digest, best_record)
+    allowed_run = {
+        "output",
+        "benchmark",
+        "continuation_from",
+        "continuation_checkpoint_sha256",
+        "continuation_selection_evidence",
+        "final_evaluation_seed_start",
+        "final_evaluation_seed_count",
+        "training_seed_limit",
+    }
+    if endpoint:
+        allowed_run |= {"periodic_evaluation_seed_start", "periodic_evaluation_seed_count",
+                        "final_evaluation_role", "evaluate_fixed_endpoint",
+                        "development_reference_checkpoint", "development_reference_sha256",
+                        "continuation_from_training_implementation_sha256",
+                        "continuation_to_training_implementation_sha256"}
+    for key in set(run) | set(original["run"]):
+        if key not in allowed_run and run.get(key) != original["run"].get(key):
+            raise ValueError("unapproved continuation run setting: " + key)
+    allowed_stage = {
+        "target_environment_steps",
+        "evaluate_every_steps",
+        "checkpoint_every_steps",
+        "minimum_final_evaluation_episodes",
+    }
+    if set(config["stages"]) != {"train"} or set(original["stages"]) != {"train"}:
+        raise ValueError("continuation requires single-stage Act1")
+    for key in set(config["stages"]["train"]) | set(original["stages"]["train"]):
+        if key not in allowed_stage and config["stages"]["train"].get(key) != original[
+            "stages"
+        ]["train"].get(key):
+            raise ValueError("unapproved continuation stage setting: " + key)
+    old_lr = float(original["ppo"]["learning_rate"])
+    new_lr = float(config["ppo"]["learning_rate"])
+    if (
+        config["model"] != original["model"]
+        or {k: v for k, v in config["ppo"].items() if k != "learning_rate"}
+        != {k: v for k, v in original["ppo"].items() if k != "learning_rate"}
+        or new_lr not in (old_lr, old_lr / 2)
+    ):
+        raise ValueError(
+            "unapproved model/PPO/reward change; only the explicit half-LR branch is supported"
+        )
+    payload = torch.load(path, map_location="cpu", weights_only=False)
+    contract = payload["contract"]
+    workers, shards = contract["workers"], contract["worker_shards"]
+    if (
+        not state_preserving_source_transition(contract["native_source_sha256"], native_source_digest())
+        or contract["profile"] != profile
+        or contract["model"] != ModelConfig(**config["model"]).to_dict()
+        or contract["ppo"] != PPOConfig(**original["ppo"]).to_dict()
+        or contract["training_config_sha256"]
+        != _training_identity(original, workers=workers, shards=shards)
+    ):
+        raise ValueError("parent environment/model/training contract mismatch")
+    benchmark_path = root / run["benchmark"]
+    # A completed-endpoint fork has identical tensor workload and must preserve
+    # the measured worker layout. Seed its preparation record; fresh source and
+    # exact-resume preflight still run before training.
+    if endpoint and not benchmark_path.exists():
+        parent_benchmark = root / original["run"]["benchmark"]
+        layout = json.loads(parent_benchmark.read_text(encoding="utf-8"))
+    else:
+        layout = json.loads(benchmark_path.read_text(encoding="utf-8"))
+    if [layout["selected_workers"], layout["selected_shards"]] != [workers, shards]:
+        raise ValueError("continuation must retain the original worker layout")
+    steps = int(payload["trainer"]["environment_steps"])
+    if endpoint and (steps != parent_manifest["environment_steps"]
+                     or payload["trainer"]["update"] != parent_manifest["updates"]
+                     or contract["training_config_sha256"] != parent_manifest["training_identity_sha256"]):
+        raise ValueError("parent endpoint manifest disagrees with checkpoint")
+    if best_record is not None and (
+        best_record["environment_steps"] != steps or best_record["update"] != payload["trainer"]["update"]
+    ):
+        raise ValueError("parent best selection metadata disagrees with checkpoint")
+    if not steps < int(config["stages"]["train"]["target_environment_steps"]):
+        raise ValueError(
+            "target is cumulative steps and must exceed the parent step count"
+        )
+    identity = _training_identity(config, workers=workers, shards=shards)
+    config_sha = training_config_digest(config_path)
+    provenance = {
+        "schema": "sls-act1-state-preserving-continuation-v1",
+        "parent_checkpoint_sha256": digest,
+        "parent_environment_steps": steps,
+        "parent_update": payload["trainer"]["update"],
+        "parent_selection_evidence": selection_evidence,
+        "parent_path": str(path),
+        "config_sha256": config_sha,
+        "old_training_identity": contract["training_config_sha256"],
+        "new_training_identity": identity,
+        "old_training_seed_limit": contract["training_seed_limit"],
+        "preserved": "model, Adam moments/step counters, recurrent memory, episode limits, workers and RNG; no step/seed reset",
+        "old_learning_rate": old_lr,
+        "new_learning_rate": new_lr,
+        "exact_resume_of_parent_experiment": False,
+    }
+    if endpoint:
+        provenance.update({
+            "schema": "sls-act1-endpoint-continuation-v1",
+            "old_training_implementation_sha256": old_implementation,
+            "new_training_implementation_sha256": new_implementation,
+            "implementation_transition": "reviewed PPO diagnostic estimator and selection/identity updates; loss/reward/model/native unchanged",
+            "selection_reset": "fresh periodic baseline and selection; parent endpoint not selected by new seeds",
+        })
+    if target.exists():
+        # A partially created target (for example after an interrupted run) must
+        # fail with the intended diagnostic instead of a bare FileNotFoundError
+        # from the marker read.
+        marker_path = target / "continuation.json"
+        if not marker_path.is_file():
+            raise ValueError(
+                "existing continuation directory has no continuation.json; "
+                "remove or repair it before retrying"
+            )
+        marker = json.loads(marker_path.read_text(encoding="utf-8"))
+        if (
+            marker["parent_checkpoint_sha256"] != digest
+            or marker["config_sha256"] != config_sha
+        ):
+            raise ValueError(
+                "existing continuation belongs to another parent/configuration"
+            )
+        if not (target / "latest.pt").is_file():
+            raise ValueError("existing continuation has no latest checkpoint")
+        return marker
+    new_limit = training_seed_limit(run)
+    if new_limit > contract["training_seed_limit"]:
+        raise ValueError(
+            "continuation may not expose historical held-out seeds to training"
+        )
+    if int(payload["trainer"]["next_seed"]) >= new_limit:
+        raise ValueError("continuation training seeds overlap evaluation")
+    contract["training_config_sha256"] = identity
+    contract["training_seed_limit"] = new_limit
+    contract["ppo"] = PPOConfig(**config["ppo"]).to_dict()
+    for group in payload["optimizer"]["param_groups"]:
+        if group["lr"] != old_lr:
+            raise ValueError("parent optimizer LR disagrees with its contract")
+        group["lr"] = new_lr
+    provenance["new_training_seed_limit"] = new_limit
+    target.parent.mkdir(parents=True, exist_ok=True)
+    if endpoint and not benchmark_path.exists():
+        benchmark_path.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(parent_benchmark, benchmark_path)
+    with tempfile.TemporaryDirectory(
+        prefix="act1-continuation-", dir=target.parent
+    ) as temporary:
+        staging = Path(temporary) / "run"
+        staging.mkdir()
+        torch.save(payload, staging / "latest.pt")
+        shutil.copy2(config_path, staging / "training-config.toml")
+        (staging / "continuation.json").write_text(
+            json.dumps(provenance, indent=2) + "\n", encoding="utf-8"
+        )
+        if best_record is not None:
+            selection = staging / "stages/train/selection"
+            selection.mkdir(parents=True)
+            shutil.copy2(staging / "latest.pt", selection / "best_progress.pt")
+            (selection / "best_progress.json").write_text(
+                json.dumps({**best_record, "checkpoint_sha256": sha256_file(selection / "best_progress.pt")}, indent=2)
+                + "\n", encoding="utf-8",
+            )
+        manifest = {
+            "schema": MANIFEST_SCHEMA,
+            "created_unix": time.time(),
+            "status": "CONTINUATION_READY",
+            "stages": {},
+            "simulator_only": True,
+            "profile": run["profile"],
+            "workflow": run["workflow"],
+            "curriculum": {"train": run["profile"]},
+            "checkpoint_schema": payload["schema"],
+            "encoding_schema": contract["encoding_schema"],
+            "vocabulary_sha256": contract["vocabulary_sha256"],
+            "content_scope_id": contract["content_scope_id"],
+            "content_scope_sha256": contract["content_scope_sha256"],
+            "periodic_evaluation_seeds": [int(run["periodic_evaluation_seed_start"]),
+                int(run["periodic_evaluation_seed_start"]) + int(run["periodic_evaluation_seed_count"])],
+            "final_evaluation_seeds": [int(run["final_evaluation_seed_start"]),
+                int(run["final_evaluation_seed_start"]) + int(run["final_evaluation_seed_count"])],
+            "training_identity_sha256": identity,
+            "config_sha256": config_sha,
+            "native_source_sha256": contract["native_source_sha256"],
+            "model": contract["model"],
+            "ppo": contract["ppo"],
+            "workers": workers,
+            "shards": shards,
+            "continuation": provenance,
+        }
+        if endpoint:
+            manifest["training_implementation_sha256"] = new_implementation
+            manifest["git"] = git_state()
+        (staging / "run-manifest.json").write_text(
+            json.dumps(manifest, indent=2) + "\n", encoding="utf-8"
+        )
+        os.rename(staging, target)
+    assert sha256_file(path) == digest
+    return provenance
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--config", type=Path, required=True)
+    args = parser.parse_args()
+    print(json.dumps(initialize(args.config), indent=2))
+
+
+if __name__ == "__main__":
+    main()

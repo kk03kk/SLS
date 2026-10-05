@@ -1,0 +1,31 @@
+{
+  "schema": "sls-native-core-audit-probe-v1",
+  "date": "2026-10-04",
+  "git_commit": "5435d4a2f423a1e3b445977a48fae41ac90b5837",
+  "smoke_bomb": {
+    "normal_legal": true,
+    "escaped": true,
+    "map_screen": true,
+    "reward_callback_called": false,
+    "treasure_draws": 1,
+    "potion_draws": 1,
+    "bosses_blocked": {
+      "SLIME_BOSS": true,
+      "THE_GUARDIAN": true,
+      "HEXAGHOST": true,
+      "AUTOMATON": true,
+      "COLLECTOR": true,
+      "CHAMP": true,
+      "AWAKENED_ONE": true,
+      "TIME_EATER": true,
+      "DONU_AND_DECA": true,
+      "THE_HEART": true
+    },
+    "back_attack_blocked": true
+  },
+  "pytest": {
+    "command": "python -m pytest tests/simulator/test_native_mechanisms.py -q",
+    "passed": 34,
+    "seconds": 2.54
+  }
+}

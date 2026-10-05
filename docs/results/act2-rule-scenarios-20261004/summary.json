@@ -1,0 +1,1229 @@
+{
+  "automaton-two-cycles-a18": [
+    {
+      "player_hp": 5000,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "BRONZE_AUTOMATON",
+          "move": "BRONZE_AUTOMATON_SPAWN_ORBS",
+          "hp": 320,
+          "block": 0,
+          "strength": 0
+        }
+      ]
+    },
+    {
+      "player_hp": 5000,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "BRONZE_ORB",
+          "move": "BRONZE_ORB_BEAM",
+          "hp": 58,
+          "block": 0,
+          "strength": 0
+        },
+        {
+          "id": "BRONZE_AUTOMATON",
+          "move": "BRONZE_AUTOMATON_FLAIL",
+          "hp": 320,
+          "block": 0,
+          "strength": 0
+        }
+      ]
+    },
+    {
+      "player_hp": 4976,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "BRONZE_ORB",
+          "move": "BRONZE_ORB_BEAM",
+          "hp": 58,
+          "block": 0,
+          "strength": 0
+        },
+        {
+          "id": "BRONZE_AUTOMATON",
+          "move": "BRONZE_AUTOMATON_BOOST",
+          "hp": 320,
+          "block": 0,
+          "strength": 0
+        }
+      ]
+    },
+    {
+      "player_hp": 4968,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "BRONZE_ORB",
+          "move": "BRONZE_ORB_STASIS",
+          "hp": 58,
+          "block": 0,
+          "strength": 0
+        },
+        {
+          "id": "BRONZE_AUTOMATON",
+          "move": "BRONZE_AUTOMATON_FLAIL",
+          "hp": 320,
+          "block": 12,
+          "strength": 4
+        }
+      ]
+    },
+    {
+      "player_hp": 4944,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "BRONZE_ORB",
+          "move": "BRONZE_ORB_SUPPORT_BEAM",
+          "hp": 58,
+          "block": 0,
+          "strength": 0
+        },
+        {
+          "id": "BRONZE_AUTOMATON",
+          "move": "BRONZE_AUTOMATON_BOOST",
+          "hp": 320,
+          "block": 0,
+          "strength": 4
+        }
+      ]
+    },
+    {
+      "player_hp": 4944,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "BRONZE_ORB",
+          "move": "BRONZE_ORB_SUPPORT_BEAM",
+          "hp": 58,
+          "block": 0,
+          "strength": 0
+        },
+        {
+          "id": "BRONZE_AUTOMATON",
+          "move": "BRONZE_AUTOMATON_HYPER_BEAM",
+          "hp": 320,
+          "block": 24,
+          "strength": 8
+        }
+      ]
+    },
+    {
+      "player_hp": 4886,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "BRONZE_ORB",
+          "move": "BRONZE_ORB_BEAM",
+          "hp": 58,
+          "block": 0,
+          "strength": 0
+        },
+        {
+          "id": "BRONZE_AUTOMATON",
+          "move": "BRONZE_AUTOMATON_STUNNED",
+          "hp": 320,
+          "block": 12,
+          "strength": 8
+        }
+      ]
+    },
+    {
+      "player_hp": 4878,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "BRONZE_ORB",
+          "move": "BRONZE_ORB_BEAM",
+          "hp": 58,
+          "block": 0,
+          "strength": 0
+        },
+        {
+          "id": "BRONZE_AUTOMATON",
+          "move": "BRONZE_AUTOMATON_FLAIL",
+          "hp": 320,
+          "block": 0,
+          "strength": 8
+        }
+      ]
+    },
+    {
+      "player_hp": 4838,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "BRONZE_ORB",
+          "move": "BRONZE_ORB_SUPPORT_BEAM",
+          "hp": 58,
+          "block": 0,
+          "strength": 0
+        },
+        {
+          "id": "BRONZE_AUTOMATON",
+          "move": "BRONZE_AUTOMATON_BOOST",
+          "hp": 320,
+          "block": 0,
+          "strength": 8
+        }
+      ]
+    },
+    {
+      "player_hp": 4838,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "BRONZE_ORB",
+          "move": "BRONZE_ORB_BEAM",
+          "hp": 58,
+          "block": 0,
+          "strength": 0
+        },
+        {
+          "id": "BRONZE_AUTOMATON",
+          "move": "BRONZE_AUTOMATON_FLAIL",
+          "hp": 320,
+          "block": 24,
+          "strength": 12
+        }
+      ]
+    },
+    {
+      "player_hp": 4790,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "BRONZE_ORB",
+          "move": "BRONZE_ORB_BEAM",
+          "hp": 58,
+          "block": 0,
+          "strength": 0
+        },
+        {
+          "id": "BRONZE_AUTOMATON",
+          "move": "BRONZE_AUTOMATON_BOOST",
+          "hp": 320,
+          "block": 0,
+          "strength": 12
+        }
+      ]
+    },
+    {
+      "player_hp": 4782,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "BRONZE_ORB",
+          "move": "BRONZE_ORB_SUPPORT_BEAM",
+          "hp": 58,
+          "block": 0,
+          "strength": 0
+        },
+        {
+          "id": "BRONZE_AUTOMATON",
+          "move": "BRONZE_AUTOMATON_HYPER_BEAM",
+          "hp": 320,
+          "block": 12,
+          "strength": 16
+        }
+      ]
+    },
+    {
+      "player_hp": 4716,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "BRONZE_ORB",
+          "move": "BRONZE_ORB_SUPPORT_BEAM",
+          "hp": 58,
+          "block": 0,
+          "strength": 0
+        },
+        {
+          "id": "BRONZE_AUTOMATON",
+          "move": "BRONZE_AUTOMATON_STUNNED",
+          "hp": 320,
+          "block": 12,
+          "strength": 16
+        }
+      ]
+    }
+  ],
+  "automaton-two-cycles-a19": [
+    {
+      "player_hp": 5000,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "BRONZE_AUTOMATON",
+          "move": "BRONZE_AUTOMATON_SPAWN_ORBS",
+          "hp": 320,
+          "block": 0,
+          "strength": 0
+        }
+      ]
+    },
+    {
+      "player_hp": 5000,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "BRONZE_ORB",
+          "move": "BRONZE_ORB_BEAM",
+          "hp": 58,
+          "block": 0,
+          "strength": 0
+        },
+        {
+          "id": "BRONZE_AUTOMATON",
+          "move": "BRONZE_AUTOMATON_FLAIL",
+          "hp": 320,
+          "block": 0,
+          "strength": 0
+        }
+      ]
+    },
+    {
+      "player_hp": 4976,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "BRONZE_ORB",
+          "move": "BRONZE_ORB_BEAM",
+          "hp": 58,
+          "block": 0,
+          "strength": 0
+        },
+        {
+          "id": "BRONZE_AUTOMATON",
+          "move": "BRONZE_AUTOMATON_BOOST",
+          "hp": 320,
+          "block": 0,
+          "strength": 0
+        }
+      ]
+    },
+    {
+      "player_hp": 4968,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "BRONZE_ORB",
+          "move": "BRONZE_ORB_STASIS",
+          "hp": 58,
+          "block": 0,
+          "strength": 0
+        },
+        {
+          "id": "BRONZE_AUTOMATON",
+          "move": "BRONZE_AUTOMATON_FLAIL",
+          "hp": 320,
+          "block": 12,
+          "strength": 4
+        }
+      ]
+    },
+    {
+      "player_hp": 4944,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "BRONZE_ORB",
+          "move": "BRONZE_ORB_SUPPORT_BEAM",
+          "hp": 58,
+          "block": 0,
+          "strength": 0
+        },
+        {
+          "id": "BRONZE_AUTOMATON",
+          "move": "BRONZE_AUTOMATON_BOOST",
+          "hp": 320,
+          "block": 0,
+          "strength": 4
+        }
+      ]
+    },
+    {
+      "player_hp": 4944,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "BRONZE_ORB",
+          "move": "BRONZE_ORB_SUPPORT_BEAM",
+          "hp": 58,
+          "block": 0,
+          "strength": 0
+        },
+        {
+          "id": "BRONZE_AUTOMATON",
+          "move": "BRONZE_AUTOMATON_HYPER_BEAM",
+          "hp": 320,
+          "block": 24,
+          "strength": 8
+        }
+      ]
+    },
+    {
+      "player_hp": 4886,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "BRONZE_ORB",
+          "move": "BRONZE_ORB_BEAM",
+          "hp": 58,
+          "block": 0,
+          "strength": 0
+        },
+        {
+          "id": "BRONZE_AUTOMATON",
+          "move": "BRONZE_AUTOMATON_BOOST",
+          "hp": 320,
+          "block": 12,
+          "strength": 8
+        }
+      ]
+    },
+    {
+      "player_hp": 4878,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "BRONZE_ORB",
+          "move": "BRONZE_ORB_BEAM",
+          "hp": 58,
+          "block": 0,
+          "strength": 0
+        },
+        {
+          "id": "BRONZE_AUTOMATON",
+          "move": "BRONZE_AUTOMATON_FLAIL",
+          "hp": 320,
+          "block": 12,
+          "strength": 12
+        }
+      ]
+    },
+    {
+      "player_hp": 4830,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "BRONZE_ORB",
+          "move": "BRONZE_ORB_SUPPORT_BEAM",
+          "hp": 58,
+          "block": 0,
+          "strength": 0
+        },
+        {
+          "id": "BRONZE_AUTOMATON",
+          "move": "BRONZE_AUTOMATON_BOOST",
+          "hp": 320,
+          "block": 0,
+          "strength": 12
+        }
+      ]
+    },
+    {
+      "player_hp": 4830,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "BRONZE_ORB",
+          "move": "BRONZE_ORB_BEAM",
+          "hp": 58,
+          "block": 0,
+          "strength": 0
+        },
+        {
+          "id": "BRONZE_AUTOMATON",
+          "move": "BRONZE_AUTOMATON_FLAIL",
+          "hp": 320,
+          "block": 24,
+          "strength": 16
+        }
+      ]
+    },
+    {
+      "player_hp": 4774,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "BRONZE_ORB",
+          "move": "BRONZE_ORB_BEAM",
+          "hp": 58,
+          "block": 0,
+          "strength": 0
+        },
+        {
+          "id": "BRONZE_AUTOMATON",
+          "move": "BRONZE_AUTOMATON_BOOST",
+          "hp": 320,
+          "block": 0,
+          "strength": 16
+        }
+      ]
+    },
+    {
+      "player_hp": 4766,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "BRONZE_ORB",
+          "move": "BRONZE_ORB_SUPPORT_BEAM",
+          "hp": 58,
+          "block": 0,
+          "strength": 0
+        },
+        {
+          "id": "BRONZE_AUTOMATON",
+          "move": "BRONZE_AUTOMATON_HYPER_BEAM",
+          "hp": 320,
+          "block": 12,
+          "strength": 20
+        }
+      ]
+    },
+    {
+      "player_hp": 4696,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "BRONZE_ORB",
+          "move": "BRONZE_ORB_SUPPORT_BEAM",
+          "hp": 58,
+          "block": 0,
+          "strength": 0
+        },
+        {
+          "id": "BRONZE_AUTOMATON",
+          "move": "BRONZE_AUTOMATON_BOOST",
+          "hp": 320,
+          "block": 12,
+          "strength": 20
+        }
+      ]
+    }
+  ],
+  "automaton-two-cycles-a20": [
+    {
+      "player_hp": 5000,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "BRONZE_AUTOMATON",
+          "move": "BRONZE_AUTOMATON_SPAWN_ORBS",
+          "hp": 320,
+          "block": 0,
+          "strength": 0
+        }
+      ]
+    },
+    {
+      "player_hp": 5000,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "BRONZE_ORB",
+          "move": "BRONZE_ORB_BEAM",
+          "hp": 58,
+          "block": 0,
+          "strength": 0
+        },
+        {
+          "id": "BRONZE_AUTOMATON",
+          "move": "BRONZE_AUTOMATON_FLAIL",
+          "hp": 320,
+          "block": 0,
+          "strength": 0
+        }
+      ]
+    },
+    {
+      "player_hp": 4976,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "BRONZE_ORB",
+          "move": "BRONZE_ORB_BEAM",
+          "hp": 58,
+          "block": 0,
+          "strength": 0
+        },
+        {
+          "id": "BRONZE_AUTOMATON",
+          "move": "BRONZE_AUTOMATON_BOOST",
+          "hp": 320,
+          "block": 0,
+          "strength": 0
+        }
+      ]
+    },
+    {
+      "player_hp": 4968,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "BRONZE_ORB",
+          "move": "BRONZE_ORB_STASIS",
+          "hp": 58,
+          "block": 0,
+          "strength": 0
+        },
+        {
+          "id": "BRONZE_AUTOMATON",
+          "move": "BRONZE_AUTOMATON_FLAIL",
+          "hp": 320,
+          "block": 12,
+          "strength": 4
+        }
+      ]
+    },
+    {
+      "player_hp": 4944,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "BRONZE_ORB",
+          "move": "BRONZE_ORB_SUPPORT_BEAM",
+          "hp": 58,
+          "block": 0,
+          "strength": 0
+        },
+        {
+          "id": "BRONZE_AUTOMATON",
+          "move": "BRONZE_AUTOMATON_BOOST",
+          "hp": 320,
+          "block": 0,
+          "strength": 4
+        }
+      ]
+    },
+    {
+      "player_hp": 4944,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "BRONZE_ORB",
+          "move": "BRONZE_ORB_SUPPORT_BEAM",
+          "hp": 58,
+          "block": 0,
+          "strength": 0
+        },
+        {
+          "id": "BRONZE_AUTOMATON",
+          "move": "BRONZE_AUTOMATON_HYPER_BEAM",
+          "hp": 320,
+          "block": 24,
+          "strength": 8
+        }
+      ]
+    },
+    {
+      "player_hp": 4886,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "BRONZE_ORB",
+          "move": "BRONZE_ORB_BEAM",
+          "hp": 58,
+          "block": 0,
+          "strength": 0
+        },
+        {
+          "id": "BRONZE_AUTOMATON",
+          "move": "BRONZE_AUTOMATON_BOOST",
+          "hp": 320,
+          "block": 12,
+          "strength": 8
+        }
+      ]
+    },
+    {
+      "player_hp": 4878,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "BRONZE_ORB",
+          "move": "BRONZE_ORB_BEAM",
+          "hp": 58,
+          "block": 0,
+          "strength": 0
+        },
+        {
+          "id": "BRONZE_AUTOMATON",
+          "move": "BRONZE_AUTOMATON_FLAIL",
+          "hp": 320,
+          "block": 12,
+          "strength": 12
+        }
+      ]
+    },
+    {
+      "player_hp": 4830,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "BRONZE_ORB",
+          "move": "BRONZE_ORB_SUPPORT_BEAM",
+          "hp": 58,
+          "block": 0,
+          "strength": 0
+        },
+        {
+          "id": "BRONZE_AUTOMATON",
+          "move": "BRONZE_AUTOMATON_BOOST",
+          "hp": 320,
+          "block": 0,
+          "strength": 12
+        }
+      ]
+    },
+    {
+      "player_hp": 4830,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "BRONZE_ORB",
+          "move": "BRONZE_ORB_BEAM",
+          "hp": 58,
+          "block": 0,
+          "strength": 0
+        },
+        {
+          "id": "BRONZE_AUTOMATON",
+          "move": "BRONZE_AUTOMATON_FLAIL",
+          "hp": 320,
+          "block": 24,
+          "strength": 16
+        }
+      ]
+    },
+    {
+      "player_hp": 4774,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "BRONZE_ORB",
+          "move": "BRONZE_ORB_BEAM",
+          "hp": 58,
+          "block": 0,
+          "strength": 0
+        },
+        {
+          "id": "BRONZE_AUTOMATON",
+          "move": "BRONZE_AUTOMATON_BOOST",
+          "hp": 320,
+          "block": 0,
+          "strength": 16
+        }
+      ]
+    },
+    {
+      "player_hp": 4766,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "BRONZE_ORB",
+          "move": "BRONZE_ORB_SUPPORT_BEAM",
+          "hp": 58,
+          "block": 0,
+          "strength": 0
+        },
+        {
+          "id": "BRONZE_AUTOMATON",
+          "move": "BRONZE_AUTOMATON_HYPER_BEAM",
+          "hp": 320,
+          "block": 12,
+          "strength": 20
+        }
+      ]
+    },
+    {
+      "player_hp": 4696,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "BRONZE_ORB",
+          "move": "BRONZE_ORB_SUPPORT_BEAM",
+          "hp": 58,
+          "block": 0,
+          "strength": 0
+        },
+        {
+          "id": "BRONZE_AUTOMATON",
+          "move": "BRONZE_AUTOMATON_BOOST",
+          "hp": 320,
+          "block": 12,
+          "strength": 20
+        }
+      ]
+    }
+  ],
+  "spheric-opening-a16": [
+    {
+      "player_hp": 5000,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "SPHERIC_GUARDIAN",
+          "move": "SPHERIC_GUARDIAN_ACTIVATE",
+          "hp": 20,
+          "block": 40,
+          "strength": 0
+        }
+      ]
+    },
+    {
+      "player_hp": 5000,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "SPHERIC_GUARDIAN",
+          "move": "SPHERIC_GUARDIAN_ATTACK_DEBUFF",
+          "hp": 20,
+          "block": 65,
+          "strength": 0
+        }
+      ]
+    },
+    {
+      "player_hp": 4989,
+      "player_powers": [
+        {
+          "id": "FRAIL",
+          "name": "Frail",
+          "amount": 5
+        }
+      ],
+      "monsters": [
+        {
+          "id": "SPHERIC_GUARDIAN",
+          "move": "SPHERIC_GUARDIAN_SLAM",
+          "hp": 20,
+          "block": 65,
+          "strength": 0
+        }
+      ]
+    },
+    {
+      "player_hp": 4967,
+      "player_powers": [
+        {
+          "id": "FRAIL",
+          "name": "Frail",
+          "amount": 4
+        }
+      ],
+      "monsters": [
+        {
+          "id": "SPHERIC_GUARDIAN",
+          "move": "SPHERIC_GUARDIAN_HARDEN",
+          "hp": 20,
+          "block": 65,
+          "strength": 0
+        }
+      ]
+    },
+    {
+      "player_hp": 4956,
+      "player_powers": [
+        {
+          "id": "FRAIL",
+          "name": "Frail",
+          "amount": 3
+        }
+      ],
+      "monsters": [
+        {
+          "id": "SPHERIC_GUARDIAN",
+          "move": "SPHERIC_GUARDIAN_SLAM",
+          "hp": 20,
+          "block": 80,
+          "strength": 0
+        }
+      ]
+    }
+  ],
+  "spheric-opening-a17": [
+    {
+      "player_hp": 5000,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "SPHERIC_GUARDIAN",
+          "move": "SPHERIC_GUARDIAN_ACTIVATE",
+          "hp": 20,
+          "block": 40,
+          "strength": 0
+        }
+      ]
+    },
+    {
+      "player_hp": 5000,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "SPHERIC_GUARDIAN",
+          "move": "SPHERIC_GUARDIAN_ATTACK_DEBUFF",
+          "hp": 20,
+          "block": 75,
+          "strength": 0
+        }
+      ]
+    },
+    {
+      "player_hp": 4989,
+      "player_powers": [
+        {
+          "id": "FRAIL",
+          "name": "Frail",
+          "amount": 5
+        }
+      ],
+      "monsters": [
+        {
+          "id": "SPHERIC_GUARDIAN",
+          "move": "SPHERIC_GUARDIAN_SLAM",
+          "hp": 20,
+          "block": 75,
+          "strength": 0
+        }
+      ]
+    },
+    {
+      "player_hp": 4967,
+      "player_powers": [
+        {
+          "id": "FRAIL",
+          "name": "Frail",
+          "amount": 4
+        }
+      ],
+      "monsters": [
+        {
+          "id": "SPHERIC_GUARDIAN",
+          "move": "SPHERIC_GUARDIAN_HARDEN",
+          "hp": 20,
+          "block": 75,
+          "strength": 0
+        }
+      ]
+    },
+    {
+      "player_hp": 4956,
+      "player_powers": [
+        {
+          "id": "FRAIL",
+          "name": "Frail",
+          "amount": 3
+        }
+      ],
+      "monsters": [
+        {
+          "id": "SPHERIC_GUARDIAN",
+          "move": "SPHERIC_GUARDIAN_SLAM",
+          "hp": 20,
+          "block": 90,
+          "strength": 0
+        }
+      ]
+    }
+  ],
+  "spheric-opening-a20": [
+    {
+      "player_hp": 5000,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "SPHERIC_GUARDIAN",
+          "move": "SPHERIC_GUARDIAN_ACTIVATE",
+          "hp": 20,
+          "block": 40,
+          "strength": 0
+        }
+      ]
+    },
+    {
+      "player_hp": 5000,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "SPHERIC_GUARDIAN",
+          "move": "SPHERIC_GUARDIAN_ATTACK_DEBUFF",
+          "hp": 20,
+          "block": 75,
+          "strength": 0
+        }
+      ]
+    },
+    {
+      "player_hp": 4989,
+      "player_powers": [
+        {
+          "id": "FRAIL",
+          "name": "Frail",
+          "amount": 5
+        }
+      ],
+      "monsters": [
+        {
+          "id": "SPHERIC_GUARDIAN",
+          "move": "SPHERIC_GUARDIAN_SLAM",
+          "hp": 20,
+          "block": 75,
+          "strength": 0
+        }
+      ]
+    },
+    {
+      "player_hp": 4967,
+      "player_powers": [
+        {
+          "id": "FRAIL",
+          "name": "Frail",
+          "amount": 4
+        }
+      ],
+      "monsters": [
+        {
+          "id": "SPHERIC_GUARDIAN",
+          "move": "SPHERIC_GUARDIAN_HARDEN",
+          "hp": 20,
+          "block": 75,
+          "strength": 0
+        }
+      ]
+    },
+    {
+      "player_hp": 4956,
+      "player_powers": [
+        {
+          "id": "FRAIL",
+          "name": "Frail",
+          "amount": 3
+        }
+      ],
+      "monsters": [
+        {
+          "id": "SPHERIC_GUARDIAN",
+          "move": "SPHERIC_GUARDIAN_SLAM",
+          "hp": 20,
+          "block": 90,
+          "strength": 0
+        }
+      ]
+    }
+  ],
+  "champ-threshold-hp220": [
+    {
+      "player_hp": 5000,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "THE_CHAMP",
+          "move": "THE_CHAMP_GLOAT",
+          "hp": 220,
+          "block": 0,
+          "strength": 0
+        }
+      ]
+    },
+    {
+      "player_hp": 5000,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "THE_CHAMP",
+          "move": "THE_CHAMP_DEFENSIVE_STANCE",
+          "hp": 220,
+          "block": 0,
+          "strength": 4
+        }
+      ]
+    },
+    {
+      "player_hp": 5000,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "THE_CHAMP",
+          "move": "THE_CHAMP_HEAVY_SLASH",
+          "hp": 220,
+          "block": 27,
+          "strength": 4
+        }
+      ]
+    }
+  ],
+  "champ-threshold-hp219": [
+    {
+      "player_hp": 5000,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "THE_CHAMP",
+          "move": "THE_CHAMP_GLOAT",
+          "hp": 219,
+          "block": 0,
+          "strength": 0
+        }
+      ]
+    },
+    {
+      "player_hp": 5000,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "THE_CHAMP",
+          "move": "THE_CHAMP_ANGER",
+          "hp": 219,
+          "block": 0,
+          "strength": 4
+        }
+      ]
+    },
+    {
+      "player_hp": 5000,
+      "player_powers": [],
+      "monsters": [
+        {
+          "id": "THE_CHAMP",
+          "move": "THE_CHAMP_EXECUTE",
+          "hp": 219,
+          "block": 0,
+          "strength": 16
+        }
+      ]
+    }
+  ],
+  "artifact-THE_CHAMP-FACE_SLAP": [
+    {
+      "player_hp": 5000,
+      "player_powers": [
+        {
+          "id": "ARTIFACT",
+          "name": "Artifact",
+          "amount": 1
+        }
+      ],
+      "monsters": [
+        {
+          "id": "THE_CHAMP",
+          "move": "THE_CHAMP_FACE_SLAP",
+          "hp": 440,
+          "block": 0,
+          "strength": 0
+        }
+      ]
+    },
+    {
+      "player_hp": 4986,
+      "player_powers": [
+        {
+          "id": "VULNERABLE",
+          "name": "Vulnerable",
+          "amount": 2
+        }
+      ],
+      "monsters": [
+        {
+          "id": "THE_CHAMP",
+          "move": "THE_CHAMP_DEFENSIVE_STANCE",
+          "hp": 440,
+          "block": 0,
+          "strength": 0
+        }
+      ]
+    }
+  ],
+  "artifact-THE_CHAMP-TAUNT": [
+    {
+      "player_hp": 5000,
+      "player_powers": [
+        {
+          "id": "ARTIFACT",
+          "name": "Artifact",
+          "amount": 1
+        }
+      ],
+      "monsters": [
+        {
+          "id": "THE_CHAMP",
+          "move": "THE_CHAMP_TAUNT",
+          "hp": 440,
+          "block": 0,
+          "strength": 0
+        }
+      ]
+    },
+    {
+      "player_hp": 5000,
+      "player_powers": [
+        {
+          "id": "VULNERABLE",
+          "name": "Vulnerable",
+          "amount": 2
+        }
+      ],
+      "monsters": [
+        {
+          "id": "THE_CHAMP",
+          "move": "THE_CHAMP_DEFENSIVE_STANCE",
+          "hp": 440,
+          "block": 0,
+          "strength": 0
+        }
+      ]
+    }
+  ],
+  "artifact-THE_COLLECTOR-MEGA_DEBUFF": [
+    {
+      "player_hp": 5000,
+      "player_powers": [
+        {
+          "id": "ARTIFACT",
+          "name": "Artifact",
+          "amount": 1
+        }
+      ],
+      "monsters": [
+        {
+          "id": "THE_COLLECTOR",
+          "move": "THE_COLLECTOR_MEGA_DEBUFF",
+          "hp": 300,
+          "block": 0,
+          "strength": 0
+        }
+      ]
+    },
+    {
+      "player_hp": 5000,
+      "player_powers": [
+        {
+          "id": "VULNERABLE",
+          "name": "Vulnerable",
+          "amount": 5
+        },
+        {
+          "id": "FRAIL",
+          "name": "Frail",
+          "amount": 5
+        }
+      ],
+      "monsters": [
+        {
+          "id": "THE_COLLECTOR",
+          "move": "THE_COLLECTOR_SPAWN",
+          "hp": 300,
+          "block": 0,
+          "strength": 0
+        }
+      ]
+    }
+  ]
+}

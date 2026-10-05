@@ -1,0 +1,178 @@
+{
+  "schema": "sls-act12-analysis-recomputation-v1",
+  "date": "2026-10-04",
+  "role": "recomputation-of-existing-development-data-no-new-policy-evaluation",
+  "source_artifact": "docs/results/act12-readiness-20261004/zero-shot-act12.json",
+  "source_sha256": "1bd3afe2298391f0fe19817d0e04423b299a93fde1b7ff452b7ff1f504f6c8b7",
+  "source_runtime": {
+    "python": "3.12.12 | packaged by Anaconda, Inc. | (main, Oct 21 2025, 20:05:38) [MSC v.1929 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "hostname": "FZYSSY",
+    "torch": "2.10.0+cu130",
+    "cuda": "13.0",
+    "gpu": "NVIDIA GeForce RTX 5070 Laptop GPU",
+    "cpu_threads": 2,
+    "cpu_interop_threads": 16,
+    "mkldnn_enabled": true,
+    "float32_matmul_precision": "high",
+    "deterministic_algorithms": true,
+    "environment_shards": 4
+  },
+  "source_simulator": {
+    "native_source_sha256": "1e30bb6cfa32f600cd63c59983c14ab8928fac4452c1586d630295d2c6ff9453",
+    "native_artifact": {
+      "path": "D:\\SLS\\local\\build\\native\\cpython-312\\_lightspeed.cp312-win_amd64.pyd",
+      "sha256": "85e8c5d76028211e8afb95ed46c0730d75d5ca9922b955e161f6bbb0df9f4781",
+      "source_sha256": "1e30bb6cfa32f600cd63c59983c14ab8928fac4452c1586d630295d2c6ff9453",
+      "git_commit": "c2f315876609f1e9ad72fbcca5f143d18409b280"
+    },
+    "content_scope_id": "sls-ironclad-ascension-content-v1",
+    "content_scope_sha256": "e92ab9e347bac50422d148d7e23b505f99c68eb3d515f0b7bcebf8862981490d"
+  },
+  "old_analysis_git": "15a78ba",
+  "old_analysis_error": "boss counts disagree with raw outcomes",
+  "corrected_summary": {
+    "wins": 0,
+    "episodes": 32,
+    "rate": 0.0,
+    "ci95": [
+      0.0,
+      0.1071791982550706
+    ],
+    "bosses": {
+      "HEXAGHOST": {
+        "wins": 10,
+        "seeds": 11,
+        "entries": 10,
+        "clear_rate": 0.9090909090909091,
+        "entry_win_rate": 1.0
+      },
+      "SLIME_BOSS": {
+        "wins": 9,
+        "seeds": 11,
+        "entries": 11,
+        "clear_rate": 0.8181818181818182,
+        "entry_win_rate": 0.8181818181818182
+      },
+      "THE_GUARDIAN": {
+        "wins": 7,
+        "seeds": 10,
+        "entries": 8,
+        "clear_rate": 0.7,
+        "entry_win_rate": 0.875
+      }
+    },
+    "failure_floor_mean": 21.53125,
+    "failure_floor_median": 22.0,
+    "mean_steps": 227.96875,
+    "health": {
+      "backend_errors": 0,
+      "backend_truncations": 0,
+      "step_limits": 0,
+      "cycle_limits": 0,
+      "timeouts": 0
+    },
+    "evaluation_horizon": 2,
+    "acts": {
+      "1": {
+        "reached": 32,
+        "reach_rate": 1.0,
+        "act_clears": 26,
+        "bosses": {
+          "HEXAGHOST": {
+            "assigned_episodes": 11,
+            "boss_entries": 10,
+            "act_clears": 10,
+            "act_clear_rate": 0.9090909090909091,
+            "boss_entry_clear_rate": 1.0,
+            "full_horizon_wins": 0
+          },
+          "SLIME_BOSS": {
+            "assigned_episodes": 11,
+            "boss_entries": 11,
+            "act_clears": 9,
+            "act_clear_rate": 0.8181818181818182,
+            "boss_entry_clear_rate": 0.8181818181818182,
+            "full_horizon_wins": 0
+          },
+          "THE_GUARDIAN": {
+            "assigned_episodes": 10,
+            "boss_entries": 8,
+            "act_clears": 7,
+            "act_clear_rate": 0.7,
+            "boss_entry_clear_rate": 0.875,
+            "full_horizon_wins": 0
+          }
+        },
+        "full_horizon_wins_given_reach": 0.0,
+        "failure_floor_counts": {
+          "8": 2,
+          "11": 1,
+          "16": 3
+        }
+      },
+      "2": {
+        "reached": 26,
+        "reach_rate": 0.8125,
+        "act_clears": 0,
+        "bosses": {
+          "AUTOMATON": {
+            "assigned_episodes": 5,
+            "boss_entries": 2,
+            "act_clears": 0,
+            "act_clear_rate": 0.0,
+            "boss_entry_clear_rate": 0.0,
+            "full_horizon_wins": 0
+          },
+          "CHAMP": {
+            "assigned_episodes": 9,
+            "boss_entries": 0,
+            "act_clears": 0,
+            "act_clear_rate": 0.0,
+            "boss_entry_clear_rate": null,
+            "full_horizon_wins": 0
+          },
+          "COLLECTOR": {
+            "assigned_episodes": 12,
+            "boss_entries": 0,
+            "act_clears": 0,
+            "act_clear_rate": 0.0,
+            "boss_entry_clear_rate": null,
+            "full_horizon_wins": 0
+          }
+        },
+        "full_horizon_wins_given_reach": 0.0,
+        "failure_floor_counts": {
+          "18": 1,
+          "19": 1,
+          "20": 3,
+          "21": 2,
+          "22": 4,
+          "23": 4,
+          "24": 3,
+          "25": 3,
+          "27": 2,
+          "28": 1,
+          "33": 2
+        }
+      }
+    },
+    "boss_metric_note": "Act clears are stage outcomes; full_horizon_wins is the terminal objective. Reach-conditioned groups depend on policy."
+  },
+  "legacy_act1_recomputation": {
+    "endpoint-evaluation.json": {
+      "sha256": "6c6ca4fa2151444fef831c2ee5317bb323d11b9ca7d72863c9577a1d64e940ad",
+      "old_and_new_outputs_equal": true,
+      "wins": 1573,
+      "episodes": 2048
+    },
+    "final-evaluation.json": {
+      "sha256": "800298f0f8a450cc514ee5ef5a2e2d28b73055f4c8a4ae8cb6c637ab0f272a4a",
+      "old_and_new_outputs_equal": true,
+      "wins": 1581,
+      "episodes": 2048
+    }
+  },
+  "native_source_sha256_unchanged": "fe354a23c7584d68d0a2b6681b8dfd4e97d98e107b7ddf57c479060d91468f39",
+  "training_implementation_sha256_unchanged": "a4d23e8bea1996e2148660924323317db633dcfc5657b1c71b4a98b7269ac6de"
+}

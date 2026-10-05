@@ -1,0 +1,158 @@
+{
+  "build": {
+    "compiler": "javac 21.0.9",
+    "compiler_sha256": "8a1d32f529ba4d01940194e3b06d14aff828e5d47f5f374ec88c81902fc3456f",
+    "dependencies": {
+      "base_mod": "c3353c10e64c621b723e9fd7d0502dfa796f828b101b68513594a5f5ef83fbaf",
+      "communication_mod": "12b99249eccfd5245ddb0b6b7575e1a1dfba0ce0ed6fad5bd5bbd4a303897ef5",
+      "game": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+      "mod_the_spire": "541b5e8a875d2a404a5a6d54f4a6f814284b0cf71acb9245239d9c5ef50ea604"
+    },
+    "java_release": 8,
+    "members": {
+      "ModTheSpire.json": "06c38f65b3eb1cfe127c97753ac31e4a1b5586f5f5ee6e48a7ad2e9bd5ec331b",
+      "spirecomm/parity/BatchResetPatch$Advertise.class": "4cc6604ba9496dbcdc4108e6bdcd9bf37d94fb108eefc2242da0c0a2f3204676",
+      "spirecomm/parity/BatchResetPatch$Execute.class": "546adf7217ad44d94c9d25998119364866855156c0b86712e33157977ee42ea8",
+      "spirecomm/parity/BatchResetPatch.class": "dc3fe91ea3b38824e2b6b54fd706c35ffe1436e7e758b0e7beaa545e94574286",
+      "spirecomm/parity/CardGroupRngPatch$AnyCard.class": "9a013e5415faf37dedbf34b8ff7823f223a8deeb7489bba3fe89e63cc1990927",
+      "spirecomm/parity/CardGroupRngPatch$ByRarity.class": "1734e991a7a0fbde13d53755c7fc0968fe16d8b17bac5d4b6fc8bcc576b9a2da",
+      "spirecomm/parity/CardGroupRngPatch$ByType.class": "57132ed36fdc95aaa6cea4f85f3fe660b925830e3b64879d511683b2154a725b",
+      "spirecomm/parity/CardGroupRngPatch.class": "c81b295ffce574fd1a8982e24dcf0054db2e1154f63c16a118ebff0254b1828f",
+      "spirecomm/parity/CardStatePatch$AddDynamicFields.class": "b1ca804722b1d745e5b8e344e4abb61c3ae7ce99eee85de0b157874fd873be0f",
+      "spirecomm/parity/CardStatePatch$AddRewardPreviews.class": "8c453e165896e9d2bd3cdc789623b0f1cf2e062fef90208d09052744a2fd2298",
+      "spirecomm/parity/CardStatePatch.class": "1f41d70339c544116dcd571f36d6cab6657b9b309037fa79f15749d8318485ec",
+      "spirecomm/parity/CommunicationStatePatch$AddRngState.class": "8e21d4b7f0d4547de13d3e01620f37346590e4ebde5b18dbb2c1de51685e5e30",
+      "spirecomm/parity/CommunicationStatePatch.class": "b06337bab7183e47f55d8141d13233a9ee57b3697446d6cce9f5ea88797b6bb3",
+      "spirecomm/parity/ContinuePatch$Advertise.class": "ed9a2a47fad847937c10043c7ccb657e218619e02b5f84e7f6bb3f445cbe306f",
+      "spirecomm/parity/ContinuePatch$Execute.class": "4ca7168768e729794c81afa9bb1c89eb268a26e32a1df804d76b87fdd8ceab96",
+      "spirecomm/parity/ContinuePatch.class": "71a6d03ff5a6235f5b89a58e5ad4921dba1cd708711ea1f9402598f2e362114a",
+      "spirecomm/parity/DiscoveryTimingPatch$CountUpdates.class": "50d19a18ec7af1615198189b2f959dde621f7b30428a741fa95f41c561fef933",
+      "spirecomm/parity/DiscoveryTimingPatch.class": "b4cf01941591d7dfe2429770bc39280d1ecb6ea2359341bfcad18cfc808b1231",
+      "spirecomm/parity/DungeonSeedPatch$LoadedRun.class": "95122b80814d3b7450ed2302fc86cffcfc0494ac40f51610db55968710b796dc",
+      "spirecomm/parity/DungeonSeedPatch$NewRun.class": "dd2af7f5e478677fa9f70037f9a484b8e36e8630e262452c2adfe81914f2d1e1",
+      "spirecomm/parity/DungeonSeedPatch.class": "0555090357c4d95670c7af4b4d4dc55a6bc7e1883f2e8f8890518d61bdfb6b7d",
+      "spirecomm/parity/EventStatePatch$AddMatchAttempts.class": "0ae9ab94f30d92c3fd12a14d713deda7e86aa2b8131a8972841b0ef895bdcc3d",
+      "spirecomm/parity/EventStatePatch.class": "133d4be31c035efa68187311d1091e1b02a7c55b0dff4435cd746f3b61a7cef6",
+      "spirecomm/parity/MatchInputPatch$Advertise.class": "fbaa763c8b36f6b533468246b1b2bd57c2ea10bbcc015847df6163f53c382466",
+      "spirecomm/parity/MatchInputPatch$Execute.class": "9e47aacab95feeb42a49b7812a82f4415d6688b33a7460224ac7ccf348cd3bbd",
+      "spirecomm/parity/MatchInputPatch.class": "b18529411e46ba451c88b2d3ea753dedf8223cbb0163438af40df7c0a69bbc71",
+      "spirecomm/parity/OracleMode.class": "2ff3587cac57a7422141840a2a4d5fff46292ef2211907324f783329244f0f1b",
+      "spirecomm/parity/OracleScenarioPatch$Advertise.class": "8f365bbf1c6d71824bc612a4a65fe6747455d7059859523e6414dd411d2563a9",
+      "spirecomm/parity/OracleScenarioPatch$AttestSmokeBombEffect.class": "b210bc5e10c1ec0b82e493e27d00ee2fb4d5260ffd8a164fa0f5b014e0ddf709",
+      "spirecomm/parity/OracleScenarioPatch$Execute.class": "e1172fa76d834db7ced76415f475f6c5c29c2d6b2ab3d2fc1fb15cf24dc532df",
+      "spirecomm/parity/OracleScenarioPatch.class": "25dce160e155b95bac3d413f990669785b9bae9300b57ac9959a972a9284ef17",
+      "spirecomm/parity/ParityRng$1.class": "45691a01bcfd7de98df6b82a3bfb657fb6162c7bc1d80deda6a9fb6c6fcc6f98",
+      "spirecomm/parity/ParityRng$RngSnapshot.class": "a706886f8ca7c044475e7c978419756c13e509b71ea78b8352989b751f23b755",
+      "spirecomm/parity/ParityRng.class": "f0328926d5930d9b39be7f3f700c8005de583cd73d008b0b8f923f21bd576ba1",
+      "spirecomm/parity/scenario-card-allowlist.tsv": "a813678054dd40e902744e0bf553d18de70ed0f48f3029999d87e2a7ebf5ad2b",
+      "spirecomm/parity/scenario-encounter-allowlist.tsv": "506b981ca7e80e992997375f06f509918bc17e354c54d4b8c225821cb6ff2fa7",
+      "spirecomm/parity/scenario-event-allowlist.tsv": "8c55b9b957d907d7671f8b0a5c78ef38127b5ee7f441cf84a55bff0ef720cf2a",
+      "spirecomm/parity/scenario-potion-allowlist.tsv": "d651325c7fd1c0b0c4c65a9e3469153b079b90a5e2cd85b195246c6b2a6f6565",
+      "spirecomm/parity/scenario-relic-allowlist.tsv": "43a4beef9bd9dd9096389dfe3d6f6abf8afb173c41b3ddcf8afb5a49af02c600"
+    },
+    "output_sha256": "d41a1cae5587fc7f2ea9abedf172431dd36e7bb8199deea135e417d01030faa9",
+    "schema": "sls-oracle-build-v1",
+    "sources": {
+      "ModTheSpire.json": "06c38f65b3eb1cfe127c97753ac31e4a1b5586f5f5ee6e48a7ad2e9bd5ec331b",
+      "resources/spirecomm/parity/scenario-card-allowlist.tsv": "a813678054dd40e902744e0bf553d18de70ed0f48f3029999d87e2a7ebf5ad2b",
+      "resources/spirecomm/parity/scenario-encounter-allowlist.tsv": "506b981ca7e80e992997375f06f509918bc17e354c54d4b8c225821cb6ff2fa7",
+      "resources/spirecomm/parity/scenario-event-allowlist.tsv": "8c55b9b957d907d7671f8b0a5c78ef38127b5ee7f441cf84a55bff0ef720cf2a",
+      "resources/spirecomm/parity/scenario-potion-allowlist.tsv": "d651325c7fd1c0b0c4c65a9e3469153b079b90a5e2cd85b195246c6b2a6f6565",
+      "resources/spirecomm/parity/scenario-relic-allowlist.tsv": "43a4beef9bd9dd9096389dfe3d6f6abf8afb173c41b3ddcf8afb5a49af02c600",
+      "src/spirecomm/parity/BatchResetPatch.java": "3043136356dda0b012ebe72c89aee6f0563f01708f04a9b682cbbae8a6d21ff3",
+      "src/spirecomm/parity/CardGroupRngPatch.java": "656187695cef1f8481600091579c47c613253e3449585b2cce2cba786281e420",
+      "src/spirecomm/parity/CardStatePatch.java": "749c54756dc36b74bb0d48efe425472b252a7a3624747b7f257fc866b2ed6b66",
+      "src/spirecomm/parity/CommunicationStatePatch.java": "a401621a8cb4a887310b028d1e44659ac5f90620dd1e4fe53d6359bbf445105a",
+      "src/spirecomm/parity/ContinuePatch.java": "e07e97baf701f32673c90b311ff6f0660ebb46a1ff238c9763953be3d01c640f",
+      "src/spirecomm/parity/DiscoveryTimingPatch.java": "c7fa5602c28ac3dcf364f051fc8431c84859238a7d71b3a34538923e00ddcc5b",
+      "src/spirecomm/parity/DungeonSeedPatch.java": "c0fca2d08c169bb28809f28a637e4e52ae3ad8f0ab4f36a05d69deee05870af8",
+      "src/spirecomm/parity/EventStatePatch.java": "7c6ef73c7b512d5d375ec7e07588e7a5ee94deca2065c9fdd033393050ff508f",
+      "src/spirecomm/parity/MatchInputPatch.java": "8aed60ae1be00db288546f422dfa50e726422aedf07a523d624d7a5f0959b86f",
+      "src/spirecomm/parity/OracleMode.java": "befdfbcd73ccc98f1034b248827bd94fcf4a950d629acf865ed046a3e8b35bf8",
+      "src/spirecomm/parity/OracleScenarioPatch.java": "60c5e2d2c4722a730bde2986e2a233088bfaef50e75f654348c4263445536cf0",
+      "src/spirecomm/parity/ParityRng.java": "98b98583c8ee18f0bee15a6de072c33edcfc2fe96b1321c58117204266923aa4"
+    },
+    "used_existing_oracle": false
+  },
+  "complete_stock_parity_claimed": false,
+  "date": "2026-10-05",
+  "default_mode": "production",
+  "double_build_identical": true,
+  "instrumentation_schema": "spirecomm-parity-v11",
+  "jvm_mode_probes": {
+    "default": {
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "ORACLE_MODE_OK production"
+    },
+    "invalid": {
+      "returncode": 1,
+      "stderr": "Exception in thread \"main\" java.lang.ExceptionInInitializerError\n\tat OracleModeProbe.main(OracleModeProbe.java:11)\nCaused by: java.lang.IllegalArgumentException: sls.oracle.mode must be production or validation\n\tat spirecomm.parity.OracleMode.readMode(OracleMode.java:13)\n\tat spirecomm.parity.OracleMode.<clinit>(OracleMode.java:6)\n\t... 1 more\n",
+      "stdout": ""
+    },
+    "production": {
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "ORACLE_MODE_OK production"
+    },
+    "validation": {
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "ORACLE_MODE_OK validation"
+    }
+  },
+  "legacy_baseline_comparison": {
+    "added": [],
+    "different_bytes": [
+      "ModTheSpire.json",
+      "spirecomm/parity/CardStatePatch$AddDynamicFields.class",
+      "spirecomm/parity/CardStatePatch$AddRewardPreviews.class",
+      "spirecomm/parity/EventStatePatch$AddMatchAttempts.class",
+      "spirecomm/parity/EventStatePatch.class"
+    ],
+    "disassembly_equal": {
+      "spirecomm/parity/CardStatePatch$AddDynamicFields.class": true,
+      "spirecomm/parity/CardStatePatch$AddRewardPreviews.class": true,
+      "spirecomm/parity/EventStatePatch$AddMatchAttempts.class": true,
+      "spirecomm/parity/EventStatePatch.class": true
+    },
+    "new_sha256": "e4b508dbbfd3f170a341c11ec3fba39c370953bc7d23f1df98bbd97781f52f91",
+    "old_sha256": "d034ed56bf7c93de8c82404ff57aaba62a9256def8402441251481f91c50e191",
+    "removed": []
+  },
+  "mod_version": "1.1.0",
+  "mode_contract": "sls-oracle-mode-v1",
+  "native_source_sha256": "fe354a23c7584d68d0a2b6681b8dfd4e97d98e107b7ddf57c479060d91468f39",
+  "normal_start_win_rate_measured": false,
+  "policy_input_changed": false,
+  "runtime_smokes": {
+    "production": {
+      "card_probe_completed": false,
+      "diagnostic_fields_present": false,
+      "oracle_sha256": "d41a1cae5587fc7f2ea9abedf172431dd36e7bb8199deea135e417d01030faa9",
+      "profile": "IRONCLAD_A20_ACT1",
+      "recovery_journal_sha256": "c23f059f975be3aaa821ebb25000ff9b60f20982d33360fc80f5f9e28ad6b226",
+      "recovery_status": "RECOVERED",
+      "returned_to_menu": true,
+      "scenario_command_available": false,
+      "seed": 0,
+      "status": "PASS",
+      "trace_sha256": "6ead18b1609a0a8b346c35b84e0907bc7d34c39cc9450e26b3c10e908690a3a8"
+    },
+    "validation": {
+      "card_probe_completed": true,
+      "diagnostic_fields_present": true,
+      "oracle_sha256": "d41a1cae5587fc7f2ea9abedf172431dd36e7bb8199deea135e417d01030faa9",
+      "profile": "IRONCLAD_A20_ACT1",
+      "recovery_journal_sha256": "793b6f2b8ab7f1cf2b3f0c2e4a41b5cb7bf244ae67bdc36b6b3389ca7aa0d1b3",
+      "recovery_status": "RECOVERED",
+      "returned_to_menu": true,
+      "scenario_command_available": true,
+      "seed": 0,
+      "status": "PASS",
+      "trace_sha256": "cc0bbd9729c67576e92193d4cebafacacdc5f1268c11bce0a3fa435200b24e93"
+    }
+  },
+  "schema": "sls-oracle-qualification-v1",
+  "training_implementation_sha256": "04fa179d6bc36cd3c595c9c9639c3112546bbb343bc06f3b8c9c3dab88f265e7"
+}

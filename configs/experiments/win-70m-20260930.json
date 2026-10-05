@@ -1,0 +1,35 @@
+{
+  "schema": "sls-win-70m-budget-experiment-v1",
+  "config": "configs/train/ironclad_a20_act1_win_70m_continuation.toml",
+  "config_sha256": "63a1c55a68aa57edc141e72200ca6e81095a7a8aced87afa3b1e941d34e1efe7",
+  "hypothesis": "More training under the fixed Win objective can improve natural-start A20 Act1 full clear probability; no claim that reaching 70M necessarily improves it.",
+  "control": "frozen 56M champion evaluated on exactly the same development seeds/runtime",
+  "experimental_variable": "additional training budget under Win-only reward; no lambda/normalization/critic/lr/native changes",
+  "source": "complete Win 58.015744M latest.pt, Adam/RNG/workers/memory retained",
+  "additional_decisions": 11984256,
+  "training_seed": 120000000,
+  "training_seed_handling": "continue saved next_seed and all RNG state; no new training seed or reset",
+  "periodic_selection_seeds": [
+    8000000000000,
+    8000000000512
+  ],
+  "development_confirmation_seeds": [
+    8000002000000,
+    8000002002048
+  ],
+  "reserved_final_seeds": [
+    9000000000000,
+    9000000004096
+  ],
+  "primary_endpoint": "70M fixed-budget endpoint versus frozen champion; selected-best is separately confirmed and secondary",
+  "success_rule": "primary paired delta >= 0.02, exact McNemar p<0.05 and lower 95% paired interval>0, all health counters zero; secondary selected model must not clearly contradict. One training seed limits recipe generalization.",
+  "failure_rule": "endpoint and selected model both have upper paired 95% interval <= 0, or reproducible runtime failure. Otherwise inconclusive; do not automatically add steps.",
+  "after_no_improvement": "Stop pure budget extension. Use measured critic/advantage/credit evidence to choose one Win-only lambda or normalization experiment; do not conclude lambda is broken from lambda**T alone.",
+  "estimated_gpu_hours": [
+    38,
+    48
+  ],
+  "wall_limit_hours": 60,
+  "reproducibility": "state-preserving implementation fork, not exact 4b4028c continuation; PPO KL diagnostic sampling and selection changed, source digests pinned; full losses/model/reward/native/worker layout unchanged",
+  "final_policy": "Do not consume 9e12 during training. Freeze one candidate/hash/runtime/batching and baseline using development only, then evaluate 4096 paired final seeds once. No selection on final. Real stock-game full-run claims require stock-game trials."
+}

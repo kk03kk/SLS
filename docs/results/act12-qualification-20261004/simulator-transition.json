@@ -1,0 +1,16 @@
+{
+  "schema": "sls-curriculum-simulator-transition-v1",
+  "status": "VERIFIED_RULE_CORRECTION",
+  "semantics_revision": "sls-snecko-tail-whip-order-v1",
+  "source_native_source_sha256": "1e30bb6cfa32f600cd63c59983c14ab8928fac4452c1586d630295d2c6ff9453",
+  "target_native_source_sha256": "fe354a23c7584d68d0a2b6681b8dfd4e97d98e107b7ddf57c479060d91468f39",
+  "transfer_mode": "weights-only",
+  "exact_resume_allowed": false,
+  "source_profile": "IRONCLAD_A20_ACT1",
+  "target_profile": "IRONCLAD_A20_ACT2",
+  "reason": "Correct A17+ Snecko debuff queue order; evaluate frozen parent and new policy under the corrected Act2 rules.",
+  "evidence": {
+    "snecko-before.json": "c1890a20a10004909b8ad2dd17844beba8657189ab83d387df0f519507591fc0",
+    "snecko-after.json": "4bcfc6fcb4432e74fd237df0ce7973ac6f1660763c2067e5a6c1999aecf5299c"
+  }
+}

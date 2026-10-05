@@ -1,0 +1,305 @@
+{
+  "schema": "sls-stage-local-validation-v1",
+  "native_source_sha256": "1e30bb6cfa32f600cd63c59983c14ab8928fac4452c1586d630295d2c6ff9453",
+  "native_artifact": {
+    "path": "D:\\SLS\\local\\build\\native\\cpython-312\\_lightspeed.cp312-win_amd64.pyd",
+    "sha256": "85e8c5d76028211e8afb95ed46c0730d75d5ca9922b955e161f6bbb0df9f4781",
+    "source_sha256": "1e30bb6cfa32f600cd63c59983c14ab8928fac4452c1586d630295d2c6ff9453",
+    "git_commit": "c2f315876609f1e9ad72fbcca5f143d18409b280"
+  },
+  "final_training_implementation_sha256": "9da7e28c7a2fc83fcbc1e289dade65dddb60d03fdf6a1670c9ad2fb011bc3bbf",
+  "real_model_runtime_checks": [
+    {
+      "file": "baseline-runtime.json",
+      "checkpoint_sha256": "9555c8608155ba262901757cd57d76f854f1cd76a5b6126375e832fa0a714710",
+      "wins": 47,
+      "n": 64,
+      "runtime": {
+        "cpu_interop_threads": 16,
+        "cpu_threads": 2,
+        "cuda": "13.0",
+        "deterministic_algorithms": true,
+        "environment_shards": 4,
+        "float32_matmul_precision": "highest",
+        "gpu": "NVIDIA GeForce RTX 5070 Laptop GPU",
+        "hostname": "FZYSSY",
+        "mkldnn_enabled": true,
+        "platform": "Windows-11-10.0.26200-SP0",
+        "python": "3.12.12 | packaged by Anaconda, Inc. | (main, Oct 21 2025, 20:05:38) [MSC v.1929 64 bit (AMD64)]",
+        "torch": "2.10.0+cu130"
+      },
+      "health": {
+        "backend_errors": 0,
+        "backend_truncations": 0,
+        "step_limits": 0,
+        "cycle_limits": 0,
+        "timeouts": 0
+      }
+    },
+    {
+      "file": "progress-endpoint-runtime.json",
+      "checkpoint_sha256": "965325a6c9d084bbc2b2204700e8b4d9f824915988a2f417fbe7c995ebcc74ad",
+      "wins": 46,
+      "n": 64,
+      "runtime": {
+        "cpu_interop_threads": 16,
+        "cpu_threads": 2,
+        "cuda": "13.0",
+        "deterministic_algorithms": true,
+        "environment_shards": 4,
+        "float32_matmul_precision": "highest",
+        "gpu": "NVIDIA GeForce RTX 5070 Laptop GPU",
+        "hostname": "FZYSSY",
+        "mkldnn_enabled": true,
+        "platform": "Windows-11-10.0.26200-SP0",
+        "python": "3.12.12 | packaged by Anaconda, Inc. | (main, Oct 21 2025, 20:05:38) [MSC v.1929 64 bit (AMD64)]",
+        "torch": "2.10.0+cu130"
+      },
+      "health": {
+        "backend_errors": 0,
+        "backend_truncations": 0,
+        "step_limits": 0,
+        "cycle_limits": 0,
+        "timeouts": 0
+      }
+    },
+    {
+      "file": "progress-selected-runtime.json",
+      "checkpoint_sha256": "df701b00879367178873bdb7781120359527c11240c20543df948102de74f508",
+      "wins": 46,
+      "n": 64,
+      "runtime": {
+        "cpu_interop_threads": 16,
+        "cpu_threads": 2,
+        "cuda": "13.0",
+        "deterministic_algorithms": true,
+        "environment_shards": 4,
+        "float32_matmul_precision": "highest",
+        "gpu": "NVIDIA GeForce RTX 5070 Laptop GPU",
+        "hostname": "FZYSSY",
+        "mkldnn_enabled": true,
+        "platform": "Windows-11-10.0.26200-SP0",
+        "python": "3.12.12 | packaged by Anaconda, Inc. | (main, Oct 21 2025, 20:05:38) [MSC v.1929 64 bit (AMD64)]",
+        "torch": "2.10.0+cu130"
+      },
+      "health": {
+        "backend_errors": 0,
+        "backend_truncations": 0,
+        "step_limits": 0,
+        "cycle_limits": 0,
+        "timeouts": 0
+      }
+    },
+    {
+      "file": "win-endpoint-runtime.json",
+      "checkpoint_sha256": "5d525638ffb1562ddffc14c2d7d72887592f716bec87309043ea8c530f869283",
+      "wins": 50,
+      "n": 64,
+      "runtime": {
+        "cpu_interop_threads": 16,
+        "cpu_threads": 2,
+        "cuda": "13.0",
+        "deterministic_algorithms": true,
+        "environment_shards": 4,
+        "float32_matmul_precision": "highest",
+        "gpu": "NVIDIA GeForce RTX 5070 Laptop GPU",
+        "hostname": "FZYSSY",
+        "mkldnn_enabled": true,
+        "platform": "Windows-11-10.0.26200-SP0",
+        "python": "3.12.12 | packaged by Anaconda, Inc. | (main, Oct 21 2025, 20:05:38) [MSC v.1929 64 bit (AMD64)]",
+        "torch": "2.10.0+cu130"
+      },
+      "health": {
+        "backend_errors": 0,
+        "backend_truncations": 0,
+        "step_limits": 0,
+        "cycle_limits": 0,
+        "timeouts": 0
+      }
+    },
+    {
+      "file": "win-selected-runtime.json",
+      "checkpoint_sha256": "e416801c849ba3e339074c05d52a47512fbede65dfee108ef27305edb6477a6b",
+      "wins": 54,
+      "n": 64,
+      "runtime": {
+        "cpu_interop_threads": 16,
+        "cpu_threads": 2,
+        "cuda": "13.0",
+        "deterministic_algorithms": true,
+        "environment_shards": 4,
+        "float32_matmul_precision": "highest",
+        "gpu": "NVIDIA GeForce RTX 5070 Laptop GPU",
+        "hostname": "FZYSSY",
+        "mkldnn_enabled": true,
+        "platform": "Windows-11-10.0.26200-SP0",
+        "python": "3.12.12 | packaged by Anaconda, Inc. | (main, Oct 21 2025, 20:05:38) [MSC v.1929 64 bit (AMD64)]",
+        "torch": "2.10.0+cu130"
+      },
+      "health": {
+        "backend_errors": 0,
+        "backend_truncations": 0,
+        "step_limits": 0,
+        "cycle_limits": 0,
+        "timeouts": 0
+      }
+    }
+  ],
+  "original_corpus_hash_checks": [
+    {
+      "seed": 20260926,
+      "sha256": "3a5ede7dcbb93297b1f88ecf90c37e2b26a13683ede3339edda31c1fb820068e",
+      "boundaries": 169,
+      "terminal": true
+    },
+    {
+      "seed": 0,
+      "sha256": "bbc8ea3e3b339f7443154921472ac771fb0c4c023807351d1a02592d2805656b",
+      "boundaries": 160,
+      "terminal": true
+    },
+    {
+      "seed": 3,
+      "sha256": "03d54251c1e47dfca9b9ea89cde05ddb01156b2269a468af31e5761002972219",
+      "boundaries": 158,
+      "terminal": true
+    },
+    {
+      "seed": 4,
+      "sha256": "3e57fbedc484881323bdb8ab4d41a54a7f9474c9914f6d0446f7b7cac15cf312",
+      "boundaries": 182,
+      "terminal": true
+    },
+    {
+      "seed": 5,
+      "sha256": "80fca563e502224b3db92d83dec60ec8eeaa66dac0de3512054075670750989d",
+      "boundaries": 200,
+      "terminal": true
+    },
+    {
+      "seed": 6,
+      "sha256": "6a70234939a525d6a16b66bb10dea0b066a0abc76b95d9a63df9c16931b67576",
+      "boundaries": 154,
+      "terminal": true
+    },
+    {
+      "seed": 7,
+      "sha256": "6f704c413f8f4e66bad7a026cdb3855269a11f64761d0ac85e50e2ded8042ab2",
+      "boundaries": 141,
+      "terminal": true
+    },
+    {
+      "seed": 8,
+      "sha256": "2ef9e561b1f538afc9d30b7ce7950e560e8f6893bc66016b17724e524f60f9c5",
+      "boundaries": 181,
+      "terminal": true
+    },
+    {
+      "seed": 9,
+      "sha256": "1d7b7b99065d77a8d610736deabc1643ac7687e8aa6da87cc22024f2aeb513ce",
+      "boundaries": 219,
+      "terminal": true
+    },
+    {
+      "seed": 10,
+      "sha256": "4bc99d3380806efd1d4ce1408d50e44a2a4e103a1769c6706aaa3dca9d3a2066",
+      "boundaries": 184,
+      "terminal": true
+    }
+  ],
+  "original_bytecode_executed": false,
+  "ppo_microcheck": {
+    "schema": "sls-local-real-checkpoint-probe-v1",
+    "source_checkpoint_sha256": "9555c8608155ba262901757cd57d76f854f1cd76a5b6126375e832fa0a714710",
+    "production_training": false,
+    "probe_decisions": 2048,
+    "workers": 8,
+    "minibatch_sequences": 2,
+    "seed": 150000000,
+    "source_weights_preserved_at_start": true,
+    "optimizer_reset": true,
+    "optimizer_metrics": {
+      "policy": 0.0016755135729908943,
+      "value": 0.04267794266343117,
+      "entropy": 0.17261739075183868,
+      "loss": 0.022669263184070587,
+      "approx_kl": 0.007677758112549782,
+      "gradient_norm": 2.5980448722839355,
+      "gradient_clip_fraction": 0.8125,
+      "epochs_completed": 1.0,
+      "entropy_coefficient": 0.002,
+      "entropy_schedule_progress": 0.0,
+      "learning_rate": 3.125e-05,
+      "kl_early_stop": 1.0,
+      "entropy_term": 0.0003452347815036774,
+      "entropy_to_policy_loss_ratio": 0.20604714104906485,
+      "value_explained_variance": 0.22598624229431152,
+      "samples_combat_fraction": 0.66943359375,
+      "advantage_mean_combat": -0.009821738116443157,
+      "advantage_std_combat": 0.32124629616737366,
+      "advantage_scale_combat": 3.1128762597475177,
+      "advantage_normalized_std_combat": 1.0,
+      "samples_run_fraction": 0.14453125,
+      "advantage_mean_run": -0.026828037574887276,
+      "advantage_std_run": 0.1993081122636795,
+      "advantage_scale_run": 5.017356987975763,
+      "advantage_normalized_std_run": 0.9999998807907104,
+      "samples_choice_fraction": 0.18603515625,
+      "advantage_mean_choice": -0.029777243733406067,
+      "advantage_std_choice": 0.20590375363826752,
+      "advantage_scale_choice": 4.8566377919968655,
+      "advantage_normalized_std_choice": 0.9999999403953552,
+      "approx_kl_epoch_1": 0.022032752633094788,
+      "approx_kl_final": 0.022032752633094788,
+      "clip_fraction": 0.06298828125,
+      "kl_diagnostic_sample_fraction": 1.0
+    },
+    "exact_actions_replayed": true,
+    "exact_weights_replayed": true,
+    "all_metrics_finite": true,
+    "training_implementation_sha256": "39c3805da025851a8ea0b46eb7fc07277c0eac47739f5fce9e457d98436a5769",
+    "simulator": {
+      "native_source_sha256": "1e30bb6cfa32f600cd63c59983c14ab8928fac4452c1586d630295d2c6ff9453",
+      "native_artifact": {
+        "path": "D:\\SLS\\local\\build\\native\\cpython-312\\_lightspeed.cp312-win_amd64.pyd",
+        "sha256": "85e8c5d76028211e8afb95ed46c0730d75d5ca9922b955e161f6bbb0df9f4781",
+        "source_sha256": "1e30bb6cfa32f600cd63c59983c14ab8928fac4452c1586d630295d2c6ff9453",
+        "git_commit": "c2f315876609f1e9ad72fbcca5f143d18409b280"
+      },
+      "content_scope_id": "sls-ironclad-ascension-content-v1",
+      "content_scope_sha256": "e92ab9e347bac50422d148d7e23b505f99c68eb3d515f0b7bcebf8862981490d"
+    },
+    "runtime": {
+      "python": "3.12.12 | packaged by Anaconda, Inc. | (main, Oct 21 2025, 20:05:38) [MSC v.1929 64 bit (AMD64)]",
+      "platform": "Windows-11-10.0.26200-SP0",
+      "hostname": "FZYSSY",
+      "torch": "2.10.0+cu130",
+      "cuda": "13.0",
+      "gpu": "NVIDIA GeForce RTX 5070 Laptop GPU",
+      "cpu_threads": 2,
+      "cpu_interop_threads": 16,
+      "mkldnn_enabled": true,
+      "float32_matmul_precision": "high",
+      "deterministic_algorithms": true,
+      "environment_shards": 4
+    }
+  },
+  "paired_tool_smoke": {
+    "schema": "sls-paired-checkpoint-evaluation-v2",
+    "episodes": 4,
+    "chunks_per_model": 2
+  },
+  "validation_notes": "Runtime checks are reused development seeds, not model promotion; micro-update is reduced worker/minibatch and not production performance.",
+  "pytest": {
+    "passed": 945,
+    "skipped": 1,
+    "warnings": 4,
+    "seconds": 65.57
+  },
+  "static_checks": {
+    "ruff": "PASS",
+    "vocabulary": "PASS",
+    "training_configs": "19/19",
+    "git_whitespace": "PASS"
+  }
+}

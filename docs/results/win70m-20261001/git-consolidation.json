@@ -1,0 +1,44 @@
+{
+  "schema": "sls-main-consolidation-evidence-v1",
+  "date": "2026-10-02",
+  "inspected_head": "e0024449e2ef7c5adc3360a283542e5dec6b3a5c",
+  "refs_before": [
+    {
+      "ref": "refs/heads/codex/a20-act1-60m-stable",
+      "tip": "31149a9083e0cec84185c7814f07750513a71bbc",
+      "commits_not_in_latest_work": 0
+    },
+    {
+      "ref": "refs/heads/codex/win70m-evidence-20260930",
+      "tip": "e0024449e2ef7c5adc3360a283542e5dec6b3a5c",
+      "commits_not_in_latest_work": 0
+    },
+    {
+      "ref": "refs/heads/main",
+      "tip": "4b4028cf5c831bb4c22a5e2edd6b7599e1779730",
+      "commits_not_in_latest_work": 0
+    },
+    {
+      "ref": "refs/remotes/origin/codex/a20-act1-60m-stable",
+      "tip": "7101998a0baa5f95ae7ae579393b2579d8cd2e77",
+      "commits_not_in_latest_work": 0
+    },
+    {
+      "ref": "refs/remotes/origin/codex/win70m-evidence-20260930",
+      "tip": "e0024449e2ef7c5adc3360a283542e5dec6b3a5c",
+      "commits_not_in_latest_work": 0
+    },
+    {
+      "ref": "refs/remotes/origin/main",
+      "tip": "4b4028cf5c831bb4c22a5e2edd6b7599e1779730",
+      "commits_not_in_latest_work": 0
+    }
+  ],
+  "destination": "main",
+  "history_rewrite": false,
+  "old_refs_reachable_from_latest_work": true,
+  "backup_bundle": "runs/archives/git-branches-before-main-20261002.bundle",
+  "backup_sha256": "cd101a1f0c703707b649912dce6a998269b1784bee1fd1f1616bf2c00d7fadde",
+  "authorization": "Human explicitly requested main only and deletion of all other branches.",
+  "agents_md": "Existing user working change preserved; not edited or committed."
+}

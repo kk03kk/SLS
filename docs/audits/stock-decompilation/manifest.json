@@ -1,0 +1,41 @@
+{
+  "schema": "sls-stock-decompilation-v1",
+  "authority": {
+    "jar": "../../local/external/original-game/desktop-1.0.jar",
+    "absolute_jar_at_generation": "D:\\SLS\\local\\external\\original-game\\desktop-1.0.jar",
+    "sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+    "size_bytes": 365086855
+  },
+  "decompiler": {
+    "name": "CFR",
+    "version": "0.152",
+    "jar": "../../local/build/tools/cfr/cfr-0.152.jar",
+    "sha256": "f686e8f3ded377d7bc87d216a90e9e9512df4156e75b06c655a16648ae8765b2",
+    "source": "https://www.benf.org/other/cfr/cfr-0.152.jar",
+    "java_runtime": "21.0.9",
+    "arguments": [
+      "--outputdir",
+      "D:\\SLS\\decompiled\\desktop-1.0\\source",
+      "--caseinsensitivefs",
+      "true",
+      "--silent",
+      "true",
+      "--clobber",
+      "true"
+    ]
+  },
+  "output": {
+    "directory": "source",
+    "all_jar_class_entries": 7038,
+    "game_class_entries_including_inner_classes": 2306,
+    "game_top_level_classes": 2008,
+    "decompiled_game_java_files": 2008,
+    "total_java_files": 4873,
+    "total_files": 4874,
+    "total_bytes": 22220042,
+    "summary": "source/summary.txt",
+    "game_namespace_problem_methods": 0,
+    "third_party_problem_methods": 14
+  },
+  "authority_note": "The JAR bytecode identified by SHA256 is authoritative. Decompiled Java is a readable audit projection and must not silently replace bytecode evidence when CFR output is ambiguous."
+}

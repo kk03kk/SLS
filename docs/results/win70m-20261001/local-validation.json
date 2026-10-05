@@ -1,0 +1,41 @@
+{
+  "schema": "sls-win90m-local-validation-v1",
+  "date": "2026-10-02",
+  "runtime": {
+    "python": "3.12.12 | packaged by Anaconda, Inc. | (main, Oct 21 2025, 20:05:38) [MSC v.1929 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "torch": "2.10.0+cu130",
+    "gpu": "NVIDIA GeForce RTX 5070 Laptop GPU"
+  },
+  "pytest": {
+    "passed": 957,
+    "skipped": 1,
+    "warnings": 4,
+    "seconds": 74.8,
+    "skipped_reason": "optional old exported Act1 policy unavailable",
+    "warnings_reason": "explicit runtime/provenance rebind tests"
+  },
+  "checks": {
+    "ruff": "PASS",
+    "training_configs": "20/20",
+    "vocabulary": "PASS",
+    "submission_dry_run": "PASS",
+    "source_bundle_corruption_rejected": "PASS",
+    "actual_64_worker_endpoint_state_preserved": "PASS",
+    "git_whitespace": "PASS"
+  },
+  "training_implementation_sha256": "9da7e28c7a2fc83fcbc1e289dade65dddb60d03fdf6a1670c9ad2fb011bc3bbf",
+  "native_source_sha256": "1e30bb6cfa32f600cd63c59983c14ab8928fac4452c1586d630295d2c6ff9453",
+  "native_artifact": {
+    "path": "D:\\SLS\\local\\build\\native\\cpython-312\\_lightspeed.cp312-win_amd64.pyd",
+    "sha256": "85e8c5d76028211e8afb95ed46c0730d75d5ca9922b955e161f6bbb0df9f4781",
+    "source_sha256": "1e30bb6cfa32f600cd63c59983c14ab8928fac4452c1586d630295d2c6ff9453",
+    "git_commit": "c2f315876609f1e9ad72fbcca5f143d18409b280"
+  },
+  "server_training_executed_by_agent": false,
+  "limitations": [
+    "No new stock-bytecode qualification (local game JAR unavailable).",
+    "No 90M training or production A100 update locally; compute preflight must pass.",
+    "Windows and Linux inference outcomes are not assumed identical."
+  ]
+}

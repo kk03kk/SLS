@@ -1,0 +1,16 @@
+{
+  "schema": "sls-act12-rule-discrepancy-v1",
+  "rule": "Snecko A17+ Tail Whip debuff order with one Artifact",
+  "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "native_source_sha256": "1e30bb6cfa32f600cd63c59983c14ab8928fac4452c1586d630295d2c6ff9453",
+  "native_powers": {
+    "WEAK": 2
+  },
+  "expected_stock_debuffs": {
+    "VULNERABLE": 2
+  },
+  "actual_debuffs": {
+    "WEAK": 2
+  },
+  "comparison_type": "stock bytecode ordering versus native controlled scenario, not stock runtime trajectory"
+}

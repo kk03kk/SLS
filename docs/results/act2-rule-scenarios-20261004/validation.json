@@ -1,0 +1,37 @@
+{
+  "schema": "sls-act2-bounded-rule-validation-v1",
+  "date": "2026-10-04",
+  "source_git_base": "9826a8b",
+  "tested_worktree_sources_canonical_lf": {
+    "tests/simulator/test_a20_late_act_parity.py": "5328b723ec24378b4839fd782c232287979c4c979d522ca2c78777740cc3f38a",
+    "tools/audit_act2_rule_scenarios.py": "c558b003703b83e92e47b733906cbd782c3df5d0a71ff273c57cf948bf5fd9ae"
+  },
+  "native_source_sha256": "fe354a23c7584d68d0a2b6681b8dfd4e97d98e107b7ddf57c479060d91468f39",
+  "native_artifact": {
+    "path": "D:\\SLS\\local\\build\\native\\cpython-312\\_lightspeed.cp312-win_amd64.pyd",
+    "sha256": "d57aa10cc85ce817220fe8ce8d5eefe9004bd6804d96b06e857d9c5706bf0e56",
+    "source_sha256": "fe354a23c7584d68d0a2b6681b8dfd4e97d98e107b7ddf57c479060d91468f39",
+    "git_commit": "cc2c5b25df1cecada739c9de5f3c0d080cf9bc97"
+  },
+  "training_implementation_sha256": "a4d23e8bea1996e2148660924323317db633dcfc5657b1c71b4a98b7269ac6de",
+  "native_and_training_identities_unchanged": true,
+  "tests": {
+    "command": "python -m pytest tests/simulator tests/test_a20_curriculum.py tests/rl/test_curriculum_simulator_transition.py -q --junitxml=local/reports/act2-rule-scenarios-20261004/pytest.xml",
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "187",
+    "time": "20.789",
+    "timestamp": "2026-10-04T23:15:25.245274+08:00",
+    "hostname": "FZYSSY",
+    "reported_wall_seconds": 20.79
+  },
+  "ruff": {
+    "command": "python -m ruff check .",
+    "status": "passed"
+  },
+  "stock_execution": "javap bytecode only; game not launched",
+  "new_rule_cases": 11,
+  "no_policy_or_server_training": true
+}

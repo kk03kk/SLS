@@ -1,0 +1,10 @@
+{
+  "schema": "sls-evidence-files-v1",
+  "files": {
+    "native-traces.json": "18c6b8af318b724abc8fc3f5988508a29ccba6e6b2570b6ad4f1df72f5c951d9",
+    "pytest.xml": "1b754d04e560a39cfd785f3df36cc9232544d2540babe34770b95e166a286856",
+    "README.md": "f0fa00c5669186526af616d84b0a8c24c299c814427c3112b8674c22b0cc4053",
+    "summary.json": "66804555f9437d2056a973a7918b5ecbf82a5104d57b3a297bf696acb579b73d",
+    "validation.json": "0319aa79587b827e0aa0964fdab2ebdccb1edd2f8834b317f20893c14d04b729"
+  }
+}

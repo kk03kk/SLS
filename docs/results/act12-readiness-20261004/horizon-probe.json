@@ -1,0 +1,782 @@
+[
+  {
+    "profile": "IRONCLAD_A20_ACT1",
+    "seed": 0,
+    "decisions": 39,
+    "terminal_screen": "COMBAT_REWARD",
+    "terminal_act": 1,
+    "reason": "ACT_1_CLEARED",
+    "reward_screens": [
+      {
+        "act": 1,
+        "floor": 0,
+        "screen": "CARD_REWARD",
+        "actions": 10
+      },
+      {
+        "act": 1,
+        "floor": 1,
+        "screen": "COMBAT_REWARD",
+        "actions": 5
+      },
+      {
+        "act": 1,
+        "floor": 4,
+        "screen": "CARD_REWARD",
+        "actions": 10
+      },
+      {
+        "act": 1,
+        "floor": 7,
+        "screen": "COMBAT_REWARD",
+        "actions": 5
+      },
+      {
+        "act": 1,
+        "floor": 8,
+        "screen": "COMBAT_REWARD",
+        "actions": 6
+      },
+      {
+        "act": 1,
+        "floor": 9,
+        "screen": "COMBAT_REWARD",
+        "actions": 4
+      },
+      {
+        "act": 1,
+        "floor": 9,
+        "screen": "COMBAT_REWARD",
+        "actions": 2
+      },
+      {
+        "act": 1,
+        "floor": 10,
+        "screen": "COMBAT_REWARD",
+        "actions": 6
+      },
+      {
+        "act": 1,
+        "floor": 11,
+        "screen": "COMBAT_REWARD",
+        "actions": 8
+      },
+      {
+        "act": 1,
+        "floor": 11,
+        "screen": "COMBAT_REWARD",
+        "actions": 7
+      },
+      {
+        "act": 1,
+        "floor": 13,
+        "screen": "COMBAT_REWARD",
+        "actions": 5
+      },
+      {
+        "act": 1,
+        "floor": 14,
+        "screen": "COMBAT_REWARD",
+        "actions": 5
+      }
+    ],
+    "battles_skipped": true
+  },
+  {
+    "profile": "IRONCLAD_A20_ACT1",
+    "seed": 3,
+    "decisions": 38,
+    "terminal_screen": "COMBAT_REWARD",
+    "terminal_act": 1,
+    "reason": "ACT_1_CLEARED",
+    "reward_screens": [
+      {
+        "act": 1,
+        "floor": 0,
+        "screen": "CARD_REWARD",
+        "actions": 4
+      },
+      {
+        "act": 1,
+        "floor": 1,
+        "screen": "COMBAT_REWARD",
+        "actions": 5
+      },
+      {
+        "act": 1,
+        "floor": 2,
+        "screen": "COMBAT_REWARD",
+        "actions": 5
+      },
+      {
+        "act": 1,
+        "floor": 3,
+        "screen": "CARD_REWARD",
+        "actions": 10
+      },
+      {
+        "act": 1,
+        "floor": 4,
+        "screen": "COMBAT_REWARD",
+        "actions": 6
+      },
+      {
+        "act": 1,
+        "floor": 5,
+        "screen": "COMBAT_REWARD",
+        "actions": 5
+      },
+      {
+        "act": 1,
+        "floor": 6,
+        "screen": "COMBAT_REWARD",
+        "actions": 6
+      },
+      {
+        "act": 1,
+        "floor": 8,
+        "screen": "COMBAT_REWARD",
+        "actions": 7
+      },
+      {
+        "act": 1,
+        "floor": 8,
+        "screen": "COMBAT_REWARD",
+        "actions": 6
+      },
+      {
+        "act": 1,
+        "floor": 9,
+        "screen": "COMBAT_REWARD",
+        "actions": 4
+      },
+      {
+        "act": 1,
+        "floor": 9,
+        "screen": "COMBAT_REWARD",
+        "actions": 2
+      },
+      {
+        "act": 1,
+        "floor": 10,
+        "screen": "COMBAT_REWARD",
+        "actions": 6
+      },
+      {
+        "act": 1,
+        "floor": 11,
+        "screen": "COMBAT_REWARD",
+        "actions": 6
+      },
+      {
+        "act": 1,
+        "floor": 13,
+        "screen": "COMBAT_REWARD",
+        "actions": 6
+      },
+      {
+        "act": 1,
+        "floor": 14,
+        "screen": "COMBAT_REWARD",
+        "actions": 6
+      }
+    ],
+    "battles_skipped": true
+  },
+  {
+    "profile": "IRONCLAD_A20_ACT1",
+    "seed": 4,
+    "decisions": 38,
+    "terminal_screen": "COMBAT_REWARD",
+    "terminal_act": 1,
+    "reason": "ACT_1_CLEARED",
+    "reward_screens": [
+      {
+        "act": 1,
+        "floor": 0,
+        "screen": "CARD_REWARD",
+        "actions": 10
+      },
+      {
+        "act": 1,
+        "floor": 1,
+        "screen": "COMBAT_REWARD",
+        "actions": 6
+      },
+      {
+        "act": 1,
+        "floor": 3,
+        "screen": "COMBAT_REWARD",
+        "actions": 6
+      },
+      {
+        "act": 1,
+        "floor": 5,
+        "screen": "COMBAT_REWARD",
+        "actions": 5
+      },
+      {
+        "act": 1,
+        "floor": 7,
+        "screen": "COMBAT_REWARD",
+        "actions": 7
+      },
+      {
+        "act": 1,
+        "floor": 7,
+        "screen": "COMBAT_REWARD",
+        "actions": 6
+      },
+      {
+        "act": 1,
+        "floor": 9,
+        "screen": "COMBAT_REWARD",
+        "actions": 4
+      },
+      {
+        "act": 1,
+        "floor": 9,
+        "screen": "COMBAT_REWARD",
+        "actions": 2
+      },
+      {
+        "act": 1,
+        "floor": 11,
+        "screen": "COMBAT_REWARD",
+        "actions": 5
+      },
+      {
+        "act": 1,
+        "floor": 13,
+        "screen": "COMBAT_REWARD",
+        "actions": 6
+      },
+      {
+        "act": 1,
+        "floor": 14,
+        "screen": "COMBAT_REWARD",
+        "actions": 6
+      }
+    ],
+    "battles_skipped": true
+  },
+  {
+    "profile": "IRONCLAD_A20_ACT2",
+    "seed": 0,
+    "decisions": 74,
+    "terminal_screen": "COMBAT_REWARD",
+    "terminal_act": 2,
+    "reason": "ACT_2_CLEARED",
+    "reward_screens": [
+      {
+        "act": 1,
+        "floor": 0,
+        "screen": "CARD_REWARD",
+        "actions": 10
+      },
+      {
+        "act": 1,
+        "floor": 1,
+        "screen": "COMBAT_REWARD",
+        "actions": 5
+      },
+      {
+        "act": 1,
+        "floor": 4,
+        "screen": "CARD_REWARD",
+        "actions": 10
+      },
+      {
+        "act": 1,
+        "floor": 7,
+        "screen": "COMBAT_REWARD",
+        "actions": 5
+      },
+      {
+        "act": 1,
+        "floor": 8,
+        "screen": "COMBAT_REWARD",
+        "actions": 6
+      },
+      {
+        "act": 1,
+        "floor": 9,
+        "screen": "COMBAT_REWARD",
+        "actions": 4
+      },
+      {
+        "act": 1,
+        "floor": 9,
+        "screen": "COMBAT_REWARD",
+        "actions": 2
+      },
+      {
+        "act": 1,
+        "floor": 10,
+        "screen": "COMBAT_REWARD",
+        "actions": 6
+      },
+      {
+        "act": 1,
+        "floor": 11,
+        "screen": "COMBAT_REWARD",
+        "actions": 8
+      },
+      {
+        "act": 1,
+        "floor": 11,
+        "screen": "COMBAT_REWARD",
+        "actions": 7
+      },
+      {
+        "act": 1,
+        "floor": 13,
+        "screen": "COMBAT_REWARD",
+        "actions": 5
+      },
+      {
+        "act": 1,
+        "floor": 14,
+        "screen": "COMBAT_REWARD",
+        "actions": 5
+      },
+      {
+        "act": 1,
+        "floor": 16,
+        "screen": "COMBAT_REWARD",
+        "actions": 5
+      },
+      {
+        "act": 1,
+        "floor": 17,
+        "screen": "BOSS_REWARD",
+        "actions": 3
+      },
+      {
+        "act": 2,
+        "floor": 18,
+        "screen": "COMBAT_REWARD",
+        "actions": 5
+      },
+      {
+        "act": 2,
+        "floor": 19,
+        "screen": "CARD_REWARD",
+        "actions": 20
+      },
+      {
+        "act": 2,
+        "floor": 20,
+        "screen": "COMBAT_REWARD",
+        "actions": 6
+      },
+      {
+        "act": 2,
+        "floor": 21,
+        "screen": "COMBAT_REWARD",
+        "actions": 5
+      },
+      {
+        "act": 2,
+        "floor": 23,
+        "screen": "COMBAT_REWARD",
+        "actions": 7
+      },
+      {
+        "act": 2,
+        "floor": 25,
+        "screen": "COMBAT_REWARD",
+        "actions": 7
+      },
+      {
+        "act": 2,
+        "floor": 26,
+        "screen": "COMBAT_REWARD",
+        "actions": 2
+      },
+      {
+        "act": 2,
+        "floor": 27,
+        "screen": "COMBAT_REWARD",
+        "actions": 7
+      },
+      {
+        "act": 2,
+        "floor": 28,
+        "screen": "COMBAT_REWARD",
+        "actions": 5
+      },
+      {
+        "act": 2,
+        "floor": 29,
+        "screen": "COMBAT_REWARD",
+        "actions": 5
+      },
+      {
+        "act": 2,
+        "floor": 30,
+        "screen": "COMBAT_REWARD",
+        "actions": 6
+      },
+      {
+        "act": 2,
+        "floor": 31,
+        "screen": "COMBAT_REWARD",
+        "actions": 5
+      }
+    ],
+    "battles_skipped": true
+  },
+  {
+    "profile": "IRONCLAD_A20_ACT2",
+    "seed": 3,
+    "decisions": 73,
+    "terminal_screen": "COMBAT_REWARD",
+    "terminal_act": 2,
+    "reason": "ACT_2_CLEARED",
+    "reward_screens": [
+      {
+        "act": 1,
+        "floor": 0,
+        "screen": "CARD_REWARD",
+        "actions": 4
+      },
+      {
+        "act": 1,
+        "floor": 1,
+        "screen": "COMBAT_REWARD",
+        "actions": 5
+      },
+      {
+        "act": 1,
+        "floor": 2,
+        "screen": "COMBAT_REWARD",
+        "actions": 5
+      },
+      {
+        "act": 1,
+        "floor": 3,
+        "screen": "CARD_REWARD",
+        "actions": 10
+      },
+      {
+        "act": 1,
+        "floor": 4,
+        "screen": "COMBAT_REWARD",
+        "actions": 6
+      },
+      {
+        "act": 1,
+        "floor": 5,
+        "screen": "COMBAT_REWARD",
+        "actions": 5
+      },
+      {
+        "act": 1,
+        "floor": 6,
+        "screen": "COMBAT_REWARD",
+        "actions": 6
+      },
+      {
+        "act": 1,
+        "floor": 8,
+        "screen": "COMBAT_REWARD",
+        "actions": 7
+      },
+      {
+        "act": 1,
+        "floor": 8,
+        "screen": "COMBAT_REWARD",
+        "actions": 6
+      },
+      {
+        "act": 1,
+        "floor": 9,
+        "screen": "COMBAT_REWARD",
+        "actions": 4
+      },
+      {
+        "act": 1,
+        "floor": 9,
+        "screen": "COMBAT_REWARD",
+        "actions": 2
+      },
+      {
+        "act": 1,
+        "floor": 10,
+        "screen": "COMBAT_REWARD",
+        "actions": 6
+      },
+      {
+        "act": 1,
+        "floor": 11,
+        "screen": "COMBAT_REWARD",
+        "actions": 6
+      },
+      {
+        "act": 1,
+        "floor": 13,
+        "screen": "COMBAT_REWARD",
+        "actions": 6
+      },
+      {
+        "act": 1,
+        "floor": 14,
+        "screen": "COMBAT_REWARD",
+        "actions": 6
+      },
+      {
+        "act": 1,
+        "floor": 16,
+        "screen": "COMBAT_REWARD",
+        "actions": 5
+      },
+      {
+        "act": 1,
+        "floor": 17,
+        "screen": "BOSS_REWARD",
+        "actions": 3
+      },
+      {
+        "act": 2,
+        "floor": 18,
+        "screen": "COMBAT_REWARD",
+        "actions": 5
+      },
+      {
+        "act": 2,
+        "floor": 19,
+        "screen": "COMBAT_REWARD",
+        "actions": 5
+      },
+      {
+        "act": 2,
+        "floor": 21,
+        "screen": "COMBAT_REWARD",
+        "actions": 6
+      },
+      {
+        "act": 2,
+        "floor": 22,
+        "screen": "COMBAT_REWARD",
+        "actions": 5
+      },
+      {
+        "act": 2,
+        "floor": 24,
+        "screen": "COMBAT_REWARD",
+        "actions": 6
+      },
+      {
+        "act": 2,
+        "floor": 25,
+        "screen": "COMBAT_REWARD",
+        "actions": 6
+      },
+      {
+        "act": 2,
+        "floor": 26,
+        "screen": "COMBAT_REWARD",
+        "actions": 3
+      },
+      {
+        "act": 2,
+        "floor": 27,
+        "screen": "COMBAT_REWARD",
+        "actions": 2
+      },
+      {
+        "act": 2,
+        "floor": 28,
+        "screen": "COMBAT_REWARD",
+        "actions": 6
+      },
+      {
+        "act": 2,
+        "floor": 29,
+        "screen": "COMBAT_REWARD",
+        "actions": 6
+      },
+      {
+        "act": 2,
+        "floor": 30,
+        "screen": "COMBAT_REWARD",
+        "actions": 6
+      },
+      {
+        "act": 2,
+        "floor": 31,
+        "screen": "COMBAT_REWARD",
+        "actions": 5
+      }
+    ],
+    "battles_skipped": true
+  },
+  {
+    "profile": "IRONCLAD_A20_ACT2",
+    "seed": 4,
+    "decisions": 73,
+    "terminal_screen": "COMBAT_REWARD",
+    "terminal_act": 2,
+    "reason": "ACT_2_CLEARED",
+    "reward_screens": [
+      {
+        "act": 1,
+        "floor": 0,
+        "screen": "CARD_REWARD",
+        "actions": 10
+      },
+      {
+        "act": 1,
+        "floor": 1,
+        "screen": "COMBAT_REWARD",
+        "actions": 6
+      },
+      {
+        "act": 1,
+        "floor": 3,
+        "screen": "COMBAT_REWARD",
+        "actions": 6
+      },
+      {
+        "act": 1,
+        "floor": 5,
+        "screen": "COMBAT_REWARD",
+        "actions": 5
+      },
+      {
+        "act": 1,
+        "floor": 7,
+        "screen": "COMBAT_REWARD",
+        "actions": 7
+      },
+      {
+        "act": 1,
+        "floor": 7,
+        "screen": "COMBAT_REWARD",
+        "actions": 6
+      },
+      {
+        "act": 1,
+        "floor": 9,
+        "screen": "COMBAT_REWARD",
+        "actions": 4
+      },
+      {
+        "act": 1,
+        "floor": 9,
+        "screen": "COMBAT_REWARD",
+        "actions": 2
+      },
+      {
+        "act": 1,
+        "floor": 11,
+        "screen": "COMBAT_REWARD",
+        "actions": 5
+      },
+      {
+        "act": 1,
+        "floor": 13,
+        "screen": "COMBAT_REWARD",
+        "actions": 6
+      },
+      {
+        "act": 1,
+        "floor": 14,
+        "screen": "COMBAT_REWARD",
+        "actions": 6
+      },
+      {
+        "act": 1,
+        "floor": 16,
+        "screen": "COMBAT_REWARD",
+        "actions": 5
+      },
+      {
+        "act": 1,
+        "floor": 17,
+        "screen": "BOSS_REWARD",
+        "actions": 3
+      },
+      {
+        "act": 2,
+        "floor": 18,
+        "screen": "COMBAT_REWARD",
+        "actions": 5
+      },
+      {
+        "act": 2,
+        "floor": 19,
+        "screen": "COMBAT_REWARD",
+        "actions": 5
+      },
+      {
+        "act": 2,
+        "floor": 20,
+        "screen": "COMBAT_REWARD",
+        "actions": 5
+      },
+      {
+        "act": 2,
+        "floor": 21,
+        "screen": "COMBAT_REWARD",
+        "actions": 6
+      },
+      {
+        "act": 2,
+        "floor": 22,
+        "screen": "COMBAT_REWARD",
+        "actions": 5
+      },
+      {
+        "act": 2,
+        "floor": 24,
+        "screen": "COMBAT_REWARD",
+        "actions": 5
+      },
+      {
+        "act": 2,
+        "floor": 25,
+        "screen": "COMBAT_REWARD",
+        "actions": 7
+      },
+      {
+        "act": 2,
+        "floor": 26,
+        "screen": "COMBAT_REWARD",
+        "actions": 3
+      },
+      {
+        "act": 2,
+        "floor": 27,
+        "screen": "CARD_REWARD",
+        "actions": 20
+      },
+      {
+        "act": 2,
+        "floor": 28,
+        "screen": "COMBAT_REWARD",
+        "actions": 7
+      },
+      {
+        "act": 2,
+        "floor": 29,
+        "screen": "COMBAT_REWARD",
+        "actions": 5
+      },
+      {
+        "act": 2,
+        "floor": 30,
+        "screen": "COMBAT_REWARD",
+        "actions": 6
+      },
+      {
+        "act": 2,
+        "floor": 31,
+        "screen": "COMBAT_REWARD",
+        "actions": 5
+      }
+    ],
+    "battles_skipped": true
+  }
+]

@@ -1,0 +1,34 @@
+{
+  "schema": "sls-act12-qualification-validation-v1",
+  "date": "2026-10-04",
+  "role": "local-validation-not-server-training",
+  "native_source_sha256": "fe354a23c7584d68d0a2b6681b8dfd4e97d98e107b7ddf57c479060d91468f39",
+  "training_implementation_sha256": "a4d23e8bea1996e2148660924323317db633dcfc5657b1c71b4a98b7269ac6de",
+  "tests": {
+    "command": "python -m pytest -q",
+    "passed": 1002,
+    "skipped": 1,
+    "warnings": 4,
+    "seconds": 113.77,
+    "output": "full-pytest.txt"
+  },
+  "ruff": {
+    "command": "python -m ruff check .",
+    "status": "passed"
+  },
+  "training_configs": {
+    "command": "python tools/check_training_configs.py",
+    "validated": 20
+  },
+  "vocabulary": {
+    "command": "python tools/generate_policy_vocabulary.py --check",
+    "sha256": "04df4dc504ccf10d389b7b0e798ebc7a1ea2036edfc273a5cf5b11071b3b8ed0"
+  },
+  "micro_probe": "transfer-micro-result.json",
+  "limitations": [
+    "No new 90M artifacts",
+    "No stock full-game runtime comparison",
+    "No win-rate improvement claimed",
+    "Micro batch is not a learning experiment"
+  ]
+}

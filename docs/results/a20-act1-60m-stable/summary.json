@@ -1,0 +1,113 @@
+{
+  "schema": "sls-experiment-closeout-v1",
+  "experiment": "ironclad-a20-act1-v4-60m-stable",
+  "status": "COMPLETE",
+  "trained_environment_steps": 60014592,
+  "selected_environment_steps": 56000512,
+  "selected_update": 610,
+  "checkpoint_sha256": "9555c8608155ba262901757cd57d76f854f1cd76a5b6126375e832fa0a714710",
+  "policy_filename": "ironclad-a20-act1-56m-champion.pt",
+  "policy_sha256": "fdc820cf0f5d807d15ab7834981f280ae370d54288b9d02b45dafe6d3c987536",
+  "model_weights_sha256": "fd92bfe0ba3df6038d2e43d2315029d68eea639c0368bff423f5359b8b916bd6",
+  "environment_profile": {
+    "allow_key_acquisition": true,
+    "ascension": 20,
+    "character_id": "IRONCLAD",
+    "horizon": 1,
+    "note_for_yourself_card": "IRON_WAVE",
+    "note_for_yourself_policy": "AUTO_LEAVE",
+    "profile_id": "IRONCLAD_A20_ACT1",
+    "secret_portal_eligible": true,
+    "start_distribution": "NATURAL_RUN_START",
+    "version": 1
+  },
+  "training_source_git_commit": "7101998a0baa5f95ae7ae579393b2579d8cd2e77",
+  "training_native_source_sha256": "95e5b651516bb11c0a87eec2ad08d35435be517fd7520163052c7785c5245bc3",
+  "training_config_sha256": "fd8738dd8ed7bfd9edef254ecb3908cbb0ba3be1358bd21db9a2335084d5e013",
+  "initialization": {
+    "parent_steps": 46006272,
+    "parent_checkpoint_sha256": "2db39fde737445b109d31cc522dde42dfe2c7372b34007e108ce702b03acc70d",
+    "exact_resume": false,
+    "preserved": "all model weights",
+    "reset": "Adam, RNG, workers, recurrent state, update count and best selection"
+  },
+  "selection": {
+    "seeds_half_open": [
+      6000000000000,
+      6000000000512
+    ],
+    "episodes": 512,
+    "parent_46m_successes": 363,
+    "selected_56m_successes": 388,
+    "last_60m_successes": 361
+  },
+  "final_evaluation": {
+    "episodes": 2048,
+    "successes": 1585,
+    "success_rate": 0.77392578125,
+    "success_rate_ci95": [
+      0.7553068066942151,
+      0.7915190677789885
+    ],
+    "backend_errors": 0,
+    "backend_truncations": 0,
+    "timeouts": 0,
+    "cycle_limits": 0,
+    "step_limits": 0,
+    "self_loops": 0,
+    "boss_attempts": {
+      "ACT_1:HEXAGHOST": 711,
+      "ACT_1:SLIME_BOSS": 672,
+      "ACT_1:THE_GUARDIAN": 665
+    },
+    "boss_successes": {
+      "ACT_1:HEXAGHOST": 526,
+      "ACT_1:SLIME_BOSS": 569,
+      "ACT_1:THE_GUARDIAN": 490
+    },
+    "boss_success_rate": {
+      "ACT_1:HEXAGHOST": 0.739803094233474,
+      "ACT_1:SLIME_BOSS": 0.8467261904761905,
+      "ACT_1:THE_GUARDIAN": 0.7368421052631579
+    },
+    "boss_entry_success_rate": {
+      "ACT_1:HEXAGHOST": 0.7957639939485628,
+      "ACT_1:SLIME_BOSS": 0.9060509554140127,
+      "ACT_1:THE_GUARDIAN": 0.7954545454545454
+    }
+  },
+  "final_seeds_half_open": [
+    7000000000000,
+    7000000002048
+  ],
+  "raw_final_evaluation_sha256": "f258fc4d69b1f54ab382a077400b80e15e72c2fac12f2d64bbf26727ddbc796d",
+  "runtime": {
+    "gpu": "NVIDIA A100-PCIE-40GB",
+    "workers": 64,
+    "shards": 16,
+    "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+    "torch": "2.6.0+cu124",
+    "cuda": "12.4"
+  },
+  "limits": [
+    "Results were measured in the server training simulator, not the current modified local simulator or the original game.",
+    "Historical 46M independent evaluation used different seeds.",
+    "Act1 simulator parity audit remains incomplete.",
+    "Downloaded champion bundle omits latest.pt and the server export; it is not a full exact-resume backup."
+  ],
+  "local_qualification": {
+    "native_source_sha256": "c28b45cefa2e2d8529ae21c53bcf722b1ab33efc75693d759887da554b2480a8",
+    "policy_load_passed": true,
+    "smoke_seed": 42,
+    "smoke_boundaries": 161,
+    "smoke_act1_cleared": true,
+    "independent_current_environment_evaluation": false,
+    "original_game_evaluation": false,
+    "full_tests_passed": 854,
+    "full_tests_skipped": 1,
+    "skip_reason": "optional historical local policy absent from active model library",
+    "ruff_passed": true,
+    "vocabulary_check_passed": true,
+    "documentation_local_links_passed": true
+  }
+}

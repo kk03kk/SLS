@@ -1,0 +1,980 @@
+"""CommunicationMod payload adapter for the canonical FullRun contract."""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+from typing import Any, Mapping, Sequence
+
+from sls.content.card_features import (
+    public_card_option_properties,
+    public_card_properties,
+)
+from sls.content.energy import canonical_max_energy
+from sls.content.event_options import project_event_options, require_event_details
+from sls.content.neow import neow_properties
+from sls.content.normalize import (
+    normalize_card_id,
+    normalize_content_id,
+    normalize_event_id,
+    normalize_monster_id,
+    normalize_potion_id,
+    normalize_power_amount,
+    normalize_power_id,
+    normalize_relic_counter,
+)
+from sls.content.scope import (
+    filter_policy_key_acquisitions,
+    filter_policy_offers,
+    filter_policy_shop,
+)
+from sls.contracts import (
+    Action,
+    ActionKind,
+    Card,
+    Decision,
+    Enemy,
+    MapNode,
+    Observation,
+    Player,
+    PublicEntity,
+    RunContext,
+    ScreenType,
+    ShopItem,
+)
+
+ROOM_SYMBOLS = {
+    "M": "MONSTER",
+    "?": "EVENT",
+    "$": "SHOP",
+    "E": "ELITE",
+    "T": "TREASURE",
+    "R": "REST",
+}
+
+
+def _rest_option_index(label: str) -> int:
+    # Native actions use stable option kinds; CommunicationMod numbers only the
+    # currently available choices (e.g. Fusion Hammer removes Smith).
+    return {"REST": 0, "SMITH": 1, "RECALL": 2, "LIFT": 3,
+            "TOKE": 4, "DIG": 5, "PROCEED": 6}[label]
+
+
+def _event_option_indices(
+    payload: Mapping[str, Any], game: Mapping[str, Any], state: Mapping[str, Any], count: int,
+) -> tuple[int, ...]:
+    continuation = payload.get("_continuation") or game.get("_continuation") or {}
+    event_id = normalize_event_id(
+        state.get("event_id") or game.get("event_id") or continuation.get("event_id")
+    )
+    phase = str(state.get("event_choice_phase") or continuation.get("event_phase") or "")
+    if event_id == "GOLDEN_IDOL" and phase == "1":
+        return tuple(range(2, 2 + count))
+    if event_id == "FALLING" and phase == "CHOICE" and count == 1 and state.get("event_option_details") == {}:
+        # With no eligible cards stock renders one Leave row at physical 0;
+        # native reserves semantic option 3 for precisely this case.
+        return (3,)
+    # CommunicationMod's choice_list removes disabled dialog rows, while the
+    # native simulator retains stock's physical event option index.  Oracle's
+    # screen_state preserves the full rows, so recover the physical indices
+    # without changing the wire ordinal used by ``choose``.
+    semantic_rows = _mappings(payload.get("_event_option_rows"))
+    rows = semantic_rows or _mappings(state.get("options"))
+    enabled = tuple(
+        _integer(row.get("choice_index", index)) if semantic_rows else index
+        for index, row in enumerate(rows) if not bool(row.get("disabled"))
+    )
+    if rows and len(enabled) == count:
+        if event_id == "KNOWING_SKULL" and count == 4:
+            return tuple({0: 2, 1: 0, 2: 1, 3: 3}[index] for index in enabled)
+        return enabled
+    if event_id == "KNOWING_SKULL" and count == 4:
+        return (2, 0, 1, 3)
+    return tuple(range(count))
+
+
+def _reward_kind(reward: Mapping[str, Any]) -> str:
+    """Collapse stock reward subclasses that share one canonical domain."""
+
+    kind = str(reward.get("reward_type") or "UNKNOWN").upper()
+    return "GOLD" if kind == "STOLEN_GOLD" else kind
+
+
+def _has_empty_potion_slot(game: Mapping[str, Any]) -> bool:
+    """Whether a stock potion reward can be collected at this boundary."""
+
+    potions = _mappings(game.get("potions"))
+    # Older/targeted payloads may omit the slot vector.  In that case keep the
+    # reward visible; production Oracle payloads always expose every slot.
+    return not potions or any(
+        normalize_potion_id(item.get("id")) == "EMPTY_POTION_SLOT"
+        for item in potions
+    )
+
+
+@dataclass(frozen=True, slots=True)
+class AdaptedOriginalDecision:
+    decision: Decision
+    commands: Mapping[str, tuple[str, ...]]
+
+
+def _maximum_energy(
+    game: Mapping[str, Any], visible_player: Mapping[str, Any],
+    *,
+    in_combat: bool,
+) -> int:
+    """Recover the public energy-per-turn value omitted by CommunicationMod."""
+
+    # Policy ABI v3 uses 3 as a stable non-combat placeholder. Preserve the
+    # projection the current checkpoints were trained on; permanent relic
+    # energy becomes explicit when combat initializes.
+    if not in_combat:
+        return 3
+    relics = {
+        normalize_content_id(item.get("id"))
+        for item in _mappings(game.get("relics"))
+    }
+    room = str(game.get("room_class") or game.get("room_type") or "").upper()
+    explicit = visible_player.get("max_energy") if in_combat else None
+    return canonical_max_energy(
+        relics,
+        combat_value=None if explicit is None else _integer(explicit),
+        room_type=room,
+        in_combat=in_combat,
+    )
+
+
+def adapt_original(
+    payload: Mapping[str, Any], *, allow_key_acquisition: bool = True,
+) -> AdaptedOriginalDecision:
+    """Convert one ready CommunicationMod state without exposing wire commands."""
+
+    game = _mapping(payload.get("game_state"))
+    combat = _mapping(game.get("combat_state"))
+    screen_state = _mapping(game.get("screen_state"))
+    screen = _screen_type(payload, game, combat)
+    parity_run = _mapping(game.get("_parity_run") or payload.get("_parity_run"))
+    visible_player = _mapping(combat.get("player")) if combat else game
+
+    hand = _cards(combat.get("hand"), "HAND", preserve_order=True)
+    has_frozen_eye = any(
+        normalize_content_id(item.get("id")) == "FROZEN_EYE"
+        for item in _sequence(game.get("relics"))
+    )
+    draw = _cards(
+        combat.get("draw_pile"), "DRAW", preserve_order=has_frozen_eye,
+        visible_order=has_frozen_eye,
+    )
+    discard = _cards(combat.get("discard_pile"), "DISCARD")
+    exhaust = _cards(combat.get("exhaust_pile"), "EXHAUST")
+    deck = _cards(game.get("deck"), "DECK", preserve_order=True)
+    relic_ids = {
+        normalize_content_id(item.get("id"))
+        for item in _mappings(game.get("relics"))
+    }
+    hide_intents = "RUNIC_DOME" in relic_ids
+    parity_intents = _mappings(payload.get("_monster_intents"))
+    enemies = tuple(
+        _enemy(
+            monster, index,
+            parity_intents[index] if index < len(parity_intents) else {},
+            hide_intent=hide_intents,
+        )
+        for index, monster in enumerate(_mappings(combat.get("monsters")))
+    )
+    powers = _powers(_mapping(combat.get("player")).get("powers"), "PLAYER_POWER")
+    for monster_index, monster in enumerate(_mappings(combat.get("monsters"))):
+        if not bool(monster.get("is_gone", False)) and _integer(monster.get("current_hp")) > 0:
+            powers += _powers(monster.get("powers"), f"MONSTER:{monster_index}:POWER")
+
+    actions, commands = _actions(payload, game, combat, screen_state, screen, hand)
+    options = _screen_entities(payload, game, combat, screen_state, screen)
+    actions, commands = project_event_options(
+        options, actions, commands, screen_state.get("event_option_details"),
+    )
+    if screen is ScreenType.SHOP:
+        shop, actions, commands = filter_policy_shop(
+            options["shop"], actions, commands,
+        )
+        options["shop"] = shop
+    elif screen is ScreenType.COMBAT_REWARD:
+        rewards, actions, commands = filter_policy_offers(
+            options["reward"], actions, commands,
+        )
+        options["reward"] = rewards
+    reward_items = options["reward"] if screen is ScreenType.COMBAT_REWARD else ()
+    reward_items, actions, commands = filter_policy_key_acquisitions(
+        reward_items, actions, commands, allow_keys=allow_key_acquisition,
+    )
+    if screen is ScreenType.COMBAT_REWARD:
+        options["reward"] = reward_items
+    outcome = str(game.get("screen_type") or "").upper()
+    terminal = screen is ScreenType.GAME_OVER or outcome in {"DEATH", "VICTORY"}
+    if terminal:
+        actions = ()
+        commands = {}
+        hand = draw = discard = exhaust = ()
+        enemies = ()
+        powers = ()
+
+    observation = Observation(
+        player=Player(
+            normalize_content_id(game.get("class", game.get("character", "IRONCLAD"))),
+            _integer(visible_player.get("current_hp", game.get("current_hp"))),
+            _integer(visible_player.get("max_hp", game.get("max_hp"))),
+            _integer(visible_player.get("block")),
+            _integer(visible_player.get("energy")),
+            _maximum_energy(game, visible_player, in_combat=bool(combat)),
+        ),
+        run=RunContext(
+            _integer(game.get("ascension_level", game.get("ascension"))),
+            _integer(game.get("act")),
+            _integer(game.get("floor")),
+            _integer(game.get("gold")),
+            bool(parity_run.get("ruby_key", False)),
+            bool(parity_run.get("emerald_key", False)),
+            bool(parity_run.get("sapphire_key", False)),
+            _optional_content_id(game.get("act_boss")),
+        ),
+        screen=screen,
+        deck=deck,
+        hand=hand,
+        draw_pile=draw,
+        discard_pile=discard,
+        exhaust_pile=exhaust,
+        enemies=enemies,
+        powers=powers,
+        relics=tuple(
+            PublicEntity(
+                f"RELIC:{index}", normalize_content_id(item.get("id")),
+                (("counter", normalize_relic_counter(item.get("counter", 0))),),
+            )
+            for index, item in enumerate(_mappings(game.get("relics")))
+        ),
+        potions=tuple(
+            PublicEntity(
+                f"POTION:{index}", normalize_potion_id(item.get("id")),
+                (("slot", index),),
+            )
+            for index, item in enumerate(_mappings(game.get("potions")))
+            if normalize_potion_id(item.get("id")) != "EMPTY_POTION_SLOT"
+        ),
+        map_nodes=_map_nodes(game, parity_run),
+        choice_options=options["choice"],
+        selected_cards=_selected_cards(game, screen_state, options["choice"]) if not terminal else (),
+        reward_options=options["reward"],
+        shop_items=options["shop"],
+        event_options=options["event"],
+        rest_options=options["rest"],
+        boss_relic_options=options["boss"],
+        public_context=(
+            (("turn", _integer(combat.get("turn"))),)
+            if combat and not terminal else (
+                (("attempts_remaining", _integer(screen_state["attempts_remaining"])),)
+                if screen is ScreenType.EVENT and payload.get("_match_slots")
+                and "attempts_remaining" in screen_state else ()
+            )
+        ),
+    )
+    return AdaptedOriginalDecision(Decision(observation, actions, terminal), commands)
+
+
+def _combat_choice_source(game: Mapping[str, Any], combat: Mapping[str, Any]) -> str:
+    card_in_play = combat.get("card_in_play") or {}
+    explicit_source = str(
+        _mapping(combat.get("card_select")).get("source") or ""
+    ).upper().removesuffix("_PILE")
+    choice_source = explicit_source
+    if choice_source not in {"HAND", "DRAW", "DISCARD", "EXHAUST", "GENERATED"}:
+        # These are visible selection sources, not generated card offers.
+        # Card/action identity describes the UI operation; never infer it
+        # from private queue contents or hidden draw-pile order.
+        choice_source = {
+            "EXHUME": "EXHAUST",
+            "SECRET_TECHNIQUE": "DRAW", "SECRET_WEAPON": "DRAW", "SEEK": "DRAW",
+            "HEADBUTT": "DISCARD", "HOLOGRAM": "DISCARD",
+        }.get(normalize_card_id(card_in_play.get("id")), "GENERATED")
+        action_name = str(game.get("current_action") or "").rsplit(".", 1)[-1]
+        choice_source = {
+            "ExhumeAction": "EXHAUST",
+            "SecretTechniqueAction": "DRAW", "SecretWeaponAction": "DRAW", "SeekAction": "DRAW",
+            "HeadbuttAction": "DISCARD", "BetterDiscardPileToHandAction": "DISCARD",
+        }.get(action_name, choice_source)
+    return choice_source
+
+
+def _selected_cards(game: Mapping[str, Any], state: Mapping[str, Any],
+                    choices: tuple[PublicEntity, ...]) -> tuple[PublicEntity, ...]:
+    screen = str(game.get("screen_type") or "").upper()
+    if screen not in {"HAND_SELECT", "GRID"}:
+        return ()
+    cards = _mappings(state.get("selected" if screen == "HAND_SELECT" else "selected_cards"))
+    source = "HAND" if screen == "HAND_SELECT" else (
+        str(dict(choices[0].properties).get("source", "GENERATED")) if choices else (
+            _combat_choice_source(game, _mapping(game.get("combat_state")))
+            if game.get("combat_state") else "MASTER_DECK"
+        )
+    )
+    return tuple(
+        PublicEntity(
+            f"SELECTED:{order}", normalize_card_id(card.get("id")),
+            tuple(sorted({
+                **dict(public_card_option_properties(normalize_card_id(card.get("id")), card)),
+                "source": source, "selected": True, "selected_order": order,
+            }.items())),
+        ) for order, card in enumerate(cards)
+    )
+
+
+def _actions(
+    payload: Mapping[str, Any],
+    game: Mapping[str, Any],
+    combat: Mapping[str, Any],
+    state: Mapping[str, Any],
+    screen: ScreenType,
+    hand: tuple[Card, ...],
+) -> tuple[tuple[Action, ...], dict[str, tuple[str, ...]]]:
+    available = {str(item).lower() for item in _sequence(payload.get("available_commands"))}
+    result: list[Action] = []
+    commands: dict[str, tuple[str, ...]] = {}
+
+    def add(action: Action, *wire: str) -> None:
+        if action.candidate_id in commands:
+            raise ValueError(f"Original actions collapse to {action.candidate_id}")
+        result.append(action)
+        commands[action.candidate_id] = tuple(wire)
+
+    def add_potion_actions(monsters: tuple[Mapping[str, Any], ...] = ()) -> None:
+        if "potion" not in available:
+            return
+        for slot, potion in enumerate(_mappings(game.get("potions"))):
+            if normalize_potion_id(potion.get("id")) == "EMPTY_POTION_SLOT":
+                continue
+            if bool(potion.get("can_use", True)):
+                if bool(potion.get("requires_target", False)):
+                    for target, monster in enumerate(monsters):
+                        if _integer(monster.get("current_hp")) > 0 and not monster.get("is_gone"):
+                            add(
+                                Action(
+                                    ActionKind.USE_POTION,
+                                    subject_id=f"POTION:{slot}",
+                                    target_id=f"MONSTER:{target}",
+                                ),
+                                f"potion use {slot} {target}",
+                            )
+                else:
+                    add(
+                        Action(ActionKind.USE_POTION, subject_id=f"POTION:{slot}"),
+                        f"potion use {slot}",
+                    )
+            if bool(potion.get("can_discard", True)):
+                add(
+                    Action(ActionKind.DISCARD_POTION, subject_id=f"POTION:{slot}"),
+                    f"potion discard {slot}",
+                )
+
+    if combat:
+        monsters = _mappings(combat.get("monsters"))
+        if "play" in available:
+            for index, (card, raw) in enumerate(zip(hand, _mappings(combat.get("hand")))):
+                if not bool(raw.get("is_playable", False)):
+                    continue
+                if bool(raw.get("has_target", raw.get("requires_target", False))):
+                    for target, monster in enumerate(monsters):
+                        if _integer(monster.get("current_hp")) > 0 and not monster.get("is_gone"):
+                            add(
+                                Action(
+                                    ActionKind.PLAY_CARD,
+                                    subject_id=card.instance_id,
+                                    target_id=f"MONSTER:{target}",
+                                ),
+                                f"play {index + 1} {target}",
+                            )
+                else:
+                    add(Action(ActionKind.PLAY_CARD, subject_id=card.instance_id), f"play {index + 1}")
+        raw_screen = str(game.get("screen_type") or "").upper()
+        if raw_screen == "HAND_SELECT" and "choose" in available:
+            raw_hand = _mappings(combat.get("hand"))
+            hand_index_by_uuid = {
+                str(card.get("uuid")): index
+                for index, card in enumerate(raw_hand) if card.get("uuid") is not None
+            }
+            for wire_index, card in enumerate(_mappings(state.get("hand"))):
+                hand_index = hand_index_by_uuid.get(str(card.get("uuid")))
+                if hand_index is None:
+                    raise ValueError("HAND_SELECT card is absent from the combat hand")
+                add(
+                    Action(ActionKind.SELECT_CARD, subject_id=f"CHOICE:{hand_index}"),
+                    f"choose {wire_index}",
+                )
+        choice = _mappings(_mapping(combat.get("card_select")).get("cards"))
+        if not choice:
+            choice = _mappings(_mapping(game.get("screen_state")).get("cards"))
+        if not choice:
+            choice = _mappings(game.get("choice_list"))
+        if raw_screen != "HAND_SELECT" and "choose" in available and choice:
+            for index, _ in enumerate(choice):
+                add(Action(ActionKind.SELECT_CARD, subject_id=f"CHOICE:{index}"), f"choose {index}")
+        if "confirm" in available:
+            add(Action(ActionKind.CONFIRM, option_id="combat-selection"), "confirm")
+        add_potion_actions(monsters)
+        if "end" in available:
+            add(Action(ActionKind.END_TURN), "end")
+        return tuple(result), commands
+
+    choices = _sequence(game.get("choice_list"))
+    if not choices and screen in {ScreenType.NEOW, ScreenType.EVENT}:
+        choices = tuple(
+            option.get("text") if isinstance(option, Mapping) else option
+            for option in _sequence(state.get("options"))
+        )
+    match_slots = _mappings(payload.get("_match_slots"))
+    continuation = _mapping(payload.get("_continuation") or game.get("_continuation"))
+    event_id = normalize_event_id(
+        state.get("event_id") or game.get("event_id") or continuation.get("event_id")
+    )
+    if screen is ScreenType.EVENT and event_id == "MATCH_AND_KEEP" and match_slots:
+        available_slots = [
+            slot for slot in match_slots if not bool(slot.get("removed"))
+        ]
+        for left_index, left in enumerate(available_slots):
+            for right in available_slots[left_index + 1:]:
+                left_slot, right_slot = _integer(left.get("slot")), _integer(right.get("slot"))
+                add(
+                    Action(
+                        ActionKind.CHOOSE_EVENT_OPTION,
+                        option_id=f"match-pair:{left_slot}:{right_slot}",
+                        subject_id=f"match-slot:{left_slot}",
+                        target_id=f"match-slot:{right_slot}",
+                    ),
+                    f"parity_match {left_slot} {right_slot}",
+                    "wait 120",
+                )
+    elif screen in {ScreenType.NEOW, ScreenType.EVENT} and "choose" in available:
+        kind = ActionKind.CHOOSE_NEOW_OPTION if screen is ScreenType.NEOW else ActionKind.CHOOSE_EVENT_OPTION
+        semantic_indices = (
+            tuple(range(len(choices))) if screen is ScreenType.NEOW
+            else _event_option_indices(payload, game, state, len(choices))
+        )
+        for wire_index, semantic_index in enumerate(semantic_indices):
+            add(Action(kind, option_id=f"event-option:{semantic_index}"), f"choose {wire_index}")
+    elif screen is ScreenType.MAP and "choose" in available:
+        nodes = _mappings(state.get("next_nodes"))
+        for index, node in enumerate(nodes):
+            add(
+                Action(
+                    ActionKind.CHOOSE_MAP_NODE,
+                    node_id=f"map:{_integer(node.get('x'))}:{_integer(node.get('y'))}",
+                ),
+                f"choose {index}",
+            )
+        if bool(state.get("boss_available")) and not nodes:
+            add(Action(ActionKind.CHOOSE_MAP_NODE, node_id="map:boss"), "choose 0")
+    elif screen is ScreenType.CARD_REWARD:
+        cards = _mappings(state.get("cards"))
+        select_type = str(state.get("type") or state.get("select_type") or "").upper()
+        if state.get("for_purge"):
+            select_type = "REMOVE"
+        elif state.get("for_upgrade"):
+            select_type = "UPGRADE"
+        elif state.get("for_transform"):
+            select_type = "TRANSFORM"
+        kind = {
+            "UPGRADE": ActionKind.UPGRADE_CARD,
+            "PURGE": ActionKind.REMOVE_CARD,
+            "REMOVE": ActionKind.REMOVE_CARD,
+        }.get(select_type, ActionKind.SELECT_CARD)
+        for index, _ in enumerate(cards):
+            add(Action(kind, subject_id=f"select-card:{index}"), f"choose {index}")
+        if "skip" in available:
+            add(Action(ActionKind.SKIP_CARD_REWARD, option_id="reward-card:0"), "skip")
+        if "bowl" in available:
+            add(Action(ActionKind.TAKE_SINGING_BOWL, option_id="reward-card:0"), "bowl")
+    elif screen is ScreenType.COMBAT_REWARD:
+        counters: dict[str, int] = {}
+        reward_card_groups = _sequence(payload.get("_combat_reward_cards"))
+        for choice_index, reward in enumerate(_mappings(state.get("rewards"))):
+            reward_type = _reward_kind(reward)
+            occurrence = counters.get(reward_type, 0)
+            counters[reward_type] = occurrence + 1
+            if reward_type == "CARD":
+                cards = _mappings(
+                    reward.get("cards")
+                    or (reward_card_groups[occurrence] if occurrence < len(reward_card_groups) else ())
+                )
+                for card_index, _ in enumerate(cards):
+                    add(
+                        Action(
+                            ActionKind.CHOOSE_CARD_REWARD,
+                            subject_id=f"reward-card:{occurrence}:{card_index}",
+                        ),
+                        f"choose {choice_index}", f"choose {card_index}",
+                    )
+                # This adapter flattens stock's parent CombatRewardScreen and
+                # child CardRewardScreen into one policy boundary.  Child
+                # ``skip`` only closes the card popup and leaves the same
+                # RewardItem available, so exposing it here creates a
+                # stateless no-op loop.  The parent SKIP_REWARD action is the
+                # irreversible way to abandon remaining rewards.
+                if any(
+                    normalize_content_id(item.get("id")) == "SINGING_BOWL"
+                    for item in _mappings(game.get("relics"))
+                ):
+                    add(
+                        Action(
+                            ActionKind.TAKE_SINGING_BOWL,
+                            option_id=f"reward-card:{occurrence}",
+                        ),
+                        f"choose {choice_index}", "bowl",
+                    )
+            elif reward_type == "GOLD":
+                add(Action(ActionKind.TAKE_REWARD, reward_id=f"reward-gold:{occurrence}"), f"choose {choice_index}")
+            elif reward_type == "POTION":
+                if _has_empty_potion_slot(game):
+                    add(Action(ActionKind.TAKE_REWARD, reward_id=f"reward-potion:{occurrence}"), f"choose {choice_index}")
+            elif reward_type == "RELIC":
+                add(Action(ActionKind.TAKE_REWARD, reward_id=f"reward-relic:{occurrence}"), f"choose {choice_index}")
+            elif "SAPPHIRE" in reward_type:
+                add(Action(ActionKind.TAKE_BLUE_KEY, reward_id="reward-key:sapphire"), f"choose {choice_index}")
+            elif "KEY" in reward_type:
+                add(Action(ActionKind.TAKE_REWARD, reward_id="reward-key:emerald"), f"choose {choice_index}")
+        if "proceed" in available:
+            add(Action(ActionKind.SKIP_REWARD), "proceed")
+    elif screen is ScreenType.BOSS_REWARD and "choose" in available:
+        relics = _sequence(state.get("relics") or choices)
+        for index, _ in enumerate(relics):
+            add(Action(ActionKind.CHOOSE_BOSS_RELIC, subject_id=f"boss-relic:{index}"), f"choose {index}")
+    elif screen is ScreenType.SHOP:
+        gold = _integer(game.get("gold"))
+        compact: list[tuple[str, int, Mapping[str, Any]]] = []
+        if state.get("purge_available") and _integer(state.get("purge_cost"), 10**9) <= gold:
+            compact.append(("REMOVE", 0, {}))
+        for label, key in (("CARD", "cards"), ("RELIC", "relics"), ("POTION", "potions")):
+            for index, item in enumerate(_mappings(state.get(key))):
+                if (
+                    _integer(item.get("price"), 10**9) <= gold
+                    and (label != "POTION" or _has_empty_potion_slot(game))
+                ):
+                    compact.append((label, index, item))
+        for choice_index, (label, index, _) in enumerate(compact):
+            if label == "CARD":
+                action = Action(ActionKind.BUY_CARD, subject_id=f"shop-card:{index}")
+            elif label == "RELIC":
+                action = Action(ActionKind.BUY_RELIC, subject_id=f"shop-relic:{index}")
+            elif label == "POTION":
+                action = Action(ActionKind.BUY_POTION, subject_id=f"shop-potion:{index}")
+            else:
+                action = Action(ActionKind.CONFIRM, option_id="shop-remove")
+            add(action, f"choose {choice_index}")
+        if "leave" in available:
+            add(Action(ActionKind.LEAVE_SHOP), "leave")
+    elif screen is ScreenType.REST and "choose" in available:
+        for index, choice in enumerate(choices):
+            label = normalize_content_id(choice.get("text") if isinstance(choice, Mapping) else choice)
+            kind = {
+                "REST": ActionKind.REST,
+                "SMITH": ActionKind.CONFIRM,
+                "RECALL": ActionKind.RECALL,
+                "LIFT": ActionKind.LIFT,
+                "TOKE": ActionKind.CONFIRM,
+                "DIG": ActionKind.DIG,
+            }.get(label, ActionKind.PROCEED)
+            semantic_index = _rest_option_index(label)
+            add(Action(kind, option_id=f"rest-option:{semantic_index}"), f"choose {index}")
+    elif screen is ScreenType.TREASURE:
+        if "choose" in available:
+            add(Action(ActionKind.OPEN_CHEST), "choose 0")
+        if "proceed" in available:
+            add(Action(ActionKind.PROCEED), "proceed")
+    elif "proceed" in available:
+        add(Action(ActionKind.PROCEED), "proceed")
+    # Stock permits Blood Potion, Fruit Juice and Entropic Brew outside combat.
+    # CommunicationMod advertises the same generic potion command and marks
+    # each slot's authoritative can_use flag.  Preserve the current screen
+    # actions and add these inventory actions instead of silently dropping them.
+    add_potion_actions()
+    return tuple(result), commands
+
+
+def _screen_type(
+    payload: Mapping[str, Any], game: Mapping[str, Any], combat: Mapping[str, Any],
+) -> ScreenType:
+    continuation = _mapping(payload.get("_continuation") or game.get("_continuation"))
+    continuation_screen = str(continuation.get("screen") or "NONE").upper()
+    if continuation_screen in {"DEATH", "VICTORY", "GAME_OVER", "COMPLETE"}:
+        return ScreenType.GAME_OVER
+    if combat:
+        return ScreenType.COMBAT
+    if not payload.get("in_game", True):
+        return ScreenType.GAME_OVER
+    raw = str(game.get("screen_type") or "NONE").upper()
+    if raw in {"DEATH", "VICTORY", "GAME_OVER", "COMPLETE"}:
+        return ScreenType.GAME_OVER
+    if raw in {"EVENT", "NEOW"}:
+        return ScreenType.NEOW if _integer(game.get("floor")) == 0 else ScreenType.EVENT
+    return {
+        "MAP": ScreenType.MAP,
+        "COMBAT_REWARD": ScreenType.COMBAT_REWARD,
+        "CARD_REWARD": ScreenType.CARD_REWARD,
+        "GRID": ScreenType.CARD_REWARD,
+        "BOSS_REWARD": ScreenType.BOSS_REWARD,
+        "SHOP_SCREEN": ScreenType.SHOP,
+        "SHOP_ROOM": ScreenType.SHOP,
+        "REST": ScreenType.REST,
+        "REST_ROOM": ScreenType.REST,
+        "CHEST": ScreenType.TREASURE,
+    }.get(raw, ScreenType.ACT_TRANSITION)
+
+
+def _cards(
+    values: Any,
+    zone: str,
+    *,
+    preserve_order: bool = False,
+    visible_order: bool = False,
+) -> tuple[Card, ...]:
+    cards = list(_mappings(values))
+    if not preserve_order:
+        cards.sort(key=lambda value: (
+            normalize_card_id(value.get("id")),
+            _integer(value.get("upgrades")),
+            _integer(value.get("cost")),
+            public_card_properties(normalize_card_id(value.get("id")), value),
+        ))
+    def current_cost(card: Mapping[str, Any]) -> int:
+        base_cost = _integer(card.get("base_cost", card.get("cost")))
+        if zone != "HAND":
+            # CommunicationMod can briefly retain a card's cost-for-turn after
+            # the card has left the hand (for example after Liquid Memories).
+            # That transient value is neither actionable nor stable and would
+            # otherwise leak protocol timing into recurrent policy state.
+            return base_cost
+        return _integer(card.get("cost_for_turn", card.get("cost", base_cost)))
+
+    return tuple(
+        Card(
+            f"{zone}:{index}" if zone != "DRAW" or visible_order else f"DRAW:HIDDEN:{index}",
+            normalize_card_id(card.get("id")),
+            zone,
+            _integer(card.get("upgrades")),
+            _integer(card.get("base_cost", card.get("cost"))),
+            current_cost(card),
+            bool(card.get("is_playable", False)) if zone == "HAND" else False,
+            index if zone == "DRAW" and visible_order else None,
+            tuple(sorted(public_card_properties(normalize_card_id(card.get("id")), card)
+                         + ((("order_is_visible", True),)
+                            if zone == "DRAW" and visible_order else ()))),
+        )
+        for index, card in enumerate(cards)
+    )
+
+
+def _powers(values: Any, prefix: str) -> tuple[PublicEntity, ...]:
+    visible = sorted(
+        _mappings(values),
+        key=lambda value: (
+            normalize_power_id(value.get("id")), _integer(value.get("amount")),
+        ),
+    )
+    return tuple(
+        PublicEntity(
+            f"{prefix}:{index}", normalize_power_id(value.get("id")),
+            (("amount", normalize_power_amount(value.get("id"), value.get("amount"))),),
+            owner_id="player" if prefix == "PLAYER_POWER" else prefix.removesuffix(":POWER"),
+        )
+        for index, value in enumerate(visible)
+    )
+
+
+def _enemy(
+    monster: Mapping[str, Any],
+    index: int,
+    parity: Mapping[str, Any],
+    *,
+    hide_intent: bool = False,
+) -> Enemy:
+    monster_id = normalize_monster_id(monster.get("id"))
+    gone = bool(monster.get("is_gone", False)) or _integer(monster.get("current_hp")) <= 0
+    intent = str(parity.get("intent") or monster.get("intent") or "UNKNOWN").upper()
+    if intent == "DEBUG" and (monster_id, _integer(monster.get("move_id"))) == ("CULTIST", 3):
+        intent = "BUFF"
+    is_attack = intent in {"ATTACK", "ATTACK_BUFF", "ATTACK_DEBUFF", "ATTACK_DEFEND"}
+    damage = _integer(
+        parity.get("damage", monster.get("move_adjusted_damage", monster.get("intent_damage")))
+    )
+    hits = _integer(parity.get("hits", monster.get("move_hits", monster.get("intent_hits", 1))))
+    if gone:
+        intent, damage, hits = "UNKNOWN", 0, 0
+    elif hide_intent:
+        intent, damage, hits = "NONE", 0, 0
+    elif not is_attack:
+        damage, hits = 0, 0
+    return Enemy(
+        f"MONSTER:{index}", monster_id,
+        _integer(monster.get("current_hp")), _integer(monster.get("max_hp")),
+        _integer(monster.get("block")), intent, damage, hits,
+        (("is_gone", gone),),
+    )
+
+
+def _map_nodes(game: Mapping[str, Any], parity_run: Mapping[str, Any]) -> tuple[MapNode, ...]:
+    nodes = []
+    reachable = {
+        (_integer(node.get("x")), _integer(node.get("y")))
+        for node in _mappings(_mapping(game.get("screen_state")).get("next_nodes"))
+    }
+    if _integer(game.get("floor")) == 0 and not reachable:
+        reachable = {
+            (_integer(node.get("x")), 0)
+            for node in _mappings(game.get("map")) if _integer(node.get("y")) == 0
+        }
+    burning = (-1, -1) if parity_run.get("emerald_key") is True else (
+        _integer(parity_run.get("burning_elite_x"), -1),
+        _integer(parity_run.get("burning_elite_y"), -1),
+    )
+    current = (
+        _integer(parity_run.get("current_map_x"), -99),
+        _integer(parity_run.get("current_map_y"), -99),
+    )
+    if current != (-99, -99) and not reachable:
+        for node in _mappings(game.get("map")):
+            if (_integer(node.get("x")), _integer(node.get("y"))) == current:
+                reachable = {
+                    (_integer(edge.get("x")), _integer(edge.get("y")))
+                    for edge in _mappings(node.get("children"))
+                }
+                break
+    for node in _mappings(game.get("map")):
+        x, y = _integer(node.get("x")), _integer(node.get("y"))
+        nodes.append(MapNode(
+            f"map:{x}:{y}", x, y,
+            (
+                "BURNING_ELITE" if (x, y) == burning else
+                ROOM_SYMBOLS.get(str(node.get("symbol")), str(node.get("symbol") or "UNKNOWN"))
+            ),
+            (x, y) in reachable,
+            tuple(
+                (
+                    "map:boss" if _integer(edge.get("y")) == 16 else
+                    f"map:{_integer(edge.get('x'))}:{_integer(edge.get('y'))}"
+                )
+                for edge in _mappings(node.get("children"))
+            ),
+        ))
+    screen_state = _mapping(game.get("screen_state"))
+    if bool(screen_state.get("boss_available")) and not _mappings(screen_state.get("next_nodes")):
+        nodes.append(MapNode("map:boss", 0, 15, "BOSS", True))
+    return tuple(nodes)
+
+
+def _screen_entities(
+    payload: Mapping[str, Any], game: Mapping[str, Any], combat: Mapping[str, Any],
+    state: Mapping[str, Any], screen: ScreenType,
+) -> dict[str, tuple[Any, ...]]:
+    result: dict[str, tuple[Any, ...]] = {
+        "choice": (), "reward": (), "shop": (), "event": (), "rest": (), "boss": (),
+    }
+    choices = _sequence(game.get("choice_list"))
+    if not choices and screen in {ScreenType.NEOW, ScreenType.EVENT}:
+        # CommunicationMod omits the legacy RoomEventDialog choice_list after
+        # a targeted room replacement, while its canonical screen_state still
+        # contains the complete indexed option records.
+        choices = tuple(
+            option.get("text") if isinstance(option, Mapping) else option
+            for option in _sequence(state.get("options"))
+        )
+    raw_screen = str(game.get("screen_type") or "").upper()
+    if combat and raw_screen == "HAND_SELECT":
+        result["choice"] = tuple(
+            PublicEntity(
+                f"CHOICE:{index}", normalize_card_id(card.get("id")),
+                tuple(sorted((
+                    ("source", "HAND"),
+                    *public_card_option_properties(normalize_card_id(card.get("id")), card),
+                ))),
+            )
+            for index, card in enumerate(_mappings(combat.get("hand")))
+        )
+    elif combat and choices:
+        screen_cards = _mappings(state.get("cards"))
+        choice_source = _combat_choice_source(game, combat)
+        result["choice"] = tuple(
+            PublicEntity(
+                f"CHOICE:{index}",
+                normalize_card_id(screen_cards[index].get("id"))
+                if index < len(screen_cards)
+                else normalize_content_id(_choice_id(value)),
+                tuple(sorted((
+                    ("source", choice_source),
+                    *public_card_option_properties(
+                        normalize_card_id(screen_cards[index].get("id")), screen_cards[index],
+                    ),
+                ))) if index < len(screen_cards) else (),
+            )
+            for index, value in enumerate(choices)
+        )
+    elif screen in {ScreenType.NEOW, ScreenType.EVENT}:
+        event_id = "NEOW" if screen is ScreenType.NEOW else normalize_event_id(
+            state.get("event_id") or game.get("event_id")
+            or _mapping(payload.get("_continuation") or game.get("_continuation")).get("event_id")
+            or "EVENT"
+        )
+        match_slots = _mappings(payload.get("_match_slots"))
+        require_event_details(event_id, state)
+        if event_id == "MATCH_AND_KEEP" and match_slots:
+            result["event"] = tuple(
+                PublicEntity(
+                    f"match-slot:{_integer(slot.get('slot'))}",
+                    normalize_card_id(slot.get("content_id"))
+                    if bool(slot.get("known")) else "HIDDEN_CARD",
+                    (
+                        ("known", bool(slot.get("known"))),
+                        ("removed", bool(slot.get("removed"))),
+                    ),
+                )
+                for slot in match_slots
+            )
+            return result
+        semantic_indices = (
+            tuple(range(len(choices))) if screen is ScreenType.NEOW
+            else _event_option_indices(payload, game, state, len(choices))
+        )
+        neow_offers = (
+            state.get("neow_options")
+            if screen is ScreenType.NEOW and len(choices) in {2, 4} else None
+        )
+        if screen is ScreenType.NEOW and len(choices) in {2, 4}:
+            if not isinstance(neow_offers, list) or len(neow_offers) != len(choices):
+                raise ValueError("public Neow offers missing; update the observation oracle")
+        result["event"] = tuple(
+            PublicEntity(
+                f"event-option:{semantic_index}", f"{event_id}:OPTION:{semantic_index}",
+                neow_properties(neow_offers[semantic_index]["bonus"],
+                                neow_offers[semantic_index]["drawback"])
+                if neow_offers is not None else (),
+            )
+            for semantic_index in semantic_indices
+        )
+    elif screen is ScreenType.REST:
+        result["rest"] = tuple(
+            PublicEntity(
+                f"rest-option:{_rest_option_index(normalize_content_id(_choice_id(value)))}",
+                normalize_content_id(_choice_id(value)),
+            )
+            for index, value in enumerate(choices)
+        )
+    elif screen is ScreenType.BOSS_REWARD:
+        result["boss"] = tuple(
+            PublicEntity(f"boss-relic:{index}", normalize_content_id(_choice_id(value)))
+            for index, value in enumerate(_sequence(state.get("relics") or choices))
+        )
+    elif screen is ScreenType.COMBAT_REWARD:
+        entities: list[PublicEntity] = []
+        counters: dict[str, int] = {}
+        reward_card_groups = _sequence(payload.get("_combat_reward_cards"))
+        for reward in _mappings(state.get("rewards")):
+            kind = _reward_kind(reward)
+            index = counters.get(kind, 0)
+            counters[kind] = index + 1
+            if kind == "CARD":
+                cards = _mappings(
+                    reward.get("cards")
+                    or (reward_card_groups[index] if index < len(reward_card_groups) else ())
+                )
+                entities.extend(
+                    PublicEntity(
+                        f"reward-card:{index}:{card_index}",
+                        normalize_card_id(card.get("id")),
+                        public_card_option_properties(normalize_card_id(card.get("id")), card),
+                    )
+                    for card_index, card in enumerate(cards)
+                )
+            elif kind == "GOLD":
+                entities.append(PublicEntity(
+                    f"reward-gold:{index}", "GOLD",
+                    (("amount", _integer(reward.get("gold", reward.get("amount")))),),
+                ))
+            elif kind == "RELIC":
+                relic = reward.get("relic")
+                entities.append(PublicEntity(
+                    f"reward-relic:{index}",
+                    normalize_content_id(
+                        reward.get("id") or _mapping(relic).get("id") or relic
+                    ),
+                ))
+            elif kind == "POTION":
+                potion = reward.get("potion")
+                entities.append(PublicEntity(
+                    f"reward-potion:{index}",
+                    normalize_potion_id(
+                        reward.get("id") or _mapping(potion).get("id") or potion
+                    ),
+                ))
+            elif "SAPPHIRE" in kind:
+                entities.append(PublicEntity("reward-key:sapphire", "SAPPHIRE_KEY"))
+            elif "KEY" in kind:
+                entities.append(PublicEntity("reward-key:emerald", "EMERALD_KEY"))
+        result["reward"] = tuple(sorted(entities, key=lambda item: item.instance_id))
+    elif screen is ScreenType.CARD_REWARD:
+        is_grid = str(game.get("screen_type") or "").upper() == "GRID"
+        deck_index_by_uuid = {
+            str(card.get("uuid")): index
+            for index, card in enumerate(_mappings(game.get("deck")))
+            if card.get("uuid") is not None
+        }
+        result["reward"] = tuple(
+            PublicEntity(
+                f"select-card:{index}", normalize_card_id(card.get("id")),
+                tuple(sorted((
+                    *public_card_option_properties(normalize_card_id(card.get("id")), card),
+                    *((("deck_index", deck_index_by_uuid.get(str(card.get("uuid")), index)),)
+                      if is_grid else ()),
+                ))),
+            )
+            for index, card in enumerate(_mappings(state.get("cards")))
+        )
+    elif screen is ScreenType.SHOP:
+        items = []
+        for kind, key in (("CARD", "cards"), ("RELIC", "relics"), ("POTION", "potions")):
+            for index, item in enumerate(_mappings(state.get(key))):
+                content = normalize_card_id(item.get("id")) if kind == "CARD" else normalize_content_id(item.get("id"))
+                items.append(ShopItem(
+                    f"shop-{kind.lower()}:{index}", content, kind,
+                    _integer(item.get("price")), bool(item.get("sold", False)),
+                    public_card_option_properties(content, item) if kind == "CARD" else (),
+                ))
+        result["shop"] = tuple(items)
+        if state.get("purge_available") and state.get("purge_cost") is not None:
+            result["choice"] = (PublicEntity(
+                "shop-remove", "SHOP", (("price", _integer(state["purge_cost"])),),
+            ),)
+    return result
+
+
+def _choice_id(value: Any) -> Any:
+    if isinstance(value, Mapping):
+        return value.get("id", value.get("text", value.get("name", "OPTION")))
+    return value
+
+
+def _optional_content_id(value: Any) -> str | None:
+    normalized = normalize_content_id(value)
+    return None if normalized in {"", "INVALID", "NONE", "UNKNOWN"} else normalized
+
+
+def _integer(value: Any, default: int = 0) -> int:
+    try:
+        return int(value if value is not None else default)
+    except (TypeError, ValueError):
+        return default
+
+
+def _mapping(value: Any) -> Mapping[str, Any]:
+    return value if isinstance(value, Mapping) else {}
+
+
+def _sequence(value: Any) -> Sequence[Any]:
+    return value if isinstance(value, Sequence) and not isinstance(value, (str, bytes)) else ()
+
+
+def _mappings(value: Any) -> tuple[Mapping[str, Any], ...]:
+    return tuple(item for item in _sequence(value) if isinstance(item, Mapping))

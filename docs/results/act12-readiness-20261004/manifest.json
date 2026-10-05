@@ -1,0 +1,92 @@
+{
+  "report_date": "2026-10-04",
+  "tests": {
+    "command": "python -m pytest tests/test_a20_curriculum.py tests/test_curriculum.py tests/simulator/test_fullrun_structure.py tests/simulator/test_a20_late_act_parity.py tests/rl/test_single_act_selection.py -q",
+    "seconds": 26.46,
+    "passed": 57
+  },
+  "model_probe": {
+    "checkpoint_sha256": "cb53fee1ae3f47cc906665c903068dabaf38a328be1e07697e6d17c5b21d7d5c",
+    "seed_start": 8000005000000,
+    "battles_skipped": false,
+    "successes": 0,
+    "wilson95": [
+      0.0,
+      0.107179
+    ],
+    "episodes": 32,
+    "reached_act2": 26,
+    "weights_updated": false,
+    "seed_stop_exclusive": 8000005000032
+  },
+  "execution_date": "2026-10-03",
+  "role": "development-diagnostic",
+  "schema": "sls-act12-readiness-evidence-v1",
+  "source_git_commit": "5435d4a2f423a1e3b445977a48fae41ac90b5837",
+  "boundary_probe": {
+    "performance_evidence": false,
+    "profiles": [
+      "IRONCLAD_A20_ACT1",
+      "IRONCLAD_A20_ACT2"
+    ],
+    "battles_skipped": true,
+    "seeds": [
+      0,
+      3,
+      4
+    ]
+  },
+  "not_server_training": true,
+  "files": [
+    {
+      "path": "full-pytest.txt",
+      "bytes": 3074,
+      "sha256": "03791f39c35bddab0e175f41cd946570d91cf9bb61dfb675a8680025ad93a830"
+    },
+    {
+      "path": "horizon-probe.json",
+      "bytes": 15437,
+      "sha256": "063817826e8609ba446dab2c05a9caeea470ec1b0ea246148ffb6b2c9aa54b2d"
+    },
+    {
+      "path": "native-core-recheck.json",
+      "bytes": 798,
+      "sha256": "b90922bbe21c651db146d1e5f489a4f50ee707abf6a999ba350cac080b6b55f3"
+    },
+    {
+      "path": "preparation-validation.json",
+      "bytes": 1349,
+      "sha256": "c13e07c91c5d8ae04a7b91146c096476622c6719a1bacd24131a2c0dd04f2114"
+    },
+    {
+      "path": "pytest.txt",
+      "bytes": 102,
+      "sha256": "920890e51f55e2428b49643e1906a51ff5d5275d1ff5d253d6da5f2b45324c24"
+    },
+    {
+      "path": "targeted-pytest.txt",
+      "bytes": 101,
+      "sha256": "012d9d5f68017a8d2fe0278f325b74922d09998aba42d2dc718e7562f504de13"
+    },
+    {
+      "path": "transfer-micro-result.json",
+      "bytes": 6326,
+      "sha256": "80e584d2e5e8781126a221a99a68bcd7402e28901b36035b59a363c0b3031593"
+    },
+    {
+      "path": "transfer_micro_probe.py",
+      "bytes": 4109,
+      "sha256": "951f8b22ded20d71541757c58f55541a054aef37d7b5783b06e20cbf28583f48"
+    },
+    {
+      "path": "zero-shot-act12.json",
+      "bytes": 287075,
+      "sha256": "1bd3afe2298391f0fe19817d0e04423b299a93fde1b7ff452b7ff1f504f6c8b7"
+    },
+    {
+      "path": "zero_shot_probe.py",
+      "bytes": 2196,
+      "sha256": "687dcb0048766ca3bf3e17ad5e098b6875036346f0da5642bd2cc81baf7bab3f"
+    }
+  ]
+}

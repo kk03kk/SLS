@@ -1,0 +1,21 @@
+{
+  "schema": "sls-analysis-validation-v1",
+  "tests": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "62",
+    "time": "4.148",
+    "timestamp": "2026-10-04T23:24:15.203261+08:00",
+    "hostname": "FZYSSY"
+  },
+  "command": "python -m pytest tests/test_act12_analysis.py tests/test_win_continuation_analysis.py tests/test_compare_run_arms.py tests/test_act12_pilot.py -q",
+  "ruff": "python -m ruff check .: passed",
+  "tested_sources_canonical_lf": {
+    "tools/analyze_act12_pilot.py": "da0bd27767b0510c23084d8d069f3ceb05da6bb2da932b70fea14295b405db93",
+    "tools/analyze_reward_screen.py": "fe685314abdf030a7cca8acd4b282b25ccec5221b4644aa4877a5ad9e552581a",
+    "tests/test_act12_analysis.py": "230900859a56f83035d4fe62732c087b2bb765d076c7172cf91ccca4e27da754"
+  },
+  "no_training_or_simulator_contract_change": true
+}
