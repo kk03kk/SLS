@@ -136,3 +136,8 @@
 | [results/act12-preparation-20261005/validation.json](results/act12-preparation-20261005/validation.json) | 验证摘要 | 本地检查、源身份和原始证据SHA |
 
 | [results/act12-preparation-20261005/stock-power-reference.json](results/act12-preparation-20261005/stock-power-reference.json) | 原版身份附件 | Flight/Hex/PainfulStabs字节码SHA；无原版源码 |
+
+## 登录节点提交修复补充（2026-10-05）
+
+- [修复与恢复说明](results/act12-submission-repair-20261005/README.md)
+- [失败定位、身份绑定与验证摘要](results/act12-submission-repair-20261005/validation.json)

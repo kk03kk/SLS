@@ -51,3 +51,7 @@ python tools/analyze_act12_pilot.py --run local/runs/ironclad-a20-act12-win-pilo
 已有Snecko及11个Boss/Spheric边界案例；此次新增六个有原版字节码依据的Book、Slavers、Leader、Chosen、Byrd受控案例，未发现这些检查中的新规则差异。跨幕/Boss奖励结构已有回归，但不能据此宣布全Act2原版交互/RNG和所有Boss relic全面parity。资格范围与原始证据见准备结案。
 
 先运行这一个4M试训。若缺少成功，下一候选是正常局自然状态的Act2后缀课程；若成功存在且独立on-policy诊断确认critic异常，再做一个critic变量；lambda消融和吞吐优化随后根据数据决定。不新增reward A/B、不重置actor、不扩大网络，不立即承诺长训有效。
+
+## 登录节点提交修复（2026-10-05）
+
+ff5e40b在xlogin2复制工具导入Torch时失败，尚未sbatch。修复见 [提交修复证据](results/act12-submission-repair-20261005/README.md)。登录侧只做无需Torch的字节/身份检查；全局配置与checkpoint深度校验由--bound-plan在GPU节点执行。恢复使用已有新克隆目录，拉取修复提交，保留所有旧run。

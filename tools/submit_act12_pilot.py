@@ -15,19 +15,17 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "src"))
 
 from sls.rl.training_contract import (
+    NATIVE_SOURCE_PATHS,
+    local_source_digest,
     sha256_file,
     source_sha256,
     training_implementation_digest,
 )
-from tools.prepare_act12_pilot import (
-    build_configuration,
-    inspect_parent,
-    repository_path,
-)
+from tools.operator_paths import repository_path
 from tools.submit_slurm import _parser, build_sbatch_command
 
 
-def validate_plan(plan: dict, *, root: Path = ROOT) -> Path:
+def validate_plan(plan: dict, *, root: Path = ROOT, deep: bool = True) -> Path:
     if plan.get("schema") != "sls-act12-bound-plan-v1" or plan.get("status") != "READY_FOR_LOCAL_VALIDATION":
         raise ValueError("only a hash-bound Act1-2 plan can be submitted")
     config_path = repository_path(root, plan["config"])
@@ -42,6 +40,26 @@ def validate_plan(plan: dict, *, root: Path = ROOT) -> Path:
     if (source_sha256(recipe_path) != plan["recipe_sha256"]
             or json.loads(recipe_path.read_text(encoding="utf-8")) != plan["recipe"]):
         raise ValueError("bound pilot recipe changed")
+    if not deep:
+        # The locally inspected model is sealed by its SHA. Repeat that byte
+        # check on login nodes; deserialize and reconstruct the recipe on GPU.
+        parent = plan["parent"]
+        folder = repository_path(root, parent["run"])
+        bundle = json.loads((folder / "training-bundle.json").read_text(encoding="utf-8"))
+        for name, digest in parent["evidence"].items():
+            if (bundle["files"].get(name) != digest
+                    or sha256_file(repository_path(root, folder / name)) != digest):
+                raise ValueError(f"parent evidence changed: {name}")
+        if sha256_file(repository_path(root, parent["checkpoint"])) != parent["sha256"]:
+            raise ValueError("parent checkpoint changed")
+        if local_source_digest(NATIVE_SOURCE_PATHS, root=root) != parent["target_native_source_sha256"]:
+            raise ValueError("pilot simulator source changed")
+        transition = parent.get("simulator_transition")
+        if transition and sha256_file(repository_path(root, transition["evidence"])) != transition["evidence_sha256"]:
+            raise ValueError("simulator transition evidence changed")
+        return config_path
+    from tools.prepare_act12_pilot import build_configuration, inspect_parent
+
     original, parent, _ = inspect_parent(
         Path(plan["parent"]["run"]), plan["parent"]["role"], root=root,
         simulator_transition=plan["parent"].get("simulator_transition"),
@@ -62,12 +80,13 @@ def main() -> int:
     args = parser.parse_args()
     plan_path = repository_path(ROOT, args.plan)
     plan = json.loads(plan_path.read_text(encoding="utf-8"))
-    config_path = validate_plan(plan)
+    config_path = validate_plan(plan, deep=False)
     hours = int(plan["wall_limit_hours"])
     if not 1 <= hours <= 72:
         raise ValueError("wall limit must be between 1 and 72 hours")
     command = build_sbatch_command(_parser().parse_args([
         "train", "--config", str(config_path), "--prepare", "--python", sys.executable,
+        "--bound-plan", str(plan_path),
         "--constraint", "xgpg", "--cpus", "16", "--memory", "64G",
         "--time", f"{hours // 24}-{hours % 24:02d}:00:00",
     ]))

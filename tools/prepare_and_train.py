@@ -58,6 +58,7 @@ def main() -> int:
     preparation_started = time.monotonic()
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=Path, required=True)
+    parser.add_argument("--bound-plan", type=Path)
     args = parser.parse_args()
     if not os.environ.get("SLURM_JOB_ID"):
         raise RuntimeError("submit train --prepare to a Slurm GPU compute node")
@@ -93,6 +94,14 @@ def main() -> int:
     torch.set_float32_matmul_precision("high")
     if not torch.cuda.is_available():
         raise RuntimeError("CUDA is unavailable on allocated compute node")
+    if args.bound_plan is not None:
+        run_tool("check_training_configs.py")
+        sys.path.insert(0, str(ROOT))
+        from tools.submit_act12_pilot import validate_plan
+        bound = json.loads(args.bound_plan.read_text(encoding="utf-8"))
+        if validate_plan(bound, deep=True) != args.config.resolve():
+            raise ValueError("bound plan targets a different training configuration")
+        print(json.dumps({"bound_plan_deep_validation": "PASS"}), flush=True)
     if config["run"].get("continuation_from"):
         run_tool("initialize_act1_continuation.py", "--config", args.config)
     latest = ROOT / config["run"]["output"] / "latest.pt"

@@ -1,0 +1,13 @@
+# Act1–2提交修复：2026-10-05
+
+用户在xlogin2执行ff5e40b命令时，复制工具尚未进入main就因导入Torch而失败：`libtorch_cuda.so: failed to map segment from shared object`。set -e使本次命令在sbatch之前停止，未启动本轮训练。原始90M parent和训练目录未被该复制工具修改；不据此推断其他已有作业状态。
+
+确认的问题是路径helper经prepare_act12_pilot间接加载了Torch/CUDA。底层共享库映射失败的原因尚未由服务器ulimit/资源信息确认，本次不重装或改动服务器Python环境。
+
+现在import_act12_parent和submit_act12_pilot的CLI均支持完全禁止Torch导入的登录节点。登录侧保持config、recipe、训练implementation、operator源码、parent checkpoint与证据的SHA核验；全局配置检查、模型反序列化和完整parent/recipe重构在GPU节点内通过显式--bound-plan再次执行。需要GPU深度检查的失败仍在训练开始前阻止执行。
+
+4M预算、模型、reward/PPO、种子与训练配置字节保持；native和训练implementation身份不变，仅操作工具摘要及bound-plan绑定更新。旧ff5e40b的准备记录和validation.json保留当时身份，本目录记录本次修复，不能把旧plan摘要改写成新plan。
+
+本地相关70项测试通过，新增4项覆盖禁止Torch导入的两种CLI、轻量提交与损坏拒绝、向GPU传递plan。实际90M parent复制和提交检查在禁止Torch导入时通过；完整模型深度检查另行通过；Ruff和27份配置通过。验证摘要见validation.json。
+
+恢复时复用现有SLS-act12-r1，确认工作区干净，fetch并checkout修复commit，复制parent后提交。不要再次运行旧克隆脚本，也不要在login节点执行check_training_configs.py；该检查已转入GPU作业。

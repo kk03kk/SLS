@@ -51,6 +51,7 @@ def _parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--config", type=Path)
     parser.add_argument("--prepare", action="store_true")
+    parser.add_argument("--bound-plan", type=Path)
     parser.add_argument("--checkpoint", type=Path)
     parser.add_argument("--comparison-checkpoint", type=Path)
     parser.add_argument("--evaluation-output", type=Path)
@@ -102,6 +103,8 @@ def build_sbatch_command(args: argparse.Namespace, *, root: Path = ROOT) -> list
         raise ValueError("diagnostic paths are only valid for corpus")
     if args.prepare and (args.task != "train" or args.resume != "auto"):
         raise ValueError("--prepare requires train with --resume auto")
+    if args.bound_plan is not None and not args.prepare:
+        raise ValueError("--bound-plan requires train --prepare")
     python = _absolute_without_symlink_resolution(args.python)
     if args.task in {"smoke", "pilot", "train"}:
         partition, walltime = "gpu-long", "3-00:00:00"
@@ -194,6 +197,8 @@ def build_sbatch_command(args: argparse.Namespace, *, root: Path = ROOT) -> list
         command.extend(("--config", str(args.config.resolve())))
     if args.prepare:
         command = [str(python), str(root / "tools/prepare_and_train.py"), "--config", str(config)]
+        if args.bound_plan is not None:
+            command.extend(("--bound-plan", str(args.bound_plan.resolve())))
     logs = root / "local" / "runs" / "slurm-logs"
     sbatch = [
         "sbatch", "--parsable", f"--account={args.account}", f"--qos={args.qos}",

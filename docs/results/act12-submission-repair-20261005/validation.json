@@ -1,0 +1,24 @@
+{
+  "schema": "sls-act12-login-submission-repair-v1",
+  "failed_commit": "ff5e40bb3f0783c3f590c28b0c70c5717608079b",
+  "observed_error": "ImportError: libtorch_cuda.so: failed to map segment from shared object",
+  "failed_phase": "import_act12_parent module import, before main or copying, before sbatch",
+  "confirmed_defect": "login file-copy tool indirectly imported Torch through prepare_act12_pilot.repository_path; submitter also eagerly imported that module",
+  "underlying_mapping_failure_cause": "UNVERIFIED; no server resource diagnostics supplied yet",
+  "repair": "stdlib path helper; login submission checks source/config/recipe/evidence/checkpoint bytes; full recipe reconstruction and checkpoint deserialization plus global config checks run on allocated GPU node before training",
+  "old_bound_plan_sha256": "29d5a822330482043b36fd06ce2ff5808e24ff382ac51966d09fb0c41f1999d6",
+  "new_bound_plan_sha256": "9da1324f115084f87d60a326fe7946c39659c13e037dbf6c8d9b461296b75301",
+  "training_implementation_sha256": "03ab4c6e5d823be9a598fec855d1311020060e302e4ab9c2010426e546ac3e97",
+  "training_config_unchanged": true,
+  "parent_reward_model_budget_seeds_unchanged": true,
+  "validation": {
+    "targeted_tests_passed": 70,
+    "ruff": "PASS",
+    "configs_valid": 27,
+    "actual_parent_copy_torch_import_forbidden": "PASS",
+    "actual_bound_submission_validation_torch_import_forbidden": "PASS",
+    "actual_parent_deep_validation": "PASS",
+    "sbatch_bound_plan_forwarding": "PASS"
+  },
+  "scope_limit": "No server job submitted by the assistant; actual GPU-node Torch runtime is checked in server preflight."
+}

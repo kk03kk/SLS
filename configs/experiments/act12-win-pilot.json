@@ -66,11 +66,12 @@
   "decision_note": "Use the preregistered 90M fixed endpoint: paired 2048-seed +3.22pp over 70M, no confirmed selected76 advantage; current normal-start Act2 probe demonstrates a true success, motivating a 4M adjacent-stage adaptation pilot.",
   "wall_limit_hours": 24,
   "operator_sources": {
-    "tools/prepare_act12_pilot.py": "b097d17178a14dd0d82c2b3f635b2441b248525f943bf13ae2a1de04e9f32798",
-    "tools/submit_act12_pilot.py": "70dc179a4e04d7049b965f0d3a929fe6d47bd82d09b44dacc8f70632a7d69c0f",
-    "tools/prepare_and_train.py": "aee11520c2398fc29552d1d2f08f97ac33b07ef80adbc0d347a58b17d01d6d3e",
-    "tools/submit_slurm.py": "2e2bfc3251101207bfc9eb74c51ad00a70a5d40d0570890b49ac1743d8b28208",
-    "tools/import_act12_parent.py": "c05a5f29be7ac20394c19e01215547ddbf85aa41d2d5c6c26edb86430b61b44a",
-    "tools/analyze_act12_pilot.py": "713b9201461ee13e5bc5141400a34745545e3d4c7ed262f788bbd3dd50eafad6"
+    "tools/prepare_act12_pilot.py": "35ac000e47bdab8306c21367feaf795f179d443146c56d25f296a7473de8657d",
+    "tools/submit_act12_pilot.py": "58b1dc891e8289c8926f1b913cbe05c96564bb33b5bd2c9bfc8e0b998b7c9558",
+    "tools/prepare_and_train.py": "d91dd93af22839e744c518d900dc9eb5d1ccb7ff5e3e996b708e070ed98bdb8e",
+    "tools/submit_slurm.py": "b4a191c398c298c630180e782290be239139d0c238c44b1d861f2fc267232c56",
+    "tools/import_act12_parent.py": "6ec9de43778bf726dab91b91673b66dcbfa739c9b4642e237d41b73127228e8f",
+    "tools/analyze_act12_pilot.py": "713b9201461ee13e5bc5141400a34745545e3d4c7ed262f788bbd3dd50eafad6",
+    "tools/operator_paths.py": "89d5fb7ab01731a57d93e56f1df976b4ecbcf030efd92eba0452bde20e3e2354"
   }
 }

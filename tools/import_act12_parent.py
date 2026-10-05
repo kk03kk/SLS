@@ -13,7 +13,7 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "src"))
 
 from sls.rl.training_contract import sha256_file
-from tools.prepare_act12_pilot import repository_path
+from tools.operator_paths import repository_path
 
 
 def import_parent(source: Path, plan: dict, *, root: Path = ROOT) -> Path:

@@ -27,16 +27,10 @@ from sls.rl.training_contract import (
     training_implementation_digest,
 )
 from tools.check_training_configs import validate
+from tools.operator_paths import repository_path
 
 RECIPE = ROOT / "configs/experiments/act12-win-pilot-recipe.json"
 HEALTH = ("backend_errors", "backend_truncations", "step_limits", "cycle_limits", "timeouts")
-
-
-def repository_path(root: Path, value: str | Path) -> Path:
-    path = (root / value).resolve()
-    if not path.is_relative_to(root.resolve()):
-        raise ValueError("path must remain within the repository")
-    return path
 
 
 def _relative(root: Path, path: Path) -> str:
@@ -242,6 +236,7 @@ def main() -> int:
         "tools/prepare_act12_pilot.py", "tools/submit_act12_pilot.py",
         "tools/prepare_and_train.py", "tools/submit_slurm.py",
         "tools/import_act12_parent.py", "tools/analyze_act12_pilot.py",
+        "tools/operator_paths.py",
     )}
     with plan_path.open("x", encoding="utf-8", newline="\n") as stream:
         stream.write(json.dumps(plan, indent=2, ensure_ascii=False) + "\n")
