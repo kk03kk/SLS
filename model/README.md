@@ -1,5 +1,7 @@
 # 演示模型
 
+2026-10-06：新增 `ironclad-a20-act12-pilot-94m-endpoint.pt` 和 `ironclad-a20-act12-pilot-91m5-periodic-selected.pt`（各带`.json`来源清单）。由下载的checkpoint在本地导出，goal=ACT2；开发联合通关3/1024和2/1024，没有晋升champion，不覆盖历史56M/90M。服务器原独立policy导出未包含在lite包里，未补造。见[Act1–2结案](../docs/results/act12-pilot-20261006/README.md)。
+
 本目录只放可供推理和实机控制窗口加载的 `sls-policy-artifact-v5` 模型。
 当前默认模型：**战士 A20 第一幕，56,000,512 步 champion**。
 

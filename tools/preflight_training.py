@@ -46,6 +46,21 @@ def check_standalone_reward_encoding(decision) -> None:
         encode_decision(Decision(observation, actions))
 
 
+def check_cpu_array_conversion() -> None:
+    """Check the installed array runtime against the original tensor conversion."""
+    import torch
+
+    from sls.model.batching import _cpu_tensor
+
+    for values, dtype in (([[0.0, -0.0, 1.23456789, -31.01]], torch.float32),
+                          ([[False, True, False]], torch.bool),
+                          ([[0, 1, 2**40, -7]], torch.long)):
+        actual = _cpu_tensor(values, dtype)
+        expected = torch.tensor(values, dtype=dtype)
+        if actual.dtype != expected.dtype or not torch.equal(actual, expected):
+            raise RuntimeError('installed NumPy changes CPU tensor conversion')
+
+
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=Path)
@@ -116,6 +131,7 @@ def main() -> int:
         if decision.terminal or not decision.actions:
             raise RuntimeError("simulator smoke produced an invalid Decision")
         check_standalone_reward_encoding(decision)
+        check_cpu_array_conversion()
         if hashlib.sha256(SEED_8335_DUMP.read_bytes()).hexdigest() != SEED_8335_SHA256:
             raise RuntimeError("seed 8335 regression fixture provenance is stale")
         replayed = replay_dump(SEED_8335_DUMP)
@@ -188,6 +204,7 @@ def main() -> int:
             "platform": platform.platform(), "git": git_state(),
             "seed_8335_regression": "PASS",
             "standalone_reward_encoding": "PASS",
+            "cpu_array_conversion": "PASS",
             "decision_invariant": "PASS",
             **ironclad_scope_contract(profile.ascension),
             "native_source_sha256": native_source_digest(), "native_artifact": native_artifact(),

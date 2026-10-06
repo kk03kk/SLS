@@ -1,0 +1,1201 @@
+{
+  "schema": "sls-act2-differential-v1",
+  "native_source_sha256": "2247ca990f0afb396b3c0820c156fd3af0c0a6d08ba6cae9736a7b03490ad4f0",
+  "runs": [
+    {
+      "encounter": "BOOK_OF_STABBING",
+      "seed": 131100000,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "BOOK_OF_STABBING",
+      "seed": 131100001,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "BOOK_OF_STABBING",
+      "seed": 131100002,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "BOOK_OF_STABBING",
+      "seed": 131100003,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        },
+        {
+          "boundary": 3,
+          "differences": []
+        },
+        {
+          "boundary": 4,
+          "differences": []
+        },
+        {
+          "boundary": 5,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "BOOK_OF_STABBING",
+      "seed": 131100004,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        },
+        {
+          "boundary": 3,
+          "differences": []
+        },
+        {
+          "boundary": 4,
+          "differences": []
+        },
+        {
+          "boundary": 5,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "BOOK_OF_STABBING",
+      "seed": 131100005,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        },
+        {
+          "boundary": 3,
+          "differences": []
+        },
+        {
+          "boundary": 4,
+          "differences": []
+        },
+        {
+          "boundary": 5,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "BOOK_OF_STABBING",
+      "seed": 131100006,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "BOOK_OF_STABBING",
+      "seed": 131100007,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "BOOK_OF_STABBING",
+      "seed": 131100008,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "THREE_BYRDS",
+      "seed": 131100009,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        },
+        {
+          "boundary": 3,
+          "differences": []
+        },
+        {
+          "boundary": 4,
+          "differences": []
+        },
+        {
+          "boundary": 5,
+          "differences": []
+        },
+        {
+          "boundary": 6,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "THREE_BYRDS",
+      "seed": 131100010,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        },
+        {
+          "boundary": 3,
+          "differences": []
+        },
+        {
+          "boundary": 4,
+          "differences": []
+        },
+        {
+          "boundary": 5,
+          "differences": []
+        },
+        {
+          "boundary": 6,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "THREE_BYRDS",
+      "seed": 131100011,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        },
+        {
+          "boundary": 3,
+          "differences": []
+        },
+        {
+          "boundary": 4,
+          "differences": []
+        },
+        {
+          "boundary": 5,
+          "differences": []
+        },
+        {
+          "boundary": 6,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "THREE_BYRDS",
+      "seed": 131100012,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "THREE_BYRDS",
+      "seed": 131100013,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "THREE_BYRDS",
+      "seed": 131100014,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "THREE_BYRDS",
+      "seed": 131100015,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        },
+        {
+          "boundary": 3,
+          "differences": []
+        },
+        {
+          "boundary": 4,
+          "differences": []
+        },
+        {
+          "boundary": 5,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "THREE_BYRDS",
+      "seed": 131100016,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        },
+        {
+          "boundary": 3,
+          "differences": []
+        },
+        {
+          "boundary": 4,
+          "differences": []
+        },
+        {
+          "boundary": 5,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "THREE_BYRDS",
+      "seed": 131100017,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        },
+        {
+          "boundary": 3,
+          "differences": []
+        },
+        {
+          "boundary": 4,
+          "differences": []
+        },
+        {
+          "boundary": 5,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "SHELLED_PARASITE_AND_FUNGI",
+      "seed": 131100018,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        },
+        {
+          "boundary": 3,
+          "differences": []
+        },
+        {
+          "boundary": 4,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "SHELLED_PARASITE_AND_FUNGI",
+      "seed": 131100019,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        },
+        {
+          "boundary": 3,
+          "differences": []
+        },
+        {
+          "boundary": 4,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "SHELLED_PARASITE_AND_FUNGI",
+      "seed": 131100020,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        },
+        {
+          "boundary": 3,
+          "differences": []
+        },
+        {
+          "boundary": 4,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "SHELLED_PARASITE_AND_FUNGI",
+      "seed": 131100021,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "SHELLED_PARASITE_AND_FUNGI",
+      "seed": 131100022,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "SHELLED_PARASITE_AND_FUNGI",
+      "seed": 131100023,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "SHELLED_PARASITE_AND_FUNGI",
+      "seed": 131100024,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "SHELLED_PARASITE_AND_FUNGI",
+      "seed": 131100025,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "SHELLED_PARASITE_AND_FUNGI",
+      "seed": 131100026,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "SLAVERS",
+      "seed": 131100027,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "SLAVERS",
+      "seed": 131100028,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "SLAVERS",
+      "seed": 131100029,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "SLAVERS",
+      "seed": 131100030,
+      "status": "SEMANTIC_DIFFERENCE",
+      "first_divergence": {
+        "boundary": 0,
+        "differences": [
+          {
+            "path": "$.adapted.observation.enemies[2].intent",
+            "original": "DEBUFF",
+            "simulator": "STRONG_DEBUFF"
+          }
+        ]
+      },
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": [
+            {
+              "path": "$.adapted.observation.enemies[2].intent",
+              "original": "DEBUFF",
+              "simulator": "STRONG_DEBUFF"
+            }
+          ]
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        },
+        {
+          "boundary": 3,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "SLAVERS",
+      "seed": 131100031,
+      "status": "SEMANTIC_DIFFERENCE",
+      "first_divergence": {
+        "boundary": 0,
+        "differences": [
+          {
+            "path": "$.adapted.observation.enemies[2].intent",
+            "original": "DEBUFF",
+            "simulator": "STRONG_DEBUFF"
+          }
+        ]
+      },
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": [
+            {
+              "path": "$.adapted.observation.enemies[2].intent",
+              "original": "DEBUFF",
+              "simulator": "STRONG_DEBUFF"
+            }
+          ]
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        },
+        {
+          "boundary": 3,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "SLAVERS",
+      "seed": 131100032,
+      "status": "SEMANTIC_DIFFERENCE",
+      "first_divergence": {
+        "boundary": 0,
+        "differences": [
+          {
+            "path": "$.adapted.observation.enemies[2].intent",
+            "original": "DEBUFF",
+            "simulator": "STRONG_DEBUFF"
+          }
+        ]
+      },
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": [
+            {
+              "path": "$.adapted.observation.enemies[2].intent",
+              "original": "DEBUFF",
+              "simulator": "STRONG_DEBUFF"
+            }
+          ]
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        },
+        {
+          "boundary": 3,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "SLAVERS",
+      "seed": 131100033,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        },
+        {
+          "boundary": 3,
+          "differences": []
+        },
+        {
+          "boundary": 4,
+          "differences": []
+        },
+        {
+          "boundary": 5,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "SLAVERS",
+      "seed": 131100034,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        },
+        {
+          "boundary": 3,
+          "differences": []
+        },
+        {
+          "boundary": 4,
+          "differences": []
+        },
+        {
+          "boundary": 5,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "SLAVERS",
+      "seed": 131100035,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        },
+        {
+          "boundary": 3,
+          "differences": []
+        },
+        {
+          "boundary": 4,
+          "differences": []
+        },
+        {
+          "boundary": 5,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "SNAKE_PLANT",
+      "seed": 131100036,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "SNAKE_PLANT",
+      "seed": 131100037,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "SNAKE_PLANT",
+      "seed": 131100038,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "SNAKE_PLANT",
+      "seed": 131100039,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "SNAKE_PLANT",
+      "seed": 131100040,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "SNAKE_PLANT",
+      "seed": 131100041,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "SNAKE_PLANT",
+      "seed": 131100042,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        },
+        {
+          "boundary": 3,
+          "differences": []
+        },
+        {
+          "boundary": 4,
+          "differences": []
+        },
+        {
+          "boundary": 5,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "SNAKE_PLANT",
+      "seed": 131100043,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        },
+        {
+          "boundary": 3,
+          "differences": []
+        },
+        {
+          "boundary": 4,
+          "differences": []
+        },
+        {
+          "boundary": 5,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "SNAKE_PLANT",
+      "seed": 131100044,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        },
+        {
+          "boundary": 3,
+          "differences": []
+        },
+        {
+          "boundary": 4,
+          "differences": []
+        },
+        {
+          "boundary": 5,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    }
+  ],
+  "training_gate": "NOT_QUALIFIED"
+}

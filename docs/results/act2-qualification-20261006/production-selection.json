@@ -1,0 +1,81 @@
+{
+  "schema": "sls-act2-canary-selection-v1",
+  "purpose": "COVERAGE_ONLY_NOT_WIN_RATE_OR_CHECKPOINT_SELECTION",
+  "scout_sha256": "8a03c960f96d4159ce63bd7f1ad473a88885600adc15e61a38b08437d36fe833",
+  "model_sha256": "ed9068343c8d628a13595a3919d8a15c5f9a19840be1042e07e5f12fcc8ca30c",
+  "native_source_sha256": "2247ca990f0afb396b3c0820c156fd3af0c0a6d08ba6cae9736a7b03490ad4f0",
+  "selection_rule": "first eligible seeds; 3 ordinary deaths, 2 witnessed elite entries, 3 distinct bosses",
+  "runs": [
+    {
+      "seed": 8000011000000,
+      "role": "ACT2_ORDINARY_FAILURE",
+      "native_evidence": {
+        "enemy_ids": [
+          "CHOSEN"
+        ]
+      }
+    },
+    {
+      "seed": 8000011000001,
+      "role": "ACT2_ELITE_ENTRY",
+      "native_evidence": {
+        "enemy_ids": [
+          "BOOK_OF_STABBING"
+        ]
+      }
+    },
+    {
+      "seed": 8000011000002,
+      "role": "ACT2_ORDINARY_FAILURE",
+      "native_evidence": {
+        "enemy_ids": [
+          "SNAKE_PLANT"
+        ]
+      }
+    },
+    {
+      "seed": 8000011000003,
+      "role": "ACT2_ELITE_ENTRY",
+      "native_evidence": {
+        "enemy_ids": [
+          "FAT_GREMLIN",
+          "FAT_GREMLIN",
+          "GREMLIN_LEADER"
+        ]
+      }
+    },
+    {
+      "seed": 8000011000004,
+      "role": "ACT2_ORDINARY_FAILURE",
+      "native_evidence": {
+        "enemy_ids": [
+          "SNECKO"
+        ]
+      }
+    },
+    {
+      "seed": 8000011000005,
+      "role": "ACT2_BOSS_ENTRY:CHAMP",
+      "native_evidence": [
+        "ACT_1:HEXAGHOST",
+        "ACT_2:CHAMP"
+      ]
+    },
+    {
+      "seed": 8000011000009,
+      "role": "ACT2_BOSS_ENTRY:AUTOMATON",
+      "native_evidence": [
+        "ACT_1:THE_GUARDIAN",
+        "ACT_2:AUTOMATON"
+      ]
+    },
+    {
+      "seed": 8000011000069,
+      "role": "ACT2_BOSS_ENTRY:COLLECTOR",
+      "native_evidence": [
+        "ACT_1:SLIME_BOSS",
+        "ACT_2:COLLECTOR"
+      ]
+    }
+  ]
+}

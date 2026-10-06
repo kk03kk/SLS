@@ -97,11 +97,54 @@ class BackupJournal:
                     target.unlink()
             except OSError as error:
                 failures.append(f"{target}: {error}")
+        for tree in self.data.get('protected_trees', ()):
+            root = Path(tree['root']).resolve()
+            expected = set(tree['files'])
+            for path in root.rglob('*'):
+                if not path.is_file():
+                    continue
+                try:
+                    if not path.resolve().is_relative_to(root):
+                        raise OSError('protected-tree target resolves outside original root')
+                    if path.relative_to(root).as_posix() not in expected:
+                        path.unlink()
+                except OSError as error:
+                    failures.append(f'{path}: {error}')
         self.data["status"] = "RECOVERY_FAILED" if failures else "RECOVERED"
         self.data["recovery_failures"] = failures
         self._flush()
         if failures:
             raise RuntimeError("Original runtime recovery failed: " + "; ".join(failures))
+
+    def backup_tree(self, root: Path) -> None:
+        root = root.resolve()
+        trees = self.data.setdefault('protected_trees', [])
+        if any(Path(t['root']) == root for t in trees):
+            return
+        files = [p for p in root.rglob('*') if p.is_file()]
+        if any(not p.resolve().is_relative_to(root) for p in files):
+            raise OSError('protected-tree target resolves outside original root')
+        for path in files:
+            self.backup(path)
+        trees.append({'root': str(root), 'files': sorted(p.relative_to(root).as_posix() for p in files)})
+        self._flush()
+
+
+def stop_owned_and_restore(journal: BackupJournal, process) -> None:
+    """Restore before exit/cloud scan and again after the owned process exits."""
+    try:
+        journal.restore()
+    finally:
+        try:
+            if process is not None and process.poll() is None:
+                process.terminate()
+                try:
+                    process.wait(timeout=15)
+                except subprocess.TimeoutExpired:
+                    process.kill()
+                    process.wait(timeout=15)
+        finally:
+            journal.restore()
 
 
 def launcher_command(
@@ -184,6 +227,8 @@ def main() -> int:
     extra_mods = [path for path in mod_dir.glob("*.jar") if path.name != target_oracle.name]
     for target in [config, mod_list, display, target_oracle, *extra_mods, *_all_user_files(args.game_root)]:
         journal.backup(target)
+    for name in ('preferences', 'betaPreferences', 'saves'):
+        journal.backup_tree(args.game_root / name)
     completion = run_root / "completion.json"
     stdout_path = run_root / "original.stdout.log"
     stderr_path = run_root / "original.stderr.log"
@@ -249,16 +294,7 @@ def main() -> int:
                 raise TimeoutError(f"Original canary timed out after {args.timeout}s")
     finally:
         # Restore protected saves/config while Java is alive, before Steam Cloud's exit scan.
-        try:
-            journal.restore()
-        finally:
-            if process is not None and process.poll() is None:
-                process.terminate()
-                try:
-                    process.wait(timeout=15)
-                except subprocess.TimeoutExpired:
-                    process.kill()
-                    process.wait(timeout=15)
+        stop_owned_and_restore(journal, process)
     print(json.dumps({
         "completion": marker, "runtime_journal": str(journal.path),
         "stdout": str(stdout_path), "stderr": str(stderr_path),

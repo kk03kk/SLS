@@ -232,7 +232,8 @@ bool isValidShopAction(const GameContext &gc, const search::GameAction a) {
             if (select > 2) {
                 return false;
             }
-            return s.potionPrice(select) != -1 && gc.gold >= s.potionPrice(select);
+            return !gc.hasRelic(RelicId::SOZU) && gc.potionCount < gc.potionCapacity &&
+                   s.potionPrice(select) != -1 && gc.gold >= s.potionPrice(select);
 
 
         case search::GameAction::RewardsActionType::RELIC:
@@ -254,7 +255,8 @@ bool isValidShopAction(const GameContext &gc, const search::GameAction a) {
 }
 
 bool isValidPotionAction(const GameContext &gc, const search::GameAction a) {
-    if (gc.curEvent == Event::WE_MEET_AGAIN && gc.screenState == ScreenState::EVENT_SCREEN) {
+    // The stock current room retains its event while the map is open.
+    if (gc.curEvent == Event::WE_MEET_AGAIN) {
         return false;
     }
     if (a.getIdx1() < 0 || a.getIdx1() >= gc.potionCapacity) {
@@ -547,7 +549,8 @@ std::vector<search::GameAction> getAllShopActions(const sts::GameContext &gc) {
 
     for (int i = 0; i < 3; ++i) {
         auto price = s.potionPrice(i);
-        if (price != -1 && gc.gold >= price) {
+        if (price != -1 && gc.gold >= price &&
+            !gc.hasRelic(RelicId::SOZU) && gc.potionCount < gc.potionCapacity) {
             actions.emplace_back(search::GameAction::RewardsActionType::POTION, i);
         }
     }

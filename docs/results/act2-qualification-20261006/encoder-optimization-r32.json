@@ -1,0 +1,98 @@
+{
+  "schema": "sls-encoder-optimization-verification-v1",
+  "status": "PASS",
+  "native_source_sha256": "b100427d1e3ae6eee05818b6904047049609b1aa70807872c1f5f5e0edd6d62f",
+  "runtime": {
+    "python_cache_tag": "cpython-312",
+    "torch": "2.10.0+cu130",
+    "numpy": "2.3.5",
+    "cuda": "13.0",
+    "cudnn": 91200,
+    "cuda_device_count": 1,
+    "cuda_device": "NVIDIA GeForce RTX 5070 Laptop GPU",
+    "deterministic_algorithms": true,
+    "float32_matmul_precision": "high",
+    "cudnn_benchmark": false,
+    "cublas_workspace_config": ":4096:8"
+  },
+  "numpy_version": "2.3.5",
+  "parent_model_sha256": "ed9068343c8d628a13595a3919d8a15c5f9a19840be1042e07e5f12fcc8ca30c",
+  "artifact_sha256": "2e8aa20ba50cab3fef7ea726db988137bd0018f9379c18637084faa65f5ce29f",
+  "input_and_model_fields_exact": true,
+  "rollout_and_ppo_update_exact": true,
+  "worker_layout": [
+    4,
+    2
+  ],
+  "rollout_steps": 32,
+  "order": [
+    "reference",
+    "optimized",
+    "optimized",
+    "reference"
+  ],
+  "median_collect_optimize_seconds": {
+    "reference": 2.1015708500053734,
+    "optimized": 2.030734450032469
+  },
+  "limitation": "Windows small fixed workload; no NUS throughput or policy-quality claim",
+  "sample_count": 96,
+  "private_evidence_sha256": "d457e77ae2f2fbe9843bb3252fe8c7ac08e056f72f0c3404d448f30bb4e8661a",
+  "baseline_profiler_sha256": "e95ce71f4ce2132ab65e07207d51319a1dc3b0acfee9e58922661df0692ebecc",
+  "cpu_reference_batching_source_sha256": "9d4fed2fd2fce96c4d2eeccd4804471faf0238de7a35696bb020042eac55c287",
+  "optimized_batching_source_sha256": "53840369c00baf417b96cab08e2108f69806c41a011553b1e1c1faf20b14b9a8",
+  "timings": [
+    {
+      "conversion": "reference",
+      "seconds": [
+        2.095089300069958,
+        2.12676269991789,
+        2.094178900006227
+      ],
+      "rollout_sha256": [
+        "797dd4ecec671a69f48825810609efd79e09dbbc9bd2c30415663f09385c68ec",
+        "3ee1cb07ce2532ab25ba550e68324a969b0d6fb78e4ff38e8d146376647f5019",
+        "8e53a98a11e3c3b7ae060d06c37a8f824cb55cec4ade76e42c739e3cb23eedb4"
+      ]
+    },
+    {
+      "conversion": "optimized",
+      "seconds": [
+        2.03248719999101,
+        2.0322558999760076,
+        1.9901951999636367
+      ],
+      "rollout_sha256": [
+        "797dd4ecec671a69f48825810609efd79e09dbbc9bd2c30415663f09385c68ec",
+        "3ee1cb07ce2532ab25ba550e68324a969b0d6fb78e4ff38e8d146376647f5019",
+        "8e53a98a11e3c3b7ae060d06c37a8f824cb55cec4ade76e42c739e3cb23eedb4"
+      ]
+    },
+    {
+      "conversion": "optimized",
+      "seconds": [
+        1.9263448000419885,
+        2.0305227000499144,
+        2.0309462000150234
+      ],
+      "rollout_sha256": [
+        "797dd4ecec671a69f48825810609efd79e09dbbc9bd2c30415663f09385c68ec",
+        "3ee1cb07ce2532ab25ba550e68324a969b0d6fb78e4ff38e8d146376647f5019",
+        "8e53a98a11e3c3b7ae060d06c37a8f824cb55cec4ade76e42c739e3cb23eedb4"
+      ]
+    },
+    {
+      "conversion": "reference",
+      "seconds": [
+        1.9920162999769673,
+        2.1080523999407887,
+        2.157394399982877
+      ],
+      "rollout_sha256": [
+        "797dd4ecec671a69f48825810609efd79e09dbbc9bd2c30415663f09385c68ec",
+        "3ee1cb07ce2532ab25ba550e68324a969b0d6fb78e4ff38e8d146376647f5019",
+        "8e53a98a11e3c3b7ae060d06c37a8f824cb55cec4ade76e42c739e3cb23eedb4"
+      ]
+    }
+  ]
+}

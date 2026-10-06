@@ -80,6 +80,28 @@ def validate_json(path: Path, payload: object) -> list[str]:
         return ["experiment plan is not an object"]
     schema = payload.get("schema")
     if schema == "sls-act12-bound-plan-v1":
+        historical = payload.get('status') == 'COMPLETED_HISTORICAL'
+        if historical:
+            evidence = payload.get('historical_evidence', {})
+            original_path = ROOT / evidence['original_plan']
+            manifest_path = ROOT / evidence['completed_manifest']
+            for evidence_path, key in ((original_path, 'original_plan_sha256'),
+                                       (manifest_path, 'completed_manifest_sha256')):
+                actual = hashlib.sha256(evidence_path.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
+                if actual != evidence[key]:
+                    problems.append(f'historical evidence hash changed: {key}')
+            original = json.loads(original_path.read_text(encoding='utf-8'))
+            restored_plan = {k: v for k, v in payload.items() if k != 'historical_evidence'}
+            restored_plan['status'] = original.get('status')
+            if restored_plan != original:
+                problems.append('historical plan bindings differ from original evidence')
+            manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
+            if (manifest.get('status') != 'COMPLETE'
+                    or manifest.get('training_implementation_sha256') !=
+                        payload['target_training_implementation_sha256']
+                    or manifest.get('config_sha256') != payload['config_sha256']
+                    or manifest.get('native_source_sha256') != payload['parent']['target_native_source_sha256']):
+                problems.append('historical completion identity mismatch')
         # Clean CI clones have no private parent weights; check the portable
         # bindings here. The submitter additionally verifies actual parent bytes.
         config = ROOT / payload["config"]
@@ -92,7 +114,7 @@ def validate_json(path: Path, payload: object) -> list[str]:
         recipe = json.loads(recipe_path.read_text(encoding="utf-8"))
         if payload["recipe"] != recipe:
             problems.append("bound recipe differs from registered recipe")
-        for name, digest in payload.get("operator_sources", {}).items():
+        for name, digest in (() if historical else payload.get("operator_sources", {}).items()):
             actual = hashlib.sha256((ROOT / name).read_bytes().replace(b"\r\n", b"\n")).hexdigest()
             if actual != digest:
                 problems.append(f"bound operator source changed: {name}")
@@ -103,7 +125,7 @@ def validate_json(path: Path, payload: object) -> list[str]:
                 != payload["parent"]["environment_steps"] + recipe["additional_decisions"]):
             problems.append("parent or cumulative budget disagrees with bound plan")
         from sls.rl.training_contract import training_implementation_digest
-        if training_implementation_digest() != payload["target_training_implementation_sha256"]:
+        if not historical and training_implementation_digest() != payload["target_training_implementation_sha256"]:
             problems.append("bound implementation changed")
         return problems
     budget = schema in {"sls-win-70m-budget-experiment-v1", "sls-win-90m-budget-experiment-v1"}

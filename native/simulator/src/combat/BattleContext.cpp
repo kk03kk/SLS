@@ -33,6 +33,14 @@ void BattleContext::init(const GameContext &gc, MonsterEncounter encounterToInit
     monsterHpRng = startRandom;
     shuffleRng = startRandom;
     cardRandomRng = startRandom;
+    // Colosseum starts a second fight without entering another room. Stock
+    // keeps the room's streams, including the extra deck prep on reopen.
+    if (encounterToInit == MonsterEncounter::COLOSSEUM_EVENT_NOBS) {
+        aiRng = gc.aiRng;
+        monsterHpRng = gc.monsterHpRng;
+        shuffleRng = gc.shuffleRng;
+        cardRandomRng = gc.cardRandomRng;
+    }
     miscRng = gc.miscRng;
     potionRng = gc.potionRng;
 
@@ -559,10 +567,17 @@ void BattleContext::exitBattle(GameContext &g) const {
 }
 
 void BattleContext::updateRelicsOnExit(GameContext &g) const {
-    // Stock onVictory hooks enqueue their heals before the action queue runs.
-    // Conditional relics therefore inspect the HP at victory, not HP after an
-    // earlier relic's queued heal has resolved.
+    // AbstractRoom.endBattle checks Meat on the Bone before onVictory hooks.
+    // Its eligibility is therefore based on HP before Burning/Black Blood.
     const int hpAtVictory = g.curHp;
+    // Stock onVictory heals still run while the room phase is COMBAT, so Magic
+    // Flower applies here as well as to heals performed by the battle player.
+    const auto victoryHeal = [&](int amount) {
+        if (player.hasRelic<R::MAGIC_FLOWER>()) {
+            amount = (amount * 3 + 1) / 2; // stock MathUtils.round(amount * 1.5f)
+        }
+        g.playerHeal(amount);
+    };
     for (auto &r : g.relics.relics) {
         switch (r.id) {
             case RelicId::ANCIENT_TEA_SET:
@@ -618,26 +633,27 @@ void BattleContext::updateRelicsOnExit(GameContext &g) const {
                 break;
 
             case RelicId::BURNING_BLOOD:
-                if (outcome == Outcome::PLAYER_VICTORY) {
-                    g.playerHeal(6);
+                if (outcome == Outcome::PLAYER_VICTORY || outcome == Outcome::PLAYER_ESCAPE) {
+                    victoryHeal(6);
                 }
                 break;
 
             case RelicId::BLACK_BLOOD:
-                if (outcome == Outcome::PLAYER_VICTORY) {
-                    g.playerHeal(12);
+                if (outcome == Outcome::PLAYER_VICTORY || outcome == Outcome::PLAYER_ESCAPE) {
+                    victoryHeal(12);
                 }
                 break;
 
             case RelicId::MEAT_ON_THE_BONE:
-                if (outcome == Outcome::PLAYER_VICTORY && hpAtVictory <= g.maxHp / 2) {
-                    g.playerHeal(12);
+                if ((outcome == Outcome::PLAYER_VICTORY || outcome == Outcome::PLAYER_ESCAPE) && hpAtVictory <= g.maxHp / 2) {
+                    victoryHeal(12);
                 }
                 break;
 
             case RelicId::FACE_OF_CLERIC:
-                if (outcome == Outcome::PLAYER_VICTORY) {
-                    g.playerIncreaseMaxHp(1);
+                if (outcome == Outcome::PLAYER_VICTORY || outcome == Outcome::PLAYER_ESCAPE) {
+                    ++g.maxHp;
+                    victoryHeal(1);
                 }
                 break;
 
@@ -658,7 +674,8 @@ void cardOnExit(const CardInstance &c, Deck &deck) {
     auto &deckCard = deck.cards[deckIdx];
 
     if (c.getId() == CardId::RITUAL_DAGGER) {
-        deckCard.misc = c.specialData;
+        // Growth is permanent. A stale duplicate must not undo a prior kill.
+        deckCard.misc = std::max(deckCard.misc, c.specialData);
     }
 
     // todo
@@ -1065,10 +1082,15 @@ void BattleContext::useAttackCard() {
             break;
         }
 
-        case CardId::ANGER:
+        case CardId::ANGER: {
             addToBot( Actions::AttackEnemy(t, calculateCardDamage(c, t, up ? 8 : 6)) );
-            addToBot( Actions::MakeTempCardInDiscard( CardInstance(CardId::ANGER, up), 1) );
+            // Stock uses makeStatEquivalentCopy, preserving randomized combat
+            // costs (e.g. Snecko) and copied flags, not a fresh zero-cost card.
+            CardInstance copy(c);
+            copy.retain = false; // makeStatEquivalentCopy does not copy retain.
+            addToBot( Actions::MakeTempCardInDiscard(copy, 1) );
             break;
+        }
 
         case CardId::BASH:
             // technically calculate attack damage is called first, keep note if we optimize addToBot later

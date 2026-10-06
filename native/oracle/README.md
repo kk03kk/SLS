@@ -14,7 +14,8 @@ Oracle 是原版游戏的观测与验证接入 Mod，不是训练模拟器。它
 | `BatchResetPatch.java` | 使用原版流程返回主菜单 |
 | `ContinuePatch.java` | 触发原版存档继续 |
 | `MatchInputPatch.java` | 将语义 Match 选择送入原版输入路径 |
-| `DiscoveryTimingPatch.java` | 记录 Discovery 帧更新信息，不替换游戏动作 |
+| `DiscoveryTimingPatch.java` | 记录 Discovery 帧更新信息，不替换游戏动作；1.2.2在production完成后输出独立本地clock日志，字段不进入策略消息 |
+| `GeneratedChoiceNotificationPatch.java` | Oracle1.2.1：通知CommunicationMod同屏连续生成选择；不修改stock动作、选项或RNG |
 | `ParityRng.java` | 验证用 math RNG 和探针基线；新局/载入时清除旧基线 |
 | `CardGroupRngPatch.java` | 仅验证模式替换未显式使用游戏 RNG 的随机卡牌选择 |
 | `DungeonSeedPatch.java` | 仅验证模式初始化 math RNG |
@@ -22,6 +23,12 @@ Oracle 是原版游戏的观测与验证接入 Mod，不是训练模拟器。它
 | `OracleMode.java` | 每个 JVM 固定的 production/validation 模式契约 |
 
 `resources/` 中的五个 allowlist 是已有校验环境的固定内容/原版构造键映射。资源不是游戏 JAR，也不代表全部内容已完成保真验证。卡牌、药水、遗物、遭遇和事件范围保持历史包的映射，不在恢复源码时悄悄扩展。
+
+`act2-scenes.json` 固定首批24项A20义务/72个seed；三项正常开局系统义务由
+[系统场景补充](../../docs/results/act2-qualification-20261006/system-scenes-v2.json)绑定。
+`parity_act2`显式设置A20/Act2/floor及受控初态，后续由原版动作系统执行；
+legacy `parity_encounter`调用保持A0兼容，不能代替A20资格。
+`_stock_direct`只在validation提供独立对象投影。详见[本轮证据与限制](../../docs/results/act2-qualification-20261006/README.md)。
 
 基础源码恢复自 Git revision `4848867580b348e32c876b2d53ac278f32c0e463` 的 `java/oracle-mod/`；该目录在 `5dd256369eb4f73f50dfa06fa925c5f0d2cfd9e1` 被移除。已有两个新版观测补丁保留。逐文件原始哈希、资源来源和旧包清单见 [source-recovery.json](source-recovery.json)。这是恢复项目自己的源码，不是反编译并发布原版游戏代码。
 

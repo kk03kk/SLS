@@ -1,0 +1,42 @@
+{
+  "schema": "sls-act12-local-training-readiness-v1",
+  "status": "LOCAL_VALIDATION_COMPLETE",
+  "scope": "LIMITED_PILOT_WITH_DISCLOSED_DETERMINISTIC_DISCOVERY_TIMING",
+  "server_training_started": false,
+  "whole_act2_certified": false,
+  "native_source_sha256": "b100427d1e3ae6eee05818b6904047049609b1aa70807872c1f5f5e0edd6d62f",
+  "training_implementation_sha256": "9dca86829696613903d07b7fcbc6d4928f1c957c98fd6eaad534d6e76519ba94",
+  "study_sha256": "d1c2e24d89fa58b14fd2c9f34077445099d79d0656aa8aa194748b81552b86b5",
+  "proofs": {
+    "bounded-closeout-r30.json": "a7540dbfa92ed1ff6c2403e9b26a3efc19d161968eb59edc123d56d7a186d3f0",
+    "discovery-r31-strict.json": "a03a08a0ac35c21305428b3d708d49710b23fa9fa8a323907b0c7092dfb7b0bc",
+    "discovery-r31-clock-conditioned.json": "3167611cf98a7f30f05de4429a55c0d0ea1d359d4951c2ce1a730f02a64d7025",
+    "encoder-optimization-r32.json": "239269697ebe7fe7c79437855a11eb49a37bef929bf0b1809c52c6b44470af09",
+    "control-parent-preflight-r33.json": "881ff055d4f9738bbf38885000e1363682b95e78beabe9643143fa10dd9bf264",
+    "experimental-parent-preflight-r33.json": "6bc70d579800df57930661faf0aa0f547f26486cdd1074d98a89f568ed3805d9",
+    "restoration-r33.json": "b4a269ef0d32efd9500246fe3e94e01ac313f25cfcd8f75d808e6cac605cf997",
+    "simulator-transition-r33.json": "7832a690df7621c20d69fb0639adf9708b5e090eadca61d3d941e46a9a34f803"
+  },
+  "local_validation": {
+    "python_tests": {
+      "passed": 1201,
+      "skipped": 1,
+      "warnings": 4,
+      "log_sha256": "dfb84ceb01a29c1e392981a3a196582c7b527b07e0851f289cfa879aab0df3ee"
+    },
+    "configurations": 33,
+    "ruff": "PASS",
+    "policy_vocabulary": "PASS",
+    "content_registry": "PASS",
+    "wheel": "PASS",
+    "actual_parent_preflight_both_lambdas": "PASS",
+    "login_node_torch_import": "ABSENT",
+    "protected_files": 63,
+    "protected_tree_membership": "PASS"
+  },
+  "not_claimed": [
+    "No server benchmark or training result",
+    "No lambda efficacy or joint win-rate gain",
+    "No full Act2/Act3/Heart qualification"
+  ]
+}

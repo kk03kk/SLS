@@ -23,6 +23,27 @@ class ScriptedTransport:
         return next(self.payloads)
 
 
+def test_singing_bowl_fold_uses_supported_choice_command():
+    payload = game_payload([])
+    cards = [{"id": "Strike_R", "cost": 1}, {"id": "Defend_R", "cost": 1}]
+    payload["game_state"].update(screen_type="COMBAT_REWARD",
+        relics=[{"id": "Singing Bowl", "counter": -1}],
+        screen_state={"rewards": [{"reward_type": "CARD", "cards": cards}]})
+    adapted = adapt_original(payload)
+    bowl = next(a for a in adapted.decision.actions if a.kind is ActionKind.TAKE_SINGING_BOWL)
+    assert adapted.commands[bowl.candidate_id] == ("choose 0", "choose 2")
+
+
+def test_standalone_singing_bowl_is_a_choice_after_displayed_cards():
+    payload = game_payload(["Strike", "Defend", "bowl"])
+    payload["game_state"].update(screen_type="CARD_REWARD", screen_state={
+        "cards": [{"id": "Strike_R", "cost": 1}, {"id": "Defend_R", "cost": 1}],
+        "bowl_available": True, "skip_available": True})
+    adapted = adapt_original(payload)
+    bowl = next(a for a in adapted.decision.actions if a.kind is ActionKind.TAKE_SINGING_BOWL)
+    assert adapted.commands[bowl.candidate_id] == ("choose 2",)
+
+
 def game_payload(choices: list[str]) -> dict:
     return {
         "in_game": True,
@@ -49,6 +70,39 @@ def game_payload(choices: list[str]) -> dict:
             "_parity_run": {},
         },
     }
+
+
+def test_sozu_does_not_offer_noop_shop_potion_purchase():
+    payload = game_payload([])
+    payload['available_commands'].append('leave')
+    payload['game_state'].update(
+        screen_type='SHOP_SCREEN', gold=99,
+        relics=[{'id': 'Sozu', 'counter': -1}],
+        potions=[{'id': 'Potion Slot'}],
+        screen_state={'potions': [{'id': 'BloodPotion', 'price': 50}]},
+    )
+    adapted = adapt_original(payload)
+    assert not any(a.kind is ActionKind.BUY_POTION for a in adapted.decision.actions)
+
+
+def test_partial_grid_selection_remains_player_decision():
+    payload = game_payload([])
+    payload['game_state'].update(screen_type='GRID', action_phase='WAITING_ON_USER',
+        screen_state={'num_cards': 2, 'selected_cards': [{'uuid': 'picked'}]})
+    backend = OriginalBackend(OriginalSession(ScriptedTransport([])), IRONCLAD_A0_ACT1)
+    assert backend._wait_for_selection_completion(payload, []) is payload
+
+
+@pytest.mark.parametrize('screen', ['DEATH', 'VICTORY', 'GAME_OVER', 'COMPLETE'])
+def test_production_terminal_screen_overrides_retained_combat_objects(screen):
+    payload = game_payload([])
+    payload['available_commands'] = ['proceed', 'wait', 'state']
+    payload['game_state'].update(screen_type=screen,
+        combat_state={'monsters': [{'id': 'Chosen', 'current_hp': 25}], 'hand': []})
+    decision = adapt_original(payload).decision
+    assert decision.terminal and decision.observation.screen is ScreenType.GAME_OVER
+    backend = OriginalBackend(OriginalSession(ScriptedTransport([])), IRONCLAD_A0_ACT1)
+    assert backend._wait_for_actionable_combat_boundary(payload, []) is payload
 
 
 def test_reset_folds_the_original_only_neow_dialog() -> None:
@@ -263,6 +317,62 @@ def test_selection_completion_advances_transient_none_with_wait() -> None:
     result = backend._wait_for_selection_completion(transient, [])
     assert transport.sent == ["wait 1"]
     assert result["game_state"]["screen_type"] == "EVENT"
+
+
+def test_production_selection_completion_uses_public_action_phase() -> None:
+    transient = game_payload([])
+    transient["available_commands"] = ["wait"]
+    transient["game_state"].update({"screen_type": "NONE", "room_phase": "COMBAT",
+                                    "action_phase": "EXECUTING_ACTIONS"})
+    settled = game_payload([])
+    settled["game_state"].update({"screen_type": "NONE", "room_phase": "COMBAT",
+                                  "action_phase": "WAITING_ON_USER"})
+    transport = ScriptedTransport([settled])
+    backend = OriginalBackend(OriginalSession(transport), IRONCLAD_A0_ACT1)
+    backend.session.payload = transient
+    result = backend._wait_for_selection_completion(transient, [])
+    assert result is settled
+    assert transport.sent == ["wait 1"]
+    assert "_continuation" not in result
+
+
+def test_production_death_screen_does_not_wait_for_validation_continuation() -> None:
+    payload = game_payload([])
+    payload["game_state"].update({"screen_type": "DEATH", "room_phase": "COMBAT",
+        "combat_state": {"player": {"current_hp": 0}, "monsters": [{"current_hp": 10}]}})
+    transport = ScriptedTransport([])
+    backend = OriginalBackend(OriginalSession(transport), IRONCLAD_A0_ACT1)
+    backend.session.payload = payload
+    assert backend._settle_combat_terminal(payload) is payload
+    assert transport.sent == []
+
+
+def test_consecutive_generated_choices_remain_separate_policy_boundaries() -> None:
+    payload = game_payload(["Madness", "Flash of Steel", "Sadistic Nature"])
+    payload["game_state"].update({"screen_type": "CARD_REWARD", "room_phase": "COMBAT",
+        "screen_state": {"cards": [{"uuid": f"second:{i}"} for i in range(3)]}})
+    transport = ScriptedTransport([])
+    backend = OriginalBackend(OriginalSession(transport), IRONCLAD_A0_ACT1)
+    backend.session.payload = payload
+    assert backend._wait_for_selection_completion(payload, [],
+        selected_reward_uuids=("first:0", "first:1", "first:2")) is payload
+    assert transport.sent == []
+
+
+def test_same_generated_choice_is_not_mistaken_for_a_new_boundary() -> None:
+    payload = game_payload(["Madness"])
+    payload["available_commands"] = ["choose", "wait"]
+    payload["game_state"].update({"screen_type": "CARD_REWARD", "room_phase": "COMBAT",
+        "screen_state": {"cards": [{"uuid": "first:0"}]}})
+    settled = game_payload([])
+    settled["game_state"].update({"screen_type": "NONE", "room_phase": "COMBAT",
+                                  "action_phase": "WAITING_ON_USER"})
+    transport = ScriptedTransport([settled])
+    backend = OriginalBackend(OriginalSession(transport), IRONCLAD_A0_ACT1)
+    backend.session.payload = payload
+    assert backend._wait_for_selection_completion(payload, [],
+        selected_reward_uuids=("first:0",)) is settled
+    assert transport.sent == ["wait 1"]
 
 
 def test_grid_cards_use_master_deck_uuid_indices_and_oracle_bottle_task() -> None:
@@ -951,6 +1061,47 @@ def test_leave_shop_uses_room_proceed_instead_of_reentering_shop() -> None:
     transition = backend.step(backend._adapted.decision.actions[0])
     assert transition.decision.observation.screen is ScreenType.MAP
     assert backend.last_executed_commands == ("leave", "proceed")
+
+
+def test_multi_pick_grid_undo_to_zero_remains_a_player_boundary() -> None:
+    pending = game_payload([])
+    pending['game_state'].update({'screen_type': 'GRID', 'screen_state': {
+        'selected_cards': [], 'num_cards': 2,
+    }})
+    pending['available_commands'] = ['choose', 'wait']
+    transport = ScriptedTransport([])
+    backend = OriginalBackend(OriginalSession(transport), IRONCLAD_A0_ACT1)
+    assert backend._wait_for_selection_completion(pending, []) == pending
+    assert transport.sent == []
+
+
+def test_actual_debug_intent_waits_even_when_move_projection_is_attack() -> None:
+    pending = game_payload([])
+    pending['available_commands'] = ['wait']
+    pending['game_state']['combat_state'] = {'monsters': [
+        {'id': 'AcidSlime_M', 'intent': 'DEBUG', 'current_hp': 30},
+    ]}
+    pending['_monster_intents'] = [{'intent': 'ATTACK_DEBUFF', 'damage': 8, 'hits': 1}]
+    stable = json.loads(json.dumps(pending))
+    stable['game_state']['combat_state']['monsters'][0]['intent'] = 'ATTACK_DEBUFF'
+    transport = ScriptedTransport([stable])
+    session = OriginalSession(transport)
+    session.payload = pending
+    backend = OriginalBackend(session, IRONCLAD_A0_ACT1)
+    assert backend._settle_debug_intents(pending) == stable
+    assert transport.sent == ['wait 1']
+
+
+def test_actual_debug_intent_without_wait_is_rejected() -> None:
+    pending = game_payload([])
+    pending['available_commands'] = ['play']
+    pending['game_state']['combat_state'] = {'monsters': [
+        {'id': 'AcidSlime_M', 'intent': 'DEBUG', 'current_hp': 30},
+    ]}
+    pending['_monster_intents'] = [{'intent': 'ATTACK_DEBUFF', 'damage': 8, 'hits': 1}]
+    backend = OriginalBackend(OriginalSession(ScriptedTransport([])), IRONCLAD_A0_ACT1)
+    with pytest.raises(RuntimeError, match='intent remains DEBUG'):
+        backend._settle_debug_intents(pending)
 
 
 def test_command_boundary_requires_two_equal_nonadvancing_snapshots() -> None:

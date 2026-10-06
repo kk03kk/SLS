@@ -1,0 +1,1332 @@
+{
+  "schema": "sls-act2-scenes-v1",
+  "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "stock_sources": {
+    "com.megacrit.cardcrawl.monsters.city.BookOfStabbing": {
+      "class_sha256": "64f08a6a152228d06cde6bcd2987203f32362abde72f2a39038d474b527f1320",
+      "bytecode_sha256": "8eab2ed1e9f6ea477d7254dcaf5c400dac448468520653eda6f35a90421a23df",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.monsters.city.BookOfStabbing"
+      ]
+    },
+    "com.megacrit.cardcrawl.monsters.city.Byrd": {
+      "class_sha256": "7b55ad3a100417dd4ac44cc23231350dec328ebbde5c1ad1a22730fba11ecba5",
+      "bytecode_sha256": "cce5db9ca98fe50de018ebdb3f3fd0ad2c3a43f034e75919afeae57f438cd4e5",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.monsters.city.Byrd"
+      ]
+    },
+    "com.megacrit.cardcrawl.monsters.city.ShelledParasite": {
+      "class_sha256": "e3c804b4c4371facc0df9ee876afcb13eb4de19ba0f8bb962872c3e025803e42",
+      "bytecode_sha256": "f07b39fe8d8920be2778b97b7b074c5f37324c8f94d55d1a3c96ccb7f6f38319",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.monsters.city.ShelledParasite"
+      ]
+    },
+    "com.megacrit.cardcrawl.monsters.exordium.FungiBeast": {
+      "class_sha256": "01d84978223e6bbae731d464a72817c6bd4b28c3bb295b609fa0fe299dae0c5c",
+      "bytecode_sha256": "d13ccfec9816df201079bd53b766a46bdc1d487d2dd219a616afc899c70c3809",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.monsters.exordium.FungiBeast"
+      ]
+    },
+    "com.megacrit.cardcrawl.monsters.exordium.SlaverBlue": {
+      "class_sha256": "bf3fd9bb150b729d67d8c36caa44c8789a396d3f8a9ac9c6887dc0d6d381ceab",
+      "bytecode_sha256": "34247f104bc22c4908ecd8053e2423f719c14f454964321be3c4c43242b69236",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.monsters.exordium.SlaverBlue"
+      ]
+    },
+    "com.megacrit.cardcrawl.monsters.exordium.SlaverRed": {
+      "class_sha256": "be885de16ae2048c6f401e909d113a5990186e0c9f0252a0a73df419324d347c",
+      "bytecode_sha256": "6135f058400a077515663f2b8f07a092df403bba4250e62d437cb1ab11911195",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.monsters.exordium.SlaverRed"
+      ]
+    },
+    "com.megacrit.cardcrawl.monsters.city.Taskmaster": {
+      "class_sha256": "92a4ffd745b1c9d1eec9ce2879fd56ea63b152c1f092b6af878555aba4f3f40e",
+      "bytecode_sha256": "bba627aabf3d39c72d91de8997db45a34393e1dc773988260ca456984d186c1b",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.monsters.city.Taskmaster"
+      ]
+    },
+    "com.megacrit.cardcrawl.monsters.city.SnakePlant": {
+      "class_sha256": "b7352bfefe5340eca8b486ae339c69e0a30a4fd665eb8230d4ec3e80cfd4f6bc",
+      "bytecode_sha256": "35f1015857d0d362b48bdbf1c5aa283c815a8116cfc3a37193257c077658f1ca",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.monsters.city.SnakePlant"
+      ]
+    },
+    "com.megacrit.cardcrawl.monsters.city.Champ": {
+      "class_sha256": "c87c5a25e2c3da220c2a4557e49e768d3423689621099e00d2833b81e92ee3e8",
+      "bytecode_sha256": "ed11b7846a4258c46189501eb409d3e7e195278a2bc4d51b0e726dc5679bd238",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.monsters.city.Champ"
+      ]
+    },
+    "com.megacrit.cardcrawl.monsters.city.TheCollector": {
+      "class_sha256": "955c4799fb5ba11724226339820a060f2d5cb76eddddf6890dbf1eaff157fe15",
+      "bytecode_sha256": "a57fb6d8666af7e6c2e6d51c1737b4b290191e6677f2d12b11b41ef04904b5dc",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.monsters.city.TheCollector"
+      ]
+    },
+    "com.megacrit.cardcrawl.monsters.city.BronzeAutomaton": {
+      "class_sha256": "6b726a9aa4557af414e03eecf68d8269103fb17c1571995681df8ac5544f1a2a",
+      "bytecode_sha256": "88bf9bad02f0fc8b00df557df54c86d2fd589a2e252d3c6b18b00d8815004bc5",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.monsters.city.BronzeAutomaton"
+      ]
+    },
+    "com.megacrit.cardcrawl.monsters.city.BronzeOrb": {
+      "class_sha256": "92cc3c117351725acf5863d45f2aa553bda7c7dc3567f3372cafc045f76b91a2",
+      "bytecode_sha256": "99673e2157a6d6e6a1bd3e40bc669f91478f936182b676117086562569caf859",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.monsters.city.BronzeOrb"
+      ]
+    },
+    "com.megacrit.cardcrawl.powers.FlightPower": {
+      "class_sha256": "851a4852ebf87e0407447e223ed66c182b681f8cf3ad31f6cceccfbe9fb09993",
+      "bytecode_sha256": "047dbf537168c573243cf704045b07664d3ffa7210dcfd861ceae2c8bc31945c",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.powers.FlightPower"
+      ]
+    },
+    "com.megacrit.cardcrawl.powers.MalleablePower": {
+      "class_sha256": "50f1332c948908dc6f862f7ddeae876e4698e2980a6cdd492dc5ba75333a2bf1",
+      "bytecode_sha256": "3cc5bf126ffbacb32faad0b97ac3402eeb737d334745d7d258f15ab287fc5901",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.powers.MalleablePower"
+      ]
+    },
+    "com.megacrit.cardcrawl.powers.PlatedArmorPower": {
+      "class_sha256": "55b7c1baaef4e355c73e9f597281a95b43628f545f1445d1dd151a20795e35f8",
+      "bytecode_sha256": "1f6436ed42cbccfa5fb07c4920ec2e063cb06ecc21c538d7df43daeefd227f11",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.powers.PlatedArmorPower"
+      ]
+    },
+    "com.megacrit.cardcrawl.powers.SporeCloudPower": {
+      "class_sha256": "3dfa7432a7838263ef29edf4572417a1f5346109d857b9d4a014e12b4824f5f7",
+      "bytecode_sha256": "c6a533d1cbe68c9d900a44aafa74dd66f06ad8768e595d6c0f0466388f8958f3",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.powers.SporeCloudPower"
+      ]
+    },
+    "com.megacrit.cardcrawl.powers.PainfulStabsPower": {
+      "class_sha256": "27e984a8be6fb3e7ec12f1cbe54de4ad9f06bd6d8466d288433dc135169acd13",
+      "bytecode_sha256": "d44541a091264d60b494c70beb851596ddbd55b58ec87ff8abb5501b2453fbe6",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.powers.PainfulStabsPower"
+      ]
+    },
+    "com.megacrit.cardcrawl.powers.EntanglePower": {
+      "class_sha256": "44e2740a744f6867cb3ba06308c6c1133822ada799de3ef00015f5cddee355a7",
+      "bytecode_sha256": "14f5fd06b3b37b90e49d1006a4958d9c2ef7522bf6461cfe289b80eb25c15776",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.powers.EntanglePower"
+      ]
+    },
+    "com.megacrit.cardcrawl.actions.GameActionManager": {
+      "class_sha256": "14085d57e6a79ad89b0c43c5032138118c3e988dbb3f22fca50c4c5096435e8a",
+      "bytecode_sha256": "406c85f4fe5cfb70b5d6e6e5b8440d5353c869553c941c45c1938660416512a4",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.actions.GameActionManager"
+      ]
+    },
+    "com.megacrit.cardcrawl.dungeons.AbstractDungeon": {
+      "class_sha256": "5452fdd7b33fa47dcea5c2e58d5d521dfde3acefba006c095ad5b01c60eda369",
+      "bytecode_sha256": "be440b70a41da50c747d240101168e6e0aad5a6eec66906f38ecb82f47c238dc",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.dungeons.AbstractDungeon"
+      ]
+    },
+    "com.megacrit.cardcrawl.rooms.AbstractRoom": {
+      "class_sha256": "22214900fc051a2e8e73b72532ee561abc95a77f7172b105b68d3afeca0a74f6",
+      "bytecode_sha256": "62453410540607634c82dc0b5e1a84c504e606dbbd17e3ef1ca4848ee857d8bd",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.rooms.AbstractRoom"
+      ]
+    },
+    "com.megacrit.cardcrawl.potions.SmokeBomb": {
+      "class_sha256": "313cd49f9d322f2e4a916942f784e3a4a4475ed65aa1e9814b56dc3d719faa15",
+      "bytecode_sha256": "f8d4e72be2cfa28d20cc7ea268dbb51cd0894f57bb2dd6d8e636350be2476b3f",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.potions.SmokeBomb"
+      ]
+    }
+  },
+  "scenes": [
+    {
+      "id": "book-single",
+      "encounter": "BOOK_OF_STABBING",
+      "stock_classes": [
+        "monsters.city.BookOfStabbing",
+        "powers.PainfulStabsPower"
+      ],
+      "actions": [
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "initial": {
+        "hp": 5000,
+        "energy": 10,
+        "block": 0,
+        "hand": [
+          "Strike_R",
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Strike_R"
+        ],
+        "moves": {
+          "BOOK_OF_STABBING": {
+            "stock": 2,
+            "native": "BOOK_OF_STABBING_SINGLE_STAB",
+            "damage": 24,
+            "hits": 1
+          }
+        }
+      },
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "seeds": [
+        131100000,
+        131100001,
+        131100002
+      ],
+      "ascension": 20,
+      "act": 2,
+      "floor": 20
+    },
+    {
+      "id": "book-growth",
+      "encounter": "BOOK_OF_STABBING",
+      "stock_classes": [
+        "monsters.city.BookOfStabbing",
+        "powers.PainfulStabsPower"
+      ],
+      "actions": [
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "initial": {
+        "hp": 5000,
+        "energy": 10,
+        "block": 0,
+        "hand": [
+          "Strike_R",
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Strike_R"
+        ]
+      },
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "seeds": [
+        131100003,
+        131100004,
+        131100005
+      ],
+      "ascension": 20,
+      "act": 2,
+      "floor": 20
+    },
+    {
+      "id": "book-block-wound",
+      "encounter": "BOOK_OF_STABBING",
+      "stock_classes": [
+        "monsters.city.BookOfStabbing",
+        "powers.PainfulStabsPower"
+      ],
+      "actions": [
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "initial": {
+        "hp": 5000,
+        "energy": 10,
+        "block": 30,
+        "hand": [
+          "Strike_R",
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Strike_R"
+        ]
+      },
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "seeds": [
+        131100006,
+        131100007,
+        131100008
+      ],
+      "ascension": 20,
+      "act": 2,
+      "floor": 20
+    },
+    {
+      "id": "byrd-knockdown",
+      "encounter": "THREE_BYRDS",
+      "stock_classes": [
+        "monsters.city.Byrd",
+        "powers.FlightPower"
+      ],
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        },
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        },
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        },
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "initial": {
+        "hp": 5000,
+        "energy": 10,
+        "block": 0,
+        "hand": [
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger"
+        ],
+        "draw": [
+          "Defend_R",
+          "Strike_R"
+        ]
+      },
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "seeds": [
+        131100009,
+        131100010,
+        131100011
+      ],
+      "ascension": 20,
+      "act": 2,
+      "floor": 20
+    },
+    {
+      "id": "byrd-potion",
+      "encounter": "THREE_BYRDS",
+      "stock_classes": [
+        "monsters.city.Byrd",
+        "powers.FlightPower"
+      ],
+      "actions": [
+        {
+          "kind": "potion",
+          "potion_index": 0,
+          "target_index": 0
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "initial": {
+        "hp": 5000,
+        "energy": 10,
+        "block": 0,
+        "hand": [
+          "Strike_R",
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Strike_R"
+        ],
+        "potion": "Fire Potion"
+      },
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "seeds": [
+        131100012,
+        131100013,
+        131100014
+      ],
+      "ascension": 20,
+      "act": 2,
+      "floor": 20
+    },
+    {
+      "id": "byrd-independence",
+      "encounter": "THREE_BYRDS",
+      "stock_classes": [
+        "monsters.city.Byrd",
+        "powers.FlightPower"
+      ],
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        },
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 1
+        },
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        },
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 2
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "initial": {
+        "hp": 5000,
+        "energy": 10,
+        "block": 0,
+        "hand": [
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger"
+        ],
+        "draw": [
+          "Defend_R",
+          "Strike_R"
+        ]
+      },
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "seeds": [
+        131100015,
+        131100016,
+        131100017
+      ],
+      "ascension": 20,
+      "act": 2,
+      "floor": 20
+    },
+    {
+      "id": "parasite-armor",
+      "encounter": "SHELLED_PARASITE_AND_FUNGI",
+      "stock_classes": [
+        "monsters.city.ShelledParasite",
+        "monsters.exordium.FungiBeast",
+        "powers.PlatedArmorPower",
+        "powers.SporeCloudPower"
+      ],
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        },
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        },
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "initial": {
+        "hp": 5000,
+        "energy": 10,
+        "block": 0,
+        "hand": [
+          "Strike_R",
+          "Strike_R",
+          "Strike_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Strike_R"
+        ]
+      },
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "seeds": [
+        131100018,
+        131100019,
+        131100020
+      ],
+      "ascension": 20,
+      "act": 2,
+      "floor": 20
+    },
+    {
+      "id": "fungi-death",
+      "encounter": "SHELLED_PARASITE_AND_FUNGI",
+      "stock_classes": [
+        "monsters.city.ShelledParasite",
+        "monsters.exordium.FungiBeast",
+        "powers.PlatedArmorPower",
+        "powers.SporeCloudPower"
+      ],
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 1
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "initial": {
+        "hp": 5000,
+        "energy": 10,
+        "block": 0,
+        "hand": [
+          "Strike_R",
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Strike_R"
+        ],
+        "monster_hp": {
+          "FUNGI_BEAST": 6
+        }
+      },
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "seeds": [
+        131100021,
+        131100022,
+        131100023
+      ],
+      "ascension": 20,
+      "act": 2,
+      "floor": 20
+    },
+    {
+      "id": "fungi-aoe-order",
+      "encounter": "SHELLED_PARASITE_AND_FUNGI",
+      "stock_classes": [
+        "monsters.city.ShelledParasite",
+        "monsters.exordium.FungiBeast",
+        "powers.PlatedArmorPower",
+        "powers.SporeCloudPower"
+      ],
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "initial": {
+        "hp": 5000,
+        "energy": 10,
+        "block": 0,
+        "hand": [
+          "Cleave"
+        ],
+        "draw": [
+          "Defend_R",
+          "Strike_R"
+        ],
+        "monster_hp": {
+          "FUNGI_BEAST": 1
+        }
+      },
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "seeds": [
+        131100024,
+        131100025,
+        131100026
+      ],
+      "ascension": 20,
+      "act": 2,
+      "floor": 20
+    },
+    {
+      "id": "slavers-opener",
+      "encounter": "SLAVERS",
+      "stock_classes": [
+        "monsters.exordium.SlaverBlue",
+        "monsters.exordium.SlaverRed",
+        "monsters.city.Taskmaster",
+        "powers.EntanglePower"
+      ],
+      "actions": [
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "initial": {
+        "hp": 5000,
+        "energy": 10,
+        "block": 0,
+        "hand": [
+          "Strike_R",
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Strike_R"
+        ]
+      },
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "seeds": [
+        131100027,
+        131100028,
+        131100029
+      ],
+      "ascension": 20,
+      "act": 2,
+      "floor": 20
+    },
+    {
+      "id": "slavers-entangle",
+      "encounter": "SLAVERS",
+      "stock_classes": [
+        "monsters.exordium.SlaverBlue",
+        "monsters.exordium.SlaverRed",
+        "monsters.city.Taskmaster",
+        "powers.EntanglePower"
+      ],
+      "actions": [
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "initial": {
+        "hp": 5000,
+        "energy": 10,
+        "block": 0,
+        "hand": [
+          "Strike_R",
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Strike_R"
+        ],
+        "moves": {
+          "RED_SLAVER": {
+            "stock": 2,
+            "native": "RED_SLAVER_ENTANGLE",
+            "damage": 0,
+            "hits": 0
+          }
+        }
+      },
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "seeds": [
+        131100030,
+        131100031,
+        131100032
+      ],
+      "ascension": 20,
+      "act": 2,
+      "floor": 20
+    },
+    {
+      "id": "taskmaster-growth",
+      "encounter": "SLAVERS",
+      "stock_classes": [
+        "monsters.exordium.SlaverBlue",
+        "monsters.exordium.SlaverRed",
+        "monsters.city.Taskmaster",
+        "powers.EntanglePower"
+      ],
+      "actions": [
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "initial": {
+        "hp": 5000,
+        "energy": 10,
+        "block": 0,
+        "hand": [
+          "Strike_R",
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Strike_R"
+        ]
+      },
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "seeds": [
+        131100033,
+        131100034,
+        131100035
+      ],
+      "ascension": 20,
+      "act": 2,
+      "floor": 20
+    },
+    {
+      "id": "plant-single",
+      "encounter": "SNAKE_PLANT",
+      "stock_classes": [
+        "monsters.city.SnakePlant",
+        "powers.MalleablePower"
+      ],
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        }
+      ],
+      "initial": {
+        "hp": 5000,
+        "energy": 10,
+        "block": 0,
+        "hand": [
+          "Strike_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Strike_R"
+        ]
+      },
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "seeds": [
+        131100036,
+        131100037,
+        131100038
+      ],
+      "ascension": 20,
+      "act": 2,
+      "floor": 20
+    },
+    {
+      "id": "plant-multi",
+      "encounter": "SNAKE_PLANT",
+      "stock_classes": [
+        "monsters.city.SnakePlant",
+        "powers.MalleablePower"
+      ],
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        },
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        }
+      ],
+      "initial": {
+        "hp": 5000,
+        "energy": 10,
+        "block": 0,
+        "hand": [
+          "Twin Strike",
+          "Twin Strike"
+        ],
+        "draw": [
+          "Defend_R",
+          "Strike_R"
+        ]
+      },
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "seeds": [
+        131100039,
+        131100040,
+        131100041
+      ],
+      "ascension": 20,
+      "act": 2,
+      "floor": 20
+    },
+    {
+      "id": "plant-reset",
+      "encounter": "SNAKE_PLANT",
+      "stock_classes": [
+        "monsters.city.SnakePlant",
+        "powers.MalleablePower"
+      ],
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        },
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        },
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "initial": {
+        "hp": 5000,
+        "energy": 10,
+        "block": 0,
+        "hand": [
+          "Strike_R",
+          "Strike_R",
+          "Strike_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Strike_R"
+        ]
+      },
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "seeds": [
+        131100042,
+        131100043,
+        131100044
+      ],
+      "ascension": 20,
+      "act": 2,
+      "floor": 20
+    },
+    {
+      "id": "champ-threshold-220",
+      "encounter": "CHAMP",
+      "stock_classes": [
+        "monsters.city.Champ"
+      ],
+      "actions": [
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "initial": {
+        "hp": 5000,
+        "energy": 10,
+        "block": 0,
+        "hand": [
+          "Strike_R",
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Strike_R"
+        ],
+        "monster_hp": {
+          "THE_CHAMP": 220
+        }
+      },
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "seeds": [
+        131100045,
+        131100046,
+        131100047
+      ],
+      "ascension": 20,
+      "act": 2,
+      "floor": 20
+    },
+    {
+      "id": "champ-threshold-219",
+      "encounter": "CHAMP",
+      "stock_classes": [
+        "monsters.city.Champ"
+      ],
+      "actions": [
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "initial": {
+        "hp": 5000,
+        "energy": 10,
+        "block": 0,
+        "hand": [
+          "Strike_R",
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Strike_R"
+        ],
+        "monster_hp": {
+          "THE_CHAMP": 219
+        }
+      },
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "seeds": [
+        131100048,
+        131100049,
+        131100050
+      ],
+      "ascension": 20,
+      "act": 2,
+      "floor": 20
+    },
+    {
+      "id": "collector-cycle",
+      "encounter": "COLLECTOR",
+      "stock_classes": [
+        "monsters.city.TheCollector"
+      ],
+      "actions": [
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "initial": {
+        "hp": 5000,
+        "energy": 10,
+        "block": 0,
+        "hand": [
+          "Strike_R",
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Strike_R"
+        ]
+      },
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "seeds": [
+        131100051,
+        131100052,
+        131100053
+      ],
+      "ascension": 20,
+      "act": 2,
+      "floor": 20
+    },
+    {
+      "id": "collector-summon",
+      "encounter": "COLLECTOR",
+      "stock_classes": [
+        "monsters.city.TheCollector"
+      ],
+      "actions": [
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "initial": {
+        "hp": 5000,
+        "energy": 10,
+        "block": 0,
+        "hand": [
+          "Strike_R",
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Strike_R"
+        ]
+      },
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "seeds": [
+        131100054,
+        131100055,
+        131100056
+      ],
+      "ascension": 20,
+      "act": 2,
+      "floor": 20
+    },
+    {
+      "id": "automaton-cycle",
+      "encounter": "AUTOMATON",
+      "stock_classes": [
+        "monsters.city.BronzeAutomaton",
+        "monsters.city.BronzeOrb"
+      ],
+      "actions": [
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "initial": {
+        "hp": 5000,
+        "energy": 10,
+        "block": 0,
+        "hand": [
+          "Strike_R",
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Strike_R"
+        ]
+      },
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "seeds": [
+        131100057,
+        131100058,
+        131100059
+      ],
+      "ascension": 20,
+      "act": 2,
+      "floor": 20
+    },
+    {
+      "id": "automaton-stasis",
+      "encounter": "AUTOMATON",
+      "stock_classes": [
+        "monsters.city.BronzeAutomaton",
+        "monsters.city.BronzeOrb"
+      ],
+      "actions": [
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "initial": {
+        "hp": 5000,
+        "energy": 10,
+        "block": 0,
+        "hand": [
+          "Strike_R",
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Strike_R"
+        ]
+      },
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "seeds": [
+        131100060,
+        131100061,
+        131100062
+      ],
+      "ascension": 20,
+      "act": 2,
+      "floor": 20
+    },
+    {
+      "id": "act-transition",
+      "encounter": null,
+      "stock_classes": [
+        "dungeons.AbstractDungeon",
+        "rooms.AbstractRoom"
+      ],
+      "obligation": "Act1->Act2 state and RNG continuation",
+      "status": "SYSTEM_SCENARIO_PENDING",
+      "seeds": [
+        131100063,
+        131100064,
+        131100065
+      ],
+      "ascension": 20,
+      "act": 2,
+      "floor": 20
+    },
+    {
+      "id": "reward-collection",
+      "encounter": null,
+      "stock_classes": [
+        "dungeons.AbstractDungeon",
+        "rooms.AbstractRoom"
+      ],
+      "obligation": "stock combat reward collection",
+      "status": "SYSTEM_SCENARIO_PENDING",
+      "seeds": [
+        131100066,
+        131100067,
+        131100068
+      ],
+      "ascension": 20,
+      "act": 2,
+      "floor": 20
+    },
+    {
+      "id": "checkpoint-continuation",
+      "encounter": null,
+      "stock_classes": [
+        "dungeons.AbstractDungeon",
+        "rooms.AbstractRoom"
+      ],
+      "obligation": "native checkpoint restoration and identical action replay",
+      "status": "SYSTEM_SCENARIO_PENDING",
+      "seeds": [
+        131100069,
+        131100070,
+        131100071
+      ],
+      "ascension": 20,
+      "act": 2,
+      "floor": 20
+    }
+  ],
+  "training_gate": "NOT_QUALIFIED",
+  "final_holdout_used": false
+}

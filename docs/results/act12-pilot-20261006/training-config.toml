@@ -1,0 +1,83 @@
+[run]
+workflow = "single-stage"
+profile = "IRONCLAD_A20_ACT2"
+seed = 130000000
+training_seed_limit = 2000000000000
+device = "cuda"
+deterministic = true
+worker_backend = "sharded-vector"
+worker_layout = [64, 16]
+benchmark = "local/runs/preparation/ironclad-a20-act12-win-pilot-r1/benchmark.json"
+output = "local/runs/ironclad-a20-act12-win-pilot-r1"
+selection_progress_guard = true
+final_evaluation_role = "development-confirmation"
+evaluate_fixed_endpoint = true
+development_reference_checkpoint = "local/runs/ironclad-a20-act1-win-90m-continuation/final.pt"
+development_reference_sha256 = "274963f4fe32b75003c5a1b4ccd394b5185304156e6ea22a76aee2764d54f1e0"
+development_reference_profile = "IRONCLAD_A20_ACT1"
+periodic_evaluation_seed_start = 8000006000000
+periodic_evaluation_seed_count = 256
+final_evaluation_seed_start = 8000007000000
+final_evaluation_seed_count = 1024
+evaluation_max_steps = 4096
+preparation_wall_hours = 24
+preparation_safety_factor = 1.5
+preparation_evaluation_reserve_hours = 4
+
+[stages.train]
+profile = "IRONCLAD_A20_ACT2"
+target_environment_steps = 94013696
+evaluate_every_steps = 500000
+checkpoint_every_steps = 500000
+minimum_success_rate = 0.0
+minimum_reached_act2_rate = 0.0
+minimum_reached_act3_rate = 0.0
+minimum_evaluation_episodes = 256
+minimum_final_evaluation_episodes = 1024
+
+[model]
+embedding_dim = 128
+transformer_layers = 4
+attention_heads = 4
+feedforward_dim = 256
+recurrent_hidden_dim = 256
+recurrent_layers = 1
+dropout = 0.0
+architecture = "sls-recurrent-relational-policy-v5"
+
+[ppo]
+rollout_steps = 256
+recurrent_sequence_length = 64
+minibatch_sequences = 16
+learning_rate = 3.125e-05
+gamma = 1.0
+gae_lambda = 0.98
+clip_ratio = 0.2
+value_coefficient = 0.5
+entropy_coefficient = 0.002
+entropy_final = 0.002
+entropy_decay_steps = 4000000
+entropy_schedule_start_steps = 56000512
+target_kl = 0.02
+final_kl_samples = 4096
+value_clip_ratio = 0.2
+max_gradient_norm = 0.5
+epochs = 2
+potential_shaping = true
+potential_scale = 0.2
+failure_progress_scale = 0.0
+reward_schema = "sls-curriculum-win-v1"
+episode_limit_schema = "sls-fullrun-episode-limit-v2"
+max_episode_steps = 4096
+max_boundary_visits = 4
+limit_failure_reward = -1.0
+
+[warm_start]
+transfer_kind = "curriculum-stage"
+checkpoint = "local/runs/ironclad-a20-act1-win-90m-continuation/final.pt"
+checkpoint_sha256 = "274963f4fe32b75003c5a1b4ccd394b5185304156e6ea22a76aee2764d54f1e0"
+parent_environment_steps = 90013696
+
+[warm_start.simulator_transition]
+evidence = "docs/results/act12-qualification-20261004/simulator-transition.json"
+evidence_sha256 = "9f0988b311d0fb0c0416063db51ea33749fa5b97154f155309905da6c631df0a"

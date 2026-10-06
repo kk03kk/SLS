@@ -1,0 +1,301 @@
+{
+  "schema": "sls-act2-first-divergence-inventory-v1",
+  "evidence": [
+    {
+      "local_path": "local/audits/act2-qualification-20261006/automaton-checkpoint-before-test.log",
+      "bytes": 1865,
+      "sha256": "bbb94efa0d28692001165e5e10f8504d2d98c70bfb5cee3bf2fc9e3586b54ae4",
+      "purpose": "old failure / first divergence, never overwritten; debug attachment is not qualification"
+    },
+    {
+      "local_path": "local/audits/act2-qualification-20261006/automaton-checkpoint-first-divergence-before.json",
+      "bytes": 826072,
+      "sha256": "1f73b3563ac103bd2fb82cb4df3f305a9eca259ddae7a7f9b9b86d87ac6ab505",
+      "purpose": "old failure / first divergence, never overwritten; debug attachment is not qualification"
+    },
+    {
+      "local_path": "local/audits/act2-qualification-20261006/black-blood-before-test.log",
+      "bytes": 1239,
+      "sha256": "2c2d68e2e56a7bfdaa30aaf9ad3fba386c7deccb47549aa236f112b5b7b1a8c7",
+      "purpose": "old failure / first divergence, never overwritten; debug attachment is not qualification"
+    },
+    {
+      "local_path": "local/audits/act2-qualification-20261006/blue-slaver-before-test.log",
+      "bytes": 2952,
+      "sha256": "e596464e50578de66c2b96d080c8cd452d0810404b6186b59ef31876cc2df06b",
+      "purpose": "old failure / first divergence, never overwritten; debug attachment is not qualification"
+    },
+    {
+      "local_path": "local/audits/act2-qualification-20261006/blue-slaver-first-divergence-before.json",
+      "bytes": 329383,
+      "sha256": "38e9d11a6690b449b799a99e11b6b04eb45a12efae5fcf055ddcf868bab19a57",
+      "purpose": "old failure / first divergence, never overwritten; debug attachment is not qualification"
+    },
+    {
+      "local_path": "local/audits/act2-qualification-20261006/boss-extra-rewards-restore-before-test-v2.log",
+      "bytes": 3704,
+      "sha256": "33150d3513faf6d770707e50b92179e2a32615af41b0314992930c8e99571302",
+      "purpose": "old failure / first divergence, never overwritten; debug attachment is not qualification"
+    },
+    {
+      "local_path": "local/audits/act2-qualification-20261006/boss-extra-rewards-restore-before-test.log",
+      "bytes": 1346,
+      "sha256": "1bc1663bbfbc574af330d00ee739bbf63d9ef71e8ea1755f0955ef3d7bfa37e8",
+      "purpose": "old failure / first divergence, never overwritten; debug attachment is not qualification"
+    },
+    {
+      "local_path": "local/audits/act2-qualification-20261006/calling-bell-before-test.log",
+      "bytes": 1356,
+      "sha256": "1916eeaae0b518312f93cd3b64f286b201517fedee914679808b490b46183001",
+      "purpose": "old failure / first divergence, never overwritten; debug attachment is not qualification"
+    },
+    {
+      "local_path": "local/audits/act2-qualification-20261006/discovery-live-object-state-r5.txt",
+      "bytes": 541,
+      "sha256": "0a0c6e6914347fd417553c24bd54b68e6e1f93b49f1492deb1c75befef301f5c",
+      "purpose": "old failure / first divergence, never overwritten; debug attachment is not qualification"
+    },
+    {
+      "local_path": "local/audits/act2-qualification-20261006/discovery-thread-stuck-r5.txt",
+      "bytes": 12719,
+      "sha256": "6c64a9b406a2472676efa16b437b34e9d371f349ebea3d7331bb04cc9c25010f",
+      "purpose": "old failure / first divergence, never overwritten; debug attachment is not qualification"
+    },
+    {
+      "local_path": "local/audits/act2-qualification-20261006/parasite-before-test-v2.log",
+      "bytes": 1454,
+      "sha256": "f93af3b5ec4b8a7a5cee5df66ceb35fe33eb862128e3ecedb1ef6a724842b888",
+      "purpose": "old failure / first divergence, never overwritten; debug attachment is not qualification"
+    },
+    {
+      "local_path": "local/audits/act2-qualification-20261006/parasite-before-test.log",
+      "bytes": 1063,
+      "sha256": "6e676f7cfff17d0855710d54ead23f0e69a599873743c844db71c95a0c45c42e",
+      "purpose": "old failure / first divergence, never overwritten; debug attachment is not qualification"
+    },
+    {
+      "local_path": "local/audits/act2-qualification-20261006/parasite-first-divergence-before.json",
+      "bytes": 157113,
+      "sha256": "62cbf39512babfe969c8fa3990e21ebeed029a48128f76741adf31ef3b2b728d",
+      "purpose": "old failure / first divergence, never overwritten; debug attachment is not qualification"
+    },
+    {
+      "local_path": "local/audits/act2-qualification-20261006/singing-bowl-before-test.log",
+      "bytes": 2102,
+      "sha256": "5cceacb3d3f82876ab03f63a485a3f380b1b1b2a2f6c5f06d9dbb09ec5f0cd22",
+      "purpose": "old failure / first divergence, never overwritten; debug attachment is not qualification"
+    },
+    {
+      "local_path": "local/audits/act2-qualification-20261006/anger-before-test-v2.log",
+      "bytes": 1349,
+      "sha256": "8d5b6c82edf9df39f5c6ed4b39107b97499292d2435fc419655d3a4839bc66f9",
+      "purpose": "Preserved failure or first-divergence evidence; not a qualified pass"
+    },
+    {
+      "local_path": "local/audits/act2-qualification-20261006/anger-before-test-v3.log",
+      "bytes": 1349,
+      "sha256": "8d5b6c82edf9df39f5c6ed4b39107b97499292d2435fc419655d3a4839bc66f9",
+      "purpose": "Preserved failure or first-divergence evidence; not a qualified pass"
+    },
+    {
+      "local_path": "local/audits/act2-qualification-20261006/anger-before-test.log",
+      "bytes": 1312,
+      "sha256": "d1662f2d1293b40efa2ce3792b65fc9182fe30fd2d5d393ae0e30ea3ccc6ad58",
+      "purpose": "Preserved failure or first-divergence evidence; not a qualified pass"
+    },
+    {
+      "local_path": "local/audits/act2-qualification-20261006/blood-preview-before-test-v2.log",
+      "bytes": 1952,
+      "sha256": "7cb6c3b8ebb7f2228ea5b4f24edb8c354551ad198a56b86b149f12eabe0a5e17",
+      "purpose": "Preserved failure or first-divergence evidence; not a qualified pass"
+    },
+    {
+      "local_path": "local/audits/act2-qualification-20261006/blood-preview-before-test.log",
+      "bytes": 1063,
+      "sha256": "f531891a7a439e1b8fbbf0cb185ac856fdc770ddce3961517d52799fa671f226",
+      "purpose": "Preserved failure or first-divergence evidence; not a qualified pass"
+    },
+    {
+      "local_path": "local/audits/act2-qualification-20261006/colosseum-before-test-v2.log",
+      "bytes": 2937,
+      "sha256": "11007f132747046185cb71c713991677b604f6afdf48f5108edcc726fdac017c",
+      "purpose": "Preserved failure or first-divergence evidence; not a qualified pass"
+    },
+    {
+      "local_path": "local/audits/act2-qualification-20261006/colosseum-before-test-v3.log",
+      "bytes": 3159,
+      "sha256": "e1fa198b76a8ebd387c35a066fd06ae79eff564056116cda758d48d2413d8ba9",
+      "purpose": "Preserved failure or first-divergence evidence; not a qualified pass"
+    },
+    {
+      "local_path": "local/audits/act2-qualification-20261006/colosseum-before-test.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "purpose": "Preserved failure or first-divergence evidence; not a qualified pass"
+    },
+    {
+      "local_path": "local/audits/act2-qualification-20261006/death-block-before-test.log",
+      "bytes": 2079,
+      "sha256": "975c2cbb1453cc351e7850eec19e5a3c9ab2a2f5b617ef94e93ebbf3da083df4",
+      "purpose": "Preserved failure or first-divergence evidence; not a qualified pass"
+    },
+    {
+      "local_path": "local/audits/act2-qualification-20261006/grid-before-test.log",
+      "bytes": 2373,
+      "sha256": "1a0f18edc778b475e4cd6983015acfd5b254a97559558a0ba89daffdcf71ff65",
+      "purpose": "Preserved failure or first-divergence evidence; not a qualified pass"
+    },
+    {
+      "local_path": "local/audits/act2-qualification-20261006/magic-flower-before-test.log",
+      "bytes": 2037,
+      "sha256": "3ac4d91835e24ae8d49928884496f227e4ab87760c0d486d43a08094b4e9b9e9",
+      "purpose": "Preserved failure or first-divergence evidence; not a qualified pass"
+    },
+    {
+      "local_path": "local/audits/act2-qualification-20261006/smoke-heal-before-test.log",
+      "bytes": 2079,
+      "sha256": "9d4665243dcca1477d8ec2841613a110d65f6803afc078e8e8751812721d0169",
+      "purpose": "Preserved failure or first-divergence evidence; not a qualified pass"
+    },
+    {
+      "local_path": "local/audits/act2-qualification-20261006/sozu-shop-before-test.log",
+      "bytes": 1144,
+      "sha256": "3f9886f7aa25cd97a5c6ded0c77e0bd091119f6b568a0c70f1a1115356b8e488",
+      "purpose": "Preserved failure or first-divergence evidence; not a qualified pass"
+    },
+    {
+      "local_path": "local/audits/act2-qualification-20261006/summon-treasure-before-test.log",
+      "bytes": 2667,
+      "sha256": "f55c9ef8a50c17d056fef061e69735691e24dc3143aa38273870649a9e194ad8",
+      "purpose": "Preserved failure or first-divergence evidence; not a qualified pass"
+    },
+    {
+      "local_path": "local/audits/act2-qualification-20261006/we-meet-before-test.log",
+      "bytes": 1127,
+      "sha256": "5b19d85ac873e7cc240bd0f44f4826eda92ae9481a48f88763dea33a6defbe84",
+      "purpose": "Preserved failure or first-divergence evidence; not a qualified pass"
+    },
+    {
+      "local_path": "local/audits/act2-qualification-20261006/anger-first-divergence-before.json",
+      "bytes": 110316,
+      "sha256": "eddddd948684559e970656e95c8f560bdc58e6762bd51a0809c35226a0eb5b12",
+      "purpose": "Preserved failure or first-divergence evidence; not a qualified pass"
+    },
+    {
+      "local_path": "local/audits/act2-qualification-20261006/blood-preview-first-divergence-before.json",
+      "bytes": 77532,
+      "sha256": "01ad51ab9e7854ddcbf828fec0a446b1d958deb5a4362d79ad8944b9d913f366",
+      "purpose": "Preserved failure or first-divergence evidence; not a qualified pass"
+    },
+    {
+      "local_path": "local/audits/act2-qualification-20261006/death-block-first-divergence-before.json",
+      "bytes": 58703,
+      "sha256": "f216beee56caa61c1aa3949f3e5a345ea8029e9b0b5ada8194df9baf033a5c2b",
+      "purpose": "Preserved failure or first-divergence evidence; not a qualified pass"
+    },
+    {
+      "local_path": "local/audits/act2-qualification-20261006/system-64-first-divergence-r3.json",
+      "bytes": 70636,
+      "sha256": "01cf773979217c80e325b88a5de4bb7c9ed655b07ce60b00871a5063ac415886",
+      "purpose": "Preserved failure or first-divergence evidence; not a qualified pass"
+    },
+    {
+      "local_path": "local/audits/act2-qualification-20261006/system-checkpoint-reward-r11.failure.json",
+      "bytes": 43667,
+      "sha256": "812b3bb5483e8ac7b6961111fe7d197e476ac20fe452588e7fd265f8e07bd9ff",
+      "purpose": "Preserved failure or first-divergence evidence; not a qualified pass"
+    },
+    {
+      "local_path": "local/audits/act2-qualification-20261006/centurion-orphan-before-test.log",
+      "bytes": 1606,
+      "sha256": "6eee7ee2ac1aa44e8d17abbfeb05d4f744036b6e27e1bdc0ecf69ec4de9e0765",
+      "purpose": "Preserved pre-fix failure; independent stock inputs retained in regression fixture. Not a qualification pass."
+    },
+    {
+      "local_path": "local/audits/act2-qualification-20261006/colosseum-second-reward-before-test-v2.log",
+      "bytes": 1258,
+      "sha256": "c9b8b350f9db3e98efbda3c1caf96407c7c48369049a98760e7d61e2bf71c1c7",
+      "purpose": "Preserved pre-fix failure; independent stock inputs retained in regression fixture. Not a qualification pass."
+    },
+    {
+      "local_path": "local/audits/act2-qualification-20261006/colosseum-second-reward-before-test.log",
+      "bytes": 1256,
+      "sha256": "4ef051a451cd2ad19c65bf066c88cfb682323496a9167cd51dc2a08791583bdb",
+      "purpose": "Preserved pre-fix failure; independent stock inputs retained in regression fixture. Not a qualification pass."
+    },
+    {
+      "local_path": "local/audits/act2-qualification-20261006/conditional-replay-before-test.log",
+      "bytes": 10092,
+      "sha256": "c30aff869459bf2a12dd15831dfb6a4cc1774102ab63455c9cf691606f564760",
+      "purpose": "Preserved pre-fix failure; independent stock inputs retained in regression fixture. Not a qualification pass."
+    },
+    {
+      "local_path": "local/audits/act2-qualification-20261006/hexaghost-before-test.log",
+      "bytes": 1899,
+      "sha256": "21943b52319b11fcf397ad838dbf4ffeb211176896fc9b56e796b5b482b7a7d1",
+      "purpose": "Preserved pre-fix failure; independent stock inputs retained in regression fixture. Not a qualification pass."
+    },
+    {
+      "local_path": "local/audits/act2-qualification-20261006/plated-order-before-test.log",
+      "bytes": 1421,
+      "sha256": "647344c41fee372ea4ba265061fb05fd5d1bde62ff7051955685d34708acf9c5",
+      "purpose": "Preserved pre-fix failure; independent stock inputs retained in regression fixture. Not a qualification pass."
+    },
+    {
+      "local_path": "local/audits/act2-qualification-20261006/colosseum-nob-intent-before-test.log",
+      "bytes": 1558,
+      "sha256": "9ea87fb3d1929e1208035877bc0196cc30a24823abd176371e18b16ec3e1d120",
+      "purpose": "Preserved pre-fix failure or stale-fixture rejection; actual stock replacement does not weaken checkpoint checks."
+    },
+    {
+      "local_path": "local/audits/act2-qualification-20261006/colosseum-second-reward-pre-r23-fixture.json",
+      "bytes": 105373,
+      "sha256": "c887e3ae4d776da09ef979fb6aec93557cbc19160e1edd87a237938f18d4ee4f",
+      "purpose": "Preserved pre-fix failure or stale-fixture rejection; actual stock replacement does not weaken checkpoint checks."
+    },
+    {
+      "local_path": "local/audits/act2-qualification-20261006/nob-adjacent-r23-tests.log",
+      "bytes": 2768,
+      "sha256": "9dd9017f05fa78306c8695d534889b1024412e197f6447a2c1236c50bbad97ce",
+      "purpose": "Preserved pre-fix failure or stale-fixture rejection; actual stock replacement does not weaken checkpoint checks."
+    },
+    {
+      "local_path": "local/audits/act2-qualification-20261006/ritual-dagger-before-test.log",
+      "bytes": 1747,
+      "sha256": "e4fedaa713d74ff68c417780449c7d0737c5eb27e99c08d2806296aa72fe9cd1",
+      "purpose": "Ritual Dagger stock-grounded before/after regression; unchanged raw evidence"
+    },
+    {
+      "local_path": "local/audits/act2-qualification-20261006/ritual-dagger-after-r27-v2.log",
+      "bytes": 100,
+      "sha256": "2965ccad7001e197985fce6d0519caccad013f839caddb0720019c6dcfcb7251",
+      "purpose": "Ritual Dagger stock-grounded before/after regression; unchanged raw evidence"
+    },
+    {
+      "local_path": "local/audits/act2-qualification-20261006/byrd-thorns-before-test.log",
+      "bytes": 1430,
+      "sha256": "4989a0904d625779ec889f1f5f6f9c9c653a1996cdb3ceb8ce0ff4f81a36bdbf",
+      "purpose": "preserved pre-fix failure or post-fix validation; not whole Act2 certification"
+    },
+    {
+      "local_path": "local/audits/act2-qualification-20261006/first-strong-before-test.log",
+      "bytes": 1870,
+      "sha256": "0370030df702079f0a1fd098b78cb4f8154509add6562b3710fcbf3462345014",
+      "purpose": "preserved pre-fix failure or post-fix validation; not whole Act2 certification"
+    },
+    {
+      "local_path": "local/audits/act2-qualification-20261006/targeted-r30.log",
+      "bytes": 100,
+      "sha256": "e72bbaa2c0c6d6439f20e62af3d1fd3e3153db27830306f26c6ddc09293338f6",
+      "purpose": "preserved pre-fix failure or post-fix validation; not whole Act2 certification"
+    },
+    {
+      "local_path": "local/audits/act2-qualification-20261006/native-r30-build.log",
+      "bytes": 210991,
+      "sha256": "5fec85d69a051a7bb63cd38e10017be54774a70dc7226519f0dbcbb30416b48b",
+      "purpose": "preserved pre-fix failure or post-fix validation; not whole Act2 certification"
+    }
+  ],
+  "stock_source_summaries": "stock-flow-source-identity.json",
+  "native_changes": "semantics-migration.json"
+}

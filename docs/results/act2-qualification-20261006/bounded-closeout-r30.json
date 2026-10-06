@@ -1,0 +1,161 @@
+{
+  "schema": "sls-act2-bounded-closeout-v1",
+  "native_source_sha256": "b100427d1e3ae6eee05818b6904047049609b1aa70807872c1f5f5e0edd6d62f",
+  "decision": "PRIORITY1_BOUNDED_CLOSEOUT_ENTER_PRIORITY2",
+  "full_original_qualification": "NOT_QUALIFIED",
+  "ready_for_new_nus_submission": false,
+  "scope_authority": "Human requested bounded closeout and entry to priority2 on 2026-10-07; original eight-trajectory requirement deferred",
+  "controlled_runs_matched": 72,
+  "controlled_seeds": [
+    131100000,
+    131100001,
+    131100002,
+    131100003,
+    131100004,
+    131100005,
+    131100006,
+    131100007,
+    131100008,
+    131100009,
+    131100010,
+    131100011,
+    131100012,
+    131100013,
+    131100014,
+    131100015,
+    131100016,
+    131100017,
+    131100018,
+    131100019,
+    131100020,
+    131100021,
+    131100022,
+    131100023,
+    131100024,
+    131100025,
+    131100026,
+    131100027,
+    131100028,
+    131100029,
+    131100030,
+    131100031,
+    131100032,
+    131100033,
+    131100034,
+    131100035,
+    131100036,
+    131100037,
+    131100038,
+    131100039,
+    131100040,
+    131100041,
+    131100042,
+    131100043,
+    131100044,
+    131100045,
+    131100046,
+    131100047,
+    131100048,
+    131100049,
+    131100050,
+    131100051,
+    131100052,
+    131100053,
+    131100054,
+    131100055,
+    131100056,
+    131100057,
+    131100058,
+    131100059,
+    131100060,
+    131100061,
+    131100062,
+    131100063,
+    131100064,
+    131100065,
+    131100066,
+    131100067,
+    131100068,
+    131100069,
+    131100070,
+    131100071
+  ],
+  "controlled_evidence": [
+    {
+      "path": "docs/results/act2-qualification-20261006/combat-r4-after-r30.json",
+      "sha256": "8e1baf56a2025555d373b210efbff917afa0c40788b7fc3b953a40b68bc5a987"
+    },
+    {
+      "path": "docs/results/act2-qualification-20261006/boss-entangle-r5-after-r30.json",
+      "sha256": "25355a0744bcd5e099c53f9a3e9c084dbce5ea936847db620247f4f8fa1fb71e"
+    },
+    {
+      "path": "docs/results/act2-qualification-20261006/system-checkpoint-reward-r12-after-r30.json",
+      "sha256": "9b2e0bdc57405a85730de94014a4b9696f168b41fdb7f088ddf85a0a70adbab6"
+    },
+    {
+      "path": "docs/results/act2-qualification-20261006/system-stock-policy-r23-transition-after-r30.json",
+      "sha256": "7137c8904ec3addbbf8249d537dec4919b8fa252ed82dedce188c1bb4ac3d9a9"
+    },
+    {
+      "path": "docs/results/act2-qualification-20261006/system-stock-policy-r24-reward-after-r30.json",
+      "sha256": "fc92e60ad4da5202c2ca335e344847d445f7ae3b300cf990d990d4518c1fd4b6"
+    },
+    {
+      "path": "docs/results/act2-qualification-20261006/system-stock-policy-r25-checkpoint-after-r30.json",
+      "sha256": "ea6524aaa1893dc464a71f35ac8d79340d78bdeda1ba514ee06ee05c05a937e8"
+    }
+  ],
+  "production": [
+    {
+      "seed": 8000011000000,
+      "status": "SEMANTIC_DIFFERENCE",
+      "boundaries_checked": 125,
+      "path": "docs/results/act2-qualification-20261006/production-r26-a-8000011000000-after-r30.json",
+      "sha256": "2205a0ee9a9eeb084554534b905f4e2c165d4376a03ec672b1e8ac2f48a92ffb"
+    },
+    {
+      "seed": 8000011000001,
+      "status": "TRAJECTORY_MATCH",
+      "boundaries_checked": 200,
+      "path": "docs/results/act2-qualification-20261006/production-r26-a-8000011000001-after-r30.json",
+      "sha256": "f92268a3678a7a2f8a0c8083d4a5cdfccecfeacae09d8d94f8c5e322bf42d91c"
+    },
+    {
+      "seed": 8000011000002,
+      "status": "TRAJECTORY_MATCH",
+      "boundaries_checked": 450,
+      "path": "docs/results/act2-qualification-20261006/production-r26-a-8000011000002-after-r30.json",
+      "sha256": "759fcc3b278d7589bd9c283284eaebe44067f75aa4562cf48452dd01593fb594"
+    },
+    {
+      "seed": 8000011000004,
+      "status": "TRAJECTORY_MATCH",
+      "boundaries_checked": 216,
+      "path": "docs/results/act2-qualification-20261006/production-r27-b-8000011000004-after-r30.json",
+      "sha256": "1719363ee1ee04469c6749e0302090c2b45dbceaeeb8202a82f8974d30ee6da4"
+    },
+    {
+      "seed": 8000011000005,
+      "status": "TRAJECTORY_MATCH",
+      "boundaries_checked": 378,
+      "path": "docs/results/act2-qualification-20261006/production-r27-b-8000011000005-after-r30.json",
+      "sha256": "436e6245871122371cf3c5fa16e4d055c9f961ec1687292f5f908408b123efbe"
+    },
+    {
+      "seed": 8000011000007,
+      "status": "TRAJECTORY_MATCH",
+      "boundaries_checked": 397,
+      "path": "docs/results/act2-qualification-20261006/production-r27-b-8000011000007-after-r30.json",
+      "sha256": "83be151559e859a225bd01c2f1bf8ce8da489aa52ae64922706e3f8953654ab6"
+    }
+  ],
+  "limitations": [
+    "Discovery-dependent production card RNG divergence is source-supported timing hypothesis, not independently measured or repaired",
+    "Automaton and Collector normal-start stock trajectories deferred",
+    "Historical native coverage selection is not rebound to new source; actual stock map-role coverage is incomplete",
+    "No complete Act2 certification or measured training/win-rate improvement",
+    "Training recipe and corrected-environment control require preparation after throughput work"
+  ],
+  "protected_files_restored": 63
+}

@@ -78,6 +78,7 @@ public final class OracleScenarioPatch {
     public static final String POTION_PROBE_COMMAND = "parity_potion";
     public static final String RELIC_PROBE_COMMAND = "parity_relic";
     public static final String ENCOUNTER_PROBE_COMMAND = "parity_encounter";
+    public static final String ACT2_PROBE_COMMAND = "parity_act2";
     public static final String ENGINE_PROBE_COMMAND = "parity_engine";
     public static final String EVENT_PROBE_COMMAND = "parity_event";
     public static final String DISTRIBUTION_PROBE_COMMAND = "parity_distribution";
@@ -1622,10 +1623,23 @@ public final class OracleScenarioPatch {
 
     /** Construct a stock encounter using the live stock RNG streams. */
     private static void applyEncounterProbe(String encounterId) {
+        applyEncounterProbe(encounterId, AbstractDungeon.ascensionLevel,
+            AbstractDungeon.actNum, AbstractDungeon.floorNum, "legacy");
+    }
+
+    private static void applyEncounterProbe(String encounterId, int ascension,
+            int act, int floor, String scenarioId) {
+        if (ascension < 0 || ascension > 20 || act < 1 || act > 3 || floor < 1
+                || !scenarioId.matches("[A-Za-z0-9_-]+")) {
+            throw new IllegalArgumentException("invalid encounter probe context");
+        }
         String gameId = ENCOUNTER_ALLOWLIST.get(encounterId.toUpperCase(Locale.ROOT));
         if (gameId == null) {
-            throw new IllegalArgumentException("parity_encounter is not in the Act 1 allowlist");
+            throw new IllegalArgumentException("parity_encounter is not in the encounter allowlist");
         }
+        AbstractDungeon.ascensionLevel = ascension;
+        AbstractDungeon.actNum = act;
+        AbstractDungeon.floorNum = floor;
         AbstractPlayer player = AbstractDungeon.player;
         clearCombatState(player);
         installProbeRelics(player, CardType.SKILL);
@@ -1641,7 +1655,11 @@ public final class OracleScenarioPatch {
         monsters.usePreBattleAction();
         monsters.showIntent();
         activate("encounter_probe:" + encounterId.toUpperCase(Locale.ROOT),
-            "STOCK_MONSTER_HELPER:ACT1_ALLOWLIST", player);
+            "STOCK_MONSTER_HELPER:CONTEXT_V2", player);
+        activeScenario.put("ascension", ascension);
+        activeScenario.put("act", act);
+        activeScenario.put("floor", floor);
+        activeScenario.put("controlled_id", scenarioId);
         CommunicationMod.mustSendGameState = true;
         GameStateListener.registerStateChange();
     }
@@ -1657,6 +1675,87 @@ public final class OracleScenarioPatch {
                     && AbstractDungeon.actionManager.currentAction == null) return;
         }
         throw new IllegalStateException("engine probe actions did not drain");
+    }
+
+    @SuppressWarnings("unchecked")
+    private static void applyAct2Probe(String id) {
+        Map<String, Object> manifest;
+        try (InputStream stream = OracleScenarioPatch.class.getResourceAsStream(
+                "/spirecomm/parity/act2-scenes.json")) {
+            if (stream == null) throw new IllegalStateException("missing Act2 scene inventory");
+            manifest = new com.autoplay.gson.Gson().fromJson(
+                new InputStreamReader(stream, StandardCharsets.UTF_8), Map.class);
+        } catch (java.io.IOException error) {
+            throw new IllegalStateException(error);
+        }
+        Map<String, Object> scene = null;
+        for (Object value : (java.util.List<?>) manifest.get("scenes")) {
+            Map<String, Object> candidate = (Map<String, Object>) value;
+            if (id.equals(candidate.get("id"))) scene = candidate;
+        }
+        if (scene == null || scene.get("initial") == null) {
+            throw new IllegalArgumentException("unknown or unprepared controlled Act2 scene");
+        }
+        applyEncounterProbe((String) scene.get("encounter"), 20, 2, 20, id);
+        drainActions();
+        Map<String, Object> initial = (Map<String, Object>) scene.get("initial");
+        AbstractPlayer player = AbstractDungeon.player;
+        player.currentHealth = ((Number) initial.get("hp")).intValue();
+        player.maxHealth = player.currentHealth;
+        player.currentBlock = ((Number) initial.get("block")).intValue();
+        player.gold = 99;
+        // EnergyManager.energy is the per-turn recharge amount; the current
+        // spendable pool lives in EnergyPanel. Changing both would silently
+        // give the probe ten energy on every future turn.
+        player.energy.energy = 3;
+        EnergyPanel.setEnergy(((Number) initial.get("energy")).intValue());
+        player.hand.clear(); player.drawPile.clear();
+        for (Object value : (java.util.List<?>) initial.get("hand")) {
+            player.hand.addToTop(card((String) value));
+        }
+        for (Object value : (java.util.List<?>) initial.get("draw")) {
+            player.drawPile.addToTop(card((String) value));
+        }
+        player.potions.clear();
+        for (int slot = 0; slot < player.potionSlots; ++slot) player.potions.add(new PotionSlot(slot));
+        if (initial.get("potion") != null) {
+            // Stock obtainPotion assigns the slot consumed by destroyPotion.
+            // Inserting an unobtained prototype leaves slot=-1 and crashes
+            // the real stock use path after its damage action is queued.
+            player.obtainPotion(0, PotionHelper.getPotion((String) initial.get("potion")));
+        }
+        Map<String, Object> hp = (Map<String, Object>) initial.get("monster_hp");
+        Map<String, Object> moves = (Map<String, Object>) initial.get("moves");
+        for (AbstractMonster monster : AbstractDungeon.getMonsters().monsters) {
+            // Match canonical IDs through the project-owned allowlist. The
+            // values change only initial conditions, never stock callbacks.
+            String canonical = monster.id;
+            if ("BookOfStabbing".equals(monster.id)) canonical = "BOOK_OF_STABBING";
+            if ("SlaverRed".equals(monster.id)) canonical = "RED_SLAVER";
+            if ("FungiBeast".equals(monster.id)) canonical = "FUNGI_BEAST";
+            if ("Champ".equals(monster.id)) canonical = "THE_CHAMP";
+            if (hp != null && hp.containsKey(canonical)) {
+                monster.currentHealth = ((Number) hp.get(canonical)).intValue();
+            }
+            if (moves != null && moves.containsKey(canonical)) {
+                Map<String, Object> move = (Map<String, Object>) moves.get(canonical);
+                int damage = ((Number) move.get("damage")).intValue();
+                int hits = ((Number) move.get("hits")).intValue();
+                monster.setMove(((Number) move.get("stock")).byteValue(),
+                    damage > 0 ? AbstractMonster.Intent.ATTACK
+                        : "RED_SLAVER_ENTANGLE".equals(move.get("native"))
+                            ? AbstractMonster.Intent.STRONG_DEBUFF : AbstractMonster.Intent.DEBUFF,
+                    damage, Math.max(hits, 1), hits > 1);
+                monster.createIntent();
+            }
+        }
+        activate("act2_probe:" + id, "STOCK_ACTION_SYSTEM:ACT2_SCENES_V1", player);
+        activeScenario.put("ascension", 20);
+        activeScenario.put("act", 2);
+        activeScenario.put("floor", 20);
+        activeScenario.put("manifest_schema", manifest.get("schema"));
+        CommunicationMod.mustSendGameState = true;
+        GameStateListener.registerStateChange();
     }
 
     /** Execute stock stance/orb primitives without requiring character cards. */
@@ -1893,6 +1992,7 @@ public final class OracleScenarioPatch {
                 if (!commands.contains(POTION_PROBE_COMMAND)) commands.add(POTION_PROBE_COMMAND);
                 if (!commands.contains(RELIC_PROBE_COMMAND)) commands.add(RELIC_PROBE_COMMAND);
                 if (!commands.contains(ENCOUNTER_PROBE_COMMAND)) commands.add(ENCOUNTER_PROBE_COMMAND);
+                if (!commands.contains(ACT2_PROBE_COMMAND)) commands.add(ACT2_PROBE_COMMAND);
                 if (!commands.contains(ENGINE_PROBE_COMMAND)) commands.add(ENGINE_PROBE_COMMAND);
             }
             return commands;
@@ -1910,6 +2010,12 @@ public final class OracleScenarioPatch {
                 return SpireReturn.Continue();
             }
             if (!normalized.startsWith(COMMAND + " ")) {
+                if (normalized.startsWith(ACT2_PROBE_COMMAND + " ")) {
+                    String[] parts = command.trim().split("\\s+");
+                    if (parts.length != 2) throw new IllegalArgumentException("parity_act2 requires SCENE_ID");
+                    applyAct2Probe(parts[1]);
+                    return SpireReturn.Return(Boolean.TRUE);
+                }
                 if (normalized.startsWith(DISTRIBUTION_PROBE_COMMAND + " ")) {
                     String[] parts = command.trim().split("\\s+");
                     if (parts.length != 3) throw new IllegalArgumentException(
@@ -2134,10 +2240,16 @@ public final class OracleScenarioPatch {
                 }
                 if (normalized.startsWith(ENCOUNTER_PROBE_COMMAND + " ")) {
                     String[] encounterParts = command.trim().split("\\s+");
-                    if (encounterParts.length != 2) {
-                        throw new IllegalArgumentException("parity_encounter requires ENCOUNTER_ID");
+                    if (encounterParts.length == 6) {
+                        applyEncounterProbe(encounterParts[1], Integer.parseInt(encounterParts[2]),
+                            Integer.parseInt(encounterParts[3]), Integer.parseInt(encounterParts[4]),
+                            encounterParts[5]);
+                    } else if (encounterParts.length == 2) {
+                        applyEncounterProbe(encounterParts[1]);
+                    } else {
+                        throw new IllegalArgumentException(
+                            "parity_encounter requires ENCOUNTER_ID [ASCENSION ACT FLOOR SCENARIO_ID]");
                     }
-                    applyEncounterProbe(encounterParts[1]);
                     return SpireReturn.Return(Boolean.TRUE);
                 }
                 if (normalized.startsWith(RELIC_PROBE_COMMAND + " ")) {

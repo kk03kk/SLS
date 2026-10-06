@@ -123,6 +123,12 @@ def build_configuration(original: dict, parent: dict, recipe: dict, *, run_name:
         config["ppo"].get("failure_progress_scale") != 0 or config["ppo"].get("gamma") != 1
     ):
         raise ValueError("Act1-2 parent must use the registered Win objective")
+    overrides = recipe.get("ppo_overrides", {})
+    if (not isinstance(overrides, dict) or set(overrides) - {"gae_lambda"}
+            or any(isinstance(v, bool) or not isinstance(v, (int, float))
+                   or not 0 <= v <= 1 for v in overrides.values())):
+        raise ValueError("this transfer recipe permits only a valid gae_lambda override")
+    config["ppo"].update(overrides)
     if recipe["source_profile"] != "IRONCLAD_A20_ACT1" or recipe["target_profile"] != "IRONCLAD_A20_ACT2":
         raise ValueError("recipe must describe adjacent A20 Act1 to Act2 transfer")
     budget = int(recipe["additional_decisions"])
@@ -237,6 +243,10 @@ def main() -> int:
         "tools/prepare_and_train.py", "tools/submit_slurm.py",
         "tools/import_act12_parent.py", "tools/analyze_act12_pilot.py",
         "tools/operator_paths.py",
+        "tools/preflight_training.py", "tools/benchmark_workers.py",
+        "tools/submit_act12_lambda_study.py", "tools/analyze_act12_lambda_study.py",
+        "tools/run_act12_lambda_study.py",
+        "requirements/model.lock", "pyproject.toml",
     )}
     with plan_path.open("x", encoding="utf-8", newline="\n") as stream:
         stream.write(json.dumps(plan, indent=2, ensure_ascii=False) + "\n")

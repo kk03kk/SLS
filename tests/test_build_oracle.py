@@ -11,8 +11,9 @@ from tools.verify_oracle import install, require_no_running_game
 
 def test_committed_oracle_resources_are_complete_and_unique():
     payloads = resource_payloads()
-    assert len(payloads) == 6
-    assert json.loads(payloads['ModTheSpire.json'])['version'] == '1.1.0'
+    assert len(payloads) == 7
+    assert json.loads(payloads['ModTheSpire.json'])['version'] == '1.2.2'
+    assert len(json.loads(payloads['spirecomm/parity/act2-scenes.json'])['scenes']) == 24
 
 
 def test_jar_is_deterministic_across_member_insertion_orders(tmp_path):

@@ -1,0 +1,27 @@
+{
+  "schema": "sls-act2-system-differential-v1",
+  "native_source_sha256": "2247ca990f0afb396b3c0820c156fd3af0c0a6d08ba6cae9736a7b03490ad4f0",
+  "runs": [
+    {
+      "seed": 131100064,
+      "first_divergence": null,
+      "boundaries_checked": 172,
+      "act2_boundaries": 23,
+      "reward_boundaries": 38,
+      "checkpoint_replays": 171,
+      "stock_action_unavailable": 171,
+      "status": "INCOMPLETE_PREFIX_MATCH"
+    },
+    {
+      "seed": 131100065,
+      "first_divergence": null,
+      "boundaries_checked": 230,
+      "act2_boundaries": 66,
+      "reward_boundaries": 35,
+      "checkpoint_replays": 229,
+      "stock_action_unavailable": null,
+      "status": "SYSTEM_BRANCH_MATCH"
+    }
+  ],
+  "training_gate": "NOT_QUALIFIED"
+}

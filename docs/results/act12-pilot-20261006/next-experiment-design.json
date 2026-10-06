@@ -1,0 +1,98 @@
+{
+  "schema": "sls-act12-research-design-v1",
+  "status": "SUPERSEDED_BY_ACT2_RULES_AUDIT_NOT_SUBMITTABLE",
+  "date": "2026-10-06",
+  "primary_objective": "normal-Neow-start A20 Ironclad Act1+Act2 joint clear probability",
+  "hypothesis": "Reducing within-rollout dependence on an Act1-initialized critic with lambda=1 improves joint learning during horizon transfer relative to the completed lambda=.98 pilot.",
+  "parent": {
+    "path": "local/runs/ironclad-a20-act1-win-90m-continuation/final.pt",
+    "steps": 90013696,
+    "sha256": "274963f4fe32b75003c5a1b4ccd394b5185304156e6ea22a76aee2764d54f1e0",
+    "initialization": "Match completed pilot: all model weights including critic; fresh Adam/RNG/workers/recurrent state; same reviewed weights-only native transition. Do not initialize from degraded 94M."
+  },
+  "experimental_variable": {
+    "gae_lambda": {
+      "control": 0.98,
+      "experimental": 1.0
+    }
+  },
+  "historical_training_control": {
+    "run": "local/runs/ironclad-a20-act12-win-pilot-r1",
+    "endpoint_steps": 94027776,
+    "endpoint_sha256": "d40df968de3409de72dd319b590b2683a136ffcfbd09776665742327809a0429",
+    "training_seed": 130000000,
+    "limitation": "One historical matched training seed, not a concurrent replicated randomized experiment; re-evaluate all arms on the same fresh development seeds and runtime."
+  },
+  "unchanged": [
+    "normal-start Act2 profile",
+    "all actor and critic weights at initialization",
+    "Win terminal +/-1",
+    "gamma=1",
+    "PBRS scale=.2 and terminal potential=0",
+    "model architecture",
+    "learning rate=3.125e-5",
+    "epochs=2",
+    "entropy=.002",
+    "domain advantage normalization",
+    "value clipping=.2",
+    "rollout=256",
+    "sequence length=64",
+    "workers=64/shards=16",
+    "native rules and observation/action encoding"
+  ],
+  "additional_decisions": 4000000,
+  "target_environment_steps": 94013696,
+  "allowed_overshoot": "less than one 16384-decision rollout",
+  "training_seed": 130000000,
+  "reason_for_seed_reuse": "Match the completed control initialization and seed stream; trajectories legitimately diverge after policy changes. New training seed replication follows only a promising result.",
+  "development_periodic_seeds": [
+    8000009000000,
+    8000009000256
+  ],
+  "development_confirmation_seeds": [
+    8000010000000,
+    8000010002048
+  ],
+  "evaluate_every_steps": 500000,
+  "confirmation_models": [
+    "frozen 90M parent",
+    "historical lambda=.98 fixed 94M endpoint",
+    "lambda=1 fixed endpoint"
+  ],
+  "selection": "Fixed experimental endpoint is primary. Periodic peak is diagnostic, not a substitute; do not search more checkpoints on confirmation after seeing its results.",
+  "wall_limit_hours": 24,
+  "cost_estimate": "Completed pilot updates took 11.19h for 4.014M; allow roughly 14-18h total depending on node/evaluation, with measured preparation budget gate: training estimate*1.5 + evaluation reserve + elapsed preparation <=24h. A failed gate aborts submission/training rather than silently reducing budget.",
+  "success_criteria": [
+    "Completed healthy budget; finite metrics/checkpoints; no backend/limit termination failures",
+    "Genuine ACT_2_CLEARED outcomes in both disjoint late windows [2M,3M) and [3M,4M+overshoot)",
+    "Fixed lambda=1 joint clear rate improves by at least .01 absolute over frozen90 and by at least .01 over matched historical lambda=.98 endpoint on fresh2048 confirmation",
+    "Both paired superiority comparisons pass exact two-sided McNemar with Holm correction across the two comparisons at family alpha=.05; report paired raw discordance and intervals, not p alone"
+  ],
+  "outcomes": {
+    "SUCCESS": "Supports a second training-seed replication or bounded same-recipe extension, not immediate Act3 promotion.",
+    "INCONCLUSIVE": "Positive but too small/uncertain gain; no automatic extension or holdout peeking. Reassess positive-example scarcity and natural-entry curriculum.",
+    "NO_GAIN": "No joint development gain. Stop this recipe; prioritize natural Act2-entry suffix training/critic adaptation with explicit new start-distribution and recurrent-state contracts.",
+    "INCOMPLETE": "Failed health or unfinished budget is an implementation/execution result, not evidence lambda cannot learn."
+  },
+  "act1_reach_policy": "Intermediate diagnostic and sample-efficiency signal only. No optimization/selection gate that vetoes a confirmed joint improvement; restoring reach alone is not success.",
+  "reserved_final_seeds": [
+    9000000000000,
+    9000000004096
+  ],
+  "reserved_final_policy": "Remain sealed through method development. Freeze one recipe/checkpoint selection rule before one final normal-start joint-clear evaluation; do not reuse it for tuning. Stock-game parity remains a separate transfer qualification.",
+  "remaining_preparation": [
+    "Before GPU submission, complete bounded high-impact Act2 stock qualification and throughput profiling; see project-priorities.md",
+    "If rules/observation/action change, rebind identities and rebuild a matched training control rather than attribute environment fixes to lambda",
+    "Generate new runtime TOML and SHA-bound plan; keep completed pilot plan immutable",
+    "Run actual-parent warm-start/preflight and lambda=1 implementation/finite-update smoke checks",
+    "Implement identity-aware paired confirmation for models with intentionally different PPO lambda",
+    "Include all three evaluations and measured wall budget in one submission",
+    "Validate locally, commit/push GitHub, provide human-run NUS command"
+  ],
+  "not_claimed": "No lambda=1 optimizer update or server training was run in this analysis. Local collection-only probe establishes estimator behavior, not efficacy.",
+  "supersession": {
+    "reason": "Act2 audit confirmed production rule/RNG changes. Historical lambda=.98 run cannot be the strict single-variable training control in corrected environment.",
+    "evidence": "../act2-qualification-20261006/semantics-migration.json",
+    "required_next_decision": "After qualification, design a matched corrected-environment control or explicitly preregister a new-recipe validation. No new NUS training in this audit."
+  }
+}

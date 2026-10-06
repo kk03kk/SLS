@@ -1,0 +1,186 @@
+{
+  "schema": "sls-act2-recovery-index-v1",
+  "batches": [
+    {
+      "capture": "local/audits/act2-qualification-20261006/boss-entangle-r5.json",
+      "launch_sha256": "8a5c89c581c095d9670e28a971b2e4b175873035bfe1b731e3f6bc92e5794486",
+      "oracle_sha256": "c13d88b98b920a7d0aa4be3dbf70f3fc456939288a37573f5525edc0ab702fea",
+      "mode": "validation",
+      "completion": {
+        "exit_code": 0,
+        "error": null
+      },
+      "recovery_status": "RECOVERED",
+      "recovery_journal_sha256": "24d1c4bcff62bcd266b2f82bbd40225c3dc4078cd445a9e1e879769e043f07e3"
+    },
+    {
+      "capture": "local/audits/act2-qualification-20261006/combat-r3.json",
+      "launch_sha256": "2fe3257a19dd2392feba35e0cd961fdca5e0aadaa7bd6d9cd63270173e1a8c2b",
+      "oracle_sha256": "5734d6907932a1f00c02f91dd15413efd2a3d98a2421d9748f0c0bdcb63790dd",
+      "mode": "validation",
+      "completion": {
+        "exit_code": 2,
+        "error": "Confirmed stock game crash: TopPanel.destroyPotion ArrayIndexOutOfBoundsException -1; raw stderr retained. This is an execution failure."
+      },
+      "recovery_status": "RECOVERED",
+      "recovery_journal_sha256": "bbb5c833ec396b5bc767cae0a9715a3a99c218715ed21b8d9797026bf4b109a9"
+    },
+    {
+      "capture": "local/audits/act2-qualification-20261006/combat-r4.json",
+      "launch_sha256": "3cb8601a22ce10c6df99002c6939db117acdc1767555f5822614bb403883a665",
+      "oracle_sha256": "de31c9c6b9b2781dd7f1f7c109fc526f261a56a35bc67a1769faa60b602f295f",
+      "mode": "validation",
+      "completion": {
+        "exit_code": 0,
+        "error": null
+      },
+      "recovery_status": "RECOVERED",
+      "recovery_journal_sha256": "905376ea35a1e7b90471c9b6de0ba3a1c7a615d4783bdc663de3614c3c22a924"
+    },
+    {
+      "capture": "local/audits/act2-qualification-20261006/production-first3-r1.json",
+      "launch_sha256": "96645ed261d542b2fac28796628bb6b559713f3cbd8f367e545a49bc591fc983",
+      "oracle_sha256": "c13d88b98b920a7d0aa4be3dbf70f3fc456939288a37573f5525edc0ab702fea",
+      "mode": "production",
+      "completion": {
+        "exit_code": 2,
+        "error": "Production child made no run-start progress for over 5 minutes after ready. Capturing startup execution failure; diagnosis suspects deferred-import/stdin reader contention. No qualification result."
+      },
+      "recovery_status": "RECOVERED",
+      "recovery_journal_sha256": "efcf02530ffda9cd7d5499d7a1f0c0db80a720a597057074259f17bb22c88197"
+    },
+    {
+      "capture": "local/audits/act2-qualification-20261006/production-first3-r2.json",
+      "launch_sha256": "de761092d04862fa7bff46d7387506c146d809fb18d0dae2bccef7dd95a16fff",
+      "oracle_sha256": "c13d88b98b920a7d0aa4be3dbf70f3fc456939288a37573f5525edc0ab702fea",
+      "mode": "production",
+      "completion": {
+        "exit_code": 2,
+        "error": "RuntimeError: selection did not reach a semantic screen within 30 frames"
+      },
+      "recovery_status": "RECOVERED",
+      "recovery_journal_sha256": "aecea3ba3706cf868ef4b34619ae5ecbc4293a1afc044befa5e3f6de2d871bd7"
+    },
+    {
+      "capture": "local/audits/act2-qualification-20261006/production-first3-r3.json",
+      "launch_sha256": "ffe0f17e8272266ce60f1de528b53a98b892d093f556c13d8aff2b5fe64c501e",
+      "oracle_sha256": "c13d88b98b920a7d0aa4be3dbf70f3fc456939288a37573f5525edc0ab702fea",
+      "mode": "production",
+      "completion": {
+        "exit_code": 2,
+        "error": "RuntimeError: Original combat terminal presentation did not settle"
+      },
+      "recovery_status": "RECOVERED",
+      "recovery_journal_sha256": "a39e6b38d639388ac2a1f40dd091d341007faeb722b24b4655ba748dd578b28e"
+    },
+    {
+      "capture": "local/audits/act2-qualification-20261006/scenes-r2.json",
+      "launch_sha256": "9730542f6ab5e1ae6878c76d062d9894cb6dee0c3b6677a9f0c296a417f5227b",
+      "oracle_sha256": "ad09f36d7150eeb731101e97db34143a9446d8fd4252d6600a7f07e07366f0ca",
+      "mode": "validation",
+      "completion": {
+        "exit_code": 0,
+        "error": null
+      },
+      "recovery_status": "RECOVERED",
+      "recovery_journal_sha256": "6135b1d57c2ac81ef5cd873ffb39dce6cf8cf81ef8322ac30496da4ef0799b06"
+    },
+    {
+      "capture": "local/audits/act2-qualification-20261006/system-discovery-debug-r5.json",
+      "launch_sha256": "d930082952db60280f4b7d99aa28e99c9a98c40ef9269a1e01fc669eafed0c43",
+      "oracle_sha256": "c13d88b98b920a7d0aa4be3dbf70f3fc456939288a37573f5525edc0ab702fea",
+      "mode": "validation",
+      "completion": {
+        "exit_code": 2,
+        "error": "TimeoutError: Original game did not return a command boundary within 180s"
+      },
+      "recovery_status": "RECOVERED",
+      "recovery_journal_sha256": "14b897ba882a196323e22d1ce39021571c116de307f656bb4134ba152f444472"
+    },
+    {
+      "capture": "local/audits/act2-qualification-20261006/system-rewards-r1.json",
+      "launch_sha256": "6f60c2903a181dd038bc378e0a1bba0d87bc104a7a51d9685aedfb5760a998a3",
+      "oracle_sha256": "c13d88b98b920a7d0aa4be3dbf70f3fc456939288a37573f5525edc0ab702fea",
+      "mode": "validation",
+      "completion": {
+        "exit_code": 2,
+        "error": "RuntimeError: unadvertised Original command 'bowl'; available=['choose', 'click', 'key', 'parity_distribution', 'parity_event', 'parity_relic', 'parity_relic_campfire', 'parity_relic_card_use', 'parity_relic_counter', 'parity_relic_damage', 'parity_relic_end_turn', 'parity_relic_equip', 'parity_relic_heal', 'parity_relic_hp_loss', 'parity_relic_neutral', 'parity_relic_obtain_card', 'parity_relic_resource', 'parity_relic_reward', 'parity_relic_shuffle', 'parity_relic_spawn', 'parity_relic_special_resource', 'parity_relic_trigger', 'parity_relic_turn_state', 'parity_relic_unequip', 'parity_relic_victory', 'parity_relic_victory_resource', 'parity_relic_world', 'reset_run', 'skip', 'state', 'wait']"
+      },
+      "recovery_status": "RECOVERED",
+      "recovery_journal_sha256": "13bcadd6206160de803182b405dd5d045df7869dd287ab307e34d1cacbc6d645"
+    },
+    {
+      "capture": "local/audits/act2-qualification-20261006/system-transition-r1.json",
+      "launch_sha256": "3bfdb02584fdd10f6faa22b5261d08ebb4c14f967a094b9d58c248e8bad46772",
+      "oracle_sha256": "c13d88b98b920a7d0aa4be3dbf70f3fc456939288a37573f5525edc0ab702fea",
+      "mode": "validation",
+      "completion": {
+        "exit_code": 2,
+        "error": "TimeoutError: Original game did not return a command boundary within 60s"
+      },
+      "recovery_status": "RECOVERED",
+      "recovery_journal_sha256": "1208401786ff6c1d0a783e3211666d800bab4265f4a95249fdbb5e9a93fa9968"
+    },
+    {
+      "capture": "local/audits/act2-qualification-20261006/system-transition-r2.json",
+      "launch_sha256": "1b607d6fd8793efb8efc93077e1f51370e217bcc519c6d90cb3c30c12b04728a",
+      "oracle_sha256": "c13d88b98b920a7d0aa4be3dbf70f3fc456939288a37573f5525edc0ab702fea",
+      "mode": "validation",
+      "completion": {
+        "exit_code": 2,
+        "error": "Observed CommunicationMod child handshake timeout in stdout; no capture process remains. This is an execution failure."
+      },
+      "recovery_status": "RECOVERED",
+      "recovery_journal_sha256": "5bfb7aa080fa8e23e12f81db30961b290565fd16bee24b9810a572b505db2010"
+    },
+    {
+      "capture": "local/audits/act2-qualification-20261006/system-transition-r3.json",
+      "launch_sha256": "a16d9694b96663dbdbf919e60950909a5c55821f41ac851a2f237e10dba7adc2",
+      "oracle_sha256": "c13d88b98b920a7d0aa4be3dbf70f3fc456939288a37573f5525edc0ab702fea",
+      "mode": "validation",
+      "completion": {
+        "exit_code": 0,
+        "error": null
+      },
+      "recovery_status": "RECOVERED",
+      "recovery_journal_sha256": "3837de0ad2a13a2748593e925dce9d941918ec69585eb8ee0dfea629e799893e"
+    },
+    {
+      "capture": "local/audits/act2-qualification-20261006/system-transition-r4.json",
+      "launch_sha256": "d7f9bbaa102738a855c8adee0aca2398345b88ec47c65382092dde2f4410c9ed",
+      "oracle_sha256": "c13d88b98b920a7d0aa4be3dbf70f3fc456939288a37573f5525edc0ab702fea",
+      "mode": "validation",
+      "completion": {
+        "exit_code": 2,
+        "error": "TimeoutError: Original game did not return a command boundary within 60s"
+      },
+      "recovery_status": "RECOVERED",
+      "recovery_journal_sha256": "885cf88cdf1f7558e3293ba659b529dc5a4566b8ac8213dcf295de52447cf01b"
+    },
+    {
+      "capture": "local/audits/act2-qualification-20261006/system-stock-policy-r23-transition.json",
+      "launch_sha256": "b870942798ed238cad66bbf37fb05987dd712e07faf27808514dc7168565cc78",
+      "oracle_sha256": "f59e2960838a5b744b9a146b8c489560d532f411c813886955ca2fa6dce7a4ef",
+      "mode": "validation",
+      "completion": {
+        "exit_code": 0,
+        "error": null
+      },
+      "recovery_status": "RECOVERED",
+      "recovery_journal_sha256": "eba5f1c07dec72aff388b04068aff6c8afabe7ad0d1412a1478f1f3a0419057b"
+    },
+    {
+      "capture": "local/audits/act2-qualification-20261006/system-stock-policy-r24-reward.json",
+      "launch_sha256": "e1690095998e3d52cc30307407ba5719fe6bbb4522c51ed6eb992fe0f9d0d53b",
+      "oracle_sha256": "f59e2960838a5b744b9a146b8c489560d532f411c813886955ca2fa6dce7a4ef",
+      "mode": "validation",
+      "completion": {
+        "exit_code": 0,
+        "error": null
+      },
+      "recovery_status": "RECOVERED",
+      "recovery_journal_sha256": "c41f71fc2c5dd8e0495b9bfc9659fa55930c08ce5f5af94b7028feee767b4907"
+    }
+  ],
+  "scope": "completed launcher journals only; active batch not yet included"
+}

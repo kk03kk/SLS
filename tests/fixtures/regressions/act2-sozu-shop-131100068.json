@@ -1,0 +1,2264 @@
+{
+  "before": {
+    "run_state": {
+      "seed": 131100068,
+      "math_seed": 130202171,
+      "event_start_context": {
+        "note_card": "IRON_WAVE",
+        "portal_eligible": true
+      },
+      "ascension": 20,
+      "act": 2,
+      "floor": 21,
+      "monster_list_offset": 1,
+      "elite_monster_list_offset": 0,
+      "second_boss": 0,
+      "map": "\n        /  /    | \\  \\     \n14     R  R     R  R  R    \n         \\  \\     \\|/      \n13        $  M     M       \n        /    |     | \\     \n12     R     M     E  M    \n         \\   |     |  | \\  \n11        M  ?     ?  E  M \n          |/       |/ |  | \n10        R        M  ?  R \n        /   \\      | \\|/   \n9      E     ?     ?  E    \n       |   /       |/ |    \n8      T  T        T  T    \n       |  |      / |/      \n7      E  M     R  ?       \n       |/     /    | \\     \n6      R     ?     M  E    \n         \\ /     / |    \\  \n5         E     R  E     R \n            \\     \\  \\ /   \n4            M     ?  ?    \n           / | \\ /    | \\  \n3         M  $  $     ?  M \n          |  |    \\ /    | \n2         M  M     ?     M \n        /      \\   | \\   | \n1      M        M  ?  ?  M \n       |      /  /  /    | \n0      M     M  M  M     M ",
+      "burning_elite_x": 0,
+      "burning_elite_y": 7,
+      "burning_elite_buff": 3
+    },
+    "rng": {
+      "ai": {
+        "counter": 0,
+        "seed0": 10788948775057897803,
+        "seed1": 8175712910815121766
+      },
+      "card_random": {
+        "counter": 0,
+        "seed0": 10788948775057897803,
+        "seed1": 8175712910815121766
+      },
+      "card": {
+        "counter": 271,
+        "seed0": 17339089646172752997,
+        "seed1": 16800934483565673766
+      },
+      "event": {
+        "counter": 6,
+        "seed0": 12689804743586258020,
+        "seed1": 17622341091268147054
+      },
+      "math_util": {
+        "counter": 0,
+        "seed0": 13871506739401115579,
+        "seed1": 17279303220291515865
+      },
+      "merchant": {
+        "counter": 32,
+        "seed0": 2201111824940978498,
+        "seed1": 3602393250277932122
+      },
+      "misc": {
+        "counter": 0,
+        "seed0": 10788948775057897803,
+        "seed1": 8175712910815121766
+      },
+      "monster_hp": {
+        "counter": 0,
+        "seed0": 10788948775057897803,
+        "seed1": 8175712910815121766
+      },
+      "monster": {
+        "counter": 81,
+        "seed0": 4468452037556125463,
+        "seed1": 980567043457045557
+      },
+      "neow": {
+        "counter": 5,
+        "seed0": 3551469749656285759,
+        "seed1": 12689804743586258020
+      },
+      "potion": {
+        "counter": 39,
+        "seed0": 17786797241934287746,
+        "seed1": 17965921770982207230
+      },
+      "relic": {
+        "counter": 5,
+        "seed0": 3551469749656285759,
+        "seed1": 12689804743586258020
+      },
+      "shuffle": {
+        "counter": 0,
+        "seed0": 10788948775057897803,
+        "seed1": 8175712910815121766
+      },
+      "treasure": {
+        "counter": 11,
+        "seed0": 7230246414334164206,
+        "seed1": 2971515453652605059
+      }
+    },
+    "derived_rng": {
+      "map": {
+        "algorithm": "sts.RandomXS128/Map.fromSeed:v1",
+        "base_seed": 131100068,
+        "derived_seed": 131100268,
+        "act": 2,
+        "ascension": 20,
+        "assign_burning_elite": true
+      }
+    },
+    "ordered_pools": {
+      "events": [
+        8,
+        9,
+        12,
+        13,
+        16,
+        20,
+        22,
+        30,
+        35,
+        46,
+        52
+      ],
+      "shrines": [
+        31,
+        54,
+        24,
+        50,
+        38,
+        51
+      ],
+      "special_one_time_events": [
+        6,
+        11,
+        15,
+        17,
+        18,
+        21,
+        26,
+        27,
+        36,
+        40,
+        44,
+        53,
+        48
+      ],
+      "common_relics": [
+        144,
+        163,
+        171,
+        139,
+        113,
+        148,
+        76,
+        52,
+        175,
+        91,
+        121,
+        132,
+        44,
+        92,
+        119,
+        169,
+        1,
+        149,
+        70,
+        90,
+        174,
+        159,
+        93,
+        46,
+        9,
+        89,
+        55,
+        97,
+        0,
+        48,
+        167
+      ],
+      "uncommon_relics": [
+        4,
+        94,
+        60,
+        120,
+        40,
+        162,
+        49,
+        147,
+        87,
+        141,
+        24,
+        34,
+        33,
+        14,
+        170,
+        142,
+        68,
+        67,
+        158,
+        176,
+        95,
+        27,
+        96,
+        166,
+        31,
+        61,
+        51,
+        173
+      ],
+      "rare_relics": [
+        6,
+        78,
+        30,
+        146,
+        177,
+        21,
+        165,
+        109,
+        77,
+        36,
+        74,
+        7,
+        29,
+        15,
+        54,
+        80,
+        154,
+        35,
+        131,
+        65,
+        2,
+        105,
+        157,
+        107,
+        160,
+        11,
+        10
+      ],
+      "shop_relics": [
+        5,
+        155,
+        69,
+        150,
+        99,
+        136,
+        73,
+        12,
+        38,
+        66,
+        128,
+        138,
+        161,
+        25,
+        47
+      ],
+      "boss_relics": [
+        156,
+        127,
+        134,
+        102,
+        114,
+        59,
+        108,
+        53,
+        62,
+        17,
+        133,
+        172,
+        100,
+        56,
+        85,
+        57,
+        140,
+        98,
+        135
+      ],
+      "colorless_cards": [
+        94,
+        281,
+        242,
+        344,
+        121,
+        188,
+        335,
+        36,
+        21,
+        290,
+        100,
+        352,
+        241,
+        291,
+        12,
+        218,
+        177,
+        155,
+        166,
+        131,
+        259,
+        240,
+        343,
+        64,
+        113,
+        150,
+        213,
+        216,
+        173,
+        327,
+        200,
+        223,
+        225,
+        336,
+        212
+      ],
+      "normal_encounters": [
+        22,
+        23,
+        33,
+        28,
+        27,
+        31,
+        29,
+        28,
+        26,
+        31,
+        29,
+        27,
+        28,
+        31,
+        30
+      ],
+      "elite_encounters": [
+        34,
+        36,
+        34,
+        36,
+        34,
+        35,
+        34,
+        35,
+        36,
+        35
+      ]
+    },
+    "player_state": {
+      "current_hp": 75,
+      "max_hp": 75,
+      "gold": 254,
+      "potion_count": 0,
+      "potion_capacity": 2,
+      "potions": [
+        1,
+        1
+      ],
+      "relics": [
+        {
+          "id": 86,
+          "data": 0
+        },
+        {
+          "id": 26,
+          "data": 1
+        },
+        {
+          "id": 151,
+          "data": 0
+        },
+        {
+          "id": 64,
+          "data": 0
+        }
+      ],
+      "deck": [
+        {
+          "id": 15,
+          "upgraded": false,
+          "misc": 0
+        },
+        {
+          "id": 321,
+          "upgraded": false,
+          "misc": 0
+        },
+        {
+          "id": 321,
+          "upgraded": false,
+          "misc": 0
+        },
+        {
+          "id": 321,
+          "upgraded": false,
+          "misc": 0
+        },
+        {
+          "id": 321,
+          "upgraded": false,
+          "misc": 0
+        },
+        {
+          "id": 321,
+          "upgraded": false,
+          "misc": 0
+        },
+        {
+          "id": 104,
+          "upgraded": false,
+          "misc": 0
+        },
+        {
+          "id": 104,
+          "upgraded": false,
+          "misc": 0
+        },
+        {
+          "id": 104,
+          "upgraded": false,
+          "misc": 0
+        },
+        {
+          "id": 104,
+          "upgraded": true,
+          "misc": 0
+        },
+        {
+          "id": 25,
+          "upgraded": false,
+          "misc": 0
+        },
+        {
+          "id": 11,
+          "upgraded": false,
+          "misc": 0
+        },
+        {
+          "id": 67,
+          "upgraded": false,
+          "misc": 0
+        },
+        {
+          "id": 264,
+          "upgraded": false,
+          "misc": 0
+        },
+        {
+          "id": 69,
+          "upgraded": true,
+          "misc": 0
+        },
+        {
+          "id": 11,
+          "upgraded": false,
+          "misc": 0
+        },
+        {
+          "id": 187,
+          "upgraded": true,
+          "misc": 0
+        },
+        {
+          "id": 69,
+          "upgraded": true,
+          "misc": 0
+        },
+        {
+          "id": 40,
+          "upgraded": true,
+          "misc": 0
+        },
+        {
+          "id": 73,
+          "upgraded": false,
+          "misc": 0
+        }
+      ],
+      "bottle_indices": [
+        -1,
+        -1,
+        -1
+      ],
+      "blue_key": false,
+      "green_key": false,
+      "red_key": false
+    },
+    "public_inventory": {
+      "potions": [
+        {
+          "instance_id": "potion:0",
+          "content_id": "EMPTY_POTION_SLOT",
+          "slot": 0
+        },
+        {
+          "instance_id": "potion:1",
+          "content_id": "EMPTY_POTION_SLOT",
+          "slot": 1
+        }
+      ],
+      "relics": [
+        {
+          "instance_id": "relic:0",
+          "content_id": "BURNING_BLOOD",
+          "counter": 0
+        },
+        {
+          "instance_id": "relic:1",
+          "content_id": "HAPPY_FLOWER",
+          "counter": 1
+        },
+        {
+          "instance_id": "relic:2",
+          "content_id": "MOLTEN_EGG",
+          "counter": 0
+        },
+        {
+          "instance_id": "relic:3",
+          "content_id": "SOZU",
+          "counter": 0
+        }
+      ],
+      "deck": [
+        {
+          "id": "ASCENDERS_BANE",
+          "name": "Ascender's Bane",
+          "uuid": "-1",
+          "cost": -2,
+          "base_cost": -2,
+          "upgrades": 0,
+          "special_data": 0,
+          "free_to_play_once": false,
+          "retain": false,
+          "self_retain": false,
+          "bottled_flame": false,
+          "bottled_lightning": false,
+          "bottled_tornado": false,
+          "ethereal": true,
+          "has_target": false,
+          "exhausts": false,
+          "is_playable": false,
+          "instance_id": "deck:0",
+          "content_id": "ASCENDERS_BANE",
+          "current_cost": -2
+        },
+        {
+          "id": "STRIKE_RED",
+          "name": "Strike",
+          "uuid": "-1",
+          "cost": 1,
+          "base_cost": 1,
+          "upgrades": 0,
+          "special_data": 0,
+          "free_to_play_once": false,
+          "retain": false,
+          "self_retain": false,
+          "bottled_flame": false,
+          "bottled_lightning": false,
+          "bottled_tornado": false,
+          "ethereal": false,
+          "has_target": true,
+          "exhausts": false,
+          "is_playable": false,
+          "instance_id": "deck:1",
+          "content_id": "STRIKE_RED",
+          "current_cost": 1
+        },
+        {
+          "id": "STRIKE_RED",
+          "name": "Strike",
+          "uuid": "-1",
+          "cost": 1,
+          "base_cost": 1,
+          "upgrades": 0,
+          "special_data": 0,
+          "free_to_play_once": false,
+          "retain": false,
+          "self_retain": false,
+          "bottled_flame": false,
+          "bottled_lightning": false,
+          "bottled_tornado": false,
+          "ethereal": false,
+          "has_target": true,
+          "exhausts": false,
+          "is_playable": false,
+          "instance_id": "deck:2",
+          "content_id": "STRIKE_RED",
+          "current_cost": 1
+        },
+        {
+          "id": "STRIKE_RED",
+          "name": "Strike",
+          "uuid": "-1",
+          "cost": 1,
+          "base_cost": 1,
+          "upgrades": 0,
+          "special_data": 0,
+          "free_to_play_once": false,
+          "retain": false,
+          "self_retain": false,
+          "bottled_flame": false,
+          "bottled_lightning": false,
+          "bottled_tornado": false,
+          "ethereal": false,
+          "has_target": true,
+          "exhausts": false,
+          "is_playable": false,
+          "instance_id": "deck:3",
+          "content_id": "STRIKE_RED",
+          "current_cost": 1
+        },
+        {
+          "id": "STRIKE_RED",
+          "name": "Strike",
+          "uuid": "-1",
+          "cost": 1,
+          "base_cost": 1,
+          "upgrades": 0,
+          "special_data": 0,
+          "free_to_play_once": false,
+          "retain": false,
+          "self_retain": false,
+          "bottled_flame": false,
+          "bottled_lightning": false,
+          "bottled_tornado": false,
+          "ethereal": false,
+          "has_target": true,
+          "exhausts": false,
+          "is_playable": false,
+          "instance_id": "deck:4",
+          "content_id": "STRIKE_RED",
+          "current_cost": 1
+        },
+        {
+          "id": "STRIKE_RED",
+          "name": "Strike",
+          "uuid": "-1",
+          "cost": 1,
+          "base_cost": 1,
+          "upgrades": 0,
+          "special_data": 0,
+          "free_to_play_once": false,
+          "retain": false,
+          "self_retain": false,
+          "bottled_flame": false,
+          "bottled_lightning": false,
+          "bottled_tornado": false,
+          "ethereal": false,
+          "has_target": true,
+          "exhausts": false,
+          "is_playable": false,
+          "instance_id": "deck:5",
+          "content_id": "STRIKE_RED",
+          "current_cost": 1
+        },
+        {
+          "id": "DEFEND_RED",
+          "name": "Defend",
+          "uuid": "-1",
+          "cost": 1,
+          "base_cost": 1,
+          "upgrades": 0,
+          "special_data": 0,
+          "free_to_play_once": false,
+          "retain": false,
+          "self_retain": false,
+          "bottled_flame": false,
+          "bottled_lightning": false,
+          "bottled_tornado": false,
+          "ethereal": false,
+          "has_target": false,
+          "exhausts": false,
+          "is_playable": false,
+          "instance_id": "deck:6",
+          "content_id": "DEFEND_RED",
+          "current_cost": 1
+        },
+        {
+          "id": "DEFEND_RED",
+          "name": "Defend",
+          "uuid": "-1",
+          "cost": 1,
+          "base_cost": 1,
+          "upgrades": 0,
+          "special_data": 0,
+          "free_to_play_once": false,
+          "retain": false,
+          "self_retain": false,
+          "bottled_flame": false,
+          "bottled_lightning": false,
+          "bottled_tornado": false,
+          "ethereal": false,
+          "has_target": false,
+          "exhausts": false,
+          "is_playable": false,
+          "instance_id": "deck:7",
+          "content_id": "DEFEND_RED",
+          "current_cost": 1
+        },
+        {
+          "id": "DEFEND_RED",
+          "name": "Defend",
+          "uuid": "-1",
+          "cost": 1,
+          "base_cost": 1,
+          "upgrades": 0,
+          "special_data": 0,
+          "free_to_play_once": false,
+          "retain": false,
+          "self_retain": false,
+          "bottled_flame": false,
+          "bottled_lightning": false,
+          "bottled_tornado": false,
+          "ethereal": false,
+          "has_target": false,
+          "exhausts": false,
+          "is_playable": false,
+          "instance_id": "deck:8",
+          "content_id": "DEFEND_RED",
+          "current_cost": 1
+        },
+        {
+          "id": "DEFEND_RED",
+          "name": "Defend",
+          "uuid": "-1",
+          "cost": 1,
+          "base_cost": 1,
+          "upgrades": 1,
+          "special_data": 0,
+          "free_to_play_once": false,
+          "retain": false,
+          "self_retain": false,
+          "bottled_flame": false,
+          "bottled_lightning": false,
+          "bottled_tornado": false,
+          "ethereal": false,
+          "has_target": false,
+          "exhausts": false,
+          "is_playable": false,
+          "instance_id": "deck:9",
+          "content_id": "DEFEND_RED",
+          "current_cost": 1
+        },
+        {
+          "id": "BASH",
+          "name": "Bash",
+          "uuid": "-1",
+          "cost": 2,
+          "base_cost": 2,
+          "upgrades": 0,
+          "special_data": 0,
+          "free_to_play_once": false,
+          "retain": false,
+          "self_retain": false,
+          "bottled_flame": false,
+          "bottled_lightning": false,
+          "bottled_tornado": false,
+          "ethereal": false,
+          "has_target": true,
+          "exhausts": false,
+          "is_playable": false,
+          "instance_id": "deck:10",
+          "content_id": "BASH",
+          "current_cost": 2
+        },
+        {
+          "id": "ANGER",
+          "name": "Anger",
+          "uuid": "-1",
+          "cost": 0,
+          "base_cost": 0,
+          "upgrades": 0,
+          "special_data": 0,
+          "free_to_play_once": false,
+          "retain": false,
+          "self_retain": false,
+          "bottled_flame": false,
+          "bottled_lightning": false,
+          "bottled_tornado": false,
+          "ethereal": false,
+          "has_target": true,
+          "exhausts": false,
+          "is_playable": false,
+          "instance_id": "deck:11",
+          "content_id": "ANGER",
+          "current_cost": 0
+        },
+        {
+          "id": "CLEAVE",
+          "name": "Cleave",
+          "uuid": "-1",
+          "cost": 1,
+          "base_cost": 1,
+          "upgrades": 0,
+          "special_data": 0,
+          "free_to_play_once": false,
+          "retain": false,
+          "self_retain": false,
+          "bottled_flame": false,
+          "bottled_lightning": false,
+          "bottled_tornado": false,
+          "ethereal": false,
+          "has_target": false,
+          "exhausts": false,
+          "is_playable": false,
+          "instance_id": "deck:12",
+          "content_id": "CLEAVE",
+          "current_cost": 1
+        },
+        {
+          "id": "RAMPAGE",
+          "name": "Rampage",
+          "uuid": "-1",
+          "cost": 1,
+          "base_cost": 1,
+          "upgrades": 0,
+          "special_data": 0,
+          "base_damage": 8,
+          "free_to_play_once": false,
+          "retain": false,
+          "self_retain": false,
+          "bottled_flame": false,
+          "bottled_lightning": false,
+          "bottled_tornado": false,
+          "ethereal": false,
+          "has_target": true,
+          "exhausts": false,
+          "is_playable": false,
+          "instance_id": "deck:13",
+          "content_id": "RAMPAGE",
+          "current_cost": 1
+        },
+        {
+          "id": "CLOTHESLINE",
+          "name": "Clothesline",
+          "uuid": "-1",
+          "cost": 2,
+          "base_cost": 2,
+          "upgrades": 1,
+          "special_data": 0,
+          "free_to_play_once": false,
+          "retain": false,
+          "self_retain": false,
+          "bottled_flame": false,
+          "bottled_lightning": false,
+          "bottled_tornado": false,
+          "ethereal": false,
+          "has_target": true,
+          "exhausts": false,
+          "is_playable": false,
+          "instance_id": "deck:14",
+          "content_id": "CLOTHESLINE",
+          "current_cost": 2
+        },
+        {
+          "id": "ANGER",
+          "name": "Anger",
+          "uuid": "-1",
+          "cost": 0,
+          "base_cost": 0,
+          "upgrades": 0,
+          "special_data": 0,
+          "free_to_play_once": false,
+          "retain": false,
+          "self_retain": false,
+          "bottled_flame": false,
+          "bottled_lightning": false,
+          "bottled_tornado": false,
+          "ethereal": false,
+          "has_target": true,
+          "exhausts": false,
+          "is_playable": false,
+          "instance_id": "deck:15",
+          "content_id": "ANGER",
+          "current_cost": 0
+        },
+        {
+          "id": "IMMOLATE",
+          "name": "Immolate",
+          "uuid": "-1",
+          "cost": 2,
+          "base_cost": 2,
+          "upgrades": 1,
+          "special_data": 0,
+          "free_to_play_once": false,
+          "retain": false,
+          "self_retain": false,
+          "bottled_flame": false,
+          "bottled_lightning": false,
+          "bottled_tornado": false,
+          "ethereal": false,
+          "has_target": false,
+          "exhausts": false,
+          "is_playable": false,
+          "instance_id": "deck:16",
+          "content_id": "IMMOLATE",
+          "current_cost": 2
+        },
+        {
+          "id": "CLOTHESLINE",
+          "name": "Clothesline",
+          "uuid": "-1",
+          "cost": 2,
+          "base_cost": 2,
+          "upgrades": 1,
+          "special_data": 0,
+          "free_to_play_once": false,
+          "retain": false,
+          "self_retain": false,
+          "bottled_flame": false,
+          "bottled_lightning": false,
+          "bottled_tornado": false,
+          "ethereal": false,
+          "has_target": true,
+          "exhausts": false,
+          "is_playable": false,
+          "instance_id": "deck:17",
+          "content_id": "CLOTHESLINE",
+          "current_cost": 2
+        },
+        {
+          "id": "BLUDGEON",
+          "name": "Bludgeon",
+          "uuid": "-1",
+          "cost": 3,
+          "base_cost": 3,
+          "upgrades": 1,
+          "special_data": 0,
+          "free_to_play_once": false,
+          "retain": false,
+          "self_retain": false,
+          "bottled_flame": false,
+          "bottled_lightning": false,
+          "bottled_tornado": false,
+          "ethereal": false,
+          "has_target": true,
+          "exhausts": false,
+          "is_playable": false,
+          "instance_id": "deck:18",
+          "content_id": "BLUDGEON",
+          "current_cost": 3
+        },
+        {
+          "id": "COMBUST",
+          "name": "Combust",
+          "uuid": "-1",
+          "cost": 1,
+          "base_cost": 1,
+          "upgrades": 0,
+          "special_data": 0,
+          "free_to_play_once": false,
+          "retain": false,
+          "self_retain": false,
+          "bottled_flame": false,
+          "bottled_lightning": false,
+          "bottled_tornado": false,
+          "ethereal": false,
+          "has_target": false,
+          "exhausts": false,
+          "is_playable": false,
+          "instance_id": "deck:19",
+          "content_id": "COMBUST",
+          "current_cost": 1
+        }
+      ]
+    },
+    "progress_state": {
+      "outcome": 1,
+      "screen_state": 8,
+      "last_room": 2,
+      "current_room": 0,
+      "current_event": 0,
+      "boss": 39,
+      "current_map_x": 3,
+      "current_map_y": 3,
+      "monster_chance": 0.30000001192092896,
+      "shop_chance": 0.08999999612569809,
+      "treasure_chance": 0.05999999865889549,
+      "potion_chance": -10,
+      "card_rarity_factor": 3,
+      "shop_remove_count": 0,
+      "speedrun_pace": false,
+      "screen_continuation_serialized": true
+    },
+    "screen_info": {
+      "screen_state": 8,
+      "complete": true,
+      "shop": {
+        "cards": [
+          {
+            "id": 339,
+            "upgraded": true,
+            "misc": 0
+          },
+          {
+            "id": 288,
+            "upgraded": true,
+            "misc": 1
+          },
+          {
+            "id": 112,
+            "upgraded": false,
+            "misc": 0
+          },
+          {
+            "id": 178,
+            "upgraded": false,
+            "misc": 0
+          },
+          {
+            "id": 47,
+            "upgraded": false,
+            "misc": 0
+          },
+          {
+            "id": 212,
+            "upgraded": false,
+            "misc": 0
+          },
+          {
+            "id": 343,
+            "upgraded": false,
+            "misc": 0
+          }
+        ],
+        "potions": [
+          12,
+          7,
+          9
+        ],
+        "relics": [
+          22,
+          41,
+          145
+        ],
+        "prices": [
+          55,
+          37,
+          77,
+          59,
+          166,
+          96,
+          189,
+          317,
+          273,
+          165,
+          56,
+          57,
+          54
+        ],
+        "remove_cost": 75
+      },
+      "continuation": "map"
+    },
+    "public_screen": {
+      "cards": [
+        {
+          "id": "THUNDERCLAP",
+          "name": "Thunderclap",
+          "uuid": "-1",
+          "cost": 1,
+          "base_cost": 1,
+          "upgrades": 1,
+          "special_data": 0,
+          "free_to_play_once": false,
+          "retain": false,
+          "self_retain": false,
+          "bottled_flame": false,
+          "bottled_lightning": false,
+          "bottled_tornado": false,
+          "ethereal": false,
+          "has_target": false,
+          "exhausts": false,
+          "is_playable": false,
+          "instance_id": "shop-card:0",
+          "content_id": "THUNDERCLAP",
+          "current_cost": 1
+        },
+        {
+          "id": "SEARING_BLOW",
+          "name": "Searing Blow",
+          "uuid": "-1",
+          "cost": 2,
+          "base_cost": 2,
+          "upgrades": 1,
+          "special_data": 1,
+          "free_to_play_once": false,
+          "retain": false,
+          "self_retain": false,
+          "bottled_flame": false,
+          "bottled_lightning": false,
+          "bottled_tornado": false,
+          "ethereal": false,
+          "has_target": true,
+          "exhausts": false,
+          "is_playable": false,
+          "instance_id": "shop-card:1",
+          "content_id": "SEARING_BLOW",
+          "current_cost": 2
+        },
+        {
+          "id": "DISARM",
+          "name": "Disarm",
+          "uuid": "-1",
+          "cost": 1,
+          "base_cost": 1,
+          "upgrades": 0,
+          "special_data": 0,
+          "free_to_play_once": false,
+          "retain": false,
+          "self_retain": false,
+          "bottled_flame": false,
+          "bottled_lightning": false,
+          "bottled_tornado": false,
+          "ethereal": false,
+          "has_target": true,
+          "exhausts": true,
+          "is_playable": false,
+          "instance_id": "shop-card:2",
+          "content_id": "DISARM",
+          "current_cost": 1
+        },
+        {
+          "id": "HAVOC",
+          "name": "Havoc",
+          "uuid": "-1",
+          "cost": 1,
+          "base_cost": 1,
+          "upgrades": 0,
+          "special_data": 0,
+          "free_to_play_once": false,
+          "retain": false,
+          "self_retain": false,
+          "bottled_flame": false,
+          "bottled_lightning": false,
+          "bottled_tornado": false,
+          "ethereal": false,
+          "has_target": false,
+          "exhausts": false,
+          "is_playable": false,
+          "instance_id": "shop-card:3",
+          "content_id": "HAVOC",
+          "current_cost": 1
+        },
+        {
+          "id": "BRUTALITY",
+          "name": "Brutality",
+          "uuid": "-1",
+          "cost": 0,
+          "base_cost": 0,
+          "upgrades": 0,
+          "special_data": 0,
+          "free_to_play_once": false,
+          "retain": false,
+          "self_retain": false,
+          "bottled_flame": false,
+          "bottled_lightning": false,
+          "bottled_tornado": false,
+          "ethereal": false,
+          "has_target": false,
+          "exhausts": false,
+          "is_playable": false,
+          "instance_id": "shop-card:4",
+          "content_id": "BRUTALITY",
+          "current_cost": 0
+        },
+        {
+          "id": "MADNESS",
+          "name": "Madness",
+          "uuid": "-1",
+          "cost": 1,
+          "base_cost": 1,
+          "upgrades": 0,
+          "special_data": 0,
+          "free_to_play_once": false,
+          "retain": false,
+          "self_retain": false,
+          "bottled_flame": false,
+          "bottled_lightning": false,
+          "bottled_tornado": false,
+          "ethereal": false,
+          "has_target": false,
+          "exhausts": true,
+          "is_playable": false,
+          "instance_id": "shop-card:5",
+          "content_id": "MADNESS",
+          "current_cost": 1
+        },
+        {
+          "id": "TRANSMUTATION",
+          "name": "Transmutation",
+          "uuid": "-1",
+          "cost": -1,
+          "base_cost": -1,
+          "upgrades": 0,
+          "special_data": 0,
+          "free_to_play_once": false,
+          "retain": false,
+          "self_retain": false,
+          "bottled_flame": false,
+          "bottled_lightning": false,
+          "bottled_tornado": false,
+          "ethereal": false,
+          "has_target": false,
+          "exhausts": true,
+          "is_playable": false,
+          "instance_id": "shop-card:6",
+          "content_id": "TRANSMUTATION",
+          "current_cost": -1
+        }
+      ],
+      "relics": [
+        "GINGER",
+        "MUMMIFIED_HAND",
+        "LEES_WAFFLE"
+      ],
+      "potions": [
+        "DEXTERITY_POTION",
+        "BLOOD_POTION",
+        "COLORLESS_POTION"
+      ],
+      "prices": [
+        55,
+        37,
+        77,
+        59,
+        166,
+        96,
+        189,
+        317,
+        273,
+        165,
+        56,
+        57,
+        54
+      ],
+      "remove_cost": 75
+    },
+    "public_map": [
+      {
+        "node_id": "map:0:0",
+        "x": 0,
+        "y": 0,
+        "room_type": "MONSTER",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:0:1"
+        ]
+      },
+      {
+        "node_id": "map:2:0",
+        "x": 2,
+        "y": 0,
+        "room_type": "MONSTER",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:3:1"
+        ]
+      },
+      {
+        "node_id": "map:3:0",
+        "x": 3,
+        "y": 0,
+        "room_type": "MONSTER",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:4:1"
+        ]
+      },
+      {
+        "node_id": "map:4:0",
+        "x": 4,
+        "y": 0,
+        "room_type": "MONSTER",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:5:1"
+        ]
+      },
+      {
+        "node_id": "map:6:0",
+        "x": 6,
+        "y": 0,
+        "room_type": "MONSTER",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:6:1"
+        ]
+      },
+      {
+        "node_id": "map:0:1",
+        "x": 0,
+        "y": 1,
+        "room_type": "MONSTER",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:1:2"
+        ]
+      },
+      {
+        "node_id": "map:3:1",
+        "x": 3,
+        "y": 1,
+        "room_type": "MONSTER",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:2:2"
+        ]
+      },
+      {
+        "node_id": "map:4:1",
+        "x": 4,
+        "y": 1,
+        "room_type": "EVENT",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:4:2"
+        ]
+      },
+      {
+        "node_id": "map:5:1",
+        "x": 5,
+        "y": 1,
+        "room_type": "EVENT",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:4:2"
+        ]
+      },
+      {
+        "node_id": "map:6:1",
+        "x": 6,
+        "y": 1,
+        "room_type": "MONSTER",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:6:2"
+        ]
+      },
+      {
+        "node_id": "map:1:2",
+        "x": 1,
+        "y": 2,
+        "room_type": "MONSTER",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:1:3"
+        ]
+      },
+      {
+        "node_id": "map:2:2",
+        "x": 2,
+        "y": 2,
+        "room_type": "MONSTER",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:2:3"
+        ]
+      },
+      {
+        "node_id": "map:4:2",
+        "x": 4,
+        "y": 2,
+        "room_type": "EVENT",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:3:3",
+          "map:5:3"
+        ]
+      },
+      {
+        "node_id": "map:6:2",
+        "x": 6,
+        "y": 2,
+        "room_type": "MONSTER",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:6:3"
+        ]
+      },
+      {
+        "node_id": "map:1:3",
+        "x": 1,
+        "y": 3,
+        "room_type": "MONSTER",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:2:4"
+        ]
+      },
+      {
+        "node_id": "map:2:3",
+        "x": 2,
+        "y": 3,
+        "room_type": "SHOP",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:2:4"
+        ]
+      },
+      {
+        "node_id": "map:3:3",
+        "x": 3,
+        "y": 3,
+        "room_type": "SHOP",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:2:4",
+          "map:4:4"
+        ]
+      },
+      {
+        "node_id": "map:5:3",
+        "x": 5,
+        "y": 3,
+        "room_type": "EVENT",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:5:4"
+        ]
+      },
+      {
+        "node_id": "map:6:3",
+        "x": 6,
+        "y": 3,
+        "room_type": "MONSTER",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:5:4"
+        ]
+      },
+      {
+        "node_id": "map:2:4",
+        "x": 2,
+        "y": 4,
+        "room_type": "MONSTER",
+        "reachable": true,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:1:5"
+        ]
+      },
+      {
+        "node_id": "map:4:4",
+        "x": 4,
+        "y": 4,
+        "room_type": "EVENT",
+        "reachable": true,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:3:5"
+        ]
+      },
+      {
+        "node_id": "map:5:4",
+        "x": 5,
+        "y": 4,
+        "room_type": "EVENT",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:4:5",
+          "map:6:5"
+        ]
+      },
+      {
+        "node_id": "map:1:5",
+        "x": 1,
+        "y": 5,
+        "room_type": "ELITE",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:0:6",
+          "map:2:6"
+        ]
+      },
+      {
+        "node_id": "map:3:5",
+        "x": 3,
+        "y": 5,
+        "room_type": "REST",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:4:6"
+        ]
+      },
+      {
+        "node_id": "map:4:5",
+        "x": 4,
+        "y": 5,
+        "room_type": "ELITE",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:4:6"
+        ]
+      },
+      {
+        "node_id": "map:6:5",
+        "x": 6,
+        "y": 5,
+        "room_type": "REST",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:5:6"
+        ]
+      },
+      {
+        "node_id": "map:0:6",
+        "x": 0,
+        "y": 6,
+        "room_type": "REST",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:0:7",
+          "map:1:7"
+        ]
+      },
+      {
+        "node_id": "map:2:6",
+        "x": 2,
+        "y": 6,
+        "room_type": "EVENT",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:3:7"
+        ]
+      },
+      {
+        "node_id": "map:4:6",
+        "x": 4,
+        "y": 6,
+        "room_type": "MONSTER",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:4:7"
+        ]
+      },
+      {
+        "node_id": "map:5:6",
+        "x": 5,
+        "y": 6,
+        "room_type": "ELITE",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:4:7"
+        ]
+      },
+      {
+        "node_id": "map:0:7",
+        "x": 0,
+        "y": 7,
+        "room_type": "ELITE",
+        "reachable": false,
+        "burning": true,
+        "outgoing_node_ids": [
+          "map:0:8"
+        ]
+      },
+      {
+        "node_id": "map:1:7",
+        "x": 1,
+        "y": 7,
+        "room_type": "MONSTER",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:1:8"
+        ]
+      },
+      {
+        "node_id": "map:3:7",
+        "x": 3,
+        "y": 7,
+        "room_type": "REST",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:4:8"
+        ]
+      },
+      {
+        "node_id": "map:4:7",
+        "x": 4,
+        "y": 7,
+        "room_type": "EVENT",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:4:8",
+          "map:5:8"
+        ]
+      },
+      {
+        "node_id": "map:0:8",
+        "x": 0,
+        "y": 8,
+        "room_type": "TREASURE",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:0:9"
+        ]
+      },
+      {
+        "node_id": "map:1:8",
+        "x": 1,
+        "y": 8,
+        "room_type": "TREASURE",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:2:9"
+        ]
+      },
+      {
+        "node_id": "map:4:8",
+        "x": 4,
+        "y": 8,
+        "room_type": "TREASURE",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:4:9",
+          "map:5:9"
+        ]
+      },
+      {
+        "node_id": "map:5:8",
+        "x": 5,
+        "y": 8,
+        "room_type": "TREASURE",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:5:9"
+        ]
+      },
+      {
+        "node_id": "map:0:9",
+        "x": 0,
+        "y": 9,
+        "room_type": "ELITE",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:1:10"
+        ]
+      },
+      {
+        "node_id": "map:2:9",
+        "x": 2,
+        "y": 9,
+        "room_type": "EVENT",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:1:10"
+        ]
+      },
+      {
+        "node_id": "map:4:9",
+        "x": 4,
+        "y": 9,
+        "room_type": "EVENT",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:4:10"
+        ]
+      },
+      {
+        "node_id": "map:5:9",
+        "x": 5,
+        "y": 9,
+        "room_type": "ELITE",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:4:10",
+          "map:5:10",
+          "map:6:10"
+        ]
+      },
+      {
+        "node_id": "map:1:10",
+        "x": 1,
+        "y": 10,
+        "room_type": "REST",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:1:11",
+          "map:2:11"
+        ]
+      },
+      {
+        "node_id": "map:4:10",
+        "x": 4,
+        "y": 10,
+        "room_type": "MONSTER",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:4:11",
+          "map:5:11"
+        ]
+      },
+      {
+        "node_id": "map:5:10",
+        "x": 5,
+        "y": 10,
+        "room_type": "EVENT",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:5:11"
+        ]
+      },
+      {
+        "node_id": "map:6:10",
+        "x": 6,
+        "y": 10,
+        "room_type": "REST",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:6:11"
+        ]
+      },
+      {
+        "node_id": "map:1:11",
+        "x": 1,
+        "y": 11,
+        "room_type": "MONSTER",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:0:12"
+        ]
+      },
+      {
+        "node_id": "map:2:11",
+        "x": 2,
+        "y": 11,
+        "room_type": "EVENT",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:2:12"
+        ]
+      },
+      {
+        "node_id": "map:4:11",
+        "x": 4,
+        "y": 11,
+        "room_type": "EVENT",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:4:12"
+        ]
+      },
+      {
+        "node_id": "map:5:11",
+        "x": 5,
+        "y": 11,
+        "room_type": "ELITE",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:5:12"
+        ]
+      },
+      {
+        "node_id": "map:6:11",
+        "x": 6,
+        "y": 11,
+        "room_type": "MONSTER",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:5:12"
+        ]
+      },
+      {
+        "node_id": "map:0:12",
+        "x": 0,
+        "y": 12,
+        "room_type": "REST",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:1:13"
+        ]
+      },
+      {
+        "node_id": "map:2:12",
+        "x": 2,
+        "y": 12,
+        "room_type": "MONSTER",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:2:13"
+        ]
+      },
+      {
+        "node_id": "map:4:12",
+        "x": 4,
+        "y": 12,
+        "room_type": "ELITE",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:4:13"
+        ]
+      },
+      {
+        "node_id": "map:5:12",
+        "x": 5,
+        "y": 12,
+        "room_type": "MONSTER",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:4:13"
+        ]
+      },
+      {
+        "node_id": "map:1:13",
+        "x": 1,
+        "y": 13,
+        "room_type": "SHOP",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:0:14"
+        ]
+      },
+      {
+        "node_id": "map:2:13",
+        "x": 2,
+        "y": 13,
+        "room_type": "MONSTER",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:1:14"
+        ]
+      },
+      {
+        "node_id": "map:4:13",
+        "x": 4,
+        "y": 13,
+        "room_type": "MONSTER",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:3:14",
+          "map:4:14",
+          "map:5:14"
+        ]
+      },
+      {
+        "node_id": "map:0:14",
+        "x": 0,
+        "y": 14,
+        "room_type": "REST",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:3:15"
+        ]
+      },
+      {
+        "node_id": "map:1:14",
+        "x": 1,
+        "y": 14,
+        "room_type": "REST",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:3:15"
+        ]
+      },
+      {
+        "node_id": "map:3:14",
+        "x": 3,
+        "y": 14,
+        "room_type": "REST",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:3:15"
+        ]
+      },
+      {
+        "node_id": "map:4:14",
+        "x": 4,
+        "y": 14,
+        "room_type": "REST",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:3:15"
+        ]
+      },
+      {
+        "node_id": "map:5:14",
+        "x": 5,
+        "y": 14,
+        "room_type": "REST",
+        "reachable": false,
+        "burning": false,
+        "outgoing_node_ids": [
+          "map:3:15"
+        ]
+      }
+    ],
+    "public_run": {
+      "character_id": "IRONCLAD",
+      "ascension": 20,
+      "act": 2,
+      "floor": 21,
+      "gold": 254,
+      "visible_boss_id": "CHAMP",
+      "outcome": 1,
+      "screen_state": 8,
+      "current_event_id": "INVALID",
+      "completed_act": 0
+    },
+    "replay_actions": [
+      1,
+      3,
+      1,
+      1,
+      0,
+      2147483648,
+      0,
+      65536,
+      65538,
+      2147483648,
+      65536,
+      65536,
+      2147483648,
+      0,
+      2,
+      65536,
+      2147483648,
+      65538,
+      256,
+      134217728,
+      805306368,
+      3,
+      1,
+      0,
+      0,
+      2147483648,
+      2,
+      3,
+      1,
+      0,
+      2147483648,
+      0,
+      3,
+      0,
+      2147483648,
+      1,
+      0,
+      256,
+      134217728,
+      805306368,
+      3,
+      2,
+      3,
+      1,
+      2147483648,
+      0,
+      0,
+      1,
+      2147483648,
+      65540,
+      512,
+      402653184,
+      134217728,
+      805306368,
+      4,
+      1,
+      4,
+      536870913,
+      1,
+      805306368,
+      4,
+      1,
+      13,
+      5,
+      1,
+      5,
+      1,
+      65538,
+      65537,
+      2147483648,
+      0,
+      65538,
+      65536,
+      1,
+      2147483648,
+      4,
+      0,
+      0,
+      2147483648,
+      3,
+      1,
+      1,
+      0,
+      2147483648,
+      1,
+      256,
+      402653184,
+      134217728,
+      805306368,
+      6,
+      0,
+      536870912,
+      134217728,
+      805306368,
+      5,
+      1,
+      5,
+      0,
+      5,
+      1,
+      3,
+      1,
+      1,
+      2147483648,
+      0,
+      1,
+      0,
+      2147483648,
+      1,
+      0,
+      134217728,
+      134217728,
+      3221225472,
+      402653184,
+      805306368,
+      5,
+      2,
+      512,
+      134217728,
+      805306368,
+      5,
+      0,
+      3,
+      2147483648,
+      0,
+      2,
+      134217728,
+      805306368,
+      6,
+      1,
+      8,
+      0,
+      536870913,
+      536870912,
+      1073741826,
+      5,
+      0,
+      1,
+      2,
+      0,
+      2147483648,
+      2,
+      0,
+      2147483648,
+      2,
+      2,
+      0,
+      2147483648,
+      1,
+      2,
+      2147483648,
+      1,
+      3,
+      0,
+      2147483648,
+      0,
+      1,
+      1,
+      0,
+      2147483648,
+      3,
+      2,
+      1,
+      0,
+      2147483648,
+      1,
+      256,
+      134217728,
+      805306368,
+      0,
+      4,
+      2,
+      2,
+      2147483648,
+      3,
+      1,
+      2,
+      0,
+      0,
+      2147483648,
+      4,
+      2,
+      512,
+      402653184,
+      134217728,
+      805306368,
+      5,
+      1,
+      4,
+      2,
+      3
+    ],
+    "replay_required": false,
+    "legal_actions": [
+      {
+        "bits": 0,
+        "idx1": 0,
+        "idx2": 0,
+        "idx3": 0,
+        "potion": false,
+        "potion_discard": false,
+        "reward_type": 0
+      },
+      {
+        "bits": 1,
+        "idx1": 1,
+        "idx2": 0,
+        "idx3": 0,
+        "potion": false,
+        "potion_discard": false,
+        "reward_type": 0
+      },
+      {
+        "bits": 2,
+        "idx1": 2,
+        "idx2": 0,
+        "idx3": 0,
+        "potion": false,
+        "potion_discard": false,
+        "reward_type": 0
+      },
+      {
+        "bits": 3,
+        "idx1": 3,
+        "idx2": 0,
+        "idx3": 0,
+        "potion": false,
+        "potion_discard": false,
+        "reward_type": 0
+      },
+      {
+        "bits": 4,
+        "idx1": 4,
+        "idx2": 0,
+        "idx3": 0,
+        "potion": false,
+        "potion_discard": false,
+        "reward_type": 0
+      },
+      {
+        "bits": 5,
+        "idx1": 5,
+        "idx2": 0,
+        "idx3": 0,
+        "potion": false,
+        "potion_discard": false,
+        "reward_type": 0
+      },
+      {
+        "bits": 6,
+        "idx1": 6,
+        "idx2": 0,
+        "idx3": 0,
+        "potion": false,
+        "potion_discard": false,
+        "reward_type": 0
+      },
+      {
+        "bits": 536870914,
+        "idx1": 2,
+        "idx2": 0,
+        "idx3": 0,
+        "potion": false,
+        "potion_discard": false,
+        "reward_type": 4
+      },
+      {
+        "bits": 402653184,
+        "idx1": 0,
+        "idx2": 0,
+        "idx3": 0,
+        "potion": false,
+        "potion_discard": false,
+        "reward_type": 3
+      },
+      {
+        "bits": 402653185,
+        "idx1": 1,
+        "idx2": 0,
+        "idx3": 0,
+        "potion": false,
+        "potion_discard": false,
+        "reward_type": 3
+      },
+      {
+        "bits": 402653186,
+        "idx1": 2,
+        "idx2": 0,
+        "idx3": 0,
+        "potion": false,
+        "potion_discard": false,
+        "reward_type": 3
+      },
+      {
+        "bits": 671088640,
+        "idx1": 0,
+        "idx2": 0,
+        "idx3": 0,
+        "potion": false,
+        "potion_discard": false,
+        "reward_type": 5
+      },
+      {
+        "bits": 805306368,
+        "idx1": 0,
+        "idx2": 0,
+        "idx3": 0,
+        "potion": false,
+        "potion_discard": false,
+        "reward_type": 6
+      }
+    ]
+  },
+  "stock_seed": 131100068,
+  "stock_boundary": 191,
+  "expected_potion_purchase_actions": []
+}

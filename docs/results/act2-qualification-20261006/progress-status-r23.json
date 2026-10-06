@@ -1,0 +1,21 @@
+{
+  "schema": "sls-act2-progress-status-v1",
+  "native_source_sha256": "f6fad929448200bd593218f9f1e0e7a6cae422d26c316d92cdc2ac73f4b481bd",
+  "controlled_matched": 71,
+  "controlled_expected": 72,
+  "controlled_missing_or_failed": [
+    131100070
+  ],
+  "production_current_source_matched": 0,
+  "production_expected": 8,
+  "development_rescan_required": true,
+  "training_gate": "NOT_QUALIFIED",
+  "input_sha256": {
+    "combat-after-r23.json": "6b2ad34e56acdf38316932f1affa8a0c46706836653aa2d3a4c1f08aea0f1111",
+    "boss-entangle-after-r23.json": "20382507d7e30372c6287b131f7c1cf6bc5d064f568be8d62a562ec757b0bd43",
+    "system-checkpoint-r12-after-r23.json": "a91d198cac3bfc616789498691470b6d10d439b00d1610a7830719a6128e9931",
+    "system-stock-policy-r23-transition-after-r23.json": "6d32604795643b5ddd775999958d53c1cc5abc75e3f7a0fc821f9bce85af26e7",
+    "system-stock-policy-r24-reward-after-r23.json": "f66ef9aaa80a00998abacdb283de9df1880e4b62180b1deac55000a25ddaf267"
+  },
+  "scope": "Progress only; final rollup still requires current-source frozen selection, production replay, recovery, and local checks."
+}

@@ -6,6 +6,8 @@
 
 ## 常用入口
 
+Act2审计补充：`replay_act2_clock_conditioned_trajectory.py`只用于读取独立stock日志的Discovery计时条件诊断，结果不能替代严格production通过；范围见[计时证据说明](../docs/results/act2-qualification-20261006/CLOCK_CONDITIONAL.md)。
+
 | 工作 | 命令 | 说明 |
 | --- | --- | --- |
 | 安装、构建、测试 | `python tools/bootstrap.py --with-model` | 安装依赖，不是下载预训练权重 |
@@ -132,3 +134,30 @@ NUS 登录节点只用于轻量 Git、身份检查和提交；native 构建、pr
 - 两个生成器不加 `--check` 时会写正式注册表/词表。修改正式数据后，必须检查契约变化并重新准备证据。
 
 本轮修复、源码身份变化与验证见 [三个目录复查](../docs/three-folder-review-20261005.md)。
+
+`analyze_act12_download.py`：核验Act1–2 lite下载并复算联合通关、配对reach、训练窗口和critic描述统计；只显式允许缺服务器policy export，其他证据必须存在且哈希正确。`analyze_reward_screen.analyze_run` 默认完整性要求保持严格。见[2026-10-06证据](../docs/results/act12-pilot-20261006/README.md)。
+
+## A20 Act2 差分核验
+
+见[当前证据与训练门禁](../docs/results/act2-qualification-20261006/README.md)。工具不启动 NUS 训练，不覆盖证据。
+
+| 入口 | 用途 |
+| --- | --- |
+| `capture_act2_stock_sources.py` | 本地合法 JAR 的 javap 与来源摘要；原始反汇编仅留本地 |
+| `prepare_act2_scene_manifest.py` | 从已审核 stock 方法准备 24 个场景及固定 seed 清单 |
+| `run_act2_encounter_batch.py` / `capture_act2_encounter_batch.py` | 显式 A20、多决策边界、单进程、备份恢复的 validation 批次 |
+| `replay_act2_encounter_batch.py` | 独立 stock 对象、公共状态、实际 mask 与 RNG 差分 |
+| `capture_act2_reference_scripts.py` | 冻结正常 Neow 动作请求；native 结果不能当 stock 正确答案 |
+| `run_act2_flow_batch.py` / `capture_act2_system_batch.py` | 正常开局 validation 脚本；每批不超过30分钟 |
+| `capture_act2_stock_policy_system_batch.py` | 固定系统seeds的原版单一冻结策略记录完整脚本，native随后重放同一动作；实测条件输入仅用于validation |
+| `replay_act2_system_batch.py` | 跨幕、奖励及逐边界 checkpoint 恢复/延续核验 |
+| `select_act2_canaries.py` | 按固定区间和 seed 顺序选覆盖轨迹；缺类别则报缺失 |
+| `capture_act2_production_batch.py` / `replay_act2_production_trajectory.py` | 冻结90M、显式Act2 horizon、production自然局及相同动作 native 重放 |
+| `check_probe_source_preservation.py` | 隔离旧/新 native 验证纯接口修改；不能覆盖后续规则修复 |
+| `check_act2_choice_identity.py` | 从实际stock边界复算15个PolicyBatch张量的UI身份等价证明 |
+| `summarize_act2_qualification.py` | 严格汇总72义务/8自然轨迹；缺项、失败、过期来源不会通过 |
+
+
+## 修复版联合通关λ pilot
+
+`submit_act12_lambda_study.py`是新实验唯一提交入口；`run_act12_lambda_study.py`在同一GPU节点串行两臂并核对完成状态；`analyze_act12_lambda_study.py`严格比较固定终点联合通关。配置迁移和本地验收见[TRAINING_READY.md](../docs/results/act2-qualification-20261006/TRAINING_READY.md)。`profile_act12_batching.py`与`verify_encoder_optimization.py`保留编码性能及行为等价的复算入口，不导出模型作为服务器训练结果。

@@ -2,6 +2,7 @@
 #include <cctype>
 #include <cstdint>
 #include <memory>
+#include <map>
 #include <stdexcept>
 #include <string>
 #include <unordered_set>
@@ -276,8 +277,9 @@ const char *intent_name(const Monster &monster, const BattleContext *context = n
         return context != nullptr && context->ascension >= 19 ? "DEFEND_BUFF" : "DEFEND";
     }
     if (monster.moveHistory[0] == MMID::GREMLIN_NOB_SKULL_BASH) {
-        return context != nullptr && context->encounter == MonsterEncounter::COLOSSEUM_EVENT_NOBS
-            ? "ATTACK" : "ATTACK_DEBUFF";
+        // Stock MonsterHelper's Colosseum Nobs uses the two-argument Nob
+        // constructor, hence canVuln=true just like the normal elite.
+        return "ATTACK_DEBUFF";
     }
     switch (monster.moveHistory[0]) {
         case MMID::GENERIC_ESCAPE_MOVE:
@@ -556,8 +558,11 @@ py::dict public_combat_choice_state(const BattleContext &bc) {
         case CardSelectTask::DISCOVERY:
             result["source"] = "GENERATED";
             for (int index = 0; index < 3; ++index) {
-                auto value = public_combat_card(
-                    CardInstance(bc.cardSelectInfo.cards[index]), "GENERATED", nullptr);
+                // Stock makeCopy incorporates damage suffered earlier in this
+                // combat. Project a fresh instance without changing state/RNG.
+                CardInstance preview(bc.cardSelectInfo.cards[index]);
+                bc.initializeFreshCard(preview);
+                auto value = public_combat_card(preview, "GENERATED", nullptr);
                 value["instance_id"] = "combat-choice:" + std::to_string(index);
                 value["choice_index"] = index;
                 options.append(value);
@@ -688,18 +693,34 @@ py::dict public_combat_state(
         append_monster(4, "monster:ghost-large-slime");
         append_monster(1, "monster:1");
     } else if (bc.encounter == MonsterEncounter::GREMLIN_LEADER) {
-        // Java appends newly summoned Gremlins while retaining replaced dead
-        // minions in MonsterGroup.  Lightspeed reuses slots, so reconstruct
-        // that public history as current minion then newest-to-oldest ghosts.
+        // SummonGremlinAction inserts by drawX before equal-position entities.
+        // Wizard's constructor shifts its drawX left by 35, so an old Wizard
+        // remains before a non-Wizard replacement even in the same fixed slot.
         for (int index = 0; index < 3; ++index) {
+            std::vector<int> entries;
             if (bc.monsters.arr[index].id != MonsterId::INVALID) {
-                append_monster(index, "monster:" + std::to_string(index));
+                entries.push_back(-1);
             }
             for (int ghost = bc.gremlinLeaderGhostCount - 1; ghost >= 0; --ghost) {
                 if (bc.gremlinLeaderGhostSlots[ghost] == index) {
+                    entries.push_back(ghost);
+                }
+            }
+            const auto offset = [&](int entry) {
+                const auto id = entry < 0 ? bc.monsters.arr[index].id
+                                          : bc.gremlinLeaderGhosts[entry].id;
+                return id == MonsterId::GREMLIN_WIZARD ? -35 : 0;
+            };
+            std::stable_sort(entries.begin(), entries.end(), [&](int a, int b) {
+                return offset(a) < offset(b);
+            });
+            for (const auto entry : entries) {
+                if (entry < 0) {
+                    append_monster(index, "monster:" + std::to_string(index));
+                } else {
                     append_summon_ghost(
-                        bc.gremlinLeaderGhosts[ghost],
-                        "monster:ghost-gremlin-" + std::to_string(ghost));
+                        bc.gremlinLeaderGhosts[entry],
+                        "monster:ghost-gremlin-" + std::to_string(entry));
                 }
             }
         }
@@ -1285,6 +1306,13 @@ py::dict public_screen_state(const GameContext &gc) {
             options.append(value);
         }
         result["card_options"] = options;
+        py::list selected;
+        for (const auto &option : gc.info.haveSelectedCards) {
+            auto value = public_run_card(option.card, "selected-card", &gc.deck, option.deckIdx);
+            value["deck_index"] = option.deckIdx;
+            selected.append(value);
+        }
+        result["selected_cards"] = selected;
     } else if (gc.screenState == ScreenState::REWARDS) {
         const auto &rewards = gc.info.rewardsContainer;
         py::list card_rewards;
@@ -1415,10 +1443,14 @@ py::dict screen_info_state(const GameContext &gc) {
         }
         case ScreenState::REWARDS:
             result["rewards"] = rewards_state(gc.info.rewardsContainer);
-            result["stolen_gold"] = gc.info.stolenGold;
+            // Stolen gold belongs to a monster combat reward, not a later
+            // treasure/event screen reusing ScreenStateInfo's old storage.
+            result["stolen_gold"] = gc.curRoom == Room::MONSTER ? gc.info.stolenGold : 0;
             result["continuation"] = (
                 gc.curRoom == Room::BOSS && (gc.act == 1 || gc.act == 2)
-            ) ? "boss_treasure" : "map";
+            ) ? "boss_treasure" : (
+                gc.curRoom == Room::BOSS_TREASURE && (gc.act == 1 || gc.act == 2)
+            ) ? "next_act" : "map";
             break;
         case ScreenState::BOSS_RELIC_REWARDS: {
             py::list relics;
@@ -1437,6 +1469,7 @@ py::dict screen_info_state(const GameContext &gc) {
             result["transform_rng"] = static_cast<int>(gc.info.transformRng);
             result["select_type"] = static_cast<int>(gc.info.selectScreenType);
             result["select_count"] = gc.info.toSelectCount;
+            result["grid_selection_contract"] = "sls-stock-grid-toggle-v2";
             result["from_rewards"] = gc.info.cardSelectFromRewards;
             if (restorableRewardBottle) {
                 result["rewards"] = rewards_state(gc.info.rewardsContainer);
@@ -1553,6 +1586,13 @@ void restore_screen_info(GameContext &gc, const py::dict &state) {
                 gc.regainControlAction = [](GameContext &context) {
                     context.enterBossTreasureRoom();
                 };
+            } else if (gc.curRoom == Room::BOSS_TREASURE && (gc.act == 1 || gc.act == 2)) {
+                // Calling Bell's extra relic rewards still belong to the
+                // chosen boss relic. Leaving them advances the act, rather
+                // than reopening the old map at its out-of-range boss node.
+                gc.regainControlAction = [](GameContext &context) {
+                    context.transitionToAct(context.act + 1);
+                };
             } else {
                 gc.regainControlAction = [](GameContext &context) {
                     context.screenState = ScreenState::MAP_SCREEN;
@@ -1573,6 +1613,11 @@ void restore_screen_info(GameContext &gc, const py::dict &state) {
             gc.info.transformRng = static_cast<RngReference>(state["transform_rng"].cast<int>());
             gc.info.selectScreenType = static_cast<CardSelectScreenType>(state["select_type"].cast<int>());
             gc.info.toSelectCount = state["select_count"].cast<int>();
+            if (gc.info.toSelectCount > 1 && py::len(state["selected"]) > 0 &&
+                (!state.contains("grid_selection_contract") ||
+                 state["grid_selection_contract"].cast<std::string>() != "sls-stock-grid-toggle-v2")) {
+                throw std::invalid_argument("legacy partial GRID requires explicit migration; candidate ordinals changed");
+            }
             gc.info.cardSelectFromRewards = state.contains("from_rewards")
                 && state["from_rewards"].cast<bool>();
             if (gc.info.cardSelectFromRewards) {
@@ -1629,6 +1674,15 @@ void restore_screen_info(GameContext &gc, const py::dict &state) {
             // The public room/act fields disambiguate that legacy value.
             gc.regainControlAction = [](GameContext &context) {
                 context.enterBossTreasureRoom();
+            };
+        } else if (continuation == "next_act" ||
+                (continuation == "map" && gc.curRoom == Room::BOSS_TREASURE &&
+                 (gc.act == 1 || gc.act == 2))) {
+            if (gc.curRoom != Room::BOSS_TREASURE || (gc.act != 1 && gc.act != 2)) {
+                throw std::invalid_argument("next_act continuation requires Act1/2 boss treasure");
+            }
+            gc.regainControlAction = [](GameContext &context) {
+                context.transitionToAct(context.act + 1);
             };
         } else if (continuation == "map") {
             gc.regainControlAction = [](GameContext &context) {
@@ -2879,11 +2933,18 @@ public:
     void reset_encounter_probe(
         std::uint64_t seed,
         const std::string &encounter_id,
-        const py::dict &rng) {
+        const py::dict &rng,
+        int ascension = 0, int act = 1, int floor = 1,
+        const std::string &scenario_id = "") {
+        if (ascension < 0 || ascension > 20 || act < 1 || act > 3 || floor < 1) {
+            throw std::invalid_argument("invalid encounter probe context");
+        }
         // Build once to establish the canonical Ironclad run container, then
         // rewind every stock-compatible stream to the Original pre-constructor
         // boundary and construct the requested encounter from that boundary.
-        reset(seed, "CULTIST", 0, {}, {}, false);
+        reset(seed, "CULTIST", ascension, {}, {}, false);
+        gc_->act = act;
+        gc_->floorNum = floor;
         restore_full_run_rng(*gc_, rng);
         bc_ = std::make_unique<BattleContext>();
         bc_->init(*gc_, MonsterEncounter::CULTIST);
@@ -3707,7 +3768,10 @@ private:
         if (values.size() > bc_->monsters.arr.size()) {
             throw std::invalid_argument("Combat checkpoint has too many monsters");
         }
-        bc_->monsters.monsterCount = 0;
+        // Automaton starts in slot 1; slots 0 and 2 are reserved for its
+        // first-turn summon. Public checkpoints omit INVALID monsters, so
+        // max(restored slot)+1 alone would lose the right-hand orb slot.
+        bc_->monsters.monsterCount = bc_->encounter == MonsterEncounter::AUTOMATON ? 3 : 0;
         std::array<bool, 7> occupied{};
         for (int index = 0; index < static_cast<int>(values.size()); ++index) {
             const auto value = values[index].cast<py::dict>();
@@ -4261,6 +4325,7 @@ public:
         battle_.reset();
         battle_action_count_ = 0;
         action_history_.clear();
+        validation_action_evidence_.clear();
         has_terminal_display_moves_ = false;
         math_seed_ = math_seed.is_none()
             ? seed - static_cast<std::uint64_t>(897897)
@@ -4320,6 +4385,7 @@ public:
         battle_.reset();
         battle_action_count_ = 0;
         action_history_.clear();
+        validation_action_evidence_.clear();
         has_terminal_display_moves_ = false;
     }
 
@@ -4415,6 +4481,17 @@ public:
         py::list replay_actions;
         for (const auto bits : action_history_) replay_actions.append(bits);
         result["replay_actions"] = replay_actions;
+        if (!validation_action_evidence_.empty()) {
+            result["validation_replay_contract"] = "sls-stock-conditional-replay-v1";
+            py::list inputs;
+            for (const auto &[index, evidence] : validation_action_evidence_) {
+                py::dict item;
+                item["action_index"] = index;
+                for (const auto &[key, value] : evidence) item[py::str(key)] = value;
+                inputs.append(item);
+            }
+            result["replay_validation_inputs"] = inputs;
+        }
         // A combat card-selection boundary can retain the card currently
         // resolving plus queued cleanup/callback actions.  Those closures are
         // deliberately not serialized.  Exact FullRun checkpoints therefore
@@ -4476,6 +4553,38 @@ public:
             || event_context["portal_eligible"].cast<bool>();
         const auto requested_history = state.contains("replay_actions")
             ? state["replay_actions"].cast<py::list>() : py::list();
+        std::map<std::size_t, std::map<std::string, int>> requested_evidence;
+        if (state.contains("replay_validation_inputs")) {
+            if (!state.contains("validation_replay_contract") ||
+                    state["validation_replay_contract"].cast<std::string>() !=
+                        "sls-stock-conditional-replay-v1") {
+                throw std::invalid_argument("Unknown validation replay contract");
+            }
+            for (const auto entry : state["replay_validation_inputs"].cast<py::list>()) {
+                const auto item = entry.cast<py::dict>();
+                const int index = item["action_index"].cast<int>();
+                if (index < 0 || index > static_cast<int>(requested_history.size()) ||
+                        requested_evidence.count(index)) {
+                    throw std::invalid_argument("Invalid validation replay action index");
+                }
+                auto &evidence = requested_evidence[index];
+                for (const auto field : item) {
+                    const auto key = field.first.cast<std::string>();
+                    if (key == "action_index") continue;
+                    const int value = field.second.cast<int>();
+                    if ((key == "discovery_retrieval_updates" && value >= 1 && value <= 120) ||
+                            (key == "card_soul_cost_reset_count" && value >= 1 && value <= 10 &&
+                                index < static_cast<int>(requested_history.size()))) {
+                        evidence[key] = value;
+                    } else {
+                        throw std::invalid_argument("Invalid validation replay input");
+                    }
+                }
+                if (evidence.empty()) throw std::invalid_argument("Empty validation replay input");
+            }
+        } else if (state.contains("validation_replay_contract")) {
+            throw std::invalid_argument("Validation replay contract lacks inputs");
+        }
         const bool replay_required = state.contains("replay_required") &&
             state["replay_required"].cast<bool>();
         const auto progress = state.contains("progress_state")
@@ -4515,7 +4624,20 @@ public:
                 run["seed"].cast<std::uint64_t>(),
                 run["ascension"].cast<int>(),
                 py::int_(run["math_seed"].cast<std::uint64_t>()), note_card, portal_eligible);
-            for (const auto item : requested_history) step(item.cast<std::uint32_t>());
+            for (std::size_t index = 0; index < requested_history.size(); ++index) {
+                const auto input = requested_evidence.find(index);
+                if (input != requested_evidence.end() && input->second.count("discovery_retrieval_updates")) {
+                    set_discovery_retrieval_updates_for_validation(input->second.at("discovery_retrieval_updates"));
+                }
+                step(requested_history[index].cast<std::uint32_t>());
+                if (input != requested_evidence.end() && input->second.count("card_soul_cost_reset_count")) {
+                    reset_last_hand_card_costs_for_validation(input->second.at("card_soul_cost_reset_count"));
+                }
+            }
+            const auto pending = requested_evidence.find(requested_history.size());
+            if (pending != requested_evidence.end()) {
+                set_discovery_retrieval_updates_for_validation(pending->second.at("discovery_retrieval_updates"));
+            }
             const auto replayed = snapshot();
             if (legacyUnsettledVictory) {
                 // Crash-dump v1 could capture a battle won entirely by
@@ -4646,6 +4768,7 @@ public:
         for (const auto item : requested_history) {
             action_history_.push_back(item.cast<std::uint32_t>());
         }
+        validation_action_evidence_ = requested_evidence;
     }
 
     py::list legal_actions() const {
@@ -4674,6 +4797,7 @@ public:
                 "Discovery timing evidence is invalid at the current boundary");
         }
         battle_->cardSelectInfo.discoveryRetrievalUpdates = updates;
+        validation_action_evidence_[action_history_.size()]["discovery_retrieval_updates"] = updates;
     }
 
     void reset_last_hand_card_costs_for_validation(int count) {
@@ -4685,6 +4809,8 @@ public:
         for (int index = begin; index < battle_->cards.cardsInHand; ++index) {
             battle_->cards.hand[index].costForTurn = battle_->cards.hand[index].cost;
         }
+        if (action_history_.empty()) throw std::logic_error("Card Soul evidence requires an executed action");
+        validation_action_evidence_[action_history_.size() - 1]["card_soul_cost_reset_count"] = count;
     }
 
     py::dict step(std::uint32_t bits) {
@@ -4699,6 +4825,9 @@ public:
                 pre_action_moves[index] = battle_->monsters.arr[index].moveHistory[0];
             }
             action.execute(*battle_);
+            // Stock RitualDaggerAction updates masterDeck during combat,
+            // before the next player boundary, rather than only on exit.
+            battle_->updateCardsOnExit(gc_->deck);
             action_history_.push_back(bits);
             ++battle_action_count_;
             if (battle_->outcome != Outcome::UNDECIDED) {
@@ -4908,6 +5037,7 @@ private:
     std::unique_ptr<BattleContext> battle_;
     int battle_action_count_ = 0;
     std::vector<std::uint32_t> action_history_;
+    std::map<std::size_t, std::map<std::string, int>> validation_action_evidence_;
     std::array<MMID, 7> terminal_display_moves_ {};
     bool has_terminal_display_moves_ = false;
     std::uint64_t math_seed_ = 0;
@@ -6380,7 +6510,9 @@ PYBIND11_MODULE(_lightspeed, module) {
         .def("relic_equip_probe", &LightspeedBattle::relic_equip_probe,
              py::arg("seed"), py::arg("relic_id"))
         .def("reset_encounter_probe", &LightspeedBattle::reset_encounter_probe,
-             py::arg("seed"), py::arg("encounter_id"), py::arg("rng"))
+             py::arg("seed"), py::arg("encounter_id"), py::arg("rng"),
+             py::arg("ascension") = 0, py::arg("act") = 1,
+             py::arg("floor") = 1, py::arg("scenario_id") = "")
         .def("set_player_health", &LightspeedBattle::set_player_health,
              py::arg("current_hp"), py::arg("max_hp"))
         .def("_set_duplication_power_for_testing",

@@ -1,0 +1,96 @@
+{
+  "schema": "sls-act2-system-differential-v1",
+  "native_source_sha256": "b100427d1e3ae6eee05818b6904047049609b1aa70807872c1f5f5e0edd6d62f",
+  "runs": [
+    {
+      "seed": 131100069,
+      "first_divergence": null,
+      "boundaries_checked": 271,
+      "act2_boundaries": 88,
+      "reward_boundaries": 63,
+      "checkpoint_replays": 270,
+      "stock_action_unavailable": null,
+      "terminal_reason_verified": true,
+      "controlled_runtime_inputs": [
+        {
+          "boundary": 147,
+          "stock_measured_inputs": {
+            "discovery_retrieval_updates": 15
+          }
+        }
+      ],
+      "qualification_scope": "STOCK_MEASURED_TIMING_CONDITIONAL; NOT_PRODUCTION_RNG_CERTIFICATION",
+      "status": "SYSTEM_BRANCH_MATCH"
+    },
+    {
+      "seed": 131100070,
+      "first_divergence": null,
+      "boundaries_checked": 325,
+      "act2_boundaries": 127,
+      "reward_boundaries": 52,
+      "checkpoint_replays": 324,
+      "stock_action_unavailable": 324,
+      "terminal_reason_verified": false,
+      "controlled_runtime_inputs": [
+        {
+          "boundary": 99,
+          "stock_measured_inputs": {
+            "discovery_retrieval_updates": 14
+          }
+        }
+      ],
+      "qualification_scope": "STOCK_MEASURED_TIMING_CONDITIONAL; NOT_PRODUCTION_RNG_CERTIFICATION",
+      "status": "INCOMPLETE_PREFIX_MATCH"
+    },
+    {
+      "seed": 131100071,
+      "first_divergence": null,
+      "boundaries_checked": 142,
+      "act2_boundaries": 0,
+      "reward_boundaries": 21,
+      "checkpoint_replays": 141,
+      "stock_action_unavailable": null,
+      "terminal_reason_verified": true,
+      "controlled_runtime_inputs": [
+        {
+          "boundary": 30,
+          "stock_measured_inputs": {
+            "discovery_retrieval_updates": 14
+          }
+        }
+      ],
+      "qualification_scope": "STOCK_MEASURED_TIMING_CONDITIONAL; NOT_PRODUCTION_RNG_CERTIFICATION",
+      "status": "SYSTEM_BRANCH_MATCH"
+    },
+    {
+      "seed": 131100066,
+      "first_divergence": null,
+      "boundaries_checked": 162,
+      "act2_boundaries": 0,
+      "reward_boundaries": 30,
+      "checkpoint_replays": 161,
+      "stock_action_unavailable": 161,
+      "terminal_reason_verified": false,
+      "controlled_runtime_inputs": [
+        {
+          "boundary": 126,
+          "stock_measured_inputs": {
+            "discovery_retrieval_updates": 15
+          }
+        },
+        {
+          "boundary": 129,
+          "stock_measured_inputs": {
+            "discovery_retrieval_updates": 14
+          }
+        }
+      ],
+      "qualification_scope": "STOCK_MEASURED_TIMING_CONDITIONAL; NOT_PRODUCTION_RNG_CERTIFICATION",
+      "status": "INCOMPLETE_PREFIX_MATCH"
+    }
+  ],
+  "stock_capture_sha256": "10d77d6ec16160ea3f9d1b738c5e9d2aec6eb83d7f78390eaab09fee17ee8793",
+  "launch_evidence_sha256": "09907ab873b67d618aa2c5c734b2c029404222eff38f9639ae369c689befba4f",
+  "oracle_build_sha256": "f59e2960838a5b744b9a146b8c489560d532f411c813886955ca2fa6dce7a4ef",
+  "training_gate": "NOT_QUALIFIED"
+}

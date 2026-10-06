@@ -33,6 +33,13 @@ def _toward_burning_elite(decision: Decision) -> Action:
 
 
 def _structural_action(decision: Decision) -> Action:
+    selected_indices = {dict(c.properties).get('deck_index')
+                        for c in decision.observation.selected_cards}
+    if selected_indices and decision.observation.screen is ScreenType.CARD_REWARD:
+        choices = {c.instance_id: dict(c.properties).get('deck_index')
+                   for c in decision.observation.reward_options}
+        return next(a for a in decision.actions
+                    if a.subject_id in choices and choices[a.subject_id] not in selected_indices)
     for predicate in (
         lambda action: action.kind is ActionKind.TAKE_REWARD
         and action.reward_id == "reward-key:emerald",

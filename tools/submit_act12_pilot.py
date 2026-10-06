@@ -77,6 +77,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--plan", type=Path, required=True)
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--dependency", help="afterok:<job-id>; used by a matched study")
     args = parser.parse_args()
     plan_path = repository_path(ROOT, args.plan)
     plan = json.loads(plan_path.read_text(encoding="utf-8"))
@@ -89,6 +90,7 @@ def main() -> int:
         "--bound-plan", str(plan_path),
         "--constraint", "xgpg", "--cpus", "16", "--memory", "64G",
         "--time", f"{hours // 24}-{hours % 24:02d}:00:00",
+        *(["--dependency", args.dependency] if args.dependency else []),
     ]))
     print(shlex.join(command), flush=True)
     if args.dry_run:

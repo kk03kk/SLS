@@ -1,0 +1,77 @@
+{
+  "schema": "sls-act12-bound-plan-v1",
+  "status": "READY_FOR_LOCAL_VALIDATION",
+  "config": "configs/train/ironclad_a20_act12_win_pilot.toml",
+  "config_sha256": "bc2a3f68b06019b5ddf1c514b8b14c3987610c451c38de7e58f4d00ad8929073",
+  "target_training_implementation_sha256": "03ab4c6e5d823be9a598fec855d1311020060e302e4ab9c2010426e546ac3e97",
+  "parent": {
+    "run": "local/runs/ironclad-a20-act1-win-90m-continuation",
+    "role": "endpoint",
+    "checkpoint": "local/runs/ironclad-a20-act1-win-90m-continuation/final.pt",
+    "sha256": "274963f4fe32b75003c5a1b4ccd394b5185304156e6ea22a76aee2764d54f1e0",
+    "environment_steps": 90013696,
+    "native_source_sha256": "1e30bb6cfa32f600cd63c59983c14ab8928fac4452c1586d630295d2c6ff9453",
+    "target_native_source_sha256": "fe354a23c7584d68d0a2b6681b8dfd4e97d98e107b7ddf57c479060d91468f39",
+    "training_implementation_sha256": "9da7e28c7a2fc83fcbc1e289dade65dddb60d03fdf6a1670c9ad2fb011bc3bbf",
+    "evidence": {
+      "run-manifest.json": "382e128483b64fd55f1b87df0b589329fb791292791fbcc28a44ce567db09018",
+      "training-config.toml": "fb9ddaafa797697c7d4a50e0988ef5056c62a49af966d12b35c3c9c5a4fa365c",
+      "final.pt": "274963f4fe32b75003c5a1b4ccd394b5185304156e6ea22a76aee2764d54f1e0",
+      "endpoint-evaluation.json": "3ec90b3269c22198f9f05b3356051ad06e3b23ac3ee7a1aadbacadb46bccef0c"
+    },
+    "simulator_transition": {
+      "evidence": "docs/results/act12-qualification-20261004/simulator-transition.json",
+      "evidence_sha256": "9f0988b311d0fb0c0416063db51ea33749fa5b97154f155309905da6c631df0a"
+    }
+  },
+  "recipe": {
+    "schema": "sls-act12-pilot-recipe-v1",
+    "status": "FINALIZED_90M_ENDPOINT_4M_PILOT",
+    "source_profile": "IRONCLAD_A20_ACT1",
+    "target_profile": "IRONCLAD_A20_ACT2",
+    "minimum_parent_run_target": 90000000,
+    "additional_decisions": 4000000,
+    "training_seed": 130000000,
+    "training_seed_limit": 2000000000000,
+    "worker_layout": [
+      64,
+      16
+    ],
+    "periodic_seed_start": 8000006000000,
+    "periodic_seed_count": 256,
+    "confirmation_seed_start": 8000007000000,
+    "confirmation_seed_count": 1024,
+    "reserved_final_seeds": [
+      9000000000000,
+      9000000004096
+    ],
+    "evaluate_every_steps": 500000,
+    "checkpoint_every_steps": 500000,
+    "wall_limit_hours": 24,
+    "simulator_transition_evidence": "docs/results/act12-qualification-20261004/simulator-transition.json",
+    "hypothesis": "Normal-start A20 Act1-2 Win PPO can begin learning second-act survival using the existing architecture and adjacent-stage weight transfer.",
+    "control": "Frozen SHA-pinned Act1 parent evaluated from normal starts through Act2 on the same development-confirmation seeds and runtime.",
+    "training_changes": "New horizon and fresh stage initialization; retain all model weights, reset Adam/RNG/workers/memory, inherit cumulative steps. Preserve parent PPO scalars and architecture. Bind the reviewed Snecko rule correction; frozen parent and candidate are both evaluated under corrected Act2 semantics.",
+    "success_rule": "Healthy complete budget; true ACT_2_CLEARED training outcomes in both disjoint late windows [2M,3M) and [3M,4M+rollout]; primary fixed endpoint paired development improvement >=0.02 with approximate paired 95% lower bound >0. One training seed, simulator evidence only.",
+    "failure_rule": "Incomplete budget is INCOMPLETE. Other results are INCONCLUSIVE or NO_DEVELOPMENT_GAIN; inspect true-success windows, natural Act2 entries and value diagnostics before any extension. Greedy evaluation calibration is descriptive, not on-policy critic proof.",
+    "final_policy": "Keep final seeds sealed. This pilot's endpoint and selected checkpoint use development confirmation only.",
+    "throughput_safety_factor": 1.5,
+    "evaluation_reserve_hours": 4,
+    "selection_candidates": "Only checkpoints actually evaluated on the periodic development block; fixed endpoint is primary and is not implicitly included in periodic selection.",
+    "diagnostics": "Existing termination_success metrics binned into disjoint late windows; evaluation records first decision per act, HP/deck/relic/potions, shaped critic value and potential. No policy-input, action or reward change.",
+    "evidence": "docs/results/act12-preparation-20261005/README.md"
+  },
+  "recipe_sha256": "f33ac3093a67ab0185acf2a8b85a4de6818e890436163df2c527ea136d353312",
+  "recipe_path": "configs/experiments/act12-win-pilot-recipe.json",
+  "decision_note": "Use the preregistered 90M fixed endpoint: paired 2048-seed +3.22pp over 70M, no confirmed selected76 advantage; current normal-start Act2 probe demonstrates a true success, motivating a 4M adjacent-stage adaptation pilot.",
+  "wall_limit_hours": 24,
+  "operator_sources": {
+    "tools/prepare_act12_pilot.py": "35ac000e47bdab8306c21367feaf795f179d443146c56d25f296a7473de8657d",
+    "tools/submit_act12_pilot.py": "58b1dc891e8289c8926f1b913cbe05c96564bb33b5bd2c9bfc8e0b998b7c9558",
+    "tools/prepare_and_train.py": "d91dd93af22839e744c518d900dc9eb5d1ccb7ff5e3e996b708e070ed98bdb8e",
+    "tools/submit_slurm.py": "b4a191c398c298c630180e782290be239139d0c238c44b1d861f2fc267232c56",
+    "tools/import_act12_parent.py": "6ec9de43778bf726dab91b91673b66dcbfa739c9b4642e237d41b73127228e8f",
+    "tools/analyze_act12_pilot.py": "713b9201461ee13e5bc5141400a34745545e3d4c7ed262f788bbd3dd50eafad6",
+    "tools/operator_paths.py": "89d5fb7ab01731a57d93e56f1df976b4ecbcf030efd92eba0452bde20e3e2354"
+  }
+}

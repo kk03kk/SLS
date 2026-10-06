@@ -1,0 +1,66 @@
+{
+  "schema": "sls-act2-system-differential-v1",
+  "native_source_sha256": "c89f44d9b0394badc70c7ab916bf6e05217a989e6d97924f4f052a302c340cb4",
+  "runs": [
+    {
+      "seed": 131100063,
+      "first_divergence": null,
+      "boundaries_checked": 270,
+      "act2_boundaries": 138,
+      "reward_boundaries": 50,
+      "checkpoint_replays": 269,
+      "stock_action_unavailable": null,
+      "controlled_runtime_inputs": [
+        {
+          "boundary": 109,
+          "stock_measured_inputs": {
+            "discovery_retrieval_updates": 14
+          }
+        },
+        {
+          "boundary": 110,
+          "stock_measured_inputs": {
+            "discovery_retrieval_updates": 14
+          }
+        }
+      ],
+      "qualification_scope": "STOCK_MEASURED_TIMING_CONDITIONAL; NOT_PRODUCTION_RNG_CERTIFICATION",
+      "status": "SYSTEM_BRANCH_MATCH"
+    },
+    {
+      "seed": 131100064,
+      "first_divergence": null,
+      "boundaries_checked": 220,
+      "act2_boundaries": 71,
+      "reward_boundaries": 45,
+      "checkpoint_replays": 219,
+      "stock_action_unavailable": null,
+      "controlled_runtime_inputs": [
+        {
+          "boundary": 216,
+          "stock_measured_inputs": {
+            "discovery_retrieval_updates": 14
+          }
+        }
+      ],
+      "qualification_scope": "STOCK_MEASURED_TIMING_CONDITIONAL; NOT_PRODUCTION_RNG_CERTIFICATION",
+      "status": "SYSTEM_BRANCH_MATCH"
+    },
+    {
+      "seed": 131100065,
+      "first_divergence": null,
+      "boundaries_checked": 230,
+      "act2_boundaries": 66,
+      "reward_boundaries": 35,
+      "checkpoint_replays": 229,
+      "stock_action_unavailable": null,
+      "controlled_runtime_inputs": [],
+      "qualification_scope": "STOCK_MEASURED_TIMING_CONDITIONAL; NOT_PRODUCTION_RNG_CERTIFICATION",
+      "status": "SYSTEM_BRANCH_MATCH"
+    }
+  ],
+  "stock_capture_sha256": "77e43230eef4efed7565bfad2070f03a63d28cb7d435d10fb9196618c49d42f2",
+  "launch_evidence_sha256": "8347762e1e720baffdde8529dff5535b559a1253a0cf671b5e1f42ef33dd99fb",
+  "oracle_build_sha256": "f59e2960838a5b744b9a146b8c489560d532f411c813886955ca2fa6dce7a4ef",
+  "training_gate": "NOT_QUALIFIED"
+}

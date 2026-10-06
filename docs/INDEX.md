@@ -4,6 +4,10 @@
 
 | 文件 | 类别 | 内容 |
 | --- | --- | --- |
+| [results/act2-qualification-20261006/README.md](results/act2-qualification-20261006/README.md) | 当前核验 / 门禁 | A20 Act2 原版差分、修复与尚未验证范围 |
+| [results/act2-qualification-20261006/ACTIVE_SCOPE.md](results/act2-qualification-20261006/ACTIVE_SCOPE.md) | 当前执行范围 | 有限收尾及后续范围变更历史 |
+| [results/act2-qualification-20261006/semantics-migration.json](results/act2-qualification-20261006/semantics-migration.json) | 来源 / 迁移 | 真实规则修复不允许无损来源转换 |
+| [results/act2-qualification-20261006/system-scenes.json](results/act2-qualification-20261006/system-scenes.json) | 不可变场景补充 | 九个正常 Neow 流程动作脚本身份 |
 | [repository-cleanup-20261005.md](repository-cleanup-20261005.md) | 日期整理记录 | 各目录处理、修复及整体验证 |
 | [a20-act1-60m-stable-launch.md](a20-act1-60m-stable-launch.md) | 指南 / 阶段方案（launch 文档须核对阶段状态） | A20 Act1 46M → 60M stable run |
 | [act1-plateau-workflow.md](act1-plateau-workflow.md) | 指南 / 阶段方案（launch 文档须核对阶段状态） | A20 第一幕：突破平台期的执行流程 |
@@ -141,3 +145,35 @@
 
 - [修复与恢复说明](results/act12-submission-repair-20261005/README.md)
 - [失败定位、身份绑定与验证摘要](results/act12-submission-repair-20261005/validation.json)
+
+## Act1–2 4M结案与研究设计（2026-10-06）
+
+本阶段后续环境核验：[Act2结果与门禁](results/act2-qualification-20261006/README.md)、
+[逐义务原版来源](results/act2-qualification-20261006/risk-and-source-ledger.json)、
+[语义与恢复迁移](results/act2-qualification-20261006/semantics-migration.json)、
+[自然轨迹来源与当前重扫状态](results/act2-qualification-20261006/README.md#自然轨迹与验证边界)。
+
+- [results/act12-pilot-20261006/analysis.json](results/act12-pilot-20261006/analysis.json)
+- [results/act12-pilot-20261006/archive-inventory.json](results/act12-pilot-20261006/archive-inventory.json)
+- [results/act12-pilot-20261006/best_progress.json](results/act12-pilot-20261006/best_progress.json)
+- [results/act12-pilot-20261006/checkpoint-audit.json](results/act12-pilot-20261006/checkpoint-audit.json)
+- [results/act12-pilot-20261006/checkpoint_audit.py](results/act12-pilot-20261006/checkpoint_audit.py)
+- [results/act12-pilot-20261006/credit-probe.json](results/act12-pilot-20261006/credit-probe.json)
+- [results/act12-pilot-20261006/credit_probe.py](results/act12-pilot-20261006/credit_probe.py)
+- [results/act12-pilot-20261006/endpoint-evaluation.json.gz](results/act12-pilot-20261006/endpoint-evaluation.json.gz)
+- [results/act12-pilot-20261006/evidence-placement.json](results/act12-pilot-20261006/evidence-placement.json)
+- [results/act12-pilot-20261006/final-evaluation.json.gz](results/act12-pilot-20261006/final-evaluation.json.gz)
+- [results/act12-pilot-20261006/metrics.jsonl.gz](results/act12-pilot-20261006/metrics.jsonl.gz)
+- [results/act12-pilot-20261006/next-experiment-design.json](results/act12-pilot-20261006/next-experiment-design.json)
+- [results/act12-pilot-20261006/README.md](results/act12-pilot-20261006/README.md)
+- [results/act12-pilot-20261006/recompute_outcomes.py](results/act12-pilot-20261006/recompute_outcomes.py)
+- [results/act12-pilot-20261006/reference-evaluation.json.gz](results/act12-pilot-20261006/reference-evaluation.json.gz)
+- [results/act12-pilot-20261006/run-manifest.json](results/act12-pilot-20261006/run-manifest.json)
+- [results/act12-pilot-20261006/training-bundle.json](results/act12-pilot-20261006/training-bundle.json)
+- [results/act12-pilot-20261006/training-config.toml](results/act12-pilot-20261006/training-config.toml)
+- [results/act12-pilot-20261006/validation.json](results/act12-pilot-20261006/validation.json)
+- [results/act12-pilot-20261006/project-priorities.md](results/act12-pilot-20261006/project-priorities.md)
+
+
+- [修复版λ pilot启动与验收](results/act2-qualification-20261006/TRAINING_READY.md)
+- [机器可读本地训练准备状态](results/act2-qualification-20261006/training-ready-r34.json)

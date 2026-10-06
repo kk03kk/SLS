@@ -36,6 +36,16 @@ _BOSS_MONSTERS = {
 }
 
 
+def _act2_elite_entry(observation, selected_room: tuple[int, str | None] | None) -> list[str]:
+    """Coverage evidence requires a selected elite map room, excluding Colosseum."""
+    if (observation.run.act != 2 or observation.screen.value != "COMBAT"
+            or selected_room is None or selected_room[0] != 2
+            or selected_room[1] not in {"ELITE", "BURNING_ELITE"}):
+        return []
+    return sorted({enemy.monster_id for enemy in observation.enemies}
+                  & {"BOOK_OF_STABBING", "GREMLIN_LEADER", "TASKMASTER"})
+
+
 @dataclass(frozen=True, slots=True)
 class EvaluationResult:
     """boss_* rates group act completion by scheduled boss, including earlier deaths.
@@ -205,6 +215,9 @@ def _evaluate_impl(
     boss_results: dict[str, list[bool]] = {}
     boss_action_counts: dict[str, dict[str, int]] = {}
     entered_bosses: list[set[str]] = [set() for _ in seed_values]
+    # Coverage diagnostics only. Taskmaster also appears in the Colosseum event.
+    act2_elite_entries = [dict() for _ in seed_values]
+    selected_rooms: list[tuple[int, str | None] | None] = [None for _ in seed_values]
     # One iteration beyond the step limit. Every live slot is normally removed by
     # the limiter on the max_steps-th decision, so the extra iteration only runs
     # when the limiter failed to fire; that path is what makes `timeouts` a real
@@ -247,6 +260,9 @@ def _evaluate_impl(
         for batch_index, index in enumerate(active):
             action = decisions[index].actions[int(action_indices[batch_index])]
             observation = decisions[index].observation
+            elite_ids = _act2_elite_entry(observation, selected_rooms[index])
+            if elite_ids:
+                act2_elite_entries[index].setdefault(str(observation.run.floor), elite_ids)
             act_key = str(observation.run.act)
             if act_key not in act_entries[index]:
                 act_entries[index][act_key] = {
@@ -268,6 +284,8 @@ def _evaluate_impl(
                 contexts[index] = {"event_options": [e.content_id for e in observation.event_options]}
             if action.kind.value == "CHOOSE_MAP_NODE":
                 routes[index].append(action.node_id)
+                node = next((node for node in observation.map_nodes if node.node_id == action.node_id), None)
+                selected_rooms[index] = (observation.run.act, node.visible_room_type if node else None)
             traces[index].append({"step": episode_steps[index], "floor": observation.run.floor,
                                   "hp": observation.player.current_hp, "screen": observation.screen.value,
                                   "action": action.to_dict()})
@@ -451,6 +469,8 @@ def _evaluate_impl(
         {"seed": seed, "success": won[i], "reason": reasons[i], "steps": episode_steps[i],
          "floor": decisions[i].observation.run.floor, "bosses": bosses_by_act[i],
          "entered_bosses": sorted(entered_bosses[i]), "last_context": contexts[i],
+         "act2_elite_entries": act2_elite_entries[i],
+         "act2_entry_diagnostics_contract": "sls-act2-map-room-coverage-v1",
          "route": routes[i], "deck": [c.card_id for c in decisions[i].observation.deck],
          "act_entries": act_entries[i]}
         for i, seed in enumerate(seed_values)

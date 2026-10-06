@@ -1,0 +1,281 @@
+{
+  "schema": "sls-simulator-semantics-review-v1",
+  "revision": "act2-rules-rng-grid-observation-and-conditional-replay-r30",
+  "from_native_source_sha256": "fe354a23c7584d68d0a2b6681b8dfd4e97d98e107b7ddf57c479060d91468f39",
+  "probe_only_native_source_sha256": "e22b168000cbd4c004ce6d5f0259d9154cf19e6a35e8ce7c117966a8f549cce3",
+  "to_native_source_sha256": "b100427d1e3ae6eee05818b6904047049609b1aa70807872c1f5f5e0edd6d62f",
+  "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "production_behavior_preserved": false,
+  "automatic_resume_whitelisted": false,
+  "checkpoint_layout_changed": true,
+  "model_shape_changed": false,
+  "encoding_schema_changed": false,
+  "action_vocabulary_changed": false,
+  "reward_changed": false,
+  "training_algorithm_changed": false,
+  "changes": [
+    {
+      "mechanism": "Shelled Parasite repeat-Fell replacement roll",
+      "ascension": "all, after initial move",
+      "stock_class": "com.megacrit.cardcrawl.monsters.city.ShelledParasite",
+      "stock_method": "getMove(int)",
+      "stock_seed": 131100022,
+      "first_divergence_boundary": 2,
+      "before": "native Double Strike versus stock Suck, with identical AI RNG state",
+      "test": "tests/simulator/test_act2_parasite_reroll.py"
+    },
+    {
+      "mechanism": "Blue Slaver consecutive Rake limit",
+      "ascension": "A17+; A0-A16 behavior retained",
+      "stock_class": "com.megacrit.cardcrawl.monsters.exordium.SlaverBlue",
+      "stock_method": "getMove(int)",
+      "stock_seed": 131100034,
+      "first_divergence_boundary": 2,
+      "before": "native repeated Rake versus stock Stab, with identical AI RNG state",
+      "test": "tests/simulator/test_blue_slaver_rake_limit.py"
+    },
+    {
+      "mechanism": "Calling Bell boss-treasure discarded card reward RNG and rare-card pity",
+      "stock_class": "com.megacrit.cardcrawl.relics.CallingBell",
+      "stock_method": "update() -> CombatRewardScreen.open() -> setupItemReward()",
+      "stock_seed": 131100064,
+      "first_divergence_boundary": 145,
+      "before": "Stock card RNG counter 91 versus native 82; identical public state; later Act2 card/action differences are the same root cause",
+      "test": "tests/simulator/test_calling_bell_boss_rng.py"
+    },
+    {
+      "mechanism": "Boss-treasure extra-reward checkpoint continuation",
+      "stock_seed": 131100064,
+      "before": "Restored Calling Bell extra rewards returned to old boss map and raised IndexError; stock and uninterrupted native advance to next act",
+      "test": "tests/simulator/test_calling_bell_boss_rng.py",
+      "scope": "Act1/2 only; Act3/Heart unchanged"
+    },
+    {
+      "mechanism": "Black Blood replacement preserves relic position",
+      "stock_class": "com.megacrit.cardcrawl.relics.AbstractRelic",
+      "stock_method": "instantObtain(AbstractPlayer,int,boolean)",
+      "stock_seed": 131100065,
+      "first_divergence_boundary": 164,
+      "before": "native appended BLACK_BLOOD after other relics; stock replaces BURNING_BLOOD at index 0",
+      "test": "tests/simulator/test_black_blood_replacement_order.py"
+    },
+    {
+      "mechanism": "Anger stat-equivalent copy retains Confusion cost",
+      "stock_seed": 131100063,
+      "first_divergence_boundary": 190,
+      "stock_method": "cards.red.Anger.use / cards.AbstractCard.makeStatEquivalentCopy",
+      "test": "tests/simulator/test_anger_confusion_copy.py"
+    },
+    {
+      "mechanism": "Generated Blood for Blood preview incorporates prior HP-loss events",
+      "stock_seed": 131100067,
+      "first_divergence_boundary": 66,
+      "stock_method": "cards.red.BloodForBlood.makeCopy",
+      "test": "tests/simulator/test_blood_generated_preview.py"
+    },
+    {
+      "mechanism": "Sozu shop purchase is a stock no-op, not a native paid purchase",
+      "stock_seed": 131100068,
+      "first_divergence_boundary": 191,
+      "stock_method": "shop.StorePotion.purchasePotion",
+      "test": "tests/simulator/test_sozu_shop_actions.py"
+    },
+    {
+      "mechanism": "Smoke Bomb escape executes stock victory relic healing",
+      "stock_seed": 131100063,
+      "first_divergence_boundary": 255,
+      "stock_method": "rooms.AbstractRoom.endBattle / characters.AbstractPlayer.onVictory",
+      "test": "tests/simulator/test_smoke_victory_heal.py"
+    },
+    {
+      "mechanism": "Partial multi-pick GRID preserves candidates, deselection and selected deck identity",
+      "stock_seed": 131100069,
+      "first_divergence_boundary": 162,
+      "stock_method": "screens.select.GridCardSelectScreen.update / relics.EmptyCage.update",
+      "test": "tests/simulator/test_deck_grid_selection.py"
+    },
+    {
+      "mechanism": "We Meet Again potion lock persists on map until leaving current room",
+      "stock_seed": 8000011000000,
+      "first_divergence_boundary": 51,
+      "stock_method": "potions.AbstractPotion.canUse/canDiscard",
+      "test": "tests/simulator/test_we_meet_potion_boundary.py",
+      "old_native_source_sha256": "c89f44d9b0394badc70c7ab916bf6e05217a989e6d97924f4f052a302c340cb4"
+    },
+    {
+      "mechanism": "Genuine player death clears block after revival branches",
+      "stock_seed": 8000011000001,
+      "first_divergence_boundary": 199,
+      "stock_class": "com.megacrit.cardcrawl.characters.AbstractPlayer",
+      "stock_method": "damage(DamageInfo)",
+      "before": "Terminal Combust death retained 8 block in native; stock cleared block to 0. All preceding 199 decision boundaries matched.",
+      "test": "tests/simulator/test_death_block_cleanup.py",
+      "old_native_source_sha256": "066b3fb754ee636d8e02f9ab50f8eb473a4a7b22ce36877b5d832605f846ac8e"
+    },
+    {
+      "mechanism": "Magic Flower combat-exit heals and positive odd-amount rounding",
+      "stock_seed": 8000011000002,
+      "first_divergence_boundary": 153,
+      "stock_class": "com.megacrit.cardcrawl.relics.MagicFlower",
+      "stock_method": "onPlayerHeal(int); BurningBlood.onVictory",
+      "before": "Stock 71 HP versus native 68 after Burning Blood. Stock COMBAT phase applies Magic Flower; MathUtils.round rather than truncation.",
+      "test": "tests/simulator/test_magic_flower_victory.py",
+      "old_native_source_sha256": "db731e011f78fc3b484854234a8995032b8888728ac05f90c1fecfa56c95d9af",
+      "scope": "Production witness for Burning Blood; other exit-heal combinations require adjacent controlled runtime coverage."
+    },
+    {
+      "mechanism": "Colosseum same-room lifecycle random streams",
+      "stock_seed": 131100066,
+      "first_divergence_boundary": 246,
+      "stock_class": "com.megacrit.cardcrawl.events.city.Colosseum",
+      "stock_method": "reopen -> AbstractPlayer.preBattlePrep; AbstractRoom.update potion roll before rewardAllowed",
+      "before": "After first fight, stock potion counter58/native57 and shuffle counter2/native1. Second fight incorrectly reseeded room-local streams.",
+      "test": "tests/simulator/test_colosseum_lifecycle.py",
+      "old_native_source_sha256": "37f89a319bd24024e7c9ff11e4f6bde510f03fbcab46a6e37d846d5a88fe3df9",
+      "scope": "First-fight completion and second-fight initial state matched; complete second-fight rewards still require runtime validation."
+    },
+    {
+      "mechanism": "Gremlin Leader summoned Mad Gremlin innate Angry power",
+      "stock_seed": 131100068,
+      "first_divergence_boundary": 271,
+      "stock_class": "com.megacrit.cardcrawl.monsters.exordium.GremlinWarrior",
+      "stock_method": "constructor; SummonGremlinAction.update",
+      "before": "Stock newly summoned Mad Gremlin has Angry2; native omitted innate power initialization.",
+      "test": "tests/simulator/test_gremlin_summon_state.py",
+      "old_native_source_sha256": "398d2bf9aeec356218200b945af977e433f9c112179aa9a5d1529676bb562d33"
+    },
+    {
+      "mechanism": "Gremlin Leader retained Wizard drawX target ordering",
+      "stock_seed": 131100068,
+      "first_divergence_boundary": 271,
+      "stock_class": "com.megacrit.cardcrawl.monsters.exordium.GremlinWizard",
+      "stock_method": "constructor drawX offset -35; SummonGremlinAction.getSmartPosition",
+      "before": "Old Wizard remains left of replacement Mad Gremlin in the same slot. Native always put replacement first, changing public target indices.",
+      "test": "tests/simulator/test_gremlin_summon_state.py",
+      "old_native_source_sha256": "398d2bf9aeec356218200b945af977e433f9c112179aa9a5d1529676bb562d33"
+    },
+    {
+      "mechanism": "Unrelated stolen-gold checkpoint metadata at treasure rewards",
+      "stock_seed": 131100067,
+      "first_divergence_boundary": 101,
+      "classification": "SERIALIZATION_ONLY_UNUSED_STORAGE",
+      "before": "Uninterrupted treasure reward serialized60 old looter gold; restored treasure serialized0. Public reward/action state matched stock. Serialize stolen_gold only for monster-combat reward context.",
+      "test": "tests/simulator/test_treasure_checkpoint_metadata.py",
+      "old_native_source_sha256": "398d2bf9aeec356218200b945af977e433f9c112179aa9a5d1529676bb562d33",
+      "automatic_source_whitelist": false
+    },
+    {
+      "mechanism": "Hexaghost Inferno upgrades existing draw/discard Burns and adds three upgraded Burns",
+      "test": "tests/simulator/test_hexaghost_inferno_burns.py",
+      "scope": "Independent stock witness and local regression; natural replay pending"
+    },
+    {
+      "mechanism": "Colosseum second combat rewards include potion roll and card rewards",
+      "test": "tests/simulator/test_colosseum_second_rewards.py",
+      "scope": "Actual stock seed131100066 second victory at boundary255; full observation/resources/RNG regression and complete 320-boundary trajectory matched. Previous source-only fixture archived with SHA; no restore bypass."
+    },
+    {
+      "mechanism": "Plated Armor reduction and armor-break callback execute at action queue tail",
+      "test": "tests/simulator/test_plated_armor_headbutt_order.py",
+      "scope": "Stock Headbutt selection witness seed131100070 boundary215; full current-source replay matched"
+    },
+    {
+      "mechanism": "Centurion committed Defend falls back to self when Mystic has died, without target RNG draw",
+      "test": "tests/simulator/test_centurion_orphan_defend.py",
+      "scope": "Stock seed131100070 boundary313; public state and RNG regression"
+    },
+    {
+      "mechanism": "Validation checkpoint records sparse stock-measured per-action inputs for full history replay",
+      "test": "tests/simulator/test_conditional_checkpoint_replay.py",
+      "scope": "Validation-only sls-stock-conditional-replay-v1; production without inputs unchanged; legacy missing-input captures rejected"
+    },
+    {
+      "mechanism": "Colosseum Nob Skull Bash intent reflects canVuln=true ordinary constructor",
+      "stock_seed": 131100066,
+      "first_divergence_boundary": 250,
+      "classification": "NATIVE_OBSERVATION_PROJECTION_ERROR",
+      "before": "Stock ATTACK_DEBUFF versus native ATTACK; actual Vulnerable execution already present in native",
+      "source": "helpers.MonsterHelper.getEncounter and GremlinNob(float,float) -> canVuln=true; getMove labels Skull Bash ATTACK_DEBUFF",
+      "test": "tests/simulator/test_colosseum_nob_intent.py",
+      "scope": "Completed stock second combat and rewards replay matched after repair; no model shape or action vocabulary change"
+    },
+    {
+      "mechanism": "Ritual Dagger live permanent master-deck growth and same-identity combat instances",
+      "stock_class": "com.megacrit.cardcrawl.actions.unique.RitualDaggerAction",
+      "stock_method": "update",
+      "stock_seed": 8000011000002,
+      "first_divergence_boundary": 353,
+      "before": "master deck base damage15 native versus18 stock immediately after kill",
+      "test": "tests/simulator/test_ritual_dagger_live_masterdeck.py",
+      "scope": "Actual production witness and complete450-boundary replay; no blanket certification of all duplicate-card combinations",
+      "checkpoint_layout_changed": false,
+      "observation_semantics_changed": true,
+      "automatic_resume_whitelisted": false
+    },
+    {
+      "mechanism": "Cancel remaining NORMAL monster hits after attacker dies or becomes halfDead",
+      "stock_class": "com.megacrit.cardcrawl.actions.common.DamageAction",
+      "stock_method": "update()",
+      "stock_seed": 8000011000005,
+      "first_divergence_boundary": 254,
+      "test": "tests/simulator/test_dead_attacker_cancels_multihit.py",
+      "before": "Byrd killed by thorns still dealt four queued hits; player HP17 vs stock21"
+    },
+    {
+      "mechanism": "TheCity first strong encounter exclusions and retry RNG consumption",
+      "stock_class": "com.megacrit.cardcrawl.dungeons.TheCity",
+      "stock_method": "generateExclusions()/generateStrongEnemies()",
+      "stock_seed": 8000011000005,
+      "first_divergence_boundary": 266,
+      "test": "tests/simulator/test_act2_first_strong_exclusions.py",
+      "before": "Chosen+Byrds immediately after 3Byrds instead of stock Snecko; later monster RNG sequence changed"
+    }
+  ],
+  "migration_requirement": "Keep historical checkpoints and results with their original source identity. Frozen model inference can be explicitly evaluated in the corrected environment; weights retain their Act1 training provenance. Re-prepare training and use a matched corrected-environment control or declare a new recipe. Old lambda=.98 training is not a strict single-variable comparison.",
+  "qualification_status": "IN_PROGRESS_NOT_QUALIFIED",
+  "checkpoint_restore_change": {
+    "issue": "Automaton opening restore lost reserved slot 2; right orb disappeared after summoning",
+    "regression": "tests/simulator/test_automaton_checkpoint_slots.py",
+    "old_native_source_sha256": "111d3ed951a754a4fceefd3b7d6d83c5303d11be820be16c20dc4003eda6eda7",
+    "compatibility": "same checkpoint layout; repair inferred encounter capacity; restored continuation behavior changes"
+  },
+  "checkpoint_continuation_contract": "next_act added to screen_info.continuation for Act1/2 boss-treasure extra rewards; legacy map inferred only from matching room/act; no automatic source compatibility bypass",
+  "original_wire_contract": {
+    "revision": "sls-original-choice-public-boundary-v7",
+    "changes": [
+      "Singing Bowl uses advertised choose appended card index; both combat reward and standalone card-reward masks expose the same semantic action",
+      "Selection completion reads public game_state.action_phase when validation continuation is absent; combat card-choice animation bounded at 180 frames",
+      "Production terminal detection reads public screen_type; no hidden validation continuation required",
+      "Oracle1.2.1 notifies new customCombatOpen via CommunicationMod state-change flag; separate generated candidate UUID groups remain separate player decisions. No stock action/RNG field writes.",
+      "Sozu suppresses effectless shop purchase actions; native no longer charges for an uncollectible potion.",
+      "Partial multi-pick GRID returns a player decision instead of waiting forever; selected master-deck identities remain visible.",
+      "Public terminal screen takes precedence over retained combat objects in production adapter and boundary settling.",
+      "Wait for actual public monster.intent to leave DEBUG, independently of projected EnemyMoveInfo; Spot Weakness can otherwise execute before intent initialization. Old captures with pending intent are execution evidence, not qualified stable boundaries.",
+      "Multi-pick GRID deselection to zero remains a player decision. Stock r11 seed131100069 returned num_cards2 and selected_cards[]; v6 waited and failed. v7 returns the boundary without extra commands; regression and same-script recapture retained."
+    ],
+    "native_environment_changed_by_wire_fix": false,
+    "observation_layout_changed": false,
+    "action_vocabulary_changed": false,
+    "old_execution_failures_are_not_passes": true,
+    "oracle_version": "1.2.1",
+    "oracle_build_sha256": "f59e2960838a5b744b9a146b8c489560d532f411c813886955ca2fa6dce7a4ef"
+  },
+  "action_semantics_changed": true,
+  "observation_semantics_changed": true,
+  "grid_selection_contract": {
+    "revision": "sls-stock-grid-toggle-v2",
+    "checkpoint_field": "screen_info.grid_selection_contract",
+    "legacy_partial_state": "reject ambiguous selected legacy state; never automatically whitelist source migration",
+    "observation": "existing v2 selected_cards and v5 numeric deck_index now populated for master-deck grids",
+    "actions": "same vocabulary; selected card can be clicked again to deselect before final required pick",
+    "training_comparability": "source/observation/action semantics changed; rebuild matched control"
+  },
+  "evaluation_diagnostics_change": {
+    "field": "result.seed_results[].act2_elite_entries",
+    "purpose": "Coverage-only witnessed combat in an Act2 ELITE map node, recorded from the selected public node; surviving encounters count. Individual slavers and Colosseum Taskmaster do not qualify. This field does not enter model inputs or action selection.",
+    "training_algorithm_changed": false,
+    "action_selection_changed": false,
+    "compatibility": "Historical scouts lacking this field must be rescanned; training implementation digest changes because evaluation instrumentation is versioned with RL sources."
+  },
+  "validation_replay_contract": "sls-stock-conditional-replay-v1"
+}

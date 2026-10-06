@@ -1,0 +1,24 @@
+{
+  "current_native_and_implementation_match_server": true,
+  "final_latest_tensor_equal": true,
+  "checkpoints": {
+    "final.pt": {
+      "finite_model_optimizer_trainer": true,
+      "environment_states": 64,
+      "next_seed": 130019574,
+      "steps": 94027776
+    },
+    "latest.pt": {
+      "finite_model_optimizer_trainer": true,
+      "environment_states": 64,
+      "next_seed": 130019574,
+      "steps": 94027776
+    },
+    "stages/train/selection/best_progress.pt": {
+      "finite_model_optimizer_trainer": true,
+      "environment_states": 64,
+      "next_seed": 130006562,
+      "steps": 91504640
+    }
+  }
+}

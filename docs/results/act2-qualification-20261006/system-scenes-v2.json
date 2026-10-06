@@ -1,0 +1,108 @@
+{
+  "schema": "sls-act2-system-scenes-v2",
+  "supplements_frozen_manifest_without_rewriting": "sls-act2-scenes-v1",
+  "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "scenes": [
+    {
+      "id": "act-transition",
+      "seeds": [
+        131100063,
+        131100064,
+        131100065
+      ],
+      "initial_state": "NORMAL_NEOW_A20_IRONCLAD_ACT1_FLOOR0",
+      "stock_classes": [
+        "dungeons.AbstractDungeon",
+        "rooms.AbstractRoom"
+      ],
+      "scripts": [
+        {
+          "seed": 131100063,
+          "sha256": "c630b1f2619bff25efc7d4ca72507527b679c93d15d5b39dbff31649ea18f40c",
+          "actions": 269
+        },
+        {
+          "seed": 131100064,
+          "sha256": "a53a1cfcbe6bc256dbfa0625e89688dd9d71c00c35f357ede2fb0b73a9b7b318",
+          "actions": 219
+        },
+        {
+          "seed": 131100065,
+          "sha256": "0e5380b994159a6b001afe4c0a38992fc874ec8c6bd398f9e6c63af0a28574e4",
+          "actions": 229
+        }
+      ],
+      "boundaries": "every returned canonical player decision including rewards and act transition; native checkpoint restored and same action continued at each matched boundary",
+      "expected_result_source": "STOCK_ONLY; frozen native trajectories specify requests, not expected observations",
+      "unreached_branches": "explicitly unverified; Act1 death cannot certify Act2 transition"
+    },
+    {
+      "id": "reward-collection",
+      "seeds": [
+        131100066,
+        131100067,
+        131100068
+      ],
+      "initial_state": "NORMAL_NEOW_A20_IRONCLAD_ACT1_FLOOR0",
+      "stock_classes": [
+        "dungeons.AbstractDungeon",
+        "rooms.AbstractRoom"
+      ],
+      "scripts": [
+        {
+          "seed": 131100066,
+          "sha256": "9eeb17c8ad9e8a956aea8af6acd65fcb85a01bd2b743e5dfc9aee12bff03e3d0",
+          "actions": 311
+        },
+        {
+          "seed": 131100067,
+          "sha256": "feb250d9acf3ffad409cede4b9ee42ba46e7b76c20524f2d1e7922771a9528aa",
+          "actions": 154
+        },
+        {
+          "seed": 131100068,
+          "sha256": "d0c617888c0f83fbc255c4d0c84caabaf23872362a57a5d9e98f9e4240daa275",
+          "actions": 295
+        }
+      ],
+      "boundaries": "every returned canonical player decision including rewards and act transition; native checkpoint restored and same action continued at each matched boundary",
+      "expected_result_source": "STOCK_ONLY; frozen native trajectories specify requests, not expected observations",
+      "unreached_branches": "explicitly unverified; Act1 death cannot certify Act2 transition"
+    },
+    {
+      "id": "checkpoint-continuation",
+      "seeds": [
+        131100069,
+        131100070,
+        131100071
+      ],
+      "initial_state": "NORMAL_NEOW_A20_IRONCLAD_ACT1_FLOOR0",
+      "stock_classes": [
+        "dungeons.AbstractDungeon",
+        "rooms.AbstractRoom"
+      ],
+      "scripts": [
+        {
+          "seed": 131100069,
+          "sha256": "23407f6d83d54d92b6042de86b32b17091a9682a7c71700dff9d8cecc7a94ff8",
+          "actions": 250
+        },
+        {
+          "seed": 131100070,
+          "sha256": "1a02a4b737e8f3246297d3a952eaba098a009bcc0601c8dcd8cb3ebacbba47a6",
+          "actions": 351
+        },
+        {
+          "seed": 131100071,
+          "sha256": "f26d9961c1d39e7bd437a31f769ac0b33d75757e9df2cc7adde782612e21ee22",
+          "actions": 141
+        }
+      ],
+      "boundaries": "every returned canonical player decision including rewards and act transition; native checkpoint restored and same action continued at each matched boundary",
+      "expected_result_source": "STOCK_ONLY; frozen native trajectories specify requests, not expected observations",
+      "unreached_branches": "explicitly unverified; Act1 death cannot certify Act2 transition"
+    }
+  ],
+  "supersedes": "system-scenes.json (preserved, old native request scripts)",
+  "scripts_manifest_sha256": "1c307c7e0d45c98904c15ed379999cee4ce64af5109596790358323e49a6642a"
+}

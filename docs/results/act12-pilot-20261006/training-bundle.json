@@ -1,0 +1,18 @@
+{
+  "crash_files": [],
+  "files": {
+    "endpoint-evaluation.json": "1ec2302e913c69e465ac27f0da5f78823a4bad794b58850005105938f2fd2781",
+    "final-evaluation.json": "a055c064931bfa2f78910643acaaafc25a0c01e98f1026c42de556354a703df1",
+    "final.pt": "d40df968de3409de72dd319b590b2683a136ffcfbd09776665742327809a0429",
+    "ironclad-a20-act12-win-pilot-r1.pt": "cbbb6cf77a2015e00f5c58824149680715115c1ec203576cb1769675dafb74e6",
+    "latest.pt": "5c187a74e45515584fd957b538cf5ea8dba47a3931fd365203a7f3fc54fa89d2",
+    "reference-evaluation.json": "342b2f32786c6804bffee5e66996ceaa595c1d250bc335cd2ea59f62f53d6a17",
+    "run-manifest.json": "f9b8e508cf46344a0ba24ff9e6da65015363748c9ebf6271cfaad5bca7a98a3f",
+    "stages/train/metrics.jsonl": "954ce218abfb565559db9d28560ea4f19e86ac2e7c09fce342a6a8d17c2567b2",
+    "stages/train/selection/best_progress.json": "5ffb3a11452a6c3adf74579da1a2a89702f11c1088b2d1b8d9baed95ff335314",
+    "stages/train/selection/best_progress.pt": "0be25fd2d348ea36f388444664e4c4bb20eabc4830f5988ca2d69725c40abc4e",
+    "training-config.toml": "bc2a3f68b06019b5ddf1c514b8b14c3987610c451c38de7e58f4d00ad8929073"
+  },
+  "live_action_journals": "collected locally under local/logs/",
+  "schema": "sls-training-bundle-v2"
+}

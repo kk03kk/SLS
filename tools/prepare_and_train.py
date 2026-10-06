@@ -42,6 +42,12 @@ def budget_estimate(config: dict, benchmark: dict, *, elapsed: float,
     estimate = (elapsed + remaining / rate * float(run["preparation_safety_factor"])
                 + float(run["preparation_evaluation_reserve_hours"]) * 3600)
     available = float(run["preparation_wall_hours"]) * 3600
+    study_available = os.environ.get('SLS_STUDY_AVAILABLE_SECONDS')
+    if study_available is not None:
+        study_seconds = float(study_available)
+        if not 0 < study_seconds < float('inf'):
+            raise ValueError('study remaining wall budget is invalid')
+        available = min(available, study_seconds)
     return {"schema": "sls-training-wall-estimate-v1", "remaining_decisions": remaining,
             "benchmark_decisions_per_second": rate, "estimated_seconds": estimate,
             "available_seconds": available, "fits": estimate <= available,
@@ -75,6 +81,11 @@ def main() -> int:
     if importlib.util.find_spec("torch") is None:
         subprocess.run([sys.executable, "-m", "pip", "install", "-r",
                         str(ROOT / "requirements/model.lock")], check=True, cwd=ROOT)
+    if importlib.util.find_spec("numpy") is None:
+        # Existing NUS torch installations need only the new CPU array runtime.
+        # Do not replace the site's working CUDA stack to install one dependency.
+        subprocess.run([sys.executable, "-m", "pip", "install", "--no-deps",
+                        "numpy==2.3.5"], check=True, cwd=ROOT)
     probe = subprocess.run([
         sys.executable, "-c",
         "import sys; sys.path.insert(0, 'src'); "

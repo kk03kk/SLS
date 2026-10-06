@@ -290,7 +290,7 @@ void Player::heal(int amount) {
     }
 
     if (hasRelic<RelicId::MAGIC_FLOWER>()) {
-        amount = amount * 3 / 2;
+        amount = (amount * 3 + 1) / 2; // stock MathUtils.round(amount * 1.5f)
     }
 
     bool wasBloodied = curHp <= maxHp/2;
@@ -488,6 +488,9 @@ void Player::wouldDie(BattleContext &bc) {
         }
     }
 
+    // AbstractPlayer.damage clears remaining block only after genuine death;
+    // Fairy/Lizard Tail revival above must retain their existing behavior.
+    block = 0;
     bc.outcome = Outcome::PLAYER_LOSS;
 }
 

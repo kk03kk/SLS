@@ -25,6 +25,7 @@ from tools.run_original_canary import (
     _recover_pending,
     launcher_command,
     original_runtime_paths,
+    stop_owned_and_restore,
 )
 
 
@@ -103,7 +104,8 @@ def install(oracle: Path, game_root: Path | None) -> dict:
     return result
 
 
-def runtime_smoke(oracle: Path, output: Path, mode: str, game_root: Path | None, timeout: float) -> dict:
+def runtime_smoke(oracle: Path, output: Path, mode: str, game_root: Path | None, timeout: float,
+                  *, capture_command: list[str] | None = None) -> dict:
     if output.exists() or output.with_suffix(".launch.json").exists():
         raise FileExistsError("runtime output exists; choose a new evidence path")
     local, game = original_runtime_paths(game_root)
@@ -124,9 +126,12 @@ def runtime_smoke(oracle: Path, output: Path, mode: str, game_root: Path | None,
     others = [p for p in mod_dir.glob("*.jar") if p != installed]
     for target in [config, mod_list, display, installed, *others, *_all_user_files(game)]:
         journal.backup(target)
+    for name in ('preferences', 'betaPreferences', 'saves'):
+        journal.backup_tree(game / name)
     completion = run / "completion.json"
     process = None
     marker = None
+    failure = None
     try:
         mod_dir.mkdir(parents=True, exist_ok=True)
         shutil.copy2(oracle, installed)
@@ -136,6 +141,8 @@ def runtime_smoke(oracle: Path, output: Path, mode: str, game_root: Path | None,
         command = " ".join([_command_path(Path(sys.executable)),
                             _command_path(ROOT / "tools/capture_oracle_smoke.py"),
                             "--mode", mode, "--output", _command_path(output)])
+        if capture_command is not None:
+            command = subprocess.list2cmdline(capture_command).replace(":", "\\:")
         config.write_text(f"command={command}\nrunAtGameStart=true\nverbose=true\n", encoding="utf-8")
         mod_list.write_text(json.dumps({"defaultList": "<Default>", "lists": {"<Default>": [
             "BaseMod.jar", "CommunicationMod.jar", "SpirecommParity.jar"]}}), encoding="utf-8")
@@ -155,26 +162,29 @@ def runtime_smoke(oracle: Path, output: Path, mode: str, game_root: Path | None,
                 if completion.is_file():
                     marker = json.loads(completion.read_text(encoding="utf-8"))
                     break
+                if b"Game crashed." in (run / "stderr.log").read_bytes():
+                    raise RuntimeError(f"stock game reported a crash; logs: {run}")
+                stdout_tail = (run / "stdout.log").read_bytes()[-65536:]
+                if b"Timed out while waiting for signal from external process." in stdout_tail:
+                    raise RuntimeError(f"CommunicationMod child handshake failed; logs: {run}")
+                if b"Child process has died..." in stdout_tail:
+                    raise RuntimeError(f"CommunicationMod child exited without completion; logs: {run}")
                 if process.poll() is not None:
                     raise RuntimeError(f"game exited before smoke: {process.returncode}; logs: {run}")
                 time.sleep(.25)
             if marker is None:
                 raise TimeoutError(f"Oracle runtime smoke timed out; logs: {run}")
+    except BaseException as error:
+        failure = error
     finally:
-        try:
-            journal.restore()
-        finally:
-            if process is not None and process.poll() is None:
-                process.terminate()
-                try:
-                    process.wait(timeout=15)
-                except subprocess.TimeoutExpired:
-                    process.kill()
-                    process.wait(timeout=15)
+        stop_owned_and_restore(journal, process)
     result = {"oracle_sha256": sha256(oracle), "mode": mode, "completion": marker,
-              "recovery_journal": str(journal.path), "recovery_status": journal.data["status"]}
+              "recovery_journal": str(journal.path), "recovery_status": journal.data["status"],
+              "execution_error": str(failure) if failure else None}
     output.with_suffix(".launch.json").write_text(json.dumps(result, indent=2), encoding="utf-8")
-    if marker.get("exit_code") != 0:
+    if failure is not None:
+        raise RuntimeError(f"Oracle execution failed with recovery evidence: {output}; {failure}") from failure
+    if (marker or {}).get("exit_code") != 0:
         raise RuntimeError(f"Oracle smoke failed: {output}")
     return result
 

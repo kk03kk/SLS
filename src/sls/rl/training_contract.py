@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import importlib
+import importlib.metadata
 import json
 import os
 import subprocess
@@ -240,6 +241,7 @@ def runtime_contract(torch_module: object) -> dict[str, object]:
     return {
         "python_cache_tag": sys.implementation.cache_tag,
         "torch": str(getattr(torch_module, "__version__")),
+        "numpy": importlib.metadata.version("numpy"),
         "cuda": getattr(getattr(torch_module, "version"), "cuda"),
         "cudnn": getattr(backends.cudnn, "version")() if cuda_available else None,
         "cuda_device_count": cuda.device_count() if cuda_available else 0,

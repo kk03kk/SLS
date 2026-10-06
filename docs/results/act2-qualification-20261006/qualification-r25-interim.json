@@ -1,0 +1,47 @@
+{
+  "schema": "sls-act2-qualification-rollup-v1",
+  "native_source_sha256": "f6fad929448200bd593218f9f1e0e7a6cae422d26c316d92cdc2ac73f4b481bd",
+  "controlled_matched": 72,
+  "controlled_expected": 72,
+  "controlled_missing_or_failed": [],
+  "production_expected": 8,
+  "production_missing_or_failed": [
+    8000011000000,
+    8000011000001,
+    8000011000002,
+    8000011000004,
+    8000011000005,
+    8000011000007,
+    8000011000009,
+    8000011000069
+  ],
+  "blockers": [
+    "production canaries missing or divergent"
+  ],
+  "training_gate": "NOT_QUALIFIED",
+  "scope": "24 bounded obligations only; no complete Act2 certification or win-rate estimate",
+  "input_sha256": {
+    "docs/results/act2-qualification-20261006/combat-after-r23.json": "6b2ad34e56acdf38316932f1affa8a0c46706836653aa2d3a4c1f08aea0f1111",
+    "docs/results/act2-qualification-20261006/boss-entangle-after-r23.json": "20382507d7e30372c6287b131f7c1cf6bc5d064f568be8d62a562ec757b0bd43",
+    "docs/results/act2-qualification-20261006/system-checkpoint-r12-after-r23.json": "a91d198cac3bfc616789498691470b6d10d439b00d1610a7830719a6128e9931",
+    "docs/results/act2-qualification-20261006/system-stock-policy-r23-transition-after-r23.json": "6d32604795643b5ddd775999958d53c1cc5abc75e3f7a0fc821f9bce85af26e7",
+    "docs/results/act2-qualification-20261006/system-stock-policy-r24-reward-after-r23.json": "f66ef9aaa80a00998abacdb283de9df1880e4b62180b1deac55000a25ddaf267",
+    "docs/results/act2-qualification-20261006/system-stock-policy-r25-checkpoint-after-r23.json": "a87b74be979c4258175f5a7b01f5db434a6b9ab6e83969376ecd545848b7e9a8",
+    "docs/results/act2-qualification-20261006/production-selection-r23.json": "d3877205d236ca29652e4bdf1e12e29dda70edfd80a87254fc6a3cce0f894e6e"
+  },
+  "superseded_harness_seeds": [
+    131100030,
+    131100031,
+    131100032
+  ],
+  "superseded_system_rows": [
+    [
+      "docs/results/act2-qualification-20261006/system-checkpoint-r12-after-r23.json",
+      "131100066"
+    ],
+    [
+      "docs/results/act2-qualification-20261006/system-checkpoint-r12-after-r23.json",
+      "131100070"
+    ]
+  ]
+}

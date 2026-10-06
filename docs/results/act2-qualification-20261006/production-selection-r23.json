@@ -1,0 +1,79 @@
+{
+  "schema": "sls-act2-canary-selection-v1",
+  "purpose": "COVERAGE_ONLY_NOT_WIN_RATE_OR_CHECKPOINT_SELECTION",
+  "scout_sha256": "07eacab5032e0e2217757b0e6ed6eeea40029f98b475408f02b534ef38b6f086",
+  "model_sha256": "ed9068343c8d628a13595a3919d8a15c5f9a19840be1042e07e5f12fcc8ca30c",
+  "native_source_sha256": "f6fad929448200bd593218f9f1e0e7a6cae422d26c316d92cdc2ac73f4b481bd",
+  "selection_rule": "first eligible seeds; 3 ordinary deaths, 2 witnessed elite entries, 3 distinct bosses",
+  "runs": [
+    {
+      "seed": 8000011000000,
+      "role": "ACT2_ORDINARY_FAILURE",
+      "native_evidence": {
+        "enemy_ids": [
+          "CHOSEN"
+        ]
+      }
+    },
+    {
+      "seed": 8000011000001,
+      "role": "ACT2_ELITE_ENTRY",
+      "native_evidence": {
+        "23": [
+          "BOOK_OF_STABBING"
+        ]
+      }
+    },
+    {
+      "seed": 8000011000002,
+      "role": "ACT2_ELITE_ENTRY",
+      "native_evidence": {
+        "28": [
+          "TASKMASTER"
+        ]
+      }
+    },
+    {
+      "seed": 8000011000004,
+      "role": "ACT2_ORDINARY_FAILURE",
+      "native_evidence": {
+        "enemy_ids": [
+          "SNECKO"
+        ]
+      }
+    },
+    {
+      "seed": 8000011000005,
+      "role": "ACT2_BOSS_ENTRY:CHAMP",
+      "native_evidence": [
+        "ACT_1:HEXAGHOST",
+        "ACT_2:CHAMP"
+      ]
+    },
+    {
+      "seed": 8000011000007,
+      "role": "ACT2_ORDINARY_FAILURE",
+      "native_evidence": {
+        "enemy_ids": [
+          "SNECKO"
+        ]
+      }
+    },
+    {
+      "seed": 8000011000009,
+      "role": "ACT2_BOSS_ENTRY:AUTOMATON",
+      "native_evidence": [
+        "ACT_1:THE_GUARDIAN",
+        "ACT_2:AUTOMATON"
+      ]
+    },
+    {
+      "seed": 8000011000069,
+      "role": "ACT2_BOSS_ENTRY:COLLECTOR",
+      "native_evidence": [
+        "ACT_1:SLIME_BOSS",
+        "ACT_2:COLLECTOR"
+      ]
+    }
+  ]
+}

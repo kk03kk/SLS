@@ -6,6 +6,7 @@ import math
 from dataclasses import dataclass
 from typing import Iterable, Mapping
 
+import numpy as np
 import torch
 
 from sls.contracts import Decision, Observation
@@ -23,6 +24,16 @@ from sls.model.encoding import (
 )
 
 REFERENCE_FIELDS = ("subject_id", "target_id", "option_id", "node_id", "reward_id")
+
+
+def _cpu_tensor(values: object, dtype: torch.dtype) -> torch.Tensor:
+    """Convert fresh primitive lists with one typed contiguous CPU allocation.
+
+    Explicit dtypes preserve the previous torch.tensor conversion. Each array is
+    newly allocated and owned by its tensor; no observation objects are shared.
+    """
+    array_dtype = {torch.float32: np.float32, torch.bool: np.bool_, torch.long: np.int64}[dtype]
+    return torch.from_numpy(np.asarray(values, dtype=array_dtype))
 
 
 @dataclass(frozen=True, slots=True)
@@ -286,12 +297,12 @@ def encode_decision(decision: Decision, config: object | None = None) -> Encoded
 
     return EncodedDecision(
         torch.tensor(SCREEN_GROUP_IDS[SCREEN_TO_GROUP[observation.screen.value]]),
-        torch.tensor(numeric_rows, dtype=torch.float32), torch.tensor(present_rows, dtype=torch.bool),
-        torch.tensor(type_rows, dtype=torch.long), torch.tensor(content_rows, dtype=torch.long),
-        torch.tensor(category_rows, dtype=torch.long), adjacency,
-        torch.tensor(action_numeric, dtype=torch.float32).reshape(-1, len(NUMERIC_FIELDS)),
-        torch.tensor(action_present, dtype=torch.bool).reshape(-1, len(NUMERIC_FIELDS)),
-        torch.tensor(action_types, dtype=torch.long),
-        torch.tensor(action_references, dtype=torch.long).reshape(-1, len(REFERENCE_FIELDS)),
-        torch.tensor(action_masks, dtype=torch.bool).reshape(-1, len(REFERENCE_FIELDS)),
+        _cpu_tensor(numeric_rows, torch.float32), _cpu_tensor(present_rows, torch.bool),
+        _cpu_tensor(type_rows, torch.long), _cpu_tensor(content_rows, torch.long),
+        _cpu_tensor(category_rows, torch.long), adjacency,
+        _cpu_tensor(action_numeric, torch.float32).reshape(-1, len(NUMERIC_FIELDS)),
+        _cpu_tensor(action_present, torch.bool).reshape(-1, len(NUMERIC_FIELDS)),
+        _cpu_tensor(action_types, torch.long),
+        _cpu_tensor(action_references, torch.long).reshape(-1, len(REFERENCE_FIELDS)),
+        _cpu_tensor(action_masks, torch.bool).reshape(-1, len(REFERENCE_FIELDS)),
     )

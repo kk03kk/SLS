@@ -37,6 +37,50 @@ import java.lang.reflect.Field;
 
 public final class CommunicationStatePatch {
     public static final String INSTRUMENTATION_SCHEMA = "spirecomm-parity-v11";
+
+    // Validation-only independent projection: read stock objects directly,
+    // without GameStateConverter or either Python observation adapter.
+    private static Map<String, Object> directCreature(
+            com.megacrit.cardcrawl.core.AbstractCreature creature) {
+        Map<String, Object> row = new LinkedHashMap<String, Object>();
+        row.put("current_hp", creature.currentHealth);
+        row.put("max_hp", creature.maxHealth);
+        row.put("block", creature.currentBlock);
+        ArrayList<Map<String, Object>> powers = new ArrayList<Map<String, Object>>();
+        for (com.megacrit.cardcrawl.powers.AbstractPower power : creature.powers) {
+            Map<String, Object> item = new LinkedHashMap<String, Object>();
+            item.put("id", power.ID);
+            item.put("amount", power.amount);
+            powers.add(item);
+        }
+        row.put("powers", powers);
+        return row;
+    }
+
+    private static Map<String, Object> directStockState() {
+        Map<String, Object> result = new LinkedHashMap<String, Object>();
+        result.put("schema", "sls-stock-direct-v1");
+        result.put("ascension", AbstractDungeon.ascensionLevel);
+        result.put("act", AbstractDungeon.actNum);
+        result.put("floor", AbstractDungeon.floorNum);
+        result.put("turn", com.megacrit.cardcrawl.actions.GameActionManager.turn);
+        result.put("phase", AbstractDungeon.actionManager.phase.toString());
+        result.put("player", directCreature(AbstractDungeon.player));
+        result.put("energy", com.megacrit.cardcrawl.ui.panels.EnergyPanel.totalCount);
+        ArrayList<Map<String, Object>> monsters = new ArrayList<Map<String, Object>>();
+        if (AbstractDungeon.getMonsters() != null) {
+            for (AbstractMonster monster : AbstractDungeon.getMonsters().monsters) {
+                Map<String, Object> row = directCreature(monster);
+                row.put("id", monster.id);
+                row.put("next_move", monster.nextMove);
+                row.put("dying", monster.isDying);
+                row.put("escaped", monster.escaped);
+                monsters.add(row);
+            }
+        }
+        result.put("monsters", monsters);
+        return result;
+    }
     private static final Method CALCULATE_DAMAGE = privateCalculateDamage();
     private static AbstractEvent matchEvent;
     private static final ArrayList<String> matchOrder = new ArrayList<String>();
@@ -448,6 +492,7 @@ public final class CommunicationStatePatch {
         boolean validationMode = OracleMode.validation();
         String validationFields = validationMode
             ? ",\"_rng\":" + gson.toJson(rng)
+                + ",\"_stock_direct\":" + gson.toJson(directStockState())
                 + ",\"_continuation\":" + gson.toJson(continuation)
                 + ",\"_timing_evidence\":" + gson.toJson(timingEvidence)
                 + ",\"math_seed\":" + Long.toUnsignedString(ParityRng.mathSeed)

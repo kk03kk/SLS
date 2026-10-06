@@ -1,0 +1,106 @@
+{
+  "schema": "sls-act2-system-scenes-v1",
+  "supplements_frozen_manifest_without_rewriting": "sls-act2-scenes-v1",
+  "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "scenes": [
+    {
+      "id": "act-transition",
+      "seeds": [
+        131100063,
+        131100064,
+        131100065
+      ],
+      "initial_state": "NORMAL_NEOW_A20_IRONCLAD_ACT1_FLOOR0",
+      "stock_classes": [
+        "dungeons.AbstractDungeon",
+        "rooms.AbstractRoom"
+      ],
+      "scripts": [
+        {
+          "seed": 131100063,
+          "sha256": "50e67c81c47e8a08a900d72bb1fcd4fdd181aa7562106967ca635262e67a3fc7",
+          "actions": 269
+        },
+        {
+          "seed": 131100064,
+          "sha256": "9bfa4bf042c28d958b02012ae4c29aa6773859bd1d557f13478a11ff6a4605ad",
+          "actions": 221
+        },
+        {
+          "seed": 131100065,
+          "sha256": "ce2f1c54a2d473a33cb324cdc2773856dccf5dc790e63c7d5ba56da41cce4b8b",
+          "actions": 229
+        }
+      ],
+      "boundaries": "every returned canonical player decision including rewards and act transition; native checkpoint restored and same action continued at each matched boundary",
+      "expected_result_source": "STOCK_ONLY; frozen native trajectories specify requests, not expected observations",
+      "unreached_branches": "explicitly unverified; Act1 death cannot certify Act2 transition"
+    },
+    {
+      "id": "reward-collection",
+      "seeds": [
+        131100066,
+        131100067,
+        131100068
+      ],
+      "initial_state": "NORMAL_NEOW_A20_IRONCLAD_ACT1_FLOOR0",
+      "stock_classes": [
+        "dungeons.AbstractDungeon",
+        "rooms.AbstractRoom"
+      ],
+      "scripts": [
+        {
+          "seed": 131100066,
+          "sha256": "7a711439ca7cd5b1269fe0c4157a48f03e6b2f399912fc42709db69c7f1387fa",
+          "actions": 311
+        },
+        {
+          "seed": 131100067,
+          "sha256": "804bbf68cf2e7fe41dc2701c659a4623cd9eb75ad91cdf75ea2c73392b0f7c0b",
+          "actions": 154
+        },
+        {
+          "seed": 131100068,
+          "sha256": "e33bf6d47e1ce105734a76f9186afac0d131ccc0bcf06867d863639c1a334223",
+          "actions": 295
+        }
+      ],
+      "boundaries": "every returned canonical player decision including rewards and act transition; native checkpoint restored and same action continued at each matched boundary",
+      "expected_result_source": "STOCK_ONLY; frozen native trajectories specify requests, not expected observations",
+      "unreached_branches": "explicitly unverified; Act1 death cannot certify Act2 transition"
+    },
+    {
+      "id": "checkpoint-continuation",
+      "seeds": [
+        131100069,
+        131100070,
+        131100071
+      ],
+      "initial_state": "NORMAL_NEOW_A20_IRONCLAD_ACT1_FLOOR0",
+      "stock_classes": [
+        "dungeons.AbstractDungeon",
+        "rooms.AbstractRoom"
+      ],
+      "scripts": [
+        {
+          "seed": 131100069,
+          "sha256": "fa913a7ccb626af4854386acaeff7f0fcb91dfd85b9737350921e084bed7efde",
+          "actions": 250
+        },
+        {
+          "seed": 131100070,
+          "sha256": "aa11c4f895435807a5ad290e40d7467ba57bc44bb3b288a9c2eb425fd14f3668",
+          "actions": 351
+        },
+        {
+          "seed": 131100071,
+          "sha256": "2211c63eb1994168f625ef19ff17325d70949278b381ce3aafdb3eda1f7e2fb2",
+          "actions": 141
+        }
+      ],
+      "boundaries": "every returned canonical player decision including rewards and act transition; native checkpoint restored and same action continued at each matched boundary",
+      "expected_result_source": "STOCK_ONLY; frozen native trajectories specify requests, not expected observations",
+      "unreached_branches": "explicitly unverified; Act1 death cannot certify Act2 transition"
+    }
+  ]
+}

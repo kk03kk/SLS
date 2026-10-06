@@ -1,6 +1,6 @@
 {
   "schema": "sls-act12-bound-plan-v1",
-  "status": "READY_FOR_LOCAL_VALIDATION",
+  "status": "COMPLETED_HISTORICAL",
   "config": "configs/train/ironclad_a20_act12_win_pilot.toml",
   "config_sha256": "bc2a3f68b06019b5ddf1c514b8b14c3987610c451c38de7e58f4d00ad8929073",
   "target_training_implementation_sha256": "03ab4c6e5d823be9a598fec855d1311020060e302e4ab9c2010426e546ac3e97",
@@ -73,5 +73,11 @@
     "tools/import_act12_parent.py": "6ec9de43778bf726dab91b91673b66dcbfa739c9b4642e237d41b73127228e8f",
     "tools/analyze_act12_pilot.py": "713b9201461ee13e5bc5141400a34745545e3d4c7ed262f788bbd3dd50eafad6",
     "tools/operator_paths.py": "89d5fb7ab01731a57d93e56f1df976b4ecbcf030efd92eba0452bde20e3e2354"
+  },
+  "historical_evidence": {
+    "original_plan": "docs/results/act12-pilot-20261006/original-bound-plan.json",
+    "original_plan_sha256": "9da1324f115084f87d60a326fe7946c39659c13e037dbf6c8d9b461296b75301",
+    "completed_manifest": "docs/results/act12-pilot-20261006/run-manifest.json",
+    "completed_manifest_sha256": "f9b8e508cf46344a0ba24ff9e6da65015363748c9ebf6271cfaad5bca7a98a3f"
   }
 }

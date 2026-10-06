@@ -5,6 +5,7 @@ import com.evacipated.cardcrawl.modthespire.lib.SpirePostfixPatch;
 import com.evacipated.cardcrawl.modthespire.lib.SpirePrefixPatch;
 import com.megacrit.cardcrawl.actions.unique.DiscoveryAction;
 import com.megacrit.cardcrawl.core.Settings;
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import basemod.ReflectionHacks;
 
 /** Observation-only evidence for stock DiscoveryAction's frame-driven RNG bug. */
@@ -32,6 +33,15 @@ public final class DiscoveryTimingPatch {
             if (action.isDone) {
                 lastRetrievalUpdates = activeRetrievalUpdates;
                 ++completionSerial;
+                // Passive forensic clock witness, outside CommunicationMod
+                // observations and policy inputs. No RNG/action/state writes.
+                // Emitted after the final stock update, never inferred by native.
+                if (!OracleMode.validation()) {
+                    System.out.println("SLS_DISCOVERY_CLOCK_V1 seed=" + Settings.seed
+                        + " floor=" + AbstractDungeon.floorNum
+                        + " serial=" + completionSerial
+                        + " updates=" + lastRetrievalUpdates);
+                }
             }
         }
     }

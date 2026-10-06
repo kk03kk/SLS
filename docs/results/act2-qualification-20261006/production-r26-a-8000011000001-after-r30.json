@@ -1,0 +1,33 @@
+{
+  "schema": "sls-act2-production-replay-v1",
+  "seed": 8000011000001,
+  "trajectory_sha256": "4033c5d1906890eef9ea0b9905dd7985a0beab7027a7dd98187616cec6db4e3f",
+  "native_source_sha256": "b100427d1e3ae6eee05818b6904047049609b1aa70807872c1f5f5e0edd6d62f",
+  "policy": {
+    "source_git_commit": "5435d4a2f423a1e3b445977a48fae41ac90b5837",
+    "architecture": "sls-recurrent-relational-policy-v5",
+    "encoding_schema": "sls-policy-input-v5",
+    "vocabulary_sha256": "04df4dc504ccf10d389b7b0e798ebc7a1ea2036edfc273a5cf5b11071b3b8ed0",
+    "model_sha256": "ed9068343c8d628a13595a3919d8a15c5f9a19840be1042e07e5f12fcc8ca30c",
+    "recurrent_memory_size": 256,
+    "goal": "ACT1"
+  },
+  "evaluation_environment": {
+    "profile_id": "IRONCLAD_A20_ACT2",
+    "trained_profile_id": "IRONCLAD_A20_ACT1",
+    "evaluation_contract": "sls-frozen-act1-reference-act2-v1",
+    "frozen_model_sha256": "ed9068343c8d628a13595a3919d8a15c5f9a19840be1042e07e5f12fcc8ca30c",
+    "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+    "oracle_mode": "production",
+    "original_execution_contract": "sls-original-choice-public-boundary-v7"
+  },
+  "boundaries_checked": 200,
+  "first_divergence": null,
+  "terminal_reason_verified": true,
+  "status": "TRAJECTORY_MATCH",
+  "rng_comparison": "NOT_EXPOSED_IN_PRODUCTION",
+  "purpose": "FLOW_DIAGNOSTIC_NOT_WIN_RATE_ESTIMATE",
+  "batch_sha256": "2b94dd8023e8b5fa5dcb9eadca133a53dc65db50678018c0f4cf9d4d2af49876",
+  "launch_evidence_sha256": "d95129d3aafe390aa7399b567c9cf3b9021a1112f1e18833ab4547c56d95be23",
+  "oracle_build_sha256": "f59e2960838a5b744b9a146b8c489560d532f411c813886955ca2fa6dce7a4ef"
+}

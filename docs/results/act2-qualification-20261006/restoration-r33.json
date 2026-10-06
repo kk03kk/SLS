@@ -1,0 +1,28 @@
+{
+  "schema": "sls-act2-restoration-check-v1",
+  "checked_at_utc": "2026-10-06T16:44:58.277470+00:00",
+  "baseline_journal_sha256": "496079f66bca0c6e240cf27576512804f51229ec95024285605f983539da45c3",
+  "files_restored": true,
+  "protected_trees": [
+    {
+      "tree": "preferences",
+      "expected_files": 54,
+      "actual_files": 54,
+      "membership_matches": true
+    },
+    {
+      "tree": "betaPreferences",
+      "expected_files": 1,
+      "actual_files": 1,
+      "membership_matches": true
+    },
+    {
+      "tree": "saves",
+      "expected_files": 3,
+      "actual_files": 3,
+      "membership_matches": true
+    }
+  ],
+  "protected_file_count": 63,
+  "local_report_sha256": "392ca8eeb6ccc49a76ac1bf1a589bd55f363ed22776740254551ca0927d28792"
+}

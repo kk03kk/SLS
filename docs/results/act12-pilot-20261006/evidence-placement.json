@@ -1,0 +1,31 @@
+{
+  "canonical_runs": [
+    "local/runs/ironclad-a20-act12-win-pilot-r1",
+    "local/runs/preparation/ironclad-a20-act12-win-pilot-r1"
+  ],
+  "archive": "runs/archives/sls-act12-pilot-lite-20261006.tar.gz",
+  "imports": "local/imports/act12-pilot-20261006",
+  "raw_bundle_unchanged": true,
+  "gzip_lossless": {
+    "reference-evaluation.json.gz": {
+      "decompressed_sha256": "342b2f32786c6804bffee5e66996ceaa595c1d250bc335cd2ea59f62f53d6a17",
+      "sha256": "82e4adaba081c16833e83c0d6f3e1365a83b557fd89643bde5cb3615943061a5",
+      "bytes": 191049
+    },
+    "endpoint-evaluation.json.gz": {
+      "decompressed_sha256": "1ec2302e913c69e465ac27f0da5f78823a4bad794b58850005105938f2fd2781",
+      "sha256": "c0aceea16c15b8b0df6eec203f2ee40945f44a8437520ea0952af7f51a10d12f",
+      "bytes": 160907
+    },
+    "final-evaluation.json.gz": {
+      "decompressed_sha256": "a055c064931bfa2f78910643acaaafc25a0c01e98f1026c42de556354a703df1",
+      "sha256": "613a2a232df7d137edca011ce612bc52a94c9fefd465d287a5d468caebea1d8f",
+      "bytes": 168375
+    },
+    "metrics.jsonl.gz": {
+      "decompressed_sha256": "954ce218abfb565559db9d28560ea4f19e86ac2e7c09fce342a6a8d17c2567b2",
+      "sha256": "a0299b5a68ba67a8c669e0a0930f5efc4ffceaa8c43ce6cb0b0f4e5ac822226f",
+      "bytes": 436464
+    }
+  }
+}

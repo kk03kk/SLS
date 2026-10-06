@@ -1,0 +1,17 @@
+{
+  "schema": "sls-probe-source-preservation-v1",
+  "identical": true,
+  "baseline_sha256": "d9a7405bbe15c7ea95da97e92199471e7ec470cec881748baff8eec4d3e4d297",
+  "current_sha256": "d9a7405bbe15c7ea95da97e92199471e7ec470cec881748baff8eec4d3e4d297",
+  "boundaries": 1381,
+  "sources": {
+    "baseline": "fe354a23c7584d68d0a2b6681b8dfd4e97d98e107b7ddf57c479060d91468f39",
+    "current": "e22b168000cbd4c004ce6d5f0259d9154cf19e6a35e8ce7c117966a8f549cce3"
+  },
+  "artifacts": {
+    "baseline": "d57aa10cc85ce817220fe8ce8d5eefe9004bd6804d96b06e857d9c5706bf0e56",
+    "current": "b9044f71bbf298f362e886e680aedaf44462e2d04bd42cbe337588b74dbe8d9e"
+  },
+  "scope": "A0/A20 normal full-run paths, first-legal-action scripts, four fixed seeds each",
+  "limitation": "bounded runtime evidence plus source diff review; not complete Act2 parity"
+}

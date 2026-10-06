@@ -314,12 +314,17 @@ def _selected_cards(game: Mapping[str, Any], state: Mapping[str, Any],
             if game.get("combat_state") else "MASTER_DECK"
         )
     )
+    deck_indices = {str(card.get("uuid")): index
+                    for index, card in enumerate(_mappings(game.get("deck")))
+                    if card.get("uuid") is not None}
     return tuple(
         PublicEntity(
             f"SELECTED:{order}", normalize_card_id(card.get("id")),
             tuple(sorted({
                 **dict(public_card_option_properties(normalize_card_id(card.get("id")), card)),
                 "source": source, "selected": True, "selected_order": order,
+                **({"deck_index": deck_indices[str(card["uuid"])]}
+                   if source == "MASTER_DECK" and str(card.get("uuid")) in deck_indices else {}),
             }.items())),
         ) for order, card in enumerate(cards)
     )
@@ -489,6 +494,8 @@ def _actions(
             add(Action(ActionKind.SKIP_CARD_REWARD, option_id="reward-card:0"), "skip")
         if "bowl" in available:
             add(Action(ActionKind.TAKE_SINGING_BOWL, option_id="reward-card:0"), "bowl")
+        elif bool(state.get("bowl_available")) and "choose" in available:
+            add(Action(ActionKind.TAKE_SINGING_BOWL, option_id="reward-card:0"), f"choose {len(cards)}")
     elif screen is ScreenType.COMBAT_REWARD:
         counters: dict[str, int] = {}
         reward_card_groups = _sequence(payload.get("_combat_reward_cards"))
@@ -524,7 +531,7 @@ def _actions(
                             ActionKind.TAKE_SINGING_BOWL,
                             option_id=f"reward-card:{occurrence}",
                         ),
-                        f"choose {choice_index}", "bowl",
+                        f"choose {choice_index}", f"choose {len(cards)}",
                     )
             elif reward_type == "GOLD":
                 add(Action(ActionKind.TAKE_REWARD, reward_id=f"reward-gold:{occurrence}"), f"choose {choice_index}")
@@ -552,7 +559,11 @@ def _actions(
             for index, item in enumerate(_mappings(state.get(key))):
                 if (
                     _integer(item.get("price"), 10**9) <= gold
-                    and (label != "POTION" or _has_empty_potion_slot(game))
+                    and (label != "POTION" or (
+                        _has_empty_potion_slot(game)
+                        and not any(normalize_content_id(r.get("id")) == "SOZU"
+                                    for r in _mappings(game.get("relics")))
+                    ))
                 ):
                     compact.append((label, index, item))
         for choice_index, (label, index, _) in enumerate(compact):
@@ -600,14 +611,13 @@ def _screen_type(
 ) -> ScreenType:
     continuation = _mapping(payload.get("_continuation") or game.get("_continuation"))
     continuation_screen = str(continuation.get("screen") or "NONE").upper()
-    if continuation_screen in {"DEATH", "VICTORY", "GAME_OVER", "COMPLETE"}:
+    raw = str(game.get("screen_type") or "NONE").upper()
+    if (continuation_screen in {"DEATH", "VICTORY", "GAME_OVER", "COMPLETE"}
+            or raw in {"DEATH", "VICTORY", "GAME_OVER", "COMPLETE"}):
         return ScreenType.GAME_OVER
     if combat:
         return ScreenType.COMBAT
     if not payload.get("in_game", True):
-        return ScreenType.GAME_OVER
-    raw = str(game.get("screen_type") or "NONE").upper()
-    if raw in {"DEATH", "VICTORY", "GAME_OVER", "COMPLETE"}:
         return ScreenType.GAME_OVER
     if raw in {"EVENT", "NEOW"}:
         return ScreenType.NEOW if _integer(game.get("floor")) == 0 else ScreenType.EVENT

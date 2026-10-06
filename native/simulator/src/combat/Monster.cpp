@@ -403,10 +403,20 @@ void Monster::attackedUnblockedHelper(BattleContext &bc, int damage) { // todo, 
         // damage turn.
 
     } else if (hasStatus<MS::PLATED_ARMOR>()) {
-        decrementStatus<MS::PLATED_ARMOR>();
-        if(!hasStatus<MS::PLATED_ARMOR>() && id == MonsterId::SHELLED_PARASITE) {
-            setMove(MMID::SHELLED_PARASITE_STUNNED);
-        }
+        // PlatedArmorPower.wasHPLost queues ReducePowerAction at the bottom.
+        // Headbutt can expose a selection boundary before that action resolves.
+        const int ownerIdx = idx;
+        bc.addToBot({[ownerIdx](BattleContext &context) {
+            auto &owner = context.monsters.arr[ownerIdx];
+            if (owner.isDeadOrEscaped() || !owner.hasStatus<MS::PLATED_ARMOR>()) return;
+            owner.decrementStatus<MS::PLATED_ARMOR>();
+            if (!owner.hasStatus<MS::PLATED_ARMOR>() && owner.id == MonsterId::SHELLED_PARASITE) {
+                context.addToBot({[ownerIdx](BattleContext &next) {
+                    auto &monster = next.monsters.arr[ownerIdx];
+                    if (!monster.isDeadOrEscaped()) monster.setMove(MMID::SHELLED_PARASITE_STUNNED);
+                }});
+            }
+        }});
 
     // Curl Up's original onAttacked hook only triggers when the incoming
     // unblocked damage is strictly smaller than current HP.  A lethal hit

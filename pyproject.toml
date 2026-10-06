@@ -12,7 +12,7 @@ requires-python = ">=3.12"
 dependencies = []
 
 [project.optional-dependencies]
-model = ["torch>=2.6,<3"]
+model = ["torch>=2.6,<3", "numpy>=1.26,<3"]
 test = ["pytest==8.4.1"]
 
 [tool.setuptools]

@@ -86,6 +86,10 @@ Action Actions::DamageAllEnemy(int damage) {
 
 Action Actions::AttackPlayer(int idx, int damage) {
     return {[=] (BattleContext &bc) {
+        // DamageAction cancels NORMAL hits when its owner dies/half-dies.
+        // Thorns/Flame Barrier can kill the owner between queued multi-hits.
+        const auto &attacker = bc.monsters.arr[idx];
+        if (attacker.isDeadOrEscaped() || attacker.isHalfDead()) return;
         bc.player.attacked(bc, idx, damage);
     }, false};
 }
@@ -588,6 +592,10 @@ Action Actions::SummonGremlins() {
         gremlin0.construct(bc, MonsterGroup::getGremlin(bc.aiRng), newGremlinIdxs[0]);
         gremlin1.construct(bc, MonsterGroup::getGremlin(bc.aiRng), newGremlinIdxs[1]);
         bc.monsters.monstersAlive += 2;
+        // Stock constructors initialize innate powers for spawned Gremlins
+        // too, including A17+ Angry(2) on GremlinWarrior.
+        gremlin0.preBattleAction(bc);
+        gremlin1.preBattleAction(bc);
 
         if (bc.player.hasRelic<R::PHILOSOPHERS_STONE>()) {
             gremlin0.buff<MS::STRENGTH>(1);
@@ -1307,9 +1315,7 @@ Action Actions::RitualDaggerAction(int idx, int damage) {
             auto &c = bc.curCardQueueItem.card;
             const auto upgradeAmt = c.isUpgraded() ? 5 : 3;
 
-            if (bc.curCardQueueItem.purgeOnUse) {
-                bc.cards.findAndUpgradeSpecialData(c.uniqueId, upgradeAmt);
-            }
+            bc.cards.findAndUpgradeSpecialData(c.uniqueId, upgradeAmt);
             c.specialData += upgradeAmt;
         }
 

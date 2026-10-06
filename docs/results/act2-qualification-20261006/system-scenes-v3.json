@@ -1,0 +1,40 @@
+{
+  "schema": "sls-act2-system-scenes-v3",
+  "supplements": "system-scenes-v2.json",
+  "script_contract": "sls-stock-recorded-frozen-policy-v1",
+  "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "model_sha256": "ed9068343c8d628a13595a3919d8a15c5f9a19840be1042e07e5f12fcc8ca30c",
+  "initial_state": "NORMAL_NEOW_A20_IRONCLAD_ACT1_FLOOR0",
+  "termination": "ACT2_TERMINAL_OR_DEATH",
+  "script_source": "One frozen stock actor records semantic actions; native only replays those same actions. Expected states exclusively from stock.",
+  "boundaries": "Every stable player decision; compare public state, legal actions, direct stock objects, RNG, and restored same-action continuation.",
+  "controlled_input_scope": "Actual stock timing inputs recorded per action for validation only; no production injection.",
+  "scenes": [
+    {
+      "id": "act-transition",
+      "seeds": [
+        131100063,
+        131100064,
+        131100065
+      ]
+    },
+    {
+      "id": "reward-collection",
+      "seeds": [
+        131100066,
+        131100067,
+        131100068
+      ]
+    },
+    {
+      "id": "checkpoint-continuation",
+      "seeds": [
+        131100069,
+        131100070,
+        131100071
+      ]
+    }
+  ],
+  "unreached_branches": "Record unverified; Act1 death cannot certify an Act2 transition.",
+  "overwrites_old_evidence": false
+}

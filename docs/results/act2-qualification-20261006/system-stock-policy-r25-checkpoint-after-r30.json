@@ -1,0 +1,30 @@
+{
+  "schema": "sls-act2-system-differential-v1",
+  "native_source_sha256": "b100427d1e3ae6eee05818b6904047049609b1aa70807872c1f5f5e0edd6d62f",
+  "runs": [
+    {
+      "seed": 131100070,
+      "first_divergence": null,
+      "boundaries_checked": 370,
+      "act2_boundaries": 172,
+      "reward_boundaries": 56,
+      "checkpoint_replays": 369,
+      "stock_action_unavailable": null,
+      "terminal_reason_verified": true,
+      "controlled_runtime_inputs": [
+        {
+          "boundary": 99,
+          "stock_measured_inputs": {
+            "discovery_retrieval_updates": 15
+          }
+        }
+      ],
+      "qualification_scope": "STOCK_MEASURED_TIMING_CONDITIONAL; NOT_PRODUCTION_RNG_CERTIFICATION",
+      "status": "SYSTEM_BRANCH_MATCH"
+    }
+  ],
+  "stock_capture_sha256": "560d464cc6ec7c7ccf02c1e8bdd9b4488742dd71760e0c47980e20d26a1e75cf",
+  "launch_evidence_sha256": "01e37795223d951a91408494e2a4ed642fb3fb8e6a8dccd508c352ee1c301b52",
+  "oracle_build_sha256": "f59e2960838a5b744b9a146b8c489560d532f411c813886955ca2fa6dce7a4ef",
+  "training_gate": "NOT_QUALIFIED"
+}

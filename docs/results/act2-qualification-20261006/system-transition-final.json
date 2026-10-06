@@ -1,0 +1,3357 @@
+{
+  "schema": "sls-act2-system-differential-v1",
+  "native_source_sha256": "2247ca990f0afb396b3c0820c156fd3af0c0a6d08ba6cae9736a7b03490ad4f0",
+  "runs": [
+    {
+      "seed": 131100063,
+      "first_divergence": {
+        "boundary": 190,
+        "differences": [
+          {
+            "path": "$.observation.discard_pile[0].base_cost",
+            "original": 1,
+            "simulator": 0
+          },
+          {
+            "path": "$.observation.discard_pile[0].current_cost",
+            "original": 1,
+            "simulator": 0
+          }
+        ],
+        "screen": "COMBAT",
+        "stock": {
+          "observation": {
+            "boss_relic_options": {},
+            "choice_options": {},
+            "deck": [
+              {
+                "base_cost": -2,
+                "card_id": "ASCENDERS_BANE",
+                "current_cost": -2,
+                "instance_id": "DECK:0",
+                "playable": false,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                },
+                "upgrades": 0,
+                "visible_order": null,
+                "zone": "DECK"
+              },
+              {
+                "base_cost": 1,
+                "card_id": "STRIKE_RED",
+                "current_cost": 1,
+                "instance_id": "DECK:1",
+                "playable": false,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                },
+                "upgrades": 0,
+                "visible_order": null,
+                "zone": "DECK"
+              },
+              {
+                "base_cost": 1,
+                "card_id": "STRIKE_RED",
+                "current_cost": 1,
+                "instance_id": "DECK:2",
+                "playable": false,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                },
+                "upgrades": 0,
+                "visible_order": null,
+                "zone": "DECK"
+              },
+              {
+                "base_cost": 1,
+                "card_id": "STRIKE_RED",
+                "current_cost": 1,
+                "instance_id": "DECK:3",
+                "playable": false,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                },
+                "upgrades": 0,
+                "visible_order": null,
+                "zone": "DECK"
+              },
+              {
+                "base_cost": 1,
+                "card_id": "STRIKE_RED",
+                "current_cost": 1,
+                "instance_id": "DECK:4",
+                "playable": false,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                },
+                "upgrades": 0,
+                "visible_order": null,
+                "zone": "DECK"
+              },
+              {
+                "base_cost": 1,
+                "card_id": "STRIKE_RED",
+                "current_cost": 1,
+                "instance_id": "DECK:5",
+                "playable": false,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                },
+                "upgrades": 0,
+                "visible_order": null,
+                "zone": "DECK"
+              },
+              {
+                "base_cost": 1,
+                "card_id": "DEFEND_RED",
+                "current_cost": 1,
+                "instance_id": "DECK:6",
+                "playable": false,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                },
+                "upgrades": 0,
+                "visible_order": null,
+                "zone": "DECK"
+              },
+              {
+                "base_cost": 1,
+                "card_id": "DEFEND_RED",
+                "current_cost": 1,
+                "instance_id": "DECK:7",
+                "playable": false,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                },
+                "upgrades": 0,
+                "visible_order": null,
+                "zone": "DECK"
+              },
+              {
+                "base_cost": 1,
+                "card_id": "DEFEND_RED",
+                "current_cost": 1,
+                "instance_id": "DECK:8",
+                "playable": false,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                },
+                "upgrades": 0,
+                "visible_order": null,
+                "zone": "DECK"
+              },
+              {
+                "base_cost": 1,
+                "card_id": "DEFEND_RED",
+                "current_cost": 1,
+                "instance_id": "DECK:9",
+                "playable": false,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                },
+                "upgrades": 0,
+                "visible_order": null,
+                "zone": "DECK"
+              },
+              {
+                "base_cost": 2,
+                "card_id": "BASH",
+                "current_cost": 2,
+                "instance_id": "DECK:10",
+                "playable": false,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                },
+                "upgrades": 0,
+                "visible_order": null,
+                "zone": "DECK"
+              },
+              {
+                "base_cost": 2,
+                "card_id": "FLAME_BARRIER",
+                "current_cost": 2,
+                "instance_id": "DECK:11",
+                "playable": false,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                },
+                "upgrades": 0,
+                "visible_order": null,
+                "zone": "DECK"
+              },
+              {
+                "base_cost": 2,
+                "card_id": "UPPERCUT",
+                "current_cost": 2,
+                "instance_id": "DECK:12",
+                "playable": false,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                },
+                "upgrades": 1,
+                "visible_order": null,
+                "zone": "DECK"
+              },
+              {
+                "base_cost": 1,
+                "card_id": "POMMEL_STRIKE",
+                "current_cost": 1,
+                "instance_id": "DECK:13",
+                "playable": false,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                },
+                "upgrades": 0,
+                "visible_order": null,
+                "zone": "DECK"
+              },
+              {
+                "base_cost": 1,
+                "card_id": "FIRE_BREATHING",
+                "current_cost": 1,
+                "instance_id": "DECK:14",
+                "playable": false,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                },
+                "upgrades": 0,
+                "visible_order": null,
+                "zone": "DECK"
+              },
+              {
+                "base_cost": 1,
+                "card_id": "WILD_STRIKE",
+                "current_cost": 1,
+                "instance_id": "DECK:15",
+                "playable": false,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                },
+                "upgrades": 0,
+                "visible_order": null,
+                "zone": "DECK"
+              },
+              {
+                "base_cost": 1,
+                "card_id": "INFLAME",
+                "current_cost": 1,
+                "instance_id": "DECK:16",
+                "playable": false,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                },
+                "upgrades": 0,
+                "visible_order": null,
+                "zone": "DECK"
+              },
+              {
+                "base_cost": 2,
+                "card_id": "CARNAGE",
+                "current_cost": 2,
+                "instance_id": "DECK:17",
+                "playable": false,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                },
+                "upgrades": 0,
+                "visible_order": null,
+                "zone": "DECK"
+              },
+              {
+                "base_cost": 2,
+                "card_id": "IMMOLATE",
+                "current_cost": 2,
+                "instance_id": "DECK:18",
+                "playable": false,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                },
+                "upgrades": 0,
+                "visible_order": null,
+                "zone": "DECK"
+              },
+              {
+                "base_cost": 0,
+                "card_id": "ANGER",
+                "current_cost": 0,
+                "instance_id": "DECK:19",
+                "playable": false,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                },
+                "upgrades": 0,
+                "visible_order": null,
+                "zone": "DECK"
+              },
+              {
+                "base_cost": -2,
+                "card_id": "DECAY",
+                "current_cost": -2,
+                "instance_id": "DECK:20",
+                "playable": false,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                },
+                "upgrades": 0,
+                "visible_order": null,
+                "zone": "DECK"
+              },
+              {
+                "base_cost": 1,
+                "card_id": "HAVOC",
+                "current_cost": 1,
+                "instance_id": "DECK:21",
+                "playable": false,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                },
+                "upgrades": 0,
+                "visible_order": null,
+                "zone": "DECK"
+              },
+              {
+                "base_cost": 1,
+                "card_id": "IRON_WAVE",
+                "current_cost": 1,
+                "instance_id": "DECK:22",
+                "playable": false,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                },
+                "upgrades": 0,
+                "visible_order": null,
+                "zone": "DECK"
+              }
+            ],
+            "discard_pile": [
+              {
+                "base_cost": 1,
+                "card_id": "ANGER",
+                "current_cost": 1,
+                "instance_id": "DISCARD:0",
+                "playable": false,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                },
+                "upgrades": 1,
+                "visible_order": null,
+                "zone": "DISCARD"
+              },
+              {
+                "base_cost": 1,
+                "card_id": "ANGER",
+                "current_cost": 1,
+                "instance_id": "DISCARD:1",
+                "playable": false,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                },
+                "upgrades": 1,
+                "visible_order": null,
+                "zone": "DISCARD"
+              },
+              {
+                "base_cost": 2,
+                "card_id": "CARNAGE",
+                "current_cost": 2,
+                "instance_id": "DISCARD:2",
+                "playable": false,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                },
+                "upgrades": 0,
+                "visible_order": null,
+                "zone": "DISCARD"
+              },
+              {
+                "base_cost": 2,
+                "card_id": "UPPERCUT",
+                "current_cost": 2,
+                "instance_id": "DISCARD:3",
+                "playable": false,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                },
+                "upgrades": 1,
+                "visible_order": null,
+                "zone": "DISCARD"
+              }
+            ],
+            "draw_pile": [
+              {
+                "base_cost": -2,
+                "card_id": "ASCENDERS_BANE",
+                "current_cost": -2,
+                "instance_id": "DRAW:HIDDEN:0",
+                "playable": false,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                },
+                "upgrades": 0,
+                "visible_order": null,
+                "zone": "DRAW"
+              },
+              {
+                "base_cost": 1,
+                "card_id": "DEFEND_RED",
+                "current_cost": 1,
+                "instance_id": "DRAW:HIDDEN:1",
+                "playable": false,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                },
+                "upgrades": 0,
+                "visible_order": null,
+                "zone": "DRAW"
+              },
+              {
+                "base_cost": 1,
+                "card_id": "DEFEND_RED",
+                "current_cost": 1,
+                "instance_id": "DRAW:HIDDEN:2",
+                "playable": false,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                },
+                "upgrades": 0,
+                "visible_order": null,
+                "zone": "DRAW"
+              },
+              {
+                "base_cost": 1,
+                "card_id": "DEFEND_RED",
+                "current_cost": 1,
+                "instance_id": "DRAW:HIDDEN:3",
+                "playable": false,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                },
+                "upgrades": 0,
+                "visible_order": null,
+                "zone": "DRAW"
+              },
+              {
+                "base_cost": 1,
+                "card_id": "FIRE_BREATHING",
+                "current_cost": 1,
+                "instance_id": "DRAW:HIDDEN:4",
+                "playable": false,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                },
+                "upgrades": 0,
+                "visible_order": null,
+                "zone": "DRAW"
+              },
+              {
+                "base_cost": 2,
+                "card_id": "FLAME_BARRIER",
+                "current_cost": 2,
+                "instance_id": "DRAW:HIDDEN:5",
+                "playable": false,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                },
+                "upgrades": 0,
+                "visible_order": null,
+                "zone": "DRAW"
+              },
+              {
+                "base_cost": 1,
+                "card_id": "HAVOC",
+                "current_cost": 1,
+                "instance_id": "DRAW:HIDDEN:6",
+                "playable": false,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                },
+                "upgrades": 0,
+                "visible_order": null,
+                "zone": "DRAW"
+              },
+              {
+                "base_cost": 2,
+                "card_id": "IMMOLATE",
+                "current_cost": 2,
+                "instance_id": "DRAW:HIDDEN:7",
+                "playable": false,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                },
+                "upgrades": 0,
+                "visible_order": null,
+                "zone": "DRAW"
+              },
+              {
+                "base_cost": 1,
+                "card_id": "INFLAME",
+                "current_cost": 1,
+                "instance_id": "DRAW:HIDDEN:8",
+                "playable": false,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                },
+                "upgrades": 0,
+                "visible_order": null,
+                "zone": "DRAW"
+              },
+              {
+                "base_cost": 1,
+                "card_id": "IRON_WAVE",
+                "current_cost": 1,
+                "instance_id": "DRAW:HIDDEN:9",
+                "playable": false,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                },
+                "upgrades": 0,
+                "visible_order": null,
+                "zone": "DRAW"
+              },
+              {
+                "base_cost": 1,
+                "card_id": "POMMEL_STRIKE",
+                "current_cost": 1,
+                "instance_id": "DRAW:HIDDEN:10",
+                "playable": false,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                },
+                "upgrades": 0,
+                "visible_order": null,
+                "zone": "DRAW"
+              },
+              {
+                "base_cost": 1,
+                "card_id": "STRIKE_RED",
+                "current_cost": 1,
+                "instance_id": "DRAW:HIDDEN:11",
+                "playable": false,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                },
+                "upgrades": 0,
+                "visible_order": null,
+                "zone": "DRAW"
+              },
+              {
+                "base_cost": 1,
+                "card_id": "STRIKE_RED",
+                "current_cost": 1,
+                "instance_id": "DRAW:HIDDEN:12",
+                "playable": false,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                },
+                "upgrades": 0,
+                "visible_order": null,
+                "zone": "DRAW"
+              },
+              {
+                "base_cost": 1,
+                "card_id": "STRIKE_RED",
+                "current_cost": 1,
+                "instance_id": "DRAW:HIDDEN:13",
+                "playable": false,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                },
+                "upgrades": 0,
+                "visible_order": null,
+                "zone": "DRAW"
+              },
+              {
+                "base_cost": 1,
+                "card_id": "STRIKE_RED",
+                "current_cost": 1,
+                "instance_id": "DRAW:HIDDEN:14",
+                "playable": false,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                },
+                "upgrades": 0,
+                "visible_order": null,
+                "zone": "DRAW"
+              },
+              {
+                "base_cost": 1,
+                "card_id": "WILD_STRIKE",
+                "current_cost": 1,
+                "instance_id": "DRAW:HIDDEN:15",
+                "playable": false,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                },
+                "upgrades": 0,
+                "visible_order": null,
+                "zone": "DRAW"
+              }
+            ],
+            "enemies": [
+              {
+                "block": 0,
+                "current_hp": 116,
+                "instance_id": "MONSTER:0",
+                "intent": "ATTACK",
+                "intent_damage": 18,
+                "intent_hits": 1,
+                "max_hp": 171,
+                "monster_id": "BOOK_OF_STABBING",
+                "properties": {
+                  "is_gone": false
+                }
+              }
+            ],
+            "event_options": {},
+            "exhaust_pile": {},
+            "hand": [
+              {
+                "base_cost": 0,
+                "card_id": "STRIKE_RED",
+                "current_cost": 0,
+                "instance_id": "HAND:0",
+                "playable": true,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                },
+                "upgrades": 1,
+                "visible_order": null,
+                "zone": "HAND"
+              },
+              {
+                "base_cost": -2,
+                "card_id": "DECAY",
+                "current_cost": -2,
+                "instance_id": "HAND:1",
+                "playable": false,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                },
+                "upgrades": 0,
+                "visible_order": null,
+                "zone": "HAND"
+              },
+              {
+                "base_cost": 2,
+                "card_id": "BASH",
+                "current_cost": 2,
+                "instance_id": "HAND:2",
+                "playable": false,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                },
+                "upgrades": 1,
+                "visible_order": null,
+                "zone": "HAND"
+              },
+              {
+                "base_cost": 2,
+                "card_id": "DEFEND_RED",
+                "current_cost": 2,
+                "instance_id": "HAND:3",
+                "playable": false,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                },
+                "upgrades": 1,
+                "visible_order": null,
+                "zone": "HAND"
+              }
+            ],
+            "map_nodes": [
+              {
+                "node_id": "map:2:0",
+                "outgoing_node_ids": [
+                  "map:2:1"
+                ],
+                "reachable": false,
+                "visible_room_type": "MONSTER",
+                "x": 2,
+                "y": 0
+              },
+              {
+                "node_id": "map:4:0",
+                "outgoing_node_ids": [
+                  "map:4:1"
+                ],
+                "reachable": false,
+                "visible_room_type": "MONSTER",
+                "x": 4,
+                "y": 0
+              },
+              {
+                "node_id": "map:2:1",
+                "outgoing_node_ids": [
+                  "map:1:2",
+                  "map:2:2"
+                ],
+                "reachable": false,
+                "visible_room_type": "MONSTER",
+                "x": 2,
+                "y": 1
+              },
+              {
+                "node_id": "map:4:1",
+                "outgoing_node_ids": [
+                  "map:5:2"
+                ],
+                "reachable": false,
+                "visible_room_type": "EVENT",
+                "x": 4,
+                "y": 1
+              },
+              {
+                "node_id": "map:1:2",
+                "outgoing_node_ids": [
+                  "map:0:3",
+                  "map:1:3",
+                  "map:2:3"
+                ],
+                "reachable": false,
+                "visible_room_type": "MONSTER",
+                "x": 1,
+                "y": 2
+              },
+              {
+                "node_id": "map:2:2",
+                "outgoing_node_ids": [
+                  "map:2:3",
+                  "map:3:3"
+                ],
+                "reachable": false,
+                "visible_room_type": "EVENT",
+                "x": 2,
+                "y": 2
+              },
+              {
+                "node_id": "map:5:2",
+                "outgoing_node_ids": [
+                  "map:5:3"
+                ],
+                "reachable": false,
+                "visible_room_type": "SHOP",
+                "x": 5,
+                "y": 2
+              },
+              {
+                "node_id": "map:0:3",
+                "outgoing_node_ids": [
+                  "map:1:4"
+                ],
+                "reachable": false,
+                "visible_room_type": "EVENT",
+                "x": 0,
+                "y": 3
+              },
+              {
+                "node_id": "map:1:3",
+                "outgoing_node_ids": [
+                  "map:2:4"
+                ],
+                "reachable": false,
+                "visible_room_type": "MONSTER",
+                "x": 1,
+                "y": 3
+              },
+              {
+                "node_id": "map:2:3",
+                "outgoing_node_ids": [
+                  "map:2:4"
+                ],
+                "reachable": false,
+                "visible_room_type": "SHOP",
+                "x": 2,
+                "y": 3
+              },
+              {
+                "node_id": "map:3:3",
+                "outgoing_node_ids": [
+                  "map:2:4"
+                ],
+                "reachable": false,
+                "visible_room_type": "MONSTER",
+                "x": 3,
+                "y": 3
+              },
+              {
+                "node_id": "map:5:3",
+                "outgoing_node_ids": [
+                  "map:6:4"
+                ],
+                "reachable": false,
+                "visible_room_type": "EVENT",
+                "x": 5,
+                "y": 3
+              },
+              {
+                "node_id": "map:1:4",
+                "outgoing_node_ids": [
+                  "map:2:5"
+                ],
+                "reachable": false,
+                "visible_room_type": "MONSTER",
+                "x": 1,
+                "y": 4
+              },
+              {
+                "node_id": "map:2:4",
+                "outgoing_node_ids": [
+                  "map:2:5",
+                  "map:3:5"
+                ],
+                "reachable": false,
+                "visible_room_type": "MONSTER",
+                "x": 2,
+                "y": 4
+              },
+              {
+                "node_id": "map:6:4",
+                "outgoing_node_ids": [
+                  "map:6:5"
+                ],
+                "reachable": false,
+                "visible_room_type": "MONSTER",
+                "x": 6,
+                "y": 4
+              },
+              {
+                "node_id": "map:2:5",
+                "outgoing_node_ids": [
+                  "map:1:6",
+                  "map:2:6"
+                ],
+                "reachable": false,
+                "visible_room_type": "REST",
+                "x": 2,
+                "y": 5
+              },
+              {
+                "node_id": "map:3:5",
+                "outgoing_node_ids": [
+                  "map:2:6",
+                  "map:3:6"
+                ],
+                "reachable": false,
+                "visible_room_type": "ELITE",
+                "x": 3,
+                "y": 5
+              },
+              {
+                "node_id": "map:6:5",
+                "outgoing_node_ids": [
+                  "map:6:6"
+                ],
+                "reachable": false,
+                "visible_room_type": "REST",
+                "x": 6,
+                "y": 5
+              },
+              {
+                "node_id": "map:1:6",
+                "outgoing_node_ids": [
+                  "map:1:7"
+                ],
+                "reachable": false,
+                "visible_room_type": "ELITE",
+                "x": 1,
+                "y": 6
+              },
+              {
+                "node_id": "map:2:6",
+                "outgoing_node_ids": [
+                  "map:2:7",
+                  "map:3:7"
+                ],
+                "reachable": false,
+                "visible_room_type": "MONSTER",
+                "x": 2,
+                "y": 6
+              },
+              {
+                "node_id": "map:3:6",
+                "outgoing_node_ids": [
+                  "map:3:7"
+                ],
+                "reachable": false,
+                "visible_room_type": "REST",
+                "x": 3,
+                "y": 6
+              },
+              {
+                "node_id": "map:6:6",
+                "outgoing_node_ids": [
+                  "map:5:7"
+                ],
+                "reachable": false,
+                "visible_room_type": "ELITE",
+                "x": 6,
+                "y": 6
+              },
+              {
+                "node_id": "map:1:7",
+                "outgoing_node_ids": [
+                  "map:0:8"
+                ],
+                "reachable": false,
+                "visible_room_type": "REST",
+                "x": 1,
+                "y": 7
+              },
+              {
+                "node_id": "map:2:7",
+                "outgoing_node_ids": [
+                  "map:1:8",
+                  "map:2:8"
+                ],
+                "reachable": false,
+                "visible_room_type": "ELITE",
+                "x": 2,
+                "y": 7
+              },
+              {
+                "node_id": "map:3:7",
+                "outgoing_node_ids": [
+                  "map:2:8",
+                  "map:4:8"
+                ],
+                "reachable": false,
+                "visible_room_type": "MONSTER",
+                "x": 3,
+                "y": 7
+              },
+              {
+                "node_id": "map:5:7",
+                "outgoing_node_ids": [
+                  "map:4:8"
+                ],
+                "reachable": true,
+                "visible_room_type": "REST",
+                "x": 5,
+                "y": 7
+              },
+              {
+                "node_id": "map:0:8",
+                "outgoing_node_ids": [
+                  "map:0:9"
+                ],
+                "reachable": false,
+                "visible_room_type": "TREASURE",
+                "x": 0,
+                "y": 8
+              },
+              {
+                "node_id": "map:1:8",
+                "outgoing_node_ids": [
+                  "map:0:9"
+                ],
+                "reachable": false,
+                "visible_room_type": "TREASURE",
+                "x": 1,
+                "y": 8
+              },
+              {
+                "node_id": "map:2:8",
+                "outgoing_node_ids": [
+                  "map:1:9",
+                  "map:2:9"
+                ],
+                "reachable": false,
+                "visible_room_type": "TREASURE",
+                "x": 2,
+                "y": 8
+              },
+              {
+                "node_id": "map:4:8",
+                "outgoing_node_ids": [
+                  "map:4:9"
+                ],
+                "reachable": false,
+                "visible_room_type": "TREASURE",
+                "x": 4,
+                "y": 8
+              },
+              {
+                "node_id": "map:0:9",
+                "outgoing_node_ids": [
+                  "map:0:10"
+                ],
+                "reachable": false,
+                "visible_room_type": "ELITE",
+                "x": 0,
+                "y": 9
+              },
+              {
+                "node_id": "map:1:9",
+                "outgoing_node_ids": [
+                  "map:0:10"
+                ],
+                "reachable": false,
+                "visible_room_type": "MONSTER",
+                "x": 1,
+                "y": 9
+              },
+              {
+                "node_id": "map:2:9",
+                "outgoing_node_ids": [
+                  "map:3:10"
+                ],
+                "reachable": false,
+                "visible_room_type": "EVENT",
+                "x": 2,
+                "y": 9
+              },
+              {
+                "node_id": "map:4:9",
+                "outgoing_node_ids": [
+                  "map:3:10",
+                  "map:4:10"
+                ],
+                "reachable": false,
+                "visible_room_type": "MONSTER",
+                "x": 4,
+                "y": 9
+              },
+              {
+                "node_id": "map:0:10",
+                "outgoing_node_ids": [
+                  "map:0:11",
+                  "map:1:11"
+                ],
+                "reachable": false,
+                "visible_room_type": "MONSTER",
+                "x": 0,
+                "y": 10
+              },
+              {
+                "node_id": "map:3:10",
+                "outgoing_node_ids": [
+                  "map:2:11",
+                  "map:4:11"
+                ],
+                "reachable": false,
+                "visible_room_type": "MONSTER",
+                "x": 3,
+                "y": 10
+              },
+              {
+                "node_id": "map:4:10",
+                "outgoing_node_ids": [
+                  "map:4:11"
+                ],
+                "reachable": false,
+                "visible_room_type": "EVENT",
+                "x": 4,
+                "y": 10
+              },
+              {
+                "node_id": "map:0:11",
+                "outgoing_node_ids": [
+                  "map:0:12"
+                ],
+                "reachable": false,
+                "visible_room_type": "MONSTER",
+                "x": 0,
+                "y": 11
+              },
+              {
+                "node_id": "map:1:11",
+                "outgoing_node_ids": [
+                  "map:2:12"
+                ],
+                "reachable": false,
+                "visible_room_type": "REST",
+                "x": 1,
+                "y": 11
+              },
+              {
+                "node_id": "map:2:11",
+                "outgoing_node_ids": [
+                  "map:3:12"
+                ],
+                "reachable": false,
+                "visible_room_type": "EVENT",
+                "x": 2,
+                "y": 11
+              },
+              {
+                "node_id": "map:4:11",
+                "outgoing_node_ids": [
+                  "map:4:12",
+                  "map:5:12"
+                ],
+                "reachable": false,
+                "visible_room_type": "ELITE",
+                "x": 4,
+                "y": 11
+              },
+              {
+                "node_id": "map:0:12",
+                "outgoing_node_ids": [
+                  "map:0:13",
+                  "map:1:13"
+                ],
+                "reachable": false,
+                "visible_room_type": "EVENT",
+                "x": 0,
+                "y": 12
+              },
+              {
+                "node_id": "map:2:12",
+                "outgoing_node_ids": [
+                  "map:2:13"
+                ],
+                "reachable": false,
+                "visible_room_type": "MONSTER",
+                "x": 2,
+                "y": 12
+              },
+              {
+                "node_id": "map:3:12",
+                "outgoing_node_ids": [
+                  "map:2:13"
+                ],
+                "reachable": false,
+                "visible_room_type": "EVENT",
+                "x": 3,
+                "y": 12
+              },
+              {
+                "node_id": "map:4:12",
+                "outgoing_node_ids": [
+                  "map:4:13"
+                ],
+                "reachable": false,
+                "visible_room_type": "EVENT",
+                "x": 4,
+                "y": 12
+              },
+              {
+                "node_id": "map:5:12",
+                "outgoing_node_ids": [
+                  "map:4:13"
+                ],
+                "reachable": false,
+                "visible_room_type": "MONSTER",
+                "x": 5,
+                "y": 12
+              },
+              {
+                "node_id": "map:0:13",
+                "outgoing_node_ids": [
+                  "map:1:14"
+                ],
+                "reachable": false,
+                "visible_room_type": "EVENT",
+                "x": 0,
+                "y": 13
+              },
+              {
+                "node_id": "map:1:13",
+                "outgoing_node_ids": [
+                  "map:1:14"
+                ],
+                "reachable": false,
+                "visible_room_type": "MONSTER",
+                "x": 1,
+                "y": 13
+              },
+              {
+                "node_id": "map:2:13",
+                "outgoing_node_ids": [
+                  "map:1:14"
+                ],
+                "reachable": false,
+                "visible_room_type": "MONSTER",
+                "x": 2,
+                "y": 13
+              },
+              {
+                "node_id": "map:4:13",
+                "outgoing_node_ids": [
+                  "map:4:14"
+                ],
+                "reachable": false,
+                "visible_room_type": "MONSTER",
+                "x": 4,
+                "y": 13
+              },
+              {
+                "node_id": "map:1:14",
+                "outgoing_node_ids": [
+                  "map:boss"
+                ],
+                "reachable": false,
+                "visible_room_type": "REST",
+                "x": 1,
+                "y": 14
+              },
+              {
+                "node_id": "map:4:14",
+                "outgoing_node_ids": [
+                  "map:boss"
+                ],
+                "reachable": false,
+                "visible_room_type": "REST",
+                "x": 4,
+                "y": 14
+              }
+            ],
+            "player": {
+              "block": 0,
+              "character_id": "IRONCLAD",
+              "current_hp": 75,
+              "energy": 0,
+              "max_energy": 3,
+              "max_hp": 75
+            },
+            "potions": [
+              {
+                "content_id": "FIRE_POTION",
+                "instance_id": "POTION:1",
+                "owner_id": null,
+                "properties": {
+                  "slot": 1
+                }
+              }
+            ],
+            "powers": [
+              {
+                "content_id": "CONFUSED",
+                "instance_id": "PLAYER_POWER:0",
+                "owner_id": "player",
+                "properties": {
+                  "amount": 1
+                }
+              },
+              {
+                "content_id": "DEXTERITY",
+                "instance_id": "PLAYER_POWER:1",
+                "owner_id": "player",
+                "properties": {
+                  "amount": 2
+                }
+              },
+              {
+                "content_id": "PAINFUL_STABS",
+                "instance_id": "MONSTER:0:POWER:0",
+                "owner_id": "MONSTER:0",
+                "properties": {
+                  "amount": 1
+                }
+              },
+              {
+                "content_id": "VULNERABLE",
+                "instance_id": "MONSTER:0:POWER:1",
+                "owner_id": "MONSTER:0",
+                "properties": {
+                  "amount": 2
+                }
+              },
+              {
+                "content_id": "WEAK",
+                "instance_id": "MONSTER:0:POWER:2",
+                "owner_id": "MONSTER:0",
+                "properties": {
+                  "amount": 2
+                }
+              }
+            ],
+            "public_context": {
+              "turn": 1
+            },
+            "relics": [
+              {
+                "content_id": "BURNING_BLOOD",
+                "instance_id": "RELIC:0",
+                "owner_id": null,
+                "properties": {
+                  "counter": 0
+                }
+              },
+              {
+                "content_id": "NEOWS_LAMENT",
+                "instance_id": "RELIC:1",
+                "owner_id": null,
+                "properties": {
+                  "counter": -2
+                }
+              },
+              {
+                "content_id": "POTION_BELT",
+                "instance_id": "RELIC:2",
+                "owner_id": null,
+                "properties": {
+                  "counter": 0
+                }
+              },
+              {
+                "content_id": "ANCIENT_TEA_SET",
+                "instance_id": "RELIC:3",
+                "owner_id": null,
+                "properties": {
+                  "counter": 0
+                }
+              },
+              {
+                "content_id": "SNECKO_EYE",
+                "instance_id": "RELIC:4",
+                "owner_id": null,
+                "properties": {
+                  "counter": 0
+                }
+              }
+            ],
+            "rest_options": {},
+            "reward_options": {},
+            "run": {
+              "act": 2,
+              "ascension": 20,
+              "floor": 24,
+              "gold": 30,
+              "has_emerald_key": true,
+              "has_ruby_key": false,
+              "has_sapphire_key": false,
+              "visible_boss_id": "AUTOMATON"
+            },
+            "schema_version": 2,
+            "screen": "COMBAT",
+            "selected_cards": {},
+            "shop_items": {}
+          },
+          "actions": [
+            {
+              "kind": "DISCARD_POTION",
+              "metadata": {},
+              "node_id": null,
+              "option_id": null,
+              "reward_id": null,
+              "schema_version": 1,
+              "subject_id": "POTION:1",
+              "target_id": null
+            },
+            {
+              "kind": "END_TURN",
+              "metadata": {},
+              "node_id": null,
+              "option_id": null,
+              "reward_id": null,
+              "schema_version": 1,
+              "subject_id": null,
+              "target_id": null
+            },
+            {
+              "kind": "PLAY_CARD",
+              "metadata": {},
+              "node_id": null,
+              "option_id": null,
+              "reward_id": null,
+              "schema_version": 1,
+              "subject_id": "HAND:0",
+              "target_id": "MONSTER:0"
+            },
+            {
+              "kind": "USE_POTION",
+              "metadata": {},
+              "node_id": null,
+              "option_id": null,
+              "reward_id": null,
+              "schema_version": 1,
+              "subject_id": "POTION:1",
+              "target_id": "MONSTER:0"
+            }
+          ],
+          "terminal": false,
+          "rng": {
+            "ai": {
+              "counter": 1,
+              "seed0": 1667060841819293325,
+              "seed1": 5523830616334734492
+            },
+            "card": {
+              "counter": 281,
+              "seed0": 8971490323692960532,
+              "seed1": 5272250961215560940
+            },
+            "card_random": {
+              "counter": 6,
+              "seed0": 14103154923433744180,
+              "seed1": 677834389249030551
+            },
+            "event": {
+              "counter": 5,
+              "seed0": 15414764555869461702,
+              "seed1": 1871026685456888345
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 2146568535488762475,
+              "seed1": 15588141609668159418
+            },
+            "merchant": {
+              "counter": 64,
+              "seed0": 8377602433509682585,
+              "seed1": 10498138295704544225
+            },
+            "misc": {
+              "counter": 0,
+              "seed0": 17366424786863288737,
+              "seed1": 1667060841819293325
+            },
+            "monster": {
+              "counter": 80,
+              "seed0": 6795886138664085600,
+              "seed1": 5700793210737987196
+            },
+            "monster_hp": {
+              "counter": 1,
+              "seed0": 1667060841819293325,
+              "seed1": 5523830616334734492
+            },
+            "neow": {
+              "counter": 5,
+              "seed0": 15414764555869461702,
+              "seed1": 1871026685456888345
+            },
+            "potion": {
+              "counter": 78,
+              "seed0": 12045495557127268356,
+              "seed1": 14464613897076520093
+            },
+            "relic": {
+              "counter": 6,
+              "seed0": 1871026685456888345,
+              "seed1": 10714960715522703858
+            },
+            "shuffle": {
+              "counter": 1,
+              "seed0": 1667060841819293325,
+              "seed1": 5523830616334734492
+            },
+            "treasure": {
+              "counter": 11,
+              "seed0": 1405142470796254191,
+              "seed1": 9503910620049683764
+            }
+          }
+        },
+        "native": {
+          "observation": {
+            "player": {
+              "character_id": "IRONCLAD",
+              "current_hp": 75,
+              "max_hp": 75,
+              "block": 0,
+              "energy": 0,
+              "max_energy": 3
+            },
+            "run": {
+              "ascension": 20,
+              "act": 2,
+              "floor": 24,
+              "gold": 30,
+              "has_ruby_key": false,
+              "has_emerald_key": true,
+              "has_sapphire_key": false,
+              "visible_boss_id": "AUTOMATON"
+            },
+            "screen": "COMBAT",
+            "deck": [
+              {
+                "instance_id": "DECK:0",
+                "card_id": "ASCENDERS_BANE",
+                "zone": "DECK",
+                "upgrades": 0,
+                "base_cost": -2,
+                "current_cost": -2,
+                "playable": false,
+                "visible_order": null,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                }
+              },
+              {
+                "instance_id": "DECK:1",
+                "card_id": "STRIKE_RED",
+                "zone": "DECK",
+                "upgrades": 0,
+                "base_cost": 1,
+                "current_cost": 1,
+                "playable": false,
+                "visible_order": null,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                }
+              },
+              {
+                "instance_id": "DECK:2",
+                "card_id": "STRIKE_RED",
+                "zone": "DECK",
+                "upgrades": 0,
+                "base_cost": 1,
+                "current_cost": 1,
+                "playable": false,
+                "visible_order": null,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                }
+              },
+              {
+                "instance_id": "DECK:3",
+                "card_id": "STRIKE_RED",
+                "zone": "DECK",
+                "upgrades": 0,
+                "base_cost": 1,
+                "current_cost": 1,
+                "playable": false,
+                "visible_order": null,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                }
+              },
+              {
+                "instance_id": "DECK:4",
+                "card_id": "STRIKE_RED",
+                "zone": "DECK",
+                "upgrades": 0,
+                "base_cost": 1,
+                "current_cost": 1,
+                "playable": false,
+                "visible_order": null,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                }
+              },
+              {
+                "instance_id": "DECK:5",
+                "card_id": "STRIKE_RED",
+                "zone": "DECK",
+                "upgrades": 0,
+                "base_cost": 1,
+                "current_cost": 1,
+                "playable": false,
+                "visible_order": null,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                }
+              },
+              {
+                "instance_id": "DECK:6",
+                "card_id": "DEFEND_RED",
+                "zone": "DECK",
+                "upgrades": 0,
+                "base_cost": 1,
+                "current_cost": 1,
+                "playable": false,
+                "visible_order": null,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                }
+              },
+              {
+                "instance_id": "DECK:7",
+                "card_id": "DEFEND_RED",
+                "zone": "DECK",
+                "upgrades": 0,
+                "base_cost": 1,
+                "current_cost": 1,
+                "playable": false,
+                "visible_order": null,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                }
+              },
+              {
+                "instance_id": "DECK:8",
+                "card_id": "DEFEND_RED",
+                "zone": "DECK",
+                "upgrades": 0,
+                "base_cost": 1,
+                "current_cost": 1,
+                "playable": false,
+                "visible_order": null,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                }
+              },
+              {
+                "instance_id": "DECK:9",
+                "card_id": "DEFEND_RED",
+                "zone": "DECK",
+                "upgrades": 0,
+                "base_cost": 1,
+                "current_cost": 1,
+                "playable": false,
+                "visible_order": null,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                }
+              },
+              {
+                "instance_id": "DECK:10",
+                "card_id": "BASH",
+                "zone": "DECK",
+                "upgrades": 0,
+                "base_cost": 2,
+                "current_cost": 2,
+                "playable": false,
+                "visible_order": null,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                }
+              },
+              {
+                "instance_id": "DECK:11",
+                "card_id": "FLAME_BARRIER",
+                "zone": "DECK",
+                "upgrades": 0,
+                "base_cost": 2,
+                "current_cost": 2,
+                "playable": false,
+                "visible_order": null,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                }
+              },
+              {
+                "instance_id": "DECK:12",
+                "card_id": "UPPERCUT",
+                "zone": "DECK",
+                "upgrades": 1,
+                "base_cost": 2,
+                "current_cost": 2,
+                "playable": false,
+                "visible_order": null,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                }
+              },
+              {
+                "instance_id": "DECK:13",
+                "card_id": "POMMEL_STRIKE",
+                "zone": "DECK",
+                "upgrades": 0,
+                "base_cost": 1,
+                "current_cost": 1,
+                "playable": false,
+                "visible_order": null,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                }
+              },
+              {
+                "instance_id": "DECK:14",
+                "card_id": "FIRE_BREATHING",
+                "zone": "DECK",
+                "upgrades": 0,
+                "base_cost": 1,
+                "current_cost": 1,
+                "playable": false,
+                "visible_order": null,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                }
+              },
+              {
+                "instance_id": "DECK:15",
+                "card_id": "WILD_STRIKE",
+                "zone": "DECK",
+                "upgrades": 0,
+                "base_cost": 1,
+                "current_cost": 1,
+                "playable": false,
+                "visible_order": null,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                }
+              },
+              {
+                "instance_id": "DECK:16",
+                "card_id": "INFLAME",
+                "zone": "DECK",
+                "upgrades": 0,
+                "base_cost": 1,
+                "current_cost": 1,
+                "playable": false,
+                "visible_order": null,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                }
+              },
+              {
+                "instance_id": "DECK:17",
+                "card_id": "CARNAGE",
+                "zone": "DECK",
+                "upgrades": 0,
+                "base_cost": 2,
+                "current_cost": 2,
+                "playable": false,
+                "visible_order": null,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                }
+              },
+              {
+                "instance_id": "DECK:18",
+                "card_id": "IMMOLATE",
+                "zone": "DECK",
+                "upgrades": 0,
+                "base_cost": 2,
+                "current_cost": 2,
+                "playable": false,
+                "visible_order": null,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                }
+              },
+              {
+                "instance_id": "DECK:19",
+                "card_id": "ANGER",
+                "zone": "DECK",
+                "upgrades": 0,
+                "base_cost": 0,
+                "current_cost": 0,
+                "playable": false,
+                "visible_order": null,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                }
+              },
+              {
+                "instance_id": "DECK:20",
+                "card_id": "DECAY",
+                "zone": "DECK",
+                "upgrades": 0,
+                "base_cost": -2,
+                "current_cost": -2,
+                "playable": false,
+                "visible_order": null,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                }
+              },
+              {
+                "instance_id": "DECK:21",
+                "card_id": "HAVOC",
+                "zone": "DECK",
+                "upgrades": 0,
+                "base_cost": 1,
+                "current_cost": 1,
+                "playable": false,
+                "visible_order": null,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                }
+              },
+              {
+                "instance_id": "DECK:22",
+                "card_id": "IRON_WAVE",
+                "zone": "DECK",
+                "upgrades": 0,
+                "base_cost": 1,
+                "current_cost": 1,
+                "playable": false,
+                "visible_order": null,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                }
+              }
+            ],
+            "hand": [
+              {
+                "instance_id": "HAND:0",
+                "card_id": "STRIKE_RED",
+                "zone": "HAND",
+                "upgrades": 1,
+                "base_cost": 0,
+                "current_cost": 0,
+                "playable": true,
+                "visible_order": null,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                }
+              },
+              {
+                "instance_id": "HAND:1",
+                "card_id": "DECAY",
+                "zone": "HAND",
+                "upgrades": 0,
+                "base_cost": -2,
+                "current_cost": -2,
+                "playable": false,
+                "visible_order": null,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                }
+              },
+              {
+                "instance_id": "HAND:2",
+                "card_id": "BASH",
+                "zone": "HAND",
+                "upgrades": 1,
+                "base_cost": 2,
+                "current_cost": 2,
+                "playable": false,
+                "visible_order": null,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                }
+              },
+              {
+                "instance_id": "HAND:3",
+                "card_id": "DEFEND_RED",
+                "zone": "HAND",
+                "upgrades": 1,
+                "base_cost": 2,
+                "current_cost": 2,
+                "playable": false,
+                "visible_order": null,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                }
+              }
+            ],
+            "draw_pile": [
+              {
+                "instance_id": "DRAW:HIDDEN:0",
+                "card_id": "ASCENDERS_BANE",
+                "zone": "DRAW",
+                "upgrades": 0,
+                "base_cost": -2,
+                "current_cost": -2,
+                "playable": false,
+                "visible_order": null,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                }
+              },
+              {
+                "instance_id": "DRAW:HIDDEN:1",
+                "card_id": "DEFEND_RED",
+                "zone": "DRAW",
+                "upgrades": 0,
+                "base_cost": 1,
+                "current_cost": 1,
+                "playable": false,
+                "visible_order": null,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                }
+              },
+              {
+                "instance_id": "DRAW:HIDDEN:2",
+                "card_id": "DEFEND_RED",
+                "zone": "DRAW",
+                "upgrades": 0,
+                "base_cost": 1,
+                "current_cost": 1,
+                "playable": false,
+                "visible_order": null,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                }
+              },
+              {
+                "instance_id": "DRAW:HIDDEN:3",
+                "card_id": "DEFEND_RED",
+                "zone": "DRAW",
+                "upgrades": 0,
+                "base_cost": 1,
+                "current_cost": 1,
+                "playable": false,
+                "visible_order": null,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                }
+              },
+              {
+                "instance_id": "DRAW:HIDDEN:4",
+                "card_id": "FIRE_BREATHING",
+                "zone": "DRAW",
+                "upgrades": 0,
+                "base_cost": 1,
+                "current_cost": 1,
+                "playable": false,
+                "visible_order": null,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                }
+              },
+              {
+                "instance_id": "DRAW:HIDDEN:5",
+                "card_id": "FLAME_BARRIER",
+                "zone": "DRAW",
+                "upgrades": 0,
+                "base_cost": 2,
+                "current_cost": 2,
+                "playable": false,
+                "visible_order": null,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                }
+              },
+              {
+                "instance_id": "DRAW:HIDDEN:6",
+                "card_id": "HAVOC",
+                "zone": "DRAW",
+                "upgrades": 0,
+                "base_cost": 1,
+                "current_cost": 1,
+                "playable": false,
+                "visible_order": null,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                }
+              },
+              {
+                "instance_id": "DRAW:HIDDEN:7",
+                "card_id": "IMMOLATE",
+                "zone": "DRAW",
+                "upgrades": 0,
+                "base_cost": 2,
+                "current_cost": 2,
+                "playable": false,
+                "visible_order": null,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                }
+              },
+              {
+                "instance_id": "DRAW:HIDDEN:8",
+                "card_id": "INFLAME",
+                "zone": "DRAW",
+                "upgrades": 0,
+                "base_cost": 1,
+                "current_cost": 1,
+                "playable": false,
+                "visible_order": null,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                }
+              },
+              {
+                "instance_id": "DRAW:HIDDEN:9",
+                "card_id": "IRON_WAVE",
+                "zone": "DRAW",
+                "upgrades": 0,
+                "base_cost": 1,
+                "current_cost": 1,
+                "playable": false,
+                "visible_order": null,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                }
+              },
+              {
+                "instance_id": "DRAW:HIDDEN:10",
+                "card_id": "POMMEL_STRIKE",
+                "zone": "DRAW",
+                "upgrades": 0,
+                "base_cost": 1,
+                "current_cost": 1,
+                "playable": false,
+                "visible_order": null,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                }
+              },
+              {
+                "instance_id": "DRAW:HIDDEN:11",
+                "card_id": "STRIKE_RED",
+                "zone": "DRAW",
+                "upgrades": 0,
+                "base_cost": 1,
+                "current_cost": 1,
+                "playable": false,
+                "visible_order": null,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                }
+              },
+              {
+                "instance_id": "DRAW:HIDDEN:12",
+                "card_id": "STRIKE_RED",
+                "zone": "DRAW",
+                "upgrades": 0,
+                "base_cost": 1,
+                "current_cost": 1,
+                "playable": false,
+                "visible_order": null,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                }
+              },
+              {
+                "instance_id": "DRAW:HIDDEN:13",
+                "card_id": "STRIKE_RED",
+                "zone": "DRAW",
+                "upgrades": 0,
+                "base_cost": 1,
+                "current_cost": 1,
+                "playable": false,
+                "visible_order": null,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                }
+              },
+              {
+                "instance_id": "DRAW:HIDDEN:14",
+                "card_id": "STRIKE_RED",
+                "zone": "DRAW",
+                "upgrades": 0,
+                "base_cost": 1,
+                "current_cost": 1,
+                "playable": false,
+                "visible_order": null,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                }
+              },
+              {
+                "instance_id": "DRAW:HIDDEN:15",
+                "card_id": "WILD_STRIKE",
+                "zone": "DRAW",
+                "upgrades": 0,
+                "base_cost": 1,
+                "current_cost": 1,
+                "playable": false,
+                "visible_order": null,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                }
+              }
+            ],
+            "discard_pile": [
+              {
+                "instance_id": "DISCARD:0",
+                "card_id": "ANGER",
+                "zone": "DISCARD",
+                "upgrades": 1,
+                "base_cost": 0,
+                "current_cost": 0,
+                "playable": false,
+                "visible_order": null,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                }
+              },
+              {
+                "instance_id": "DISCARD:1",
+                "card_id": "ANGER",
+                "zone": "DISCARD",
+                "upgrades": 1,
+                "base_cost": 1,
+                "current_cost": 1,
+                "playable": false,
+                "visible_order": null,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                }
+              },
+              {
+                "instance_id": "DISCARD:2",
+                "card_id": "CARNAGE",
+                "zone": "DISCARD",
+                "upgrades": 0,
+                "base_cost": 2,
+                "current_cost": 2,
+                "playable": false,
+                "visible_order": null,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                }
+              },
+              {
+                "instance_id": "DISCARD:3",
+                "card_id": "UPPERCUT",
+                "zone": "DISCARD",
+                "upgrades": 1,
+                "base_cost": 2,
+                "current_cost": 2,
+                "playable": false,
+                "visible_order": null,
+                "properties": {
+                  "bottled_flame": false,
+                  "bottled_lightning": false,
+                  "bottled_tornado": false,
+                  "free_to_play_once": false,
+                  "retain": false,
+                  "self_retain": false
+                }
+              }
+            ],
+            "exhaust_pile": {},
+            "enemies": [
+              {
+                "instance_id": "MONSTER:0",
+                "monster_id": "BOOK_OF_STABBING",
+                "current_hp": 116,
+                "max_hp": 171,
+                "block": 0,
+                "intent": "ATTACK",
+                "intent_damage": 18,
+                "intent_hits": 1,
+                "properties": {
+                  "is_gone": false
+                }
+              }
+            ],
+            "powers": [
+              {
+                "instance_id": "PLAYER_POWER:0",
+                "content_id": "CONFUSED",
+                "properties": {
+                  "amount": 1
+                },
+                "owner_id": "player"
+              },
+              {
+                "instance_id": "PLAYER_POWER:1",
+                "content_id": "DEXTERITY",
+                "properties": {
+                  "amount": 2
+                },
+                "owner_id": "player"
+              },
+              {
+                "instance_id": "MONSTER:0:POWER:0",
+                "content_id": "PAINFUL_STABS",
+                "properties": {
+                  "amount": 1
+                },
+                "owner_id": "MONSTER:0"
+              },
+              {
+                "instance_id": "MONSTER:0:POWER:1",
+                "content_id": "VULNERABLE",
+                "properties": {
+                  "amount": 2
+                },
+                "owner_id": "MONSTER:0"
+              },
+              {
+                "instance_id": "MONSTER:0:POWER:2",
+                "content_id": "WEAK",
+                "properties": {
+                  "amount": 2
+                },
+                "owner_id": "MONSTER:0"
+              }
+            ],
+            "relics": [
+              {
+                "instance_id": "RELIC:0",
+                "content_id": "BURNING_BLOOD",
+                "properties": {
+                  "counter": 0
+                },
+                "owner_id": null
+              },
+              {
+                "instance_id": "RELIC:1",
+                "content_id": "NEOWS_LAMENT",
+                "properties": {
+                  "counter": -2
+                },
+                "owner_id": null
+              },
+              {
+                "instance_id": "RELIC:2",
+                "content_id": "POTION_BELT",
+                "properties": {
+                  "counter": 0
+                },
+                "owner_id": null
+              },
+              {
+                "instance_id": "RELIC:3",
+                "content_id": "ANCIENT_TEA_SET",
+                "properties": {
+                  "counter": 0
+                },
+                "owner_id": null
+              },
+              {
+                "instance_id": "RELIC:4",
+                "content_id": "SNECKO_EYE",
+                "properties": {
+                  "counter": 0
+                },
+                "owner_id": null
+              }
+            ],
+            "potions": [
+              {
+                "instance_id": "POTION:1",
+                "content_id": "FIRE_POTION",
+                "properties": {
+                  "slot": 1
+                },
+                "owner_id": null
+              }
+            ],
+            "map_nodes": [
+              {
+                "node_id": "map:2:0",
+                "x": 2,
+                "y": 0,
+                "visible_room_type": "MONSTER",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:2:1"
+                ]
+              },
+              {
+                "node_id": "map:4:0",
+                "x": 4,
+                "y": 0,
+                "visible_room_type": "MONSTER",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:4:1"
+                ]
+              },
+              {
+                "node_id": "map:2:1",
+                "x": 2,
+                "y": 1,
+                "visible_room_type": "MONSTER",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:1:2",
+                  "map:2:2"
+                ]
+              },
+              {
+                "node_id": "map:4:1",
+                "x": 4,
+                "y": 1,
+                "visible_room_type": "EVENT",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:5:2"
+                ]
+              },
+              {
+                "node_id": "map:1:2",
+                "x": 1,
+                "y": 2,
+                "visible_room_type": "MONSTER",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:0:3",
+                  "map:1:3",
+                  "map:2:3"
+                ]
+              },
+              {
+                "node_id": "map:2:2",
+                "x": 2,
+                "y": 2,
+                "visible_room_type": "EVENT",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:2:3",
+                  "map:3:3"
+                ]
+              },
+              {
+                "node_id": "map:5:2",
+                "x": 5,
+                "y": 2,
+                "visible_room_type": "SHOP",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:5:3"
+                ]
+              },
+              {
+                "node_id": "map:0:3",
+                "x": 0,
+                "y": 3,
+                "visible_room_type": "EVENT",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:1:4"
+                ]
+              },
+              {
+                "node_id": "map:1:3",
+                "x": 1,
+                "y": 3,
+                "visible_room_type": "MONSTER",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:2:4"
+                ]
+              },
+              {
+                "node_id": "map:2:3",
+                "x": 2,
+                "y": 3,
+                "visible_room_type": "SHOP",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:2:4"
+                ]
+              },
+              {
+                "node_id": "map:3:3",
+                "x": 3,
+                "y": 3,
+                "visible_room_type": "MONSTER",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:2:4"
+                ]
+              },
+              {
+                "node_id": "map:5:3",
+                "x": 5,
+                "y": 3,
+                "visible_room_type": "EVENT",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:6:4"
+                ]
+              },
+              {
+                "node_id": "map:1:4",
+                "x": 1,
+                "y": 4,
+                "visible_room_type": "MONSTER",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:2:5"
+                ]
+              },
+              {
+                "node_id": "map:2:4",
+                "x": 2,
+                "y": 4,
+                "visible_room_type": "MONSTER",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:2:5",
+                  "map:3:5"
+                ]
+              },
+              {
+                "node_id": "map:6:4",
+                "x": 6,
+                "y": 4,
+                "visible_room_type": "MONSTER",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:6:5"
+                ]
+              },
+              {
+                "node_id": "map:2:5",
+                "x": 2,
+                "y": 5,
+                "visible_room_type": "REST",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:1:6",
+                  "map:2:6"
+                ]
+              },
+              {
+                "node_id": "map:3:5",
+                "x": 3,
+                "y": 5,
+                "visible_room_type": "ELITE",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:2:6",
+                  "map:3:6"
+                ]
+              },
+              {
+                "node_id": "map:6:5",
+                "x": 6,
+                "y": 5,
+                "visible_room_type": "REST",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:6:6"
+                ]
+              },
+              {
+                "node_id": "map:1:6",
+                "x": 1,
+                "y": 6,
+                "visible_room_type": "ELITE",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:1:7"
+                ]
+              },
+              {
+                "node_id": "map:2:6",
+                "x": 2,
+                "y": 6,
+                "visible_room_type": "MONSTER",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:2:7",
+                  "map:3:7"
+                ]
+              },
+              {
+                "node_id": "map:3:6",
+                "x": 3,
+                "y": 6,
+                "visible_room_type": "REST",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:3:7"
+                ]
+              },
+              {
+                "node_id": "map:6:6",
+                "x": 6,
+                "y": 6,
+                "visible_room_type": "ELITE",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:5:7"
+                ]
+              },
+              {
+                "node_id": "map:1:7",
+                "x": 1,
+                "y": 7,
+                "visible_room_type": "REST",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:0:8"
+                ]
+              },
+              {
+                "node_id": "map:2:7",
+                "x": 2,
+                "y": 7,
+                "visible_room_type": "ELITE",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:1:8",
+                  "map:2:8"
+                ]
+              },
+              {
+                "node_id": "map:3:7",
+                "x": 3,
+                "y": 7,
+                "visible_room_type": "MONSTER",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:2:8",
+                  "map:4:8"
+                ]
+              },
+              {
+                "node_id": "map:5:7",
+                "x": 5,
+                "y": 7,
+                "visible_room_type": "REST",
+                "reachable": true,
+                "outgoing_node_ids": [
+                  "map:4:8"
+                ]
+              },
+              {
+                "node_id": "map:0:8",
+                "x": 0,
+                "y": 8,
+                "visible_room_type": "TREASURE",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:0:9"
+                ]
+              },
+              {
+                "node_id": "map:1:8",
+                "x": 1,
+                "y": 8,
+                "visible_room_type": "TREASURE",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:0:9"
+                ]
+              },
+              {
+                "node_id": "map:2:8",
+                "x": 2,
+                "y": 8,
+                "visible_room_type": "TREASURE",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:1:9",
+                  "map:2:9"
+                ]
+              },
+              {
+                "node_id": "map:4:8",
+                "x": 4,
+                "y": 8,
+                "visible_room_type": "TREASURE",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:4:9"
+                ]
+              },
+              {
+                "node_id": "map:0:9",
+                "x": 0,
+                "y": 9,
+                "visible_room_type": "ELITE",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:0:10"
+                ]
+              },
+              {
+                "node_id": "map:1:9",
+                "x": 1,
+                "y": 9,
+                "visible_room_type": "MONSTER",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:0:10"
+                ]
+              },
+              {
+                "node_id": "map:2:9",
+                "x": 2,
+                "y": 9,
+                "visible_room_type": "EVENT",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:3:10"
+                ]
+              },
+              {
+                "node_id": "map:4:9",
+                "x": 4,
+                "y": 9,
+                "visible_room_type": "MONSTER",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:3:10",
+                  "map:4:10"
+                ]
+              },
+              {
+                "node_id": "map:0:10",
+                "x": 0,
+                "y": 10,
+                "visible_room_type": "MONSTER",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:0:11",
+                  "map:1:11"
+                ]
+              },
+              {
+                "node_id": "map:3:10",
+                "x": 3,
+                "y": 10,
+                "visible_room_type": "MONSTER",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:2:11",
+                  "map:4:11"
+                ]
+              },
+              {
+                "node_id": "map:4:10",
+                "x": 4,
+                "y": 10,
+                "visible_room_type": "EVENT",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:4:11"
+                ]
+              },
+              {
+                "node_id": "map:0:11",
+                "x": 0,
+                "y": 11,
+                "visible_room_type": "MONSTER",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:0:12"
+                ]
+              },
+              {
+                "node_id": "map:1:11",
+                "x": 1,
+                "y": 11,
+                "visible_room_type": "REST",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:2:12"
+                ]
+              },
+              {
+                "node_id": "map:2:11",
+                "x": 2,
+                "y": 11,
+                "visible_room_type": "EVENT",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:3:12"
+                ]
+              },
+              {
+                "node_id": "map:4:11",
+                "x": 4,
+                "y": 11,
+                "visible_room_type": "ELITE",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:4:12",
+                  "map:5:12"
+                ]
+              },
+              {
+                "node_id": "map:0:12",
+                "x": 0,
+                "y": 12,
+                "visible_room_type": "EVENT",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:0:13",
+                  "map:1:13"
+                ]
+              },
+              {
+                "node_id": "map:2:12",
+                "x": 2,
+                "y": 12,
+                "visible_room_type": "MONSTER",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:2:13"
+                ]
+              },
+              {
+                "node_id": "map:3:12",
+                "x": 3,
+                "y": 12,
+                "visible_room_type": "EVENT",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:2:13"
+                ]
+              },
+              {
+                "node_id": "map:4:12",
+                "x": 4,
+                "y": 12,
+                "visible_room_type": "EVENT",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:4:13"
+                ]
+              },
+              {
+                "node_id": "map:5:12",
+                "x": 5,
+                "y": 12,
+                "visible_room_type": "MONSTER",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:4:13"
+                ]
+              },
+              {
+                "node_id": "map:0:13",
+                "x": 0,
+                "y": 13,
+                "visible_room_type": "EVENT",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:1:14"
+                ]
+              },
+              {
+                "node_id": "map:1:13",
+                "x": 1,
+                "y": 13,
+                "visible_room_type": "MONSTER",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:1:14"
+                ]
+              },
+              {
+                "node_id": "map:2:13",
+                "x": 2,
+                "y": 13,
+                "visible_room_type": "MONSTER",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:1:14"
+                ]
+              },
+              {
+                "node_id": "map:4:13",
+                "x": 4,
+                "y": 13,
+                "visible_room_type": "MONSTER",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:4:14"
+                ]
+              },
+              {
+                "node_id": "map:1:14",
+                "x": 1,
+                "y": 14,
+                "visible_room_type": "REST",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:boss"
+                ]
+              },
+              {
+                "node_id": "map:4:14",
+                "x": 4,
+                "y": 14,
+                "visible_room_type": "REST",
+                "reachable": false,
+                "outgoing_node_ids": [
+                  "map:boss"
+                ]
+              }
+            ],
+            "choice_options": {},
+            "selected_cards": {},
+            "reward_options": {},
+            "shop_items": {},
+            "event_options": {},
+            "rest_options": {},
+            "boss_relic_options": {},
+            "public_context": {
+              "turn": 1
+            },
+            "schema_version": 2
+          },
+          "actions": [
+            {
+              "schema_version": 1,
+              "kind": "DISCARD_POTION",
+              "subject_id": "POTION:1",
+              "target_id": null,
+              "option_id": null,
+              "node_id": null,
+              "reward_id": null,
+              "metadata": {}
+            },
+            {
+              "schema_version": 1,
+              "kind": "END_TURN",
+              "subject_id": null,
+              "target_id": null,
+              "option_id": null,
+              "node_id": null,
+              "reward_id": null,
+              "metadata": {}
+            },
+            {
+              "schema_version": 1,
+              "kind": "PLAY_CARD",
+              "subject_id": "HAND:0",
+              "target_id": "MONSTER:0",
+              "option_id": null,
+              "node_id": null,
+              "reward_id": null,
+              "metadata": {}
+            },
+            {
+              "schema_version": 1,
+              "kind": "USE_POTION",
+              "subject_id": "POTION:1",
+              "target_id": "MONSTER:0",
+              "option_id": null,
+              "node_id": null,
+              "reward_id": null,
+              "metadata": {}
+            }
+          ],
+          "terminal": false,
+          "rng": {
+            "ai": {
+              "counter": 1,
+              "seed0": 1667060841819293325,
+              "seed1": 5523830616334734492
+            },
+            "card_random": {
+              "counter": 6,
+              "seed0": 14103154923433744180,
+              "seed1": 677834389249030551
+            },
+            "card": {
+              "counter": 281,
+              "seed0": 8971490323692960532,
+              "seed1": 5272250961215560940
+            },
+            "event": {
+              "counter": 5,
+              "seed0": 15414764555869461702,
+              "seed1": 1871026685456888345
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 2146568535488762475,
+              "seed1": 15588141609668159418
+            },
+            "merchant": {
+              "counter": 64,
+              "seed0": 8377602433509682585,
+              "seed1": 10498138295704544225
+            },
+            "misc": {
+              "counter": 0,
+              "seed0": 17366424786863288737,
+              "seed1": 1667060841819293325
+            },
+            "monster_hp": {
+              "counter": 1,
+              "seed0": 1667060841819293325,
+              "seed1": 5523830616334734492
+            },
+            "monster": {
+              "counter": 80,
+              "seed0": 6795886138664085600,
+              "seed1": 5700793210737987196
+            },
+            "neow": {
+              "counter": 5,
+              "seed0": 15414764555869461702,
+              "seed1": 1871026685456888345
+            },
+            "potion": {
+              "counter": 78,
+              "seed0": 12045495557127268356,
+              "seed1": 14464613897076520093
+            },
+            "relic": {
+              "counter": 6,
+              "seed0": 1871026685456888345,
+              "seed1": 10714960715522703858
+            },
+            "shuffle": {
+              "counter": 1,
+              "seed0": 1667060841819293325,
+              "seed1": 5523830616334734492
+            },
+            "treasure": {
+              "counter": 11,
+              "seed0": 1405142470796254191,
+              "seed1": 9503910620049683764
+            }
+          }
+        }
+      },
+      "boundaries_checked": 191,
+      "act2_boundaries": 58,
+      "reward_boundaries": 40,
+      "checkpoint_replays": 190,
+      "stock_action_unavailable": null,
+      "status": "SEMANTIC_DIFFERENCE"
+    },
+    {
+      "seed": 131100064,
+      "first_divergence": null,
+      "boundaries_checked": 220,
+      "act2_boundaries": 71,
+      "reward_boundaries": 45,
+      "checkpoint_replays": 219,
+      "stock_action_unavailable": null,
+      "status": "SYSTEM_BRANCH_MATCH"
+    },
+    {
+      "seed": 131100065,
+      "first_divergence": null,
+      "boundaries_checked": 230,
+      "act2_boundaries": 66,
+      "reward_boundaries": 35,
+      "checkpoint_replays": 229,
+      "stock_action_unavailable": null,
+      "status": "SYSTEM_BRANCH_MATCH"
+    }
+  ],
+  "stock_capture_sha256": "77e43230eef4efed7565bfad2070f03a63d28cb7d435d10fb9196618c49d42f2",
+  "launch_evidence_sha256": "8347762e1e720baffdde8529dff5535b559a1253a0cf671b5e1f42ef33dd99fb",
+  "oracle_build_sha256": "f59e2960838a5b744b9a146b8c489560d532f411c813886955ca2fa6dce7a4ef",
+  "training_gate": "NOT_QUALIFIED"
+}

@@ -578,6 +578,11 @@ void Monster::takeTurn(BattleContext &bc) {     // todo, maybe for monsters that
                 bc.aiRng.random(0);
                 auto &mystic = bc.monsters.arr[1];
                 mystic.addBlock(asc17 ? 20 : 15);
+            } else {
+                // GainBlockRandomMonsterAction falls back to its source when
+                // the committed Defend loses its ally before execution. No
+                // target-selection RNG is consumed on that empty-list branch.
+                addBlock(asc17 ? 20 : 15);
             }
             rollMove(bc);
             break;
@@ -824,6 +829,17 @@ void Monster::takeTurn(BattleContext &bc) {     // todo, maybe for monsters that
 
         case MMID::HEXAGHOST_INFERNO: // 6
             attackPlayerHelper(bc, asc4 ? 3 : 2, 6);
+            // Stock BurnIncreaseAction upgrades only draw/discard Burns,
+            // then adds three Burn+ through the normal discard-card action.
+            bc.addToBot({[](BattleContext &context) {
+                for (auto &card : context.cards.discardPile) {
+                    if (card.id == CardId::BURN) card.upgrade();
+                }
+                for (auto &card : context.cards.drawPile) {
+                    if (card.id == CardId::BURN) card.upgrade();
+                }
+            }});
+            bc.addToBot(Actions::MakeTempCardInDiscard(CardInstance(CardId::BURN, true), 3));
             uniquePower0 = 0;
             setMove(MMID::HEXAGHOST_SEAR);
             bc.addToBot( Actions::NoOpRollMove() );
@@ -2099,8 +2115,8 @@ MMID Monster::getMoveForRoll(BattleContext &bc, int &monsterData, const int roll
             if (roll >= 40 && !lastTwoMoves(MMID::BLUE_SLAVER_STAB)) {
                 return (MMID::BLUE_SLAVER_STAB);
 
-            } else if ( !lastTwoMoves(MMID::BLUE_SLAVER_RAKE) ||
-                (asc17 && !lastMove(MMID::BLUE_SLAVER_RAKE)) ) {
+            } else if (asc17 ? !lastMove(MMID::BLUE_SLAVER_RAKE)
+                             : !lastTwoMoves(MMID::BLUE_SLAVER_RAKE)) {
                 return (MMID::BLUE_SLAVER_RAKE);
 
             } else {
@@ -2729,17 +2745,19 @@ MMID Monster::getMoveForRoll(BattleContext &bc, int &monsterData, const int roll
                 break;
             }
 
-            int roll2 = 100;
-
-            if (roll < 20) {
+            int effectiveRoll = roll;
+            if (effectiveRoll < 20) {
                 if (!lastMove(MMID::SHELLED_PARASITE_FELL)) {
                     return (MMID::SHELLED_PARASITE_FELL);
                     break;
                 }
-                roll2 = bc.aiRng.random(20,99);
+                // Stock getMove recursively dispatches on the replacement
+                // [20,99] roll. Testing the original (<20) roll below would
+                // force Double Strike even when the replacement selects Suck.
+                effectiveRoll = bc.aiRng.random(20,99);
             }
 
-            if (roll < 60 || roll2 < 60) {
+            if (effectiveRoll < 60) {
                 if (!lastTwoMoves(MMID::SHELLED_PARASITE_DOUBLE_STRIKE)) {
                     return (MMID::SHELLED_PARASITE_DOUBLE_STRIKE);
                 } else {

@@ -1,0 +1,158 @@
+{
+  "schema": "sls-act2-stock-coverage-v1",
+  "native_source_sha256": "b100427d1e3ae6eee05818b6904047049609b1aa70807872c1f5f5e0edd6d62f",
+  "selection_native_source_sha256": "f6fad929448200bd593218f9f1e0e7a6cae422d26c316d92cdc2ac73f4b481bd",
+  "selection_sha256": "d3877205d236ca29652e4bdf1e12e29dda70edfd80a87254fc6a3cce0f894e6e",
+  "runs": [
+    {
+      "seed": 8000011000000,
+      "role": "ACT2_ORDINARY_FAILURE",
+      "actual_stock_evidence": {
+        "ordinary_failure": false,
+        "elite_floors": [],
+        "boss_entries": [],
+        "last_act2_combat": {
+          "boundary": 185,
+          "floor": 19,
+          "enemies": [
+            "CHOSEN"
+          ],
+          "selected_room": [
+            2,
+            "EVENT"
+          ]
+        }
+      },
+      "role_witnessed": false,
+      "trajectory_sha256": "69d481fe3ca49e2ebf9cad4035a6d29796259fd9edf3cbc985394443f13b2232"
+    },
+    {
+      "seed": 8000011000001,
+      "role": "ACT2_ELITE_ENTRY",
+      "actual_stock_evidence": {
+        "ordinary_failure": false,
+        "elite_floors": [
+          23
+        ],
+        "boss_entries": [],
+        "last_act2_combat": {
+          "boundary": 198,
+          "floor": 23,
+          "enemies": [
+            "BOOK_OF_STABBING"
+          ],
+          "selected_room": [
+            2,
+            "ELITE"
+          ]
+        }
+      },
+      "role_witnessed": true,
+      "trajectory_sha256": "4033c5d1906890eef9ea0b9905dd7985a0beab7027a7dd98187616cec6db4e3f"
+    },
+    {
+      "seed": 8000011000002,
+      "role": "ACT2_ELITE_ENTRY",
+      "actual_stock_evidence": {
+        "ordinary_failure": false,
+        "elite_floors": [
+          28
+        ],
+        "boss_entries": [
+          "CHAMP"
+        ],
+        "last_act2_combat": {
+          "boundary": 448,
+          "floor": 33,
+          "enemies": [
+            "THE_CHAMP"
+          ],
+          "selected_room": [
+            2,
+            "BOSS"
+          ]
+        }
+      },
+      "role_witnessed": true,
+      "trajectory_sha256": "2104ff5b54075c5e5ed46726b5241554bc9fd5be9d816881e5d2abe19d3a6278"
+    },
+    {
+      "seed": 8000011000004,
+      "role": "ACT2_ORDINARY_FAILURE",
+      "actual_stock_evidence": {
+        "ordinary_failure": true,
+        "elite_floors": [],
+        "boss_entries": [],
+        "last_act2_combat": {
+          "boundary": 214,
+          "floor": 21,
+          "enemies": [
+            "SNECKO"
+          ],
+          "selected_room": [
+            2,
+            "MONSTER"
+          ]
+        }
+      },
+      "role_witnessed": true,
+      "trajectory_sha256": "15f0d3a8b1784b090a44fbaf2f1c21f14674c48520b313a473b6a69fd3495af7"
+    },
+    {
+      "seed": 8000011000005,
+      "role": "ACT2_BOSS_ENTRY:CHAMP",
+      "actual_stock_evidence": {
+        "ordinary_failure": false,
+        "elite_floors": [],
+        "boss_entries": [
+          "CHAMP"
+        ],
+        "last_act2_combat": {
+          "boundary": 376,
+          "floor": 33,
+          "enemies": [
+            "THE_CHAMP"
+          ],
+          "selected_room": [
+            2,
+            "BOSS"
+          ]
+        }
+      },
+      "role_witnessed": true,
+      "trajectory_sha256": "722f74d7cd4216baf0ce0469e05e44c3f7fbf3b54928249c893573627543bcde"
+    },
+    {
+      "seed": 8000011000007,
+      "role": "ACT2_ORDINARY_FAILURE",
+      "actual_stock_evidence": {
+        "ordinary_failure": false,
+        "elite_floors": [
+          28
+        ],
+        "boss_entries": [],
+        "last_act2_combat": {
+          "boundary": 395,
+          "floor": 29,
+          "enemies": [
+            "SNECKO"
+          ],
+          "selected_room": [
+            2,
+            "EVENT"
+          ]
+        }
+      },
+      "role_witnessed": false,
+      "trajectory_sha256": "55d299ccec30d273d4ca814b2ec9a78a178671d84b4734d1e90db6f8f9d492a2"
+    }
+  ],
+  "missing_roles": [
+    8000011000000,
+    8000011000007,
+    8000011000009,
+    8000011000069
+  ],
+  "coverage_complete": false,
+  "scope": "coverage only; does not certify rules or estimate win rate"
+}

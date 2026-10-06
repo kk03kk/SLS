@@ -1,0 +1,784 @@
+{
+  "schema": "sls-act2-differential-v1",
+  "native_source_sha256": "c89f44d9b0394badc70c7ab916bf6e05217a989e6d97924f4f052a302c340cb4",
+  "runs": [
+    {
+      "encounter": "SLAVERS",
+      "seed": 131100030,
+      "scene_id": "slavers-entangle",
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        },
+        {
+          "boundary": 3,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "SLAVERS",
+      "seed": 131100031,
+      "scene_id": "slavers-entangle",
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        },
+        {
+          "boundary": 3,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "SLAVERS",
+      "seed": 131100032,
+      "scene_id": "slavers-entangle",
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        },
+        {
+          "boundary": 3,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "CHAMP",
+      "seed": 131100045,
+      "scene_id": "champ-threshold-220",
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        },
+        {
+          "boundary": 3,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "CHAMP",
+      "seed": 131100046,
+      "scene_id": "champ-threshold-220",
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        },
+        {
+          "boundary": 3,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "CHAMP",
+      "seed": 131100047,
+      "scene_id": "champ-threshold-220",
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        },
+        {
+          "boundary": 3,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "CHAMP",
+      "seed": 131100048,
+      "scene_id": "champ-threshold-219",
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        },
+        {
+          "boundary": 3,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "CHAMP",
+      "seed": 131100049,
+      "scene_id": "champ-threshold-219",
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        },
+        {
+          "boundary": 3,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "CHAMP",
+      "seed": 131100050,
+      "scene_id": "champ-threshold-219",
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        },
+        {
+          "boundary": 3,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "COLLECTOR",
+      "seed": 131100051,
+      "scene_id": "collector-cycle",
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        },
+        {
+          "boundary": 3,
+          "differences": []
+        },
+        {
+          "boundary": 4,
+          "differences": []
+        },
+        {
+          "boundary": 5,
+          "differences": []
+        },
+        {
+          "boundary": 6,
+          "differences": []
+        },
+        {
+          "boundary": 7,
+          "differences": []
+        },
+        {
+          "boundary": 8,
+          "differences": []
+        },
+        {
+          "boundary": 9,
+          "differences": []
+        },
+        {
+          "boundary": 10,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "COLLECTOR",
+      "seed": 131100052,
+      "scene_id": "collector-cycle",
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        },
+        {
+          "boundary": 3,
+          "differences": []
+        },
+        {
+          "boundary": 4,
+          "differences": []
+        },
+        {
+          "boundary": 5,
+          "differences": []
+        },
+        {
+          "boundary": 6,
+          "differences": []
+        },
+        {
+          "boundary": 7,
+          "differences": []
+        },
+        {
+          "boundary": 8,
+          "differences": []
+        },
+        {
+          "boundary": 9,
+          "differences": []
+        },
+        {
+          "boundary": 10,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "COLLECTOR",
+      "seed": 131100053,
+      "scene_id": "collector-cycle",
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        },
+        {
+          "boundary": 3,
+          "differences": []
+        },
+        {
+          "boundary": 4,
+          "differences": []
+        },
+        {
+          "boundary": 5,
+          "differences": []
+        },
+        {
+          "boundary": 6,
+          "differences": []
+        },
+        {
+          "boundary": 7,
+          "differences": []
+        },
+        {
+          "boundary": 8,
+          "differences": []
+        },
+        {
+          "boundary": 9,
+          "differences": []
+        },
+        {
+          "boundary": 10,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "COLLECTOR",
+      "seed": 131100054,
+      "scene_id": "collector-summon",
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        },
+        {
+          "boundary": 3,
+          "differences": []
+        },
+        {
+          "boundary": 4,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "COLLECTOR",
+      "seed": 131100055,
+      "scene_id": "collector-summon",
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        },
+        {
+          "boundary": 3,
+          "differences": []
+        },
+        {
+          "boundary": 4,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "COLLECTOR",
+      "seed": 131100056,
+      "scene_id": "collector-summon",
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        },
+        {
+          "boundary": 3,
+          "differences": []
+        },
+        {
+          "boundary": 4,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "AUTOMATON",
+      "seed": 131100057,
+      "scene_id": "automaton-cycle",
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        },
+        {
+          "boundary": 3,
+          "differences": []
+        },
+        {
+          "boundary": 4,
+          "differences": []
+        },
+        {
+          "boundary": 5,
+          "differences": []
+        },
+        {
+          "boundary": 6,
+          "differences": []
+        },
+        {
+          "boundary": 7,
+          "differences": []
+        },
+        {
+          "boundary": 8,
+          "differences": []
+        },
+        {
+          "boundary": 9,
+          "differences": []
+        },
+        {
+          "boundary": 10,
+          "differences": []
+        },
+        {
+          "boundary": 11,
+          "differences": []
+        },
+        {
+          "boundary": 12,
+          "differences": []
+        },
+        {
+          "boundary": 13,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "AUTOMATON",
+      "seed": 131100058,
+      "scene_id": "automaton-cycle",
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        },
+        {
+          "boundary": 3,
+          "differences": []
+        },
+        {
+          "boundary": 4,
+          "differences": []
+        },
+        {
+          "boundary": 5,
+          "differences": []
+        },
+        {
+          "boundary": 6,
+          "differences": []
+        },
+        {
+          "boundary": 7,
+          "differences": []
+        },
+        {
+          "boundary": 8,
+          "differences": []
+        },
+        {
+          "boundary": 9,
+          "differences": []
+        },
+        {
+          "boundary": 10,
+          "differences": []
+        },
+        {
+          "boundary": 11,
+          "differences": []
+        },
+        {
+          "boundary": 12,
+          "differences": []
+        },
+        {
+          "boundary": 13,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "AUTOMATON",
+      "seed": 131100059,
+      "scene_id": "automaton-cycle",
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        },
+        {
+          "boundary": 3,
+          "differences": []
+        },
+        {
+          "boundary": 4,
+          "differences": []
+        },
+        {
+          "boundary": 5,
+          "differences": []
+        },
+        {
+          "boundary": 6,
+          "differences": []
+        },
+        {
+          "boundary": 7,
+          "differences": []
+        },
+        {
+          "boundary": 8,
+          "differences": []
+        },
+        {
+          "boundary": 9,
+          "differences": []
+        },
+        {
+          "boundary": 10,
+          "differences": []
+        },
+        {
+          "boundary": 11,
+          "differences": []
+        },
+        {
+          "boundary": 12,
+          "differences": []
+        },
+        {
+          "boundary": 13,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "AUTOMATON",
+      "seed": 131100060,
+      "scene_id": "automaton-stasis",
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        },
+        {
+          "boundary": 3,
+          "differences": []
+        },
+        {
+          "boundary": 4,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "AUTOMATON",
+      "seed": 131100061,
+      "scene_id": "automaton-stasis",
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        },
+        {
+          "boundary": 3,
+          "differences": []
+        },
+        {
+          "boundary": 4,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    },
+    {
+      "encounter": "AUTOMATON",
+      "seed": 131100062,
+      "scene_id": "automaton-stasis",
+      "status": "HARNESS_MATCH",
+      "first_divergence": null,
+      "boundaries": [
+        {
+          "boundary": 0,
+          "differences": []
+        },
+        {
+          "boundary": 1,
+          "differences": []
+        },
+        {
+          "boundary": 2,
+          "differences": []
+        },
+        {
+          "boundary": 3,
+          "differences": []
+        },
+        {
+          "boundary": 4,
+          "differences": []
+        }
+      ],
+      "qualification": false
+    }
+  ],
+  "stock_capture_sha256": "8a465b18ee9055dc4729a41aa7ee56bbb333ef6d94a0e421902caa1a943dc5c7",
+  "oracle_build_sha256": "c13d88b98b920a7d0aa4be3dbf70f3fc456939288a37573f5525edc0ab702fea",
+  "launch_evidence_sha256": "8a5c89c581c095d9670e28a971b2e4b175873035bfe1b731e3f6bc92e5794486",
+  "training_gate": "NOT_QUALIFIED"
+}

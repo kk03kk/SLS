@@ -456,6 +456,14 @@ class SimulatorBackend:
                 )
                 for order, index in enumerate(self._multi_selected)
                 for option in (combat["choice"]["options"][index],)
+            ) + tuple(
+                _entity(
+                    f"SELECTED:{order}", option["content_id"],
+                    **dict(public_card_option_properties(option["content_id"], option)),
+                    source="MASTER_DECK", selected=True, selected_order=order,
+                    deck_index=int(option["deck_index"]),
+                )
+                for order, option in enumerate(raw["public_screen"].get("selected_cards", ()))
             ),
             reward_options=options["reward"],
             shop_items=options["shop"],

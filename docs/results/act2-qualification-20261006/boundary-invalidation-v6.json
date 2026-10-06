@@ -1,0 +1,112 @@
+{
+  "schema": "sls-stock-boundary-review-v1",
+  "reason": "Actual monster.intent DEBUG is not equivalent to projected EnemyMoveInfo; Spot Weakness can observe it.",
+  "new_execution_contract": "sls-original-choice-public-boundary-v6",
+  "historical_reports_retained": true,
+  "rows": [
+    {
+      "path": "local\\audits\\act2-qualification-20261006\\production-first3-r9-8000011000000.jsonl",
+      "sha256": "161d13bafd8faa46c1d1922aaae2a4ee78b5c8709ccb3dc1650c742b6b7abac7",
+      "pending_intent_boundaries": [
+        2,
+        16,
+        23,
+        32,
+        52,
+        81,
+        96,
+        115,
+        116,
+        117,
+        149,
+        178
+      ],
+      "qualification": "RECAPTURE_REQUIRED"
+    },
+    {
+      "path": "local\\audits\\act2-qualification-20261006\\production-first3-r9-8000011000001.jsonl",
+      "sha256": "1e33f9e106c70aedaca74e74b162ad06d10e1404eeae7abe101ba1194057c532",
+      "pending_intent_boundaries": [
+        3,
+        25,
+        39,
+        57,
+        81,
+        113,
+        114,
+        150,
+        179
+      ],
+      "qualification": "RECAPTURE_REQUIRED"
+    },
+    {
+      "path": "local\\audits\\act2-qualification-20261006\\production-first3-r9-8000011000002.jsonl",
+      "sha256": "9a79755529cb41d5f247dd8b4b19b879a9fea1804f24a9ac3fca8d8d4b48179f",
+      "pending_intent_boundaries": [
+        5,
+        26,
+        54,
+        55,
+        73,
+        88,
+        125,
+        158,
+        183,
+        199,
+        244,
+        277,
+        308,
+        341,
+        380,
+        414
+      ],
+      "qualification": "RECAPTURE_REQUIRED"
+    },
+    {
+      "path": "local\\audits\\act2-qualification-20261006\\system-transition-r6-131100063.jsonl",
+      "sha256": "86888fdb5568daf3d219a9e7d2c4ddbe98e5f41b6438abebef5a358f4e736a6a",
+      "pending_intent_boundaries": [
+        2,
+        11,
+        20,
+        26,
+        45,
+        90,
+        133,
+        159
+      ],
+      "qualification": "RECAPTURE_REQUIRED"
+    },
+    {
+      "path": "local\\audits\\act2-qualification-20261006\\system-transition-r6-131100064.jsonl",
+      "sha256": "21701871207c99a94b8a07fe433386a5e2b765bb9dd5ac2663a2745daa021d23",
+      "pending_intent_boundaries": [
+        2,
+        12,
+        18,
+        26,
+        62,
+        78,
+        99
+      ],
+      "qualification": "RECAPTURE_REQUIRED"
+    },
+    {
+      "path": "local\\audits\\act2-qualification-20261006\\system-transition-r6-131100065.jsonl",
+      "sha256": "474e1a1cc8790a1b49c7ee1bc00d2cc6033a8ecb0f07fd24ddad439c54d5f3df",
+      "pending_intent_boundaries": [
+        2,
+        7,
+        12,
+        22,
+        49,
+        87,
+        106,
+        165,
+        191,
+        214
+      ],
+      "qualification": "RECAPTURE_REQUIRED"
+    }
+  ]
+}

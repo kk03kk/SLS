@@ -1,0 +1,88 @@
+{
+  "schema": "sls-act2-system-differential-v1",
+  "native_source_sha256": "98dcc4870002331be5ba0dd0101329556064fe81a36ed883e23c1b97cc92da77",
+  "runs": [
+    {
+      "seed": 131100066,
+      "first_divergence": null,
+      "boundaries_checked": 320,
+      "act2_boundaries": 152,
+      "reward_boundaries": 58,
+      "checkpoint_replays": 319,
+      "stock_action_unavailable": null,
+      "terminal_reason_verified": true,
+      "controlled_runtime_inputs": [
+        {
+          "boundary": 126,
+          "stock_measured_inputs": {
+            "discovery_retrieval_updates": 14
+          }
+        },
+        {
+          "boundary": 129,
+          "stock_measured_inputs": {
+            "discovery_retrieval_updates": 15
+          }
+        },
+        {
+          "boundary": 297,
+          "stock_measured_inputs": {
+            "discovery_retrieval_updates": 14
+          }
+        }
+      ],
+      "qualification_scope": "STOCK_MEASURED_TIMING_CONDITIONAL; NOT_PRODUCTION_RNG_CERTIFICATION",
+      "status": "SYSTEM_BRANCH_MATCH"
+    },
+    {
+      "seed": 131100067,
+      "first_divergence": null,
+      "boundaries_checked": 155,
+      "act2_boundaries": 0,
+      "reward_boundaries": 30,
+      "checkpoint_replays": 154,
+      "stock_action_unavailable": null,
+      "terminal_reason_verified": true,
+      "controlled_runtime_inputs": [
+        {
+          "boundary": 66,
+          "stock_measured_inputs": {
+            "discovery_retrieval_updates": 14
+          }
+        },
+        {
+          "boundary": 81,
+          "stock_measured_inputs": {
+            "discovery_retrieval_updates": 15
+          }
+        }
+      ],
+      "qualification_scope": "STOCK_MEASURED_TIMING_CONDITIONAL; NOT_PRODUCTION_RNG_CERTIFICATION",
+      "status": "SYSTEM_BRANCH_MATCH"
+    },
+    {
+      "seed": 131100068,
+      "first_divergence": null,
+      "boundaries_checked": 293,
+      "act2_boundaries": 123,
+      "reward_boundaries": 54,
+      "checkpoint_replays": 292,
+      "stock_action_unavailable": null,
+      "terminal_reason_verified": true,
+      "controlled_runtime_inputs": [
+        {
+          "boundary": 134,
+          "stock_measured_inputs": {
+            "discovery_retrieval_updates": 15
+          }
+        }
+      ],
+      "qualification_scope": "STOCK_MEASURED_TIMING_CONDITIONAL; NOT_PRODUCTION_RNG_CERTIFICATION",
+      "status": "SYSTEM_BRANCH_MATCH"
+    }
+  ],
+  "stock_capture_sha256": "7f294bae956700bb283b11f17111ac0a794340ec6bab99be326b2ee2bf632bc2",
+  "launch_evidence_sha256": "e1690095998e3d52cc30307407ba5719fe6bbb4522c51ed6eb992fe0f9d0d53b",
+  "oracle_build_sha256": "f59e2960838a5b744b9a146b8c489560d532f411c813886955ca2fa6dce7a4ef",
+  "training_gate": "NOT_QUALIFIED"
+}

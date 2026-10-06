@@ -1,0 +1,46 @@
+{
+  "schema": "sls-act2-qualification-rollup-v1",
+  "native_source_sha256": "2247ca990f0afb396b3c0820c156fd3af0c0a6d08ba6cae9736a7b03490ad4f0",
+  "controlled_matched": 64,
+  "controlled_expected": 72,
+  "controlled_missing_or_failed": [
+    131100063,
+    131100064,
+    131100066,
+    131100067,
+    131100068,
+    131100069,
+    131100070,
+    131100071
+  ],
+  "production_expected": 8,
+  "production_missing_or_failed": [
+    8000011000000,
+    8000011000001,
+    8000011000002,
+    8000011000003,
+    8000011000004,
+    8000011000005,
+    8000011000009,
+    8000011000069
+  ],
+  "blockers": [
+    "controlled obligations missing, incomplete or divergent",
+    "reward collection not witnessed",
+    "checkpoint continuation evidence missing",
+    "production canaries missing or divergent"
+  ],
+  "training_gate": "NOT_QUALIFIED",
+  "scope": "24 bounded obligations only; no complete Act2 certification or win-rate estimate",
+  "input_sha256": {
+    "docs/results/act2-qualification-20261006/combat-current.json": "6ceaf1a15a6d5a2eba05a8c754cf36335a083d4d8273211951a24a901c37548f",
+    "docs/results/act2-qualification-20261006/boss-entangle-current.json": "f81862a06f4ce470e058c6df0350f5b64c77ebde83f9e0d6b8c374bd5988f089",
+    "docs/results/act2-qualification-20261006/system-transition-prefix.json": "30c9e98fae5fc7ef2446c1702ec1640f87039d8b85aaac12f2b3a04a9d20bf94",
+    "docs/results/act2-qualification-20261006/production-selection.json": "5f8c2d4d8288d7730ae5146298295cc0b0bd521af8c8dd23a4735a8f65ff0556"
+  },
+  "superseded_harness_seeds": [
+    131100030,
+    131100031,
+    131100032
+  ]
+}

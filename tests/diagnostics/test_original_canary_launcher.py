@@ -8,6 +8,7 @@ from tools.run_original_canary import (
     BackupJournal,
     launcher_command,
     original_runtime_paths,
+    stop_owned_and_restore,
 )
 
 
@@ -69,6 +70,32 @@ def test_backup_journal_restores_existing_and_created_files(tmp_path: Path) -> N
     assert not created.exists()
     assert journal.data["status"] == "RECOVERED"
     assert journal.data["recovery_failures"] == []
+
+
+def test_recovery_catches_owned_exit_writes_and_new_save_files(tmp_path):
+    root = tmp_path / 'saves'
+    root.mkdir()
+    save = root / 'original.save'
+    save.write_bytes(b'original')
+    journal = BackupJournal(tmp_path / 'evidence' / 'journal.json')
+    journal.backup_tree(root)
+    extra = root / 'runtime.save'
+
+    class OwnedLateWriter:
+        def poll(self):
+            return None
+
+        def terminate(self):
+            save.write_bytes(b'late exit write')
+            extra.write_bytes(b'new runtime save')
+
+        def wait(self, timeout):
+            return 0
+
+    stop_owned_and_restore(journal, OwnedLateWriter())
+    assert save.read_bytes() == b'original'
+    assert not extra.exists()
+    assert journal.data['status'] == 'RECOVERED'
 
 
 def test_launcher_pins_only_the_required_mods(tmp_path: Path) -> None:

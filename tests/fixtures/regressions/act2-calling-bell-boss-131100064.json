@@ -1,0 +1,525 @@
+{
+  "schema": "sls-stock-calling-bell-boss-regression-v1",
+  "seed": 131100064,
+  "before": {
+    "derived_rng": {
+      "map": {
+        "act": 1,
+        "algorithm": "sts.RandomXS128/Map.fromSeed:v1",
+        "ascension": 20,
+        "assign_burning_elite": true,
+        "base_seed": 131100064,
+        "derived_seed": 131100065
+      }
+    },
+    "ordered_pools": {
+      "boss_relics": [
+        98,
+        108,
+        172,
+        156,
+        57,
+        134,
+        133,
+        114,
+        100,
+        17,
+        81,
+        85,
+        56,
+        127,
+        62,
+        58,
+        102,
+        140,
+        64
+      ],
+      "colorless_cards": [
+        94,
+        281,
+        242,
+        344,
+        121,
+        188,
+        335,
+        36,
+        21,
+        290,
+        100,
+        352,
+        241,
+        291,
+        12,
+        218,
+        177,
+        155,
+        166,
+        131,
+        259,
+        240,
+        343,
+        64,
+        113,
+        150,
+        213,
+        216,
+        173,
+        327,
+        200,
+        223,
+        225,
+        336,
+        212
+      ],
+      "common_relics": [
+        91,
+        113,
+        121,
+        52,
+        144,
+        93,
+        9,
+        1,
+        159,
+        149,
+        174,
+        0,
+        148,
+        119,
+        70,
+        171,
+        163,
+        46,
+        175,
+        76,
+        89,
+        132,
+        48,
+        97,
+        90,
+        8,
+        55,
+        139,
+        169,
+        92
+      ],
+      "elite_encounters": [
+        15,
+        16,
+        15,
+        17,
+        16,
+        17,
+        16,
+        17,
+        16,
+        15
+      ],
+      "events": [
+        10,
+        43,
+        14,
+        23,
+        25,
+        56,
+        28,
+        33,
+        39,
+        42
+      ],
+      "normal_encounters": [
+        3,
+        1,
+        4,
+        13,
+        10,
+        8,
+        13,
+        6,
+        14,
+        7,
+        11,
+        14,
+        6,
+        5,
+        9,
+        14
+      ],
+      "rare_relics": [
+        74,
+        54,
+        109,
+        77,
+        165,
+        15,
+        21,
+        11,
+        160,
+        35,
+        2,
+        36,
+        131,
+        65,
+        154,
+        29,
+        6,
+        30,
+        105,
+        107,
+        146,
+        7,
+        157,
+        78,
+        22,
+        177,
+        10,
+        80
+      ],
+      "shop_relics": [
+        136,
+        138,
+        38,
+        66,
+        150,
+        20,
+        128,
+        73,
+        12,
+        5,
+        155,
+        47,
+        25,
+        145,
+        99,
+        161
+      ],
+      "shrines": [
+        31,
+        24,
+        50,
+        38,
+        54
+      ],
+      "special_one_time_events": [
+        6,
+        11,
+        15,
+        17,
+        18,
+        21,
+        26,
+        27,
+        36,
+        40,
+        44,
+        53,
+        48
+      ],
+      "uncommon_relics": [
+        96,
+        147,
+        51,
+        34,
+        14,
+        24,
+        33,
+        94,
+        40,
+        151,
+        60,
+        170,
+        31,
+        142,
+        95,
+        166,
+        141,
+        87,
+        41,
+        67,
+        173,
+        68,
+        49,
+        162,
+        176,
+        4,
+        158,
+        61,
+        27
+      ]
+    },
+    "player_state": {
+      "blue_key": false,
+      "bottle_indices": [
+        -1,
+        -1,
+        -1
+      ],
+      "current_hp": 75,
+      "deck": [
+        {
+          "id": 15,
+          "misc": 0,
+          "upgraded": false
+        },
+        {
+          "id": 321,
+          "misc": 0,
+          "upgraded": false
+        },
+        {
+          "id": 321,
+          "misc": 0,
+          "upgraded": false
+        },
+        {
+          "id": 321,
+          "misc": 0,
+          "upgraded": false
+        },
+        {
+          "id": 321,
+          "misc": 0,
+          "upgraded": false
+        },
+        {
+          "id": 321,
+          "misc": 0,
+          "upgraded": false
+        },
+        {
+          "id": 104,
+          "misc": 0,
+          "upgraded": false
+        },
+        {
+          "id": 104,
+          "misc": 0,
+          "upgraded": false
+        },
+        {
+          "id": 104,
+          "misc": 0,
+          "upgraded": false
+        },
+        {
+          "id": 104,
+          "misc": 0,
+          "upgraded": false
+        },
+        {
+          "id": 25,
+          "misc": 0,
+          "upgraded": false
+        },
+        {
+          "id": 191,
+          "misc": 0,
+          "upgraded": true
+        },
+        {
+          "id": 152,
+          "misc": 0,
+          "upgraded": false
+        },
+        {
+          "id": 11,
+          "misc": 0,
+          "upgraded": false
+        },
+        {
+          "id": 244,
+          "misc": 0,
+          "upgraded": true
+        },
+        {
+          "id": 152,
+          "misc": 0,
+          "upgraded": false
+        },
+        {
+          "id": 27,
+          "misc": 0,
+          "upgraded": false
+        },
+        {
+          "id": 249,
+          "misc": 0,
+          "upgraded": false
+        },
+        {
+          "id": 154,
+          "misc": 0,
+          "upgraded": true
+        },
+        {
+          "id": 14,
+          "misc": 0,
+          "upgraded": false
+        },
+        {
+          "id": 40,
+          "misc": 0,
+          "upgraded": false
+        }
+      ],
+      "gold": 189,
+      "green_key": false,
+      "max_hp": 75,
+      "potion_capacity": 2,
+      "potion_count": 2,
+      "potions": [
+        36,
+        35
+      ],
+      "red_key": false,
+      "relics": [
+        {
+          "data": 0,
+          "id": 86
+        },
+        {
+          "data": 0,
+          "id": 116
+        },
+        {
+          "data": 0,
+          "id": 26
+        }
+      ]
+    },
+    "progress_state": {
+      "boss": 18,
+      "card_rarity_factor": 5,
+      "current_event": 0,
+      "current_map_x": 0,
+      "current_map_y": 15,
+      "current_room": 7,
+      "last_room": 1,
+      "monster_chance": 0.30000001192092896,
+      "outcome": 1,
+      "potion_chance": 20,
+      "screen_continuation_serialized": true,
+      "screen_state": 3,
+      "shop_chance": 0.08999999612569809,
+      "shop_remove_count": 0,
+      "speedrun_pace": false,
+      "treasure_chance": 0.05999999865889549
+    },
+    "rng": {
+      "ai": {
+        "counter": 0,
+        "seed0": 13288775205653600183,
+        "seed1": 15305131519507321865
+      },
+      "card": {
+        "counter": 82,
+        "seed0": 16310351596283314323,
+        "seed1": 5524297790917434916
+      },
+      "card_random": {
+        "counter": 0,
+        "seed0": 13288775205653600183,
+        "seed1": 15305131519507321865
+      },
+      "event": {
+        "counter": 2,
+        "seed0": 6988983097101036736,
+        "seed1": 6188795937038656160
+      },
+      "math_util": {
+        "counter": 0,
+        "seed0": 15556541967390064193,
+        "seed1": 6077879108210242183
+      },
+      "merchant": {
+        "counter": 16,
+        "seed0": 17460510524406916375,
+        "seed1": 18259532471470025709
+      },
+      "misc": {
+        "counter": 0,
+        "seed0": 13288775205653600183,
+        "seed1": 15305131519507321865
+      },
+      "monster": {
+        "counter": 33,
+        "seed0": 2504236146697888020,
+        "seed1": 14119613366411699647
+      },
+      "monster_hp": {
+        "counter": 0,
+        "seed0": 13288775205653600183,
+        "seed1": 15305131519507321865
+      },
+      "neow": {
+        "counter": 5,
+        "seed0": 7078389128633382016,
+        "seed1": 6348232442850941232
+      },
+      "potion": {
+        "counter": 37,
+        "seed0": 3440147209492117381,
+        "seed1": 8209531708349834810
+      },
+      "relic": {
+        "counter": 6,
+        "seed0": 6348232442850941232,
+        "seed1": 10254541775952007624
+      },
+      "shuffle": {
+        "counter": 0,
+        "seed0": 13288775205653600183,
+        "seed1": 15305131519507321865
+      },
+      "treasure": {
+        "counter": 10,
+        "seed0": 12266766167016616705,
+        "seed1": 2521320498601041531
+      }
+    },
+    "run_state": {
+      "act": 1,
+      "ascension": 20,
+      "burning_elite_buff": 2,
+      "burning_elite_x": 4,
+      "burning_elite_y": 5,
+      "elite_monster_list_offset": 1,
+      "event_start_context": {
+        "note_card": "IRON_WAVE",
+        "portal_eligible": true
+      },
+      "floor": 17,
+      "map": "\n           /  /   \\  \\     \n14        R  R     R  R    \n        /    | \\     \\  \\  \n13     ?     M  ?     ?  M \n         \\ /    |   /    | \n12        M     ?  M     ? \n        / |       \\|   /   \n11     ?  M        M  R    \n       |    \\    / |/      \n10     E     M  ?  M       \n         \\ / |    \\| \\     \n9         M  E     M  E    \n            \\  \\     \\  \\  \n8            T  T     T  T \n           /   \\  \\ / |  | \n7         M     M  R  M  R \n        /     /    |    \\| \n6      E     R     M     $ \n       |       \\   | \\ / | \n5      R        E  E  R  E \n         \\      |    \\| \\| \n4         $     ?     M  ? \n          |       \\ / |/   \n3         M        M  $    \n            \\      |  | \\  \n2            M     M  ?  M \n           /     /    |/   \n1         ?     ?     M    \n        /       |   /      \n0      M        M  M       ",
+      "math_seed": 130202167,
+      "monster_list_offset": 6,
+      "second_boss": 0,
+      "seed": 131100064
+    },
+    "screen_info": {
+      "boss_relics": [
+        53,
+        59,
+        135
+      ],
+      "complete": true,
+      "screen_state": 3
+    }
+  },
+  "action": {
+    "kind": "CHOOSE_BOSS_RELIC",
+    "metadata": {},
+    "node_id": null,
+    "option_id": null,
+    "reward_id": null,
+    "schema_version": 1,
+    "subject_id": "boss-relic:2",
+    "target_id": null
+  },
+  "expected_card_rng": {
+    "counter": 91,
+    "seed0": 12739517831250669739,
+    "seed1": 824542216467589848
+  },
+  "stock_raw_boundary": 145,
+  "stock_capture_sha256": "f18b447d98ca83f30b7b9f122c59648c709a4158e8e760eaa6b15ae71f0f5498"
+}

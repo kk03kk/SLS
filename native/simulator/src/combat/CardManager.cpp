@@ -515,6 +515,22 @@ void upgrade(CardInstance &c, int upgradeAmount) {
 // for ritual dagger, rampage
 void CardManager::findAndUpgradeSpecialData(const std::int16_t uniqueId, const int upgradeAmount) {
 
+    // RitualDaggerAction updates every battle instance with the source UUID,
+    // including the retained original during a duplicated/purge-on-use play.
+    // Rampage still updates just its original instance below.
+    bool ritualDagger = false;
+    const auto updateDagger = [&](CardInstance &card) {
+        if (card.uniqueId == uniqueId && card.getId() == CardId::RITUAL_DAGGER) {
+            upgrade(card, upgradeAmount);
+            ritualDagger = true;
+        }
+    };
+    for (auto &card : drawPile) updateDagger(card);
+    for (auto &card : discardPile) updateDagger(card);
+    for (auto &card : exhaustPile) updateDagger(card);
+    for (int i = 0; i < cardsInHand; ++i) updateDagger(hand[i]);
+    if (ritualDagger) return;
+
     // special checks for most common scenarios
     if (!discardPile.empty() && discardPile.back().uniqueId == uniqueId) {
         upgrade(discardPile.back(), upgradeAmount);

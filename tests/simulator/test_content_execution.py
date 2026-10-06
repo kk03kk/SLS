@@ -117,7 +117,10 @@ def test_every_act1_encounter_completes_a_deterministic_turn_lifecycle() -> None
         "EXORDIUM_WILDLIFE": (34, "PLAYER_VICTORY"),
         "GREMLIN_GANG": (28, "PLAYER_LOSS"),
         "GREMLIN_NOB": (24, "PLAYER_LOSS"),
-        "HEXAGHOST": (44, "PLAYER_LOSS"),
+        # Stock-confirmed Inferno BurnIncrease adds three Burn+ and upgrades
+        # draw/discard Burns (test_hexaghost_inferno_burns), shortening this
+        # deterministic A0 loss from 44 decisions to 42.
+        "HEXAGHOST": (42, "PLAYER_LOSS"),
         "JAW_WORM": (39, "PLAYER_VICTORY"),
         "LAGAVULIN": (56, "PLAYER_LOSS"),
         "LARGE_SLIME": (58, "PLAYER_VICTORY"),

@@ -1,0 +1,69 @@
+{
+  "schema": "sls-act2-system-differential-v1",
+  "native_source_sha256": "f6fad929448200bd593218f9f1e0e7a6cae422d26c316d92cdc2ac73f4b481bd",
+  "runs": [
+    {
+      "seed": 131100063,
+      "first_divergence": null,
+      "boundaries_checked": 270,
+      "act2_boundaries": 138,
+      "reward_boundaries": 50,
+      "checkpoint_replays": 269,
+      "stock_action_unavailable": null,
+      "terminal_reason_verified": true,
+      "controlled_runtime_inputs": [
+        {
+          "boundary": 109,
+          "stock_measured_inputs": {
+            "discovery_retrieval_updates": 14
+          }
+        },
+        {
+          "boundary": 110,
+          "stock_measured_inputs": {
+            "discovery_retrieval_updates": 15
+          }
+        }
+      ],
+      "qualification_scope": "STOCK_MEASURED_TIMING_CONDITIONAL; NOT_PRODUCTION_RNG_CERTIFICATION",
+      "status": "SYSTEM_BRANCH_MATCH"
+    },
+    {
+      "seed": 131100064,
+      "first_divergence": null,
+      "boundaries_checked": 220,
+      "act2_boundaries": 71,
+      "reward_boundaries": 45,
+      "checkpoint_replays": 219,
+      "stock_action_unavailable": null,
+      "terminal_reason_verified": true,
+      "controlled_runtime_inputs": [
+        {
+          "boundary": 216,
+          "stock_measured_inputs": {
+            "discovery_retrieval_updates": 14
+          }
+        }
+      ],
+      "qualification_scope": "STOCK_MEASURED_TIMING_CONDITIONAL; NOT_PRODUCTION_RNG_CERTIFICATION",
+      "status": "SYSTEM_BRANCH_MATCH"
+    },
+    {
+      "seed": 131100065,
+      "first_divergence": null,
+      "boundaries_checked": 230,
+      "act2_boundaries": 66,
+      "reward_boundaries": 35,
+      "checkpoint_replays": 229,
+      "stock_action_unavailable": null,
+      "terminal_reason_verified": true,
+      "controlled_runtime_inputs": [],
+      "qualification_scope": "STOCK_MEASURED_TIMING_CONDITIONAL; NOT_PRODUCTION_RNG_CERTIFICATION",
+      "status": "SYSTEM_BRANCH_MATCH"
+    }
+  ],
+  "stock_capture_sha256": "ca2fb461fd360b67a266bebe228875c5bb96b3219e201539bf2089eb983512f2",
+  "launch_evidence_sha256": "b870942798ed238cad66bbf37fb05987dd712e07faf27808514dc7168565cc78",
+  "oracle_build_sha256": "f59e2960838a5b744b9a146b8c489560d532f411c813886955ca2fa6dce7a4ef",
+  "training_gate": "NOT_QUALIFIED"
+}

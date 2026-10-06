@@ -1,3 +1,4 @@
+import copy
 import json
 
 import pytest
@@ -54,3 +55,23 @@ def test_compatibility_check_rejects_nonhex_and_duplicate_transitions(tmp_path):
     assert 'duplicate' in ' '.join(check_training_configs.validate_json(path, [record, record]))
     record['from'] = 'z' * 64
     assert 'invalid SHA256' in ' '.join(check_training_configs.validate_json(path, [record]))
+
+
+def test_completed_plan_preserves_bindings_but_cannot_be_resubmitted():
+    from tools.submit_act12_pilot import validate_plan
+
+    path = check_training_configs.ROOT / 'configs/experiments/act12-win-pilot.json'
+    plan = json.loads(path.read_text(encoding='utf-8'))
+    assert not check_training_configs.validate_json(path, plan)
+    with pytest.raises(ValueError, match='bound'):
+        validate_plan(plan, deep=False)
+    corrupted = copy.deepcopy(plan)
+    corrupted['target_training_implementation_sha256'] = '0' * 64
+    assert any('historical' in e for e in check_training_configs.validate_json(path, corrupted))
+
+
+def test_active_plan_still_rejects_stale_implementation():
+    path = check_training_configs.ROOT / 'configs/experiments/act12-win-pilot.json'
+    plan = json.loads((check_training_configs.ROOT /
+        'docs/results/act12-pilot-20261006/original-bound-plan.json').read_text(encoding='utf-8'))
+    assert 'bound implementation changed' in check_training_configs.validate_json(path, plan)

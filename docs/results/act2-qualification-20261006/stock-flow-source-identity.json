@@ -1,0 +1,786 @@
+{
+  "schema": "sls-act2-stock-bytecode-v1",
+  "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "classes": {
+    "com.megacrit.cardcrawl.monsters.city.BookOfStabbing": {
+      "class_sha256": "64f08a6a152228d06cde6bcd2987203f32362abde72f2a39038d474b527f1320",
+      "bytecode_sha256": "8eab2ed1e9f6ea477d7254dcaf5c400dac448468520653eda6f35a90421a23df",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.monsters.city.BookOfStabbing"
+      ]
+    },
+    "com.megacrit.cardcrawl.monsters.city.Byrd": {
+      "class_sha256": "7b55ad3a100417dd4ac44cc23231350dec328ebbde5c1ad1a22730fba11ecba5",
+      "bytecode_sha256": "cce5db9ca98fe50de018ebdb3f3fd0ad2c3a43f034e75919afeae57f438cd4e5",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.monsters.city.Byrd"
+      ]
+    },
+    "com.megacrit.cardcrawl.monsters.city.ShelledParasite": {
+      "class_sha256": "e3c804b4c4371facc0df9ee876afcb13eb4de19ba0f8bb962872c3e025803e42",
+      "bytecode_sha256": "f07b39fe8d8920be2778b97b7b074c5f37324c8f94d55d1a3c96ccb7f6f38319",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.monsters.city.ShelledParasite"
+      ]
+    },
+    "com.megacrit.cardcrawl.monsters.exordium.FungiBeast": {
+      "class_sha256": "01d84978223e6bbae731d464a72817c6bd4b28c3bb295b609fa0fe299dae0c5c",
+      "bytecode_sha256": "d13ccfec9816df201079bd53b766a46bdc1d487d2dd219a616afc899c70c3809",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.monsters.exordium.FungiBeast"
+      ]
+    },
+    "com.megacrit.cardcrawl.monsters.exordium.SlaverBlue": {
+      "class_sha256": "bf3fd9bb150b729d67d8c36caa44c8789a396d3f8a9ac9c6887dc0d6d381ceab",
+      "bytecode_sha256": "34247f104bc22c4908ecd8053e2423f719c14f454964321be3c4c43242b69236",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.monsters.exordium.SlaverBlue"
+      ]
+    },
+    "com.megacrit.cardcrawl.monsters.exordium.SlaverRed": {
+      "class_sha256": "be885de16ae2048c6f401e909d113a5990186e0c9f0252a0a73df419324d347c",
+      "bytecode_sha256": "6135f058400a077515663f2b8f07a092df403bba4250e62d437cb1ab11911195",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.monsters.exordium.SlaverRed"
+      ]
+    },
+    "com.megacrit.cardcrawl.monsters.city.Taskmaster": {
+      "class_sha256": "92a4ffd745b1c9d1eec9ce2879fd56ea63b152c1f092b6af878555aba4f3f40e",
+      "bytecode_sha256": "bba627aabf3d39c72d91de8997db45a34393e1dc773988260ca456984d186c1b",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.monsters.city.Taskmaster"
+      ]
+    },
+    "com.megacrit.cardcrawl.monsters.city.SnakePlant": {
+      "class_sha256": "b7352bfefe5340eca8b486ae339c69e0a30a4fd665eb8230d4ec3e80cfd4f6bc",
+      "bytecode_sha256": "35f1015857d0d362b48bdbf1c5aa283c815a8116cfc3a37193257c077658f1ca",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.monsters.city.SnakePlant"
+      ]
+    },
+    "com.megacrit.cardcrawl.monsters.city.Champ": {
+      "class_sha256": "c87c5a25e2c3da220c2a4557e49e768d3423689621099e00d2833b81e92ee3e8",
+      "bytecode_sha256": "ed11b7846a4258c46189501eb409d3e7e195278a2bc4d51b0e726dc5679bd238",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.monsters.city.Champ"
+      ]
+    },
+    "com.megacrit.cardcrawl.monsters.city.TheCollector": {
+      "class_sha256": "955c4799fb5ba11724226339820a060f2d5cb76eddddf6890dbf1eaff157fe15",
+      "bytecode_sha256": "a57fb6d8666af7e6c2e6d51c1737b4b290191e6677f2d12b11b41ef04904b5dc",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.monsters.city.TheCollector"
+      ]
+    },
+    "com.megacrit.cardcrawl.monsters.city.BronzeAutomaton": {
+      "class_sha256": "6b726a9aa4557af414e03eecf68d8269103fb17c1571995681df8ac5544f1a2a",
+      "bytecode_sha256": "88bf9bad02f0fc8b00df557df54c86d2fd589a2e252d3c6b18b00d8815004bc5",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.monsters.city.BronzeAutomaton"
+      ]
+    },
+    "com.megacrit.cardcrawl.monsters.city.BronzeOrb": {
+      "class_sha256": "92cc3c117351725acf5863d45f2aa553bda7c7dc3567f3372cafc045f76b91a2",
+      "bytecode_sha256": "99673e2157a6d6e6a1bd3e40bc669f91478f936182b676117086562569caf859",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.monsters.city.BronzeOrb"
+      ]
+    },
+    "com.megacrit.cardcrawl.powers.FlightPower": {
+      "class_sha256": "851a4852ebf87e0407447e223ed66c182b681f8cf3ad31f6cceccfbe9fb09993",
+      "bytecode_sha256": "047dbf537168c573243cf704045b07664d3ffa7210dcfd861ceae2c8bc31945c",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.powers.FlightPower"
+      ]
+    },
+    "com.megacrit.cardcrawl.powers.MalleablePower": {
+      "class_sha256": "50f1332c948908dc6f862f7ddeae876e4698e2980a6cdd492dc5ba75333a2bf1",
+      "bytecode_sha256": "3cc5bf126ffbacb32faad0b97ac3402eeb737d334745d7d258f15ab287fc5901",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.powers.MalleablePower"
+      ]
+    },
+    "com.megacrit.cardcrawl.powers.PlatedArmorPower": {
+      "class_sha256": "55b7c1baaef4e355c73e9f597281a95b43628f545f1445d1dd151a20795e35f8",
+      "bytecode_sha256": "1f6436ed42cbccfa5fb07c4920ec2e063cb06ecc21c538d7df43daeefd227f11",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.powers.PlatedArmorPower"
+      ]
+    },
+    "com.megacrit.cardcrawl.powers.SporeCloudPower": {
+      "class_sha256": "3dfa7432a7838263ef29edf4572417a1f5346109d857b9d4a014e12b4824f5f7",
+      "bytecode_sha256": "c6a533d1cbe68c9d900a44aafa74dd66f06ad8768e595d6c0f0466388f8958f3",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.powers.SporeCloudPower"
+      ]
+    },
+    "com.megacrit.cardcrawl.powers.PainfulStabsPower": {
+      "class_sha256": "27e984a8be6fb3e7ec12f1cbe54de4ad9f06bd6d8466d288433dc135169acd13",
+      "bytecode_sha256": "d44541a091264d60b494c70beb851596ddbd55b58ec87ff8abb5501b2453fbe6",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.powers.PainfulStabsPower"
+      ]
+    },
+    "com.megacrit.cardcrawl.powers.EntanglePower": {
+      "class_sha256": "44e2740a744f6867cb3ba06308c6c1133822ada799de3ef00015f5cddee355a7",
+      "bytecode_sha256": "14f5fd06b3b37b90e49d1006a4958d9c2ef7522bf6461cfe289b80eb25c15776",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.powers.EntanglePower"
+      ]
+    },
+    "com.megacrit.cardcrawl.actions.GameActionManager": {
+      "class_sha256": "14085d57e6a79ad89b0c43c5032138118c3e988dbb3f22fca50c4c5096435e8a",
+      "bytecode_sha256": "406c85f4fe5cfb70b5d6e6e5b8440d5353c869553c941c45c1938660416512a4",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.actions.GameActionManager"
+      ]
+    },
+    "com.megacrit.cardcrawl.dungeons.AbstractDungeon": {
+      "class_sha256": "5452fdd7b33fa47dcea5c2e58d5d521dfde3acefba006c095ad5b01c60eda369",
+      "bytecode_sha256": "be440b70a41da50c747d240101168e6e0aad5a6eec66906f38ecb82f47c238dc",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.dungeons.AbstractDungeon"
+      ]
+    },
+    "com.megacrit.cardcrawl.rooms.AbstractRoom": {
+      "class_sha256": "22214900fc051a2e8e73b72532ee561abc95a77f7172b105b68d3afeca0a74f6",
+      "bytecode_sha256": "62453410540607634c82dc0b5e1a84c504e606dbbd17e3ef1ca4848ee857d8bd",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.rooms.AbstractRoom"
+      ]
+    },
+    "com.megacrit.cardcrawl.potions.SmokeBomb": {
+      "class_sha256": "313cd49f9d322f2e4a916942f784e3a4a4475ed65aa1e9814b56dc3d719faa15",
+      "bytecode_sha256": "f8d4e72be2cfa28d20cc7ea268dbb51cd0894f57bb2dd6d8e636350be2476b3f",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.potions.SmokeBomb"
+      ]
+    },
+    "com.megacrit.cardcrawl.screens.CombatRewardScreen": {
+      "class_sha256": "faf9abcf549e44966cc13f522d84e2a7834760553e9f999fdbb61b0872e8fbf7",
+      "bytecode_sha256": "0af50c7f90b3e9f24ea40b05a02ce8141d335c92d12507cb127eabec9d9cd09b",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.screens.CombatRewardScreen"
+      ]
+    },
+    "com.megacrit.cardcrawl.screens.CardRewardScreen": {
+      "class_sha256": "0e4a6aa20b2b6dace147bd5dc58c943f530587bc9515d1efaa577fcb4b2d4a9e",
+      "bytecode_sha256": "94ae923eebe072e67dd50821d087918aafd2ee28c1c12971cf9b8f4013cebcfa",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.screens.CardRewardScreen"
+      ]
+    },
+    "com.megacrit.cardcrawl.actions.unique.DiscoveryAction": {
+      "class_sha256": "1c5a60d26d915bad35cb4ee4f70d2de9d8c39368888c0d460747b136b6ca366a",
+      "bytecode_sha256": "fe60d0936af6e4a35eb7865867a90d6d5c24900b6b416b53c854c493ffce41fa",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.actions.unique.DiscoveryAction"
+      ]
+    },
+    "com.megacrit.cardcrawl.neow.NeowEvent": {
+      "class_sha256": "4d7365f4a9c16e55f76ac829176c1251264046ce564a46799f7ef87f1aa532d6",
+      "bytecode_sha256": "99be0fdbf6be19c749ea4aed0a7ba5bb7e2626e70791b254b3cdfac21488fa51",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.neow.NeowEvent"
+      ]
+    },
+    "com.megacrit.cardcrawl.relics.CallingBell": {
+      "class_sha256": "8256d21aba781e30a48d581f2b7c52e227aa29f718ce06166eca0dcbb764704d",
+      "bytecode_sha256": "fdec22796d36c51fb915ba1ee24800be8df039f9f253b37576a225cb112fc4da",
+      "command": [
+        "javap",
+        "-classpath",
+        "LEGAL_LOCAL_STOCK_JAR",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.relics.CallingBell"
+      ]
+    },
+    "com.megacrit.cardcrawl.relics.BlackBlood": {
+      "class_sha256": "65767ce5531eebd0df2fd00df2f3a48131430be3a83882764e186cb9532f5364",
+      "bytecode_sha256": "0d631c4d740b17f53ec05e9afa0aae46b1550b8396c2ffe7bea2fc1aebde3ed8",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.relics.BlackBlood"
+      ]
+    },
+    "com.megacrit.cardcrawl.relics.AbstractRelic": {
+      "class_sha256": "1e1e29251d480d5bdeb5e02bcd3dc524b6a5e519a8e2f2c80dccc3e322bab46d",
+      "bytecode_sha256": "a22007fcc9172beab0b79efb341646918335f0d11472945788b8da6a880d3647",
+      "command": [
+        "D:/java/bin/javap.exe",
+        "-classpath",
+        "D:/Steam/steamapps/common/SlayTheSpire/desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.relics.AbstractRelic"
+      ]
+    },
+    "com.megacrit.cardcrawl.potions.ColorlessPotion": {
+      "class_sha256": "4d2a367d56d39f81ae0407cfed159069fe66218ee232872efd00b3777d6c5b94",
+      "bytecode_sha256": "346db6c53a8c8da2ceac204aa9636059fc2876ff5663fb67a317db28402b0da8",
+      "command": [
+        "D:/java/bin/javap.exe",
+        "-classpath",
+        "D:/Steam/steamapps/common/SlayTheSpire/desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.potions.ColorlessPotion"
+      ]
+    },
+    "com.megacrit.cardcrawl.cards.red.Anger": {
+      "class_sha256": "cf446c5b763c790ec924fbbd010a6be8f1175f4e2d818805b5b599d78a04cb27",
+      "bytecode_sha256": "0ce0b704dea97674876fe6b2df815fadc463607d7442e29881f43ebbcde17dae",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.cards.red.Anger"
+      ]
+    },
+    "com.megacrit.cardcrawl.cards.red.BloodForBlood": {
+      "class_sha256": "f413fa840efb475588f1d34a446e227cf373439fd8290fae8415a7d8ac8e495c",
+      "bytecode_sha256": "a9d401a951facce0d186941c5f2d26358a0b455cef8a33a941427d0f295a9f90",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.cards.red.BloodForBlood"
+      ]
+    },
+    "com.megacrit.cardcrawl.cards.AbstractCard": {
+      "class_sha256": "9e189c1212443a4811e6fe082b00e70c9a70caf1cbfa7773b233234ce43ae1cb",
+      "bytecode_sha256": "6081dda7afed999173012c37bb94d30cd2eff1101093faa4e5b25579710f1ae4",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.cards.AbstractCard"
+      ]
+    },
+    "com.megacrit.cardcrawl.shop.StorePotion": {
+      "class_sha256": "809b1becbd6cb0171346283526b570302afd8d6bf9eba8e0ba3fd5d7255547bf",
+      "bytecode_sha256": "38570ce59b7c22a74e81ac48a8c32e4dba9d0d255e8db07d8e9983ed6a6623e7",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.shop.StorePotion"
+      ]
+    },
+    "com.megacrit.cardcrawl.screens.select.GridCardSelectScreen": {
+      "class_sha256": "c866329e5c51af543e0d754702ec0b03e01fbeb439dfc7072feb9e4e21de448f",
+      "bytecode_sha256": "ee25a22ef502fd7f2f28b7a672392853488067f3f824e986b8fc4c4f5bd271c0",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.screens.select.GridCardSelectScreen"
+      ]
+    },
+    "com.megacrit.cardcrawl.relics.EmptyCage": {
+      "class_sha256": "325508a3ab20edc4aaf8668fda178a6683512d9934ca62e8ac1267adc69e9b85",
+      "bytecode_sha256": "f5d5a6e103d09dbb2ef3b2884e1d1830f2f76c99ca09ff14d69d449037742d66",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.relics.EmptyCage"
+      ]
+    },
+    "com.megacrit.cardcrawl.relics.BurningBlood": {
+      "class_sha256": "3810c46bfae43debd4bebb087f3b8624e5fdcf16b509459c13e3788046697732",
+      "bytecode_sha256": "814ecb4893c533f8fe717b95a38dd3cb34da3c1fd23ed96073ccca753a13e879",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.relics.BurningBlood"
+      ]
+    },
+    "com.megacrit.cardcrawl.relics.FaceOfCleric": {
+      "class_sha256": "1561fdc889f4c466a2287359bc2f4ed93fd8285cd31a4947d0a6818a088dc63f",
+      "bytecode_sha256": "070ff3a99906e134a3f3cb799e56a7b059a49c132a07580a564e8d734f577931",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.relics.FaceOfCleric"
+      ]
+    },
+    "com.megacrit.cardcrawl.relics.MeatOnTheBone": {
+      "class_sha256": "24d10faae5f66ca4208b8ff37c69216011006d00ef00c574ba71d35e1679e75d",
+      "bytecode_sha256": "442bca2d72a9f51471c776188f484ceaed349d6fa7035c4d61291143246a25a9",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.relics.MeatOnTheBone"
+      ]
+    },
+    "com.megacrit.cardcrawl.characters.AbstractPlayer": {
+      "class_sha256": "5dbefe89175f3e03fdd133d498b653d66073645a8c7fc109f3f4b717d10c266f",
+      "bytecode_sha256": "024309f031f41927c3bd7cc5bfde83bf79c6a4d82a7dba4551ee75b2c341b887",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.characters.AbstractPlayer"
+      ]
+    },
+    "com.megacrit.cardcrawl.relics.MagicFlower": {
+      "class_sha256": "09233e55fecb5e5b146dbbcc31d6165d25ea6b80d5cc997028352af569a27001",
+      "bytecode_sha256": "b6645217b66cbca5150aaed6eae601b1afa76e6e19fbb64306e18df4ba7f0f7e",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.relics.MagicFlower"
+      ]
+    },
+    "com.megacrit.cardcrawl.actions.common.HealAction": {
+      "class_sha256": "a24ff45b9753a558c817d40cdb98527cd07cfabba0789a26127a12da3d04e1fd",
+      "bytecode_sha256": "a289ebaccb173bfc5dd3319911779de96ef3b54d716b7bd05ecc228b8749e821",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.actions.common.HealAction"
+      ]
+    },
+    "com.megacrit.cardcrawl.potions.AbstractPotion": {
+      "class_sha256": "cdf9d9e38f964486ea7076d144e52521db7fed82691e120111f9fd3362b47b58",
+      "bytecode_sha256": "45c9a4b8177c8d497275edfc5dce3846cfd403a11a168b85b4660341d7181c1e",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.potions.AbstractPotion"
+      ]
+    },
+    "com.megacrit.cardcrawl.events.city.Colosseum": {
+      "class_sha256": "c588a3434478171a9c040f260f6162d3dcc81267ab2fc235819bc3b4c0b7fbe2",
+      "bytecode_sha256": "b2a5113be02f9a999702dff9058c1701a9cfa79af95c272143814ec1c34e3059",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.events.city.Colosseum"
+      ]
+    },
+    "com.megacrit.cardcrawl.events.AbstractImageEvent": {
+      "class_sha256": "fa29700da3aa26a87f2ff8884076161bac05033c464d0ef00cbf34a777226bcc",
+      "bytecode_sha256": "fa269ec3ccd53d04b2509aa02057a89feb6647786d4cd3d06035abba21d157c2",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.events.AbstractImageEvent"
+      ]
+    },
+    "com.megacrit.cardcrawl.cards.CardGroup": {
+      "class_sha256": "85cd264d191dda5c5719add4da2a53203aa1a0b7a2cdb1b8be5750e4d66e2d55",
+      "bytecode_sha256": "825571ef273866e73b79b926d6bf22089d533c9c76d5285f0e8a082523215a45",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.cards.CardGroup"
+      ]
+    },
+    "com.megacrit.cardcrawl.actions.unique.SummonGremlinAction": {
+      "class_sha256": "8eb9a7894a0498df66794170cedf9799ca48065ac99f177b576167131de7e36d",
+      "bytecode_sha256": "f03e88d08c6f813b6345fdb6f334d40749816fe3f4e2571bf5adbd220957bc69",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.actions.unique.SummonGremlinAction"
+      ]
+    },
+    "com.megacrit.cardcrawl.monsters.exordium.GremlinWarrior": {
+      "class_sha256": "484b4da52b6cd9410104a6050409ed222f5faa242306d2a7a7fd712bfbfaf7c2",
+      "bytecode_sha256": "ec4ec4e1d469ee18977df74c26cc37e315db5c39fa53f961617cfc2ba3b567d8",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.monsters.exordium.GremlinWarrior"
+      ]
+    },
+    "com.megacrit.cardcrawl.monsters.exordium.GremlinWizard": {
+      "class_sha256": "2a90ee2e6bef8492a1db83ab5043683b78cb07b1758a2d81ca5d6b3983e94dc5",
+      "bytecode_sha256": "0f4e2fabb8b1319a23dd5c55ac41936f707add1e056521d5201ecc0e3dba71f3",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.monsters.exordium.GremlinWizard"
+      ]
+    },
+    "com.megacrit.cardcrawl.monsters.exordium.GremlinFat": {
+      "class_sha256": "df3cc7d637049415b1d6778e5d849ce3d60d7a68fce9b3b1bab0244b2e177b25",
+      "bytecode_sha256": "864b2d7ee57c96159364eda5fd025c0d6e3377125e48e9e76d89bd20f74aa149",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.monsters.exordium.GremlinFat"
+      ]
+    },
+    "com.megacrit.cardcrawl.monsters.exordium.GremlinThief": {
+      "class_sha256": "39dd3d0500d9816737734b80a651220b22c2bbbb99754610a5aabee55d863887",
+      "bytecode_sha256": "16c202f712a1c4bb90457179cc1984da7adaa075591eefeff1de108d4928b956",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.monsters.exordium.GremlinThief"
+      ]
+    },
+    "com.megacrit.cardcrawl.monsters.exordium.GremlinTsundere": {
+      "class_sha256": "bb6805b1ded174ea81caa60867e52d1e702aa072f8d8ee92867db959c87b6fc1",
+      "bytecode_sha256": "cae41124f5068772df1ec63d471cf2a22590720dfde1ba64c5a8ef9bd26c8433",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.monsters.exordium.GremlinTsundere"
+      ]
+    },
+    "com.megacrit.cardcrawl.monsters.AbstractMonster": {
+      "class_sha256": "f151a738203895a585dcaab36204d0f9704b57216a3feeda890604d0f88a68ff",
+      "bytecode_sha256": "76b43e75dd95fce667e910d7844c3fc1de761ecbde1a46e0dabe9965867ae69e",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.monsters.AbstractMonster"
+      ]
+    },
+    "com.megacrit.cardcrawl.cards.red.SpotWeakness": {
+      "class_sha256": "008526e7e26bdf8b6a99fe40d8f33094a4372567a42e370876b2a66f3d09aa7e",
+      "bytecode_sha256": "5e54d975d4a8bf2ece826fb374557bb63067a7779db9fd86cdf37d39791ca960",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.cards.red.SpotWeakness"
+      ]
+    },
+    "com.megacrit.cardcrawl.monsters.exordium.Hexaghost": {
+      "class_sha256": "53603d38d9df1cf4c3660f031c9c0e2c2b982f078cced66f0e87d69c0ce7a8e7",
+      "bytecode_sha256": "4a9eff9c30fda69a54aaa204a3724302376aa5979cdb4f1bc99aa1509eef3c77",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.monsters.exordium.Hexaghost"
+      ]
+    },
+    "com.megacrit.cardcrawl.actions.unique.BurnIncreaseAction": {
+      "class_sha256": "21dfb7a622f08ef6c2e6216495f4e306573d542749cd7bbf1a7103e5dfdfc9e4",
+      "bytecode_sha256": "b62ba4d4bd240a17f8180b8a3f49d91d396ce864f53323b7d7065fbae9973b70",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.actions.unique.BurnIncreaseAction"
+      ]
+    },
+    "com.megacrit.cardcrawl.actions.common.ReducePowerAction": {
+      "class_sha256": "8b88d49f8cf30374c1bd120b65cff4f7cca53e739950abb319ce5c9334fe6d99",
+      "bytecode_sha256": "3a8a5903aa97427aa7de5bc8241226a2c4e519f0a938381de443cf7b202351bc",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.actions.common.ReducePowerAction"
+      ]
+    },
+    "com.megacrit.cardcrawl.monsters.city.Centurion": {
+      "class_sha256": "518af5908855e86b530623c8f5c13c5e3f53eeb3c74ff69a7acd2b406e23efd4",
+      "bytecode_sha256": "e6da0908757444d731516be3b9ebfa3887b8f02f124259c53c310ce5e2558730",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.monsters.city.Centurion"
+      ]
+    },
+    "com.megacrit.cardcrawl.actions.unique.GainBlockRandomMonsterAction": {
+      "class_sha256": "ae3ebc2533d9981d08dc07c465bae3431ee9e0ed8d9fcb49cd650e7d4f984137",
+      "bytecode_sha256": "5092be84bb4f879bb8bddffcd03dff3b5f0d43a9bbd7acca6f9115cf2ec5a3d9",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.actions.unique.GainBlockRandomMonsterAction"
+      ]
+    },
+    "com.megacrit.cardcrawl.monsters.exordium.GremlinNob": {
+      "class_sha256": "241a73b0b2f8e7023e7d8c4fa7b15a4e9a427abf1f53c4c47c2840f5baf04b26",
+      "bytecode_sha256": "ac68460dee243def2fcb24428071eb5e43d24c99cf1ca74d066821fbc638ddce",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.monsters.exordium.GremlinNob"
+      ]
+    },
+    "com.megacrit.cardcrawl.helpers.MonsterHelper": {
+      "class_sha256": "6714c1044d9ccfd84b665b9010afd960ddf288ee562c17a59e6943f8bf3eead3",
+      "bytecode_sha256": "a3e46ce0e094bceeec2393b35294dfc3c68410484210371c1d08c2db750e0486",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.helpers.MonsterHelper"
+      ]
+    },
+    "com.megacrit.cardcrawl.dungeons.TheCity": {
+      "class_sha256": "b8e4ba9a20779d96052d4d44eae09d84d2cf8e153c02e013d8d42e258f956e32",
+      "bytecode_sha256": "97ce723624fd98095600cd2d154bedfb32c176d19dcd33737de89d1a03f0893b",
+      "command": [
+        "D:/java/bin/javap.exe",
+        "-classpath",
+        "D:/Steam/steamapps/common/SlayTheSpire/desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.dungeons.TheCity"
+      ]
+    },
+    "com.megacrit.cardcrawl.cards.red.InfernalBlade": {
+      "class_sha256": "aa2ceddcd425d4d6c378a6bb2786afe7b482a7436719087c6d5ef4458562eb80",
+      "bytecode_sha256": "aa2a211a74573f5625246695b3bab31fefd0ba37badf44aa76cbc61d36f8a933",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.cards.red.InfernalBlade"
+      ]
+    },
+    "com.megacrit.cardcrawl.actions.unique.RitualDaggerAction": {
+      "class_sha256": "369eae613c8f7c16dc854a39da772cfa6572cd098ceb7734bf60980d805efbbc",
+      "bytecode_sha256": "ae93627c2dbfd6849a4021a48b0432cdbe7248c6839bed7755baa5a934142e70",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.actions.unique.RitualDaggerAction"
+      ]
+    },
+    "com.megacrit.cardcrawl.actions.common.DamageAction": {
+      "class_sha256": "8b286137c86a72f300a3bf1269f5fbc87403129012c4180691a732399d471da4",
+      "bytecode_sha256": "bbc3fecdf6cd4cc260f9f2be60b028eea4f9f63af58aca386567124d76f29701",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.actions.common.DamageAction"
+      ]
+    }
+  }
+}

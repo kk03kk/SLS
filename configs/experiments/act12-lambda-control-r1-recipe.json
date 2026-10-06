@@ -1,0 +1,40 @@
+{
+  "schema": "sls-act12-pilot-recipe-v1",
+  "status": "PREREGISTERED_CORRECTED_ENVIRONMENT_MATCHED_LAMBDA_PILOT",
+  "source_profile": "IRONCLAD_A20_ACT1",
+  "target_profile": "IRONCLAD_A20_ACT2",
+  "minimum_parent_run_target": 90000000,
+  "additional_decisions": 4000000,
+  "training_seed": 130000000,
+  "training_seed_limit": 2000000000000,
+  "worker_layout": [
+    64,
+    16
+  ],
+  "periodic_seed_start": 8000009000000,
+  "periodic_seed_count": 256,
+  "confirmation_seed_start": 8000010000000,
+  "confirmation_seed_count": 2048,
+  "reserved_final_seeds": [
+    9000000000000,
+    9000000004096
+  ],
+  "evaluate_every_steps": 500000,
+  "checkpoint_every_steps": 500000,
+  "wall_limit_hours": 24,
+  "simulator_transition_evidence": "docs/results/act2-qualification-20261006/simulator-transition-r33.json",
+  "hypothesis": "In the same corrected simulator, lambda=1 reduces within-rollout advantage decay compared with lambda=.98; both still bootstrap from critic at rollout boundaries.",
+  "control": "Fresh corrected-environment lambda=.98, same frozen90 weights, first training seed and 4M budget. Historical old-environment pilot is excluded as a training control.",
+  "training_changes": "Weights-only adjacent-stage transfer with reset optimizer/RNG/workers/memory; lambda is the sole differing training scalar between matched arms; deterministic CPU encoder optimization verified bitwise on local diagnostics.",
+  "success_rule": "Study-level fixed experimental endpoint joint gain >=.01 over matched control and current-environment frozen90; two exact McNemar comparisons with Holm alpha .05; genuine joint successes in both late windows; all health checks pass.",
+  "failure_rule": "Incomplete execution is INCOMPLETE, positive uncertain effects INCONCLUSIVE; no joint gain stops recipe extension; Act1 reach is diagnostic only.",
+  "final_policy": "2048 fresh DEVELOPMENT confirmation seeds; fixed endpoints primary, periodic peaks diagnostic. Final [9000000000000,9000000004096) remains sealed.",
+  "throughput_safety_factor": 1.5,
+  "evaluation_reserve_hours": 4,
+  "selection_candidates": "Only checkpoints actually evaluated on the periodic development block; fixed endpoint is primary and is not implicitly included in periodic selection.",
+  "diagnostics": "Existing termination_success metrics binned into disjoint late windows; evaluation records first decision per act, HP/deck/relic/potions, shaped critic value and potential. No policy-input, action or reward change.",
+  "evidence": "docs/results/act2-qualification-20261006/TRAINING_READINESS_REVIEW.md",
+  "ppo_overrides": {
+    "gae_lambda": 0.98
+  }
+}

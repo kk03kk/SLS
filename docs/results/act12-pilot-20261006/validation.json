@@ -1,0 +1,31 @@
+{
+  "schema": "sls-act12-closeout-validation-v1",
+  "date": "2026-10-06",
+  "role": "local evidence audit, not server training or method-efficacy validation",
+  "native_source_sha256": "fe354a23c7584d68d0a2b6681b8dfd4e97d98e107b7ddf57c479060d91468f39",
+  "training_implementation_sha256": "03ab4c6e5d823be9a598fec855d1311020060e302e4ab9c2010426e546ac3e97",
+  "pytest": {
+    "passed": 1079,
+    "skipped": 1,
+    "warnings": 4,
+    "seconds": 67.08,
+    "log_sha256": "46980633653d45b198c81ddb6c452fdb281ba7539dfa3361201d8abf99e870f3"
+  },
+  "ruff": "whole repository PASS",
+  "configs": "27/27 PASS",
+  "diff_check": "PASS",
+  "raw_outcome_recomputation": "PASS; bundle hashes and all 3-model normal-start counts/pairs",
+  "checkpoint_audit": "PASS; 3 available trusted checkpoints; finite model/Adam/trainer; final/latest equal",
+  "gzip_lossless_verification": "PASS",
+  "AGENTS_unmodified": true,
+  "source_sha256": {
+    "tools/analyze_act12_download.py": "d0806fbbe8efee73e150eef828f665169ff40c658d4af4a8a2b3fcd6927ba6d1",
+    "tools/analyze_reward_screen.py": "2db0ac9a80c2a899350f3fc37d3aabf29aba07bcfcdd7e286263800cf54a5b49",
+    "tests/test_act12_download.py": "2dccd634a44dafa061f21031ebd9664ee7fda4dda9cc9dfceca7c473f2b381e7",
+    "docs/results/act12-pilot-20261006/credit_probe.py": "09aa2e08b0c189fd68deba2e84b8fdd53ba496f5f77c2deabd6d52bac82e1eb9",
+    "docs/results/act12-pilot-20261006/recompute_outcomes.py": "f6306387dcb7fae16a6acc2cb3a77c17aa0a06faada057b5a211bcf345a8ef14",
+    "docs/results/act12-pilot-20261006/checkpoint_audit.py": "06ec03e53341c98f1293e39825210c756e2a159881537108e3f22a03d5e77de8"
+  },
+  "next_training": "design only; no new optimizer update, GPU submission or final holdout access",
+  "portable_credit_probe_same_runtime_replay": "PASS; identical local diagnostic record, no optimization"
+}

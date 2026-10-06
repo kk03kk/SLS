@@ -1,0 +1,37 @@
+{
+  "schema": "sls-act12-lambda-study-v1",
+  "status": "READY",
+  "hypothesis": "lambda=1 reduces within-rollout decay compared with .98 during Act1-to-Act2 adaptation; still critic-bootstrapped at rollout boundary.",
+  "primary_objective": "normal-Neow-start A20 Ironclad Act1+Act2 joint clear",
+  "arms": {
+    "control": {
+      "plan": "configs/experiments/act12-lambda-control-r1.json",
+      "plan_sha256": "3e703d48689d6eea14176cd600be54dac29ac39f0ec35548434b3b9997f429f1"
+    },
+    "experimental": {
+      "plan": "configs/experiments/act12-lambda-experimental-r1.json",
+      "plan_sha256": "4310c55aa9c2764a9f7b95ff8d9f4887d11300ccb1ea68a1186ab8dd6d8d2bf5"
+    }
+  },
+  "training_seed": 130000000,
+  "additional_decisions_per_arm": 4000000,
+  "train_seed_replication_limit": "one shared seed; replicate only after promising development evidence",
+  "scheduling": "one 48h GPU-long allocation, same node/runtime: control then experimental, then paired analysis. Each arm retains 24h preparation cap; remaining allocation minus 30min analysis reserve also gates the next arm.",
+  "development_periodic_seeds": [
+    8000009000000,
+    8000009000256
+  ],
+  "development_confirmation_seeds": [
+    8000010000000,
+    8000010002048
+  ],
+  "reserved_final_seeds": [
+    9000000000000,
+    9000000004096
+  ],
+  "checkpoint_rule": "fixed endpoints primary; periodic selected checkpoints diagnostic only",
+  "success": "experimental fixed endpoint improves >=.01 absolute versus both matched control and frozen90; exact two-sided McNemar/Holm family alpha .05; healthy completion and true joint successes in [2M,3M),[3M,4M+overshoot).",
+  "failure": "Incomplete or incompatible evaluations are execution problems; uncertain gain is inconclusive; no joint gain prevents automatic extension.",
+  "scope": "finite simulator pilot, no whole-Act2 certification or real-game win-rate estimate",
+  "wall_limit_hours": 48
+}

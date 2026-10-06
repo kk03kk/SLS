@@ -17,7 +17,8 @@ from tools.analyze_reward_screen import analyze_run, outcomes, read
 from tools.compare_run_arms import _from_seed_results, report
 
 
-def paired_act12(reference: dict, candidate: dict) -> dict:
+def paired_act12(reference: dict, candidate: dict, *,
+                 labels: tuple[str, str] = ("frozen-parent", "candidate")) -> dict:
     interval = tuple(reference["seeds"])
     if tuple(candidate["seeds"]) != interval:
         raise ValueError("Act1-2 paired seeds differ")
@@ -41,8 +42,8 @@ def paired_act12(reference: dict, candidate: dict) -> dict:
     # Act2 boss information is absent when the policy never reaches Act2.
     # Unequal reach rates are legitimate; never pair only surviving subsets.
     with contextlib.redirect_stdout(io.StringIO()):
-        result = report(_from_seed_results("frozen-parent", "Act1-2", left),
-                        _from_seed_results("candidate", "Act1-2", right), 256)
+        result = report(_from_seed_results(labels[0], "Act1-2", left),
+                        _from_seed_results(labels[1], "Act1-2", right), 256)
     n = result["paired_seeds"]
     delta = result["net"] / n
     discordant = sum(result["discordant"].values()) / n

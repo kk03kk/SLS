@@ -1,0 +1,45 @@
+{
+  "schema": "sls-act2-qualification-rollup-v1",
+  "native_source_sha256": "b515808c78fa8d9355921c721a4da01c15a3e8d375c645f2d75c75f9127a2a38",
+  "controlled_matched": 66,
+  "controlled_expected": 72,
+  "controlled_missing_or_failed": [
+    131100066,
+    131100067,
+    131100068,
+    131100069,
+    131100070,
+    131100071
+  ],
+  "production_expected": 8,
+  "production_missing_or_failed": [
+    8000011000000,
+    8000011000001,
+    8000011000002,
+    8000011000004,
+    8000011000005,
+    8000011000007,
+    8000011000009,
+    8000011000069
+  ],
+  "blockers": [
+    "controlled obligations missing, incomplete or divergent",
+    "reward collection not witnessed",
+    "checkpoint continuation evidence missing",
+    "production canaries missing or divergent"
+  ],
+  "training_gate": "NOT_QUALIFIED",
+  "scope": "24 bounded obligations only; no complete Act2 certification or win-rate estimate",
+  "input_sha256": {
+    "docs/results/act2-qualification-20261006/combat-after-r22.json": "026c9130a6351425cd22a1c7b935fb6fd1fc864c1d9ed47fb4684aea83e42e3e",
+    "docs/results/act2-qualification-20261006/boss-entangle-after-r22.json": "a7745580e8c4f519d30bc04d6cae50b22909bb7c077c75a082bed32ddc1d4138",
+    "docs/results/act2-qualification-20261006/system-stock-policy-r23-transition-after-r22.json": "e17be1cea9f9bbabc207d5a2c781eb7bf80a06c158d440ecea8509ef4369889b",
+    "docs/results/act2-qualification-20261006/production-selection-r22.json": "a249b32a9a082566b257192c77ddf25f02c14cb3e0a5053c7288ea9e463a9bff"
+  },
+  "superseded_harness_seeds": [
+    131100030,
+    131100031,
+    131100032
+  ],
+  "superseded_system_rows": []
+}

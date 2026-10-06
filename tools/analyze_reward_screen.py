@@ -108,15 +108,21 @@ def outcomes(result: dict, interval: tuple[int, int], *, horizon: int = 1) -> di
                 "backend_errors", "backend_truncations", "step_limits", "cycle_limits", "timeouts")}, **extra}
 
 
-def analyze_run(run: Path, *, horizon: int = 1) -> tuple[dict, list[dict], dict]:
+def analyze_run(
+    run: Path, *, horizon: int = 1, allow_missing_export: bool = False,
+) -> tuple[dict, list[dict], dict]:
     import torch
 
     bundle = read(run / "training-bundle.json")
     verified = {}
+    missing = {}
     for name, expected in bundle["files"].items():
         path = run / name
         if not path.resolve().is_relative_to(run.resolve()):
             raise ValueError("bundle path escapes run")
+        if allow_missing_export and name == f"{run.name}.pt" and not path.exists():
+            missing[name] = expected
+            continue
         actual = digest(path)
         if actual != expected:
             raise ValueError(f"bundle hash mismatch: {path}")
@@ -170,12 +176,18 @@ def analyze_run(run: Path, *, horizon: int = 1) -> tuple[dict, list[dict], dict]
                 "optimizer", "python_rng", "torch_rng", "cuda_rng", "environments"))}
         if path == run / "stages/train/selection/best_progress.pt":
             selected_payload = payload
-    exported = torch.load(run / f"{run.name}.pt", map_location="cpu", weights_only=False)
-    if selected_payload is None or set(exported["model"]) != set(selected_payload["model"]):
-        raise ValueError("exported policy model keys differ from selected checkpoint")
-    if any(not torch.equal(value.cpu(), selected_payload["model"][key].cpu())
-           for key, value in exported["model"].items()):
-        raise ValueError("exported policy weights differ from selected checkpoint")
+    export_path = run / f"{run.name}.pt"
+    export_verified = False
+    if export_path.exists():
+        exported = torch.load(export_path, map_location="cpu", weights_only=False)
+        if selected_payload is None or set(exported["model"]) != set(selected_payload["model"]):
+            raise ValueError("exported policy model keys differ from selected checkpoint")
+        if any(not torch.equal(value.cpu(), selected_payload["model"][key].cpu())
+               for key, value in exported["model"].items()):
+            raise ValueError("exported policy weights differ from selected checkpoint")
+        export_verified = True
+    elif not allow_missing_export:
+        raise FileNotFoundError(export_path)
     if checkpoints["latest.pt"]["steps"] != manifest["environment_steps"]:
         raise ValueError("latest checkpoint incomplete")
     updates = [row for row in metrics if "update_seconds" in row]
@@ -199,7 +211,8 @@ def analyze_run(run: Path, *, horizon: int = 1) -> tuple[dict, list[dict], dict]
         "development_confirmation": outcomes(final["result"], final_range, horizon=horizon),
         "confirmation_seed_range": final_range, "periodic_seed_range": periodic,
         "final_evaluation_has_explicit_runtime": "runtime" in final,
-        "exported_weights_match_selected": True,
+        "exported_weights_match_selected": True if export_verified else None,
+        "missing_bundle_files": missing,
         "new_decisions": manifest["environment_steps"] - (
             manifest.get("initialization") or manifest["continuation"]
         )["parent_environment_steps"],

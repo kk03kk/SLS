@@ -668,8 +668,17 @@ void GameContext::populateFirstStrongEnemy(const MonsterEncounter monsters[], co
                 break;
 
             case MonsterEncounter::CHOSEN_AND_BYRDS:
+                // TheCity.generateExclusions excludes overlapping weak enemies.
+                // Rejected rolls still consume monsterRng, before the strong list.
+                if (lastMonster == MonsterEncounter::THREE_BYRDS ||
+                    lastMonster == MonsterEncounter::CHOSEN) {
+                    continue;
+                }
                 break;
             case MonsterEncounter::SENTRY_AND_SPHERE:
+                if (lastMonster == MonsterEncounter::SPHERIC_GUARDIAN) {
+                    continue;
+                }
                 break;
             case MonsterEncounter::SNAKE_PLANT:
                 break;
@@ -678,6 +687,9 @@ void GameContext::populateFirstStrongEnemy(const MonsterEncounter monsters[], co
             case MonsterEncounter::CENTURION_AND_HEALER:
                 break;
             case MonsterEncounter::CULTIST_AND_CHOSEN:
+                if (lastMonster == MonsterEncounter::CHOSEN) {
+                    continue;
+                }
                 break;
             case MonsterEncounter::THREE_CULTIST:
                 break;
@@ -1393,7 +1405,10 @@ bool GameContext::obtainRelic(RelicId r) {
 
         case RelicId::BLACK_BLOOD: {
             if (hasRelic(RelicId::BURNING_BLOOD)) {
-                relics.remove(RelicId::BURNING_BLOOD);
+                // Stock instantObtain replaces the starter relic in place;
+                // appending changes the visible relic order and callbacks.
+                relics.replaceRelic(RelicId::BURNING_BLOOD, r);
+                return false;
             }
             break;
         }
@@ -1425,10 +1440,12 @@ bool GameContext::obtainRelic(RelicId r) {
 
         case RelicId::CALLING_BELL: {
             deck.obtain(*this, CardId::CURSE_OF_THE_BELL);
-            if (floorNum == 0) {
-                // Stock opens CombatRewardScreen in NeowRoom before clearing
-                // its rewards. The discarded card roll still advances RNG
-                // and rare-card pity state; it must never be offered here.
+            if (floorNum == 0 || curRoom == Room::BOSS_TREASURE) {
+                // CallingBell.update opens CombatRewardScreen before clearing
+                // its rewards. Both NeowRoom and TreasureRoomBoss generate
+                // a normal discarded card roll (the latter does not inherit
+                // TreasureRoom). Preserve RNG and rare-card pity state without
+                // offering the discarded cards to the player.
                 (void)createCardReward(Room::MONSTER);
             }
             Rewards reward;
@@ -2732,6 +2749,13 @@ void GameContext::chooseEventOption(int idx) {
             if (info.eventData == 0) {
                 info.eventData = 1;
                 regainControlAction = [](GameContext &gc) {
+                    // AbstractRoom.update rolls a potion even when
+                    // rewardAllowed=false. Colosseum.reopen then calls
+                    // preBattlePrep, whose deck initialization shuffles once.
+                    // Both results are discarded before the post-fight dialog.
+                    Rewards discarded;
+                    gc.addPotionRewards(discarded);
+                    gc.shuffleRng.randomLong();
                     gc.screenState = ScreenState::EVENT_SCREEN;
                     gc.info.eventData = 1;
                 };
@@ -2744,7 +2768,12 @@ void GameContext::chooseEventOption(int idx) {
                 rewards.addRelic(returnRandomRelic(RelicTier::RARE));
                 rewards.addRelic(returnRandomRelic(RelicTier::UNCOMMON));
                 regainControlAction = [rewards](GameContext &gc) {
-                    gc.openCombatRewardScreen(rewards);
+                    // Unlike the first fight, stock rewardAllowed is true.
+                    // Normal victory still rolls a potion and creates cards.
+                    Rewards completed = rewards;
+                    gc.addPotionRewards(completed);
+                    completed.addCardReward(gc.createCardReward(Room::EVENT));
+                    gc.openCombatRewardScreen(completed);
                     gc.regainControlAction = returnToMapAction;
                 };
                 enterBattle(MonsterEncounter::COLOSSEUM_EVENT_NOBS);
@@ -3856,9 +3885,19 @@ void GameContext::chooseEventOption(int idx) {
 }
 
 void GameContext::chooseSelectCardScreenOption(int idx) {
+    if (info.toSelectCount > 1) {
+        // Stock multi-pick GRID keeps its target group and permits deselection
+        // until the final required pick. No deck mutation/RNG before commit.
+        for (int selected = 0; selected < info.haveSelectedCards.size(); ++selected) {
+            if (info.haveSelectedCards[selected].deckIdx == info.toSelectCards[idx].deckIdx) {
+                info.haveSelectedCards.remove(selected);
+                return;
+            }
+        }
+    }
     bool isLastCard = info.haveSelectedCards.size() + 1 == info.toSelectCount;
     info.haveSelectedCards.push_back(info.toSelectCards[idx]);
-    info.toSelectCards.remove(idx);
+    if (info.toSelectCount == 1) info.toSelectCards.remove(idx);
 
     if (!isLastCard) { // todo maybe refactor so dont remove card if last
         return;

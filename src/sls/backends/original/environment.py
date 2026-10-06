@@ -19,6 +19,8 @@ from sls.curriculum import (
     evaluate_horizon,
 )
 
+ORIGINAL_EXECUTION_CONTRACT = "sls-original-choice-public-boundary-v7"
+
 
 def _completed_curriculum_act(
     profile: CurriculumProfile, payload: dict[str, Any], decision: Decision,
@@ -225,6 +227,14 @@ class OriginalBackend:
         selection_task_before = str(
             (payload.get("_continuation") or {}).get("card_selection_task") or ""
         ).upper()
+        selection_game = payload.get("game_state") or {}
+        combat_card_reward = (
+            str(selection_game.get("screen_type") or "").upper() == "CARD_REWARD"
+            and str(selection_game.get("room_phase") or "").upper() == "COMBAT"
+        )
+        selected_reward_uuids = tuple(
+            card.get("uuid") for card in (selection_game.get("screen_state") or {}).get("cards") or ()
+        ) if combat_card_reward else ()
         starting_deck_size = len((payload.get("game_state") or {}).get("deck") or ())
         executed: list[str] = []
         for index, command in enumerate(commands):
@@ -299,7 +309,8 @@ class OriginalBackend:
             payload = self._wait_for_selection_completion(
                 payload,
                 executed,
-                limit=180 if selection_task_before == "DISCOVERY" else 30,
+                limit=180 if selection_task_before == "DISCOVERY" or combat_card_reward else 30,
+                selected_reward_uuids=selected_reward_uuids,
             )
             payload = self._fold_terminal_selection_event(payload, executed)
             payload = self._fold_protocol_only_boundaries(
@@ -404,6 +415,7 @@ class OriginalBackend:
 
     def _wait_for_selection_completion(
         self, payload: dict[str, Any], executed: list[str], *, limit: int = 30,
+        selected_reward_uuids: tuple[str | None, ...] = (),
     ) -> dict[str, Any]:
         """Advance stock frames past transient GRID/NONE selection teardown."""
 
@@ -416,6 +428,13 @@ class OriginalBackend:
             screen = str(game.get("screen_type") or "NONE").upper()
             continuation = payload.get("_continuation") or {}
             available = {str(item).lower() for item in payload.get("available_commands") or ()}
+            if screen == "CARD_REWARD" and selected_reward_uuids and "choose" in available:
+                next_uuids = tuple(card.get("uuid") for card in
+                    (game.get("screen_state") or {}).get("cards") or ())
+                if next_uuids and all(next_uuids) and next_uuids != selected_reward_uuids:
+                    # A new stock choice is a policy boundary, even when two
+                    # Discovery actions use the same UI screen consecutively.
+                    return payload
             if screen == "HAND_SELECT":
                 state = game.get("screen_state") or {}
                 selected = state.get("selected") or ()
@@ -431,9 +450,18 @@ class OriginalBackend:
                 # A partial or optional multi-selection remains a semantic
                 # boundary; do not choose or confirm it automatically.
                 return payload
+            if screen == "GRID" and "choose" in available:
+                state = game.get("screen_state") or {}
+                selected = state.get("selected_cards") or ()
+                required = int(state.get("num_cards", 0) or 0)
+                if required > 1 and len(selected) < required:
+                    # Empty Cage and other multi-pick grids still require a
+                    # player decision, including after undoing back to zero.
+                    # Waiting cannot complete the selection.
+                    return payload
             if (
                 screen == "NONE"
-                and str(continuation.get("action_phase") or "").upper() == "WAITING_ON_USER"
+                and str(continuation.get("action_phase") or game.get("action_phase") or "").upper() == "WAITING_ON_USER"
                 and str(game.get("room_phase") or "").upper() == "COMBAT"
             ):
                 return payload
@@ -718,15 +746,29 @@ class OriginalBackend:
     def _settle_debug_intents(
         self, payload: dict[str, Any], executed: list[str] | None = None,
     ) -> dict[str, Any]:
-        """Advance presentation frames until stock monster intents are materialized."""
+        """Wait for actual stock intents, not only projected EnemyMoveInfo.
+
+        Spot Weakness reads monster.intent itself. The constructor's DEBUG
+        value can survive after the move projection already advertises ATTACK.
+        Exposing that payload changes gameplay, not just presentation.
+        """
 
         frames = 0
-        for _ in range(8):
+        for _ in range(30):
             game = payload.get("game_state") or {}
+            if str(game.get('screen_type') or '').upper() in {'DEATH', 'VICTORY', 'GAME_OVER', 'COMPLETE'}:
+                return payload
             if not game.get("combat_state"):
                 break
             intents = payload.get("_monster_intents") or []
-            if intents and all(
+            monsters = (game.get("combat_state") or {}).get("monsters") or []
+            actual_pending = any(
+                str(monster.get("intent") or "").upper() == "DEBUG"
+                and int(monster.get("current_hp", 1)) > 0
+                and not monster.get("is_gone") and not monster.get("half_dead")
+                for monster in monsters
+            )
+            if not actual_pending and intents and all(
                 str(item.get("intent") or "").upper() != "DEBUG"
                 and (
                     not str(item.get("intent") or "").upper().startswith("ATTACK")
@@ -742,6 +784,12 @@ class OriginalBackend:
             frames += 1
             if executed is not None:
                 executed.append("wait 1")
+        monsters = ((payload.get("game_state") or {}).get("combat_state") or {}).get("monsters") or []
+        if any(str(monster.get("intent") or "").upper() == "DEBUG"
+               and int(monster.get("current_hp", 1)) > 0
+               and not monster.get("is_gone") and not monster.get("half_dead")
+               for monster in monsters):
+            raise RuntimeError("stock monster intent remains DEBUG at a player boundary")
         return payload
 
     def _wait_for_actionable_combat_boundary(
@@ -760,7 +808,7 @@ class OriginalBackend:
             game = payload.get("game_state") or {}
             continuation = payload.get("_continuation") or game.get("_continuation") or {}
             if not game.get("combat_state") or str(
-                continuation.get("screen") or ""
+                continuation.get("screen") or game.get("screen_type") or ""
             ).upper() in {"DEATH", "VICTORY", "GAME_OVER", "COMPLETE"}:
                 return payload
             try:
@@ -858,7 +906,7 @@ class OriginalBackend:
         for _ in range(limit):
             game = payload.get("game_state") or {}
             continuation = payload.get("_continuation") or game.get("_continuation") or {}
-            if str(continuation.get("screen") or "").upper() in {
+            if str(continuation.get("screen") or game.get("screen_type") or "").upper() in {
                 "DEATH", "VICTORY", "GAME_OVER", "COMPLETE",
             }:
                 return payload

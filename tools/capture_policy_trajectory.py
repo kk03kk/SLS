@@ -21,6 +21,8 @@ from sls.curriculum import (  # noqa: E402
     IRONCLAD_A0_ACT3,
     IRONCLAD_A0_FULLRUN,
     IRONCLAD_A0_HEART,
+    IRONCLAD_A20_ACT1,
+    IRONCLAD_A20_ACT2,
     CurriculumProfile,
 )
 from sls.diagnostics import capture_policy_trajectory  # noqa: E402
@@ -60,6 +62,8 @@ def main() -> int:
     parser.add_argument("--max-actions", type=int)
     parser.add_argument("--diagnostic-state", action="store_true")
     parser.add_argument("--stock-jar", type=Path, help="pin the original game's bytecode identity")
+    parser.add_argument("--frozen-act1-reference-act2", action="store_true",
+                        help="explicit diagnostic horizon extension; preserve Act1 training provenance")
     args = parser.parse_args()
     stopped = False
 
@@ -72,6 +76,14 @@ def main() -> int:
     artifact = load_policy_artifact(args.artifact, device="cpu")
     profile = _profile_for_artifact(artifact.metadata)
     identity = {"profile_id": profile.profile_id}
+    if args.frozen_act1_reference_act2:
+        if profile != IRONCLAD_A20_ACT1:
+            raise ValueError("frozen reference extension requires an A20 Act1 artifact")
+        profile = IRONCLAD_A20_ACT2
+        identity.update(profile_id=profile.profile_id,
+                        trained_profile_id=IRONCLAD_A20_ACT1.profile_id,
+                        evaluation_contract="sls-frozen-act1-reference-act2-v1",
+                        frozen_model_sha256=artifact.metadata.model_sha256)
     if args.backend == "simulator":
         built = native_artifact()
         if built is None:

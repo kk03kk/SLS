@@ -1,0 +1,163 @@
+{
+  "active_stage": null,
+  "checkpoint_every_steps": 500000,
+  "checkpoint_schema": "sls-full-run-ppo-v5",
+  "config_sha256": "bc2a3f68b06019b5ddf1c514b8b14c3987610c451c38de7e58f4d00ad8929073",
+  "content_scope_id": "sls-ironclad-ascension-content-v1",
+  "content_scope_sha256": "e92ab9e347bac50422d148d7e23b505f99c68eb3d515f0b7bcebf8862981490d",
+  "created_unix": 1791208182.3036182,
+  "cuda": "12.4",
+  "cuda_peak_memory_bytes": 16070986240,
+  "curriculum": {
+    "train": "IRONCLAD_A20_ACT2"
+  },
+  "deterministic_algorithms": true,
+  "diagnostic_evaluation_seed_count": null,
+  "diagnostic_evaluation_seed_start": null,
+  "diagnostic_rotation_stride": null,
+  "encoding_schema": "sls-policy-input-v5",
+  "environment_profile": {
+    "allow_key_acquisition": true,
+    "ascension": 20,
+    "character_id": "IRONCLAD",
+    "horizon": 2,
+    "note_for_yourself_card": "IRON_WAVE",
+    "note_for_yourself_policy": "AUTO_LEAVE",
+    "profile_id": "IRONCLAD_A20_ACT2",
+    "secret_portal_eligible": true,
+    "start_distribution": "NATURAL_RUN_START",
+    "version": 1
+  },
+  "environment_steps": 94027776,
+  "episodes": 19510,
+  "final_evaluation_seeds": [
+    8000007000000,
+    8000007001024
+  ],
+  "git": {
+    "branch": "",
+    "commit": "d9ee32d67003f8ce7567a77df21916e96cbbdfef",
+    "dirty": false
+  },
+  "gpu": "NVIDIA A100-PCIE-40GB",
+  "hostname": "xgpg6",
+  "initialization": {
+    "entropy_clock": "cumulative environment steps",
+    "exact_resume_of_parent_experiment": false,
+    "parent_checkpoint": "/home/h/hengzhi/SLS-act12-r1/local/runs/ironclad-a20-act1-win-90m-continuation/final.pt",
+    "parent_checkpoint_sha256": "274963f4fe32b75003c5a1b4ccd394b5185304156e6ea22a76aee2764d54f1e0",
+    "parent_environment_steps": 90013696,
+    "preserved": "all model weights, including value head",
+    "reset": "Adam, RNG, workers, recurrent state, update count and best selection",
+    "schema": "sls-curriculum-weight-transfer-v2",
+    "simulator_transition": {
+      "evidence": {
+        "snecko-after.json": "4bcfc6fcb4432e74fd237df0ce7973ac6f1660763c2067e5a6c1999aecf5299c",
+        "snecko-before.json": "c1890a20a10004909b8ad2dd17844beba8657189ab83d387df0f519507591fc0"
+      },
+      "exact_resume_allowed": false,
+      "reason": "Correct A17+ Snecko debuff queue order; evaluate frozen parent and new policy under the corrected Act2 rules.",
+      "schema": "sls-curriculum-simulator-transition-v1",
+      "semantics_revision": "sls-snecko-tail-whip-order-v1",
+      "source_native_source_sha256": "1e30bb6cfa32f600cd63c59983c14ab8928fac4452c1586d630295d2c6ff9453",
+      "source_profile": "IRONCLAD_A20_ACT1",
+      "status": "VERIFIED_RULE_CORRECTION",
+      "target_native_source_sha256": "fe354a23c7584d68d0a2b6681b8dfd4e97d98e107b7ddf57c479060d91468f39",
+      "target_profile": "IRONCLAD_A20_ACT2",
+      "transfer_mode": "weights-only"
+    },
+    "source_profile": "IRONCLAD_A20_ACT1",
+    "step_accounting": "parent steps + new A20 environment steps",
+    "target_profile": "IRONCLAD_A20_ACT2"
+  },
+  "model": {
+    "architecture": "sls-recurrent-relational-policy-v5",
+    "attention_heads": 4,
+    "dropout": 0.0,
+    "embedding_dim": 128,
+    "encoding_schema": "sls-policy-input-v5",
+    "feedforward_dim": 256,
+    "recurrent_hidden_dim": 256,
+    "recurrent_layers": 1,
+    "transformer_layers": 4,
+    "vocabulary_hash": "04df4dc504ccf10d389b7b0e798ebc7a1ea2036edfc273a5cf5b11071b3b8ed0"
+  },
+  "native_artifact": {
+    "git_commit": "d9ee32d67003f8ce7567a77df21916e96cbbdfef",
+    "path": "/home/h/hengzhi/SLS-act12-r1/local/build/native/cpython-312/_lightspeed.cpython-312-x86_64-linux-gnu.so",
+    "sha256": "0bf2ab9628563430fe43769a436c2b8e7e1950f23bc95c55636d00b9532ea51c",
+    "source_sha256": "fe354a23c7584d68d0a2b6681b8dfd4e97d98e107b7ddf57c479060d91468f39"
+  },
+  "native_source_sha256": "fe354a23c7584d68d0a2b6681b8dfd4e97d98e107b7ddf57c479060d91468f39",
+  "periodic_evaluation_seeds": [
+    8000006000000,
+    8000006000256
+  ],
+  "platform": "Linux-6.8.0-146-generic-x86_64-with-glibc2.39",
+  "ppo": {
+    "clip_ratio": 0.2,
+    "entropy_coefficient": 0.002,
+    "entropy_decay_steps": 4000000,
+    "entropy_final": 0.002,
+    "entropy_schedule_start_steps": 56000512,
+    "episode_limit_schema": "sls-fullrun-episode-limit-v2",
+    "epochs": 2,
+    "failure_progress_scale": 0.0,
+    "final_kl_samples": 4096,
+    "gae_lambda": 0.98,
+    "gamma": 1.0,
+    "learning_rate": 3.125e-05,
+    "limit_failure_reward": -1.0,
+    "max_boundary_visits": 4,
+    "max_episode_steps": 4096,
+    "max_gradient_norm": 0.5,
+    "minibatch_sequences": 16,
+    "potential_scale": 0.2,
+    "potential_shaping": true,
+    "recurrent_sequence_length": 64,
+    "reward_schema": "sls-curriculum-win-v1",
+    "rollout_steps": 256,
+    "target_kl": 0.02,
+    "value_clip_ratio": 0.2,
+    "value_coefficient": 0.5
+  },
+  "profile": "IRONCLAD_A20_ACT2",
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "schema": "sls-recurrent-ppo-run-v2",
+  "shards": 16,
+  "simulator_only": true,
+  "slurm": {
+    "CUDA_VISIBLE_DEVICES": "0",
+    "SLURM_CPUS_ON_NODE": "16",
+    "SLURM_JOB_GPUS": "0",
+    "SLURM_JOB_ID": "912171",
+    "SLURM_JOB_NAME": "sls-train",
+    "SLURM_JOB_PARTITION": "gpu-long"
+  },
+  "stages": {
+    "train": {
+      "completed_environment_steps": 94027776,
+      "finished_unix": 1791256826.0624628,
+      "profile": "IRONCLAD_A20_ACT2",
+      "promotion_passed": true,
+      "status": "COMPLETE",
+      "stop_signal": null,
+      "target_environment_steps": 94013696
+    }
+  },
+  "status": "COMPLETE",
+  "termination_counts": {
+    "backend_truncated": 0,
+    "cycle_limit": 0,
+    "death": 19460,
+    "step_limit": 0,
+    "success": 50
+  },
+  "torch": "2.6.0+cu124",
+  "training_identity_sha256": "ca2fbcadca2f3962c7d89b015ab1e6a108a80917d6b417a454b11b13d0ad7fdb",
+  "training_implementation_sha256": "03ab4c6e5d823be9a598fec855d1311020060e302e4ab9c2010426e546ac3e97",
+  "updates": 245,
+  "vocabulary_sha256": "04df4dc504ccf10d389b7b0e798ebc7a1ea2036edfc273a5cf5b11071b3b8ed0",
+  "workers": 64,
+  "workflow": "single-stage"
+}
