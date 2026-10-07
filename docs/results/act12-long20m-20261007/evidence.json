@@ -1,0 +1,375 @@
+{
+  "schema": "sls-act12-long-run-preparation-evidence-v1",
+  "status": "LOCAL_PREPARATION_PENDING_STUDY_RESULTS",
+  "current_job": {
+    "id": 916291,
+    "status": "USER_REPORTED_RUNNING",
+    "commit": "6e54adbc0aa6fca81b994490837db382b245e42b"
+  },
+  "new_long_training_started": false,
+  "parent_checkpoint_bound": false,
+  "native_source_sha256": "b100427d1e3ae6eee05818b6904047049609b1aa70807872c1f5f5e0edd6d62f",
+  "training_implementation_sha256": "9dca86829696613903d07b7fcbc6d4928f1c957c98fd6eaad534d6e76519ba94",
+  "preserved_algorithm_and_environment": true,
+  "AGENTS_sha256": "90132f3c84221605cf5c5ffc917255e84aa4dd82e60cae9d79c120a5e307d7e7",
+  "local_probe": {
+    "checkpoint_sha256": "274963f4fe32b75003c5a1b4ccd394b5185304156e6ea22a76aee2764d54f1e0",
+    "source_profile": "IRONCLAD_A20_ACT1",
+    "source_native_sha256": "1e30bb6cfa32f600cd63c59983c14ab8928fac4452c1586d630295d2c6ff9453",
+    "evaluation_profile": "IRONCLAD_A20_ACT2",
+    "seed_start": 132000000,
+    "workers": 4,
+    "rollout_steps": 256,
+    "completed_trajectories": [
+      {
+        "env": 0,
+        "start": 0,
+        "end": 155,
+        "success": false,
+        "actual_shaped_return": -1.036266565322876,
+        "gae98_return": 0.18629026412963867,
+        "gae1_return": -1.0362658500671387,
+        "advantage98": -0.2811025381088257,
+        "advantage1": -1.503658652305603
+      },
+      {
+        "env": 1,
+        "start": 0,
+        "end": 193,
+        "success": false,
+        "actual_shaped_return": -1.0362666845321655,
+        "gae98_return": 0.41857990622520447,
+        "gae1_return": -1.036266565322876,
+        "advantage98": -0.09121235460042953,
+        "advantage1": -1.5460588932037354
+      },
+      {
+        "env": 2,
+        "start": 0,
+        "end": 178,
+        "success": false,
+        "actual_shaped_return": -1.0362666845321655,
+        "gae98_return": 0.5330019593238831,
+        "gae1_return": -1.036266803741455,
+        "advantage98": -0.03246140480041504,
+        "advantage1": -1.6017301082611084
+      },
+      {
+        "env": 3,
+        "start": 0,
+        "end": 252,
+        "success": false,
+        "actual_shaped_return": -1.036266565322876,
+        "gae98_return": 0.5266270637512207,
+        "gae1_return": -1.036268711090088,
+        "advantage98": -0.078969307243824,
+        "advantage1": -1.6418650150299072
+      }
+    ],
+    "shared_gradients": {
+      "actor_norm": 0.899711549282074,
+      "weighted_critic_norm": 1.2417281866073608,
+      "cosine": -0.06083429232239723,
+      "samples": 128,
+      "limitation": "One frozen on-policy minibatch; interference pathway, not causal attribution."
+    },
+    "memory_after_scratch_update": [
+      {
+        "offset": 64,
+        "memory_l2": 1.573910117149353,
+        "logits_max_abs": 0.8459396362304688,
+        "value_max_abs": 0.131567120552063
+      },
+      {
+        "offset": 128,
+        "memory_l2": 1.895108938217163,
+        "logits_max_abs": 0.9260826110839844,
+        "value_max_abs": 0.0664282888174057
+      },
+      {
+        "offset": 192,
+        "memory_l2": 1.7456234693527222,
+        "logits_max_abs": 0.4336714744567871,
+        "value_max_abs": 0.19726887345314026
+      }
+    ],
+    "collection_profile_seconds": {
+      "encode": 1.8119624991668388,
+      "policy": 2.9622552016517147,
+      "worker_step": 1.9850575986783952,
+      "transition": 4.207113401032984,
+      "reset": 0.012742999708279967,
+      "finalize": 0.031460899976082146
+    },
+    "frozen_weights_unchanged": true
+  },
+  "diagnostic_raw_sha256": "f36404cac333bea27fa2a3f2f067beebccc90177b0d9447c0cf18d23c4a0c619",
+  "metadata_prototype": {
+    "schema": "sls-act12-static-metadata-prototype-v1",
+    "rows": [
+      {
+        "mode": "reference",
+        "seconds": 19.932576999999583,
+        "collection_profile_seconds": {
+          "encode": 1.7782623000675812,
+          "policy": 2.8033191000577062,
+          "worker_step": 1.951336600468494,
+          "transition": 4.032599099678919,
+          "reset": 0.012336899293586612,
+          "finalize": 0.03050650004297495
+        },
+        "rollout_sha256": "af2562a7693c8c9d363e3c81b83d5886d3c16fd1e635ff76d2a5679dd5626dd2",
+        "scratch_model_sha256": "38e31aeb04478403f979822ef01d5b87ddfde7572f5df2f94ea74981f10c0cc1"
+      },
+      {
+        "mode": "prototype",
+        "seconds": 16.792410299996845,
+        "collection_profile_seconds": {
+          "encode": 1.792794100008905,
+          "policy": 2.7248901994898915,
+          "worker_step": 1.9845257000997663,
+          "transition": 3.9464766996679828,
+          "reset": 0.011129100108519197,
+          "finalize": 0.030993400025181472
+        },
+        "rollout_sha256": "af2562a7693c8c9d363e3c81b83d5886d3c16fd1e635ff76d2a5679dd5626dd2",
+        "scratch_model_sha256": "38e31aeb04478403f979822ef01d5b87ddfde7572f5df2f94ea74981f10c0cc1"
+      },
+      {
+        "mode": "prototype",
+        "seconds": 16.547124300035648,
+        "collection_profile_seconds": {
+          "encode": 1.8252422007499263,
+          "policy": 2.7495180999394506,
+          "worker_step": 2.0241847994038835,
+          "transition": 3.98830119962804,
+          "reset": 0.013181100483052433,
+          "finalize": 0.024789299932308495
+        },
+        "rollout_sha256": "af2562a7693c8c9d363e3c81b83d5886d3c16fd1e635ff76d2a5679dd5626dd2",
+        "scratch_model_sha256": "38e31aeb04478403f979822ef01d5b87ddfde7572f5df2f94ea74981f10c0cc1"
+      },
+      {
+        "mode": "reference",
+        "seconds": 16.834604499978013,
+        "collection_profile_seconds": {
+          "encode": 1.8589907998684794,
+          "policy": 2.8501073999796063,
+          "worker_step": 1.9410428988048807,
+          "transition": 4.322183100855909,
+          "reset": 0.012606599950231612,
+          "finalize": 0.020984999951906502
+        },
+        "rollout_sha256": "af2562a7693c8c9d363e3c81b83d5886d3c16fd1e635ff76d2a5679dd5626dd2",
+        "scratch_model_sha256": "38e31aeb04478403f979822ef01d5b87ddfde7572f5df2f94ea74981f10c0cc1"
+      }
+    ],
+    "median_seconds": {
+      "reference": 18.383590749988798,
+      "prototype": 16.669767300016247
+    },
+    "numerical_equivalence": true,
+    "production_integrated": false,
+    "decision": "DEFER_INTEGRATION_KEEP_PARENT_IMPLEMENTATION",
+    "limitations": "Two runs per path; local instrumented collection plus disposable PPO update and startup. No NUS throughput claim."
+  },
+  "metadata_raw_sha256": "991360aa81c7166d7e92a9442bffa470eb7e04a1f821475e0b45c87d92f985d9",
+  "stock_source_identities": {
+    "TheCollector": {
+      "class_sha256": "955c4799fb5ba11724226339820a060f2d5cb76eddddf6890dbf1eaff157fe15",
+      "javap_sha256": "a57fb6d8666af7e6c2e6d51c1737b4b290191e6677f2d12b11b41ef04904b5dc",
+      "manifest_bytecode_sha256": "a57fb6d8666af7e6c2e6d51c1737b4b290191e6677f2d12b11b41ef04904b5dc"
+    },
+    "BronzeAutomaton": {
+      "class_sha256": "6b726a9aa4557af414e03eecf68d8269103fb17c1571995681df8ac5544f1a2a",
+      "javap_sha256": "88bf9bad02f0fc8b00df557df54c86d2fd589a2e252d3c6b18b00d8815004bc5",
+      "manifest_bytecode_sha256": "88bf9bad02f0fc8b00df557df54c86d2fd589a2e252d3c6b18b00d8815004bc5"
+    },
+    "BronzeOrb": {
+      "class_sha256": "92cc3c117351725acf5863d45f2aa553bda7c7dc3567f3372cafc045f76b91a2",
+      "javap_sha256": "99673e2157a6d6e6a1bd3e40bc669f91478f936182b676117086562569caf859",
+      "manifest_bytecode_sha256": "99673e2157a6d6e6a1bd3e40bc669f91478f936182b676117086562569caf859"
+    }
+  },
+  "controlled_replay": {
+    "report_sha256": "25355a0744bcd5e099c53f9a3e9c084dbce5ea936847db620247f4f8fa1fb71e",
+    "stock_capture_sha256": "8a465b18ee9055dc4729a41aa7ee56bbb333ef6d94a0e421902caa1a943dc5c7",
+    "oracle_build_sha256": "c13d88b98b920a7d0aa4be3dbf70f3fc456939288a37573f5525edc0ab702fea",
+    "native_source_sha256": "b100427d1e3ae6eee05818b6904047049609b1aa70807872c1f5f5e0edd6d62f",
+    "runs": [
+      {
+        "encounter": "SLAVERS",
+        "seed": 131100030,
+        "scene_id": "slavers-entangle",
+        "status": "HARNESS_MATCH",
+        "first_divergence": null
+      },
+      {
+        "encounter": "SLAVERS",
+        "seed": 131100031,
+        "scene_id": "slavers-entangle",
+        "status": "HARNESS_MATCH",
+        "first_divergence": null
+      },
+      {
+        "encounter": "SLAVERS",
+        "seed": 131100032,
+        "scene_id": "slavers-entangle",
+        "status": "HARNESS_MATCH",
+        "first_divergence": null
+      },
+      {
+        "encounter": "CHAMP",
+        "seed": 131100045,
+        "scene_id": "champ-threshold-220",
+        "status": "HARNESS_MATCH",
+        "first_divergence": null
+      },
+      {
+        "encounter": "CHAMP",
+        "seed": 131100046,
+        "scene_id": "champ-threshold-220",
+        "status": "HARNESS_MATCH",
+        "first_divergence": null
+      },
+      {
+        "encounter": "CHAMP",
+        "seed": 131100047,
+        "scene_id": "champ-threshold-220",
+        "status": "HARNESS_MATCH",
+        "first_divergence": null
+      },
+      {
+        "encounter": "CHAMP",
+        "seed": 131100048,
+        "scene_id": "champ-threshold-219",
+        "status": "HARNESS_MATCH",
+        "first_divergence": null
+      },
+      {
+        "encounter": "CHAMP",
+        "seed": 131100049,
+        "scene_id": "champ-threshold-219",
+        "status": "HARNESS_MATCH",
+        "first_divergence": null
+      },
+      {
+        "encounter": "CHAMP",
+        "seed": 131100050,
+        "scene_id": "champ-threshold-219",
+        "status": "HARNESS_MATCH",
+        "first_divergence": null
+      },
+      {
+        "encounter": "COLLECTOR",
+        "seed": 131100051,
+        "scene_id": "collector-cycle",
+        "status": "HARNESS_MATCH",
+        "first_divergence": null
+      },
+      {
+        "encounter": "COLLECTOR",
+        "seed": 131100052,
+        "scene_id": "collector-cycle",
+        "status": "HARNESS_MATCH",
+        "first_divergence": null
+      },
+      {
+        "encounter": "COLLECTOR",
+        "seed": 131100053,
+        "scene_id": "collector-cycle",
+        "status": "HARNESS_MATCH",
+        "first_divergence": null
+      },
+      {
+        "encounter": "COLLECTOR",
+        "seed": 131100054,
+        "scene_id": "collector-summon",
+        "status": "HARNESS_MATCH",
+        "first_divergence": null
+      },
+      {
+        "encounter": "COLLECTOR",
+        "seed": 131100055,
+        "scene_id": "collector-summon",
+        "status": "HARNESS_MATCH",
+        "first_divergence": null
+      },
+      {
+        "encounter": "COLLECTOR",
+        "seed": 131100056,
+        "scene_id": "collector-summon",
+        "status": "HARNESS_MATCH",
+        "first_divergence": null
+      },
+      {
+        "encounter": "AUTOMATON",
+        "seed": 131100057,
+        "scene_id": "automaton-cycle",
+        "status": "HARNESS_MATCH",
+        "first_divergence": null
+      },
+      {
+        "encounter": "AUTOMATON",
+        "seed": 131100058,
+        "scene_id": "automaton-cycle",
+        "status": "HARNESS_MATCH",
+        "first_divergence": null
+      },
+      {
+        "encounter": "AUTOMATON",
+        "seed": 131100059,
+        "scene_id": "automaton-cycle",
+        "status": "HARNESS_MATCH",
+        "first_divergence": null
+      },
+      {
+        "encounter": "AUTOMATON",
+        "seed": 131100060,
+        "scene_id": "automaton-stasis",
+        "status": "HARNESS_MATCH",
+        "first_divergence": null
+      },
+      {
+        "encounter": "AUTOMATON",
+        "seed": 131100061,
+        "scene_id": "automaton-stasis",
+        "status": "HARNESS_MATCH",
+        "first_divergence": null
+      },
+      {
+        "encounter": "AUTOMATON",
+        "seed": 131100062,
+        "scene_id": "automaton-stasis",
+        "status": "HARNESS_MATCH",
+        "first_divergence": null
+      }
+    ],
+    "new_stock_capture": false,
+    "whole_act2_certified": false
+  },
+  "reserved_final_used": false,
+  "server_allocation_chain_verified_on_NUS": false,
+  "local_validation": {
+    "tests": {
+      "passed": 1216,
+      "skipped": 1,
+      "warnings": 4,
+      "seconds": 68.38,
+      "log_sha256": "052e43d37edfaafe8a36aba4eb89af49e7f3c68c4b19aa9b4d47fbd0f3204127"
+    },
+    "configurations": 33,
+    "ruff": "PASS",
+    "vocabulary": "PASS",
+    "content_registry": "PASS",
+    "wheel_sha256": "61816b2e1d7a9766fcf6a22a13b28fba08433029732e47cdbfdb49744b06b31a",
+    "same_runtime_next_rollout_and_update": "PASS_CPU_REGRESSION",
+    "login_submit_import_torch": "ABSENT",
+    "backup_timestamp_collision_regression": "PASS"
+  },
+  "unexpected_fix": {
+    "path": "tools/configure_live_inspector.py",
+    "issue": "same-timestamp safety backup could overwrite original restore source",
+    "fix": "exclusive creation with collision suffix; no training/environment behavior change"
+  }
+}

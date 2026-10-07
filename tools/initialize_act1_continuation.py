@@ -71,7 +71,7 @@ def _validate_parent_selection(
     return mode
 
 
-def initialize(config_path: Path, *, root: Path = ROOT):
+def initialize(config_path: Path, *, root: Path = ROOT, _act2_endpoint: bool = False):
     import torch
 
     from sls.curriculum import CURRICULUM_PROFILES_BY_ID, EpisodeHorizon
@@ -91,7 +91,10 @@ def initialize(config_path: Path, *, root: Path = ROOT):
     config = read_config(config_path)
     run = config["run"]
     profile = CURRICULUM_PROFILES_BY_ID[run["profile"]]
-    if profile.horizon != EpisodeHorizon.ACT_1:
+    if _act2_endpoint:
+        if profile.profile_id != "IRONCLAD_A20_ACT2" or run.get("continuation_selection_evidence") != "completed-endpoint":
+            raise ValueError("Act2 continuation requires a completed A20 endpoint")
+    elif profile.horizon != EpisodeHorizon.ACT_1:
         raise ValueError("continuation requires an Act1 environment")
     source = (root / run["continuation_from"]).resolve()
     target = (root / run["output"]).resolve()
@@ -109,6 +112,12 @@ def initialize(config_path: Path, *, root: Path = ROOT):
     if digest != run["continuation_checkpoint_sha256"]:
         raise ValueError("parent best checkpoint does not match the pinned SHA256")
     original = read_config(source / "training-config.toml")
+    if _act2_endpoint and (
+        config["ppo"] != original["ppo"]
+        or config["model"] != original["model"]
+        or run.get("training_seed_limit") != original["run"].get("training_seed_limit")
+    ):
+        raise ValueError("Act2 continuation may not change model, PPO, reward or training seed limit")
     if endpoint:
         parent_manifest = json.loads((source / "run-manifest.json").read_text(encoding="utf-8"))
         bundle = json.loads((source / "training-bundle.json").read_text(encoding="utf-8"))
@@ -148,6 +157,8 @@ def initialize(config_path: Path, *, root: Path = ROOT):
                         "development_reference_checkpoint", "development_reference_sha256",
                         "continuation_from_training_implementation_sha256",
                         "continuation_to_training_implementation_sha256"}
+    if _act2_endpoint:
+        allowed_run.add("development_reference_profile")
     for key in set(run) | set(original["run"]):
         if key not in allowed_run and run.get(key) != original["run"].get(key):
             raise ValueError("unapproved continuation run setting: " + key)
@@ -157,6 +168,8 @@ def initialize(config_path: Path, *, root: Path = ROOT):
         "checkpoint_every_steps",
         "minimum_final_evaluation_episodes",
     }
+    if _act2_endpoint:
+        allowed_stage.add("minimum_evaluation_episodes")
     if set(config["stages"]) != {"train"} or set(original["stages"]) != {"train"}:
         raise ValueError("continuation requires single-stage Act1")
     for key in set(config["stages"]["train"]) | set(original["stages"]["train"]):
@@ -236,6 +249,17 @@ def initialize(config_path: Path, *, root: Path = ROOT):
             "new_training_implementation_sha256": new_implementation,
             "implementation_transition": "reviewed PPO diagnostic estimator and selection/identity updates; loss/reward/model/native unchanged",
             "selection_reset": "fresh periodic baseline and selection; parent endpoint not selected by new seeds",
+        })
+    if _act2_endpoint:
+        provenance.update({
+            "schema": "sls-act12-endpoint-continuation-v1",
+            "implementation_transition": "same implementation; operational endpoint continuation only",
+            "configuration_changes": {
+                section: {key: {"old": original[section].get(key), "new": config[section].get(key)}
+                          for key in sorted(set(original[section]) | set(config[section]))
+                          if original[section].get(key) != config[section].get(key)}
+                for section in ("run", "stages")
+            },
         })
     if target.exists():
         # A partially created target (for example after an interrupted run) must

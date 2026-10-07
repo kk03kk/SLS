@@ -21,9 +21,19 @@ def default_config_path() -> Path:
 
 def _backup(path: Path) -> Path:
     stamp = datetime.now().strftime("%Y%m%d-%H%M%S-%f")
-    backup = path.with_name(f"{path.name}.bak-{stamp}")
-    shutil.copy2(path, backup)
-    return backup
+    serial = 0
+    while True:
+        suffix = "" if serial == 0 else f"-{serial}"
+        backup = path.with_name(f"{path.name}.bak-{stamp}{suffix}")
+        try:
+            destination = backup.open("xb")
+        except FileExistsError:
+            serial += 1
+            continue
+        with destination, path.open("rb") as source:
+            shutil.copyfileobj(source, destination)
+        shutil.copystat(path, backup)
+        return backup
 
 
 def _atomic_write(path: Path, text: str) -> None:

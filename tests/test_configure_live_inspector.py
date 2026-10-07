@@ -75,3 +75,26 @@ def test_select_required_mods_preserves_other_choices_and_backs_up(tmp_path: Pat
     previous = restore_mod_list(path, backup)
     assert json.loads(path.read_text(encoding="utf-8")) == original
     assert json.loads(previous.read_text(encoding="utf-8"))["lists"]["<Default>"] == choices
+
+
+def test_backup_timestamp_collision_never_overwrites_restore_source(tmp_path, monkeypatch):
+    from datetime import datetime
+
+    import tools.configure_live_inspector as inspector
+
+    class FrozenClock:
+        @staticmethod
+        def now():
+            return datetime(2026, 10, 7, 12)
+    monkeypatch.setattr(inspector, 'datetime', FrozenClock)
+    path = tmp_path / 'mod_lists.json'
+    original = {'defaultList': '<Default>', 'lists': {'<Default>': ['Other.jar']}}
+    path.write_text(json.dumps(original), encoding='utf-8')
+    backup = select_required_mods(path)
+    changed = path.read_bytes()
+    saved = backup.read_bytes()
+    safety = restore_mod_list(path, backup)
+    assert safety != backup
+    assert backup.read_bytes() == saved
+    assert safety.read_bytes() == changed
+    assert json.loads(path.read_text(encoding='utf-8')) == original

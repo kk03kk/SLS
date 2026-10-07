@@ -1,5 +1,7 @@
 # 工具入口与发布说明
 
+20M后续入口：`prepare_act12_long_run.py` 在本地深验证真实study结果并绑定计划；`initialize_act12_continuation.py` 保留完整学习/环境状态；`submit_act12_long_run.py` 登录节点轻量提交，`run_act12_long_run.py` 在GPU续接allocation。结果/机制复算使用 `report_act12_progress.py`、`diagnose_act12_learning.py`；静态字段缓存仅有 `benchmark_act12_field_cache.py` 原型，不集成生产。见[契约与限制](../docs/results/act12-long20m-20261007/README.md)。
+
 在项目根目录、已安装依赖的 Python 环境中执行。先用 `--help` 查看参数；能显示帮助不代表训练、服务器提交或实机采集已验证。
 
 2026-10-05 整理及 Oracle 修复后：这里有 64 个 Python 脚本、2 个 Java probe 和本说明，共 67 个正式文件。全部保留上传。自动生成的 `__pycache__/` 不上传；训练、分析与采集输出另存本地或实验归档目录。
