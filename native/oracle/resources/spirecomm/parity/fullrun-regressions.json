@@ -1,0 +1,89 @@
+{
+  "schema": "sls-fullrun-scenes-v1",
+  "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "scenes": [
+    {
+      "id": "reckless-random-insertion",
+      "ascension": 20,
+      "act": 2,
+      "floor": 20,
+      "encounter": "SNAKE_PLANT",
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "block": 0,
+        "energy": 10,
+        "hand": [
+          "Reckless Charge"
+        ],
+        "draw": [
+          "Defend_R",
+          "Strike_R",
+          "Bash",
+          "Defend_R",
+          "Strike_R",
+          "Flame Barrier",
+          "Defend_R",
+          "Strike_R"
+        ]
+      },
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "seeds": [
+        131200036,
+        131200037,
+        131200038
+      ],
+      "stock_classes": [
+        "cards.red.RecklessCharge",
+        "actions.common.MakeTempCardInDrawPileAction",
+        "cards.CardGroup"
+      ],
+      "source_evidence": {
+        "com.megacrit.cardcrawl.cards.red.RecklessCharge": {
+          "class_sha256": "77cf759aa1f7ec922df81ca1c5cebd37310f70e7638f2b5fd9f4c12ed166be1c",
+          "bytecode_sha256": "a901b631c4fac997ad63d4ae5bf954f2872f645f7d140246713df8c3566bb504"
+        },
+        "com.megacrit.cardcrawl.actions.common.MakeTempCardInDrawPileAction": {
+          "class_sha256": "e5afacee4508bb326656478ec99013ffd129edef556abce13fa08af23c43b356",
+          "bytecode_sha256": "e62f1f106ae8c6c3ea74b3ac0e5c807694adc0dc94ac52c3b26c79299d1b80f8"
+        },
+        "com.megacrit.cardcrawl.cards.CardGroup": {
+          "class_sha256": "85cd264d191dda5c5719add4da2a53203aa1a0b7a2cdb1b8be5750e4d66e2d55",
+          "bytecode_sha256": "825571ef273866e73b79b926d6bf22089d533c9c76d5285f0e8a082523215a45"
+        }
+      },
+      "stock_methods": {
+        "cards.red.RecklessCharge": [
+          "use"
+        ],
+        "actions.common.MakeTempCardInDrawPileAction": [
+          "update"
+        ],
+        "cards.CardGroup": [
+          "addToRandomSpot",
+          "getTopCard"
+        ]
+      },
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "qualification_scope": "ISOLATED_MECHANISM_NOT_PRODUCTION_RNG_HISTORY",
+      "obligation": "Compare stock-generated Dazed insertion, card RNG and later draw order; a match alone cannot resolve the earlier normal-run RNG history"
+    }
+  ],
+  "training_gate": "NOT_QUALIFIED",
+  "final_holdout_used": false
+}

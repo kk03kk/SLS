@@ -6,15 +6,30 @@ import argparse
 import hashlib
 import json
 import re
+import zipfile
 from pathlib import Path
 
 from sls.diagnostics.canary import read_trajectory
 from tools.replay_act2_production_trajectory import replay
-from tools.verify_oracle import inspect
 
 PATTERN = re.compile(
     r'SLS_DISCOVERY_CLOCK_V1 seed=(\d+) floor=(\d+) serial=(\d+) updates=(\d+)'
 )
+
+
+def verify_sealed_oracle(oracle: Path, build: dict) -> None:
+    """Offline historical evidence; launching/installing still requires current source."""
+    if (build.get('schema') != 'sls-oracle-build-v1'
+            or build.get('used_existing_oracle') is not False
+            or not build.get('sources')
+            or hashlib.sha256(oracle.read_bytes()).hexdigest() != build.get('output_sha256')):
+        raise ValueError('sealed Oracle build identity failure')
+    with zipfile.ZipFile(oracle) as archive:
+        if (len(archive.namelist()) != len(set(archive.namelist()))
+                or set(archive.namelist()) != set(build.get('members', {}))
+                or any(hashlib.sha256(archive.read(name)).hexdigest() != digest
+                       for name, digest in build['members'].items())):
+            raise ValueError('sealed Oracle member identity failure')
 
 
 def stock_clock_rows(payload: str, seed: int) -> list[dict]:
@@ -45,7 +60,7 @@ def main() -> int:
     launch = json.loads(launch_path.read_text(encoding='utf-8'))
     build = json.loads(args.oracle_build.read_text(encoding='utf-8'))
     oracle = args.oracle_build.with_name(args.oracle_build.name.removesuffix('.build.json') + '.jar')
-    inspect(oracle)
+    verify_sealed_oracle(oracle, build)
     row = [r for r in batch['runs'] if r['seed'] == metadata['seed']]
     digest = hashlib.sha256(args.trajectory.read_bytes()).hexdigest()
     if (not batch.get('execution_complete') or batch.get('execution_error')

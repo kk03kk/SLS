@@ -62,10 +62,15 @@ def main() -> int:
             before = backend.raw_payload
             if before.get("_oracle_mode") != "validation":
                 raise ValueError("controlled probes require validation mode")
-            initial = session.execute(f"parity_act2 {scene['id']}" if scene else
+            scene_command = ("parity_scene" if manifest and manifest.get("schema") == "sls-fullrun-scenes-v1"
+                             else "parity_act2")
+            corpus = f" {args.manifest.stem}" if scene_command == "parity_scene" else ""
+            initial = session.execute(f"{scene_command} {scene['id']}{corpus}" if scene else
                                       f"parity_encounter {encounter} 20 2 20 harness-{index}")
             row = {"seed": seed, "encounter": encounter, "ascension": 20, "act": 2,
                    "floor": 20, "before": before, "boundaries": [initial], "actions": []}
+            if scene:
+                row.update(act=scene["act"], floor=scene["floor"])
             result["runs"].append(row)
             if scene:
                 row["scene"] = scene

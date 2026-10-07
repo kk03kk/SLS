@@ -15,7 +15,7 @@ def payload():
     return battle.snapshot()
 
 
-@pytest.mark.parametrize("mutation", ["damage", "mask", "duration", "rng"])
+@pytest.mark.parametrize("mutation", ["damage", "mask", "duration", "rng", "cost"])
 def test_differencer_detects_material_mutations(mutation):
     before = payload()
     changed = copy.deepcopy(before)
@@ -25,8 +25,10 @@ def test_differencer_detects_material_mutations(mutation):
         changed["_legal_actions"].pop()
     elif mutation == "duration":
         changed["game_state"]["combat_state"]["monsters"][0]["powers"][0]["amount"] += 1
-    else:
+    elif mutation == "rng":
         changed["_rng"]["ai"]["counter"] += 1
+    else:
+        changed["game_state"]["combat_state"]["hand"][0]["cost"] += 1
     assert structured_differences(comparison_projection(before, stock=False),
                                   comparison_projection(changed, stock=False))
 

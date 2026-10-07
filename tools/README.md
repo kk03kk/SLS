@@ -163,3 +163,7 @@ NUS 登录节点只用于轻量 Git、身份检查和提交；native 构建、pr
 ## 修复版联合通关λ pilot
 
 `submit_act12_lambda_study.py`是新实验唯一提交入口；`run_act12_lambda_study.py`在同一GPU节点串行两臂并核对完成状态；`analyze_act12_lambda_study.py`严格比较固定终点联合通关。配置迁移和本地验收见[TRAINING_READY.md](../docs/results/act2-qualification-20261006/TRAINING_READY.md)。`profile_act12_batching.py`与`verify_encoder_optimization.py`保留编码性能及行为等价的复算入口，不导出模型作为服务器训练结果。
+
+## 三幕＋心脏校验（进行中）
+
+`prepare_fullrun_audit.py`生成保守全范围台账；`prepare_shared_scenes.py`冻结有stock身份的共享场景并拒绝seed冲突；`summarize_fullrun_parity.py`汇总证据但不升级为整体资格。现有遭遇工具通过`--manifest`支持新增语料，旧Act2入口保留。实际进展、首次分歧与尚未实现的晚幕上下文见[首批记录](../docs/results/fullrun-parity-20261007/README.md)。

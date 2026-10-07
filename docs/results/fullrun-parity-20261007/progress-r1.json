@@ -1,0 +1,383 @@
+{
+  "schema": "sls-fullrun-parity-progress-v1",
+  "native_source_sha256": "b100427d1e3ae6eee05818b6904047049609b1aa70807872c1f5f5e0edd6d62f",
+  "qualification": false,
+  "final_holdout_used": false,
+  "production_behavior_changed": false,
+  "production": [
+    {
+      "seed": 8000011000009,
+      "model_sha256": "ed9068343c8d628a13595a3919d8a15c5f9a19840be1042e07e5f12fcc8ca30c",
+      "evaluation_environment": {
+        "profile_id": "IRONCLAD_A20_ACT2",
+        "trained_profile_id": "IRONCLAD_A20_ACT1",
+        "evaluation_contract": "sls-frozen-act1-reference-act2-v1",
+        "frozen_model_sha256": "ed9068343c8d628a13595a3919d8a15c5f9a19840be1042e07e5f12fcc8ca30c",
+        "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+        "oracle_mode": "production",
+        "original_execution_contract": "sls-original-choice-public-boundary-v7"
+      },
+      "report_sha256": "9263b54858f8c73aa60c503ea4a2eeb14898a023a6d23cc0479d89d3b7688024",
+      "stock_capture_sha256": "d62e787869b2729527ed65a126e7850b99f689a764ed6a0f64d34c44590f20db",
+      "batch_sha256": "294c01f1bc9336038f071641edf2c562e81ef08f26481d1f0efe29eaaa02fc0d",
+      "launch_sha256": "51c09597ce5947b24e0f05adf6d535deee70e90beb3bb5dbbc80bdd92b861cd3",
+      "status": "SEMANTIC_DIFFERENCE",
+      "boundaries_checked": 123,
+      "first_divergence": {
+        "boundary": 122,
+        "screen": "COMBAT",
+        "act": 1,
+        "floor": 16,
+        "differences": [
+          {
+            "path": "$.actions[2].subject_id",
+            "original": "HAND:2",
+            "simulator": "HAND:1"
+          },
+          {
+            "path": "$.actions[3].subject_id",
+            "original": "HAND:3",
+            "simulator": "HAND:2"
+          },
+          {
+            "path": "$.actions[4].subject_id",
+            "original": "HAND:4",
+            "simulator": "HAND:3"
+          },
+          {
+            "path": "$.observation.hand[1].base_cost",
+            "original": -2,
+            "simulator": 2
+          },
+          {
+            "path": "$.observation.hand[1].card_id",
+            "original": "DAZED",
+            "simulator": "UPPERCUT"
+          },
+          {
+            "path": "$.observation.hand[1].current_cost",
+            "original": -2,
+            "simulator": 2
+          },
+          {
+            "path": "$.observation.hand[1].playable",
+            "original": false,
+            "simulator": true
+          },
+          {
+            "path": "$.observation.hand[1].upgrades",
+            "original": 0,
+            "simulator": 1
+          },
+          {
+            "path": "$.observation.hand[2].base_cost",
+            "original": 2,
+            "simulator": 1
+          },
+          {
+            "path": "$.observation.hand[2].card_id",
+            "original": "UPPERCUT",
+            "simulator": "RAMPAGE"
+          },
+          {
+            "path": "$.observation.hand[2].current_cost",
+            "original": 2,
+            "simulator": 1
+          },
+          {
+            "path": "$.observation.hand[2].properties.base_damage",
+            "original": null,
+            "simulator": 8
+          },
+          {
+            "path": "$.observation.hand[2].upgrades",
+            "original": 1,
+            "simulator": 0
+          },
+          {
+            "path": "$.observation.hand[3].card_id",
+            "original": "RAMPAGE",
+            "simulator": "STRIKE_RED"
+          },
+          {
+            "path": "$.observation.hand[3].properties.base_damage",
+            "original": 8,
+            "simulator": null
+          },
+          {
+            "path": "$.observation.hand[4].base_cost",
+            "original": 1,
+            "simulator": -2
+          },
+          {
+            "path": "$.observation.hand[4].card_id",
+            "original": "STRIKE_RED",
+            "simulator": "DAZED"
+          },
+          {
+            "path": "$.observation.hand[4].current_cost",
+            "original": 1,
+            "simulator": -2
+          },
+          {
+            "path": "$.observation.hand[4].playable",
+            "original": true,
+            "simulator": false
+          }
+        ]
+      },
+      "scope": "ONE_NORMAL_START_PUBLIC_TRAJECTORY_NOT_ENCOUNTER_CERTIFICATE"
+    },
+    {
+      "seed": 8000011000069,
+      "model_sha256": "ed9068343c8d628a13595a3919d8a15c5f9a19840be1042e07e5f12fcc8ca30c",
+      "evaluation_environment": {
+        "profile_id": "IRONCLAD_A20_ACT2",
+        "trained_profile_id": "IRONCLAD_A20_ACT1",
+        "evaluation_contract": "sls-frozen-act1-reference-act2-v1",
+        "frozen_model_sha256": "ed9068343c8d628a13595a3919d8a15c5f9a19840be1042e07e5f12fcc8ca30c",
+        "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+        "oracle_mode": "production",
+        "original_execution_contract": "sls-original-choice-public-boundary-v7"
+      },
+      "report_sha256": "7e8622b37a8b2a9c8fb8d949740282cbeba3e3b1231a56c1df9eb92903028342",
+      "stock_capture_sha256": "1cd43001f6c579f6a5391544e9aeac6e74d11c9246530c277dad43cde02f8d45",
+      "batch_sha256": "294c01f1bc9336038f071641edf2c562e81ef08f26481d1f0efe29eaaa02fc0d",
+      "launch_sha256": "51c09597ce5947b24e0f05adf6d535deee70e90beb3bb5dbbc80bdd92b861cd3",
+      "status": "TRAJECTORY_MATCH",
+      "boundaries_checked": 349,
+      "first_divergence": null,
+      "scope": "ONE_NORMAL_START_PUBLIC_TRAJECTORY_NOT_ENCOUNTER_CERTIFICATE"
+    }
+  ],
+  "controlled": [
+    {
+      "scene_id": "shared-multihit",
+      "seed": 131200000,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null
+    },
+    {
+      "scene_id": "shared-multihit",
+      "seed": 131200001,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null
+    },
+    {
+      "scene_id": "shared-multihit",
+      "seed": 131200002,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null
+    },
+    {
+      "scene_id": "shared-thorns",
+      "seed": 131200003,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null
+    },
+    {
+      "scene_id": "shared-thorns",
+      "seed": 131200004,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null
+    },
+    {
+      "scene_id": "shared-thorns",
+      "seed": 131200005,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null
+    },
+    {
+      "scene_id": "shared-artifact",
+      "seed": 131200006,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null
+    },
+    {
+      "scene_id": "shared-artifact",
+      "seed": 131200007,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null
+    },
+    {
+      "scene_id": "shared-artifact",
+      "seed": 131200008,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null
+    },
+    {
+      "scene_id": "shared-duration",
+      "seed": 131200009,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null
+    },
+    {
+      "scene_id": "shared-duration",
+      "seed": 131200010,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null
+    },
+    {
+      "scene_id": "shared-duration",
+      "seed": 131200011,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null
+    },
+    {
+      "scene_id": "shared-draw-shuffle",
+      "seed": 131200012,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null
+    },
+    {
+      "scene_id": "shared-draw-shuffle",
+      "seed": 131200013,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null
+    },
+    {
+      "scene_id": "shared-draw-shuffle",
+      "seed": 131200014,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null
+    },
+    {
+      "scene_id": "shared-generated-copy",
+      "seed": 131200015,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null
+    },
+    {
+      "scene_id": "shared-generated-copy",
+      "seed": 131200016,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null
+    },
+    {
+      "scene_id": "shared-generated-copy",
+      "seed": 131200017,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null
+    },
+    {
+      "scene_id": "shared-exhaust",
+      "seed": 131200018,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null
+    },
+    {
+      "scene_id": "shared-exhaust",
+      "seed": 131200019,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null
+    },
+    {
+      "scene_id": "shared-exhaust",
+      "seed": 131200020,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null
+    },
+    {
+      "scene_id": "shared-double-tap",
+      "seed": 131200021,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null
+    },
+    {
+      "scene_id": "shared-double-tap",
+      "seed": 131200022,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null
+    },
+    {
+      "scene_id": "shared-double-tap",
+      "seed": 131200023,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null
+    },
+    {
+      "scene_id": "shared-potion-flight",
+      "seed": 131200024,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null
+    },
+    {
+      "scene_id": "shared-potion-flight",
+      "seed": 131200025,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null
+    },
+    {
+      "scene_id": "shared-potion-flight",
+      "seed": 131200026,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null
+    },
+    {
+      "scene_id": "shared-reaper-death",
+      "seed": 131200027,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null
+    },
+    {
+      "scene_id": "shared-reaper-death",
+      "seed": 131200028,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null
+    },
+    {
+      "scene_id": "shared-reaper-death",
+      "seed": 131200029,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null
+    },
+    {
+      "scene_id": "shared-corruption",
+      "seed": 131200030,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null
+    },
+    {
+      "scene_id": "shared-corruption",
+      "seed": 131200031,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null
+    },
+    {
+      "scene_id": "shared-corruption",
+      "seed": 131200032,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null
+    },
+    {
+      "scene_id": "shared-hp-energy",
+      "seed": 131200033,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null
+    },
+    {
+      "scene_id": "shared-hp-energy",
+      "seed": 131200034,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null
+    },
+    {
+      "scene_id": "shared-hp-energy",
+      "seed": 131200035,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null
+    }
+  ],
+  "remaining": [
+    "AUTOMATON_FIRST_DIVERGENCE_ROOT_CAUSE",
+    "ACT3_ACT4_REAL_DUNGEON_CONTEXT",
+    "INDEPENDENT_CARD_FIELDS",
+    "ACT3_ALL_ENCOUNTERS",
+    "DOUBLE_BOSS_AND_KEYS",
+    "SHIELD_SPEAR_HEART_CONTROLLED",
+    "CONTENT_BRANCHES",
+    "LATE_ACT_NORMAL_START_TRAJECTORIES"
+  ],
+  "controlled_report_sha256": "03d9d960a09f7ae4ce90c4898c5d421a86ab8c57468485cc1a66164f21208a0b",
+  "training_review_required": true
+}

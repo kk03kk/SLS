@@ -1,0 +1,773 @@
+{
+  "schema": "sls-fullrun-scenes-v1",
+  "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "scenes": [
+    {
+      "id": "shared-multihit",
+      "encounter": "SNAKE_PLANT",
+      "ascension": 20,
+      "act": 2,
+      "floor": 20,
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 10,
+        "block": 0,
+        "hand": [
+          "Twin Strike"
+        ],
+        "draw": [
+          "Defend_R",
+          "Strike_R"
+        ]
+      },
+      "stock_classes": [
+        "cards.red.TwinStrike",
+        "monsters.city.SnakePlant",
+        "powers.MalleablePower"
+      ],
+      "stock_methods": {
+        "cards.red.TwinStrike": [
+          "use"
+        ],
+        "monsters.city.SnakePlant": [
+          "takeTurn"
+        ],
+        "powers.MalleablePower": []
+      },
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "obligation": "Two queued hits independently trigger Malleable",
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "qualification_scope": "ISOLATED_MECHANISM_NOT_DUNGEON_FLOW",
+      "seeds": [
+        131200000,
+        131200001,
+        131200002
+      ],
+      "source_evidence": {
+        "com.megacrit.cardcrawl.cards.red.TwinStrike": {
+          "class_sha256": "e7b7f85f1cd2ee5bad747ce6d4432b7631bed48dfb47d3f27494b757e81a6f16",
+          "bytecode_sha256": "d79b0ab5314d22a6a3a60bb0ce00fd7969b3bbe3608d93a8810e2dd28161810a"
+        },
+        "com.megacrit.cardcrawl.monsters.city.SnakePlant": {
+          "class_sha256": "b7352bfefe5340eca8b486ae339c69e0a30a4fd665eb8230d4ec3e80cfd4f6bc",
+          "bytecode_sha256": "35f1015857d0d362b48bdbf1c5aa283c815a8116cfc3a37193257c077658f1ca"
+        },
+        "com.megacrit.cardcrawl.powers.MalleablePower": {
+          "class_sha256": "50f1332c948908dc6f862f7ddeae876e4698e2980a6cdd492dc5ba75333a2bf1",
+          "bytecode_sha256": "3cc5bf126ffbacb32faad0b97ac3402eeb737d334745d7d258f15ab287fc5901"
+        }
+      }
+    },
+    {
+      "id": "shared-thorns",
+      "encounter": "THREE_BYRDS",
+      "ascension": 20,
+      "act": 2,
+      "floor": 20,
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 10,
+        "block": 0,
+        "hand": [
+          "Flame Barrier"
+        ],
+        "draw": [
+          "Defend_R",
+          "Strike_R"
+        ]
+      },
+      "stock_classes": [
+        "cards.red.FlameBarrier",
+        "powers.FlameBarrierPower",
+        "monsters.city.Byrd"
+      ],
+      "stock_methods": {
+        "cards.red.FlameBarrier": [
+          "use"
+        ],
+        "powers.FlameBarrierPower": [],
+        "monsters.city.Byrd": [
+          "takeTurn"
+        ]
+      },
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "obligation": "Attack-triggered thorns and next-turn removal; lethal branch not guaranteed",
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "qualification_scope": "ISOLATED_MECHANISM_NOT_DUNGEON_FLOW",
+      "seeds": [
+        131200003,
+        131200004,
+        131200005
+      ],
+      "source_evidence": {
+        "com.megacrit.cardcrawl.cards.red.FlameBarrier": {
+          "class_sha256": "d006a4097862a946dd6645577a5371a6c051c1fb87132fc0581a626e83d1b80f",
+          "bytecode_sha256": "c8475c362e3480e2309d152d44004f29fcff2b67f7e69d4b6b355a4c9b2ce7d7"
+        },
+        "com.megacrit.cardcrawl.powers.FlameBarrierPower": {
+          "class_sha256": "44fff9d230304e73270510113341c4cf6ed30edd187f6156df5ca758cb54ca1a",
+          "bytecode_sha256": "3b8bf35d083a65c22568f0b74622c144e6c5e7e99029b0329e50ecd335c939e6"
+        },
+        "com.megacrit.cardcrawl.monsters.city.Byrd": {
+          "class_sha256": "7b55ad3a100417dd4ac44cc23231350dec328ebbde5c1ad1a22730fba11ecba5",
+          "bytecode_sha256": "cce5db9ca98fe50de018ebdb3f3fd0ad2c3a43f034e75919afeae57f438cd4e5"
+        }
+      }
+    },
+    {
+      "id": "shared-artifact",
+      "encounter": "SNECKO",
+      "ascension": 20,
+      "act": 2,
+      "floor": 20,
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 10,
+        "block": 0,
+        "hand": [
+          "Panacea"
+        ],
+        "draw": [
+          "Defend_R",
+          "Strike_R"
+        ]
+      },
+      "stock_classes": [
+        "cards.colorless.Panacea",
+        "monsters.city.Snecko"
+      ],
+      "stock_methods": {
+        "cards.colorless.Panacea": [
+          "use"
+        ],
+        "monsters.city.Snecko": [
+          "takeTurn"
+        ]
+      },
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "obligation": "Artifact application and later enemy debuff consumption",
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "qualification_scope": "ISOLATED_MECHANISM_NOT_DUNGEON_FLOW",
+      "seeds": [
+        131200006,
+        131200007,
+        131200008
+      ],
+      "source_evidence": {
+        "com.megacrit.cardcrawl.cards.colorless.Panacea": {
+          "class_sha256": "4882f5e1ed9918d3e870f56814da1f2588c3816fc6764b146bfc1cc66587b001",
+          "bytecode_sha256": "3a7be5d2bc4f94aec3035f122a9bf7b99f9e2bd46a369dbc0602873debec550b"
+        },
+        "com.megacrit.cardcrawl.monsters.city.Snecko": {
+          "class_sha256": "8c993b13d8b9b6a221393a286a8ad814c09344767ac3b891255f825cbdb11a1d",
+          "bytecode_sha256": "f30069a7c430081f22bfc59e59cb4ce5760044337e864a58cf2b569e4efd332f"
+        }
+      }
+    },
+    {
+      "id": "shared-duration",
+      "encounter": "SNAKE_PLANT",
+      "ascension": 20,
+      "act": 2,
+      "floor": 20,
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 10,
+        "block": 0,
+        "hand": [
+          "Shockwave"
+        ],
+        "draw": [
+          "Defend_R",
+          "Strike_R"
+        ]
+      },
+      "stock_classes": [
+        "cards.red.Shockwave",
+        "monsters.city.SnakePlant"
+      ],
+      "stock_methods": {
+        "cards.red.Shockwave": [
+          "use"
+        ],
+        "monsters.city.SnakePlant": [
+          "takeTurn"
+        ]
+      },
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "obligation": "Weak/Vulnerable application and decrement at actual turn boundaries",
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "qualification_scope": "ISOLATED_MECHANISM_NOT_DUNGEON_FLOW",
+      "seeds": [
+        131200009,
+        131200010,
+        131200011
+      ],
+      "source_evidence": {
+        "com.megacrit.cardcrawl.cards.red.Shockwave": {
+          "class_sha256": "e028fe6a55d99eb67a7774f1f1b0d3c466060b27c52d91b3e7f87af9f0f18f53",
+          "bytecode_sha256": "3c297af53884b5d564df308cbc07aa4bfc0569aa5093e4870aaf415e619c2df3"
+        },
+        "com.megacrit.cardcrawl.monsters.city.SnakePlant": {
+          "class_sha256": "b7352bfefe5340eca8b486ae339c69e0a30a4fd665eb8230d4ec3e80cfd4f6bc",
+          "bytecode_sha256": "35f1015857d0d362b48bdbf1c5aa283c815a8116cfc3a37193257c077658f1ca"
+        }
+      }
+    },
+    {
+      "id": "shared-draw-shuffle",
+      "encounter": "SNAKE_PLANT",
+      "ascension": 20,
+      "act": 2,
+      "floor": 20,
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 10,
+        "block": 0,
+        "hand": [
+          "Pommel Strike"
+        ],
+        "draw": [
+          "Defend_R"
+        ]
+      },
+      "stock_classes": [
+        "cards.red.PommelStrike",
+        "actions.GameActionManager"
+      ],
+      "stock_methods": {
+        "cards.red.PommelStrike": [
+          "use"
+        ],
+        "actions.GameActionManager": [
+          "update"
+        ]
+      },
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "obligation": "Damage precedes draw; subsequent turn exhausts draw pile and shuffles discard",
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "qualification_scope": "ISOLATED_MECHANISM_NOT_DUNGEON_FLOW",
+      "seeds": [
+        131200012,
+        131200013,
+        131200014
+      ],
+      "source_evidence": {
+        "com.megacrit.cardcrawl.cards.red.PommelStrike": {
+          "class_sha256": "f56657940b5b96ae285adcae046243a066e47b2c9695c6868dc9e029fa7534a9",
+          "bytecode_sha256": "3d6f6669b6c9216a8f73e5c99564c3e3844d3d3fb7ec750218f9661d4eee12a4"
+        },
+        "com.megacrit.cardcrawl.actions.GameActionManager": {
+          "class_sha256": "14085d57e6a79ad89b0c43c5032138118c3e988dbb3f22fca50c4c5096435e8a",
+          "bytecode_sha256": "406c85f4fe5cfb70b5d6e6e5b8440d5353c869553c941c45c1938660416512a4"
+        }
+      }
+    },
+    {
+      "id": "shared-generated-copy",
+      "encounter": "SNAKE_PLANT",
+      "ascension": 20,
+      "act": 2,
+      "floor": 20,
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 10,
+        "block": 0,
+        "hand": [
+          "Anger"
+        ],
+        "draw": [
+          "Defend_R",
+          "Strike_R"
+        ]
+      },
+      "stock_classes": [
+        "cards.red.Anger"
+      ],
+      "stock_methods": {
+        "cards.red.Anger": [
+          "use"
+        ]
+      },
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "obligation": "Stat-equivalent generated copy enters discard and later shuffle",
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "qualification_scope": "ISOLATED_MECHANISM_NOT_DUNGEON_FLOW",
+      "seeds": [
+        131200015,
+        131200016,
+        131200017
+      ],
+      "source_evidence": {
+        "com.megacrit.cardcrawl.cards.red.Anger": {
+          "class_sha256": "cf446c5b763c790ec924fbbd010a6be8f1175f4e2d818805b5b599d78a04cb27",
+          "bytecode_sha256": "0ce0b704dea97674876fe6b2df815fadc463607d7442e29881f43ebbcde17dae"
+        }
+      }
+    },
+    {
+      "id": "shared-exhaust",
+      "encounter": "SNAKE_PLANT",
+      "ascension": 20,
+      "act": 2,
+      "floor": 20,
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 10,
+        "block": 0,
+        "hand": [
+          "Fiend Fire",
+          "Fiend Fire",
+          "Fiend Fire"
+        ],
+        "draw": [
+          "Defend_R",
+          "Strike_R"
+        ]
+      },
+      "stock_classes": [
+        "cards.red.FiendFire",
+        "actions.unique.FiendFireAction"
+      ],
+      "stock_methods": {
+        "cards.red.FiendFire": [
+          "use"
+        ],
+        "actions.unique.FiendFireAction": [
+          "update"
+        ]
+      },
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "obligation": "Exhaust remaining hand through stock action and resolve one hit per exhausted card",
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "qualification_scope": "ISOLATED_MECHANISM_NOT_DUNGEON_FLOW",
+      "seeds": [
+        131200018,
+        131200019,
+        131200020
+      ],
+      "source_evidence": {
+        "com.megacrit.cardcrawl.cards.red.FiendFire": {
+          "class_sha256": "6185b4fe3d49e736ced872788bed6c2f6c5d4434b68f2ccb4d9476fbf1a00ff6",
+          "bytecode_sha256": "16417eed7e7c570d9515e578290f047e1af34eb3a390eb4d7f99a277968d41a6"
+        },
+        "com.megacrit.cardcrawl.actions.unique.FiendFireAction": {
+          "class_sha256": "e330cf235ad185938274861eda0123afc1c985f4773a5f82195267c39833ebcd",
+          "bytecode_sha256": "b13c9b089bf015f843b92fce5eb26b6c46c579a48585106b1b33bb3dd8ebaa08"
+        }
+      }
+    },
+    {
+      "id": "shared-double-tap",
+      "encounter": "SNAKE_PLANT",
+      "ascension": 20,
+      "act": 2,
+      "floor": 20,
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 10,
+        "block": 0,
+        "hand": [
+          "Double Tap",
+          "Twin Strike"
+        ],
+        "draw": [
+          "Defend_R",
+          "Strike_R"
+        ]
+      },
+      "stock_classes": [
+        "cards.red.DoubleTap",
+        "powers.DoubleTapPower",
+        "cards.red.TwinStrike"
+      ],
+      "stock_methods": {
+        "cards.red.DoubleTap": [
+          "use"
+        ],
+        "powers.DoubleTapPower": [],
+        "cards.red.TwinStrike": [
+          "use"
+        ]
+      },
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1
+        },
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "obligation": "Duplicate attack queue; mixed-hand ordering is itself compared",
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "qualification_scope": "ISOLATED_MECHANISM_NOT_DUNGEON_FLOW",
+      "seeds": [
+        131200021,
+        131200022,
+        131200023
+      ],
+      "source_evidence": {
+        "com.megacrit.cardcrawl.cards.red.DoubleTap": {
+          "class_sha256": "321c64fda464e91e71adfbe1307253f2d9a1f0e126d6f91250c7a158dd39908f",
+          "bytecode_sha256": "b466682eacad68ab616a89e5a78dad2436ca7849913413c11ce78ca2b4f747e1"
+        },
+        "com.megacrit.cardcrawl.powers.DoubleTapPower": {
+          "class_sha256": "62622b00d9d7046135fedf5962b14778deb61874447763ac55078d1411f8f21c",
+          "bytecode_sha256": "f6842f7d9773d3138a68e7a0056f807dcae107a6b3e8a5ff9e6f1237687a44d3"
+        },
+        "com.megacrit.cardcrawl.cards.red.TwinStrike": {
+          "class_sha256": "e7b7f85f1cd2ee5bad747ce6d4432b7631bed48dfb47d3f27494b757e81a6f16",
+          "bytecode_sha256": "d79b0ab5314d22a6a3a60bb0ce00fd7969b3bbe3608d93a8810e2dd28161810a"
+        }
+      }
+    },
+    {
+      "id": "shared-potion-flight",
+      "encounter": "THREE_BYRDS",
+      "ascension": 20,
+      "act": 2,
+      "floor": 20,
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 10,
+        "block": 0,
+        "hand": [
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Strike_R"
+        ],
+        "potion": "Fire Potion"
+      },
+      "stock_classes": [
+        "monsters.city.Byrd",
+        "powers.FlightPower",
+        "potions.FirePotion"
+      ],
+      "stock_methods": {
+        "monsters.city.Byrd": [
+          "takeTurn"
+        ],
+        "powers.FlightPower": [],
+        "potions.FirePotion": [
+          "use"
+        ]
+      },
+      "actions": [
+        {
+          "kind": "potion",
+          "potion_index": 0,
+          "target_index": 0
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "obligation": "Potion damage follows stock Flight interaction",
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "qualification_scope": "ISOLATED_MECHANISM_NOT_DUNGEON_FLOW",
+      "seeds": [
+        131200024,
+        131200025,
+        131200026
+      ],
+      "source_evidence": {
+        "com.megacrit.cardcrawl.monsters.city.Byrd": {
+          "class_sha256": "7b55ad3a100417dd4ac44cc23231350dec328ebbde5c1ad1a22730fba11ecba5",
+          "bytecode_sha256": "cce5db9ca98fe50de018ebdb3f3fd0ad2c3a43f034e75919afeae57f438cd4e5"
+        },
+        "com.megacrit.cardcrawl.powers.FlightPower": {
+          "class_sha256": "851a4852ebf87e0407447e223ed66c182b681f8cf3ad31f6cceccfbe9fb09993",
+          "bytecode_sha256": "047dbf537168c573243cf704045b07664d3ffa7210dcfd861ceae2c8bc31945c"
+        },
+        "com.megacrit.cardcrawl.potions.FirePotion": {
+          "class_sha256": "0391a17323526250a23da24553b135b2f9a785feaa0ce168b9155c33f2bbd0f6",
+          "bytecode_sha256": "351ef53fe1c75fdb83c84c97b772c43d0c39740188641f7951a3257276123155"
+        }
+      }
+    },
+    {
+      "id": "shared-reaper-death",
+      "encounter": "SHELLED_PARASITE_AND_FUNGI",
+      "ascension": 20,
+      "act": 2,
+      "floor": 20,
+      "initial": {
+        "hp": 4500,
+        "max_hp": 5000,
+        "energy": 10,
+        "block": 0,
+        "hand": [
+          "Reaper"
+        ],
+        "draw": [
+          "Defend_R",
+          "Strike_R"
+        ],
+        "monster_hp": {
+          "FUNGI_BEAST": 1
+        }
+      },
+      "stock_classes": [
+        "cards.red.Reaper",
+        "actions.unique.VampireDamageAllEnemiesAction",
+        "monsters.exordium.FungiBeast"
+      ],
+      "stock_methods": {
+        "cards.red.Reaper": [
+          "use"
+        ],
+        "actions.unique.VampireDamageAllEnemiesAction": [
+          "update"
+        ],
+        "monsters.exordium.FungiBeast": [
+          "takeTurn"
+        ]
+      },
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "obligation": "AoE actual damage, Fungi death debuff and missing-health healing order",
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "qualification_scope": "ISOLATED_MECHANISM_NOT_DUNGEON_FLOW",
+      "seeds": [
+        131200027,
+        131200028,
+        131200029
+      ],
+      "source_evidence": {
+        "com.megacrit.cardcrawl.cards.red.Reaper": {
+          "class_sha256": "85046e03604073068597d760e70d30d17e1c06b67a14ecd4a713d0c14b4411c7",
+          "bytecode_sha256": "213f5fa7bdf7f6a45fe80cd739ca1384231fa0849b817f5195e18e686209bd3f"
+        },
+        "com.megacrit.cardcrawl.actions.unique.VampireDamageAllEnemiesAction": {
+          "class_sha256": "cc27bec6011a09c288df9a1bae676b2f28354bba7b6e77deae142c990e1de02d",
+          "bytecode_sha256": "b21f2d781e55c7fbf091114a7d37a2f2e5b306076a3abee6e10e3b41303a89cd"
+        },
+        "com.megacrit.cardcrawl.monsters.exordium.FungiBeast": {
+          "class_sha256": "01d84978223e6bbae731d464a72817c6bd4b28c3bb295b609fa0fe299dae0c5c",
+          "bytecode_sha256": "d13ccfec9816df201079bd53b766a46bdc1d487d2dd219a616afc899c70c3809"
+        }
+      }
+    },
+    {
+      "id": "shared-corruption",
+      "encounter": "SNAKE_PLANT",
+      "ascension": 20,
+      "act": 2,
+      "floor": 20,
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 10,
+        "block": 0,
+        "hand": [
+          "Corruption"
+        ],
+        "draw": [
+          "Defend_R",
+          "Strike_R"
+        ]
+      },
+      "stock_classes": [
+        "cards.red.Corruption"
+      ],
+      "stock_methods": {
+        "cards.red.Corruption": [
+          "use"
+        ]
+      },
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "obligation": "Power persists and changes next-turn skill costs without changing stored base costs",
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "qualification_scope": "ISOLATED_MECHANISM_NOT_DUNGEON_FLOW",
+      "seeds": [
+        131200030,
+        131200031,
+        131200032
+      ],
+      "source_evidence": {
+        "com.megacrit.cardcrawl.cards.red.Corruption": {
+          "class_sha256": "af5e969a661a864ff6446d7554aec8b7ddc5a57242356b5d523a7c2d59b54a1b",
+          "bytecode_sha256": "0fa5f5b234f455e5ab13ab28d44a0c2221015424e27784e31729e1b777148a0a"
+        }
+      }
+    },
+    {
+      "id": "shared-hp-energy",
+      "encounter": "SNAKE_PLANT",
+      "ascension": 20,
+      "act": 2,
+      "floor": 20,
+      "initial": {
+        "hp": 4500,
+        "max_hp": 5000,
+        "energy": 10,
+        "block": 0,
+        "hand": [
+          "Bloodletting"
+        ],
+        "draw": [
+          "Defend_R",
+          "Strike_R"
+        ]
+      },
+      "stock_classes": [
+        "cards.red.Bloodletting"
+      ],
+      "stock_methods": {
+        "cards.red.Bloodletting": [
+          "use"
+        ]
+      },
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "obligation": "HP-loss action and energy gain; distinguish HP loss from normal attack damage",
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "qualification_scope": "ISOLATED_MECHANISM_NOT_DUNGEON_FLOW",
+      "seeds": [
+        131200033,
+        131200034,
+        131200035
+      ],
+      "source_evidence": {
+        "com.megacrit.cardcrawl.cards.red.Bloodletting": {
+          "class_sha256": "1c9787c786eaa28777fd9b55f3636501c169027251a88fd64d8bf183e392972a",
+          "bytecode_sha256": "e24a564ded53ffba31d1f041593b72d27cf0f4f9fd19f86ae881513c45a5da41"
+        }
+      }
+    }
+  ],
+  "training_gate": "NOT_QUALIFIED",
+  "final_holdout_used": false
+}

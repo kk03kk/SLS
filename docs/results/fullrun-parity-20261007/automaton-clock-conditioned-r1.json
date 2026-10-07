@@ -1,0 +1,44 @@
+{
+  "schema": "sls-act2-clock-conditioned-replay-v1",
+  "seed": 8000011000009,
+  "trajectory_sha256": "d62e787869b2729527ed65a126e7850b99f689a764ed6a0f64d34c44590f20db",
+  "native_source_sha256": "b100427d1e3ae6eee05818b6904047049609b1aa70807872c1f5f5e0edd6d62f",
+  "policy": {
+    "source_git_commit": "5435d4a2f423a1e3b445977a48fae41ac90b5837",
+    "architecture": "sls-recurrent-relational-policy-v5",
+    "encoding_schema": "sls-policy-input-v5",
+    "vocabulary_sha256": "04df4dc504ccf10d389b7b0e798ebc7a1ea2036edfc273a5cf5b11071b3b8ed0",
+    "model_sha256": "ed9068343c8d628a13595a3919d8a15c5f9a19840be1042e07e5f12fcc8ca30c",
+    "recurrent_memory_size": 256,
+    "goal": "ACT1"
+  },
+  "evaluation_environment": {
+    "profile_id": "IRONCLAD_A20_ACT2",
+    "trained_profile_id": "IRONCLAD_A20_ACT1",
+    "evaluation_contract": "sls-frozen-act1-reference-act2-v1",
+    "frozen_model_sha256": "ed9068343c8d628a13595a3919d8a15c5f9a19840be1042e07e5f12fcc8ca30c",
+    "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+    "oracle_mode": "production",
+    "original_execution_contract": "sls-original-choice-public-boundary-v7"
+  },
+  "boundaries_checked": 334,
+  "first_divergence": null,
+  "terminal_reason_verified": true,
+  "status": "CONDITIONAL_PUBLIC_TRAJECTORY_MATCH",
+  "rng_comparison": "NOT_EXPOSED_IN_PRODUCTION",
+  "purpose": "CONDITIONAL_RULES_DIAGNOSTIC_NOT_UNCONDITIONAL_PRODUCTION_PASS",
+  "clock_inputs": [
+    {
+      "boundary": 112,
+      "seed": 8000011000009,
+      "floor": 16,
+      "serial": 1,
+      "updates": 15
+    }
+  ],
+  "stock_clock_log_sha256": "6633829cb4101bd09ac59a888b034171202d1f02c63bb49a019f617a49a7bd44",
+  "oracle_build_sha256": "3a3306bba8347d251547eaafafe6d790d1658d43229b83469e68f165d23d1d32",
+  "oracle_build_manifest_sha256": "7a2be6459c4155131581348860d80651d77684c5a9f77d61434635f9228ba2ea",
+  "launch_evidence_sha256": "51c09597ce5947b24e0f05adf6d535deee70e90beb3bb5dbbc80bdd92b861cd3",
+  "batch_sha256": "294c01f1bc9336038f071641edf2c562e81ef08f26481d1f0efe29eaaa02fc0d"
+}

@@ -128,7 +128,7 @@ def replay_controlled_run(run: Mapping[str, Any]) -> dict[str, Any]:
                                  scenario_id=run.get("scene", {}).get("id", "harness"))
     if "scene" in run:
         initial = run["scene"]["initial"]
-        battle.set_player_health(initial["hp"], initial["hp"])
+        battle.set_player_health(initial["hp"], initial.get("max_hp", initial["hp"]))
         snapshot = battle.snapshot()
         combat = snapshot["game_state"]["combat_state"]
         combat["player"]["energy"] = initial["energy"]

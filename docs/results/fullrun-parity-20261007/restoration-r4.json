@@ -1,0 +1,8 @@
+{
+  "schema": "sls-restoration-summary-v1",
+  "oracle_sha256": "7c07f49daca61118647bd2639321196ab74ab090cf66f8d27d12c7e816d64350",
+  "checked_entries": 63,
+  "status": "RECOVERED",
+  "mismatches": [],
+  "launch_sha256": "31d617058ada1fad50ac0df5bdf5c4fe5cf766fe5dbab7b4603604779abedd08"
+}

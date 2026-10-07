@@ -16,15 +16,18 @@ def main() -> int:
     parser.add_argument("--oracle-build", type=Path,
                         required=True,
                         help="identify early captures through their source-built launch evidence")
+    parser.add_argument("--manifest", type=Path)
     args = parser.parse_args()
     if args.output.exists():
         raise FileExistsError("refuse to overwrite differential evidence")
     data = json.loads(args.capture.read_text(encoding="utf-8"))
     if data.get("execution_error") or not data.get("execution_complete"):
         raise ValueError("failed stock execution cannot qualify")
-    manifest_path = Path(__file__).resolve().parents[1] / "native/oracle/resources/spirecomm/parity/act2-scenes.json"
+    manifest_path = args.manifest or Path(__file__).resolve().parents[1] / "native/oracle/resources/spirecomm/parity/act2-scenes.json"
     expected_manifest = hashlib.sha256(manifest_path.read_bytes()).hexdigest()
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    member = (f"spirecomm/parity/{manifest_path.name}" if manifest.get("schema") == "sls-fullrun-scenes-v1"
+              else "spirecomm/parity/act2-scenes.json")
     build = json.loads(args.oracle_build.read_text(encoding="utf-8"))
     launch = json.loads(args.capture.with_suffix(".launch.json").read_text(encoding="utf-8"))
     if (launch["oracle_sha256"] != build["output_sha256"]
@@ -32,13 +35,13 @@ def main() -> int:
             or launch["completion"]["exit_code"] != 0
             or build.get("schema") != "sls-oracle-build-v1"
             or build.get("used_existing_oracle") is not False
-            or build["members"]["spirecomm/parity/act2-scenes.json"] != expected_manifest
+            or build["members"][member] != expected_manifest
             or build["dependencies"]["game"] != manifest["stock_jar_sha256"]
             or data.get("stock_jar_sha256", manifest["stock_jar_sha256"]) != manifest["stock_jar_sha256"]):
         raise ValueError("capture/build/launch stock identity or recovery mismatch")
     source_identity = data.get("scene_manifest_sha256")
     if source_identity is None:
-        source_identity = build["members"]["spirecomm/parity/act2-scenes.json"]
+        source_identity = build["members"][member]
     if source_identity != expected_manifest:
         raise ValueError("missing or stale stock scene source identity")
     scenes = {s["id"]: s for s in manifest["scenes"]}

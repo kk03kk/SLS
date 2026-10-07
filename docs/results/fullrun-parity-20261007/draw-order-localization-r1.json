@@ -1,0 +1,128 @@
+{
+  "schema": "sls-draw-order-forensics-v1",
+  "seed": 8000011000009,
+  "stock_capture_sha256": "d62e787869b2729527ed65a126e7850b99f689a764ed6a0f64d34c44590f20db",
+  "scope": "HIDDEN_PILE_FORENSICS_NOT_POLICY_OBSERVATION",
+  "first_public_divergence": 122,
+  "localized_hidden_divergence": 117,
+  "stock_rng_observed": false,
+  "root_cause_confirmed": false,
+  "boundaries": [
+    {
+      "boundary": 115,
+      "stock_draw": [
+        "CLASH",
+        "STRIKE_RED",
+        "DEFEND_RED",
+        "DEFEND_RED",
+        "STRIKE_RED",
+        "RAMPAGE",
+        "UPPERCUT",
+        "DEFEND_RED",
+        "WILD_STRIKE",
+        "STRIKE_RED",
+        "BASH",
+        "DEFEND_RED",
+        "FLAME_BARRIER"
+      ],
+      "native_draw": [
+        "CLASH",
+        "STRIKE_RED",
+        "DEFEND_RED",
+        "DEFEND_RED",
+        "STRIKE_RED",
+        "RAMPAGE",
+        "UPPERCUT",
+        "DEFEND_RED",
+        "WILD_STRIKE",
+        "STRIKE_RED",
+        "BASH",
+        "DEFEND_RED",
+        "FLAME_BARRIER"
+      ],
+      "native_card_rng": {
+        "counter": 47,
+        "seed0": 17491894261372506777,
+        "seed1": 11424890385580040512
+      }
+    },
+    {
+      "boundary": 116,
+      "stock_draw": [
+        "CLASH",
+        "STRIKE_RED",
+        "DEFEND_RED",
+        "DEFEND_RED",
+        "STRIKE_RED",
+        "RAMPAGE",
+        "UPPERCUT",
+        "DEFEND_RED",
+        "WILD_STRIKE",
+        "STRIKE_RED",
+        "BASH",
+        "DEFEND_RED",
+        "FLAME_BARRIER"
+      ],
+      "native_draw": [
+        "CLASH",
+        "STRIKE_RED",
+        "DEFEND_RED",
+        "DEFEND_RED",
+        "STRIKE_RED",
+        "RAMPAGE",
+        "UPPERCUT",
+        "DEFEND_RED",
+        "WILD_STRIKE",
+        "STRIKE_RED",
+        "BASH",
+        "DEFEND_RED",
+        "FLAME_BARRIER"
+      ],
+      "native_card_rng": {
+        "counter": 47,
+        "seed0": 17491894261372506777,
+        "seed1": 11424890385580040512
+      }
+    },
+    {
+      "boundary": 117,
+      "stock_draw": [
+        "CLASH",
+        "STRIKE_RED",
+        "DEFEND_RED",
+        "DEFEND_RED",
+        "STRIKE_RED",
+        "RAMPAGE",
+        "UPPERCUT",
+        "DAZED",
+        "DEFEND_RED",
+        "WILD_STRIKE",
+        "STRIKE_RED",
+        "BASH",
+        "DEFEND_RED",
+        "FLAME_BARRIER"
+      ],
+      "native_draw": [
+        "CLASH",
+        "STRIKE_RED",
+        "DEFEND_RED",
+        "DEFEND_RED",
+        "DAZED",
+        "STRIKE_RED",
+        "RAMPAGE",
+        "UPPERCUT",
+        "DEFEND_RED",
+        "WILD_STRIKE",
+        "STRIKE_RED",
+        "BASH",
+        "DEFEND_RED",
+        "FLAME_BARRIER"
+      ],
+      "native_card_rng": {
+        "counter": 48,
+        "seed0": 11424890385580040512,
+        "seed1": 18446245269018986742
+      }
+    }
+  ]
+}

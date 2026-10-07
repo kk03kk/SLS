@@ -1,0 +1,30 @@
+{
+  "schema": "sls-fullrun-minimal-probe-v1",
+  "native_source_sha256": "b100427d1e3ae6eee05818b6904047049609b1aa70807872c1f5f5e0edd6d62f",
+  "stock_capture_sha256": "80b21c36cb7f24b480f35237875fcc9aa0746379ec321cab634545550fb81aa9",
+  "oracle_build_sha256": "7c07f49daca61118647bd2639321196ab74ab090cf66f8d27d12c7e816d64350",
+  "launch_evidence_sha256": "6284f63f02ab9898b1a379ae1aadd1f27c6e0e5aa27ce6a598f4f09240594c90",
+  "report_sha256": "4a98732c9f9d67a7b84e04d61545c43186132af4444244e9626d4a3b7a099661",
+  "runs": [
+    {
+      "scene_id": "reckless-random-insertion",
+      "seed": 131200036,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null
+    },
+    {
+      "scene_id": "reckless-random-insertion",
+      "seed": 131200037,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null
+    },
+    {
+      "scene_id": "reckless-random-insertion",
+      "seed": 131200038,
+      "status": "HARNESS_MATCH",
+      "first_divergence": null
+    }
+  ],
+  "resolves_production_divergence": false,
+  "classification": "ISOLATED_INSERTION_MATCH_PRODUCTION_HISTORY_UNRESOLVED"
+}

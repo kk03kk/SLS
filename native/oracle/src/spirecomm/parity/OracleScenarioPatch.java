@@ -79,6 +79,7 @@ public final class OracleScenarioPatch {
     public static final String RELIC_PROBE_COMMAND = "parity_relic";
     public static final String ENCOUNTER_PROBE_COMMAND = "parity_encounter";
     public static final String ACT2_PROBE_COMMAND = "parity_act2";
+    public static final String SCENE_PROBE_COMMAND = "parity_scene";
     public static final String ENGINE_PROBE_COMMAND = "parity_engine";
     public static final String EVENT_PROBE_COMMAND = "parity_event";
     public static final String DISTRIBUTION_PROBE_COMMAND = "parity_distribution";
@@ -1679,9 +1680,14 @@ public final class OracleScenarioPatch {
 
     @SuppressWarnings("unchecked")
     private static void applyAct2Probe(String id) {
+        applySceneProbe(id, "/spirecomm/parity/act2-scenes.json", true);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static void applySceneProbe(String id, String resource, boolean legacy) {
         Map<String, Object> manifest;
         try (InputStream stream = OracleScenarioPatch.class.getResourceAsStream(
-                "/spirecomm/parity/act2-scenes.json")) {
+                resource)) {
             if (stream == null) throw new IllegalStateException("missing Act2 scene inventory");
             manifest = new com.autoplay.gson.Gson().fromJson(
                 new InputStreamReader(stream, StandardCharsets.UTF_8), Map.class);
@@ -1696,12 +1702,20 @@ public final class OracleScenarioPatch {
         if (scene == null || scene.get("initial") == null) {
             throw new IllegalArgumentException("unknown or unprepared controlled Act2 scene");
         }
-        applyEncounterProbe((String) scene.get("encounter"), 20, 2, 20, id);
+        int act = legacy ? 2 : ((Number) scene.get("act")).intValue();
+        int floor = legacy ? 20 : ((Number) scene.get("floor")).intValue();
+        if (!legacy && (act != 2 || ((Number) scene.get("ascension")).intValue() != 20)) {
+            // Late-act support requires a separately verified dungeon/room
+            // setup. Do not fake it by changing AbstractDungeon.actNum.
+            throw new IllegalArgumentException("late-act scene context is not yet qualified");
+        }
+        applyEncounterProbe((String) scene.get("encounter"), 20, act, floor, id);
         drainActions();
         Map<String, Object> initial = (Map<String, Object>) scene.get("initial");
         AbstractPlayer player = AbstractDungeon.player;
         player.currentHealth = ((Number) initial.get("hp")).intValue();
-        player.maxHealth = player.currentHealth;
+        player.maxHealth = initial.containsKey("max_hp")
+            ? ((Number) initial.get("max_hp")).intValue() : player.currentHealth;
         player.currentBlock = ((Number) initial.get("block")).intValue();
         player.gold = 99;
         // EnergyManager.energy is the per-turn recharge amount; the current
@@ -1749,10 +1763,16 @@ public final class OracleScenarioPatch {
                 monster.createIntent();
             }
         }
-        activate("act2_probe:" + id, "STOCK_ACTION_SYSTEM:ACT2_SCENES_V1", player);
+        activate((legacy ? "act2_probe:" : "scene_probe:") + id,
+            legacy ? "STOCK_ACTION_SYSTEM:ACT2_SCENES_V1" : "STOCK_ACTION_SYSTEM:SCENES_V1", player);
         activeScenario.put("ascension", 20);
-        activeScenario.put("act", 2);
-        activeScenario.put("floor", 20);
+        activeScenario.put("act", act);
+        activeScenario.put("floor", floor);
+        if (!legacy) {
+            activeScenario.put("actual_dungeon", AbstractDungeon.id);
+            activeScenario.put("actual_room", AbstractDungeon.getCurrRoom().getClass().getName());
+            activeScenario.put("scope", "ISOLATED_MECHANISM_NOT_DUNGEON_FLOW");
+        }
         activeScenario.put("manifest_schema", manifest.get("schema"));
         CommunicationMod.mustSendGameState = true;
         GameStateListener.registerStateChange();
@@ -1993,6 +2013,7 @@ public final class OracleScenarioPatch {
                 if (!commands.contains(RELIC_PROBE_COMMAND)) commands.add(RELIC_PROBE_COMMAND);
                 if (!commands.contains(ENCOUNTER_PROBE_COMMAND)) commands.add(ENCOUNTER_PROBE_COMMAND);
                 if (!commands.contains(ACT2_PROBE_COMMAND)) commands.add(ACT2_PROBE_COMMAND);
+                if (!commands.contains(SCENE_PROBE_COMMAND)) commands.add(SCENE_PROBE_COMMAND);
                 if (!commands.contains(ENGINE_PROBE_COMMAND)) commands.add(ENGINE_PROBE_COMMAND);
             }
             return commands;
@@ -2010,6 +2031,18 @@ public final class OracleScenarioPatch {
                 return SpireReturn.Continue();
             }
             if (!normalized.startsWith(COMMAND + " ")) {
+                if (normalized.startsWith(SCENE_PROBE_COMMAND + " ")) {
+                    String[] parts = command.trim().split("\\s+");
+                    if (parts.length < 2 || parts.length > 3) {
+                        throw new IllegalArgumentException("parity_scene requires SCENE_ID [CORPUS_ID]");
+                    }
+                    String corpus = parts.length == 3 ? parts[2] : "fullrun-scenes";
+                    if (!corpus.matches("[a-z0-9_-]+")) {
+                        throw new IllegalArgumentException("invalid immutable corpus ID");
+                    }
+                    applySceneProbe(parts[1], "/spirecomm/parity/" + corpus + ".json", false);
+                    return SpireReturn.Return(Boolean.TRUE);
+                }
                 if (normalized.startsWith(ACT2_PROBE_COMMAND + " ")) {
                     String[] parts = command.trim().split("\\s+");
                     if (parts.length != 2) throw new IllegalArgumentException("parity_act2 requires SCENE_ID");
