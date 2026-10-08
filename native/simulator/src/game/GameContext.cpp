@@ -722,11 +722,11 @@ void GameContext::populateFirstStrongEnemy(const MonsterEncounter monsters[], co
 void GameContext::transitionToAct(int targetAct) {
     act = targetAct;
 
-    if (cardRng.counter < 250) {
+    if (cardRng.counter > 0 && cardRng.counter < 250) {
         cardRng.setCounter(250);
-    } else if (cardRng.counter < 500) {
+    } else if (cardRng.counter > 250 && cardRng.counter < 500) {
         cardRng.setCounter(500);
-    } else if (cardRng.counter < 750) {
+    } else if (cardRng.counter > 500 && cardRng.counter < 750) {
         cardRng.setCounter(750);
     }
 
@@ -1939,7 +1939,11 @@ MonsterEncounter GameContext::getEliteForRoomCreation() {
 
 void GameContext::addPotionRewards(Rewards &r) {
     // assume if in a monsters room, they didnt escape
-    int chance = 40 + potionChance;
+    // Stock AbstractRoom.addPotionToRewards: all thieves escaped is zero
+    // before White Beast Statue and reward-count overrides. Smoke Bomb does
+    // not mark every monster escaped and keeps its existing path.
+    int chance = (curRoom == Room::MONSTER && info.suppressCombatGold)
+        ? 0 : 40 + potionChance;
 
     if (hasRelic(RelicId::WHITE_BEAST_STATUE)) {
         chance = 100;

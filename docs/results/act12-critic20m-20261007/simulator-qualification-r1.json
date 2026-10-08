@@ -1,0 +1,228 @@
+{
+  "schema": "sls-critic20m-bounded-simulator-qualification-v1",
+  "status": "READY_FOR_ALLOCATION_GATE",
+  "native_source_sha256": "6efbb772958c06d1b9133f374d046d8838eaa256da1a146eaf7e1ee530eefd3d",
+  "scope": "Normal-start A20 Ironclad Act1+Act2 only; bounded mechanisms and diagnostic flows, not all combinations or whole-game certification",
+  "strict_normal_traces": [
+    {
+      "seed": 8000011000001,
+      "boundaries": 200,
+      "trajectory_sha256": "4033c5d1906890eef9ea0b9905dd7985a0beab7027a7dd98187616cec6db4e3f",
+      "replay": {
+        "path": "D:/SLS/local/audits/critic20m-release-20261008/production-r26-a-8000011000001-replay.json",
+        "sha256": "72e3dd1f90447abe12721b21e4dce37ae6201df6b8bcad8d7dd0e2d2e1bcebe5"
+      }
+    },
+    {
+      "seed": 8000011000002,
+      "boundaries": 450,
+      "trajectory_sha256": "2104ff5b54075c5e5ed46726b5241554bc9fd5be9d816881e5d2abe19d3a6278",
+      "replay": {
+        "path": "D:/SLS/local/audits/critic20m-release-20261008/production-r26-a-8000011000002-replay.json",
+        "sha256": "15280dc17ef090f5ce746725bb30958a856350b6f67eecc6c2b39348416de550"
+      }
+    },
+    {
+      "seed": 8000011000004,
+      "boundaries": 216,
+      "trajectory_sha256": "15f0d3a8b1784b090a44fbaf2f1c21f14674c48520b313a473b6a69fd3495af7",
+      "replay": {
+        "path": "D:/SLS/local/audits/critic20m-release-20261008/production-r27-b-8000011000004-replay.json",
+        "sha256": "074bac5cc509faad032f6d81df266c62cdc469148e947a4051a0d5f7ce27bb34"
+      }
+    },
+    {
+      "seed": 8000011000005,
+      "boundaries": 378,
+      "trajectory_sha256": "722f74d7cd4216baf0ce0469e05e44c3f7fbf3b54928249c893573627543bcde",
+      "replay": {
+        "path": "D:/SLS/local/audits/critic20m-release-20261008/production-r27-b-8000011000005-replay.json",
+        "sha256": "e5de7cb170a33f30d17849f5113da7a8e2593497c3a30b86c22015f309d36aa8"
+      }
+    },
+    {
+      "seed": 8000011000007,
+      "boundaries": 397,
+      "trajectory_sha256": "55d299ccec30d273d4ca814b2ec9a78a178671d84b4734d1e90db6f8f9d492a2",
+      "replay": {
+        "path": "D:/SLS/local/audits/critic20m-release-20261008/production-r27-b-8000011000007-replay.json",
+        "sha256": "83ae62eb98d8cd11563fc3d6cc90d985ab4d0d1edd28f17ae9d67f9ca19fb0a3"
+      }
+    },
+    {
+      "seed": 8000011000069,
+      "boundaries": 349,
+      "trajectory_sha256": "1cd43001f6c579f6a5391544e9aeac6e74d11c9246530c277dad43cde02f8d45",
+      "replay": {
+        "path": "D:/SLS/local/audits/critic20m-release-20261008/production-bosses-r1-8000011000069-replay.json",
+        "sha256": "801a40d9d251e368e8f1e92b563f88fa81888e6bc8f77a36160efe2aa3bb0b7a"
+      }
+    }
+  ],
+  "controlled_active_cases": 63,
+  "shared_mechanism_cases": 36,
+  "invalid_historical_probe_seeds": [
+    131100030,
+    131100031,
+    131100032
+  ],
+  "invalid_reason": "Historical Oracle forced DEBUFF for Entangle; actual stock STRONG_DEBUFF is covered by corrected sealed boss-entangle capture. Invalid probes are retained, not passes.",
+  "completed_system_branches": [
+    {
+      "seed": 131100069,
+      "status": "SYSTEM_BRANCH_MATCH",
+      "boundaries": 271,
+      "report": {
+        "path": "D:/SLS/local/audits/critic20m-release-20261008/system-checkpoint-reward-r12-replay.json",
+        "sha256": "de2ba107b1bd57607099acdd5d8cd685487d4b0e73781ff974991d566bb41671"
+      }
+    },
+    {
+      "seed": 131100071,
+      "status": "SYSTEM_BRANCH_MATCH",
+      "boundaries": 142,
+      "report": {
+        "path": "D:/SLS/local/audits/critic20m-release-20261008/system-checkpoint-reward-r12-replay.json",
+        "sha256": "de2ba107b1bd57607099acdd5d8cd685487d4b0e73781ff974991d566bb41671"
+      }
+    },
+    {
+      "seed": 131100063,
+      "status": "SYSTEM_BRANCH_MATCH",
+      "boundaries": 270,
+      "report": {
+        "path": "D:/SLS/local/audits/critic20m-release-20261008/system-stock-policy-r23-transition-replay.json",
+        "sha256": "d5649b5ee35054ffc427c02eef199c73edc4ae9e00abb73daddc64cae73df58f"
+      }
+    },
+    {
+      "seed": 131100064,
+      "status": "SYSTEM_BRANCH_MATCH",
+      "boundaries": 220,
+      "report": {
+        "path": "D:/SLS/local/audits/critic20m-release-20261008/system-stock-policy-r23-transition-replay.json",
+        "sha256": "d5649b5ee35054ffc427c02eef199c73edc4ae9e00abb73daddc64cae73df58f"
+      }
+    },
+    {
+      "seed": 131100065,
+      "status": "SYSTEM_BRANCH_MATCH",
+      "boundaries": 230,
+      "report": {
+        "path": "D:/SLS/local/audits/critic20m-release-20261008/system-stock-policy-r23-transition-replay.json",
+        "sha256": "d5649b5ee35054ffc427c02eef199c73edc4ae9e00abb73daddc64cae73df58f"
+      }
+    },
+    {
+      "seed": 131100066,
+      "status": "SYSTEM_BRANCH_MATCH",
+      "boundaries": 320,
+      "report": {
+        "path": "D:/SLS/local/audits/critic20m-release-20261008/system-stock-policy-r24-reward-replay.json",
+        "sha256": "aa4c74367987fd38adba927441cde9fe6892a26ea6b3d8155fc5b953a752804c"
+      }
+    },
+    {
+      "seed": 131100067,
+      "status": "SYSTEM_BRANCH_MATCH",
+      "boundaries": 155,
+      "report": {
+        "path": "D:/SLS/local/audits/critic20m-release-20261008/system-stock-policy-r24-reward-replay.json",
+        "sha256": "aa4c74367987fd38adba927441cde9fe6892a26ea6b3d8155fc5b953a752804c"
+      }
+    },
+    {
+      "seed": 131100068,
+      "status": "SYSTEM_BRANCH_MATCH",
+      "boundaries": 293,
+      "report": {
+        "path": "D:/SLS/local/audits/critic20m-release-20261008/system-stock-policy-r24-reward-replay.json",
+        "sha256": "aa4c74367987fd38adba927441cde9fe6892a26ea6b3d8155fc5b953a752804c"
+      }
+    },
+    {
+      "seed": 131100070,
+      "status": "SYSTEM_BRANCH_MATCH",
+      "boundaries": 370,
+      "report": {
+        "path": "D:/SLS/local/audits/critic20m-release-20261008/system-stock-policy-r25-checkpoint-replay.json",
+        "sha256": "bf384404881bf545600f283aeacca6eec2bf93e8f47e28cfd89907010175b4fd"
+      }
+    }
+  ],
+  "incomplete_system_prefixes_retained": [
+    {
+      "seed": 131100070,
+      "status": "INCOMPLETE_PREFIX_MATCH",
+      "boundaries": 325,
+      "report": {
+        "path": "D:/SLS/local/audits/critic20m-release-20261008/system-checkpoint-reward-r12-replay.json",
+        "sha256": "de2ba107b1bd57607099acdd5d8cd685487d4b0e73781ff974991d566bb41671"
+      }
+    },
+    {
+      "seed": 131100066,
+      "status": "INCOMPLETE_PREFIX_MATCH",
+      "boundaries": 162,
+      "report": {
+        "path": "D:/SLS/local/audits/critic20m-release-20261008/system-checkpoint-reward-r12-replay.json",
+        "sha256": "de2ba107b1bd57607099acdd5d8cd685487d4b0e73781ff974991d566bb41671"
+      }
+    }
+  ],
+  "shared_rule_gate": {
+    "status": "PASS",
+    "synthetic_transition_cases": 22,
+    "stock_thief_cases": 15,
+    "native_source_sha256": "6efbb772958c06d1b9133f374d046d8838eaa256da1a146eaf7e1ee530eefd3d"
+  },
+  "known_differences": [
+    {
+      "seed": 8000011000000,
+      "boundary": 124,
+      "replay": {
+        "path": "D:/SLS/local/audits/critic20m-release-20261008/production-r26-a-8000011000000-strict-replay.json",
+        "sha256": "319adb4686119161e11762cc95b77100a19cb1b40365f2d12e648a72eeeb2560"
+      },
+      "unchanged_from_prior_source": true
+    },
+    {
+      "seed": 8000011000009,
+      "boundary": 122,
+      "replay": {
+        "path": "D:/SLS/local/audits/critic20m-release-20261008/production-bosses-r1-8000011000009-strict-replay.json",
+        "sha256": "f0d86b8231de4cc13e6cbcbc8b531212fdd1d41c7a1cc3438b57df5c6eb7099f"
+      },
+      "unchanged_from_prior_source": true
+    }
+  ],
+  "automaton_clock_conditioned": {
+    "scope": "Conditioned on passive stock log updates=15, not unconditional production equivalence",
+    "boundaries": 334,
+    "evidence": {
+      "path": "D:/SLS/local/audits/critic20m-release-20261008/automaton-clock-conditioned.json",
+      "sha256": "645af1fa000902a3a9280104eb1ab39080cf401146894b156e180fd78b0307cc"
+    }
+  },
+  "new_unexplained_blocking_difference": false,
+  "decision": "Training-required bounded qualification closed for allocation acceptance; do not wait for Act3/key/Heart full certification",
+  "remaining_noncertified": [
+    "Discovery frame-driven RNG has conditional evidence; no unconditional timing parity claim",
+    "Uncovered reachable card/relic/potion/event combinations",
+    "Act3/key-acquisition/Act4/Heart full qualification and natural late-act trajectories"
+  ],
+  "evidence": [
+    {
+      "path": "D:/SLS/local/audits/critic20m-release-20261008/controlled-combat.json",
+      "sha256": "6d05e316beb44f1603ab543f758d4402923103489b165b6fd5d7ee8c7f52865f"
+    },
+    {
+      "path": "D:/SLS/local/audits/critic20m-release-20261008/controlled-boss-entangle.json",
+      "sha256": "d32da9a5fc3e0fd904c80f7d289fdacd9371c5cea2da254dd5b66f9090b2e95f"
+    },
+    {
+      "path": "D:/SLS/local/audits/critic20m-release-20261008/shared-controlled.json",
+      "sha256": "353e7793a164f8d1f290e75d24edce0a0f39b387d69010962a8cd666c5c54c9b"
+    }
+  ]
+}

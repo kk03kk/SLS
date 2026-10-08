@@ -8,6 +8,7 @@ from pathlib import Path
 from sls.rl.critic_warmup import CriticWarmupConfig
 from sls.rl.training_contract import (
     native_source_digest,
+    sha256_file,
     source_sha256,
     training_implementation_digest,
 )
@@ -26,6 +27,12 @@ OPERATOR_PATHS = (
     "requirements/model.lock", "pyproject.toml",
     "tools/check_training_configs.py",
     "tests/fixtures/regressions/act2-empty-cage-grid-131100069.json",
+    "tools/verify_act12_shared_rules.py",
+    "tests/fixtures/regressions/act2-calling-bell-boss-131100064.json",
+    "tests/fixtures/regressions/act12-thief-city-rewards-131200180.json",
+    "tools/replay_act2_production_trajectory.py",
+    "tools/replay_act2_clock_conditioned_trajectory.py",
+    "src/sls/audit/trajectory_reader.py",
 )
 
 
@@ -38,12 +45,16 @@ def safe_path(root, relative):
 
 def validate_compute_gate(gate, identity):
     checks = gate.get("checks", {})
-    if (gate.get("schema") != "sls-critic20m-compute-gate-v1"
+    shared = checks.get("shared_rule_evidence", {})
+    if (gate.get("schema") != "sls-critic20m-compute-gate-v2"
             or gate.get("ok") is not True
             or gate.get("training_identity_sha256") != identity
             or gate.get("production_probe_updates_discarded") is not True
             or any(checks.get(k) != "PASS" for k in
-                   ("grid", "cross-rollout", "last-warmup", "actor_and_gru_frozen", "first-ppo"))
+                   ("shared_rules", "grid", "cross-rollout", "last-warmup", "actor_and_gru_frozen", "first-ppo"))
+            or shared != {"status": "PASS", "synthetic_transition_cases": 22,
+                          "stock_thief_cases": 15,
+                          "native_source_sha256": "6efbb772958c06d1b9133f374d046d8838eaa256da1a146eaf7e1ee530eefd3d"}
             or type(checks.get("complete_return_states_checked")) is not int
             or checks["complete_return_states_checked"] <= 0):
         raise ValueError("missing, incomplete or stale compute acceptance")
@@ -52,8 +63,13 @@ def validate_compute_gate(gate, identity):
 def validate_config(config, control):
     if set(config) != set(control) | {"critic_warmup"} or set(config["stages"]) != {"train"}:
         raise ValueError("unregistered recipe sections")
-    if config["model"] != control["model"] or config["ppo"] != control["ppo"] or config["warm_start"] != control["warm_start"]:
+    def parent_fields(warm):
+        return {k: v for k, v in warm.items() if k != "simulator_transition"}
+    if (config["model"] != control["model"] or config["ppo"] != control["ppo"]
+            or parent_fields(config["warm_start"]) != parent_fields(control["warm_start"])):
         raise ValueError("recipe changes model/PPO/reward/parent beyond the warmup intervention")
+    if config["warm_start"]["simulator_transition"] != {'evidence': 'docs/results/act12-critic20m-20261007/simulator-transition-r1.json', 'evidence_sha256': '8428dc1c08fa02f2abe0bb2d3e09fe479a092a7ced1eef0f62c112fa5afad843'}:
+        raise ValueError("unregistered corrective simulator migration")
     warm = CriticWarmupConfig(**config["critic_warmup"])
     if warm.to_dict() != {"rollout_updates": 32, "epochs": 2, "batch_size": 1024}:
         raise ValueError("registered warmup differs")
@@ -103,11 +119,30 @@ def validate(plan_path=None, *, root=ROOT, check_sources=True):
         raise ValueError("parent binding differs from config")
     control = tomllib.loads((root / "configs/train/ironclad_a20_act12_lambda098_r1.toml").read_text())
     validate_config(config, control)
+    binding = config["warm_start"]["simulator_transition"]
+    evidence_path = safe_path(root, binding["evidence"])
+    if sha256_file(evidence_path) != binding["evidence_sha256"]:
+        raise ValueError("corrective migration evidence changed")
+    migration = json.loads(evidence_path.read_text(encoding="utf-8"))
+    if (migration.get("schema") != "sls-curriculum-simulator-transition-v1"
+            or migration.get("status") != "VERIFIED_RULE_CORRECTION"
+            or migration.get("source_native_source_sha256") != plan["parent"]["native_source_sha256"]
+            or migration.get("target_native_source_sha256") != plan["native_source_sha256"]
+            or migration.get("transfer_mode") != "weights-only"
+            or migration.get("exact_resume_allowed") is not False):
+        raise ValueError("corrective migration source/target or transfer contract mismatch")
+    proofs = migration.get("evidence", {})
+    if not isinstance(proofs, dict) or len(proofs) < 2:
+        raise ValueError("corrective migration supporting evidence missing")
+    for name, digest in proofs.items():
+        proof = (evidence_path.parent / name).resolve()
+        if not proof.is_relative_to(root.resolve()) or sha256_file(proof) != digest:
+            raise ValueError("corrective migration supporting evidence changed")
     if set(plan["operator_sha256"]) != set(OPERATOR_PATHS):
         raise ValueError("operator source binding is incomplete")
-    if (plan["native_source_sha256"] != "b100427d1e3ae6eee05818b6904047049609b1aa70807872c1f5f5e0edd6d62f"
+    if (plan["native_source_sha256"] != "6efbb772958c06d1b9133f374d046d8838eaa256da1a146eaf7e1ee530eefd3d"
             or plan["parent"]["target_native_source_sha256"] != plan["native_source_sha256"]):
-        raise ValueError("new recipe must use the corrected lambda-study environment")
+        raise ValueError("new recipe must use the independently bound corrective environment")
     for name, sha in plan["operator_sha256"].items():
         if source_sha256(safe_path(root, name)) != sha:
             raise ValueError("bound operator changed: " + name)

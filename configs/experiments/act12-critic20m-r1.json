@@ -2,7 +2,7 @@
   "schema": "sls-act12-critic20m-plan-v1",
   "status": "READY_FOR_COMPUTE_GATE",
   "config": "configs/train/ironclad_a20_act12_critic20m_r1.toml",
-  "config_sha256": "54e88d2ae8458225de4e4a2bbc975c1517ba97f17a37470177cde6e3336625e9",
+  "config_sha256": "1b91a424d2ce9ff40117b182157630248d21e54232851286fc50de948d5c2213",
   "parent": {
     "run": "local/runs/ironclad-a20-act1-win-90m-continuation",
     "role": "endpoint",
@@ -10,7 +10,7 @@
     "sha256": "274963f4fe32b75003c5a1b4ccd394b5185304156e6ea22a76aee2764d54f1e0",
     "environment_steps": 90013696,
     "native_source_sha256": "1e30bb6cfa32f600cd63c59983c14ab8928fac4452c1586d630295d2c6ff9453",
-    "target_native_source_sha256": "b100427d1e3ae6eee05818b6904047049609b1aa70807872c1f5f5e0edd6d62f",
+    "target_native_source_sha256": "6efbb772958c06d1b9133f374d046d8838eaa256da1a146eaf7e1ee530eefd3d",
     "training_implementation_sha256": "9da7e28c7a2fc83fcbc1e289dade65dddb60d03fdf6a1670c9ad2fb011bc3bbf",
     "evidence": {
       "run-manifest.json": "382e128483b64fd55f1b87df0b589329fb791292791fbcc28a44ce567db09018",
@@ -19,17 +19,17 @@
       "endpoint-evaluation.json": "3ec90b3269c22198f9f05b3356051ad06e3b23ac3ee7a1aadbacadb46bccef0c"
     },
     "simulator_transition": {
-      "evidence": "docs/results/act2-qualification-20261006/simulator-transition-r33.json",
-      "evidence_sha256": "7832a690df7621c20d69fb0639adf9708b5e090eadca61d3d941e46a9a34f803"
+      "evidence": "docs/results/act12-critic20m-20261007/simulator-transition-r1.json",
+      "evidence_sha256": "8428dc1c08fa02f2abe0bb2d3e09fe479a092a7ced1eef0f62c112fa5afad843"
     }
   },
-  "native_source_sha256": "b100427d1e3ae6eee05818b6904047049609b1aa70807872c1f5f5e0edd6d62f",
+  "native_source_sha256": "6efbb772958c06d1b9133f374d046d8838eaa256da1a146eaf7e1ee530eefd3d",
   "training_implementation_sha256": "1459b6ff6737bd72852965f230d2c1a86957eb9afce0daea172b56f43785189e",
   "operator_sha256": {
-    "tools/act12_critic20m_contract.py": "fef3ca40b60c6a1c57239dffb9184702de4fe836134ff0226439a4b966f378ce",
+    "tools/act12_critic20m_contract.py": "590ec134eb437e8cb447672a517154a8a8523a64357d6ab6f0befbaf7ecba597",
     "tools/submit_act12_critic20m.py": "1317c57dd2ef81b9d08021fa79ecded57dfd8be35092f2aa6af1af6fbeefbe85",
     "tools/run_act12_critic20m.py": "83f84fa0ff5a9146c87798278f670699ff095bc866b8d0da6a6eab3f7ae891df",
-    "tools/verify_act12_critic_warmup.py": "5e01bb754c2d2c54ba6d55747fa810f751f7b05476bcc39c08f1b2680b258b07",
+    "tools/verify_act12_critic_warmup.py": "467f4314a0d87e3e08a3190ec0cd7e4af474fdd1e6769ea1ea638743519cb00b",
     "tools/analyze_act12_critic20m.py": "02078648584d036b45ea39707e738d6806f7a85a0f9fc4912f68d402558440f2",
     "tools/import_act12_parent.py": "6ec9de43778bf726dab91b91673b66dcbfa739c9b4642e237d41b73127228e8f",
     "tools/operator_paths.py": "89d5fb7ab01731a57d93e56f1df976b4ecbcf030efd92eba0452bde20e3e2354",
@@ -43,7 +43,13 @@
     "requirements/model.lock": "8df4e9eacfa0018bf545c4ca447222cd8ecf7c597de7a221f430a865ca05c7d6",
     "pyproject.toml": "734934484da30313a9e21f652409828593075f3d71f50f198848f80566b94955",
     "tools/check_training_configs.py": "ce9d2b5024f922e68791da0d93cce39ccd6b760736fa3317c797d95a49ca22a0",
-    "tests/fixtures/regressions/act2-empty-cage-grid-131100069.json": "277718d9f148da236a23f612c646378415e9fc3d2e222cbddd3afdcae9aa8889"
+    "tests/fixtures/regressions/act2-empty-cage-grid-131100069.json": "277718d9f148da236a23f612c646378415e9fc3d2e222cbddd3afdcae9aa8889",
+    "tools/verify_act12_shared_rules.py": "3dd9cc22716b06b26caa565963ceaf2d4d3bf3edcd3aa6954ff12ed1b0cbaaf1",
+    "tests/fixtures/regressions/act2-calling-bell-boss-131100064.json": "51c0f9b11c3a739620089a3d6408abdf64c556a86997e7f03fc757025dd06a43",
+    "tests/fixtures/regressions/act12-thief-city-rewards-131200180.json": "55bdcc527df9ff82004b1903649cb6c0b220ced0d96a77c435b4651e311efc03",
+    "tools/replay_act2_production_trajectory.py": "3fabc9507aa052464504cd2de9d97b912c8e9d9acf752c4c9bf13d7aa8282104",
+    "tools/replay_act2_clock_conditioned_trajectory.py": "ce62524fc18844f48609ac7a3c24ddf0fd79ed56d6ca06277931f81c171dab0d",
+    "src/sls/audit/trajectory_reader.py": "6c46e576911c3b2db3974e9261a3830d9a0c78882864ddb7b764e7ffb085d0bf"
   },
   "allocations": 3,
   "allocation_hours": 48,
@@ -59,7 +65,7 @@
   ],
   "limitations": [
     "One training seed; cannot isolate causal superiority of warmup without matched-budget control.",
-    "Native environment unchanged from completed corrected lambda study.",
+    "Environment differs from historical lambda study by two shared rule corrections; historical lambda results are not a same-environment control.",
     "Local runtime computation deliberately deferred to allocation gate.",
     "Three allocations are conservative planning, not a completion guarantee; each finalization reserves 24h."
   ]

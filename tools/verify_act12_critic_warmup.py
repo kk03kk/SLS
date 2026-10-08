@@ -64,6 +64,10 @@ def main():
         return a == b
 
     try:
+        from tools.verify_act12_shared_rules import verify as verify_shared_rules
+        shared = verify_shared_rules(ROOT)
+        checks["shared_rules"] = "PASS"
+        checks["shared_rule_evidence"] = shared
         # Existing stock-bound GRID fixture: first select, cancel, distinct
         # instances of the same card, final automatic commit, and restoration.
         from sls.backends.simulator import SimulatorBackend
@@ -180,7 +184,7 @@ def main():
             load_checkpoint(initial, trainer)
             if trainer.update or trainer.critic_warmup.completed_updates or trainer.optimizer.state:
                 raise RuntimeError("production initial state contains probe learning")
-        result = {"schema": "sls-critic20m-compute-gate-v1", "ok": True, "checks": checks,
+        result = {"schema": "sls-critic20m-compute-gate-v2", "ok": True, "checks": checks,
                   "initial_checkpoint": initial.relative_to(ROOT).as_posix(),
                   "initial_checkpoint_sha256": sha256_file(initial),
                   "training_identity_sha256": identity, "seconds": time.monotonic()-started,

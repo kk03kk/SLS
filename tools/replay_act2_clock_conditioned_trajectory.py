@@ -9,7 +9,7 @@ import re
 import zipfile
 from pathlib import Path
 
-from sls.diagnostics.canary import read_trajectory
+from sls.audit.trajectory_reader import read_trajectory
 from tools.replay_act2_production_trajectory import replay
 
 PATTERN = re.compile(

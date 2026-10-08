@@ -84,8 +84,8 @@ checkpoint_sha256 = "274963f4fe32b75003c5a1b4ccd394b5185304156e6ea22a76aee2764d5
 parent_environment_steps = 90013696
 
 [warm_start.simulator_transition]
-evidence = "docs/results/act2-qualification-20261006/simulator-transition-r33.json"
-evidence_sha256 = "7832a690df7621c20d69fb0639adf9708b5e090eadca61d3d941e46a9a34f803"
+evidence = "docs/results/act12-critic20m-20261007/simulator-transition-r1.json"
+evidence_sha256 = "8428dc1c08fa02f2abe0bb2d3e09fe479a092a7ced1eef0f62c112fa5afad843"
 
 [critic_warmup]
 rollout_updates = 32

@@ -230,9 +230,12 @@ def test_registered_decision_never_lowers_threshold():
 
 
 def test_mock_acceptance_cannot_omit_real_probe_checks():
-    checks = {k: "PASS" for k in ("grid", "cross-rollout", "last-warmup", "actor_and_gru_frozen", "first-ppo")}
+    checks = {k: "PASS" for k in ("shared_rules", "grid", "cross-rollout", "last-warmup", "actor_and_gru_frozen", "first-ppo")}
+    checks["shared_rule_evidence"] = {"status": "PASS", "synthetic_transition_cases": 22,
+                                      "stock_thief_cases": 15,
+                                      "native_source_sha256": "6efbb772958c06d1b9133f374d046d8838eaa256da1a146eaf7e1ee530eefd3d"}
     checks["complete_return_states_checked"] = 12
-    gate = {"schema": "sls-critic20m-compute-gate-v1", "ok": True,
+    gate = {"schema": "sls-critic20m-compute-gate-v2", "ok": True,
             "training_identity_sha256": "mock", "production_probe_updates_discarded": True,
             "checks": checks}
     validate_compute_gate(gate, "mock")
@@ -275,3 +278,54 @@ def test_imports_and_operator_entrypoints_do_not_load_torch():
                     "import tools.verify_act12_critic_warmup; assert 'torch' not in sys.modules"], check=True)
     subprocess.run([sys.executable, "-c", "import sys; import tools.check_training_configs; "
                     "assert 'torch' not in sys.modules"], check=True)
+
+
+@pytest.mark.parametrize('key,value', [('checkpoint_sha256', 'wrong'),
+                                      ('parent_environment_steps', 1),
+                                      ('transfer_kind', 'environment-migration'),
+                                      ('simulator_transition', {'evidence': 'old', 'evidence_sha256': 'wrong'})])
+def test_corrective_recipe_keeps_parent_and_exact_migration_binding(key, value):
+    config, control = configs()
+    validate_config(config, control)
+    config['warm_start'][key] = value
+    with pytest.raises(ValueError):
+        validate_config(config, control)
+
+
+def test_old_acceptance_and_missing_shared_rules_are_rejected():
+    keys = ('shared_rules', 'grid', 'cross-rollout', 'last-warmup', 'actor_and_gru_frozen', 'first-ppo')
+    checks = dict.fromkeys(keys, 'PASS') | {'complete_return_states_checked': 1,
+        'shared_rule_evidence': {'status': 'PASS', 'synthetic_transition_cases': 22,
+                                 'stock_thief_cases': 15,
+                                 'native_source_sha256': '6efbb772958c06d1b9133f374d046d8838eaa256da1a146eaf7e1ee530eefd3d'}}
+    gate = {'schema': 'sls-critic20m-compute-gate-v2', 'ok': True, 'checks': checks,
+            'training_identity_sha256': 'mock', 'production_probe_updates_discarded': True}
+    validate_compute_gate(gate, 'mock')
+    with pytest.raises(ValueError):
+        validate_compute_gate(gate | {'schema': 'sls-critic20m-compute-gate-v1'}, 'mock')
+    checks.pop('shared_rules')
+    with pytest.raises(ValueError):
+        validate_compute_gate(gate, 'mock')
+
+
+def test_login_node_validation_rejects_corrupt_supporting_proof(tmp_path):
+    import shutil
+
+    from tools.act12_critic20m_contract import OPERATOR_PATHS, PLAN, validate
+    plan = json.loads((ROOT / PLAN).read_text(encoding='utf-8'))
+    paths = set(OPERATOR_PATHS) | {PLAN, plan['config'],
+        'configs/train/ironclad_a20_act12_lambda098_r1.toml',
+        plan['parent']['simulator_transition']['evidence']}
+    migration_path = ROOT / plan['parent']['simulator_transition']['evidence']
+    migration = json.loads(migration_path.read_text(encoding='utf-8'))
+    paths.update((migration_path.parent / n).resolve().relative_to(ROOT.resolve()).as_posix()
+                 for n in migration['evidence'])
+    for name in paths:
+        destination = tmp_path / name
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(ROOT / name, destination)
+    validate(root=tmp_path, check_sources=False)
+    proof = tmp_path / 'docs/results/act12-critic20m-20261007/simulator-qualification-r1.json'
+    proof.write_bytes(proof.read_bytes() + b'corruption')
+    with pytest.raises(ValueError, match='supporting evidence changed'):
+        validate(root=tmp_path, check_sources=False)

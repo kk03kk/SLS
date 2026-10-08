@@ -1,0 +1,16 @@
+{
+  "schema": "sls-curriculum-simulator-transition-v1",
+  "status": "VERIFIED_RULE_CORRECTION",
+  "source_native_source_sha256": "1e30bb6cfa32f600cd63c59983c14ab8928fac4452c1586d630295d2c6ff9453",
+  "target_native_source_sha256": "6efbb772958c06d1b9133f374d046d8838eaa256da1a146eaf7e1ee530eefd3d",
+  "transfer_mode": "weights-only",
+  "exact_resume_allowed": false,
+  "semantics_revision": "act12-thief-potion-and-card-rng-boundaries-20261008-v1",
+  "evidence": {
+    "shared-rule-corrections-r1.json": "30d18fba3aa83fec146963acdbefb65b1dee397f581b4615ad2d01993df2252e",
+    "ACT12_REWARD_CLOSEOUT_20261008.md": "ee8e2f867e6e5edf824f2a0f80fecb57ca1ac5165a53b54e9d4881bcd4a53d94",
+    "../act2-qualification-20261006/simulator-transition-r33.json": "7832a690df7621c20d69fb0639adf9708b5e090eadca61d3d941e46a9a34f803",
+    "simulator-qualification-r1.json": "944cedbd7730403dba71ebec7c9f7c6ea7ea70a7bc87da7895c23dc9711bef3f"
+  },
+  "scope": "Prior reviewed b100 Act1/2 baseline plus only escaped-thief potion and strict cardRng transition interval corrections. Isolated single-job build and 82 focused checks pass. Late-act audit source is evidence provenance, not copied into this target. Reset Adam, environment, RNG and memory; preserve all model weights. Reevaluate frozen parent in target environment; historical lambda arms remain old-source comparisons. Not complete game certification."
+}

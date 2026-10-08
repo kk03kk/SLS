@@ -1,0 +1,72 @@
+{
+  "schema": "sls-critic20m-local-readiness-v1",
+  "status": "READY_FOR_SERVER_COMPUTE_GATE",
+  "native_source_sha256": "6efbb772958c06d1b9133f374d046d8838eaa256da1a146eaf7e1ee530eefd3d",
+  "training_implementation_sha256": "1459b6ff6737bd72852965f230d2c1a86957eb9afce0daea172b56f43785189e",
+  "config_source_sha256": "1b91a424d2ce9ff40117b182157630248d21e54232851286fc50de948d5c2213",
+  "python": "3.12.12 | packaged by Anaconda, Inc. | (main, Oct 21 2025, 20:05:38) [MSC v.1929 64 bit (AMD64)]",
+  "executable": "D:\\Anaconda\\envs\\DL\\python.exe",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "checks": {
+    "single_job_native_build_and_import": "PASS",
+    "parent_four_files_and_bundle_sha": "PASS_NO_DESERIALIZATION",
+    "source_config_operator_and_migration_proof_bindings": "PASS",
+    "lightweight_and_bounded_native_tests": {
+      "passed": 93,
+      "seconds": 2.16
+    },
+    "training_config_lightweight_check": {
+      "passed": 35,
+      "total": 35
+    },
+    "related_ruff": "PASS",
+    "all_src_and_tools_ast_parse": "PASS",
+    "actual_evaluation_seed_collision_scan": {
+      "status": "PASS",
+      "files": 29,
+      "MiB": 104.26
+    },
+    "three_allocation_submit_dry_run": "PASS_NO_SBATCH",
+    "shared_rule_windows_gate": {
+      "synthetic_transition_cases": 22,
+      "stock_reward_cases": 15,
+      "status": "PASS"
+    },
+    "whitespace_diff_check": "PASS_WITH_CR_AT_EOL_FOR_EXISTING_NATIVE_CRLF"
+  },
+  "not_run_locally": [
+    "Model loading/inference",
+    "Training rollout/PPO/critic tensor update",
+    "GPU or throughput benchmark",
+    "Compute-dependent full Python suite"
+  ],
+  "required_on_nus": [
+    "Linux shared-rule probes",
+    "Real parent hash/finite/model compatibility",
+    "Value-head-only update with identical fixed-input actor/GRU",
+    "Independent complete-return recomputation",
+    "Exact cross-rollout, last-warmup and first-PPO next-sample/update replay",
+    "Initial probe state reset before production",
+    "Per-allocation actual-checkpoint preflight"
+  ],
+  "holdout_used": false,
+  "server_execution": "NOT_YET_RUN",
+  "evidence": [
+    {
+      "path": "D:/SLS/local/audits/critic20m-release-20261008/local-tests-final-r2.log",
+      "sha256": "5da64a17c6ffdb83910611ce3438f8ce56e77720ef72472067410f51e80899d8"
+    },
+    {
+      "path": "D:/SLS/local/audits/critic20m-release-20261008/config-check-final.log",
+      "sha256": "25f4731f11c714e9ceae46a3a53681b24eb1dd9dce4ce1f64fecd84788af2117"
+    },
+    {
+      "path": "D:/SLS/local/audits/critic20m-release-20261008/slurm-dry-run.txt",
+      "sha256": "ae4c8584dbac1b4d3acaf68cb1a233d1f3080233022b8f2ce0686063c3a92112"
+    },
+    {
+      "path": "D:/SLS/local/audits/critic20m-release-20261008/shared-rule-gate-windows.json",
+      "sha256": "697aa536dbc1a668a50b2e5bf379a98a2e40f33c993471795092d084e9a3b873"
+    }
+  ]
+}
