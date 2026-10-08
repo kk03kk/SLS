@@ -1,6 +1,6 @@
 {
   "schema": "sls-act12-bound-plan-v1",
-  "status": "READY_FOR_LOCAL_VALIDATION",
+  "status": "COMPLETED_HISTORICAL",
   "config": "configs/train/ironclad_a20_act12_lambda100_r1.toml",
   "config_sha256": "f9e243cde5349e4e787f12f85f784b32bcad538cdcb4663c8526cd80665a0381",
   "target_training_implementation_sha256": "9dca86829696613903d07b7fcbc6d4928f1c957c98fd6eaad534d6e76519ba94",
@@ -83,5 +83,11 @@
     "requirements/model.lock": "8df4e9eacfa0018bf545c4ca447222cd8ecf7c597de7a221f430a865ca05c7d6",
     "pyproject.toml": "734934484da30313a9e21f652409828593075f3d71f50f198848f80566b94955",
     "tools/run_act12_lambda_study.py": "276aeb278d1c4025671c6269bba0aa44071997e319192261615775abb2a56f19"
+  },
+  "historical_evidence": {
+    "original_plan": "docs/results/act12-lambda-20261008/historical-bindings/experimental-plan.json",
+    "original_plan_sha256": "4310c55aa9c2764a9f7b95ff8d9f4887d11300ccb1ea68a1186ab8dd6d8d2bf5",
+    "completed_manifest": "docs/results/act12-lambda-20261008/historical-bindings/experimental-manifest.json",
+    "completed_manifest_sha256": "e70ca62e1ea3f3ddeb5cc020378bb6011a8d8cbac541b0021eea119ea4ce5401"
   }
 }

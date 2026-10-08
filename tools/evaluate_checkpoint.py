@@ -125,7 +125,7 @@ def main(argv: list[str] | None = None) -> int:
 
     checkpoint = args.checkpoint.resolve()
     payload = torch.load(checkpoint, map_location="cpu", weights_only=False)
-    if payload.get("schema") != TRAINING_CHECKPOINT_SCHEMA:
+    if payload.get("schema") not in {TRAINING_CHECKPOINT_SCHEMA, "sls-full-run-ppo-v6"}:
         raise ValueError("unsupported training checkpoint")
     contract = payload.get("contract")
     model_state = payload.get("model")

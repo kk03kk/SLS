@@ -9,6 +9,8 @@ import os
 from pathlib import Path
 from typing import Any, Callable, Mapping
 
+from sls.rl.execution_health import finite_payload, selection_health_fields
+
 BEST_CHECKPOINT_SCHEMA = "sls-best-progress-v5"
 _LEGACY_BEST_CHECKPOINT_SCHEMAS = {"sls-best-progress-v3", "sls-best-progress-v4"}
 CLEAR_COUNT_OBJECTIVES = frozenset({"ACT1_CLEAR_COUNT", "HORIZON_CLEAR_COUNT"})
@@ -103,7 +105,9 @@ def passes_progress_guard(candidate: Mapping[str, Any], incumbent: Mapping[str, 
         # The remaining failures are a selected subset: rescuing deep failures
         # can lower their median depth while improving full-run win probability.
         # Failure depth cannot veto a higher clear count. Health failures can.
-        return not any(int(candidate.get(field, 0)) for field in _RUNTIME_HEALTH_FIELDS)
+        return (finite_payload(candidate) and not any(
+            int(candidate.get(field, -1 if candidate.get("execution_health_policy") else 0))
+            for field in selection_health_fields(candidate, _RUNTIME_HEALTH_FIELDS)))
     if any(int(candidate.get(k, 0)) for k in ("backend_errors", "backend_truncations")):
         return False
 
@@ -136,7 +140,9 @@ def evaluation_rank(record: Mapping[str, Any]) -> tuple[float, ...]:
         # Keep the earliest checkpoint on equal clear counts. Depth, speed and
         # boss subgroups are diagnostics, not additional selection objectives.
         return (
-            -float(any(int(record.get(field, 0)) for field in _RUNTIME_HEALTH_FIELDS)),
+            -float(not finite_payload(record) or any(
+                int(record.get(field, -1 if record.get("execution_health_policy") else 0))
+                for field in selection_health_fields(record, _RUNTIME_HEALTH_FIELDS))),
             float(record["successes"]),
         )
     rates = dict(record.get("boss_success_rate") or {})

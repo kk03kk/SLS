@@ -11,6 +11,7 @@ import torch
 from torch.distributions import Categorical
 
 from sls.model import Policy, PolicyBatch, PolicyFeatures, encode_decision
+from sls.rl.critic_warmup import CriticWarmupConfig, CriticWarmupState
 from sls.rl.episode_limit import (
     EPISODE_LIMIT_SCHEMA,
     TERMINATION_REASONS,
@@ -245,6 +246,7 @@ class PPOTrainer:
         git_commit: str = "TEST_OR_UNSPECIFIED",
         training_config_digest: str = "TEST_OR_UNSPECIFIED",
         training_seed_limit: int | None = None,
+        critic_warmup: CriticWarmupConfig | None = None,
     ) -> None:
         self.model = model.to(device)
         self.workers = workers
@@ -268,6 +270,50 @@ class PPOTrainer:
         self.episode_limits = [EpisodeLimitState.initial(item) for item in self.decisions]
         self.termination_counts = {reason: 0 for reason in TERMINATION_REASONS}
         self.last_collect_terminations = {reason: 0 for reason in TERMINATION_REASONS}
+        warm = critic_warmup or CriticWarmupConfig()
+        if warm.rollout_updates and (config.gamma != 1 or workers.profile.profile_id != "IRONCLAD_A20_ACT2"):
+            raise ValueError("critic warmup requires gamma=1 and normal-start A20 Act2")
+        self.critic_warmup = CriticWarmupState(warm, workers.size, config.max_episode_steps)
+        self._warmup_ready = []
+        self.warmup_target_validator = None  # Optional independent compute-node probe.
+        self._apply_warmup_freeze()
+
+    def _apply_warmup_freeze(self):
+        for name, parameter in self.model.named_parameters():
+            parameter.requires_grad_(not self.critic_warmup.active or name.startswith("value_head."))
+
+    def optimize_critic_warmup(self):
+        samples = self._warmup_ready
+        cfg = self.critic_warmup.config
+        total, batches = 0.0, 0
+        self.model.eval()
+        for _ in range(cfg.epochs):
+            indices = list(range(len(samples)))
+            self.random.shuffle(indices)
+            for start in range(0, len(indices), cfg.batch_size):
+                batch = [samples[i] for i in indices[start:start + cfg.batch_size]]
+                features = torch.stack([item[0] for item in batch]).to(self.device)
+                targets = torch.tensor([item[1] for item in batch], device=self.device, dtype=torch.float32)
+                predicted = self.model.value_head(features).squeeze(-1)
+                loss = self.config.value_coefficient * 0.5 * (predicted - targets).square().mean()
+                if not torch.isfinite(loss):
+                    raise RuntimeError("nonfinite critic warmup loss")
+                self.optimizer.zero_grad(set_to_none=True)
+                loss.backward()
+                torch.nn.utils.clip_grad_norm_(self.model.value_head.parameters(), self.config.max_gradient_norm,
+                                               error_if_nonfinite=True)
+                self.optimizer.step()
+                total += float(loss.detach())
+                batches += 1
+        count = len(samples)
+        self._warmup_ready = []
+        self.critic_warmup.finish_update()
+        self.update += 1
+        self._apply_warmup_freeze()
+        return {"critic_warmup_active": 1.0, "warmup_samples": count,
+                "warmup_completed_updates": self.critic_warmup.completed_updates,
+                "warmup_discarded_states": self.critic_warmup.discarded_states,
+                "warmup_loss": total / max(1, batches), "learning_rate": self.config.learning_rate}
 
     def _take_seeds(self, count: int) -> list[int]:
         if (
@@ -371,6 +417,7 @@ class PPOTrainer:
             rewards = []
             terminals = []
             next_decisions = [item.decision for item in transitions]
+            warm_features = output.next_memory.detach().cpu().clone() if self.critic_warmup.active else None
             reset_indices: list[int] = []
             for index, (current, item) in enumerate(zip(self.decisions, transitions)):
                 reason: str | None = None
@@ -404,8 +451,23 @@ class PPOTrainer:
                         gamma=self.config.gamma, scale=self.config.potential_scale,
                         terminal=terminal,
                     )
+                if self.critic_warmup.config.rollout_updates and reason == "backend_truncated":
+                    raise RuntimeError("backend truncation blocks the critic20m recipe")
+                if warm_features is not None:
+                    # Monte Carlo targets use the collector's actual float32 reward.
+                    reward = float(torch.tensor(reward, dtype=torch.float32))
                 rewards.append(reward)
                 terminals.append(terminal)
+                if warm_features is not None:
+                    validation_rewards = ([r for _, r in self.critic_warmup.pending[index]] + [reward]
+                                          if terminal and self.warmup_target_validator is not None else None)
+                    completed = self.critic_warmup.observe(
+                        index, warm_features[index].clone(), reward, terminal,
+                        backend_fault=reason == "backend_truncated",
+                    )
+                    if validation_rewards is not None:
+                        self.warmup_target_validator(validation_rewards, completed)
+                    self._warmup_ready.extend(completed)
                 if reason is not None:
                     collect_terminations[reason] += 1
                     self.termination_counts[reason] += 1
@@ -771,7 +833,7 @@ class PPOTrainer:
         rollout = self.collect()
         self.last_collect_seconds = time.perf_counter() - started
         optimize_started = time.perf_counter()
-        metrics = self.optimize(rollout)
+        metrics = (self.optimize_critic_warmup() if self.critic_warmup.active else self.optimize(rollout))
         self.last_optimize_seconds = time.perf_counter() - optimize_started
         metrics.update({f"terminations_{key}": float(value) for key, value in self.last_collect_terminations.items()})
         metrics.update(self.last_collect_neow)

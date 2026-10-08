@@ -20,6 +20,7 @@ from sls.content.scope import (
 )
 from sls.model import ModelConfig, Policy
 from sls.model.encoding import ENCODING_SCHEMA, vocabulary_hash
+from sls.rl.critic_warmup import WARMUP_CHECKPOINT_SCHEMA
 from sls.rl.ppo import PPOTrainer
 from sls.rl.training_contract import TRAINING_CHECKPOINT_SCHEMA, runtime_contract
 
@@ -62,7 +63,7 @@ def policy_from_training_checkpoint(
     This does not establish exact environment-resume compatibility.
     """
 
-    if payload.get("schema") != CHECKPOINT_SCHEMA:
+    if payload.get("schema") not in (CHECKPOINT_SCHEMA, WARMUP_CHECKPOINT_SCHEMA):
         raise ValueError("unsupported training checkpoint")
     contract = payload.get("contract")
     state = payload.get("model")
@@ -111,6 +112,8 @@ def checkpoint_contract(trainer: PPOTrainer) -> dict[str, Any]:
         "git_commit": trainer.git_commit,
         "training_config_sha256": trainer.training_config_digest,
         "training_seed_limit": trainer.training_seed_limit,
+        **({"critic_warmup": trainer.critic_warmup.config.to_dict()}
+           if trainer.critic_warmup.config.rollout_updates else {}),
     }
 
 
@@ -176,11 +179,13 @@ def checkpoint_contract_diff(
 
 
 def save_checkpoint(path: str | Path, trainer: PPOTrainer) -> Path:
+    if trainer._warmup_ready:
+        raise ValueError("cannot checkpoint before completed-trajectory critic update")
     target = Path(path)
     target.parent.mkdir(parents=True, exist_ok=True)
     temporary = target.with_suffix(target.suffix + ".tmp")
     payload = {
-        "schema": CHECKPOINT_SCHEMA,
+        "schema": WARMUP_CHECKPOINT_SCHEMA if trainer.critic_warmup.config.rollout_updates else CHECKPOINT_SCHEMA,
         "contract": checkpoint_contract(trainer),
         "model": trainer.model.state_dict(),
         "optimizer": trainer.optimizer.state_dict(),
@@ -201,6 +206,8 @@ def save_checkpoint(path: str | Path, trainer: PPOTrainer) -> Path:
         "torch_rng": torch.get_rng_state(),
         "cuda_rng": torch.cuda.get_rng_state_all() if torch.cuda.is_available() else None,
         "environments": trainer.workers.checkpoints(),
+        **({"critic_warmup": trainer.critic_warmup.state_dict()}
+           if trainer.critic_warmup.config.rollout_updates else {}),
     }
     torch.save(payload, temporary)
     os.replace(temporary, target)
@@ -217,7 +224,8 @@ def _load_checkpoint_exact(
     # Loading the whole payload directly onto the trainer device corrupts that
     # contract; model and optimizer loaders already move their own tensors.
     payload = torch.load(Path(path), map_location="cpu", weights_only=False)
-    if payload.get("schema") != CHECKPOINT_SCHEMA:
+    expected_schema = WARMUP_CHECKPOINT_SCHEMA if trainer.critic_warmup.config.rollout_updates else CHECKPOINT_SCHEMA
+    if payload.get("schema") != expected_schema:
         raise ValueError("unsupported training checkpoint")
     expected = checkpoint_contract(trainer)
     actual = payload.get("contract")
@@ -232,8 +240,23 @@ def _load_checkpoint_exact(
         raise CheckpointContractMismatch(differences)
     trainer.model.load_state_dict(payload["model"])
     trainer.optimizer.load_state_dict(payload["optimizer"])
+    if trainer.critic_warmup.config.rollout_updates:
+        trainer.critic_warmup.load_state_dict(payload["critic_warmup"])
+        for buffer in trainer.critic_warmup.pending:
+            for feature, _ in buffer:
+                if (not isinstance(feature, torch.Tensor)
+                        or feature.shape != (trainer.model.config.recurrent_hidden_dim,)
+                        or feature.dtype != torch.float32 or feature.device.type != "cpu"
+                        or not torch.isfinite(feature).all()):
+                    raise ValueError("invalid critic warmup hidden feature")
+        trainer._warmup_ready = []
+        trainer._apply_warmup_freeze()
     state = payload["trainer"]
     trainer.update = int(state["update"])
+    if (trainer.critic_warmup.config.rollout_updates
+            and trainer.critic_warmup.completed_updates != min(
+                trainer.update, trainer.critic_warmup.config.rollout_updates)):
+        raise ValueError("warmup/trainer update cursor mismatch")
     trainer.episodes = int(state["episodes"])
     trainer.environment_steps = int(state["environment_steps"])
     trainer.next_seed = int(state["next_seed"])

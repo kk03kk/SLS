@@ -1,5 +1,7 @@
 # 工具入口与发布说明
 
+当前2026-10-08新训练入口：`submit_act12_critic20m.py`只校验文件并提交三段afterok作业；`verify_act12_critic_warmup.py`只在Slurm GPU节点验收真实模型；`run_act12_critic20m.py`负责安全续接；`analyze_act12_critic20m.py`无Torch复算固定终点和周期所选结果。见[完整配方](../docs/results/act12-critic20m-20261008/README.md)。下面的long20m入口是历史条件续训设计，不能替代本次新配方。
+
 20M后续入口：`prepare_act12_long_run.py` 在本地深验证真实study结果并绑定计划；`initialize_act12_continuation.py` 保留完整学习/环境状态；`submit_act12_long_run.py` 登录节点轻量提交，`run_act12_long_run.py` 在GPU续接allocation。结果/机制复算使用 `report_act12_progress.py`、`diagnose_act12_learning.py`；静态字段缓存仅有 `benchmark_act12_field_cache.py` 原型，不集成生产。见[契约与限制](../docs/results/act12-long20m-20261007/README.md)。
 
 在项目根目录、已安装依赖的 Python 环境中执行。先用 `--help` 查看参数；能显示帮助不代表训练、服务器提交或实机采集已验证。

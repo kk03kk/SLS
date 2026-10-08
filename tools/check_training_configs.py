@@ -15,6 +15,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import ast
 import hashlib
 import json
 import re
@@ -23,11 +24,10 @@ import tomllib
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "src"))
 
 from sls.curriculum import CURRICULUM_PROFILES_BY_ID  # noqa: E402
-from sls.model import ModelConfig  # noqa: E402
-from sls.rl.ppo import PPOConfig  # noqa: E402
 
 
 def _digest(value: object, length: int = 64) -> bool:
@@ -79,6 +79,13 @@ def validate_json(path: Path, payload: object) -> list[str]:
     if not isinstance(payload, dict):
         return ["experiment plan is not an object"]
     schema = payload.get("schema")
+    if schema == "sls-act12-critic20m-plan-v1":
+        from tools.act12_critic20m_contract import validate as validate_critic20m
+        try:
+            validate_critic20m(path)
+        except (ValueError, KeyError, TypeError) as error:
+            problems.append(str(error))
+        return problems
     if schema == "sls-act12-bound-plan-v1":
         historical = payload.get('status') == 'COMPLETED_HISTORICAL'
         if historical:
@@ -211,7 +218,18 @@ def validate_auxiliary(path: Path, payload: dict) -> list[str]:
     return problems
 
 
-def validate(path: Path, payload: dict) -> list[str]:
+def _static_fields(section, values):
+    source, name = {"ppo": ("src/sls/rl/ppo.py", "PPOConfig"),
+                    "model": ("src/sls/model/transformer.py", "ModelConfig")}[section]
+    tree = ast.parse((ROOT / source).read_text(encoding="utf-8"))
+    definition = next(n for n in tree.body if isinstance(n, ast.ClassDef) and n.name == name)
+    fields = {n.target.id for n in definition.body if isinstance(n, ast.AnnAssign)}
+    unknown = set(values) - fields
+    if unknown:
+        raise ValueError("unknown config fields: " + str(sorted(unknown)))
+
+
+def validate(path: Path, payload: dict, *, lightweight=False) -> list[str]:
     run = payload.get("run") or {}
     if not run and "ppo" not in payload:
         # Not a training run configuration.
@@ -222,12 +240,20 @@ def validate(path: Path, payload: dict) -> list[str]:
     if "ppo" not in payload:
         problems.append("missing [ppo] section")
     try:
-        PPOConfig(**payload["ppo"])
+        if lightweight:
+            _static_fields("ppo", payload["ppo"])
+        else:
+            from sls.rl.ppo import PPOConfig
+            PPOConfig(**payload["ppo"])
     except (KeyError, TypeError, ValueError) as error:
         problems.append(f"[ppo] is invalid: {error}")
     if "model" in payload:
         try:
-            ModelConfig(**payload["model"])
+            if lightweight:
+                _static_fields("model", payload["model"])
+            else:
+                from sls.model import ModelConfig
+                ModelConfig(**payload["model"])
         except (TypeError, ValueError) as error:
             problems.append(f"[model] is invalid: {error}")
 
@@ -277,6 +303,8 @@ def main(argv: list[str] | None = None) -> int:
         "--root", type=Path, default=ROOT / "configs",
         help="directory tree to scan for TOML configs and JSON plans/contracts",
     )
+    parser.add_argument("--lightweight", action="store_true",
+                        help="AST field/range/binding checks only; never import torch/model/PPO runtime")
     args = parser.parse_args(argv)
 
     paths = sorted([*args.root.rglob("*.toml"), *args.root.rglob("*.json")])
@@ -291,7 +319,7 @@ def main(argv: list[str] | None = None) -> int:
                 problems = validate_json(path, payload)
             else:
                 payload = tomllib.loads(path.read_text(encoding="utf-8"))
-                problems = validate(path, payload)
+                problems = validate(path, payload, lightweight=args.lightweight)
         except Exception as error:  # noqa: BLE001 - report, never crash the scan
             problems = [f"unreadable: {type(error).__name__}: {error}"]
         resolved = path.resolve()
@@ -304,7 +332,8 @@ def main(argv: list[str] | None = None) -> int:
                 print(f"     {problem}")
         else:
             print(f"ok   {relative}")
-    print(f"\n{len(paths) - failures}/{len(paths)} configurations valid")
+    print(f"\n{len(paths) - failures}/{len(paths)} configurations valid"
+          + (" (lightweight; runtime constructors deferred)" if args.lightweight else ""))
     return 1 if failures else 0
 
 

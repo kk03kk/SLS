@@ -38,6 +38,7 @@ def workload_contract(config: dict) -> str:
         "profile": asdict(CURRICULUM_PROFILES_BY_ID[config["run"]["profile"]]),
         "model": config["model"], "ppo": config["ppo"],
         "deterministic": config["run"].get("deterministic", True),
+        **({"critic_warmup": config["critic_warmup"]} if "critic_warmup" in config else {}),
     })
 
 

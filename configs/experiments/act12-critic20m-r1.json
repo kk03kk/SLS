@@ -1,0 +1,66 @@
+{
+  "schema": "sls-act12-critic20m-plan-v1",
+  "status": "READY_FOR_COMPUTE_GATE",
+  "config": "configs/train/ironclad_a20_act12_critic20m_r1.toml",
+  "config_sha256": "54e88d2ae8458225de4e4a2bbc975c1517ba97f17a37470177cde6e3336625e9",
+  "parent": {
+    "run": "local/runs/ironclad-a20-act1-win-90m-continuation",
+    "role": "endpoint",
+    "checkpoint": "local/runs/ironclad-a20-act1-win-90m-continuation/final.pt",
+    "sha256": "274963f4fe32b75003c5a1b4ccd394b5185304156e6ea22a76aee2764d54f1e0",
+    "environment_steps": 90013696,
+    "native_source_sha256": "1e30bb6cfa32f600cd63c59983c14ab8928fac4452c1586d630295d2c6ff9453",
+    "target_native_source_sha256": "b100427d1e3ae6eee05818b6904047049609b1aa70807872c1f5f5e0edd6d62f",
+    "training_implementation_sha256": "9da7e28c7a2fc83fcbc1e289dade65dddb60d03fdf6a1670c9ad2fb011bc3bbf",
+    "evidence": {
+      "run-manifest.json": "382e128483b64fd55f1b87df0b589329fb791292791fbcc28a44ce567db09018",
+      "training-config.toml": "fb9ddaafa797697c7d4a50e0988ef5056c62a49af966d12b35c3c9c5a4fa365c",
+      "final.pt": "274963f4fe32b75003c5a1b4ccd394b5185304156e6ea22a76aee2764d54f1e0",
+      "endpoint-evaluation.json": "3ec90b3269c22198f9f05b3356051ad06e3b23ac3ee7a1aadbacadb46bccef0c"
+    },
+    "simulator_transition": {
+      "evidence": "docs/results/act2-qualification-20261006/simulator-transition-r33.json",
+      "evidence_sha256": "7832a690df7621c20d69fb0639adf9708b5e090eadca61d3d941e46a9a34f803"
+    }
+  },
+  "native_source_sha256": "b100427d1e3ae6eee05818b6904047049609b1aa70807872c1f5f5e0edd6d62f",
+  "training_implementation_sha256": "1459b6ff6737bd72852965f230d2c1a86957eb9afce0daea172b56f43785189e",
+  "operator_sha256": {
+    "tools/act12_critic20m_contract.py": "fef3ca40b60c6a1c57239dffb9184702de4fe836134ff0226439a4b966f378ce",
+    "tools/submit_act12_critic20m.py": "1317c57dd2ef81b9d08021fa79ecded57dfd8be35092f2aa6af1af6fbeefbe85",
+    "tools/run_act12_critic20m.py": "83f84fa0ff5a9146c87798278f670699ff095bc866b8d0da6a6eab3f7ae891df",
+    "tools/verify_act12_critic_warmup.py": "5e01bb754c2d2c54ba6d55747fa810f751f7b05476bcc39c08f1b2680b258b07",
+    "tools/analyze_act12_critic20m.py": "02078648584d036b45ea39707e738d6806f7a85a0f9fc4912f68d402558440f2",
+    "tools/import_act12_parent.py": "6ec9de43778bf726dab91b91673b66dcbfa739c9b4642e237d41b73127228e8f",
+    "tools/operator_paths.py": "89d5fb7ab01731a57d93e56f1df976b4ecbcf030efd92eba0452bde20e3e2354",
+    "tools/preflight_training.py": "1f558c1e4bcef64457633c2b781f4dc32431b56bb03aed3772ecdc39e9463e08",
+    "tools/benchmark_workers.py": "c50f7c8e536df1edc25a1fe9b718c1dd8edafc9aa39d95a0e7c00c3a6f2652ef",
+    "tools/submit_slurm.py": "b4a191c398c298c630180e782290be239139d0c238c44b1d861f2fc267232c56",
+    "tools/prepare_act12_long_run.py": "b9ec70d142ce88e08515b72f0c386bd0851bd6a39304e748e591d20788c0965d",
+    "tools/analyze_act12_pilot.py": "fc36d61cb5c555fa926928971d9500fe843679993b10b3b02de1613b4d2aa3be",
+    "tools/analyze_reward_screen.py": "2e7a09f2611f03f0e45137dad64bc3c76efcc6c2bed246403aed66c5f3b90daa",
+    "tools/compare_run_arms.py": "989472fe516ca77590d12a8bba6be7e3860b71418daecf48ee0790b36fae09c0",
+    "requirements/model.lock": "8df4e9eacfa0018bf545c4ca447222cd8ecf7c597de7a221f430a865ca05c7d6",
+    "pyproject.toml": "734934484da30313a9e21f652409828593075f3d71f50f198848f80566b94955",
+    "tools/check_training_configs.py": "ce9d2b5024f922e68791da0d93cce39ccd6b760736fa3317c797d95a49ca22a0",
+    "tests/fixtures/regressions/act2-empty-cage-grid-131100069.json": "277718d9f148da236a23f612c646378415e9fc3d2e222cbddd3afdcae9aa8889"
+  },
+  "allocations": 3,
+  "allocation_hours": 48,
+  "additional_decisions": 20000000,
+  "benchmark_rate": 114.7,
+  "hypothesis": "Calibrating the transferred value head on complete current-task shaped returns before PPO may improve normal-start A20 Act1+Act2 joint clears.",
+  "intervention": "32 rollout critic-only warmup with complete-episode MC targets, then original lambda=.98 PPO; one new recipe, not a single-scalar intervention.",
+  "control_identity": "Frozen90 reference on same runtime/environment/4096 starts; historical 4M lambda=.98 is not a 20M budget-matched control.",
+  "primary_success_rule": "Fixed endpoint joint gain >=1pp, exact two-sided McNemar p<=.05, healthy execution/evidence; otherwise NO_CONFIRMED_GAIN; no automatic extension.",
+  "final_holdout": [
+    9000000000000,
+    9000000004096
+  ],
+  "limitations": [
+    "One training seed; cannot isolate causal superiority of warmup without matched-budget control.",
+    "Native environment unchanged from completed corrected lambda study.",
+    "Local runtime computation deliberately deferred to allocation gate.",
+    "Three allocations are conservative planning, not a completion guarantee; each finalization reserves 24h."
+  ]
+}

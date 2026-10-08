@@ -47,6 +47,7 @@ from sls.rl.best_checkpoint import (
     recover_best_checkpoint,
     update_best_checkpoint,
 )
+from sls.rl.critic_warmup import CriticWarmupConfig
 from sls.rl.evaluate import EvaluationResult, evaluate
 from sls.rl.training_contract import (
     TRAINING_CHECKPOINT_SCHEMA,
@@ -240,6 +241,10 @@ def _training_identity(
         "model": payload["model"],
         **({"warm_start": payload["warm_start"]} if "warm_start" in payload else {}),
         "ppo": payload["ppo"],
+        **({"critic_warmup": payload["critic_warmup"]} if "critic_warmup" in payload else {}),
+        **({"evaluation_health_policy": run["evaluation_health_policy"]}
+           if "evaluation_health_policy" in run else {}),
+        **({"compute_gate_report": run["compute_gate_report"]} if "compute_gate_report" in run else {}),
         "stages": stages,
     })
 
@@ -840,7 +845,9 @@ def main() -> int:
             "encoding_schema": ENCODING_SCHEMA,
             "vocabulary_sha256": vocabulary_hash(),
             **ironclad_scope_contract(profile.ascension),
-            "checkpoint_schema": TRAINING_CHECKPOINT_SCHEMA,
+            "checkpoint_schema": ("sls-full-run-ppo-v6" if payload.get("critic_warmup", {}).get("rollout_updates")
+                                  else TRAINING_CHECKPOINT_SCHEMA),
+            **({"critic_warmup": payload["critic_warmup"]} if "critic_warmup" in payload else {}),
             "model": model.config.to_dict(),
             "ppo": ppo.to_dict(),
             "workers": workers_count,
@@ -904,12 +911,29 @@ def main() -> int:
                 git_commit=str(repository["commit"]),
                 training_config_digest=identity,
                 training_seed_limit=training_seed_limit(run),
+                critic_warmup=CriticWarmupConfig(
+                    **payload.get("critic_warmup", {})),
             )
             if "warm_start" in payload and not latest.exists():
                 from sls.rl.act1_transfer import initialize_act1_weights
                 if not single_stage or run.get("continuation_from"):
                     raise ValueError("A20 weight transfer requires a new single-stage run")
                 transfer = initialize_act1_weights(trainer, payload, root=ROOT)
+                if run.get("compute_gate_report"):
+                    gate_path = (ROOT / run["compute_gate_report"]).resolve()
+                    if not gate_path.is_relative_to(ROOT):
+                        raise ValueError("compute gate report escapes repository")
+                    gate = json.loads(gate_path.read_text())
+                    from tools.act12_critic20m_contract import validate_compute_gate
+                    validate_compute_gate(gate, identity)
+                    initial_path = (ROOT / gate["initial_checkpoint"]).resolve()
+                    if (gate.get("ok") is not True or gate.get("training_identity_sha256") != identity
+                            or not initial_path.is_relative_to(ROOT)
+                            or sha256_file(initial_path) != gate["initial_checkpoint_sha256"]):
+                        raise ValueError("missing or stale compute gate")
+                    load_checkpoint(initial_path, trainer)
+                    if trainer.update != 0 or trainer.environment_steps != int(payload["warm_start"]["parent_environment_steps"]):
+                        raise ValueError("compute gate initial state contains learned budget")
                 manifest["initialization"] = transfer
                 _atomic_json(manifest_path, manifest)
                 save_checkpoint(latest, trainer)
@@ -929,7 +953,10 @@ def main() -> int:
                     )
                     loaded_exactly = previous is None
                 else:
-                    resume_mode = _load_exact_or_runtime_rebind(latest, trainer)
+                    if trainer.critic_warmup.config.rollout_updates:
+                        load_checkpoint(latest, trainer)
+                    else:
+                        resume_mode = _load_exact_or_runtime_rebind(latest, trainer)
                     loaded_exactly = True
                 if resume_mode == "runtime-rebind":
                     rebind = {
@@ -1015,6 +1042,18 @@ def main() -> int:
             )
             if trainer.environment_steps >= target_steps and not resume_finalization:
                 raise ValueError(f"stage target already reached: {trainer.environment_steps}")
+            if resume_finalization and run.get("evaluation_health_policy") == "execution-only-v1":
+                archive = output / "finalization-before-resume"
+                for name in ("reference-evaluation.json", "endpoint-evaluation.json", "final-evaluation.json"):
+                    evidence = output / name
+                    if evidence.exists():
+                        archive.mkdir(exist_ok=True)
+                        retained = archive / (evidence.stem + "-" + sha256_file(evidence) + ".json")
+                        if retained.exists():
+                            if sha256_file(retained) != sha256_file(evidence):
+                                raise ValueError("archived finalization evidence changed")
+                        else:
+                            shutil.copy2(evidence, retained)
             run_until = target_steps
             if args.stop_after_additional_steps is not None:
                 batch_steps = workers_count * ppo.rollout_steps
@@ -1034,18 +1073,27 @@ def main() -> int:
                     "environment_shards": shard_count,
                     "seed_range": [seed_values[0], seed_values[-1] + 1],
                 }, sort_keys=True), flush=True)
-                return evaluate(
+                result = evaluate(
                     trainer.model, profile, seed_values, device=device,
                     max_steps=evaluation_max_steps,
                     max_boundary_visits=ppo.max_boundary_visits,
                     failure_progress_scale=ppo.failure_progress_scale,
                     stop_requested=(
-                        (lambda: controller.requested) if interruptible else None
+                        (lambda: controller.requested)
+                        if interruptible or run.get("evaluation_health_policy") == "execution-only-v1" else None
                     ),
                     environment_shards=shard_count,
                     crash_dump_dir=output / "evaluation-crashes",
                     progress_callback=_evaluation_progress(label),
                 )
+                if run.get("evaluation_health_policy") == "execution-only-v1":
+                    from sls.rl.execution_health import execution_healthy
+                    if not execution_healthy(asdict(result)):
+                        failure_dir = output / "evaluation-crashes"
+                        failure_dir.mkdir(parents=True, exist_ok=True)
+                        _atomic_json(failure_dir / f"{label}-{trainer.update}-execution-failed.json", asdict(result))
+                        raise RuntimeError("evaluation execution health failed: " + label)
+                return result
 
             def selection_record(evaluation):
                 result = best_checkpoint_record(evaluation, update=trainer.update)
@@ -1055,6 +1103,8 @@ def main() -> int:
                         "ACT1_CLEAR_COUNT" if profile.horizon is EpisodeHorizon.ACT_1
                         else "HORIZON_CLEAR_COUNT"
                     )
+                if run.get("evaluation_health_policy") == "execution-only-v1":
+                    result["execution_health_policy"] = "execution-only-v1"
                 return result
 
             _archive_uncheckpointed_metrics(metrics_path, trainer.environment_steps)
@@ -1217,101 +1267,111 @@ def main() -> int:
                         selected, stage_output / f"{output.name}-{args.stage}.pt",
                         ascension_min=profile.ascension, ascension_max=profile.ascension, goal=goal,
                     )
-            if args.stage == "train" and completed and not controller.requested:
-                save_checkpoint(output / "final.pt", trainer)
-                if run.get("development_reference_checkpoint"):
-                    reference = ROOT / str(run["development_reference_checkpoint"])
-                    if sha256_file(reference) != run["development_reference_sha256"]:
-                        raise ValueError("frozen development reference checkpoint hash mismatch")
-                    reference_payload = torch.load(reference, map_location="cpu", weights_only=False)
-                    from sls.rl.checkpoint import policy_from_training_checkpoint
-                    reference_model = policy_from_training_checkpoint(reference_payload)
-                    if reference_model.config != trainer.model.config:
-                        raise ValueError("frozen reference model configuration mismatch")
-                    cross_horizon = _validate_frozen_reference_profile(reference_payload, profile, payload)
-                    trainer.model.load_state_dict(reference_model.state_dict())
-                    reference_result = asdict(run_evaluation(
-                        tuple(final_seeds), "frozen-reference-development", interruptible=False,
+            try:
+                if args.stage == "train" and completed and not controller.requested:
+                    save_checkpoint(output / "final.pt", trainer)
+                    if run.get("development_reference_checkpoint"):
+                        reference = ROOT / str(run["development_reference_checkpoint"])
+                        if sha256_file(reference) != run["development_reference_sha256"]:
+                            raise ValueError("frozen development reference checkpoint hash mismatch")
+                        reference_payload = torch.load(reference, map_location="cpu", weights_only=False)
+                        from sls.rl.checkpoint import policy_from_training_checkpoint
+                        reference_model = policy_from_training_checkpoint(reference_payload)
+                        if reference_model.config != trainer.model.config:
+                            raise ValueError("frozen reference model configuration mismatch")
+                        cross_horizon = _validate_frozen_reference_profile(reference_payload, profile, payload)
+                        trainer.model.load_state_dict(reference_model.state_dict())
+                        reference_result = asdict(run_evaluation(
+                            tuple(final_seeds), "frozen-reference-development", interruptible=False,
+                        ))
+                        _atomic_json(output / "reference-evaluation.json", {
+                            "schema": "sls-frozen-reference-evaluation-v2",
+                            "source_profile": reference_payload["contract"]["profile"].profile_id,
+                            "evaluation_profile": profile.profile_id,
+                            "cross_horizon_reference": cross_horizon,
+                            "evaluation_role": "development-confirmation",
+                            "checkpoint": str(reference),
+                            "checkpoint_sha256": sha256_file(reference),
+                            "checkpoint_environment_steps": reference_payload["trainer"]["environment_steps"],
+                            "checkpoint_native_source_sha256": reference_payload["contract"]["native_source_sha256"],
+                            "seeds": [final_seeds.start, final_seeds.stop],
+                            **evaluation_identity(device=device, environment_shards=shard_count, ascension=profile.ascension),
+                            "result": reference_result,
+                        })
+                        endpoint_payload = torch.load(output / "final.pt", map_location="cpu", weights_only=False)
+                        trainer.model.load_state_dict(endpoint_payload["model"])
+                        del reference_model, reference_payload, endpoint_payload
+                    if run.get("evaluate_fixed_endpoint", False):
+                        # Primary development endpoint, fixed by budget before any
+                        # selection/confirmation results are observed. This leaves
+                        # trainer weights/state intact for the saved final.pt.
+                        endpoint_result = asdict(run_evaluation(
+                            tuple(final_seeds), "fixed-endpoint-development", interruptible=False,
+                        ))
+                        _atomic_json(output / "endpoint-evaluation.json", {
+                            "schema": "sls-fixed-endpoint-evaluation-v1",
+                            "evaluation_role": "development-confirmation",
+                            "checkpoint": "final.pt",
+                            "checkpoint_sha256": sha256_file(output / "final.pt"),
+                            "checkpoint_environment_steps": trainer.environment_steps,
+                            "seeds": [final_seeds.start, final_seeds.stop],
+                            **evaluation_identity(
+                                device=device, environment_shards=shard_count,
+                                ascension=profile.ascension,
+                            ),
+                            "result": endpoint_result,
+                        })
+                    selected_payload = torch.load(
+                        selected, map_location="cpu", weights_only=False,
+                    )
+                    trainer.model.load_state_dict(selected_payload["model"])
+                    final_result = asdict(run_evaluation(
+                        tuple(final_seeds), "final", interruptible=False,
                     ))
-                    _atomic_json(output / "reference-evaluation.json", {
-                        "schema": "sls-frozen-reference-evaluation-v2",
-                        "source_profile": reference_payload["contract"]["profile"].profile_id,
-                        "evaluation_profile": profile.profile_id,
-                        "cross_horizon_reference": cross_horizon,
-                        "evaluation_role": "development-confirmation",
-                        "checkpoint": str(reference),
-                        "checkpoint_sha256": sha256_file(reference),
-                        "checkpoint_environment_steps": reference_payload["trainer"]["environment_steps"],
-                        "checkpoint_native_source_sha256": reference_payload["contract"]["native_source_sha256"],
+                    final_stage = dict(stage)
+                    final_stage["minimum_evaluation_episodes"] = int(
+                        stage.get("minimum_final_evaluation_episodes", 1)
+                    )
+                    final_promoted = _single_stage_final_passes(
+                        final_result, int(final_stage["minimum_evaluation_episodes"]),
+                    ) if single_stage else _promotion_passes(final_result, final_stage)
+                    if run.get("evaluation_health_policy") == "execution-only-v1":
+                        from sls.rl.execution_health import execution_healthy
+                        final_promoted = (final_result["episodes"] >= int(final_stage["minimum_evaluation_episodes"])
+                                          and execution_healthy(final_result))
+                    _atomic_json(output / "final-evaluation.json", {
+                        "schema": "sls-final-evaluation-v3",
+                        "evaluation_role": run.get("final_evaluation_role", "final-holdout"),
+                        "checkpoint": selected.name,
+                        "checkpoint_sha256": sha256_file(selected),
+                        "checkpoint_environment_steps": selected_payload["trainer"]["environment_steps"],
                         "seeds": [final_seeds.start, final_seeds.stop],
-                        **evaluation_identity(device=device, environment_shards=shard_count, ascension=profile.ascension),
-                        "result": reference_result,
-                    })
-                    endpoint_payload = torch.load(output / "final.pt", map_location="cpu", weights_only=False)
-                    trainer.model.load_state_dict(endpoint_payload["model"])
-                    del reference_model, reference_payload, endpoint_payload
-                if run.get("evaluate_fixed_endpoint", False):
-                    # Primary development endpoint, fixed by budget before any
-                    # selection/confirmation results are observed. This leaves
-                    # trainer weights/state intact for the saved final.pt.
-                    endpoint_result = asdict(run_evaluation(
-                        tuple(final_seeds), "fixed-endpoint-development", interruptible=False,
-                    ))
-                    _atomic_json(output / "endpoint-evaluation.json", {
-                        "schema": "sls-fixed-endpoint-evaluation-v1",
-                        "evaluation_role": "development-confirmation",
-                        "checkpoint": "final.pt",
-                        "checkpoint_sha256": sha256_file(output / "final.pt"),
-                        "checkpoint_environment_steps": trainer.environment_steps,
-                        "seeds": [final_seeds.start, final_seeds.stop],
+                        # A quoted win rate is only interpretable next to the
+                        # simulator and inference settings that produced it; the
+                        # project's own qualification work found the outcome to
+                        # depend on the CPU thread setting.
                         **evaluation_identity(
-                            device=device, environment_shards=shard_count,
+                            device=device,
+                            environment_shards=shard_count,
                             ascension=profile.ascension,
                         ),
-                        "result": endpoint_result,
+                        "result": final_result,
+                        "promotion_passed": final_promoted,
                     })
-                selected_payload = torch.load(
-                    selected, map_location="cpu", weights_only=False,
-                )
-                trainer.model.load_state_dict(selected_payload["model"])
-                final_result = asdict(run_evaluation(
-                    tuple(final_seeds), "final", interruptible=False,
-                ))
-                final_stage = dict(stage)
-                final_stage["minimum_evaluation_episodes"] = int(
-                    stage.get("minimum_final_evaluation_episodes", 1)
-                )
-                final_promoted = _single_stage_final_passes(
-                    final_result, int(final_stage["minimum_evaluation_episodes"]),
-                ) if single_stage else _promotion_passes(final_result, final_stage)
-                _atomic_json(output / "final-evaluation.json", {
-                    "schema": "sls-final-evaluation-v3",
-                    "evaluation_role": run.get("final_evaluation_role", "final-holdout"),
-                    "checkpoint": selected.name,
-                    "checkpoint_sha256": sha256_file(selected),
-                    "checkpoint_environment_steps": selected_payload["trainer"]["environment_steps"],
-                    "seeds": [final_seeds.start, final_seeds.stop],
-                    # A quoted win rate is only interpretable next to the
-                    # simulator and inference settings that produced it; the
-                    # project's own qualification work found the outcome to
-                    # depend on the CPU thread setting.
-                    **evaluation_identity(
-                        device=device,
-                        environment_shards=shard_count,
-                        ascension=profile.ascension,
-                    ),
-                    "result": final_result,
-                    "promotion_passed": final_promoted,
-                })
-                if final_promoted:
-                    export_policy_artifact(
-                        selected, output / f"{output.name}.pt",
-                        ascension_min=profile.ascension, ascension_max=profile.ascension,
-                        goal={EpisodeHorizon.ACT_1: "ACT1", EpisodeHorizon.ACT_2: "ACT2",
-                              EpisodeHorizon.ACT_3: "ACT3", EpisodeHorizon.HEART: "HEART",
-                              EpisodeHorizon.FULL_RUN: "FULLRUN"}[profile.horizon],
-                    )
-                promoted = final_promoted
+                    if final_promoted:
+                        export_policy_artifact(
+                            selected, output / f"{output.name}.pt",
+                            ascension_min=profile.ascension, ascension_max=profile.ascension,
+                            goal={EpisodeHorizon.ACT_1: "ACT1", EpisodeHorizon.ACT_2: "ACT2",
+                                  EpisodeHorizon.ACT_3: "ACT3", EpisodeHorizon.HEART: "HEART",
+                                  EpisodeHorizon.FULL_RUN: "FULLRUN"}[profile.horizon],
+                        )
+                    promoted = final_promoted
+            except InterruptedError:
+                if run.get("evaluation_health_policy") != "execution-only-v1" or not controller.requested:
+                    raise
+                # Discard temporary inference weights; restore Adam/workers/RNG.
+                load_checkpoint(latest, trainer)
 
         soak_complete = (
             args.stop_after_additional_steps is not None
@@ -1337,6 +1397,9 @@ def main() -> int:
             "active_stage": None,
             "environment_steps": trainer.environment_steps,
             "updates": trainer.update,
+            **({"critic_warmup_state": {
+                k: v for k, v in trainer.critic_warmup.state_dict().items() if k != "pending"}
+               } if trainer.critic_warmup.config.rollout_updates else {}),
             "episodes": trainer.episodes,
             "termination_counts": dict(trainer.termination_counts),
             "cuda_peak_memory_bytes": (

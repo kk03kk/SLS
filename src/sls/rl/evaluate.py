@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import statistics
 from collections import Counter, deque
-from dataclasses import dataclass, field
+from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Callable
 
@@ -469,6 +469,13 @@ def _evaluate_impl(
         {"seed": seed, "success": won[i], "reason": reasons[i], "steps": episode_steps[i],
          "floor": decisions[i].observation.run.floor, "bosses": bosses_by_act[i],
          "entered_bosses": sorted(entered_bosses[i]), "last_context": contexts[i],
+         "terminal_screen": decisions[i].observation.screen.value,
+         "last_action": traces[i][-1]["action"] if traces[i] else None,
+         "terminal_selection_context": {
+             "selected_cards": [asdict(c) for c in decisions[i].observation.selected_cards],
+             "choice_options": [asdict(c) for c in decisions[i].observation.choice_options],
+             "reward_options": [asdict(c) for c in decisions[i].observation.reward_options],
+         } if reasons[i] == "cycle_limit" else None,
          "act2_elite_entries": act2_elite_entries[i],
          "act2_entry_diagnostics_contract": "sls-act2-map-room-coverage-v1",
          "route": routes[i], "deck": [c.card_id for c in decisions[i].observation.deck],

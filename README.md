@@ -1,6 +1,6 @@
 # SLS：训练《杀戮尖塔》智能体
 
-**2026-10-07 后续准备：** 用户报告匹配λ pilot（job 916291）已启动，尚无结果。已准备正常开局Act1+Act2固定终点的状态保持20M续训、学习诊断及多allocation恢复流程；达到联合收益标准后才绑定真实父模型，不增加前4M复制门槛。见[20M长训准备与限制](docs/results/act12-long20m-20261007/README.md)。
+**2026-10-08 当前阶段：** 匹配λ实验已结束，没有达到原自动延长标准。下一步准备一个从冻结90M重新迁移的**critic预热＋20M Act1+Act2新配方**，以两幕联合通关为主。只完成轻量本地验收；真实模型、恢复等价及训练尚未运行，必须先通过同次NUS allocation启动门禁。见[新配方与启动边界](docs/results/act12-critic20m-20261008/README.md)和[λ结果归档](docs/results/act12-lambda-20261008/README.md)。旧[续训准备](docs/results/act12-long20m-20261007/README.md)保留历史设计，不作为本次启动入口。
 
 **2026-10-07：修复版Act1+Act2匹配λ pilot本地准备完成。** 72次受控重放、5条完整自然轨迹及Discovery独立计时条件核验已归档；CPU编码优化等价验证通过，小型Windows端到端耗时减少约3.4%。下一轮为同环境λ=.98/1各4M，一次同节点GPU作业，联合通关率为主；尚无新训练结果。见[启动设计与验收](docs/results/act2-qualification-20261006/TRAINING_READY.md)。
 

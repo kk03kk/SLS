@@ -1,5 +1,7 @@
 # 配置目录
 
+当前2026-10-08方案：`train/ironclad_a20_act12_critic20m_r1.toml`及SHA绑定`experiments/act12-critic20m-r1.json`。冻结90M显式迁移、32 rollout critic预热、新增20M、NUS先运行计算门禁。λ计划已标记历史完成，原参数、来源和标准保留。见[新配方说明](../docs/results/act12-critic20m-20261008/README.md)。
+
 这里存放可以上传 GitHub 的正式项目配置、实验设计和兼容性契约。配置里出现的 `local/` 路径是运行时输入、输出的位置；对应模型、日志、基准报告不随配置一起上传。目录整理没有移动或改写任何原始 TOML、实验 JSON 或兼容性 JSON。
 
 截至 2026-10-05：70M 与 90M 实验均已完成并核验归档；[90M 固定终点](../docs/results/win90m-20261005/README.md)在开发确认集达到预注册成功判据。Act1-2 只有待绑定的方案，不能据此提交训练。

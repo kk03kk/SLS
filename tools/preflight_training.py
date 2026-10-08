@@ -113,6 +113,7 @@ def main() -> int:
             load_checkpoint,
             save_checkpoint,
         )
+        from sls.rl.critic_warmup import CriticWarmupConfig
         from sls.rl.preparation import read_config, workload_contract
         from sls.rl.training_contract import (
             git_state,
@@ -162,6 +163,8 @@ def main() -> int:
                 native_contract_digest=native_source_digest(),
                 git_commit=str(repository["commit"]),
                 training_config_digest="PREFLIGHT_MICRO_RESUME",
+                critic_warmup=CriticWarmupConfig(
+                    **(payload or {}).get("critic_warmup", {})),
             )
             if args.checkpoint:
                 from sls.rl.checkpoint import load_checkpoint_runtime_rebind
@@ -172,7 +175,10 @@ def main() -> int:
                 )
                 from sls.rl.preparation import training_seed_limit
                 trainer.training_seed_limit = training_seed_limit(payload["run"])
-                load_checkpoint_runtime_rebind(args.checkpoint, trainer)
+                if trainer.critic_warmup.config.rollout_updates:
+                    load_checkpoint(args.checkpoint, trainer)
+                else:
+                    load_checkpoint_runtime_rebind(args.checkpoint, trainer)
             elif payload and "warm_start" in payload:
                 from sls.rl.act1_transfer import initialize_act1_weights
                 transfer = initialize_act1_weights(trainer, payload, root=ROOT)

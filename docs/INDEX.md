@@ -1,5 +1,7 @@
 # 文档逐文件索引
 
+当前新增：[critic预热＋20M配方](results/act12-critic20m-20261008/README.md)、[多选与身份审核](results/act12-critic20m-20261008/READINESS.md)、[本地轻量验收](results/act12-critic20m-20261008/local-validation.json)、[λ实验结案](results/act12-lambda-20261008/README.md)。新配方尚未运行，下面旧long20m入口保留历史。
+
 新增：[20M长训准备与诊断](results/act12-long20m-20261007/README.md)。尚未开始该长训，保留当前λ pilot原注册标准。
 
 全部为正式仓库文档或紧凑证据；日期报告不自动代表 HEAD。当前入口见 [README](README.md)。机器证据保留原始字节。

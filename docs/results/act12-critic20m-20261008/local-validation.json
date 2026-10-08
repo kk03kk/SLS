@@ -1,0 +1,59 @@
+{
+  "schema": "sls-critic20m-local-validation-v1",
+  "date": "2026-10-08",
+  "scope": "PURE_PYTHON_AND_MOCK_ONLY",
+  "python": "3.12.12 | packaged by Anaconda, Inc. | (main, Oct 21 2025, 20:05:38) [MSC v.1929 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "environment": "Windows DL Python3.12",
+  "base_main": "e1902d6a1bb56166bc55f6d7c646c6b560dfe541",
+  "parent_sha256": "274963f4fe32b75003c5a1b4ccd394b5185304156e6ea22a76aee2764d54f1e0",
+  "native_source_sha256": "b100427d1e3ae6eee05818b6904047049609b1aa70807872c1f5f5e0edd6d62f",
+  "training_implementation_sha256": "1459b6ff6737bd72852965f230d2c1a86957eb9afce0daea172b56f43785189e",
+  "config_sha256": "54e88d2ae8458225de4e4a2bbc975c1517ba97f17a37470177cde6e3336625e9",
+  "plan_sha256": "c6d28bad062326fef606fe713c9ecebdadb1dc97d58404faccd32dfe44990a63",
+  "AGENTS_sha256": "90132f3c84221605cf5c5ffc917255e84aa4dd82e60cae9d79c120a5e307d7e7",
+  "checks": {
+    "selected_lightweight_pytest": "78 passed",
+    "lightweight_config_scan": "35/35; runtime constructors deferred",
+    "ruff": "PASS for changed Python and RL package",
+    "syntax_compile_files": 319,
+    "source_binding": "PASS",
+    "actual_seed_record_scan": "PASS; no overlap with periodic/confirmation",
+    "seed_scan_roots": [
+      "D:\\SLS\\local\\runs",
+      "D:\\SLS\\docs\\results",
+      "D:\\SLS\\local\\archives",
+      "docs\\results"
+    ],
+    "stock_cached_bytecode_identity": "PASS",
+    "model_runtime_import": "NOT_IMPORTED",
+    "rollout": "NOT_RUN",
+    "GPU": "NOT_USED",
+    "native_build": "NOT_RUN",
+    "benchmark": "NOT_RUN",
+    "full_computational_test_suite": "NOT_RUN"
+  },
+  "stock_sources": {
+    "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+    "classes": {
+      "screens.select.GridCardSelectScreen": {
+        "class_sha256": "c866329e5c51af543e0d754702ec0b03e01fbeb439dfc7072feb9e4e21de448f",
+        "bytecode_sha256": "ee25a22ef502fd7f2f28b7a672392853488067f3f824e986b8fc4c4f5bd271c0"
+      },
+      "relics.EmptyCage": {
+        "class_sha256": "325508a3ab20edc4aaf8668fda178a6683512d9934ca62e8ac1267adc69e9b85",
+        "bytecode_sha256": "f5d5a6e103d09dbb2ef3b2884e1d1830f2f76c99ca09ff14d69d449037742d66"
+      }
+    }
+  },
+  "deferred_to_NUS": [
+    "parent tensor finiteness and actual model compatibility",
+    "actual GRID/native/encoding replay",
+    "value-only weights/Adam and fixed actor/GRU equality",
+    "complete collector return independent recomputation",
+    "cross-rollout, last-warmup and first-PPO exact next sample/update and full checkpoint equality",
+    "allocation throughput and per-allocation actual-checkpoint preflight"
+  ],
+  "environment_semantics": "unchanged corrected lambda-study environment; no new migration whitelist",
+  "isolation": "detached main release worktree; original D:/SLS dirty work retained; late-act and serialization edits excluded"
+}

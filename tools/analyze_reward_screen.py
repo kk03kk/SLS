@@ -109,7 +109,7 @@ def outcomes(result: dict, interval: tuple[int, int], *, horizon: int = 1) -> di
 
 
 def analyze_run(
-    run: Path, *, horizon: int = 1, allow_missing_export: bool = False,
+    run: Path, *, horizon: int = 1, allow_missing_export: bool = True,
 ) -> tuple[dict, list[dict], dict]:
     import torch
 
