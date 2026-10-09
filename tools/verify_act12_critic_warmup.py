@@ -15,6 +15,47 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "src"))
 
 
+def legal_action(decision, kind, subject_id):
+    """Use the unique current candidate, including schema and public metadata."""
+    matches = [action for action in decision.actions
+               if action.kind == kind and action.subject_id == subject_id]
+    if len(matches) != 1:
+        raise RuntimeError(f"expected one legal {kind.value} for {subject_id}, got {len(matches)}")
+    return matches[0]
+
+
+def verify_grid(backend, restored, fixture, check_encoded_selection):
+    """Stock-bound GRID checks, callable without loading a model or CUDA."""
+    from sls.contracts import Action, ActionKind
+
+    fixture_action = Action.from_dict(fixture["action"])
+    first = backend.load_checkpoint(fixture["before"])
+    partial = backend.step(legal_action(first, fixture_action.kind, fixture_action.subject_id)).decision
+    if (partial.observation.to_dict()["selected_cards"] != fixture["stock_partial_selection"]
+            or len(partial.observation.reward_options) != fixture["stock_candidate_count"]
+            or partial.observation.deck != first.observation.deck):
+        raise RuntimeError("stock GRID partial projection mismatch")
+    check_encoded_selection(partial)
+    legal_action(partial, fixture_action.kind, fixture_action.subject_id)
+    snapshot = backend.checkpoint()
+    restored_partial = restored.load_checkpoint(snapshot)
+    restored.step(legal_action(restored_partial, fixture_action.kind, fixture_action.subject_id))
+    undo = backend.step(legal_action(partial, fixture_action.kind, fixture_action.subject_id)).decision
+    if undo.observation.to_dict() != first.observation.to_dict() or restored.checkpoint() != backend.checkpoint():
+        raise RuntimeError("GRID cancellation/restoration mismatch")
+    options = first.observation.reward_options
+    duplicates = next((x.instance_id, y.instance_id) for i, x in enumerate(options)
+                      for y in options[i+1:] if x.content_id == y.content_id and x.instance_id != y.instance_id)
+    current = undo
+    for subject in duplicates:
+        current = backend.step(legal_action(current, ActionKind.REMOVE_CARD, subject)).decision
+    committed = current
+    if len(backend.checkpoint()["public_inventory"]["deck"]) != len(fixture["before"]["public_inventory"]["deck"]) - 2:
+        raise RuntimeError("GRID distinct-instance commit mismatch")
+    if any(a.kind.value == "REMOVE_CARD" for a in committed.actions):
+        raise RuntimeError("GRID final pick did not commit")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--plan", type=Path, required=True)
@@ -71,39 +112,18 @@ def main():
         # Existing stock-bound GRID fixture: first select, cancel, distinct
         # instances of the same card, final automatic commit, and restoration.
         from sls.backends.simulator import SimulatorBackend
-        from sls.contracts import Action
         fixture = json.loads((ROOT / "tests/fixtures/regressions/act2-empty-cage-grid-131100069.json").read_text())
-        backend = SimulatorBackend(IRONCLAD_A20_ACT2)
-        first = backend.load_checkpoint(fixture["before"])
-        partial = backend.step(Action.from_dict(fixture["action"])).decision
-        if (partial.observation.to_dict()["selected_cards"] != fixture["stock_partial_selection"]
-                or len(partial.observation.reward_options) != fixture["stock_candidate_count"]
-                or partial.observation.deck != first.observation.deck):
-            raise RuntimeError("stock GRID partial projection mismatch")
         from sls.model import encode_decision
         from sls.model.encoding import NUMERIC_FIELD_IDS
-        encoded = encode_decision(partial)
-        selected_column = encoded.entity_numeric[:, NUMERIC_FIELD_IDS["selected"]]
-        if int((selected_column != 0).sum()) < 1:
-            raise RuntimeError("GRID selected state missing from policy encoding")
-        if Action.from_dict(fixture["action"]).candidate_id not in {a.candidate_id for a in partial.actions}:
-            raise RuntimeError("GRID legal cancellation missing")
-        snapshot = backend.checkpoint()
-        restored = SimulatorBackend(IRONCLAD_A20_ACT2)
-        restored.load_checkpoint(snapshot)
-        restored.step(Action.from_dict(fixture["action"]))
-        undo = backend.step(Action.from_dict(fixture["action"])).decision
-        if undo.observation.to_dict() != first.observation.to_dict() or restored.checkpoint() != backend.checkpoint():
-            raise RuntimeError("GRID cancellation/restoration mismatch")
-        options = first.observation.reward_options
-        duplicates = next((x.instance_id, y.instance_id) for i, x in enumerate(options)
-                          for y in options[i+1:] if x.content_id == y.content_id and x.instance_id != y.instance_id)
-        for subject in duplicates:
-            committed = backend.step(Action.from_dict({"kind": "REMOVE_CARD", "subject_id": subject})).decision
-        if len(backend.checkpoint()["public_inventory"]["deck"]) != len(fixture["before"]["public_inventory"]["deck"]) - 2:
-            raise RuntimeError("GRID distinct-instance commit mismatch")
-        if any(a.kind.value == "REMOVE_CARD" for a in committed.actions):
-            raise RuntimeError("GRID final pick did not commit")
+
+        def check_encoded_selection(partial):
+            encoded = encode_decision(partial)
+            selected_column = encoded.entity_numeric[:, NUMERIC_FIELD_IDS["selected"]]
+            if int((selected_column != 0).sum()) < 1:
+                raise RuntimeError("GRID selected state missing from policy encoding")
+
+        verify_grid(SimulatorBackend(IRONCLAD_A20_ACT2), SimulatorBackend(IRONCLAD_A20_ACT2),
+                    fixture, check_encoded_selection)
         checks["grid"] = "PASS"
         random.seed(config["run"]["seed"])
         torch.manual_seed(config["run"]["seed"])

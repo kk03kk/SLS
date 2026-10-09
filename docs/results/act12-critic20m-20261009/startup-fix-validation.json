@@ -1,0 +1,41 @@
+{
+  "schema": "sls-critic20m-grid-startup-fix-v1",
+  "date": "2026-10-09",
+  "failed_submission": {
+    "commit": "5e26eea0ab9c38a6130d8bddd30749f75c5a9a40",
+    "job": "922895",
+    "node": "xgpg7",
+    "exit_code": "1:0",
+    "source": "human-provided traceback; raw server logs not imported"
+  },
+  "old_operator_sha256": "467f4314a0d87e3e08a3190ec0cd7e4af474fdd1e6769ea1ea638743519cb00b",
+  "new_operator_sha256": "b3dc7259e97c50091bbeef050e640962bd4580edc5c48b0c03634b6d81cece45",
+  "native_source_sha256": "6efbb772958c06d1b9133f374d046d8838eaa256da1a146eaf7e1ee530eefd3d",
+  "training_implementation_sha256": "1459b6ff6737bd72852965f230d2c1a86957eb9afce0daea172b56f43785189e",
+  "training_config_sha256": "1b91a424d2ce9ff40117b182157630248d21e54232851286fc50de948d5c2213",
+  "checks": {
+    "targeted_tests": "104 passed in 1.75s",
+    "configurations": "35/35 lightweight valid",
+    "ruff": "PASS",
+    "submit_dry_run": "PASS; three allocations; no submission locally",
+    "diff_check": "PASS",
+    "from_dict_audit": "One remaining call: versioned stock fixture only",
+    "stock_grid": "Short native CPU replay; no model, GPU, rollout, benchmark or rebuild. Encoding callback mocked locally"
+  },
+  "deferred": [
+    "Actual GPU gate: real encoding, actor freeze, returns, and exact sampling/update/restore equivalence"
+  ],
+  "training_results": "NOT_YET_RUN",
+  "compute_gate": "NOT_YET_RUN",
+  "unchanged": [
+    "PPO",
+    "model",
+    "reward",
+    "20M budget",
+    "native source",
+    "observation/action schemas",
+    "v6 checkpoint schema",
+    "migration proof"
+  ],
+  "restart": "New isolated checkout; preserve failed logs/ledger; operator cancels only pending failed-chain children; repeat all gates"
+}
