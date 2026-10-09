@@ -1,0 +1,11 @@
+# Fixed-input probe mode repair — 2026-10-09
+
+Human-provided job 924256 log at source 26d9ea8 fails with `warmup changed fixed-input actor/GRU output`. Benchmark completed at 116.6379 decisions/s on A100 PCIe40GB, Torch2.6.0+cu124, 64 workers/16 shards. This is diagnostic sampling, not formal production training. Raw pasted log is retained locally; its SHA is recorded in probe-mode-fix-validation.json.
+
+The gate reference was evaluated immediately after constructing Policy, which defaults to train mode. `PPOTrainer.collect` and `optimize_critic_warmup` explicitly call eval, so the final comparison used eval mode. Dropout=0 does not guarantee identical Transformer execution paths in these two modes. This is a confirmed uncontrolled comparison. The model's non-value-head weights had already passed exact equality, no actor/shared Adam state was present, and the value head had changed. Therefore the log is not evidence that warmup trained actor/GRU weights. Mode-dependent numerical paths are the leading explanation, pending corrected same-GPU reproduction.
+
+Both reference and final snapshots now call a shared `fixed_actor_probe` that explicitly sets eval and no_grad, matching the collector. Exact torch.equal for both logits and GRU output remains mandatory; no tolerance, allclose, disabled check, fastpath override or training algorithm change. Failure reports record the two equality results separately.
+
+Pure mocked tests reproduce an unchanged-weight mixed-mode mismatch, force eval/no_grad at both probes regardless of prior mode, allow value-only changes, and reject real actor/memory output changes. Wiring tests require both calls and strict equality. Total targeted validation: 109 passed, 35/35 lightweight configs, Ruff, source bindings and diff checks. No actual model/GPU/rollout/benchmark was run locally. Actual gate remains NOT_YET_RUN.
+
+Reached checks before failure: shared rules, GRID, cross-rollout replay, last warmup replay, frozen weights/Adam, changed value head. Not reached: first PPO replay, final nonzero complete-target count, initial-state reset acceptance, production training. Do not certify the entire GPU gate from partial progress. Restart uses a new isolated directory at the repaired source; preserve both failed checkouts and all evidence.

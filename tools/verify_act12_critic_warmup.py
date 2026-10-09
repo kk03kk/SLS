@@ -56,6 +56,20 @@ def verify_grid(backend, restored, fixture, check_encoded_selection):
         raise RuntimeError("GRID final pick did not commit")
 
 
+
+def fixed_actor_probe(model, batch, no_grad):
+    """Compare the frozen policy under the collector's eval/no-grad mode.
+
+    train/eval may choose different Transformer kernels even at dropout=0.
+    Both snapshots must use the same inference path, not just the same weights.
+    The context factory is injectable for pure mocked regression tests.
+    """
+    model.eval()
+    with no_grad():
+        output = model(*batch.model_inputs())
+        return output.logits.clone(), output.next_memory.clone()
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--plan", type=Path, required=True)
@@ -141,10 +155,7 @@ def main():
             save_checkpoint(initial, trainer)
             baseline = {k: v.detach().cpu().clone() for k, v in model.state_dict().items()}
             batch = PolicyBatch.from_decisions((trainer.decisions[0],), model.config).to("cuda")
-            with torch.no_grad():
-                expected_output = model(*batch.model_inputs())
-                expected_logits = expected_output.logits.clone()
-                expected_memory = expected_output.next_memory.clone()
+            expected_logits, expected_memory = fixed_actor_probe(model, batch, torch.no_grad)
             target_checks = 0
             def validate_targets(rewards, samples):
                 nonlocal target_checks
@@ -192,10 +203,14 @@ def main():
             if not any(not torch.equal(v.cpu(), baseline[k]) for k, v in model.state_dict().items()
                        if k.startswith("value_head.")):
                 raise RuntimeError("value head did not update")
-            with torch.no_grad():
-                output = model(*batch.model_inputs())
-                if not torch.equal(output.logits, expected_logits) or not torch.equal(output.next_memory, expected_memory):
-                    raise RuntimeError("warmup changed fixed-input actor/GRU output")
+            actual_logits, actual_memory = fixed_actor_probe(model, batch, torch.no_grad)
+            actor_equal = torch.equal(actual_logits, expected_logits)
+            gru_equal = torch.equal(actual_memory, expected_memory)
+            checks["fixed_input_probe_mode"] = "eval/no_grad (both snapshots)"
+            checks["fixed_input_actor_equal"] = actor_equal
+            checks["fixed_input_gru_equal"] = gru_equal
+            if not actor_equal or not gru_equal:
+                raise RuntimeError("warmup changed fixed-input actor/GRU output")
             checks["actor_and_gru_frozen"] = "PASS"
             replay("first-ppo")
             if not target_checks:

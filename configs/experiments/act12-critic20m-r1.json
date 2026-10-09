@@ -29,7 +29,7 @@
     "tools/act12_critic20m_contract.py": "590ec134eb437e8cb447672a517154a8a8523a64357d6ab6f0befbaf7ecba597",
     "tools/submit_act12_critic20m.py": "1317c57dd2ef81b9d08021fa79ecded57dfd8be35092f2aa6af1af6fbeefbe85",
     "tools/run_act12_critic20m.py": "83f84fa0ff5a9146c87798278f670699ff095bc866b8d0da6a6eab3f7ae891df",
-    "tools/verify_act12_critic_warmup.py": "b3dc7259e97c50091bbeef050e640962bd4580edc5c48b0c03634b6d81cece45",
+    "tools/verify_act12_critic_warmup.py": "794b0258a3ee70f896538735406d32b999d35150fe2f958c15b2c1392b4d303c",
     "tools/analyze_act12_critic20m.py": "02078648584d036b45ea39707e738d6806f7a85a0f9fc4912f68d402558440f2",
     "tools/import_act12_parent.py": "6ec9de43778bf726dab91b91673b66dcbfa739c9b4642e237d41b73127228e8f",
     "tools/operator_paths.py": "89d5fb7ab01731a57d93e56f1df976b4ecbcf030efd92eba0452bde20e3e2354",

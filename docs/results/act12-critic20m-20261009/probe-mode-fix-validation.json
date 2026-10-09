@@ -1,0 +1,42 @@
+{
+  "schema": "sls-critic20m-probe-mode-fix-v1",
+  "date": "2026-10-09",
+  "failed_commit": "26d9ea8b236b27075fdaff23d2249a4806ed19fc",
+  "failed_jobs": [
+    "924256",
+    "924257",
+    "924258"
+  ],
+  "pasted_log_sha256": "869f2603db15846c5d4526425bf30632f45b8ea46ec7291c2c125551224dca43",
+  "evidence_status": {
+    "confirmed": "Reference probe uses default train mode; collector and warmup leave eval mode. Failure reached after exact frozen parameter and Adam checks and last-warmup replay. Production did not start.",
+    "inference": "Mode-dependent Transformer execution is the leading explanation for output inequality despite equal frozen weights. Same-GPU corrected-mode equality remains to be verified.",
+    "not_reached": [
+      "first-ppo replay",
+      "nonzero target count final gate",
+      "probe reset and final acceptance",
+      "production training"
+    ]
+  },
+  "new_operator_sha256": "794b0258a3ee70f896538735406d32b999d35150fe2f958c15b2c1392b4d303c",
+  "validation": {
+    "targeted_tests": "109 passed in 1.73s",
+    "configurations": "35/35 lightweight valid",
+    "ruff": "PASS",
+    "source_binding": "PASS",
+    "diff_check": "PASS",
+    "local_compute": "Pure mocks and short native CPU fixtures only; no real model, GPU, rollout or benchmark"
+  },
+  "fix": "Both snapshots use the same explicit eval/no_grad helper; exact torch.equal comparisons retained. Failure report records actor and GRU equality independently.",
+  "unchanged": [
+    "training config",
+    "PPO",
+    "model architecture",
+    "reward",
+    "native source",
+    "20M budget",
+    "checkpoint contracts"
+  ],
+  "gpu_gate": "NOT_YET_RUN",
+  "training_results": "NOT_YET_RUN"
+}
