@@ -7,12 +7,12 @@ from tools.analyze_act12_download import binary_pair, entry_summary
 from tools.analyze_reward_screen import analyze_run, digest
 
 
-def test_missing_export_is_explicit_opt_in(tmp_path):
+def test_missing_export_switch_keeps_required_evidence(tmp_path):
     run = tmp_path / "pilot"
     run.mkdir()
     (run / "training-bundle.json").write_text(json.dumps({"files": {"pilot.pt": "a" * 64}}))
     with pytest.raises(FileNotFoundError, match="pilot.pt"):
-        analyze_run(run, horizon=2)
+        analyze_run(run, horizon=2, allow_missing_export=False)
     # The explicit exception must continue to require actual training evidence.
     with pytest.raises(FileNotFoundError, match="training-config.toml"):
         analyze_run(run, horizon=2, allow_missing_export=True)

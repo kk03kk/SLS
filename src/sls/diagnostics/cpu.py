@@ -201,6 +201,11 @@ def load_models(checkpoints: dict[str, Path]) -> dict:
         result[label] = {"model": model, "ppo": config,
                          "identity": {"checkpoint": str(path.resolve()),
                                       "sha256": sha256_file(path),
+                                      "trained_git_commit": payload["contract"].get("git_commit"),
+                                      "encoding_schema": payload["contract"]["encoding_schema"],
+                                      "vocabulary_sha256": payload["contract"]["vocabulary_sha256"],
+                                      "model_config": payload["contract"]["model"],
+                                      "parameter_count": sum(p.numel() for p in model.parameters()),
                                       "steps": payload["trainer"]["environment_steps"],
                                       "trained_profile": getattr(profile, "profile_id", None)
                                       or profile["profile_id"],

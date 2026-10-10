@@ -34,7 +34,8 @@ def test_setup_finds_workshop_mods_and_exported_model(tmp_path: Path, monkeypatc
     }))
     inspector = Path(__file__).resolve().parents[2] / "tools" / "play_live_inspector.py"
     config.write_text(
-        f'command="{sys.executable}" "{inspector.as_posix()}"\nrunAtGameStart=true\n'
+        f'command="{sys.executable}" "{inspector.as_posix()}"\nrunAtGameStart=true\n',
+        encoding="utf-8",
     )
     monkeypatch.setattr(live_setup, "discover_policy_artifacts", lambda _roots: ({
         "name": "example", "path": str(tmp_path / "model" / "example.pt"),
@@ -51,7 +52,7 @@ def test_setup_finds_workshop_mods_and_exported_model(tmp_path: Path, monkeypatc
     assert all(result["mods"].values())
     assert result["oracle_patches_present"] is True
     assert result["verified_model_count"] == 1
-    config.write_text("command=old\nrunAtGameStart=false\n")
+    config.write_text("command=old\nrunAtGameStart=false\n", encoding="utf-8")
     assert live_setup.inspect_live_setup(
         game_dir=game, config=config, model_root=tmp_path / "model",
         mod_lists_path=mod_lists,

@@ -100,6 +100,7 @@ checkpoint_every_steps = 5
         episodes = 0
         termination_counts = {}
         model = None
+        critic_warmup = SimpleNamespace(config=SimpleNamespace(rollout_updates=0))
 
         def __init__(self, *a, **kw):
             pass
