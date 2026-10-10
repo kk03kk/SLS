@@ -1,0 +1,1908 @@
+{
+  "schema": "sls-key-capture-delivery-v1",
+  "code_commit": "c0b05856ee52d318008ccddac4329e171d38d001",
+  "simulator_comparison": "NOT_YET_PERFORMED",
+  "unique_declared_cases": 24,
+  "summaries": {
+    "ruby-recall-summary-r2.json": {
+      "schema": "sls-stock-key-room-summary-v1",
+      "simulator_comparison": "NOT_YET_PERFORMED",
+      "capture_sha256": "345cf26faaab6f683d6481a95ee8d22afdc38a4de9653185c686aedae2be4b61",
+      "launch_sha256": "f41aac695a3f8e89d30d14e1e105d025ee53ee36e68be71483f6d56d5aaaddab",
+      "build_sha256": "d1c4a744afb9eb2dcfd7e9fdeaaba710be5edf0e5ce8ea4e51b6cb9394453e34",
+      "manifest_sha256": "3bb4270f0445584607d1b6317324f52463799b1306bdfb567fafd0dd7881ba28",
+      "case_count": 3,
+      "runs": [
+        {
+          "scene": "ruby-recall",
+          "seed": 131200300,
+          "initial_keys": {
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "burning_elite_x": 1,
+            "burning_elite_y": 7,
+            "current_map_x": 1,
+            "current_map_y": 5
+          },
+          "final_keys": {
+            "ruby_key": true,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "burning_elite_x": 1,
+            "burning_elite_y": 7,
+            "current_map_x": 1,
+            "current_map_y": 5
+          },
+          "hp_before": 40,
+          "hp_after": 40,
+          "initial_relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            }
+          ],
+          "final_relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            }
+          ],
+          "deck_equal": true,
+          "rng_equal": true,
+          "initial_choices": [
+            "rest",
+            "smith",
+            "recall"
+          ],
+          "initial_reward_state": {
+            "schema": "sls-stock-reward-state-v1",
+            "room_class": "com.megacrit.cardcrawl.rooms.RestRoom",
+            "room_phase": "INCOMPLETE",
+            "smoked": false,
+            "potion_modifier": 0,
+            "card_rarity_factor": 5,
+            "room_rewards": [],
+            "screen_rewards": []
+          },
+          "final_reward_state": {
+            "schema": "sls-stock-reward-state-v1",
+            "room_class": "com.megacrit.cardcrawl.rooms.RestRoom",
+            "room_phase": "COMPLETE",
+            "smoked": false,
+            "potion_modifier": 0,
+            "card_rarity_factor": 5,
+            "room_rewards": [],
+            "screen_rewards": []
+          }
+        },
+        {
+          "scene": "ruby-recall",
+          "seed": 131200301,
+          "initial_keys": {
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "burning_elite_x": 6,
+            "burning_elite_y": 10,
+            "current_map_x": 1,
+            "current_map_y": 5
+          },
+          "final_keys": {
+            "ruby_key": true,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "burning_elite_x": 6,
+            "burning_elite_y": 10,
+            "current_map_x": 1,
+            "current_map_y": 5
+          },
+          "hp_before": 40,
+          "hp_after": 40,
+          "initial_relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            }
+          ],
+          "final_relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            }
+          ],
+          "deck_equal": true,
+          "rng_equal": true,
+          "initial_choices": [
+            "rest",
+            "smith",
+            "recall"
+          ],
+          "initial_reward_state": {
+            "schema": "sls-stock-reward-state-v1",
+            "room_class": "com.megacrit.cardcrawl.rooms.RestRoom",
+            "room_phase": "INCOMPLETE",
+            "smoked": false,
+            "potion_modifier": 0,
+            "card_rarity_factor": 5,
+            "room_rewards": [],
+            "screen_rewards": []
+          },
+          "final_reward_state": {
+            "schema": "sls-stock-reward-state-v1",
+            "room_class": "com.megacrit.cardcrawl.rooms.RestRoom",
+            "room_phase": "COMPLETE",
+            "smoked": false,
+            "potion_modifier": 0,
+            "card_rarity_factor": 5,
+            "room_rewards": [],
+            "screen_rewards": []
+          }
+        },
+        {
+          "scene": "ruby-recall",
+          "seed": 131200302,
+          "initial_keys": {
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "burning_elite_x": 4,
+            "burning_elite_y": 5,
+            "current_map_x": 3,
+            "current_map_y": 5
+          },
+          "final_keys": {
+            "ruby_key": true,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "burning_elite_x": 4,
+            "burning_elite_y": 5,
+            "current_map_x": 3,
+            "current_map_y": 5
+          },
+          "hp_before": 40,
+          "hp_after": 40,
+          "initial_relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            }
+          ],
+          "final_relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            }
+          ],
+          "deck_equal": true,
+          "rng_equal": true,
+          "initial_choices": [
+            "rest",
+            "smith",
+            "recall"
+          ],
+          "initial_reward_state": {
+            "schema": "sls-stock-reward-state-v1",
+            "room_class": "com.megacrit.cardcrawl.rooms.RestRoom",
+            "room_phase": "INCOMPLETE",
+            "smoked": false,
+            "potion_modifier": 0,
+            "card_rarity_factor": 5,
+            "room_rewards": [],
+            "screen_rewards": []
+          },
+          "final_reward_state": {
+            "schema": "sls-stock-reward-state-v1",
+            "room_class": "com.megacrit.cardcrawl.rooms.RestRoom",
+            "room_phase": "COMPLETE",
+            "smoked": false,
+            "potion_modifier": 0,
+            "card_rarity_factor": 5,
+            "room_rewards": [],
+            "screen_rewards": []
+          }
+        }
+      ]
+    },
+    "rest-qualified-summary-r1.json": {
+      "schema": "sls-stock-key-room-summary-v1",
+      "simulator_comparison": "NOT_YET_PERFORMED",
+      "capture_sha256": "93cd5821e0ced0c6a5ff48be14add36b25d0dc5c1e5ab41fd541d543af9284f9",
+      "launch_sha256": "797b142327e8935e77da4deeee359843be26788d55221e685f3808c5381d247f",
+      "build_sha256": "d1c4a744afb9eb2dcfd7e9fdeaaba710be5edf0e5ce8ea4e51b6cb9394453e34",
+      "manifest_sha256": "3bb4270f0445584607d1b6317324f52463799b1306bdfb567fafd0dd7881ba28",
+      "case_count": 12,
+      "runs": [
+        {
+          "scene": "ruby-rest-alternative",
+          "seed": 131200303,
+          "initial_keys": {
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "burning_elite_x": 5,
+            "burning_elite_y": 6,
+            "current_map_x": 1,
+            "current_map_y": 5
+          },
+          "final_keys": {
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "burning_elite_x": 5,
+            "burning_elite_y": 6,
+            "current_map_x": 1,
+            "current_map_y": 5
+          },
+          "hp_before": 40,
+          "hp_after": 64,
+          "initial_relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            }
+          ],
+          "final_relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            }
+          ],
+          "deck_equal": true,
+          "rng_equal": true,
+          "initial_choices": [
+            "rest",
+            "smith",
+            "recall"
+          ],
+          "initial_reward_state": {
+            "schema": "sls-stock-reward-state-v1",
+            "room_class": "com.megacrit.cardcrawl.rooms.RestRoom",
+            "room_phase": "INCOMPLETE",
+            "smoked": false,
+            "potion_modifier": 0,
+            "card_rarity_factor": 5,
+            "room_rewards": [],
+            "screen_rewards": []
+          },
+          "final_reward_state": {
+            "schema": "sls-stock-reward-state-v1",
+            "room_class": "com.megacrit.cardcrawl.rooms.RestRoom",
+            "room_phase": "COMPLETE",
+            "smoked": false,
+            "potion_modifier": 0,
+            "card_rarity_factor": 5,
+            "room_rewards": [],
+            "screen_rewards": []
+          }
+        },
+        {
+          "scene": "ruby-rest-alternative",
+          "seed": 131200304,
+          "initial_keys": {
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "burning_elite_x": 2,
+            "burning_elite_y": 6,
+            "current_map_x": 1,
+            "current_map_y": 5
+          },
+          "final_keys": {
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "burning_elite_x": 2,
+            "burning_elite_y": 6,
+            "current_map_x": 1,
+            "current_map_y": 5
+          },
+          "hp_before": 40,
+          "hp_after": 64,
+          "initial_relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            }
+          ],
+          "final_relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            }
+          ],
+          "deck_equal": true,
+          "rng_equal": true,
+          "initial_choices": [
+            "rest",
+            "smith",
+            "recall"
+          ],
+          "initial_reward_state": {
+            "schema": "sls-stock-reward-state-v1",
+            "room_class": "com.megacrit.cardcrawl.rooms.RestRoom",
+            "room_phase": "INCOMPLETE",
+            "smoked": false,
+            "potion_modifier": 0,
+            "card_rarity_factor": 5,
+            "room_rewards": [],
+            "screen_rewards": []
+          },
+          "final_reward_state": {
+            "schema": "sls-stock-reward-state-v1",
+            "room_class": "com.megacrit.cardcrawl.rooms.RestRoom",
+            "room_phase": "COMPLETE",
+            "smoked": false,
+            "potion_modifier": 0,
+            "card_rarity_factor": 5,
+            "room_rewards": [],
+            "screen_rewards": []
+          }
+        },
+        {
+          "scene": "ruby-rest-alternative",
+          "seed": 131200305,
+          "initial_keys": {
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "burning_elite_x": 1,
+            "burning_elite_y": 9,
+            "current_map_x": 4,
+            "current_map_y": 5
+          },
+          "final_keys": {
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "burning_elite_x": 1,
+            "burning_elite_y": 9,
+            "current_map_x": 4,
+            "current_map_y": 5
+          },
+          "hp_before": 40,
+          "hp_after": 64,
+          "initial_relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            }
+          ],
+          "final_relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            }
+          ],
+          "deck_equal": true,
+          "rng_equal": true,
+          "initial_choices": [
+            "rest",
+            "smith",
+            "recall"
+          ],
+          "initial_reward_state": {
+            "schema": "sls-stock-reward-state-v1",
+            "room_class": "com.megacrit.cardcrawl.rooms.RestRoom",
+            "room_phase": "INCOMPLETE",
+            "smoked": false,
+            "potion_modifier": 0,
+            "card_rarity_factor": 5,
+            "room_rewards": [],
+            "screen_rewards": []
+          },
+          "final_reward_state": {
+            "schema": "sls-stock-reward-state-v1",
+            "room_class": "com.megacrit.cardcrawl.rooms.RestRoom",
+            "room_phase": "COMPLETE",
+            "smoked": false,
+            "potion_modifier": 0,
+            "card_rarity_factor": 5,
+            "room_rewards": [],
+            "screen_rewards": []
+          }
+        },
+        {
+          "scene": "ruby-rest-regal-pillow",
+          "seed": 131200306,
+          "initial_keys": {
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "burning_elite_x": 4,
+            "burning_elite_y": 5,
+            "current_map_x": 3,
+            "current_map_y": 5
+          },
+          "final_keys": {
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "burning_elite_x": 4,
+            "burning_elite_y": 5,
+            "current_map_x": 3,
+            "current_map_y": 5
+          },
+          "hp_before": 40,
+          "hp_after": 79,
+          "initial_relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            },
+            {
+              "id": "Regal Pillow",
+              "counter": -1
+            }
+          ],
+          "final_relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            },
+            {
+              "id": "Regal Pillow",
+              "counter": -1
+            }
+          ],
+          "deck_equal": true,
+          "rng_equal": true,
+          "initial_choices": [
+            "rest",
+            "smith",
+            "recall"
+          ],
+          "initial_reward_state": {
+            "schema": "sls-stock-reward-state-v1",
+            "room_class": "com.megacrit.cardcrawl.rooms.RestRoom",
+            "room_phase": "INCOMPLETE",
+            "smoked": false,
+            "potion_modifier": 0,
+            "card_rarity_factor": 5,
+            "room_rewards": [],
+            "screen_rewards": []
+          },
+          "final_reward_state": {
+            "schema": "sls-stock-reward-state-v1",
+            "room_class": "com.megacrit.cardcrawl.rooms.RestRoom",
+            "room_phase": "COMPLETE",
+            "smoked": false,
+            "potion_modifier": 0,
+            "card_rarity_factor": 5,
+            "room_rewards": [],
+            "screen_rewards": []
+          }
+        },
+        {
+          "scene": "ruby-rest-regal-pillow",
+          "seed": 131200307,
+          "initial_keys": {
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "burning_elite_x": 4,
+            "burning_elite_y": 9,
+            "current_map_x": 3,
+            "current_map_y": 5
+          },
+          "final_keys": {
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "burning_elite_x": 4,
+            "burning_elite_y": 9,
+            "current_map_x": 3,
+            "current_map_y": 5
+          },
+          "hp_before": 40,
+          "hp_after": 79,
+          "initial_relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            },
+            {
+              "id": "Regal Pillow",
+              "counter": -1
+            }
+          ],
+          "final_relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            },
+            {
+              "id": "Regal Pillow",
+              "counter": -1
+            }
+          ],
+          "deck_equal": true,
+          "rng_equal": true,
+          "initial_choices": [
+            "rest",
+            "smith",
+            "recall"
+          ],
+          "initial_reward_state": {
+            "schema": "sls-stock-reward-state-v1",
+            "room_class": "com.megacrit.cardcrawl.rooms.RestRoom",
+            "room_phase": "INCOMPLETE",
+            "smoked": false,
+            "potion_modifier": 0,
+            "card_rarity_factor": 5,
+            "room_rewards": [],
+            "screen_rewards": []
+          },
+          "final_reward_state": {
+            "schema": "sls-stock-reward-state-v1",
+            "room_class": "com.megacrit.cardcrawl.rooms.RestRoom",
+            "room_phase": "COMPLETE",
+            "smoked": false,
+            "potion_modifier": 0,
+            "card_rarity_factor": 5,
+            "room_rewards": [],
+            "screen_rewards": []
+          }
+        },
+        {
+          "scene": "ruby-rest-regal-pillow",
+          "seed": 131200308,
+          "initial_keys": {
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "burning_elite_x": 5,
+            "burning_elite_y": 11,
+            "current_map_x": 1,
+            "current_map_y": 5
+          },
+          "final_keys": {
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "burning_elite_x": 5,
+            "burning_elite_y": 11,
+            "current_map_x": 1,
+            "current_map_y": 5
+          },
+          "hp_before": 40,
+          "hp_after": 79,
+          "initial_relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            },
+            {
+              "id": "Regal Pillow",
+              "counter": -1
+            }
+          ],
+          "final_relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            },
+            {
+              "id": "Regal Pillow",
+              "counter": -1
+            }
+          ],
+          "deck_equal": true,
+          "rng_equal": true,
+          "initial_choices": [
+            "rest",
+            "smith",
+            "recall"
+          ],
+          "initial_reward_state": {
+            "schema": "sls-stock-reward-state-v1",
+            "room_class": "com.megacrit.cardcrawl.rooms.RestRoom",
+            "room_phase": "INCOMPLETE",
+            "smoked": false,
+            "potion_modifier": 0,
+            "card_rarity_factor": 5,
+            "room_rewards": [],
+            "screen_rewards": []
+          },
+          "final_reward_state": {
+            "schema": "sls-stock-reward-state-v1",
+            "room_class": "com.megacrit.cardcrawl.rooms.RestRoom",
+            "room_phase": "COMPLETE",
+            "smoked": false,
+            "potion_modifier": 0,
+            "card_rarity_factor": 5,
+            "room_rewards": [],
+            "screen_rewards": []
+          }
+        },
+        {
+          "scene": "ruby-already-held",
+          "seed": 131200309,
+          "initial_keys": {
+            "ruby_key": true,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "burning_elite_x": 2,
+            "burning_elite_y": 11,
+            "current_map_x": 2,
+            "current_map_y": 5
+          },
+          "final_keys": {
+            "ruby_key": true,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "burning_elite_x": 2,
+            "burning_elite_y": 11,
+            "current_map_x": 2,
+            "current_map_y": 5
+          },
+          "hp_before": 40,
+          "hp_after": 64,
+          "initial_relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            }
+          ],
+          "final_relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            }
+          ],
+          "deck_equal": true,
+          "rng_equal": true,
+          "initial_choices": [
+            "rest",
+            "smith"
+          ],
+          "initial_reward_state": {
+            "schema": "sls-stock-reward-state-v1",
+            "room_class": "com.megacrit.cardcrawl.rooms.RestRoom",
+            "room_phase": "INCOMPLETE",
+            "smoked": false,
+            "potion_modifier": 0,
+            "card_rarity_factor": 5,
+            "room_rewards": [],
+            "screen_rewards": []
+          },
+          "final_reward_state": {
+            "schema": "sls-stock-reward-state-v1",
+            "room_class": "com.megacrit.cardcrawl.rooms.RestRoom",
+            "room_phase": "COMPLETE",
+            "smoked": false,
+            "potion_modifier": 0,
+            "card_rarity_factor": 5,
+            "room_rewards": [],
+            "screen_rewards": []
+          }
+        },
+        {
+          "scene": "ruby-already-held",
+          "seed": 131200310,
+          "initial_keys": {
+            "ruby_key": true,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "burning_elite_x": 0,
+            "burning_elite_y": 5,
+            "current_map_x": 6,
+            "current_map_y": 5
+          },
+          "final_keys": {
+            "ruby_key": true,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "burning_elite_x": 0,
+            "burning_elite_y": 5,
+            "current_map_x": 6,
+            "current_map_y": 5
+          },
+          "hp_before": 40,
+          "hp_after": 64,
+          "initial_relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            }
+          ],
+          "final_relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            }
+          ],
+          "deck_equal": true,
+          "rng_equal": true,
+          "initial_choices": [
+            "rest",
+            "smith"
+          ],
+          "initial_reward_state": {
+            "schema": "sls-stock-reward-state-v1",
+            "room_class": "com.megacrit.cardcrawl.rooms.RestRoom",
+            "room_phase": "INCOMPLETE",
+            "smoked": false,
+            "potion_modifier": 0,
+            "card_rarity_factor": 5,
+            "room_rewards": [],
+            "screen_rewards": []
+          },
+          "final_reward_state": {
+            "schema": "sls-stock-reward-state-v1",
+            "room_class": "com.megacrit.cardcrawl.rooms.RestRoom",
+            "room_phase": "COMPLETE",
+            "smoked": false,
+            "potion_modifier": 0,
+            "card_rarity_factor": 5,
+            "room_rewards": [],
+            "screen_rewards": []
+          }
+        },
+        {
+          "scene": "ruby-already-held",
+          "seed": 131200311,
+          "initial_keys": {
+            "ruby_key": true,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "burning_elite_x": 2,
+            "burning_elite_y": 9,
+            "current_map_x": 1,
+            "current_map_y": 5
+          },
+          "final_keys": {
+            "ruby_key": true,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "burning_elite_x": 2,
+            "burning_elite_y": 9,
+            "current_map_x": 1,
+            "current_map_y": 5
+          },
+          "hp_before": 40,
+          "hp_after": 64,
+          "initial_relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            }
+          ],
+          "final_relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            }
+          ],
+          "deck_equal": true,
+          "rng_equal": true,
+          "initial_choices": [
+            "rest",
+            "smith"
+          ],
+          "initial_reward_state": {
+            "schema": "sls-stock-reward-state-v1",
+            "room_class": "com.megacrit.cardcrawl.rooms.RestRoom",
+            "room_phase": "INCOMPLETE",
+            "smoked": false,
+            "potion_modifier": 0,
+            "card_rarity_factor": 5,
+            "room_rewards": [],
+            "screen_rewards": []
+          },
+          "final_reward_state": {
+            "schema": "sls-stock-reward-state-v1",
+            "room_class": "com.megacrit.cardcrawl.rooms.RestRoom",
+            "room_phase": "COMPLETE",
+            "smoked": false,
+            "potion_modifier": 0,
+            "card_rarity_factor": 5,
+            "room_rewards": [],
+            "screen_rewards": []
+          }
+        },
+        {
+          "scene": "ruby-final-act-disabled",
+          "seed": 131200312,
+          "initial_keys": {
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "current_map_x": 2,
+            "current_map_y": 6
+          },
+          "final_keys": {
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "current_map_x": 2,
+            "current_map_y": 6
+          },
+          "hp_before": 40,
+          "hp_after": 64,
+          "initial_relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            }
+          ],
+          "final_relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            }
+          ],
+          "deck_equal": true,
+          "rng_equal": true,
+          "initial_choices": [
+            "rest",
+            "smith"
+          ],
+          "initial_reward_state": {
+            "schema": "sls-stock-reward-state-v1",
+            "room_class": "com.megacrit.cardcrawl.rooms.RestRoom",
+            "room_phase": "INCOMPLETE",
+            "smoked": false,
+            "potion_modifier": 0,
+            "card_rarity_factor": 5,
+            "room_rewards": [],
+            "screen_rewards": []
+          },
+          "final_reward_state": {
+            "schema": "sls-stock-reward-state-v1",
+            "room_class": "com.megacrit.cardcrawl.rooms.RestRoom",
+            "room_phase": "COMPLETE",
+            "smoked": false,
+            "potion_modifier": 0,
+            "card_rarity_factor": 5,
+            "room_rewards": [],
+            "screen_rewards": []
+          }
+        },
+        {
+          "scene": "ruby-final-act-disabled",
+          "seed": 131200313,
+          "initial_keys": {
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "current_map_x": 3,
+            "current_map_y": 5
+          },
+          "final_keys": {
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "current_map_x": 3,
+            "current_map_y": 5
+          },
+          "hp_before": 40,
+          "hp_after": 64,
+          "initial_relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            }
+          ],
+          "final_relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            }
+          ],
+          "deck_equal": true,
+          "rng_equal": true,
+          "initial_choices": [
+            "rest",
+            "smith"
+          ],
+          "initial_reward_state": {
+            "schema": "sls-stock-reward-state-v1",
+            "room_class": "com.megacrit.cardcrawl.rooms.RestRoom",
+            "room_phase": "INCOMPLETE",
+            "smoked": false,
+            "potion_modifier": 0,
+            "card_rarity_factor": 5,
+            "room_rewards": [],
+            "screen_rewards": []
+          },
+          "final_reward_state": {
+            "schema": "sls-stock-reward-state-v1",
+            "room_class": "com.megacrit.cardcrawl.rooms.RestRoom",
+            "room_phase": "COMPLETE",
+            "smoked": false,
+            "potion_modifier": 0,
+            "card_rarity_factor": 5,
+            "room_rewards": [],
+            "screen_rewards": []
+          }
+        },
+        {
+          "scene": "ruby-final-act-disabled",
+          "seed": 131200314,
+          "initial_keys": {
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "current_map_x": 1,
+            "current_map_y": 6
+          },
+          "final_keys": {
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "current_map_x": 1,
+            "current_map_y": 6
+          },
+          "hp_before": 40,
+          "hp_after": 64,
+          "initial_relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            }
+          ],
+          "final_relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            }
+          ],
+          "deck_equal": true,
+          "rng_equal": true,
+          "initial_choices": [
+            "rest",
+            "smith"
+          ],
+          "initial_reward_state": {
+            "schema": "sls-stock-reward-state-v1",
+            "room_class": "com.megacrit.cardcrawl.rooms.RestRoom",
+            "room_phase": "INCOMPLETE",
+            "smoked": false,
+            "potion_modifier": 0,
+            "card_rarity_factor": 5,
+            "room_rewards": [],
+            "screen_rewards": []
+          },
+          "final_reward_state": {
+            "schema": "sls-stock-reward-state-v1",
+            "room_class": "com.megacrit.cardcrawl.rooms.RestRoom",
+            "room_phase": "COMPLETE",
+            "smoked": false,
+            "potion_modifier": 0,
+            "card_rarity_factor": 5,
+            "room_rewards": [],
+            "screen_rewards": []
+          }
+        }
+      ]
+    },
+    "blue-settled-summary-r1.json": {
+      "schema": "sls-stock-key-room-summary-v1",
+      "simulator_comparison": "NOT_YET_PERFORMED",
+      "capture_sha256": "3c1afadaa434582d7d9420834a0d7bf3fbc3c737f1b8facd42e6f4a5e90c9985",
+      "launch_sha256": "1231ba5623ba60be278eb39b79131a15e7395ea1732c5058f849378958fe85fa",
+      "build_sha256": "d1c4a744afb9eb2dcfd7e9fdeaaba710be5edf0e5ce8ea4e51b6cb9394453e34",
+      "manifest_sha256": "3bb4270f0445584607d1b6317324f52463799b1306bdfb567fafd0dd7881ba28",
+      "case_count": 9,
+      "runs": [
+        {
+          "scene": "sapphire-take-key",
+          "seed": 131200315,
+          "initial_keys": {
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "burning_elite_x": 0,
+            "burning_elite_y": 11,
+            "current_map_x": 0,
+            "current_map_y": 8
+          },
+          "final_keys": {
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": true,
+            "burning_elite_x": 0,
+            "burning_elite_y": 11,
+            "current_map_x": 0,
+            "current_map_y": 8
+          },
+          "hp_before": 40,
+          "hp_after": 40,
+          "initial_relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            }
+          ],
+          "final_relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            }
+          ],
+          "deck_equal": true,
+          "rng_equal": true,
+          "initial_choices": [
+            "open"
+          ],
+          "initial_reward_state": {
+            "schema": "sls-stock-reward-state-v1",
+            "room_class": "com.megacrit.cardcrawl.rooms.TreasureRoom",
+            "room_phase": "COMPLETE",
+            "smoked": false,
+            "potion_modifier": 0,
+            "card_rarity_factor": 5,
+            "room_rewards": [],
+            "screen_rewards": []
+          },
+          "final_reward_state": {
+            "schema": "sls-stock-reward-state-v1",
+            "room_class": "com.megacrit.cardcrawl.rooms.TreasureRoom",
+            "room_phase": "COMPLETE",
+            "smoked": false,
+            "potion_modifier": 0,
+            "card_rarity_factor": 5,
+            "room_rewards": [
+              {
+                "type": "RELIC",
+                "gold": 0,
+                "bonus_gold": 0,
+                "done": true,
+                "ignored": true,
+                "relic": "Letter Opener",
+                "cards": []
+              },
+              {
+                "type": "SAPPHIRE_KEY",
+                "gold": 0,
+                "bonus_gold": 0,
+                "done": true,
+                "ignored": true,
+                "cards": []
+              }
+            ],
+            "screen_rewards": []
+          }
+        },
+        {
+          "scene": "sapphire-take-key",
+          "seed": 131200316,
+          "initial_keys": {
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "burning_elite_x": 2,
+            "burning_elite_y": 12,
+            "current_map_x": 0,
+            "current_map_y": 8
+          },
+          "final_keys": {
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": true,
+            "burning_elite_x": 2,
+            "burning_elite_y": 12,
+            "current_map_x": 0,
+            "current_map_y": 8
+          },
+          "hp_before": 40,
+          "hp_after": 40,
+          "initial_relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            }
+          ],
+          "final_relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            }
+          ],
+          "deck_equal": true,
+          "rng_equal": true,
+          "initial_choices": [
+            "open"
+          ],
+          "initial_reward_state": {
+            "schema": "sls-stock-reward-state-v1",
+            "room_class": "com.megacrit.cardcrawl.rooms.TreasureRoom",
+            "room_phase": "COMPLETE",
+            "smoked": false,
+            "potion_modifier": 0,
+            "card_rarity_factor": 5,
+            "room_rewards": [],
+            "screen_rewards": []
+          },
+          "final_reward_state": {
+            "schema": "sls-stock-reward-state-v1",
+            "room_class": "com.megacrit.cardcrawl.rooms.TreasureRoom",
+            "room_phase": "COMPLETE",
+            "smoked": false,
+            "potion_modifier": 0,
+            "card_rarity_factor": 5,
+            "room_rewards": [
+              {
+                "type": "RELIC",
+                "gold": 0,
+                "bonus_gold": 0,
+                "done": true,
+                "ignored": true,
+                "relic": "Pen Nib",
+                "cards": []
+              },
+              {
+                "type": "SAPPHIRE_KEY",
+                "gold": 0,
+                "bonus_gold": 0,
+                "done": true,
+                "ignored": true,
+                "cards": []
+              }
+            ],
+            "screen_rewards": []
+          }
+        },
+        {
+          "scene": "sapphire-take-key",
+          "seed": 131200317,
+          "initial_keys": {
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "burning_elite_x": 2,
+            "burning_elite_y": 5,
+            "current_map_x": 0,
+            "current_map_y": 8
+          },
+          "final_keys": {
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": true,
+            "burning_elite_x": 2,
+            "burning_elite_y": 5,
+            "current_map_x": 0,
+            "current_map_y": 8
+          },
+          "hp_before": 40,
+          "hp_after": 40,
+          "initial_relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            }
+          ],
+          "final_relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            }
+          ],
+          "deck_equal": true,
+          "rng_equal": false,
+          "initial_choices": [
+            "open"
+          ],
+          "initial_reward_state": {
+            "schema": "sls-stock-reward-state-v1",
+            "room_class": "com.megacrit.cardcrawl.rooms.TreasureRoom",
+            "room_phase": "COMPLETE",
+            "smoked": false,
+            "potion_modifier": 0,
+            "card_rarity_factor": 5,
+            "room_rewards": [],
+            "screen_rewards": []
+          },
+          "final_reward_state": {
+            "schema": "sls-stock-reward-state-v1",
+            "room_class": "com.megacrit.cardcrawl.rooms.TreasureRoom",
+            "room_phase": "COMPLETE",
+            "smoked": false,
+            "potion_modifier": 0,
+            "card_rarity_factor": 5,
+            "room_rewards": [
+              {
+                "type": "GOLD",
+                "gold": 50,
+                "bonus_gold": 0,
+                "done": false,
+                "ignored": false,
+                "cards": []
+              },
+              {
+                "type": "RELIC",
+                "gold": 0,
+                "bonus_gold": 0,
+                "done": true,
+                "ignored": true,
+                "relic": "CeramicFish",
+                "cards": []
+              },
+              {
+                "type": "SAPPHIRE_KEY",
+                "gold": 0,
+                "bonus_gold": 0,
+                "done": true,
+                "ignored": true,
+                "cards": []
+              }
+            ],
+            "screen_rewards": [
+              {
+                "type": "GOLD",
+                "gold": 50,
+                "bonus_gold": 0,
+                "done": false,
+                "ignored": false,
+                "cards": []
+              }
+            ]
+          }
+        },
+        {
+          "scene": "sapphire-take-relic",
+          "seed": 131200318,
+          "initial_keys": {
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "burning_elite_x": 0,
+            "burning_elite_y": 12,
+            "current_map_x": 0,
+            "current_map_y": 8
+          },
+          "final_keys": {
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "burning_elite_x": 0,
+            "burning_elite_y": 12,
+            "current_map_x": 0,
+            "current_map_y": 8
+          },
+          "hp_before": 40,
+          "hp_after": 40,
+          "initial_relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            }
+          ],
+          "final_relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            },
+            {
+              "id": "MawBank",
+              "counter": -1
+            }
+          ],
+          "deck_equal": true,
+          "rng_equal": false,
+          "initial_choices": [
+            "open"
+          ],
+          "initial_reward_state": {
+            "schema": "sls-stock-reward-state-v1",
+            "room_class": "com.megacrit.cardcrawl.rooms.TreasureRoom",
+            "room_phase": "COMPLETE",
+            "smoked": false,
+            "potion_modifier": 0,
+            "card_rarity_factor": 5,
+            "room_rewards": [],
+            "screen_rewards": []
+          },
+          "final_reward_state": {
+            "schema": "sls-stock-reward-state-v1",
+            "room_class": "com.megacrit.cardcrawl.rooms.TreasureRoom",
+            "room_phase": "COMPLETE",
+            "smoked": false,
+            "potion_modifier": 0,
+            "card_rarity_factor": 5,
+            "room_rewards": [
+              {
+                "type": "GOLD",
+                "gold": 45,
+                "bonus_gold": 0,
+                "done": false,
+                "ignored": false,
+                "cards": []
+              },
+              {
+                "type": "RELIC",
+                "gold": 0,
+                "bonus_gold": 0,
+                "done": true,
+                "ignored": true,
+                "relic": "MawBank",
+                "cards": []
+              },
+              {
+                "type": "SAPPHIRE_KEY",
+                "gold": 0,
+                "bonus_gold": 0,
+                "done": true,
+                "ignored": true,
+                "cards": []
+              }
+            ],
+            "screen_rewards": [
+              {
+                "type": "GOLD",
+                "gold": 45,
+                "bonus_gold": 0,
+                "done": false,
+                "ignored": false,
+                "cards": []
+              }
+            ]
+          }
+        },
+        {
+          "scene": "sapphire-take-relic",
+          "seed": 131200319,
+          "initial_keys": {
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "burning_elite_x": 5,
+            "burning_elite_y": 5,
+            "current_map_x": 0,
+            "current_map_y": 8
+          },
+          "final_keys": {
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "burning_elite_x": 5,
+            "burning_elite_y": 5,
+            "current_map_x": 0,
+            "current_map_y": 8
+          },
+          "hp_before": 40,
+          "hp_after": 40,
+          "initial_relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            }
+          ],
+          "final_relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            },
+            {
+              "id": "Smiling Mask",
+              "counter": -1
+            }
+          ],
+          "deck_equal": true,
+          "rng_equal": false,
+          "initial_choices": [
+            "open"
+          ],
+          "initial_reward_state": {
+            "schema": "sls-stock-reward-state-v1",
+            "room_class": "com.megacrit.cardcrawl.rooms.TreasureRoom",
+            "room_phase": "COMPLETE",
+            "smoked": false,
+            "potion_modifier": 0,
+            "card_rarity_factor": 5,
+            "room_rewards": [],
+            "screen_rewards": []
+          },
+          "final_reward_state": {
+            "schema": "sls-stock-reward-state-v1",
+            "room_class": "com.megacrit.cardcrawl.rooms.TreasureRoom",
+            "room_phase": "COMPLETE",
+            "smoked": false,
+            "potion_modifier": 0,
+            "card_rarity_factor": 5,
+            "room_rewards": [
+              {
+                "type": "GOLD",
+                "gold": 25,
+                "bonus_gold": 0,
+                "done": false,
+                "ignored": false,
+                "cards": []
+              },
+              {
+                "type": "RELIC",
+                "gold": 0,
+                "bonus_gold": 0,
+                "done": true,
+                "ignored": true,
+                "relic": "Smiling Mask",
+                "cards": []
+              },
+              {
+                "type": "SAPPHIRE_KEY",
+                "gold": 0,
+                "bonus_gold": 0,
+                "done": true,
+                "ignored": true,
+                "cards": []
+              }
+            ],
+            "screen_rewards": [
+              {
+                "type": "GOLD",
+                "gold": 25,
+                "bonus_gold": 0,
+                "done": false,
+                "ignored": false,
+                "cards": []
+              }
+            ]
+          }
+        },
+        {
+          "scene": "sapphire-take-relic",
+          "seed": 131200320,
+          "initial_keys": {
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "burning_elite_x": 0,
+            "burning_elite_y": 5,
+            "current_map_x": 0,
+            "current_map_y": 8
+          },
+          "final_keys": {
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "burning_elite_x": 0,
+            "burning_elite_y": 5,
+            "current_map_x": 0,
+            "current_map_y": 8
+          },
+          "hp_before": 40,
+          "hp_after": 40,
+          "initial_relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            }
+          ],
+          "final_relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            },
+            {
+              "id": "Gremlin Horn",
+              "counter": -1
+            }
+          ],
+          "deck_equal": true,
+          "rng_equal": false,
+          "initial_choices": [
+            "open"
+          ],
+          "initial_reward_state": {
+            "schema": "sls-stock-reward-state-v1",
+            "room_class": "com.megacrit.cardcrawl.rooms.TreasureRoom",
+            "room_phase": "COMPLETE",
+            "smoked": false,
+            "potion_modifier": 0,
+            "card_rarity_factor": 5,
+            "room_rewards": [],
+            "screen_rewards": []
+          },
+          "final_reward_state": {
+            "schema": "sls-stock-reward-state-v1",
+            "room_class": "com.megacrit.cardcrawl.rooms.TreasureRoom",
+            "room_phase": "COMPLETE",
+            "smoked": false,
+            "potion_modifier": 0,
+            "card_rarity_factor": 5,
+            "room_rewards": [
+              {
+                "type": "GOLD",
+                "gold": 74,
+                "bonus_gold": 0,
+                "done": false,
+                "ignored": false,
+                "cards": []
+              },
+              {
+                "type": "RELIC",
+                "gold": 0,
+                "bonus_gold": 0,
+                "done": true,
+                "ignored": true,
+                "relic": "Gremlin Horn",
+                "cards": []
+              },
+              {
+                "type": "SAPPHIRE_KEY",
+                "gold": 0,
+                "bonus_gold": 0,
+                "done": true,
+                "ignored": true,
+                "cards": []
+              }
+            ],
+            "screen_rewards": [
+              {
+                "type": "GOLD",
+                "gold": 74,
+                "bonus_gold": 0,
+                "done": false,
+                "ignored": false,
+                "cards": []
+              }
+            ]
+          }
+        },
+        {
+          "scene": "sapphire-already-held",
+          "seed": 131200321,
+          "initial_keys": {
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": true,
+            "burning_elite_x": 0,
+            "burning_elite_y": 10,
+            "current_map_x": 0,
+            "current_map_y": 8
+          },
+          "final_keys": {
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": true,
+            "burning_elite_x": 0,
+            "burning_elite_y": 10,
+            "current_map_x": 0,
+            "current_map_y": 8
+          },
+          "hp_before": 40,
+          "hp_after": 40,
+          "initial_relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            }
+          ],
+          "final_relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            },
+            {
+              "id": "Mummified Hand",
+              "counter": -1
+            }
+          ],
+          "deck_equal": true,
+          "rng_equal": true,
+          "initial_choices": [
+            "open"
+          ],
+          "initial_reward_state": {
+            "schema": "sls-stock-reward-state-v1",
+            "room_class": "com.megacrit.cardcrawl.rooms.TreasureRoom",
+            "room_phase": "COMPLETE",
+            "smoked": false,
+            "potion_modifier": 0,
+            "card_rarity_factor": 5,
+            "room_rewards": [],
+            "screen_rewards": []
+          },
+          "final_reward_state": {
+            "schema": "sls-stock-reward-state-v1",
+            "room_class": "com.megacrit.cardcrawl.rooms.TreasureRoom",
+            "room_phase": "COMPLETE",
+            "smoked": false,
+            "potion_modifier": 0,
+            "card_rarity_factor": 5,
+            "room_rewards": [
+              {
+                "type": "RELIC",
+                "gold": 0,
+                "bonus_gold": 0,
+                "done": true,
+                "ignored": false,
+                "relic": "Mummified Hand",
+                "cards": []
+              }
+            ],
+            "screen_rewards": []
+          }
+        },
+        {
+          "scene": "sapphire-already-held",
+          "seed": 131200322,
+          "initial_keys": {
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": true,
+            "burning_elite_x": 6,
+            "burning_elite_y": 5,
+            "current_map_x": 0,
+            "current_map_y": 8
+          },
+          "final_keys": {
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": true,
+            "burning_elite_x": 6,
+            "burning_elite_y": 5,
+            "current_map_x": 0,
+            "current_map_y": 8
+          },
+          "hp_before": 40,
+          "hp_after": 40,
+          "initial_relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            }
+          ],
+          "final_relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            },
+            {
+              "id": "Potion Belt",
+              "counter": -1
+            }
+          ],
+          "deck_equal": true,
+          "rng_equal": false,
+          "initial_choices": [
+            "open"
+          ],
+          "initial_reward_state": {
+            "schema": "sls-stock-reward-state-v1",
+            "room_class": "com.megacrit.cardcrawl.rooms.TreasureRoom",
+            "room_phase": "COMPLETE",
+            "smoked": false,
+            "potion_modifier": 0,
+            "card_rarity_factor": 5,
+            "room_rewards": [],
+            "screen_rewards": []
+          },
+          "final_reward_state": {
+            "schema": "sls-stock-reward-state-v1",
+            "room_class": "com.megacrit.cardcrawl.rooms.TreasureRoom",
+            "room_phase": "COMPLETE",
+            "smoked": false,
+            "potion_modifier": 0,
+            "card_rarity_factor": 5,
+            "room_rewards": [
+              {
+                "type": "GOLD",
+                "gold": 25,
+                "bonus_gold": 0,
+                "done": false,
+                "ignored": false,
+                "cards": []
+              },
+              {
+                "type": "RELIC",
+                "gold": 0,
+                "bonus_gold": 0,
+                "done": true,
+                "ignored": false,
+                "relic": "Potion Belt",
+                "cards": []
+              }
+            ],
+            "screen_rewards": [
+              {
+                "type": "GOLD",
+                "gold": 25,
+                "bonus_gold": 0,
+                "done": false,
+                "ignored": false,
+                "cards": []
+              }
+            ]
+          }
+        },
+        {
+          "scene": "sapphire-already-held",
+          "seed": 131200323,
+          "initial_keys": {
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": true,
+            "burning_elite_x": 1,
+            "burning_elite_y": 9,
+            "current_map_x": 0,
+            "current_map_y": 8
+          },
+          "final_keys": {
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": true,
+            "burning_elite_x": 1,
+            "burning_elite_y": 9,
+            "current_map_x": 0,
+            "current_map_y": 8
+          },
+          "hp_before": 40,
+          "hp_after": 40,
+          "initial_relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            }
+          ],
+          "final_relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            },
+            {
+              "id": "Vajra",
+              "counter": -1
+            }
+          ],
+          "deck_equal": true,
+          "rng_equal": false,
+          "initial_choices": [
+            "open"
+          ],
+          "initial_reward_state": {
+            "schema": "sls-stock-reward-state-v1",
+            "room_class": "com.megacrit.cardcrawl.rooms.TreasureRoom",
+            "room_phase": "COMPLETE",
+            "smoked": false,
+            "potion_modifier": 0,
+            "card_rarity_factor": 5,
+            "room_rewards": [],
+            "screen_rewards": []
+          },
+          "final_reward_state": {
+            "schema": "sls-stock-reward-state-v1",
+            "room_class": "com.megacrit.cardcrawl.rooms.TreasureRoom",
+            "room_phase": "COMPLETE",
+            "smoked": false,
+            "potion_modifier": 0,
+            "card_rarity_factor": 5,
+            "room_rewards": [
+              {
+                "type": "GOLD",
+                "gold": 48,
+                "bonus_gold": 0,
+                "done": false,
+                "ignored": false,
+                "cards": []
+              },
+              {
+                "type": "RELIC",
+                "gold": 0,
+                "bonus_gold": 0,
+                "done": true,
+                "ignored": false,
+                "relic": "Vajra",
+                "cards": []
+              }
+            ],
+            "screen_rewards": [
+              {
+                "type": "GOLD",
+                "gold": 48,
+                "bonus_gold": 0,
+                "done": false,
+                "ignored": false,
+                "cards": []
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "protection": {
+    "original_pending_files": 197,
+    "original_files_unchanged": true,
+    "original_status_unchanged": true,
+    "no_running_game": true,
+    "journals": [
+      {
+        "journal": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\runs\\oracle-qualification\\runtime-backups\\20261010T071611.090330Z\\journal.json",
+        "entries": 63,
+        "status": "RECOVERED",
+        "sha256": "a2729d08eb4ee059b33d15c4d04458e418e87d91abaf261688fa74e45ad76eb5",
+        "all_targets_equal": true
+      },
+      {
+        "journal": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\runs\\oracle-qualification\\runtime-backups\\20261010T071722.785746Z\\journal.json",
+        "entries": 63,
+        "status": "RECOVERED",
+        "sha256": "52fa03acb03db5575fbda3022a56562580bfbed1c195a891f2952e781ce2b1cc",
+        "all_targets_equal": true
+      },
+      {
+        "journal": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\runs\\oracle-qualification\\runtime-backups\\20261010T071756.543426Z\\journal.json",
+        "entries": 63,
+        "status": "RECOVERED",
+        "sha256": "0816cb872198d00b07ba00f8e721da44e304bf8cac1ac1ea6701bec1f317d7b0",
+        "all_targets_equal": true
+      },
+      {
+        "journal": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\runs\\oracle-qualification\\runtime-backups\\20261010T071936.747461Z\\journal.json",
+        "entries": 63,
+        "status": "RECOVERED",
+        "sha256": "c63e9fc0b967265d2072869042d5a08be860c73eccb473f5a4fb1d884e9dd9b6",
+        "all_targets_equal": true
+      },
+      {
+        "journal": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\runs\\oracle-qualification\\runtime-backups\\20261010T072052.737595Z\\journal.json",
+        "entries": 63,
+        "status": "RECOVERED",
+        "sha256": "9b7ef9707a5bb3b6f06a639b8108e7b263eabb4cc96472cfa00da1e53056e0cb",
+        "all_targets_equal": true
+      },
+      {
+        "journal": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\runs\\oracle-qualification\\runtime-backups\\20261010T072443.961480Z\\journal.json",
+        "entries": 63,
+        "status": "RECOVERED",
+        "sha256": "d3714998a8a44f50d681f59582baf52bdc14a821278cb324637e9a83bbabcc1e",
+        "all_targets_equal": true
+      }
+    ]
+  },
+  "artifact": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\key-acquisition-20261010-delivery.zip",
+  "artifact_bytes": 1902316,
+  "artifact_sha256": "155e293fc0cb4acd244f1eb6c6e4e271f9be8c10d5d0a422a40994f353baa882",
+  "files": {
+    "local/build/oracle/key-acquisition-r1.build.json": "d1c4a744afb9eb2dcfd7e9fdeaaba710be5edf0e5ce8ea4e51b6cb9394453e34",
+    "local/reports/key-acquisition-20261010/blue-settled-r1.json": "3c1afadaa434582d7d9420834a0d7bf3fbc3c737f1b8facd42e6f4a5e90c9985",
+    "local/reports/key-acquisition-20261010/blue-settled-r1.launch.json": "1231ba5623ba60be278eb39b79131a15e7395ea1732c5058f849378958fe85fa",
+    "local/reports/key-acquisition-20261010/blue-settled-summary-r1.json": "28dda439bcc43656cd8b3cc9cd64f35885bb3dfe4196e28d04130019019c0c89",
+    "local/reports/key-acquisition-20261010/cpu-tests-r1.log": "1425b69b85ad38af28c6a072da35169ae52895f5f6d56681b4ced99f7534da2d",
+    "local/reports/key-acquisition-20261010/cpu-tests-r2.log": "074fb76da7dd808d24c166f99a22ba56c4c54e155dfd533e272d063ed7fcc354",
+    "local/reports/key-acquisition-20261010/production-smoke-r2.json": "d8a7005a659fef86c92c1b22b4ef7c58b51ba3a7cf7d8b46cd6d907a9a9d3b93",
+    "local/reports/key-acquisition-20261010/production-smoke-r2.launch.json": "59b2e87be04d1355106bba697810d1cf3907b2af3926e5c611345cebdbfb1119",
+    "local/reports/key-acquisition-20261010/protection-r1.json": "8fef8a0288ddaa9706e738909b03d0ea075bda09606c6caa0a7fe55d017917be",
+    "local/reports/key-acquisition-20261010/rest-blue-r1.json": "93cd5821e0ced0c6a5ff48be14add36b25d0dc5c1e5ab41fd541d543af9284f9",
+    "local/reports/key-acquisition-20261010/rest-blue-r1.launch.json": "797b142327e8935e77da4deeee359843be26788d55221e685f3808c5381d247f",
+    "local/reports/key-acquisition-20261010/rest-blue-summary-r1.json": "a9692702a6535ff4e0d77b4ff6ae1fd659f464e4dad669b655a24c0379e66bfd",
+    "local/reports/key-acquisition-20261010/rest-qualified-summary-r1.json": "c8999f2d41a2bc6bc2f0f56082cbf52b5a8924dd6b4318e3eb37a1a58ee5ab92",
+    "local/reports/key-acquisition-20261010/ruby-recall-r1.launch.json": "d479adf27a8400af33ec3e656944141915a24713b338f3e137803d7c8c2f744c",
+    "local/reports/key-acquisition-20261010/ruby-recall-r2.json": "345cf26faaab6f683d6481a95ee8d22afdc38a4de9653185c686aedae2be4b61",
+    "local/reports/key-acquisition-20261010/ruby-recall-r2.launch.json": "f41aac695a3f8e89d30d14e1e105d025ee53ee36e68be71483f6d56d5aaaddab",
+    "local/reports/key-acquisition-20261010/ruby-recall-summary-r1.json": "4727a2fd7add2b4722d2d1930f7173f7c56148f45484ffe7c2fcf4c785d3f74d",
+    "local/reports/key-acquisition-20261010/ruby-recall-summary-r2.json": "4727a2fd7add2b4722d2d1930f7173f7c56148f45484ffe7c2fcf4c785d3f74d",
+    "local/runs/oracle-qualification/runtime-backups/20261010T071611.090330Z/journal.json": "a2729d08eb4ee059b33d15c4d04458e418e87d91abaf261688fa74e45ad76eb5",
+    "local/runs/oracle-qualification/runtime-backups/20261010T071611.090330Z/stderr.log": "019e6888946f6275eea2245b907eb0d066fa31b727d3bee0374dc85fbcc6e0fe",
+    "local/runs/oracle-qualification/runtime-backups/20261010T071611.090330Z/stdout.log": "f478087a0d0a8a40ce7ff97c1ec1ad2002f31712967bb057c6ba3f88e0333889",
+    "local/runs/oracle-qualification/runtime-backups/20261010T071722.785746Z/completion.json": "defdc2ce808ead94d83fa19faf1bb0e183371eba03e0c71a1132c983cb1ed514",
+    "local/runs/oracle-qualification/runtime-backups/20261010T071722.785746Z/journal.json": "52fa03acb03db5575fbda3022a56562580bfbed1c195a891f2952e781ce2b1cc",
+    "local/runs/oracle-qualification/runtime-backups/20261010T071722.785746Z/stderr.log": "140e6e533943fe5f821366e30fd8f851260eb6769d080eb0713185503e4c2703",
+    "local/runs/oracle-qualification/runtime-backups/20261010T071722.785746Z/stdout.log": "157c4023ea8353b5281ec5576ee1dab45f0728f503cc3e5ab2af2afd26c42160",
+    "local/runs/oracle-qualification/runtime-backups/20261010T071756.543426Z/journal.json": "0816cb872198d00b07ba00f8e721da44e304bf8cac1ac1ea6701bec1f317d7b0",
+    "local/runs/oracle-qualification/runtime-backups/20261010T071756.543426Z/stderr.log": "2e7293d1d878dde58fd20ab8740f65e1c7a15b09cbc31a5c178a652ec853355a",
+    "local/runs/oracle-qualification/runtime-backups/20261010T071756.543426Z/stdout.log": "457780f6cd92700a07a3f5689192258961b4f03bc80229906386d914d3d112b7",
+    "local/runs/oracle-qualification/runtime-backups/20261010T071936.747461Z/completion.json": "df5d8a1b8cd9497eb44a78604ddc449e5bac95bcab2997eaab7ac73fd88768c1",
+    "local/runs/oracle-qualification/runtime-backups/20261010T071936.747461Z/journal.json": "c63e9fc0b967265d2072869042d5a08be860c73eccb473f5a4fb1d884e9dd9b6",
+    "local/runs/oracle-qualification/runtime-backups/20261010T071936.747461Z/stderr.log": "140e6e533943fe5f821366e30fd8f851260eb6769d080eb0713185503e4c2703",
+    "local/runs/oracle-qualification/runtime-backups/20261010T071936.747461Z/stdout.log": "59fe9d1766ec6079be174ea47640126420dbe8c18667852e566cbf83f96ca6a4",
+    "local/runs/oracle-qualification/runtime-backups/20261010T072052.737595Z/completion.json": "df5d8a1b8cd9497eb44a78604ddc449e5bac95bcab2997eaab7ac73fd88768c1",
+    "local/runs/oracle-qualification/runtime-backups/20261010T072052.737595Z/journal.json": "9b7ef9707a5bb3b6f06a639b8108e7b263eabb4cc96472cfa00da1e53056e0cb",
+    "local/runs/oracle-qualification/runtime-backups/20261010T072052.737595Z/stderr.log": "140e6e533943fe5f821366e30fd8f851260eb6769d080eb0713185503e4c2703",
+    "local/runs/oracle-qualification/runtime-backups/20261010T072052.737595Z/stdout.log": "d9401ead1440bb52077e1efa1eac6d523840484d3c48cc2a4f5f1a8c32f135c5",
+    "local/runs/oracle-qualification/runtime-backups/20261010T072443.961480Z/completion.json": "df5d8a1b8cd9497eb44a78604ddc449e5bac95bcab2997eaab7ac73fd88768c1",
+    "local/runs/oracle-qualification/runtime-backups/20261010T072443.961480Z/journal.json": "d3714998a8a44f50d681f59582baf52bdc14a821278cb324637e9a83bbabcc1e",
+    "local/runs/oracle-qualification/runtime-backups/20261010T072443.961480Z/stderr.log": "140e6e533943fe5f821366e30fd8f851260eb6769d080eb0713185503e4c2703",
+    "local/runs/oracle-qualification/runtime-backups/20261010T072443.961480Z/stdout.log": "55c8a7a9305de851aee52a2807618000dd174ecf39a459a487f0f9b52a08be28",
+    "local/verify_key_protection.py": "c076b8b5d0dc0f635abdefb33da63e85e09b1c46dfad91b62dc384333a2d28cf"
+  },
+  "validation": {
+    "cpu_tests": "1609 passed, 2 skipped, 4 warnings",
+    "cuda_disabled": true,
+    "ruff": "PASS",
+    "production_smoke": "PASS",
+    "old_blue_capture": "EARLY_EFFECT_BOUNDARY_SUPERSEDED"
+  }
+}
