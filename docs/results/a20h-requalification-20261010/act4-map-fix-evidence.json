@@ -1,0 +1,189 @@
+{
+  "schema": "sls-act4-public-map-fix-evidence-v1",
+  "code_commit": "8034501b3c16d793fe1954c25de0c8b264e51efa",
+  "old_native_source_sha256": "6805e8c991ff6e3ca1b57248678babbbc1ea904b6a1a35e17d631c426765dcc0",
+  "native_source_sha256": "e4f8452ff3cea688e49a362488814d4c2e29d9b721bcc6cd71c8d9f1d9fa733a",
+  "old_native_binary_sha256": "ce8f500b5116980f2bca854488da334cac58a679a1c1c59e3a8f70410890f3e8",
+  "native_binary_sha256": "6ee14bf97312bab04b66fcb0a6767f52c4a688eeb0c1fcf5953b5ab8764f570b",
+  "oracle_sha256": "10df4da648b89fc1d914fb823e2194228b59da94ae98ed4d2952bd25d6cc30e0",
+  "capture_sha256": "f692cbfe31df39f39c84e8349b8cbb605ba7dba4d11cb4676ab85e0347f97675",
+  "complete_public_decisions_equal": 19,
+  "fullrun_checkpoint_full_suffix_matches": 20,
+  "regression_rejects_exact_predecessor": true,
+  "cpp_game_rules_changed": false,
+  "new_resume_exception": false,
+  "training_gate": "NOT_QUALIFIED",
+  "training_eligible": false,
+  "natural_trajectory": false,
+  "verification": {
+    "cpu_passed": 1711,
+    "skipped": 2,
+    "warnings": 4,
+    "ruff": "PASS",
+    "vocabulary": "PASS",
+    "configurations_valid": 31,
+    "configurations_total": 33,
+    "configuration_failures": "TWO_PREEXISTING_BOUND_LAMBDA_PLANS_NOT_REBOUND"
+  },
+  "files": [
+    {
+      "path": "docs/results/a20h-requalification-20261010/ACT4-MAP-FIX.md",
+      "bytes": 4620,
+      "sha256": "5e7a2d11913b6b286937cf352d4483e86b5a80c85289aef1ed62f52cb15cdcae"
+    },
+    {
+      "path": "local/build/native/act4-map-fix/_lightspeed.cp312-win_amd64.pyd",
+      "bytes": 3158016,
+      "sha256": "6ee14bf97312bab04b66fcb0a6767f52c4a688eeb0c1fcf5953b5ab8764f570b"
+    },
+    {
+      "path": "local/build/native/cpython-312/_lightspeed.cp312-win_amd64.pyd",
+      "bytes": 3158016,
+      "sha256": "ce8f500b5116980f2bca854488da334cac58a679a1c1c59e3a8f70410890f3e8"
+    },
+    {
+      "path": "local/build/oracle/ending-continuous-r1.build.json",
+      "bytes": 20861,
+      "sha256": "cb38cc3499a19d2602f956bafaefb790272eb571dbbac8575a6ac3a5ef72377b"
+    },
+    {
+      "path": "local/build/oracle/ending-continuous-r1.jar",
+      "bytes": 198824,
+      "sha256": "10df4da648b89fc1d914fb823e2194228b59da94ae98ed4d2952bd25d6cc30e0"
+    },
+    {
+      "path": "local/build_act4_map_fix.py",
+      "bytes": 1142,
+      "sha256": "2055d8eb867e289c0d0f46a3b4a59c9c35d3cc62167bc07c566e3f456b74086d"
+    },
+    {
+      "path": "local/package_act4_map_fix.py",
+      "bytes": 5323,
+      "sha256": "f788d4cb37c70ee4b4f50bc2753bd09e090a6ee7cc70216fbca985d462c77f81"
+    },
+    {
+      "path": "local/reports/act4-map-fix-20261010/build-r1.txt",
+      "bytes": 270477,
+      "sha256": "b3f042eb55ab07599289373efe1f20583926fe3cba4ea5b4b50407ec78e5d63f"
+    },
+    {
+      "path": "local/reports/act4-map-fix-20261010/configs-r1.txt",
+      "bytes": 1916,
+      "sha256": "956a0c983a0ec59ccd1967850ef195574b4bf14fedfd78ae46507d0e339333f7"
+    },
+    {
+      "path": "local/reports/act4-map-fix-20261010/contract-r1.json",
+      "bytes": 821,
+      "sha256": "5c13123abd68f7af93fbf4f3e72f990aec063504335ab2d62f18eeee66b494a0"
+    },
+    {
+      "path": "local/reports/act4-map-fix-20261010/cpu-tests-r1.txt",
+      "bytes": 4114,
+      "sha256": "84beae8ab8143e93ed7a470a73cf17966d4e8a3230dfc59dfd86d0aa0642f7ca"
+    },
+    {
+      "path": "local/reports/act4-map-fix-20261010/environment-before-map-fix.py",
+      "bytes": 54937,
+      "sha256": "47ed116c57d93133f46976daf92968a1f36eafe12c322e3f4afed24e543ddfb5"
+    },
+    {
+      "path": "local/reports/act4-map-fix-20261010/native-boss-flow-r1.json",
+      "bytes": 500041,
+      "sha256": "fb8a658f7a429b08342ce78118e347a8ea76ae155993a432c445a61dfc6cdcc5"
+    },
+    {
+      "path": "local/reports/act4-map-fix-20261010/native-entry-r1.json",
+      "bytes": 289832,
+      "sha256": "3fcbb3a518523215486437df1bd27971724d4d51b580b9fba36fd131cadc7660"
+    },
+    {
+      "path": "local/reports/act4-map-fix-20261010/predecessor-r1.json",
+      "bytes": 1880,
+      "sha256": "5c9bca4334eff931509a3febebfcfa8485a83d8c721b5703e7d80c611911b528"
+    },
+    {
+      "path": "local/reports/act4-map-fix-20261010/protection-check-r1.txt",
+      "bytes": 7797,
+      "sha256": "8f7d1a139a6fa2d2cdba0b4257606287f40c12025743fc314be3ea78cb9cacb0"
+    },
+    {
+      "path": "local/reports/act4-map-fix-20261010/protection-r1.json",
+      "bytes": 8946,
+      "sha256": "b25bb817cd2efd7332627e58e46624f557d104c685b55f9e4313699fe4c6a5a2"
+    },
+    {
+      "path": "local/reports/act4-map-fix-20261010/public-replay-r1.json",
+      "bytes": 1667207,
+      "sha256": "6d45d02e77719c76cd35a57174ac81e8a4b82c0b8628476afe301f0136c6cec9"
+    },
+    {
+      "path": "local/reports/act4-map-fix-20261010/vocabulary-r1.txt",
+      "bytes": 90,
+      "sha256": "253dc6855d58deb0497e2af67b1a8eee1c686e15b91f229bfd776126ea051933"
+    },
+    {
+      "path": "local/reports/ending-continuous-20261010/stock-r2.json",
+      "bytes": 3235014,
+      "sha256": "f692cbfe31df39f39c84e8349b8cbb605ba7dba4d11cb4676ab85e0347f97675"
+    },
+    {
+      "path": "local/reports/ending-continuous-20261010/stock-r2.launch.json",
+      "bytes": 430,
+      "sha256": "286e6147b92a16a50ec0cb03e78f2fdf6b9995a6160bca2af2cb10b33f7ccb1f"
+    },
+    {
+      "path": "local/verify_act4_map_predecessor.py",
+      "bytes": 2192,
+      "sha256": "d477af89511dd273694b765a16af93d73294eecc541de5bbadc5b2971b7491c5"
+    },
+    {
+      "path": "local/verify_key_protection.py",
+      "bytes": 2110,
+      "sha256": "b5d28d3867bdcef259ff833d21f881725dd295dc2415a80d840c4428ff167a2a"
+    },
+    {
+      "path": "native/oracle/resources/spirecomm/parity/fullrun-ending-continuous-r1.json",
+      "bytes": 8002,
+      "sha256": "1ba8bb66eac0a77a95712de2bb29d551ff1fd6dbcb67860d05cf8bda19f2f22d"
+    },
+    {
+      "path": "src/sls/backends/simulator/environment.py",
+      "bytes": 55242,
+      "sha256": "729904c4e55029b65e214c0d48da172d4a08f14122aba39696ca1e4b27da0c76"
+    },
+    {
+      "path": "tests/fixtures/regressions/ending-continuous-stock-r1.json",
+      "bytes": 601850,
+      "sha256": "45bc7fb9f286614bc58d7c623d6098e2211a7ab9d3eaa66222502bee5e80c9b1"
+    },
+    {
+      "path": "tests/simulator/test_continuous_ending_stock.py",
+      "bytes": 2342,
+      "sha256": "5cea4a16f0db4184f13c8e23a469a65978d0ec873a22d64870485cd8291c6d1f"
+    },
+    {
+      "path": "tools/replay_ending_continuation.py",
+      "bytes": 7169,
+      "sha256": "95d0105093e4509985c0c8cbef6a9f90f3b090c88004716dc351c0781bc9ea25"
+    },
+    {
+      "path": "tools/reproduce_double_boss_entry.py",
+      "bytes": 14721,
+      "sha256": "a577276906ef0c62fec01c4debe84c7cd9f6fd88ea48cb98b2cd241586cd42c9"
+    },
+    {
+      "path": "tools/reproduce_double_boss_flow.py",
+      "bytes": 7935,
+      "sha256": "17141de5fd07e6a1614ae864a95015b716d66fcc0260bae3c19de9373e2d9ccb"
+    },
+    {
+      "path": "tools/verify_boss_flow_suffix.py",
+      "bytes": 10206,
+      "sha256": "220798b32d58b7fca51e3cd9446e5af1e8f9b16b43592cf3cb036da8184a857f"
+    }
+  ],
+  "bundle": {
+    "path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\act4-map-fix-20261010-delivery-r1.zip",
+    "sha256": "8cb8b14130a3a32008e246ce10e000bb2acdee28e17f372a6f35db43c3c81640"
+  }
+}
