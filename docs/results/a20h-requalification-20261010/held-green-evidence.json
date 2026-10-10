@@ -1,0 +1,138 @@
+{
+  "schema": "sls-held-green-map-evidence-v1",
+  "scope": "STOCK_STATIC_RULE_AND_CONDITIONED_NATIVE_TRANSITION_NOT_STOCK_RUNTIME",
+  "native_source_sha256": "6805e8c991ff6e3ca1b57248678babbbc1ea904b6a1a35e17d631c426765dcc0",
+  "cases": [
+    {
+      "act_before": 1,
+      "green_key": false,
+      "map_constructor_equal": true,
+      "stock_static_key_condition_equal": true,
+      "checkpoint_equal": true,
+      "next_action_restored_equal": true
+    },
+    {
+      "act_before": 1,
+      "green_key": true,
+      "map_constructor_equal": true,
+      "stock_static_key_condition_equal": true,
+      "checkpoint_equal": true,
+      "next_action_restored_equal": true
+    },
+    {
+      "act_before": 2,
+      "green_key": false,
+      "map_constructor_equal": true,
+      "stock_static_key_condition_equal": true,
+      "checkpoint_equal": true,
+      "next_action_restored_equal": true
+    },
+    {
+      "act_before": 2,
+      "green_key": true,
+      "map_constructor_equal": true,
+      "stock_static_key_condition_equal": true,
+      "checkpoint_equal": true,
+      "next_action_restored_equal": true
+    }
+  ],
+  "runtime_gaps": [
+    "actual stock next-act map capture",
+    "stock map RNG comparison",
+    "final-act-unlocked flag absent from native contract"
+  ],
+  "training_gate": "NOT_QUALIFIED",
+  "training_eligible": false,
+  "natural_trajectory": false,
+  "verification": {
+    "targeted_cpu_passed": 29,
+    "ruff": "PASS",
+    "full_suite_current_revision": "NOT_RUN"
+  },
+  "files": [
+    {
+      "path": "local/build/probe-key-map-r1.exe",
+      "bytes": 865792,
+      "sha256": "90aed888453c822e4859129873b1cdab58e8fd1e56e62279a604127f6b5d7c13"
+    },
+    {
+      "path": "local/package_held_green.py",
+      "bytes": 2306,
+      "sha256": "315e53cb8f87182b58d0fdda19ea9e685b11be0c9c1619e459b8348e35ca50fa"
+    },
+    {
+      "path": "local/reports/held-green-map-20261010/native-probe-r1.json",
+      "bytes": 396566,
+      "sha256": "83652cc06136c1a2fac39625ec865db5fcac4d9ad6660d1edb6a90cec817827d"
+    },
+    {
+      "path": "local/reports/held-green-map-20261010/protection-r1.json",
+      "bytes": 6384,
+      "sha256": "d89b7a352a31fa154938092d54cad545e9e4c5179e62007dd45debbc91b86aae"
+    },
+    {
+      "path": "local/reports/held-green-map-20261010/stock-sources-r1/dungeons.AbstractDungeon.txt",
+      "bytes": 530335,
+      "sha256": "0f3abd64e6930ca02064e7c0c30495a70bfddc9d875069422ac6509ef09677ae"
+    },
+    {
+      "path": "local/reports/held-green-map-20261010/stock-sources-r1/manifest.json",
+      "bytes": 3384,
+      "sha256": "7d5afcdee026fc8b04d1123bfdacdca71c9281ea9c380ffdaf0246b325a23d0e"
+    },
+    {
+      "path": "local/reports/held-green-map-20261010/stock-sources-r1/rewards.RewardItem.txt",
+      "bytes": 110693,
+      "sha256": "0a38de227b691bc6d5e871207e595ae60769a5c74b58a1104b6191e75bb7ee94"
+    },
+    {
+      "path": "local/reports/held-green-map-20261010/stock-sources-r1/rooms.AbstractRoom.txt",
+      "bytes": 141680,
+      "sha256": "33f8d8d045d0c4596d5b677c245024da6bc24aa454e33af6dbecb2ec457aee9c"
+    },
+    {
+      "path": "local/reports/held-green-map-20261010/stock-sources-r1/rooms.MonsterRoom.txt",
+      "bytes": 5593,
+      "sha256": "8529de56cc42de00ddfbc1d3250c0edf321a8930c0013a027d7688b00480084a"
+    },
+    {
+      "path": "local/reports/held-green-map-20261010/stock-sources-r1/rooms.MonsterRoomElite.txt",
+      "bytes": 18119,
+      "sha256": "75ad89da49ae705b08aa24d15cce3a972211d6cb5d7d77e4929e6fdcad3c7602"
+    },
+    {
+      "path": "local/reports/held-green-map-20261010/stock-sources-r1/vfx.ObtainKeyEffect.txt",
+      "bytes": 12569,
+      "sha256": "7e2b4b65768c60d4c3689ea0051db8d34c98e27cbaac48286e8669913c49a308"
+    },
+    {
+      "path": "tests/fixtures/regressions/act2-calling-bell-boss-131100064.json",
+      "bytes": 10582,
+      "sha256": "335c479834c98d4cdd188aa915e3a04e0dc575871f925813d3fd3f156a387aed"
+    },
+    {
+      "path": "tests/simulator/test_held_green_transition.py",
+      "bytes": 1384,
+      "sha256": "ac877208e4d9c051446003acbf2d114cbb1c6032b372dd239d18e681b9ea0b02"
+    },
+    {
+      "path": "tools/capture_green_key_sources.py",
+      "bytes": 2375,
+      "sha256": "f169dfaaa01a0a0b6159b9f8938f90a6389d975007a102a8e03ad6310bd95830"
+    },
+    {
+      "path": "tools/probe_held_green_transition.py",
+      "bytes": 6166,
+      "sha256": "d6c4ad0827ab63ea61fbf1fff3b4dac027e0c49f27ab8ecb34b78cad8ee1cc85"
+    },
+    {
+      "path": "tools/probe_key_map.cpp",
+      "bytes": 970,
+      "sha256": "e37bfed3db274e8e901bbe8bd1e098a65c0ee412575b90920f80f82907bbb541"
+    }
+  ],
+  "bundle": {
+    "path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\held-green-map-20261010-delivery-r1.zip",
+    "sha256": "7e93760c0e18850f6f56b27e98a733b062d7a489552842c474890e15237f2f99"
+  }
+}
