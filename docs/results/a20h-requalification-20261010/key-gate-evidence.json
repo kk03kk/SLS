@@ -1,0 +1,257 @@
+{
+  "schema": "sls-stock-key-gate-evidence-v1",
+  "code_commit": "4e68ef295df4273c5c870e92c35fec9eb318844a",
+  "native_source_sha256": "6805e8c991ff6e3ca1b57248678babbbc1ea904b6a1a35e17d631c426765dcc0",
+  "native_binary_sha256": "ce8f500b5116980f2bca854488da334cac58a679a1c1c59e3a8f70410890f3e8",
+  "oracle_sha256": "69d48458ab8a96c74d8527b46aa7e327487dc8244c44be0fbb90eafa40b5f2ac",
+  "capture_sha256": "cf3c8c8e7fc58d1cbc12ddb63480c2f02d695942449c48b3079a32c2295d551c",
+  "manifest_sha256": "1f93a995495cc1153696b824bdc035c02d7b436d6a72e7c7207e54b5f68cb166",
+  "seed_namespace": [
+    131200420,
+    131200428
+  ],
+  "cases": 8,
+  "outcomes": {
+    "ACT3_STOCK_ENDING": 7,
+    "ACT4_MAP_ENTRY": 1
+  },
+  "checkpoint_full_suffix_matches": 48,
+  "raw_resource_differences": 88,
+  "raw_resources_equal": false,
+  "enumerated_fields_equal": true,
+  "comparison_status": "ENUMERATED_FIELDS_MATCH_RAW_RESOURCE_DIFFERENCES_RETAINED",
+  "combat_totals": {
+    "aligned_combat": 24,
+    "raw_combat_exact": 16,
+    "raw_combat_differences": 8,
+    "unaligned_ui": 16
+  },
+  "scope": "EIGHT_CONTROLLED_KEY_SUBSETS_REAL_BOSS_AND_STOCK_DIALOGUE_OUTCOME_NOT_KEY_ACQUISITION",
+  "training_gate": "NOT_QUALIFIED",
+  "training_eligible": false,
+  "natural_trajectory": false,
+  "verification": {
+    "cpu_passed": 1677,
+    "skipped": 2,
+    "warnings": 4,
+    "ruff": "PASS"
+  },
+  "limitations": [
+    "controlled powerful deck, boss order and initial keys",
+    "final-act unlocked in all cases",
+    "only Time Eater then Donu/Deca",
+    "raw Deca corpse powers and folded victory UI remain unequal",
+    "Act4 rest/shop/Shield/Spear/Heart not included"
+  ],
+  "files": [
+    {
+      "path": "docs/results/a20h-requalification-20261010/KEY-GATE-MATRIX.md",
+      "bytes": 4844,
+      "sha256": "3d3e48530452f2fdea903915f2ce719a6dd7c54c20963e2a00987db3653f9a7d"
+    },
+    {
+      "path": "docs/results/a20h-requalification-20261010/LOCAL-NEXT-WORK.md",
+      "bytes": 4102,
+      "sha256": "a83798f2671e3aa75e49bbffda3bf5b7530ffb659d7f3f389fb75705767de184"
+    },
+    {
+      "path": "local/build/oracle/key-gate-matrix-r1.build.json",
+      "bytes": 20597,
+      "sha256": "e6f788ea31a90f04becfc518697293ea3fb1bff56450fe759b4f148f4e4070a3"
+    },
+    {
+      "path": "local/build/oracle/key-gate-matrix-r1.jar",
+      "bytes": 196112,
+      "sha256": "69d48458ab8a96c74d8527b46aa7e327487dc8244c44be0fbb90eafa40b5f2ac"
+    },
+    {
+      "path": "local/extract_key_gate_sources.py",
+      "bytes": 1328,
+      "sha256": "a74b3e3ea19984742bde2d3b6d270e89af9c5ae12d2b91a73b1cdc63560f2fcf"
+    },
+    {
+      "path": "local/generate_key_gate_manifest.py",
+      "bytes": 1237,
+      "sha256": "94eafbb81cb7f813526cc02be94e9ad679eb27ab14a9d06ea773d4a1aabee7a9"
+    },
+    {
+      "path": "local/generate_key_gate_regression.py",
+      "bytes": 1990,
+      "sha256": "12a85ac65f72fb8b88ca7a2018c000b54d265ed992ca5fa182bef292786d9645"
+    },
+    {
+      "path": "local/package_key_gate.py",
+      "bytes": 5983,
+      "sha256": "232cb4c3f0287c0110d4b551307082ac33b34f92a46f661c6d0ef88789cc2c03"
+    },
+    {
+      "path": "local/reports/key-gate-20261010/SearingBlow-r1.txt",
+      "bytes": 8250,
+      "sha256": "77aa1fee0b4fc9c31b66824d664f42dc7efd70296669561872ce689680027480"
+    },
+    {
+      "path": "local/reports/key-gate-20261010/SpireHeart-r1.txt",
+      "bytes": 44301,
+      "sha256": "8d3a57263aadc0b5605c478dfb5d2d956ee4c7397c62f2ae9e15eabd12dc79fd"
+    },
+    {
+      "path": "local/reports/key-gate-20261010/comparison-r1.json",
+      "bytes": 18393,
+      "sha256": "5f97e5c9fc9a51ad08787f0987ad8b8320022325ca393b19d8277123d249fa02"
+    },
+    {
+      "path": "local/reports/key-gate-20261010/comparison-r2.json",
+      "bytes": 20527,
+      "sha256": "40b58d3917b1ab7fb60aa236997796ffe34b544f7384f5bd1d6b336b1f58532e"
+    },
+    {
+      "path": "local/reports/key-gate-20261010/comparison-r3.json",
+      "bytes": 19751,
+      "sha256": "250285d4a17dce4a2a99fdcc6d466746605df4ce91752b14333560302822f331"
+    },
+    {
+      "path": "local/reports/key-gate-20261010/cpu-tests-r1.txt",
+      "bytes": 4113,
+      "sha256": "58a2c6fbaf94a909dc35f73ac7bc7df970841f0cbe66de8786b38fee42f3d161"
+    },
+    {
+      "path": "local/reports/key-gate-20261010/git-diff-check-r2.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "local/reports/key-gate-20261010/native-entry-r1.json",
+      "bytes": 2304102,
+      "sha256": "3a089c2963c5c1db661f500d856423e191a923c669269e634ec08c2099221a15"
+    },
+    {
+      "path": "local/reports/key-gate-20261010/native-flow-r1.json",
+      "bytes": 4215129,
+      "sha256": "0f6655b548f63db270c623e5511e8e2ed7e2503f9f196bcd4837f231fdb0ddb9"
+    },
+    {
+      "path": "local/reports/key-gate-20261010/native-suffix-r1.json",
+      "bytes": 87355,
+      "sha256": "86ddcb4be6680300aaf7e8585cdc799b410dee8ef5ae50287f2a6a9c8da4f92b"
+    },
+    {
+      "path": "local/reports/key-gate-20261010/production-r49.json",
+      "bytes": 56605,
+      "sha256": "647d909c75688135cbb45a900340a190c6b804782572bb17da31820c63b48bc5"
+    },
+    {
+      "path": "local/reports/key-gate-20261010/production-r49.launch.json",
+      "bytes": 433,
+      "sha256": "83892d1548064f1fafcc27b95217ef7078908ef79655a11674903297cc3044eb"
+    },
+    {
+      "path": "local/reports/key-gate-20261010/protection-r1.json",
+      "bytes": 7848,
+      "sha256": "56abf8a63b9c886b6409558449cf7657adde84aaf5059f9f9f4d9a75166c8c46"
+    },
+    {
+      "path": "local/reports/key-gate-20261010/stock-gate-r1.json",
+      "bytes": 7177924,
+      "sha256": "cf3c8c8e7fc58d1cbc12ddb63480c2f02d695942449c48b3079a32c2295d551c"
+    },
+    {
+      "path": "local/reports/key-gate-20261010/stock-gate-r1.launch.json",
+      "bytes": 430,
+      "sha256": "6b22ffc6bc7da5b3d18188de5e879e0eedbb8721de7016c61f2fd734e3ec9235"
+    },
+    {
+      "path": "local/reports/key-gate-20261010/stock-sources-r1.json",
+      "bytes": 1083,
+      "sha256": "994d43c524d059e1f88852e357448ac842d1ab7802a6e1d786108e083840334c"
+    },
+    {
+      "path": "local/runs/oracle-qualification/runtime-backups/20261010T100147.835240Z/journal.json",
+      "bytes": 28205,
+      "sha256": "d3ef870c21123cf6645853cb24a550770a651df7ac9b5d1b23b2184d7647020b"
+    },
+    {
+      "path": "local/runs/oracle-qualification/runtime-backups/20261010T100212.333542Z/journal.json",
+      "bytes": 28205,
+      "sha256": "0b013110942fd10fb100168891588ef50743055028f3c825d9545a86655d454b"
+    },
+    {
+      "path": "local/verify_key_protection.py",
+      "bytes": 2110,
+      "sha256": "b5d28d3867bdcef259ff833d21f881725dd295dc2415a80d840c4428ff167a2a"
+    },
+    {
+      "path": "native/oracle/ModTheSpire.json",
+      "bytes": 381,
+      "sha256": "742dfba09cfc5bdba5971191346693b66b466a78222b03169a4607e21bc1e749"
+    },
+    {
+      "path": "native/oracle/resources/spirecomm/parity/fullrun-key-gate-matrix-r1.json",
+      "bytes": 63483,
+      "sha256": "1f93a995495cc1153696b824bdc035c02d7b436d6a72e7c7207e54b5f68cb166"
+    },
+    {
+      "path": "src/sls/audit/boss_flow.py",
+      "bytes": 12466,
+      "sha256": "989e44a8af70ec968df2f5a0d37c5120b3495c4a13d7d49c1f2347025fdacc25"
+    },
+    {
+      "path": "tests/audit/test_key_gate_outcome.py",
+      "bytes": 1795,
+      "sha256": "6b77b7f91d3b5dcaf510bda0b4e7ebd9d6a93415b46416593d2ff637d80913e3"
+    },
+    {
+      "path": "tests/fixtures/regressions/key-gate-stock-r1.json",
+      "bytes": 727851,
+      "sha256": "2e513a2c67b2046bca7a771156962727dd1cf3da823c6eb620394d8579ffa33d"
+    },
+    {
+      "path": "tests/simulator/test_stock_key_gate.py",
+      "bytes": 2566,
+      "sha256": "e7556976427063f42c4b5b6a61934c377d866e2d88407dbc29c54b7008457dfb"
+    },
+    {
+      "path": "tests/test_build_oracle.py",
+      "bytes": 6521,
+      "sha256": "40533726cdac7021c94cabb668dc9404620d16a043762226b7fd5339178c801c"
+    },
+    {
+      "path": "tools/audit_key_gate_matrix.py",
+      "bytes": 8503,
+      "sha256": "9420e06aafb11b9288c487547a52a5791885eb42e47ad4dba58db2e3fae91435"
+    },
+    {
+      "path": "tools/build_oracle.py",
+      "bytes": 6988,
+      "sha256": "f0a6bcb6748bf4ca1a904f7558d131fd998d4b43dc0a225c61a29befc8490881"
+    },
+    {
+      "path": "tools/capture_act2_encounter_batch.py",
+      "bytes": 10221,
+      "sha256": "8d65208224c8fa5c7ef72c260d610806624d3c47fc7c309453a680ad27a591d4"
+    },
+    {
+      "path": "tools/replay_rest_key_archive.py",
+      "bytes": 13369,
+      "sha256": "ee6bd60402dcbd0d12244edc1654a66b9bd37fb342f6893de68a79df849ed70b"
+    },
+    {
+      "path": "tools/reproduce_double_boss_entry.py",
+      "bytes": 14721,
+      "sha256": "a577276906ef0c62fec01c4debe84c7cd9f6fd88ea48cb98b2cd241586cd42c9"
+    },
+    {
+      "path": "tools/reproduce_double_boss_flow.py",
+      "bytes": 7935,
+      "sha256": "17141de5fd07e6a1614ae864a95015b716d66fcc0260bae3c19de9373e2d9ccb"
+    },
+    {
+      "path": "tools/verify_boss_flow_suffix.py",
+      "bytes": 10206,
+      "sha256": "220798b32d58b7fca51e3cd9446e5af1e8f9b16b43592cf3cb036da8184a857f"
+    }
+  ],
+  "bundle": {
+    "path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\key-gate-matrix-20261010-delivery-r1.zip",
+    "sha256": "09758e4285174123a42c01daecd913b85f33063deb39897131dd878921b3ad1b"
+  }
+}
