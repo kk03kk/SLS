@@ -120,6 +120,8 @@ def test_cli_rejects_gpu_before_work(tmp_path):
     {"seed": 132100001}, {"seed_range": [132100000, 132100002]},
     {"diagnostic_seed_start": 132100000, "diagnostic_seed_count": 10},
     {"seeds": {"start": 132100000, "end": 132100002}},
+    {"seed_results": [], "evaluation_seeds": [132100001, 132100040, 132100050]},
+    {"seeds": [132099999, 132100033]},
 ])
 def test_seed_scan_rejects_collision(tmp_path, record):
     (tmp_path / "registration.json").write_text(json.dumps(record))

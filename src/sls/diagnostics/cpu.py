@@ -164,6 +164,14 @@ def check_seed_collisions(roots: list[Path], start: int, count: int) -> list[str
                 if max(start, value["start"]) < min(start + count, value["end"]):
                     hits.append(f"{path}:{location}.start/end")
             for k, child in value.items():
+                if (k in {"seeds", "seed_ids"} or k.endswith("_seeds")) and isinstance(child, list):
+                    if any(type(seed) is int and start <= seed < start + count for seed in child):
+                        hits.append(f"{path}:{location}.{k}")
+                    # Existing evaluation manifests also use [start, end) under 'seeds'.
+                    if (len(child) == 2 and all(type(seed) is int for seed in child)
+                            and child[0] < child[1]
+                            and max(start, child[0]) < min(start + count, child[1])):
+                        hits.append(f"{path}:{location}.{k}[start,end)")
                 walk(child, path, f"{location}.{k}")
         elif isinstance(value, list):
             for child in value:
