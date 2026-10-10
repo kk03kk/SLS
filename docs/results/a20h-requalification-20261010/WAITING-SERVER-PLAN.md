@@ -44,6 +44,12 @@ Discovery 实际 15 次检索更新，而 native 默认 14；仅公开状态相�
 随后继续自然同局三钥匙/后段与 Heart 长攻防。
 详细范围和证据见 [FROZEN-THREE-KEY-ROUTES.md](FROZEN-THREE-KEY-ROUTES.md)。
 
+后续相同 seed/动作的两次真实原版复验分别观察到 15 和 14 次更新，
+第三次运行自然集齐同局三钥匙，75 个默认路径公开/RNG 边界和完整恢复后缀匹配。
+首次两次失败仍保留；不能将三个重复样本报告为 clock 分布、模型胜率或全局资格。
+现在“自然同局三钥匙前缀”有一条实际证据，下一步补其后 Act1 Boss/Act2 的正常继续路径、
+完整 Act2–4 和 Heart 长交互。新结果见 [STOCK-DISCOVERY-REPEATS.md](STOCK-DISCOVERY-REPEATS.md)。
+
 ## 第二优先：模型能力和 critic 诊断
 
 冻结模型只读；同一公开历史重建各模型自己的 recurrent memory，检查战斗动作、构筑选择、
