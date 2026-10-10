@@ -1,0 +1,31 @@
+{
+  "schema": "sls-three-key-capability-evidence-v1",
+  "code_commit": "5a6ae9d67d83ef9d8558654ce84208903f88eafc",
+  "archive": "local/reports/three-key-capability-20261010-delivery-r1.zip",
+  "archive_sha256": "f994609d1f1bdd4422f0740796308c01974ca363de8bc5f8ec6ea97ed271e0b6",
+  "archive_bytes": 35984393,
+  "manifest_sha256": "5e5cb63bd434d0f3e321f351685a2f2b4893bebee646b6170d2d42a36417d326",
+  "report_sha256": "b9c5f87df73553448cbc580b5a316d3f039935b0b04e77a258e624cf3de7c2d4",
+  "closure_sha256": "9047d3b9ff1bbf277f792d1815e61aa8ac04597de0e68a4439cd694edee355b8",
+  "source_sha256": "2f388369780ca0753d679be432e75192f313805464397168a7728b58e08e99a5",
+  "final_tool_sha256": "6872b6a3bf0f330d365c92abfee70758994e26082e4767d3f848f06f426d3faf",
+  "files": 123,
+  "tests": {
+    "passed": 1758,
+    "skipped": 2,
+    "warnings": 4,
+    "seconds": 136.69
+  },
+  "ruff": "PASS",
+  "vocabulary": "PASS",
+  "configurations": {
+    "passed": 31,
+    "total": 33,
+    "preexisting_failures": 2
+  },
+  "zip_crc_and_all_member_sha256_verified": true,
+  "original_models_unchanged": true,
+  "original_workspace_pending_files_unchanged": 197,
+  "production_training_gate": "NOT_QUALIFIED",
+  "next_action": "PAUSE_AUTONOMOUS_WORK_ON_USER_REQUEST"
+}
