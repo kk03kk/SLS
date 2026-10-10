@@ -1,0 +1,1578 @@
+{
+  "schema": "sls-key-replay-delivery-v1",
+  "code_commit": "f5c1300d9b2ba1cf498d5ab65656d1734fd3e2e5",
+  "native_source_sha256": "6805e8c991ff6e3ca1b57248678babbbc1ea904b6a1a35e17d631c426765dcc0",
+  "native_binary_sha256": "ce8f500b5116980f2bca854488da334cac58a679a1c1c59e3a8f70410890f3e8",
+  "summary": {
+    "rest_cases": 15,
+    "rest_canonical_resource_matches": 15,
+    "rest_rng_matches": 15,
+    "rest_initial_observation_matches": 12,
+    "rest_legal_action_matches": 12,
+    "rest_map_matches": 15,
+    "rest_restore_matches": 15,
+    "blue_cases": 9,
+    "blue_decision_boundaries": 18,
+    "blue_boundary_matches": 18,
+    "blue_restore_matches": 18,
+    "full_a20h_qualified": false
+  },
+  "rest_findings": [
+    {
+      "scene": "ruby-recall",
+      "seed": 131200300,
+      "final_act_flag_representable": true,
+      "initial_resource_differences": [],
+      "legal_action_differences": [],
+      "initial_observation_differences": [],
+      "resource_differences": [],
+      "raw_resource_differences": [
+        {
+          "path": ".relics[0].counter",
+          "expected": -1,
+          "actual": 0
+        }
+      ],
+      "rng_differences": [],
+      "restored_suffix_equal": true,
+      "post_restore_equal": true,
+      "original_terminal_screen": "REST",
+      "native_terminal_screen": "MAP",
+      "map_observation_differences": [],
+      "map_action_differences": [],
+      "map_rng_differences": []
+    },
+    {
+      "scene": "ruby-recall",
+      "seed": 131200301,
+      "final_act_flag_representable": true,
+      "initial_resource_differences": [],
+      "legal_action_differences": [],
+      "initial_observation_differences": [],
+      "resource_differences": [],
+      "raw_resource_differences": [
+        {
+          "path": ".relics[0].counter",
+          "expected": -1,
+          "actual": 0
+        }
+      ],
+      "rng_differences": [],
+      "restored_suffix_equal": true,
+      "post_restore_equal": true,
+      "original_terminal_screen": "REST",
+      "native_terminal_screen": "MAP",
+      "map_observation_differences": [],
+      "map_action_differences": [],
+      "map_rng_differences": []
+    },
+    {
+      "scene": "ruby-recall",
+      "seed": 131200302,
+      "final_act_flag_representable": true,
+      "initial_resource_differences": [],
+      "legal_action_differences": [],
+      "initial_observation_differences": [],
+      "resource_differences": [],
+      "raw_resource_differences": [
+        {
+          "path": ".relics[0].counter",
+          "expected": -1,
+          "actual": 0
+        }
+      ],
+      "rng_differences": [],
+      "restored_suffix_equal": true,
+      "post_restore_equal": true,
+      "original_terminal_screen": "REST",
+      "native_terminal_screen": "MAP",
+      "map_observation_differences": [],
+      "map_action_differences": [],
+      "map_rng_differences": []
+    },
+    {
+      "scene": "ruby-rest-alternative",
+      "seed": 131200303,
+      "final_act_flag_representable": true,
+      "initial_resource_differences": [],
+      "legal_action_differences": [],
+      "initial_observation_differences": [],
+      "resource_differences": [],
+      "raw_resource_differences": [
+        {
+          "path": ".relics[0].counter",
+          "expected": -1,
+          "actual": 0
+        }
+      ],
+      "rng_differences": [],
+      "restored_suffix_equal": true,
+      "post_restore_equal": true,
+      "original_terminal_screen": "REST",
+      "native_terminal_screen": "MAP",
+      "map_observation_differences": [],
+      "map_action_differences": [],
+      "map_rng_differences": []
+    },
+    {
+      "scene": "ruby-rest-alternative",
+      "seed": 131200304,
+      "final_act_flag_representable": true,
+      "initial_resource_differences": [],
+      "legal_action_differences": [],
+      "initial_observation_differences": [],
+      "resource_differences": [],
+      "raw_resource_differences": [
+        {
+          "path": ".relics[0].counter",
+          "expected": -1,
+          "actual": 0
+        }
+      ],
+      "rng_differences": [],
+      "restored_suffix_equal": true,
+      "post_restore_equal": true,
+      "original_terminal_screen": "REST",
+      "native_terminal_screen": "MAP",
+      "map_observation_differences": [],
+      "map_action_differences": [],
+      "map_rng_differences": []
+    },
+    {
+      "scene": "ruby-rest-alternative",
+      "seed": 131200305,
+      "final_act_flag_representable": true,
+      "initial_resource_differences": [],
+      "legal_action_differences": [],
+      "initial_observation_differences": [],
+      "resource_differences": [],
+      "raw_resource_differences": [
+        {
+          "path": ".relics[0].counter",
+          "expected": -1,
+          "actual": 0
+        }
+      ],
+      "rng_differences": [],
+      "restored_suffix_equal": true,
+      "post_restore_equal": true,
+      "original_terminal_screen": "REST",
+      "native_terminal_screen": "MAP",
+      "map_observation_differences": [],
+      "map_action_differences": [],
+      "map_rng_differences": []
+    },
+    {
+      "scene": "ruby-rest-regal-pillow",
+      "seed": 131200306,
+      "final_act_flag_representable": true,
+      "initial_resource_differences": [],
+      "legal_action_differences": [],
+      "initial_observation_differences": [],
+      "resource_differences": [],
+      "raw_resource_differences": [
+        {
+          "path": ".relics[0].counter",
+          "expected": -1,
+          "actual": 0
+        },
+        {
+          "path": ".relics[1].counter",
+          "expected": -1,
+          "actual": 0
+        }
+      ],
+      "rng_differences": [],
+      "restored_suffix_equal": true,
+      "post_restore_equal": true,
+      "original_terminal_screen": "REST",
+      "native_terminal_screen": "MAP",
+      "map_observation_differences": [],
+      "map_action_differences": [],
+      "map_rng_differences": []
+    },
+    {
+      "scene": "ruby-rest-regal-pillow",
+      "seed": 131200307,
+      "final_act_flag_representable": true,
+      "initial_resource_differences": [],
+      "legal_action_differences": [],
+      "initial_observation_differences": [],
+      "resource_differences": [],
+      "raw_resource_differences": [
+        {
+          "path": ".relics[0].counter",
+          "expected": -1,
+          "actual": 0
+        },
+        {
+          "path": ".relics[1].counter",
+          "expected": -1,
+          "actual": 0
+        }
+      ],
+      "rng_differences": [],
+      "restored_suffix_equal": true,
+      "post_restore_equal": true,
+      "original_terminal_screen": "REST",
+      "native_terminal_screen": "MAP",
+      "map_observation_differences": [],
+      "map_action_differences": [],
+      "map_rng_differences": []
+    },
+    {
+      "scene": "ruby-rest-regal-pillow",
+      "seed": 131200308,
+      "final_act_flag_representable": true,
+      "initial_resource_differences": [],
+      "legal_action_differences": [],
+      "initial_observation_differences": [],
+      "resource_differences": [],
+      "raw_resource_differences": [
+        {
+          "path": ".relics[0].counter",
+          "expected": -1,
+          "actual": 0
+        },
+        {
+          "path": ".relics[1].counter",
+          "expected": -1,
+          "actual": 0
+        }
+      ],
+      "rng_differences": [],
+      "restored_suffix_equal": true,
+      "post_restore_equal": true,
+      "original_terminal_screen": "REST",
+      "native_terminal_screen": "MAP",
+      "map_observation_differences": [],
+      "map_action_differences": [],
+      "map_rng_differences": []
+    },
+    {
+      "scene": "ruby-already-held",
+      "seed": 131200309,
+      "final_act_flag_representable": true,
+      "initial_resource_differences": [],
+      "legal_action_differences": [],
+      "initial_observation_differences": [],
+      "resource_differences": [],
+      "raw_resource_differences": [
+        {
+          "path": ".relics[0].counter",
+          "expected": -1,
+          "actual": 0
+        }
+      ],
+      "rng_differences": [],
+      "restored_suffix_equal": true,
+      "post_restore_equal": true,
+      "original_terminal_screen": "REST",
+      "native_terminal_screen": "MAP",
+      "map_observation_differences": [],
+      "map_action_differences": [],
+      "map_rng_differences": []
+    },
+    {
+      "scene": "ruby-already-held",
+      "seed": 131200310,
+      "final_act_flag_representable": true,
+      "initial_resource_differences": [],
+      "legal_action_differences": [],
+      "initial_observation_differences": [],
+      "resource_differences": [],
+      "raw_resource_differences": [
+        {
+          "path": ".relics[0].counter",
+          "expected": -1,
+          "actual": 0
+        }
+      ],
+      "rng_differences": [],
+      "restored_suffix_equal": true,
+      "post_restore_equal": true,
+      "original_terminal_screen": "REST",
+      "native_terminal_screen": "MAP",
+      "map_observation_differences": [],
+      "map_action_differences": [],
+      "map_rng_differences": []
+    },
+    {
+      "scene": "ruby-already-held",
+      "seed": 131200311,
+      "final_act_flag_representable": true,
+      "initial_resource_differences": [],
+      "legal_action_differences": [],
+      "initial_observation_differences": [],
+      "resource_differences": [],
+      "raw_resource_differences": [
+        {
+          "path": ".relics[0].counter",
+          "expected": -1,
+          "actual": 0
+        }
+      ],
+      "rng_differences": [],
+      "restored_suffix_equal": true,
+      "post_restore_equal": true,
+      "original_terminal_screen": "REST",
+      "native_terminal_screen": "MAP",
+      "map_observation_differences": [],
+      "map_action_differences": [],
+      "map_rng_differences": []
+    },
+    {
+      "scene": "ruby-final-act-disabled",
+      "seed": 131200312,
+      "final_act_flag_representable": false,
+      "initial_resource_differences": [],
+      "legal_action_differences": [
+        {
+          "path": "",
+          "expected": [
+            {
+              "kind": "REST",
+              "subject_id": null,
+              "target_id": null,
+              "option_id": "rest-option:0",
+              "node_id": null,
+              "reward_id": null,
+              "metadata": [],
+              "schema_version": 1
+            },
+            {
+              "kind": "CONFIRM",
+              "subject_id": null,
+              "target_id": null,
+              "option_id": "rest-option:1",
+              "node_id": null,
+              "reward_id": null,
+              "metadata": [],
+              "schema_version": 1
+            }
+          ],
+          "actual": [
+            {
+              "kind": "REST",
+              "subject_id": null,
+              "target_id": null,
+              "option_id": "rest-option:0",
+              "node_id": null,
+              "reward_id": null,
+              "metadata": [],
+              "schema_version": 1
+            },
+            {
+              "kind": "CONFIRM",
+              "subject_id": null,
+              "target_id": null,
+              "option_id": "rest-option:1",
+              "node_id": null,
+              "reward_id": null,
+              "metadata": [],
+              "schema_version": 1
+            },
+            {
+              "kind": "RECALL",
+              "subject_id": null,
+              "target_id": null,
+              "option_id": "rest-option:2",
+              "node_id": null,
+              "reward_id": null,
+              "metadata": [],
+              "schema_version": 1
+            }
+          ]
+        }
+      ],
+      "initial_observation_differences": [
+        {
+          "path": ".rest_options",
+          "expected": [
+            {
+              "instance_id": "rest-option:0",
+              "content_id": "REST",
+              "properties": [],
+              "owner_id": null
+            },
+            {
+              "instance_id": "rest-option:1",
+              "content_id": "SMITH",
+              "properties": [],
+              "owner_id": null
+            }
+          ],
+          "actual": [
+            {
+              "instance_id": "rest-option:0",
+              "content_id": "REST",
+              "properties": [],
+              "owner_id": null
+            },
+            {
+              "instance_id": "rest-option:1",
+              "content_id": "SMITH",
+              "properties": [],
+              "owner_id": null
+            },
+            {
+              "instance_id": "rest-option:2",
+              "content_id": "RECALL",
+              "properties": [],
+              "owner_id": null
+            }
+          ]
+        }
+      ],
+      "resource_differences": [],
+      "raw_resource_differences": [
+        {
+          "path": ".relics[0].counter",
+          "expected": -1,
+          "actual": 0
+        }
+      ],
+      "rng_differences": [],
+      "restored_suffix_equal": true,
+      "post_restore_equal": true,
+      "original_terminal_screen": "REST",
+      "native_terminal_screen": "MAP",
+      "map_observation_differences": [],
+      "map_action_differences": [],
+      "map_rng_differences": []
+    },
+    {
+      "scene": "ruby-final-act-disabled",
+      "seed": 131200313,
+      "final_act_flag_representable": false,
+      "initial_resource_differences": [],
+      "legal_action_differences": [
+        {
+          "path": "",
+          "expected": [
+            {
+              "kind": "REST",
+              "subject_id": null,
+              "target_id": null,
+              "option_id": "rest-option:0",
+              "node_id": null,
+              "reward_id": null,
+              "metadata": [],
+              "schema_version": 1
+            },
+            {
+              "kind": "CONFIRM",
+              "subject_id": null,
+              "target_id": null,
+              "option_id": "rest-option:1",
+              "node_id": null,
+              "reward_id": null,
+              "metadata": [],
+              "schema_version": 1
+            }
+          ],
+          "actual": [
+            {
+              "kind": "REST",
+              "subject_id": null,
+              "target_id": null,
+              "option_id": "rest-option:0",
+              "node_id": null,
+              "reward_id": null,
+              "metadata": [],
+              "schema_version": 1
+            },
+            {
+              "kind": "CONFIRM",
+              "subject_id": null,
+              "target_id": null,
+              "option_id": "rest-option:1",
+              "node_id": null,
+              "reward_id": null,
+              "metadata": [],
+              "schema_version": 1
+            },
+            {
+              "kind": "RECALL",
+              "subject_id": null,
+              "target_id": null,
+              "option_id": "rest-option:2",
+              "node_id": null,
+              "reward_id": null,
+              "metadata": [],
+              "schema_version": 1
+            }
+          ]
+        }
+      ],
+      "initial_observation_differences": [
+        {
+          "path": ".rest_options",
+          "expected": [
+            {
+              "instance_id": "rest-option:0",
+              "content_id": "REST",
+              "properties": [],
+              "owner_id": null
+            },
+            {
+              "instance_id": "rest-option:1",
+              "content_id": "SMITH",
+              "properties": [],
+              "owner_id": null
+            }
+          ],
+          "actual": [
+            {
+              "instance_id": "rest-option:0",
+              "content_id": "REST",
+              "properties": [],
+              "owner_id": null
+            },
+            {
+              "instance_id": "rest-option:1",
+              "content_id": "SMITH",
+              "properties": [],
+              "owner_id": null
+            },
+            {
+              "instance_id": "rest-option:2",
+              "content_id": "RECALL",
+              "properties": [],
+              "owner_id": null
+            }
+          ]
+        }
+      ],
+      "resource_differences": [],
+      "raw_resource_differences": [
+        {
+          "path": ".relics[0].counter",
+          "expected": -1,
+          "actual": 0
+        }
+      ],
+      "rng_differences": [],
+      "restored_suffix_equal": true,
+      "post_restore_equal": true,
+      "original_terminal_screen": "REST",
+      "native_terminal_screen": "MAP",
+      "map_observation_differences": [],
+      "map_action_differences": [],
+      "map_rng_differences": []
+    },
+    {
+      "scene": "ruby-final-act-disabled",
+      "seed": 131200314,
+      "final_act_flag_representable": false,
+      "initial_resource_differences": [],
+      "legal_action_differences": [
+        {
+          "path": "",
+          "expected": [
+            {
+              "kind": "REST",
+              "subject_id": null,
+              "target_id": null,
+              "option_id": "rest-option:0",
+              "node_id": null,
+              "reward_id": null,
+              "metadata": [],
+              "schema_version": 1
+            },
+            {
+              "kind": "CONFIRM",
+              "subject_id": null,
+              "target_id": null,
+              "option_id": "rest-option:1",
+              "node_id": null,
+              "reward_id": null,
+              "metadata": [],
+              "schema_version": 1
+            }
+          ],
+          "actual": [
+            {
+              "kind": "REST",
+              "subject_id": null,
+              "target_id": null,
+              "option_id": "rest-option:0",
+              "node_id": null,
+              "reward_id": null,
+              "metadata": [],
+              "schema_version": 1
+            },
+            {
+              "kind": "CONFIRM",
+              "subject_id": null,
+              "target_id": null,
+              "option_id": "rest-option:1",
+              "node_id": null,
+              "reward_id": null,
+              "metadata": [],
+              "schema_version": 1
+            },
+            {
+              "kind": "RECALL",
+              "subject_id": null,
+              "target_id": null,
+              "option_id": "rest-option:2",
+              "node_id": null,
+              "reward_id": null,
+              "metadata": [],
+              "schema_version": 1
+            }
+          ]
+        }
+      ],
+      "initial_observation_differences": [
+        {
+          "path": ".rest_options",
+          "expected": [
+            {
+              "instance_id": "rest-option:0",
+              "content_id": "REST",
+              "properties": [],
+              "owner_id": null
+            },
+            {
+              "instance_id": "rest-option:1",
+              "content_id": "SMITH",
+              "properties": [],
+              "owner_id": null
+            }
+          ],
+          "actual": [
+            {
+              "instance_id": "rest-option:0",
+              "content_id": "REST",
+              "properties": [],
+              "owner_id": null
+            },
+            {
+              "instance_id": "rest-option:1",
+              "content_id": "SMITH",
+              "properties": [],
+              "owner_id": null
+            },
+            {
+              "instance_id": "rest-option:2",
+              "content_id": "RECALL",
+              "properties": [],
+              "owner_id": null
+            }
+          ]
+        }
+      ],
+      "resource_differences": [],
+      "raw_resource_differences": [
+        {
+          "path": ".relics[0].counter",
+          "expected": -1,
+          "actual": 0
+        }
+      ],
+      "rng_differences": [],
+      "restored_suffix_equal": true,
+      "post_restore_equal": true,
+      "original_terminal_screen": "REST",
+      "native_terminal_screen": "MAP",
+      "map_observation_differences": [],
+      "map_action_differences": [],
+      "map_rng_differences": []
+    }
+  ],
+  "blue_findings": [
+    {
+      "scene": "sapphire-take-key",
+      "seed": 131200315,
+      "initial_observation_differences": [],
+      "chest_creation": {
+        "status": "CHECKED_CHEST_METADATA_AND_TREASURE_STREAM_ONLY",
+        "stock_node": [
+          0,
+          8
+        ],
+        "differences": [],
+        "treasure_rng_differences": [],
+        "all_rng_differences": [
+          {
+            "path": ".ai.counter",
+            "expected": 1,
+            "actual": 0
+          },
+          {
+            "path": ".ai.seed0",
+            "expected": 14498023955801552329,
+            "actual": 7932481306008345589
+          },
+          {
+            "path": ".ai.seed1",
+            "expected": 8205659882734109767,
+            "actual": 16634992132530989855
+          },
+          {
+            "path": ".card_random.seed0",
+            "expected": 7442000193638128387,
+            "actual": 7932481306008345589
+          },
+          {
+            "path": ".card_random.seed1",
+            "expected": 14498023955801552329,
+            "actual": 16634992132530989855
+          },
+          {
+            "path": ".misc.counter",
+            "expected": 1,
+            "actual": 0
+          },
+          {
+            "path": ".misc.seed0",
+            "expected": 14498023955801552329,
+            "actual": 7932481306008345589
+          },
+          {
+            "path": ".misc.seed1",
+            "expected": 8205659882734109767,
+            "actual": 16634992132530989855
+          },
+          {
+            "path": ".monster_hp.counter",
+            "expected": 1,
+            "actual": 0
+          },
+          {
+            "path": ".monster_hp.seed0",
+            "expected": 14498023955801552329,
+            "actual": 7932481306008345589
+          },
+          {
+            "path": ".monster_hp.seed1",
+            "expected": 8205659882734109767,
+            "actual": 16634992132530989855
+          },
+          {
+            "path": ".shuffle.counter",
+            "expected": 1,
+            "actual": 0
+          },
+          {
+            "path": ".shuffle.seed0",
+            "expected": 14498023955801552329,
+            "actual": 7932481306008345589
+          },
+          {
+            "path": ".shuffle.seed1",
+            "expected": 8205659882734109767,
+            "actual": 16634992132530989855
+          }
+        ],
+        "native_map_parent": {
+          "node_id": "map:0:7",
+          "x": 0,
+          "y": 7,
+          "room_type": "MONSTER",
+          "reachable": false,
+          "burning": false,
+          "outgoing_node_ids": [
+            "map:0:8"
+          ]
+        }
+      }
+    },
+    {
+      "scene": "sapphire-take-key",
+      "seed": 131200316,
+      "initial_observation_differences": [],
+      "chest_creation": {
+        "status": "CHECKED_CHEST_METADATA_AND_TREASURE_STREAM_ONLY",
+        "stock_node": [
+          0,
+          8
+        ],
+        "differences": [],
+        "treasure_rng_differences": [],
+        "all_rng_differences": [
+          {
+            "path": ".ai.counter",
+            "expected": 1,
+            "actual": 0
+          },
+          {
+            "path": ".ai.seed0",
+            "expected": 5810392508498993913,
+            "actual": 12613778382202290395
+          },
+          {
+            "path": ".ai.seed1",
+            "expected": 6436767954371453428,
+            "actual": 8980101331888326217
+          },
+          {
+            "path": ".card_random.seed0",
+            "expected": 17776279468947075313,
+            "actual": 12613778382202290395
+          },
+          {
+            "path": ".card_random.seed1",
+            "expected": 5810392508498993913,
+            "actual": 8980101331888326217
+          },
+          {
+            "path": ".misc.counter",
+            "expected": 1,
+            "actual": 0
+          },
+          {
+            "path": ".misc.seed0",
+            "expected": 5810392508498993913,
+            "actual": 12613778382202290395
+          },
+          {
+            "path": ".misc.seed1",
+            "expected": 6436767954371453428,
+            "actual": 8980101331888326217
+          },
+          {
+            "path": ".monster_hp.counter",
+            "expected": 1,
+            "actual": 0
+          },
+          {
+            "path": ".monster_hp.seed0",
+            "expected": 5810392508498993913,
+            "actual": 12613778382202290395
+          },
+          {
+            "path": ".monster_hp.seed1",
+            "expected": 6436767954371453428,
+            "actual": 8980101331888326217
+          },
+          {
+            "path": ".shuffle.counter",
+            "expected": 1,
+            "actual": 0
+          },
+          {
+            "path": ".shuffle.seed0",
+            "expected": 5810392508498993913,
+            "actual": 12613778382202290395
+          },
+          {
+            "path": ".shuffle.seed1",
+            "expected": 6436767954371453428,
+            "actual": 8980101331888326217
+          }
+        ],
+        "native_map_parent": {
+          "node_id": "map:0:7",
+          "x": 0,
+          "y": 7,
+          "room_type": "REST",
+          "reachable": false,
+          "burning": false,
+          "outgoing_node_ids": [
+            "map:0:8",
+            "map:1:8"
+          ]
+        }
+      }
+    },
+    {
+      "scene": "sapphire-take-key",
+      "seed": 131200317,
+      "initial_observation_differences": [],
+      "chest_creation": {
+        "status": "CHECKED_CHEST_METADATA_AND_TREASURE_STREAM_ONLY",
+        "stock_node": [
+          0,
+          8
+        ],
+        "differences": [],
+        "treasure_rng_differences": [],
+        "all_rng_differences": [
+          {
+            "path": ".ai.counter",
+            "expected": 2,
+            "actual": 0
+          },
+          {
+            "path": ".ai.seed0",
+            "expected": 2721290755357648945,
+            "actual": 16817327451033462072
+          },
+          {
+            "path": ".ai.seed1",
+            "expected": 6200810543337483085,
+            "actual": 16218637465644278228
+          },
+          {
+            "path": ".card_random.seed0",
+            "expected": 17086762951374751204,
+            "actual": 16817327451033462072
+          },
+          {
+            "path": ".card_random.seed1",
+            "expected": 16651225272039123015,
+            "actual": 16218637465644278228
+          },
+          {
+            "path": ".misc.counter",
+            "expected": 3,
+            "actual": 0
+          },
+          {
+            "path": ".misc.seed0",
+            "expected": 6200810543337483085,
+            "actual": 16817327451033462072
+          },
+          {
+            "path": ".misc.seed1",
+            "expected": 12745154489762253712,
+            "actual": 16218637465644278228
+          },
+          {
+            "path": ".monster_hp.counter",
+            "expected": 6,
+            "actual": 0
+          },
+          {
+            "path": ".monster_hp.seed0",
+            "expected": 4708720501841288291,
+            "actual": 16817327451033462072
+          },
+          {
+            "path": ".monster_hp.seed1",
+            "expected": 11161016311775819896,
+            "actual": 16218637465644278228
+          },
+          {
+            "path": ".shuffle.counter",
+            "expected": 1,
+            "actual": 0
+          },
+          {
+            "path": ".shuffle.seed0",
+            "expected": 16651225272039123015,
+            "actual": 16817327451033462072
+          },
+          {
+            "path": ".shuffle.seed1",
+            "expected": 2721290755357648945,
+            "actual": 16218637465644278228
+          }
+        ],
+        "native_map_parent": {
+          "node_id": "map:0:7",
+          "x": 0,
+          "y": 7,
+          "room_type": "ELITE",
+          "reachable": false,
+          "burning": false,
+          "outgoing_node_ids": [
+            "map:0:8"
+          ]
+        }
+      }
+    },
+    {
+      "scene": "sapphire-take-relic",
+      "seed": 131200318,
+      "initial_observation_differences": [],
+      "chest_creation": {
+        "status": "CHECKED_CHEST_METADATA_AND_TREASURE_STREAM_ONLY",
+        "stock_node": [
+          0,
+          8
+        ],
+        "differences": [],
+        "treasure_rng_differences": [],
+        "all_rng_differences": [
+          {
+            "path": ".ai.counter",
+            "expected": 1,
+            "actual": 0
+          },
+          {
+            "path": ".ai.seed0",
+            "expected": 12509444954432467576,
+            "actual": 8489938319952634597
+          },
+          {
+            "path": ".ai.seed1",
+            "expected": 7541671203280418649,
+            "actual": 11576759259382368682
+          },
+          {
+            "path": ".card_random.seed0",
+            "expected": 14761130605011702289,
+            "actual": 8489938319952634597
+          },
+          {
+            "path": ".card_random.seed1",
+            "expected": 12509444954432467576,
+            "actual": 11576759259382368682
+          },
+          {
+            "path": ".misc.counter",
+            "expected": 1,
+            "actual": 0
+          },
+          {
+            "path": ".misc.seed0",
+            "expected": 12509444954432467576,
+            "actual": 8489938319952634597
+          },
+          {
+            "path": ".misc.seed1",
+            "expected": 7541671203280418649,
+            "actual": 11576759259382368682
+          },
+          {
+            "path": ".monster_hp.counter",
+            "expected": 1,
+            "actual": 0
+          },
+          {
+            "path": ".monster_hp.seed0",
+            "expected": 12509444954432467576,
+            "actual": 8489938319952634597
+          },
+          {
+            "path": ".monster_hp.seed1",
+            "expected": 7541671203280418649,
+            "actual": 11576759259382368682
+          },
+          {
+            "path": ".shuffle.counter",
+            "expected": 1,
+            "actual": 0
+          },
+          {
+            "path": ".shuffle.seed0",
+            "expected": 12509444954432467576,
+            "actual": 8489938319952634597
+          },
+          {
+            "path": ".shuffle.seed1",
+            "expected": 7541671203280418649,
+            "actual": 11576759259382368682
+          }
+        ],
+        "native_map_parent": {
+          "node_id": "map:1:7",
+          "x": 1,
+          "y": 7,
+          "room_type": "MONSTER",
+          "reachable": false,
+          "burning": false,
+          "outgoing_node_ids": [
+            "map:0:8"
+          ]
+        }
+      }
+    },
+    {
+      "scene": "sapphire-take-relic",
+      "seed": 131200319,
+      "initial_observation_differences": [],
+      "chest_creation": {
+        "status": "UNSUPPORTED_CONTROLLED_NODE_NOT_REACHABLE",
+        "stock_node": [
+          0,
+          8
+        ]
+      }
+    },
+    {
+      "scene": "sapphire-take-relic",
+      "seed": 131200320,
+      "initial_observation_differences": [],
+      "chest_creation": {
+        "status": "CHECKED_CHEST_METADATA_AND_TREASURE_STREAM_ONLY",
+        "stock_node": [
+          0,
+          8
+        ],
+        "differences": [],
+        "treasure_rng_differences": [],
+        "all_rng_differences": [
+          {
+            "path": ".ai.counter",
+            "expected": 1,
+            "actual": 0
+          },
+          {
+            "path": ".ai.seed0",
+            "expected": 17002384793528060967,
+            "actual": 13743239613047066267
+          },
+          {
+            "path": ".ai.seed1",
+            "expected": 1212826750505787181,
+            "actual": 2492656862110269688
+          },
+          {
+            "path": ".card_random.seed0",
+            "expected": 14053962506708284098,
+            "actual": 13743239613047066267
+          },
+          {
+            "path": ".card_random.seed1",
+            "expected": 17002384793528060967,
+            "actual": 2492656862110269688
+          },
+          {
+            "path": ".misc.counter",
+            "expected": 1,
+            "actual": 0
+          },
+          {
+            "path": ".misc.seed0",
+            "expected": 17002384793528060967,
+            "actual": 13743239613047066267
+          },
+          {
+            "path": ".misc.seed1",
+            "expected": 1212826750505787181,
+            "actual": 2492656862110269688
+          },
+          {
+            "path": ".monster_hp.counter",
+            "expected": 1,
+            "actual": 0
+          },
+          {
+            "path": ".monster_hp.seed0",
+            "expected": 17002384793528060967,
+            "actual": 13743239613047066267
+          },
+          {
+            "path": ".monster_hp.seed1",
+            "expected": 1212826750505787181,
+            "actual": 2492656862110269688
+          },
+          {
+            "path": ".shuffle.counter",
+            "expected": 1,
+            "actual": 0
+          },
+          {
+            "path": ".shuffle.seed0",
+            "expected": 17002384793528060967,
+            "actual": 13743239613047066267
+          },
+          {
+            "path": ".shuffle.seed1",
+            "expected": 1212826750505787181,
+            "actual": 2492656862110269688
+          }
+        ],
+        "native_map_parent": {
+          "node_id": "map:0:7",
+          "x": 0,
+          "y": 7,
+          "room_type": "MONSTER",
+          "reachable": false,
+          "burning": false,
+          "outgoing_node_ids": [
+            "map:0:8"
+          ]
+        }
+      }
+    },
+    {
+      "scene": "sapphire-already-held",
+      "seed": 131200321,
+      "initial_observation_differences": [],
+      "chest_creation": {
+        "status": "CHECKED_CHEST_METADATA_AND_TREASURE_STREAM_ONLY",
+        "stock_node": [
+          0,
+          8
+        ],
+        "differences": [],
+        "treasure_rng_differences": [],
+        "all_rng_differences": [
+          {
+            "path": ".ai.counter",
+            "expected": 2,
+            "actual": 0
+          },
+          {
+            "path": ".ai.seed0",
+            "expected": 10790176051813877077,
+            "actual": 5536439626387831908
+          },
+          {
+            "path": ".ai.seed1",
+            "expected": 9928405202371967946,
+            "actual": 13758395300030023792
+          },
+          {
+            "path": ".card_random.seed0",
+            "expected": 6972953354232407471,
+            "actual": 5536439626387831908
+          },
+          {
+            "path": ".card_random.seed1",
+            "expected": 16549468537552889574,
+            "actual": 13758395300030023792
+          },
+          {
+            "path": ".misc.counter",
+            "expected": 2,
+            "actual": 0
+          },
+          {
+            "path": ".misc.seed0",
+            "expected": 10790176051813877077,
+            "actual": 5536439626387831908
+          },
+          {
+            "path": ".misc.seed1",
+            "expected": 9928405202371967946,
+            "actual": 13758395300030023792
+          },
+          {
+            "path": ".monster_hp.counter",
+            "expected": 2,
+            "actual": 0
+          },
+          {
+            "path": ".monster_hp.seed0",
+            "expected": 10790176051813877077,
+            "actual": 5536439626387831908
+          },
+          {
+            "path": ".monster_hp.seed1",
+            "expected": 9928405202371967946,
+            "actual": 13758395300030023792
+          },
+          {
+            "path": ".shuffle.counter",
+            "expected": 1,
+            "actual": 0
+          },
+          {
+            "path": ".shuffle.seed0",
+            "expected": 16549468537552889574,
+            "actual": 5536439626387831908
+          },
+          {
+            "path": ".shuffle.seed1",
+            "expected": 10790176051813877077,
+            "actual": 13758395300030023792
+          }
+        ],
+        "native_map_parent": {
+          "node_id": "map:0:7",
+          "x": 0,
+          "y": 7,
+          "room_type": "ELITE",
+          "reachable": false,
+          "burning": false,
+          "outgoing_node_ids": [
+            "map:0:8"
+          ]
+        }
+      }
+    },
+    {
+      "scene": "sapphire-already-held",
+      "seed": 131200322,
+      "initial_observation_differences": [],
+      "chest_creation": {
+        "status": "CHECKED_CHEST_METADATA_AND_TREASURE_STREAM_ONLY",
+        "stock_node": [
+          0,
+          8
+        ],
+        "differences": [],
+        "treasure_rng_differences": [],
+        "all_rng_differences": [
+          {
+            "path": ".ai.counter",
+            "expected": 1,
+            "actual": 0
+          },
+          {
+            "path": ".ai.seed0",
+            "expected": 7747815668192576673,
+            "actual": 17348077478128200073
+          },
+          {
+            "path": ".ai.seed1",
+            "expected": 17434777459733828478,
+            "actual": 4742011263838010921
+          },
+          {
+            "path": ".card_random.seed0",
+            "expected": 633986262120129654,
+            "actual": 17348077478128200073
+          },
+          {
+            "path": ".card_random.seed1",
+            "expected": 7747815668192576673,
+            "actual": 4742011263838010921
+          },
+          {
+            "path": ".misc.counter",
+            "expected": 1,
+            "actual": 0
+          },
+          {
+            "path": ".misc.seed0",
+            "expected": 7747815668192576673,
+            "actual": 17348077478128200073
+          },
+          {
+            "path": ".misc.seed1",
+            "expected": 17434777459733828478,
+            "actual": 4742011263838010921
+          },
+          {
+            "path": ".monster_hp.counter",
+            "expected": 1,
+            "actual": 0
+          },
+          {
+            "path": ".monster_hp.seed0",
+            "expected": 7747815668192576673,
+            "actual": 17348077478128200073
+          },
+          {
+            "path": ".monster_hp.seed1",
+            "expected": 17434777459733828478,
+            "actual": 4742011263838010921
+          },
+          {
+            "path": ".shuffle.counter",
+            "expected": 1,
+            "actual": 0
+          },
+          {
+            "path": ".shuffle.seed0",
+            "expected": 7747815668192576673,
+            "actual": 17348077478128200073
+          },
+          {
+            "path": ".shuffle.seed1",
+            "expected": 17434777459733828478,
+            "actual": 4742011263838010921
+          }
+        ],
+        "native_map_parent": {
+          "node_id": "map:0:7",
+          "x": 0,
+          "y": 7,
+          "room_type": "EVENT",
+          "reachable": false,
+          "burning": false,
+          "outgoing_node_ids": [
+            "map:0:8",
+            "map:1:8"
+          ]
+        }
+      }
+    },
+    {
+      "scene": "sapphire-already-held",
+      "seed": 131200323,
+      "initial_observation_differences": [],
+      "chest_creation": {
+        "status": "CHECKED_CHEST_METADATA_AND_TREASURE_STREAM_ONLY",
+        "stock_node": [
+          0,
+          8
+        ],
+        "differences": [],
+        "treasure_rng_differences": [],
+        "all_rng_differences": [
+          {
+            "path": ".ai.counter",
+            "expected": 1,
+            "actual": 0
+          },
+          {
+            "path": ".ai.seed0",
+            "expected": 3132325557231063149,
+            "actual": 10928806412201018285
+          },
+          {
+            "path": ".ai.seed1",
+            "expected": 17635675465990896155,
+            "actual": 14756603896789603617
+          },
+          {
+            "path": ".card_random.seed0",
+            "expected": 14477999877646171278,
+            "actual": 10928806412201018285
+          },
+          {
+            "path": ".card_random.seed1",
+            "expected": 3132325557231063149,
+            "actual": 14756603896789603617
+          },
+          {
+            "path": ".misc.counter",
+            "expected": 1,
+            "actual": 0
+          },
+          {
+            "path": ".misc.seed0",
+            "expected": 3132325557231063149,
+            "actual": 10928806412201018285
+          },
+          {
+            "path": ".misc.seed1",
+            "expected": 17635675465990896155,
+            "actual": 14756603896789603617
+          },
+          {
+            "path": ".monster_hp.counter",
+            "expected": 1,
+            "actual": 0
+          },
+          {
+            "path": ".monster_hp.seed0",
+            "expected": 3132325557231063149,
+            "actual": 10928806412201018285
+          },
+          {
+            "path": ".monster_hp.seed1",
+            "expected": 17635675465990896155,
+            "actual": 14756603896789603617
+          },
+          {
+            "path": ".shuffle.counter",
+            "expected": 1,
+            "actual": 0
+          },
+          {
+            "path": ".shuffle.seed0",
+            "expected": 3132325557231063149,
+            "actual": 10928806412201018285
+          },
+          {
+            "path": ".shuffle.seed1",
+            "expected": 17635675465990896155,
+            "actual": 14756603896789603617
+          }
+        ],
+        "native_map_parent": {
+          "node_id": "map:0:7",
+          "x": 0,
+          "y": 7,
+          "room_type": "EVENT",
+          "reachable": false,
+          "burning": false,
+          "outgoing_node_ids": [
+            "map:0:8"
+          ]
+        }
+      }
+    }
+  ],
+  "input_ledger": {
+    "local/build/oracle/key-continuation-r1.build.json": "d63bbbf45bd68115a7b4129c273072ef84622785c76fbf27874ae1ef4cfc4003",
+    "local/build/oracle/key-continuation-r1.jar": "51a3db3e7208b2c98ffc3861a7296c9f619f12df4ce57597e0cab42f96c9f870",
+    "local/reports/key-native-20261010/blue-replay-final.json": "e613a733c0980c20bf96454fbc595ff5375c806b17da671bbf0f56947169970a",
+    "local/reports/key-native-20261010/blue-replay-r1.json": "175f69c729ef67f281ab73429a9fb5e377b0f16cb9c898560a1931eb40c867f4",
+    "local/reports/key-native-20261010/blue-replay-r2.json": "e613a733c0980c20bf96454fbc595ff5375c806b17da671bbf0f56947169970a",
+    "local/reports/key-native-20261010/cpu-tests-final.log": "b75be98483f9b54b83e36c7656d62cdbd54b5c8dba858cdb0c8d2a53871672df",
+    "local/reports/key-native-20261010/key-continuation-r1.json": "a00a74ae186d50a62d646356225f4669bb160e7e08020516b10cc11d3180e94a",
+    "local/reports/key-native-20261010/key-continuation-r1.launch.json": "8ae79aac943646cde952897fddc9e58963e7f90e8620ee1dbc208445148ca7fd",
+    "local/reports/key-native-20261010/production-r43.json": "75840281f1896dd5987d3f22c47b01822c280731cce3329a83f1eb530da25670",
+    "local/reports/key-native-20261010/production-r43.launch.json": "6969b824b6267e586ce12ac10f0d86b9c0a3321abb0901b0fe7a18312cacae5d",
+    "local/reports/key-native-20261010/protection-r1.json": "bda58949d3dbba86c99e901a705a4f40acf3ac27e75a09782f2ff24dc3dd8808",
+    "local/reports/key-native-20261010/recall-replay-r1.json": "efa35f9a56ee19ae7d9bcd5c15a3f0e8e85b1925c87937156d2f1dc2d6cc8348",
+    "local/reports/key-native-20261010/recall-replay-r2.json": "ca03c3427dee5d1775fe801d6b3bd8c934dc4e0b29e5e244f159fa34e0a0a9ce",
+    "local/reports/key-native-20261010/rest-map-replay-final.json": "9927e25ca936c7ebacb8f37b09bbd76132cb6f4e3c4d0d6b90cbeea0b6e5b9d6",
+    "local/reports/key-native-20261010/rest-map-replay-r1.json": "9927e25ca936c7ebacb8f37b09bbd76132cb6f4e3c4d0d6b90cbeea0b6e5b9d6",
+    "local/reports/key-native-20261010/rest-replay-r1.json": "b65da57b13732bbdb8074d341b4de5e341e79899c9c865514d950a7936f4db78",
+    "local/runs/oracle-qualification/runtime-backups/20261010T074125.887172Z/completion.json": "defdc2ce808ead94d83fa19faf1bb0e183371eba03e0c71a1132c983cb1ed514",
+    "local/runs/oracle-qualification/runtime-backups/20261010T074125.887172Z/journal.json": "dabdf447e973410177346461e0708223ec282157045c88cc7bb198a22eaf578d",
+    "local/runs/oracle-qualification/runtime-backups/20261010T074125.887172Z/stderr.log": "140e6e533943fe5f821366e30fd8f851260eb6769d080eb0713185503e4c2703",
+    "local/runs/oracle-qualification/runtime-backups/20261010T074125.887172Z/stdout.log": "cc62fb85688fe9fe4f6da1fce23bde7c53d26f09df659e10f0e132ebf50530d8",
+    "local/runs/oracle-qualification/runtime-backups/20261010T074300.519489Z/completion.json": "df5d8a1b8cd9497eb44a78604ddc449e5bac95bcab2997eaab7ac73fd88768c1",
+    "local/runs/oracle-qualification/runtime-backups/20261010T074300.519489Z/journal.json": "0a19cf210b4961e7c27470fd6244a7bd45b37d31c3b32ba49f291471c523534c",
+    "local/runs/oracle-qualification/runtime-backups/20261010T074300.519489Z/stderr.log": "140e6e533943fe5f821366e30fd8f851260eb6769d080eb0713185503e4c2703",
+    "local/runs/oracle-qualification/runtime-backups/20261010T074300.519489Z/stdout.log": "5216c880b67c0f2ce142affbeae9939e6a0cc542ddb634a05cc07c14b7e5b689",
+    "local/verify_key_protection.py": "b5d28d3867bdcef259ff833d21f881725dd295dc2415a80d840c4428ff167a2a",
+    "native/oracle/resources/spirecomm/parity/fullrun-key-acquisition-r1.json": "3bb4270f0445584607d1b6317324f52463799b1306bdfb567fafd0dd7881ba28"
+  },
+  "protection": {
+    "original_pending_files": 197,
+    "original_files_unchanged": true,
+    "original_status_unchanged": true,
+    "no_running_game": true,
+    "journals": [
+      {
+        "journal": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\runs\\oracle-qualification\\runtime-backups\\20261010T071611.090330Z\\journal.json",
+        "entries": 63,
+        "status": "RECOVERED",
+        "sha256": "a2729d08eb4ee059b33d15c4d04458e418e87d91abaf261688fa74e45ad76eb5",
+        "all_targets_equal": true
+      },
+      {
+        "journal": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\runs\\oracle-qualification\\runtime-backups\\20261010T071722.785746Z\\journal.json",
+        "entries": 63,
+        "status": "RECOVERED",
+        "sha256": "52fa03acb03db5575fbda3022a56562580bfbed1c195a891f2952e781ce2b1cc",
+        "all_targets_equal": true
+      },
+      {
+        "journal": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\runs\\oracle-qualification\\runtime-backups\\20261010T071756.543426Z\\journal.json",
+        "entries": 63,
+        "status": "RECOVERED",
+        "sha256": "0816cb872198d00b07ba00f8e721da44e304bf8cac1ac1ea6701bec1f317d7b0",
+        "all_targets_equal": true
+      },
+      {
+        "journal": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\runs\\oracle-qualification\\runtime-backups\\20261010T071936.747461Z\\journal.json",
+        "entries": 63,
+        "status": "RECOVERED",
+        "sha256": "c63e9fc0b967265d2072869042d5a08be860c73eccb473f5a4fb1d884e9dd9b6",
+        "all_targets_equal": true
+      },
+      {
+        "journal": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\runs\\oracle-qualification\\runtime-backups\\20261010T072052.737595Z\\journal.json",
+        "entries": 63,
+        "status": "RECOVERED",
+        "sha256": "9b7ef9707a5bb3b6f06a639b8108e7b263eabb4cc96472cfa00da1e53056e0cb",
+        "all_targets_equal": true
+      },
+      {
+        "journal": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\runs\\oracle-qualification\\runtime-backups\\20261010T072443.961480Z\\journal.json",
+        "entries": 63,
+        "status": "RECOVERED",
+        "sha256": "d3714998a8a44f50d681f59582baf52bdc14a821278cb324637e9a83bbabcc1e",
+        "all_targets_equal": true
+      },
+      {
+        "journal": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\runs\\oracle-qualification\\runtime-backups\\20261010T074125.887172Z\\journal.json",
+        "entries": 63,
+        "status": "RECOVERED",
+        "sha256": "dabdf447e973410177346461e0708223ec282157045c88cc7bb198a22eaf578d",
+        "all_targets_equal": true
+      },
+      {
+        "journal": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\runs\\oracle-qualification\\runtime-backups\\20261010T074300.519489Z\\journal.json",
+        "entries": 63,
+        "status": "RECOVERED",
+        "sha256": "0a19cf210b4961e7c27470fd6244a7bd45b37d31c3b32ba49f291471c523534c",
+        "all_targets_equal": true
+      }
+    ]
+  },
+  "validation": {
+    "cpu_tests": "1615 passed, 2 skipped, 4 warnings",
+    "cuda_disabled": true,
+    "ruff": "PASS",
+    "production_smoke": "PASS"
+  },
+  "artifact": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\key-native-20261010-delivery-r2.zip",
+  "artifact_bytes": 2985273,
+  "artifact_sha256": "9f7fc4eb46bd787291db6cdd862654555f4dcfb5d7a46cf5dc213ec03e307763"
+}

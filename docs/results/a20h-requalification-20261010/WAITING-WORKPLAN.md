@@ -11,7 +11,7 @@
 - CPU 全量 1600 passed / 2 skipped；Ruff 通过。测试通过不是原版全规则认证。现有初态持三钥匙案例不能证明取得流程。
 - 计划制定时 `OracleKeyRoom.java` 尚未编译或运行。随后已完成红/蓝钥匙24个原版受控场景及独立采集审计，进度见 [KEY-CAPTURE.md](KEY-CAPTURE.md)；native 对照尚未完成。
 
-证据与限制见 [README.md](README.md)、[evidence.json](evidence.json)。
+证据与限制见 [README.md](README.md)、[evidence.json](evidence.json)。随后完成的红/蓝钥匙 native 回放、真实地图边界及恢复检查见 [KEY-REPLAY.md](KEY-REPLAY.md)：仍保留终幕旗标缺口和不可达受控宝箱节点，完整 A20H 尚未资格通过。
 
 ## 执行顺序
 

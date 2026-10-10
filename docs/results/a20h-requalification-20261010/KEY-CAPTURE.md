@@ -54,4 +54,4 @@ python tools/audit_stock_key_room_capture.py `
 
 所有输出独占创建；不能覆盖本轮归档。此命令会短暂启动本地原版并自动备份/恢复，运行前必须无原版游戏进程。
 
-下一步按原版公开初态、真实奖励及 RNG 设置一致的 native 初始房间，执行相同合法选择并逐边界差分，包括生产 FullRun restore。随后补绿色燃烧精英分支，再连接双 Boss 与 Act4；不得从这24个原版场景推断模拟器已经完全匹配。
+之后的 native 对照与恢复进度见 [KEY-REPLAY.md](KEY-REPLAY.md)。完整 A20H 资格仍未完成；不得从这24个原版场景推断模拟器已经完全匹配。
