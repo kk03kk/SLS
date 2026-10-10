@@ -115,6 +115,27 @@ public final class CommunicationStatePatch {
         result.put("room_class", AbstractDungeon.getCurrRoom().getClass().getName());
         result.put("scene_class", AbstractDungeon.scene.getClass().getName());
         result.put("floor", AbstractDungeon.floorNum);
+        result.put("key_room_evidence_schema", "sls-stock-key-room-v1");
+        result.put("final_act_available", Settings.isFinalActAvailable);
+        Map<String, Object> pools = new LinkedHashMap<String, Object>();
+        pools.put("common_relics", new ArrayList<String>(AbstractDungeon.commonRelicPool));
+        pools.put("uncommon_relics", new ArrayList<String>(AbstractDungeon.uncommonRelicPool));
+        pools.put("rare_relics", new ArrayList<String>(AbstractDungeon.rareRelicPool));
+        pools.put("shop_relics", new ArrayList<String>(AbstractDungeon.shopRelicPool));
+        pools.put("boss_relics", new ArrayList<String>(AbstractDungeon.bossRelicPool));
+        result.put("ordered_relic_pools", pools);
+        if (AbstractDungeon.getCurrRoom() instanceof com.megacrit.cardcrawl.rooms.TreasureRoom) {
+            com.megacrit.cardcrawl.rewards.chests.AbstractChest chest =
+                ((com.megacrit.cardcrawl.rooms.TreasureRoom) AbstractDungeon.getCurrRoom()).chest;
+            if (chest != null) {
+                Map<String, Object> evidence = new LinkedHashMap<String, Object>();
+                evidence.put("class", chest.getClass().getSimpleName());
+                evidence.put("open", chest.isOpen);
+                evidence.put("gold_reward", chest.goldReward);
+                evidence.put("relic_reward", chest.relicReward.name());
+                result.put("chest", evidence);
+            }
+        }
         result.put("boss_flow_evidence_schema", "sls-stock-boss-flow-v1");
         result.put("boss_key", AbstractDungeon.bossKey);
         result.put("remaining_bosses", new ArrayList<String>(AbstractDungeon.bossList));
@@ -168,6 +189,7 @@ public final class CommunicationStatePatch {
             row.put("base_cost", card.cost);
             row.put("cost", card.costForTurn);
             row.put("upgrades", card.timesUpgraded);
+            row.put("misc", card.misc);
             row.put("free_to_play_once", card.freeToPlayOnce);
             row.put("retain", card.retain);
             row.put("self_retain", card.selfRetain);

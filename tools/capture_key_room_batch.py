@@ -125,6 +125,14 @@ def main() -> int:
                             p, requested, scene["initial"]), "post-choice effect completion")
                     row["boundaries"].append(boundary)
                     flush()
+                if scene["room"] == "REST":
+                    automatic = []
+                    folded = backend._fold_protocol_only_boundaries(row["boundaries"][-1], automatic)
+                    folded = backend._settle_command_boundary(folded, automatic)
+                    if adapt_original(folded).decision.observation.screen != "MAP":
+                        raise ValueError("rest completion did not reach actual stock map")
+                    row["automatic_map_commands"] = automatic
+                    row["automatic_map_boundary"] = folded
                 row["capture_complete"] = True
                 flush()
         backend.return_to_menu()

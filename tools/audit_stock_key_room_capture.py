@@ -61,7 +61,7 @@ def audit(capture: Path, build_path: Path, manifest_path: Path, selected: list[s
             raise ValueError("stock choice effect not completed at recorded terminal boundary")
         direct0, direct1 = before["_stock_direct"], after["_stock_direct"]
         initial = scene["initial"]
-        if (direct0["act"] != 2 or direct0["floor"] != scene["floor"]
+        if (direct0["ascension"] != 20 or direct0["act"] != 2 or direct0["floor"] != scene["floor"]
                 or direct0["dungeon_class"].rsplit(".", 1)[-1] != "TheCity"
                 or direct0["player"]["current_hp"] != initial["hp"]
                 or direct0["player"]["max_hp"] != initial["max_hp"]
@@ -71,6 +71,9 @@ def audit(capture: Path, build_path: Path, manifest_path: Path, selected: list[s
                 or Counter(card["id"] for card in direct0["master_deck"]) != Counter(initial["deck"])
                 or Counter(relic["id"] for relic in direct0["relics"]) != Counter(initial["relics"])):
             raise ValueError("stock initial state differs from frozen setup")
+        if ("final_act_available" in direct0
+                and direct0["final_act_available"] != initial["final_act_available"]):
+            raise ValueError("actual stock final-act availability differs from setup")
         rows.append(dict(scene=scene["id"], seed=seed,
                          initial_keys=before["_parity_run"], final_keys=after["_parity_run"],
                          hp_before=direct0["player"]["current_hp"], hp_after=direct1["player"]["current_hp"],
