@@ -25,6 +25,7 @@ from sls.diagnostics.cpu import (
     safe_path,
     score,
     select_states,
+    selection_sources,
 )
 from sls.model import ModelConfig, Policy
 
@@ -60,6 +61,12 @@ def test_duplicate_multiselect_preserves_click_order_and_references():
     for a, b in zip(PolicyBatch.from_decisions((d,)).model_inputs(),
                     PolicyBatch.from_decisions((restored,)).model_inputs(), strict=True):
         assert torch.equal(a, b)
+
+
+def test_deck_grid_selection_is_counted_without_choice_tokens():
+    row = decision_record(decision())
+    row["actions"] = [Action(ActionKind.REMOVE_CARD, subject_id="select-card:2").to_dict()]
+    assert selection_sources(row) == {"MASTER_DECK"}
 
 
 def test_complete_return_uses_actual_training_float32_rewards():

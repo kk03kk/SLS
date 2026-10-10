@@ -18,6 +18,7 @@ sys.path[:0] = [str(ROOT / "src"), str(ROOT)]
 from sls.diagnostics.cpu import (
     cpu_runtime,
     read_json,
+    selection_sources,
     sha256_file,
     validated_corpus,
     write_json,
@@ -64,10 +65,9 @@ def summarize(corpus, comparison, returns, output):
                     continue
                 obs = row["observation"]
                 s["decision_screens"][f"act{obs['run']['act']}:{obs['screen']}"] += 1
-                if obs["choice_options"]:
-                    sources = sorted({str(e["properties"].get("source", "unspecified"))
-                                      for e in obs["choice_options"]})
-                    branch_coverage[obs["screen"] + ":" + "+".join(sources)] += 1
+                sources = selection_sources(row)
+                if sources:
+                    branch_coverage[obs["screen"] + ":" + "+".join(sorted(sources))] += 1
                 if (trajectory["id"], row["step"]) in selected_ids:
                     selected_bosses.update(e["monster_id"] for e in obs["enemies"])
                 if obs["run"]["act"] == 2 and not reached:
@@ -121,7 +121,7 @@ def summarize(corpus, comparison, returns, output):
                    if next(iter(models.values()))["stratum"].startswith("act2:COMBAT:") and
                    any(boss in next(iter(models.values()))["stratum"] for boss in
                        ("THE_CHAMP", "THE_COLLECTOR", "BRONZE_AUTOMATON"))}
-    result = {"schema": "sls-cpu-diagnostic-summary-v1", "corpus_sha256": corpus_hash,
+    result = {"schema": "sls-cpu-diagnostic-summary-v2", "corpus_sha256": corpus_hash,
               "comparison_sha256": sha256_file(comparison), "returns_sha256": sha256_file(returns),
               "native_source_sha256": manifest["native_source_sha256"],
               "models": manifest["models"], "natural_trajectories": stats,

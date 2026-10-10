@@ -272,6 +272,16 @@ def stratum(row):
     return f"act{obs['run']['act']}:{obs['screen']}:{enemies or '-'}"
 
 
+def selection_sources(row):
+    obs = row["observation"]
+    sources = {str(e["properties"].get("source", "unspecified"))
+               for group in ("choice_options", "selected_cards") for e in obs[group]}
+    # Grid selections reference deck instances directly, rather than choice tokens.
+    if any(str(a.get("subject_id", "")).startswith("select-card:") for a in row["actions"]):
+        sources.add("MASTER_DECK")
+    return sources
+
+
 def select_states(trajectories: list[dict], directory: Path, maximum=64) -> list[dict]:
     groups = defaultdict(list)
     for trajectory in trajectories:
@@ -345,9 +355,8 @@ def capture(directory: Path, models: dict, runtime: dict, *, seed_start=SEED_STA
                     observation = row["observation"]
                     natural_strata[stratum(row)] += 1
                     encountered.update(e["monster_id"] for e in observation["enemies"])
-                    if observation["choice_options"]:
-                        sources = {str(e["properties"].get("source", "unspecified"))
-                                   for e in observation["choice_options"]}
+                    sources = selection_sources(row)
+                    if sources:
                         choice_sources.update(sources)
                         branch_coverage[observation["screen"] + ":" + "+".join(sorted(sources))] += 1
                     tail.append({"step": step, "screen": decision.observation.screen.value,
@@ -407,7 +416,7 @@ def capture(directory: Path, models: dict, runtime: dict, *, seed_start=SEED_STA
                 "natural_strata": dict(natural_strata),
                 "selection_branch_coverage": dict(branch_coverage),
                 "missing_known_choice_sources": sorted({"HAND", "MASTER_DECK", "GENERATED",
-                    "DISCARD_PILE", "EXHAUST_PILE", "DRAW_PILE"} - choice_sources),
+                    "DISCARD", "EXHAUST", "DRAW"} - choice_sources),
                 "missing_selected_boss_contexts": sorted(required - selected_encounters),
                 "missing_boss_contexts": sorted(required - encountered)}
     write_json(directory / "manifest.json", manifest)
