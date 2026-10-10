@@ -163,6 +163,8 @@ def check_seed_collisions(roots: list[Path], start: int, count: int) -> list[str
             if type(value.get("start")) is int and type(value.get("end")) is int:
                 if max(start, value["start"]) < min(start + count, value["end"]):
                     hits.append(f"{path}:{location}.start/end")
+            if hits:
+                raise ValueError("diagnostic seed collision: " + "; ".join(hits))
             for k, child in value.items():
                 if (k in {"seeds", "seed_ids"} or k.endswith("_seeds")) and isinstance(child, list):
                     if any(type(seed) is int and start <= seed < start + count for seed in child):
@@ -172,6 +174,8 @@ def check_seed_collisions(roots: list[Path], start: int, count: int) -> list[str
                             and child[0] < child[1]
                             and max(start, child[0]) < min(start + count, child[1])):
                         hits.append(f"{path}:{location}.{k}[start,end)")
+                if hits:
+                    raise ValueError("diagnostic seed collision: " + "; ".join(hits))
                 walk(child, path, f"{location}.{k}")
         elif isinstance(value, list):
             for child in value:

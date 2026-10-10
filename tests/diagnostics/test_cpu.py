@@ -134,6 +134,17 @@ def test_seed_scan_preserves_master_namespace(tmp_path):
     assert len(check_seed_collisions([tmp_path], 132100000, 32)) == 1
 
 
+def test_seed_scan_stops_at_first_collision(tmp_path, monkeypatch):
+    collision = tmp_path / "a.json"
+    collision.write_text('{"seed":132100001}')
+    unreadable = tmp_path / "b.json"
+    unreadable.write_text('invalid json')
+    monkeypatch.setattr(Path, "rglob", lambda self, pattern:
+                        (collision, unreadable) if pattern == "*.json" else ())
+    with pytest.raises(ValueError, match="diagnostic seed collision"):
+        check_seed_collisions([tmp_path], 132100000, 32)
+
+
 def test_evidence_paths_cannot_escape(tmp_path):
     with pytest.raises(ValueError, match="path"):
         safe_path(tmp_path, "../secret", "0" * 64)
