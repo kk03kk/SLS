@@ -12,6 +12,7 @@ from pathlib import Path
 
 from sls.audit.stock_clock import verify_sealed_oracle
 from tools.capture_key_room_batch import post_choice_ready, select_action
+from tools.run_key_room_batch import root_path, scene_floor
 
 
 def sha(path):
@@ -28,7 +29,7 @@ def audit(capture: Path, build_path: Path, manifest_path: Path, selected: list[s
     if selected is not None and (not selected or len(set(selected)) != len(selected)
                                 or set(selected) - {scene["id"] for scene in manifest["scenes"]}):
         raise ValueError("unknown or duplicate scene selection")
-    resource = "spirecomm/parity/fullrun-key-acquisition-r1.json"
+    resource = "spirecomm/parity/" + manifest_path.name
     if (data.get("schema") != "sls-key-room-capture-v1" or not data.get("execution_complete")
             or data.get("execution_error") or launch["completion"]["exit_code"] != 0
             or launch["recovery_status"] != "RECOVERED"
@@ -61,7 +62,7 @@ def audit(capture: Path, build_path: Path, manifest_path: Path, selected: list[s
             raise ValueError("stock choice effect not completed at recorded terminal boundary")
         direct0, direct1 = before["_stock_direct"], after["_stock_direct"]
         initial = scene["initial"]
-        if (direct0["ascension"] != 20 or direct0["act"] != 2 or direct0["floor"] != scene["floor"]
+        if (direct0["ascension"] != 20 or direct0["act"] != 2 or direct0["floor"] != scene_floor(scene, before)
                 or direct0["dungeon_class"].rsplit(".", 1)[-1] != "TheCity"
                 or direct0["player"]["current_hp"] != initial["hp"]
                 or direct0["player"]["max_hp"] != initial["max_hp"]
@@ -74,6 +75,10 @@ def audit(capture: Path, build_path: Path, manifest_path: Path, selected: list[s
         if ("final_act_available" in direct0
                 and direct0["final_act_available"] != initial["final_act_available"]):
             raise ValueError("actual stock final-act availability differs from setup")
+        if manifest["schema"] == "sls-key-room-scenes-v2":
+            if (row.get("initial_root_path") != root_path(before)
+                    or before["_parity_scenario"].get("map_node_policy") != "FIRST_ROOT_REACHABLE_ROOM"):
+                raise ValueError("missing or inconsistent reachable-node witness")
         rows.append(dict(scene=scene["id"], seed=seed,
                          initial_keys=before["_parity_run"], final_keys=after["_parity_run"],
                          hp_before=direct0["player"]["current_hp"], hp_after=direct1["player"]["current_hp"],

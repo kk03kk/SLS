@@ -11,17 +11,25 @@ from tools.verify_oracle import install, require_no_running_game
 
 def test_committed_oracle_resources_are_complete_and_unique():
     payloads = resource_payloads()
-    assert len(payloads) == 43
-    assert json.loads(payloads['ModTheSpire.json'])['version'] == '1.3.43'
+    assert len(payloads) == 44
+    assert json.loads(payloads['ModTheSpire.json'])['version'] == '1.3.44'
     key_manifest = 'spirecomm/parity/fullrun-key-acquisition-r1.json'
     key_seeds = {seed for scene in json.loads(payloads[key_manifest])['scenes']
                  for seed in scene['seeds']}
     assert key_seeds == set(range(131200300, 131200324))
+    reachable_manifest = 'spirecomm/parity/fullrun-key-acquisition-r2.json'
+    reachable_seeds = {seed for scene in json.loads(payloads[reachable_manifest])['scenes']
+                       for seed in scene['seeds']}
+    assert reachable_seeds == set(range(131200330, 131200354))
     for name, payload in payloads.items():
         if name.endswith('.json') and name not in {'ModTheSpire.json', key_manifest}:
             existing = json.loads(payload)
             assert not key_seeds.intersection(seed for scene in existing.get('scenes', [])
                                               for seed in scene.get('seeds', []))
+        if name.endswith('.json') and name not in {'ModTheSpire.json', reachable_manifest}:
+            existing = json.loads(payload)
+            assert not reachable_seeds.intersection(seed for scene in existing.get('scenes', [])
+                                                    for seed in scene.get('seeds', []))
     assert len(json.loads(payloads['spirecomm/parity/fullrun-act3-basic.json'])['scenes']) == 14
     assert len(json.loads(payloads['spirecomm/parity/act2-scenes.json'])['scenes']) == 24
     assert len(json.loads(payloads['spirecomm/parity/fullrun-scenes.json'])['scenes']) == 12

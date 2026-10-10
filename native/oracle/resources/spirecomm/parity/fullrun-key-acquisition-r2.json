@@ -1,0 +1,363 @@
+{
+  "schema": "sls-key-room-scenes-v2",
+  "purpose": "CONTROLLED_DIAGNOSTIC_NOT_WIN_RATE",
+  "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "source_evidence": {
+    "com.megacrit.cardcrawl.dungeons.TheCity": {
+      "class_sha256": "b8e4ba9a20779d96052d4d44eae09d84d2cf8e153c02e013d8d42e258f956e32"
+    },
+    "com.megacrit.cardcrawl.rooms.RestRoom": {
+      "class_sha256": "4aab27dcd7b5f7bcd9d9baa953fd2b92db4d001004dfea3ebac5f376ff589957"
+    },
+    "com.megacrit.cardcrawl.rooms.CampfireUI": {
+      "class_sha256": "271dd19302e1e485332c7c28ea4eb5197c12e44f8317405075651aa4dba7306e"
+    },
+    "com.megacrit.cardcrawl.ui.campfire.RecallOption": {
+      "class_sha256": "84d16da9cd1dde531d34bf71aa82bf98af43cf1763c867bd48bc2be414473512"
+    },
+    "com.megacrit.cardcrawl.vfx.campfire.CampfireRecallEffect": {
+      "class_sha256": "621b116ea23d4139b3e487e109bed1d4870f446717eeb8d9620dbbd9075e783d"
+    },
+    "com.megacrit.cardcrawl.vfx.ObtainKeyEffect": {
+      "class_sha256": "80f1b69ac0405fe96c6ac6fb6bada786062a139405dd7b3568964d7e4e80ea9e"
+    },
+    "com.megacrit.cardcrawl.rooms.TreasureRoom": {
+      "class_sha256": "7259e29a635bbc6625ab039ec2c6c099b8f59098dc6812f0ef6ae32ea71b3c0e"
+    },
+    "com.megacrit.cardcrawl.rooms.AbstractRoom": {
+      "class_sha256": "22214900fc051a2e8e73b72532ee561abc95a77f7172b105b68d3afeca0a74f6"
+    },
+    "com.megacrit.cardcrawl.rewards.RewardItem": {
+      "class_sha256": "7f5abc79015ab6a6cb6781776fc1752a5e5143f47be61b4ee8bcf9cb057daf55"
+    },
+    "com.megacrit.cardcrawl.rewards.chests.AbstractChest": {
+      "class_sha256": "1b243cc4d396792be200cef41578247903dd7a417a32aaed6cdac99afd6b23d8"
+    },
+    "com.megacrit.cardcrawl.map.MapRoomNode": {
+      "class_sha256": "f54cf19e2206bc20db7f77de724e3c54c6853ce0c878f3ba24cf3fb2036e2efd"
+    },
+    "com.megacrit.cardcrawl.dungeons.AbstractDungeon": {
+      "class_sha256": "5452fdd7b33fa47dcea5c2e58d5d521dfde3acefba006c095ad5b01c60eda369"
+    }
+  },
+  "scenes": [
+    {
+      "id": "ruby-recall",
+      "room": "REST",
+      "act": 2,
+      "ascension": 20,
+      "seeds": [
+        131200330,
+        131200331,
+        131200332
+      ],
+      "initial": {
+        "hp": 40,
+        "max_hp": 80,
+        "gold": 99,
+        "final_act_available": true,
+        "ruby_key": false,
+        "sapphire_key": false,
+        "deck": [
+          "Strike_R",
+          "Strike_R",
+          "Strike_R",
+          "Strike_R",
+          "Strike_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Bash",
+          "AscendersBane"
+        ],
+        "relics": [
+          "Burning Blood"
+        ]
+      },
+      "actions": [
+        "RECALL"
+      ],
+      "floor_policy": "ACT2_MAP_Y_PLUS_18"
+    },
+    {
+      "id": "ruby-rest-alternative",
+      "room": "REST",
+      "act": 2,
+      "ascension": 20,
+      "seeds": [
+        131200333,
+        131200334,
+        131200335
+      ],
+      "initial": {
+        "hp": 40,
+        "max_hp": 80,
+        "gold": 99,
+        "final_act_available": true,
+        "ruby_key": false,
+        "sapphire_key": false,
+        "deck": [
+          "Strike_R",
+          "Strike_R",
+          "Strike_R",
+          "Strike_R",
+          "Strike_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Bash",
+          "AscendersBane"
+        ],
+        "relics": [
+          "Burning Blood"
+        ]
+      },
+      "actions": [
+        "REST"
+      ],
+      "floor_policy": "ACT2_MAP_Y_PLUS_18"
+    },
+    {
+      "id": "ruby-rest-regal-pillow",
+      "room": "REST",
+      "act": 2,
+      "ascension": 20,
+      "seeds": [
+        131200336,
+        131200337,
+        131200338
+      ],
+      "initial": {
+        "hp": 40,
+        "max_hp": 80,
+        "gold": 99,
+        "final_act_available": true,
+        "ruby_key": false,
+        "sapphire_key": false,
+        "deck": [
+          "Strike_R",
+          "Strike_R",
+          "Strike_R",
+          "Strike_R",
+          "Strike_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Bash",
+          "AscendersBane"
+        ],
+        "relics": [
+          "Burning Blood",
+          "Regal Pillow"
+        ]
+      },
+      "actions": [
+        "REST"
+      ],
+      "floor_policy": "ACT2_MAP_Y_PLUS_18"
+    },
+    {
+      "id": "ruby-already-held",
+      "room": "REST",
+      "act": 2,
+      "ascension": 20,
+      "seeds": [
+        131200339,
+        131200340,
+        131200341
+      ],
+      "initial": {
+        "hp": 40,
+        "max_hp": 80,
+        "gold": 99,
+        "final_act_available": true,
+        "ruby_key": true,
+        "sapphire_key": false,
+        "deck": [
+          "Strike_R",
+          "Strike_R",
+          "Strike_R",
+          "Strike_R",
+          "Strike_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Bash",
+          "AscendersBane"
+        ],
+        "relics": [
+          "Burning Blood"
+        ]
+      },
+      "actions": [
+        "REST"
+      ],
+      "floor_policy": "ACT2_MAP_Y_PLUS_18"
+    },
+    {
+      "id": "ruby-final-act-disabled",
+      "room": "REST",
+      "act": 2,
+      "ascension": 20,
+      "seeds": [
+        131200342,
+        131200343,
+        131200344
+      ],
+      "initial": {
+        "hp": 40,
+        "max_hp": 80,
+        "gold": 99,
+        "final_act_available": false,
+        "ruby_key": false,
+        "sapphire_key": false,
+        "deck": [
+          "Strike_R",
+          "Strike_R",
+          "Strike_R",
+          "Strike_R",
+          "Strike_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Bash",
+          "AscendersBane"
+        ],
+        "relics": [
+          "Burning Blood"
+        ]
+      },
+      "actions": [
+        "REST"
+      ],
+      "floor_policy": "ACT2_MAP_Y_PLUS_18"
+    },
+    {
+      "id": "sapphire-take-key",
+      "room": "TREASURE",
+      "act": 2,
+      "ascension": 20,
+      "seeds": [
+        131200345,
+        131200346,
+        131200347
+      ],
+      "initial": {
+        "hp": 40,
+        "max_hp": 80,
+        "gold": 99,
+        "final_act_available": true,
+        "ruby_key": false,
+        "sapphire_key": false,
+        "deck": [
+          "Strike_R",
+          "Strike_R",
+          "Strike_R",
+          "Strike_R",
+          "Strike_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Bash",
+          "AscendersBane"
+        ],
+        "relics": [
+          "Burning Blood"
+        ]
+      },
+      "actions": [
+        "OPEN_CHEST",
+        "TAKE_BLUE_KEY"
+      ],
+      "floor_policy": "ACT2_MAP_Y_PLUS_18"
+    },
+    {
+      "id": "sapphire-take-relic",
+      "room": "TREASURE",
+      "act": 2,
+      "ascension": 20,
+      "seeds": [
+        131200348,
+        131200349,
+        131200350
+      ],
+      "initial": {
+        "hp": 40,
+        "max_hp": 80,
+        "gold": 99,
+        "final_act_available": true,
+        "ruby_key": false,
+        "sapphire_key": false,
+        "deck": [
+          "Strike_R",
+          "Strike_R",
+          "Strike_R",
+          "Strike_R",
+          "Strike_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Bash",
+          "AscendersBane"
+        ],
+        "relics": [
+          "Burning Blood"
+        ]
+      },
+      "actions": [
+        "OPEN_CHEST",
+        "TAKE_RELIC"
+      ],
+      "floor_policy": "ACT2_MAP_Y_PLUS_18"
+    },
+    {
+      "id": "sapphire-already-held",
+      "room": "TREASURE",
+      "act": 2,
+      "ascension": 20,
+      "seeds": [
+        131200351,
+        131200352,
+        131200353
+      ],
+      "initial": {
+        "hp": 40,
+        "max_hp": 80,
+        "gold": 99,
+        "final_act_available": true,
+        "ruby_key": false,
+        "sapphire_key": true,
+        "deck": [
+          "Strike_R",
+          "Strike_R",
+          "Strike_R",
+          "Strike_R",
+          "Strike_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Bash",
+          "AscendersBane"
+        ],
+        "relics": [
+          "Burning Blood"
+        ]
+      },
+      "actions": [
+        "OPEN_CHEST",
+        "TAKE_RELIC"
+      ],
+      "floor_policy": "ACT2_MAP_Y_PLUS_18"
+    }
+  ],
+  "map_node_policy": "FIRST_ROOT_REACHABLE_ROOM",
+  "room_rng_policy": "STOCK_SEED_PLUS_DERIVED_FLOOR_FIVE_STREAMS"
+}

@@ -29,10 +29,24 @@ import java.util.LinkedHashMap;
 public final class OracleKeyRoom {
     public static final String COMMAND = "parity_key_room";
 
+    private static boolean rootReachable(MapRoomNode node) {
+        if (node.y == 0) return node.hasEdges();
+        for (MapRoomNode parent : node.getParents()) {
+            if (parent.y >= node.y) throw new IllegalStateException("non-acyclic stock map");
+            if (rootReachable(parent)) return true;
+        }
+        return false;
+    }
+
     @SuppressWarnings("unchecked")
-    private static void prepare(String identifier) {
+    private static void prepare(String identifier, String corpus) {
+        if (!("fullrun-key-acquisition-r1".equals(corpus)
+                || "fullrun-key-acquisition-r2".equals(corpus))) {
+            throw new IllegalArgumentException("undeclared key room corpus");
+        }
+        boolean reachableFixture = "fullrun-key-acquisition-r2".equals(corpus);
         InputStream resource = OracleKeyRoom.class.getResourceAsStream(
-            "/spirecomm/parity/fullrun-key-acquisition-r1.json");
+            "/spirecomm/parity/" + corpus + ".json");
         if (resource == null) throw new IllegalStateException("missing key room resource");
         Map<String, Object> manifest;
         try (InputStreamReader reader = new InputStreamReader(resource, "UTF-8")) {
@@ -41,7 +55,10 @@ public final class OracleKeyRoom {
             throw new IllegalStateException("cannot read frozen key room resource", error);
         }
         Map<String, Object> scene = null;
-        if (!"sls-key-room-scenes-v1".equals(manifest.get("schema"))) {
+        String schema = reachableFixture ? "sls-key-room-scenes-v2" : "sls-key-room-scenes-v1";
+        if (!schema.equals(manifest.get("schema")) || (reachableFixture
+                && (!"FIRST_ROOT_REACHABLE_ROOM".equals(manifest.get("map_node_policy"))
+                || !"STOCK_SEED_PLUS_DERIVED_FLOOR_FIVE_STREAMS".equals(manifest.get("room_rng_policy"))))) {
             throw new IllegalArgumentException("unsupported key room schema");
         }
         for (Object value : (List<?>) manifest.get("scenes")) {
@@ -62,6 +79,9 @@ public final class OracleKeyRoom {
             throw new IllegalArgumentException("unsupported controlled key room type");
         }
         Map<String, Object> initial = (Map<String, Object>) scene.get("initial");
+        if (reachableFixture && !"ACT2_MAP_Y_PLUS_18".equals(scene.get("floor_policy"))) {
+            throw new IllegalArgumentException("undeclared floor derivation");
+        }
         int hp = ((Number) initial.get("hp")).intValue();
         int maxHp = ((Number) initial.get("max_hp")).intValue();
         if (hp <= 0 || hp > maxHp || maxHp > 1000) throw new IllegalArgumentException("invalid HP");
@@ -95,12 +115,22 @@ public final class OracleKeyRoom {
         for (ArrayList<MapRoomNode> row : AbstractDungeon.map) {
             for (MapRoomNode node : row) {
                 if (selected == null && ("REST".equals(kind) ? node.room instanceof RestRoom
-                        : node.room instanceof TreasureRoom)) selected = node;
+                        : node.room instanceof TreasureRoom)
+                        && (!reachableFixture || rootReachable(node))) selected = node;
             }
         }
         if (selected == null) throw new IllegalStateException("stock map lacks requested room");
         AbstractDungeon.currMapNode = selected;
-        AbstractDungeon.floorNum = ((Number) scene.get("floor")).intValue();
+        AbstractDungeon.floorNum = reachableFixture ? selected.y + 18
+            : ((Number) scene.get("floor")).intValue();
+        if (reachableFixture) {
+            long roomSeed = Settings.seed.longValue() + AbstractDungeon.floorNum;
+            AbstractDungeon.aiRng = new com.megacrit.cardcrawl.random.Random(Long.valueOf(roomSeed));
+            AbstractDungeon.shuffleRng = new com.megacrit.cardcrawl.random.Random(Long.valueOf(roomSeed));
+            AbstractDungeon.cardRandomRng = new com.megacrit.cardcrawl.random.Random(Long.valueOf(roomSeed));
+            AbstractDungeon.miscRng = new com.megacrit.cardcrawl.random.Random(Long.valueOf(roomSeed));
+            AbstractDungeon.monsterHpRng = new com.megacrit.cardcrawl.random.Random(Long.valueOf(roomSeed));
+        }
         AbstractDungeon.firstRoomChosen = true;
         AbstractDungeon.isScreenUp = false;
         AbstractDungeon.screen = AbstractDungeon.CurrentScreen.NONE;
@@ -126,6 +156,8 @@ public final class OracleKeyRoom {
         evidence.put("scenario_id", "key-room:" + identifier);
         evidence.put("source", "controlled-stock-room-entry");
         evidence.put("manifest_schema", manifest.get("schema"));
+        evidence.put("corpus", corpus);
+        evidence.put("map_node_policy", reachableFixture ? "FIRST_ROOT_REACHABLE_ROOM" : "LEGACY_FIRST_ROOM");
         OracleScenarioPatch.activeScenario = evidence;
         // This is the actual stock entry method, including campfire options,
         // onEnterRestRoom callbacks or stock getRandomChest generation.
@@ -152,8 +184,10 @@ public final class OracleKeyRoom {
                 return SpireReturn.Continue();
             }
             String[] words = command.trim().split("\\s+");
-            if (words.length != 2) throw new IllegalArgumentException("parity_key_room SCENE");
-            prepare(words[1]);
+            if (words.length != 2 && words.length != 3) {
+                throw new IllegalArgumentException("parity_key_room SCENE [CORPUS]");
+            }
+            prepare(words[1], words.length == 3 ? words[2] : "fullrun-key-acquisition-r1");
             return SpireReturn.Return(Boolean.TRUE);
         }
     }

@@ -6,7 +6,7 @@ from pathlib import Path
 import pytest
 
 from tools.capture_key_room_batch import post_choice_ready
-from tools.run_key_room_batch import validate_manifest
+from tools.run_key_room_batch import root_path, scene_floor, validate_manifest
 from tools.verify_oracle import properties_command
 
 PATH = Path(__file__).resolve().parents[2] / (
@@ -37,6 +37,40 @@ def test_frozen_scenes_have_disjoint_seeds_and_stock_actions():
     assert sum(len(scene["seeds"]) for scene in selected) == 24
     assert next(s for s in selected if s["id"] == "ruby-recall")["initial"]["ruby_key"] is False
     assert next(s for s in selected if s["id"] == "sapphire-take-key")["initial"]["sapphire_key"] is False
+
+
+def test_reachable_revision_has_separate_seeds_and_explicit_context():
+    source = json.loads(PATH.with_name("fullrun-key-acquisition-r2.json").read_text(encoding="utf-8"))
+    selected = validate_manifest(source, [scene["id"] for scene in source["scenes"]])
+    assert {seed for scene in selected for seed in scene["seeds"]} == set(range(131200330, 131200354))
+    assert scene_floor(selected[0], {"_parity_run": {"current_map_y": 5}}) == 23
+    selected[0]["floor"] = 25
+    with pytest.raises(ValueError, match="floor derivation"):
+        validate_manifest(source, [selected[0]["id"]])
+
+
+def test_root_witness_requires_full_path_not_just_a_parent():
+    source = {"game_state": {"map": [
+        {"x": 1, "y": 0, "children": [{"x": 1, "y": 1}]},
+        {"x": 1, "y": 1, "children": [{"x": 1, "y": 2}]},
+        {"x": 1, "y": 2, "children": []},
+        {"x": 0, "y": 1, "children": [{"x": 0, "y": 2}]},
+        {"x": 0, "y": 2, "children": []}]},
+        "_parity_run": {"current_map_x": 1, "current_map_y": 2}}
+    assert root_path(source) == [[1, 0], [1, 1], [1, 2]]
+    source["_parity_run"]["current_map_x"] = 0
+    with pytest.raises(ValueError, match="not root reachable"):
+        root_path(source)
+
+
+def test_root_witness_handles_stock_virtual_boss_but_rejects_internal_gap():
+    nodes = [{"x": 1, "y": y, "children": [{"x": 1, "y": y + 1}]} for y in range(14)]
+    nodes.append({"x": 1, "y": 14, "children": [{"x": 3, "y": 16}]})
+    source = {"game_state": {"map": nodes}, "_parity_run": {"current_map_x": 1, "current_map_y": 14}}
+    assert len(root_path(source)) == 15
+    nodes[4]["children"] = [{"x": 1, "y": 6}]
+    with pytest.raises(ValueError, match="non-layered"):
+        root_path(source)
 
 
 @pytest.mark.parametrize("failure", ["schema", "collision", "namespace", "unknown", "key", "action"])

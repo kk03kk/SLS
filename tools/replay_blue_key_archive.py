@@ -21,6 +21,7 @@ from tools.replay_rest_key_archive import (
     stock_resources,
 )
 from tools.reproduce_double_boss_entry import enum_ids
+from tools.run_key_room_batch import scene_floor
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -51,7 +52,7 @@ def chest_creation(row, initial, native):
     if not parents:
         return dict(status="UNSUPPORTED_CONTROLLED_NODE_NOT_REACHABLE", stock_node=[x, y])
     state = copy.deepcopy(initial)
-    state["run_state"]["floor"] = row["scene"]["floor"] - 1
+    state["run_state"]["floor"] = scene_floor(row["scene"], stock) - 1
     state["progress_state"].update(screen_state=5, current_map_x=parents[0]["x"], current_map_y=parents[0]["y"])
     state["screen_info"] = dict(screen_state=5, complete=True)
     state["rng"]["treasure"] = copy.deepcopy(row["before"]["_rng"]["treasure"])

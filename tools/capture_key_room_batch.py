@@ -15,7 +15,7 @@ from sls.backends.original.session import OriginalSession
 from sls.contracts import ActionKind
 from sls.curriculum import IRONCLAD_A20_HEART
 from tools.capture_original_card_batch import _write_completion
-from tools.run_key_room_batch import validate_manifest
+from tools.run_key_room_batch import root_path, validate_manifest
 
 
 def select_action(payload: dict, requested: str):
@@ -105,11 +105,13 @@ def main() -> int:
                         "available_commands", []):
                     raise ValueError("validation command unavailable")
                 row = dict(scene=scene, seed=seed, normal_prefix=prefix, before=before,
-                           setup_command=f"parity_key_room {scene['id']}", boundaries=[], actions=[])
+                           setup_command=f"parity_key_room {scene['id']} {args.manifest.stem}", boundaries=[], actions=[])
                 result["runs"].append(row)
                 row["setup_response"] = session.execute(row["setup_command"])
                 initial = collect(session, lambda p: ready_for(p, scene["actions"][0]), "room entry")
                 row["boundaries"].append(initial)
+                if manifest["schema"] == "sls-key-room-scenes-v2":
+                    row["initial_root_path"] = root_path(initial)
                 flush()
                 for index, requested in enumerate(scene["actions"]):
                     action, commands = select_action(row["boundaries"][-1], requested)

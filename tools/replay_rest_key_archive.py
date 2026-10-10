@@ -22,6 +22,7 @@ from sls.content.normalize import (
 from sls.curriculum import IRONCLAD_A20_HEART
 from tools.audit_stock_key_room_capture import audit
 from tools.reproduce_double_boss_entry import enum_ids
+from tools.run_key_room_batch import scene_floor
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -87,7 +88,7 @@ def prepare(row, native, cards, relics, encounters):
         burning_x, burning_y = -1, -1
     else:
         burning_x, burning_y = stock["_parity_run"]["burning_elite_x"], stock["_parity_run"]["burning_elite_y"]
-    state["run_state"].update(act=2, floor=scene["floor"],
+    state["run_state"].update(act=2, floor=scene_floor(scene, stock),
                               burning_elite_x=burning_x, burning_elite_y=burning_y)
     state["derived_rng"]["map"].update(act=2, derived_seed=row["seed"] + 200,
                                      assign_burning_elite=scene["initial"]["final_act_available"])

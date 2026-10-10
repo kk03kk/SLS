@@ -13,9 +13,42 @@ from tools.run_original_canary import original_runtime_paths
 from tools.verify_oracle import inspect, runtime_smoke
 
 
+def scene_floor(scene: dict, payload: dict) -> int:
+    if scene.get("floor_policy") == "ACT2_MAP_Y_PLUS_18":
+        return int(payload["_parity_run"]["current_map_y"]) + 18
+    return int(scene["floor"])
+
+
+def root_path(payload: dict) -> list[list[int]]:
+    nodes = {(node["x"], node["y"]): node for node in payload["game_state"]["map"]}
+    paths = {point: [list(point)] for point, node in nodes.items() if point[1] == 0 and node["children"]}
+    for point in sorted(nodes, key=lambda value: (value[1], value[0])):
+        if point not in paths:
+            continue
+        for child in nodes[point]["children"]:
+            target = (child["x"], child["y"])
+            # Stock exports the virtual boss endpoint (3,16) after row14.
+            # It is outside the ordinary-room graph used by this witness.
+            if point[1] == 14 and target == (3, 16):
+                continue
+            if target[1] != point[1] + 1:
+                raise ValueError("non-layered stock map edge")
+            if target in nodes and target not in paths:
+                paths[target] = paths[point] + [list(target)]
+    target = (payload["_parity_run"]["current_map_x"], payload["_parity_run"]["current_map_y"])
+    if target not in paths or not 0 <= target[1] <= 14:
+        raise ValueError("controlled stock room is not root reachable")
+    return paths[target]
+
+
 def validate_manifest(manifest: dict, selected: list[str]) -> list[dict]:
-    if manifest.get("schema") != "sls-key-room-scenes-v1":
+    schema = manifest.get("schema")
+    if schema not in {"sls-key-room-scenes-v1", "sls-key-room-scenes-v2"}:
         raise ValueError("unsupported key-room schema")
+    v2 = schema == "sls-key-room-scenes-v2"
+    if v2 and (manifest.get("map_node_policy") != "FIRST_ROOT_REACHABLE_ROOM"
+               or manifest.get("room_rng_policy") != "STOCK_SEED_PLUS_DERIVED_FLOOR_FIVE_STREAMS"):
+        raise ValueError("undeclared node selection policy")
     scenes = manifest["scenes"]
     identifiers = [scene["id"] for scene in scenes]
     if len(set(identifiers)) != len(identifiers) or not selected or len(set(selected)) != len(selected):
@@ -25,6 +58,8 @@ def validate_manifest(manifest: dict, selected: list[str]) -> list[dict]:
     seeds = []
     for scene in scenes:
         initial = scene["initial"]
+        if v2 and (scene.get("floor_policy") != "ACT2_MAP_Y_PLUS_18" or "floor" in scene):
+            raise ValueError("missing or ambiguous floor derivation")
         if (scene["act"] != 2 or scene["ascension"] != 20
                 or scene["room"] not in {"REST", "TREASURE"}
                 or not 0 < initial["hp"] <= initial["max_hp"] <= 1000
@@ -39,7 +74,8 @@ def validate_manifest(manifest: dict, selected: list[str]) -> list[dict]:
         if set(scene["actions"]) - allowed:
             raise ValueError("unsupported stock action script")
         seeds.extend(scene["seeds"])
-    if any(type(seed) is not int or not 131200300 <= seed < 131200330 for seed in seeds):
+    lower, upper = (131200330, 131200360) if v2 else (131200300, 131200330)
+    if any(type(seed) is not int or not lower <= seed < upper for seed in seeds):
         raise ValueError("undeclared diagnostic namespace")
     if len(set(seeds)) != len(seeds):
         raise ValueError("seed collision")
@@ -61,7 +97,8 @@ def main() -> int:
     report = inspect(args.oracle)
     manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
     validate_manifest(manifest, args.scenes)
-    name = "spirecomm/parity/fullrun-key-acquisition-r1.json"
+    filename = "fullrun-key-acquisition-r2.json" if manifest["schema"] == "sls-key-room-scenes-v2" else "fullrun-key-acquisition-r1.json"
+    name = "spirecomm/parity/" + filename
     if hashlib.sha256(args.manifest.read_bytes()).hexdigest() != report["members"].get(name):
         raise ValueError("manifest differs from source-built Oracle")
     _, game = original_runtime_paths(None)
@@ -73,6 +110,8 @@ def main() -> int:
                 "vfx.campfire.CampfireRecallEffect", "vfx.ObtainKeyEffect", "dungeons.TheCity",
                 "rooms.TreasureRoom", "rooms.AbstractRoom", "rewards.RewardItem",
                 "rewards.chests.AbstractChest"}
+    if manifest["schema"] == "sls-key-room-scenes-v2":
+        required |= {"map.MapRoomNode", "dungeons.AbstractDungeon"}
     evidence = manifest["source_evidence"]
     if set(evidence) != {"com.megacrit.cardcrawl." + key for key in required}:
         raise ValueError("missing stock source evidence")
