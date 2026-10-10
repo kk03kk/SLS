@@ -1,0 +1,138 @@
+{
+  "schema": "sls-key-reachable-evidence-v1",
+  "scene_schema": "sls-key-room-scenes-v2",
+  "namespace": [
+    131200330,
+    131200354
+  ],
+  "natural_trajectory": false,
+  "training_eligible": false,
+  "oracle_version": "1.3.44",
+  "files": [
+    {
+      "path": "local/build/oracle/key-reachable-r2.build.json",
+      "bytes": 18866,
+      "sha256": "23ca42bf682ad831c990f9c0434505706fbf72c99aa0ad949c76fafb0cbd5660"
+    },
+    {
+      "path": "local/build/oracle/key-reachable-r2.jar",
+      "bytes": 182234,
+      "sha256": "041ed8752842ec168dc1cfffcb11ccce076648a0d4e747b76519a97b3d101e7d"
+    },
+    {
+      "path": "local/reports/key-reachable-20261010/blue-replay.json",
+      "bytes": 2395800,
+      "sha256": "7d6425dbfa99e701add6e98e57ded5e64deffebf23f5fe61e3450bc4676a13ca"
+    },
+    {
+      "path": "local/reports/key-reachable-20261010/key-capture-r1.json",
+      "bytes": 317207,
+      "sha256": "a1791de3b4b64ff7060da14e25c34d93e2f8e87705757b2dce6bdb1f6e38f344"
+    },
+    {
+      "path": "local/reports/key-reachable-20261010/key-capture-r1.launch.json",
+      "bytes": 466,
+      "sha256": "61f2988b58cde93ca34f03cf4437834dd2a3aa5322bf41646d607422b888c9f4"
+    },
+    {
+      "path": "local/reports/key-reachable-20261010/key-capture-r2.json",
+      "bytes": 9201370,
+      "sha256": "218a778b1a50c9114364f8b2639d056e8e1b87b15e2e6875cfebd08604e3bc68"
+    },
+    {
+      "path": "local/reports/key-reachable-20261010/key-capture-r2.launch.json",
+      "bytes": 430,
+      "sha256": "4dc7cb6ca340b2fb0e88e37804441650c56fecd103253957c0e1d9cde701cc26"
+    },
+    {
+      "path": "local/reports/key-reachable-20261010/production-r44.json",
+      "bytes": 56605,
+      "sha256": "4179ad20bbaa8895a889d605c553a076a59d8f09931c2036106cdb8d546ef0f1"
+    },
+    {
+      "path": "local/reports/key-reachable-20261010/production-r44.launch.json",
+      "bytes": 433,
+      "sha256": "62d9a4c95e47b612975b6d2874ad7342bb88f8303f08a60f962d44c3143b89bc"
+    },
+    {
+      "path": "local/reports/key-reachable-20261010/protection.json",
+      "bytes": 4188,
+      "sha256": "d46aef6ea5829a9e74e1929b9c9029eaba811954f6f0bdfa03da990d233a807a"
+    },
+    {
+      "path": "local/reports/key-reachable-20261010/rest-replay.json",
+      "bytes": 1187481,
+      "sha256": "7e2e8452898d6e946c3980a3721827d3ba8fbfa3238e317cf9a78bfa0ef1eea2"
+    },
+    {
+      "path": "local/reports/key-reachable-20261010/stock-audit.json",
+      "bytes": 45762,
+      "sha256": "9945d6deda8125b6bdca6672c52f9dea3828dc340fa26b52cc447442581183a3"
+    },
+    {
+      "path": "local/runs/oracle-qualification/runtime-backups/20261010T081052.448429Z/journal.json",
+      "bytes": 28204,
+      "sha256": "3ae7df18a0579b04a97401a90123693bf9a81e913b35c2e252e6a143ec041c1c"
+    },
+    {
+      "path": "local/runs/oracle-qualification/runtime-backups/20261010T081052.448429Z/stderr.log",
+      "bytes": 262,
+      "sha256": "140e6e533943fe5f821366e30fd8f851260eb6769d080eb0713185503e4c2703"
+    },
+    {
+      "path": "local/runs/oracle-qualification/runtime-backups/20261010T081052.448429Z/stdout.log",
+      "bytes": 618443,
+      "sha256": "7939218fc8c5faef6dc0dd287e0d2dcd75be97be2e7cf7d030176b2aabb78768"
+    },
+    {
+      "path": "local/runs/oracle-qualification/runtime-backups/20261010T081226.100014Z/journal.json",
+      "bytes": 28205,
+      "sha256": "fe60e9c82e69c9a766aed50041a7a2155bfe3ca934fe91565e545e1b27189fd1"
+    },
+    {
+      "path": "local/runs/oracle-qualification/runtime-backups/20261010T081226.100014Z/stderr.log",
+      "bytes": 262,
+      "sha256": "140e6e533943fe5f821366e30fd8f851260eb6769d080eb0713185503e4c2703"
+    },
+    {
+      "path": "local/runs/oracle-qualification/runtime-backups/20261010T081226.100014Z/stdout.log",
+      "bytes": 952508,
+      "sha256": "72bede7297f11bb9e1afed66714ef67246e9b5b3fd9ed3634566571d30fb0783"
+    },
+    {
+      "path": "local/runs/oracle-qualification/runtime-backups/20261010T081547.041173Z/journal.json",
+      "bytes": 28204,
+      "sha256": "0194967f7289b77cbddd31538c4b0f0a73aff993d0272d9fae0a2917088518cf"
+    },
+    {
+      "path": "local/runs/oracle-qualification/runtime-backups/20261010T081547.041173Z/stderr.log",
+      "bytes": 262,
+      "sha256": "140e6e533943fe5f821366e30fd8f851260eb6769d080eb0713185503e4c2703"
+    },
+    {
+      "path": "local/runs/oracle-qualification/runtime-backups/20261010T081547.041173Z/stdout.log",
+      "bytes": 68320429,
+      "sha256": "a5bcfc176876a9df0fb9ebe24b9398825e67e3297e6770a106d37b245d929bf9"
+    }
+  ],
+  "bundle": {
+    "path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\key-reachable-20261010-delivery-r1.zip",
+    "sha256": "78f3255eae25d00bd7f4007c2e334f4d584c975d48b7a6a8ec203ee871b43cde"
+  },
+  "results": {
+    "stock_cases": 24,
+    "rest_cases": 15,
+    "rest_initial_observation_action_matches": 12,
+    "rest_resource_rng_restore_matches": 15,
+    "rest_map_matches": 15,
+    "blue_cases": 9,
+    "blue_boundaries": 18,
+    "blue_all_boundary_matches": 18,
+    "blue_reachable_chest_metadata_all_rng_matches": 9
+  },
+  "retained_gaps": [
+    "FINAL_ACT_UNAVAILABLE_NOT_REPRESENTABLE",
+    "CONTROLLED_NOT_NATURAL",
+    "GREEN_KEY_AND_ACT4_CONTINUOUS_ROUTE_NOT_YET_QUALIFIED"
+  ]
+}

@@ -13,6 +13,8 @@
 
 证据与限制见 [README.md](README.md)、[evidence.json](evidence.json)。随后完成的红/蓝钥匙 native 回放、真实地图边界及恢复检查见 [KEY-REPLAY.md](KEY-REPLAY.md)：仍保留终幕旗标缺口和不可达受控宝箱节点，完整 A20H 尚未资格通过。
 
+最新独立 R2 场景已完成原版采集及 native 对照，见 [KEY-REACHABLE.md](KEY-REACHABLE.md)。24 个初始节点都有真实根路径；9 个宝箱入口元数据及全部 RNG 匹配，旧版不可达案例保留原身份。终幕未解锁旗标缺口仍保留。下一优先项是绿钥匙真实战斗与奖励、Act3/Act4 连续路由；课程工程准备可并行，但不接入生产 PPO。
+
 ## 执行顺序
 
 | 顺序 | 本地工作 | 交付与完成标准 |
