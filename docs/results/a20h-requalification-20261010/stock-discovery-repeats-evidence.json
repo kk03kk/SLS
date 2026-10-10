@@ -1,0 +1,278 @@
+{
+  "schema": "sls-stock-discovery-repeats-evidence-v1",
+  "code_commit": "cfdeab098a8a4673142e6688854a7e9b10d7f22b",
+  "native_source_sha256": "e4f8452ff3cea688e49a362488814d4c2e29d9b721bcc6cd71c8d9f1d9fa733a",
+  "native_binary_sha256": "6ee14bf97312bab04b66fcb0a6767f52c4a688eeb0c1fcf5953b5ab8764f570b",
+  "training_implementation_sha256": "d31392af86ba43bfae1686193d1c91b9861b11ebbf224b141be38f771ff90096",
+  "original_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "oracle_sha256": "0710d21de30dc28dc7c137d63c587eec0e0d16a4b0e96d6708bde89699044f44",
+  "model_sha256": "ed9068343c8d628a13595a3919d8a15c5f9a19840be1042e07e5f12fcc8ca30c",
+  "original_runs_this_turn": 2,
+  "total_same_seed_original_runs": 3,
+  "observed_discovery_updates": [
+    15,
+    15,
+    14
+  ],
+  "pairwise_common_public_boundaries_equal": 60,
+  "first_pairwise_rng_difference": 59,
+  "actual_normal_start_same_run_three_keys": true,
+  "successful_prefix_act": 1,
+  "successful_prefix_floor": 7,
+  "successful_prefix_actions": 74,
+  "successful_prefix_default_public_rng_boundaries_equal": 75,
+  "successful_prefix_default_suffixes_equal": 75,
+  "final_replay_full_suffixes_equal": 195,
+  "clock_distribution_estimated": false,
+  "actual_original_model_inference": false,
+  "full_a20h_verified": false,
+  "production_environment_changed": false,
+  "training": false,
+  "training_eligible": false,
+  "training_gate": "NOT_QUALIFIED",
+  "checks": {
+    "cpu_tests_passed": 1753,
+    "skipped": 2,
+    "warnings": 4,
+    "ruff": "PASS",
+    "vocabulary": "PASS",
+    "configs": "31/33_TWO_PREEXISTING_SOURCE_IDENTITY_FAILURES"
+  },
+  "bundle": {
+    "path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\stock-discovery-repeat-20261010-delivery-r1.zip",
+    "bytes": 5362952,
+    "sha256": "0b748d0aa31c25491a798920716c08bb1e136c092b5973ffa8569502ff9b1f44"
+  },
+  "files": [
+    {
+      "path": "docs/results/a20h-requalification-20261010/FROZEN-THREE-KEY-ROUTES.md",
+      "bytes": 7345,
+      "sha256": "3384e92929395c6c97501ce1088fe7fbcec277d2c23494e00cfbedb779e44b14"
+    },
+    {
+      "path": "docs/results/a20h-requalification-20261010/STOCK-DISCOVERY-REPEATS.md",
+      "bytes": 6164,
+      "sha256": "33006747c20a4cc17002f910edc66c75cb1fa9fbba211a9b08a0e4bf6fef5eb7"
+    },
+    {
+      "path": "docs/results/a20h-requalification-20261010/WAITING-SERVER-PLAN.md",
+      "bytes": 5989,
+      "sha256": "f0dc077b92ca695bbfd9aacc94db1c40de69223d017d51b579354ec1ba7b0d16"
+    },
+    {
+      "path": "local/analyze_stock_discovery_repeats.py",
+      "bytes": 4767,
+      "sha256": "717cd5a8833ba57481fc74407e54e9ebd617666f672853d858020bcba5b3555c"
+    },
+    {
+      "path": "local/archive_initial_frozen_replayer.py",
+      "bytes": 2204,
+      "sha256": "fbde4fb2ec71b0f8484645f055d224758c867a883271302e49c9a3a6b996a88a"
+    },
+    {
+      "path": "local/build/oracle/ending-continuous-shop-r1.build.json",
+      "bytes": 21411,
+      "sha256": "05f5408237dbdce37520f0be4cbc4fba5d9fcef3d28da0ecad4cd2e46315f9b1"
+    },
+    {
+      "path": "local/build/oracle/ending-continuous-shop-r1.jar",
+      "bytes": 204466,
+      "sha256": "0710d21de30dc28dc7c137d63c587eec0e0d16a4b0e96d6708bde89699044f44"
+    },
+    {
+      "path": "local/freeze_natural_three_key_stock.py",
+      "bytes": 2170,
+      "sha256": "e43d0d8490777afa09c2e9bb35031091bc706eb5fbbc9f11c4a1fd4d84df4cb4"
+    },
+    {
+      "path": "local/package_stock_discovery_repeats.py",
+      "bytes": 8053,
+      "sha256": "0bf02360494006c628ef48e0831e2aad1926c12118bc555eaaa0affbc0ef0186"
+    },
+    {
+      "path": "local/repeat_stock_frozen_key_reference.py",
+      "bytes": 2083,
+      "sha256": "5b4ce409cfcee268c09d706a0c8189c48c6b0186b8eb575c0cdb8a384108411e"
+    },
+    {
+      "path": "local/reports/frozen-three-key-routes-20261010/131200532.native.jsonl",
+      "bytes": 2320794,
+      "sha256": "161f18895826f4071116a246141c079204c55c6f4e7f924e259000fbdc9f7b43"
+    },
+    {
+      "path": "local/reports/frozen-three-key-routes-20261010/131200532.public.jsonl",
+      "bytes": 1475896,
+      "sha256": "304f5c0d57b99dfda766b325849f2c3531ef8ff04a342f376378a11773f6ca4d"
+    },
+    {
+      "path": "local/reports/frozen-three-key-routes-20261010/report.json",
+      "bytes": 5162,
+      "sha256": "a667ef622b81a2e09f96578ceb3ba2f96002bcea7620b49446b786ff670b2846"
+    },
+    {
+      "path": "local/reports/frozen-three-key-routes-20261010/stock-discovery-bytecode-r1.txt",
+      "bytes": 24629,
+      "sha256": "fe60d0936af6e4a35eb7865867a90d6d5c24900b6b416b53c854c493ffce41fa"
+    },
+    {
+      "path": "local/reports/frozen-three-key-routes-20261010/stock-shortest-r1.json",
+      "bytes": 10761890,
+      "sha256": "6485c4823bd97d75aa27c99c2a432e79c4ed2695a7316513a9cd1e7e1fabe114"
+    },
+    {
+      "path": "local/reports/frozen-three-key-routes-20261010/stock-shortest-r1.launch.json",
+      "bytes": 430,
+      "sha256": "559a003c6dc9adbd59913b52d19b39968062ad27127f466b696eacbc28210928"
+    },
+    {
+      "path": "local/reports/stock-discovery-repeat-20261010/configs-r1.txt",
+      "bytes": 1916,
+      "sha256": "956a0c983a0ec59ccd1967850ef195574b4bf14fedfd78ae46507d0e339333f7"
+    },
+    {
+      "path": "local/reports/stock-discovery-repeat-20261010/cpu-tests-r1.txt",
+      "bytes": 4195,
+      "sha256": "07ebd0530f7848b1f587cc32c47de4920eb8262d3f1028e25ec99a86cd16bd91"
+    },
+    {
+      "path": "local/reports/stock-discovery-repeat-20261010/cross-run-analysis-r1.json",
+      "bytes": 6937,
+      "sha256": "87a67f70dcac363cc0997d010688d26d8f536e14b7aca172728f0266efe9da8e"
+    },
+    {
+      "path": "local/reports/stock-discovery-repeat-20261010/executed-replayer-r1.py",
+      "bytes": 10588,
+      "sha256": "32a541b4c8d1eb64d1edaf760df8eeee9c1f75cce1cf186285e2719b715ab8e2"
+    },
+    {
+      "path": "local/reports/stock-discovery-repeat-20261010/executed-replayer-r2.py",
+      "bytes": 13091,
+      "sha256": "74c6718317266dc568a5f94a6f75354012700e84874270644faf29cd5553e0a7"
+    },
+    {
+      "path": "local/reports/stock-discovery-repeat-20261010/protection-r1.json",
+      "bytes": 13338,
+      "sha256": "6d951cfc15196dbd21214e917bfe21a6f0b3b747cbbc5efc92ed964bf31e4744"
+    },
+    {
+      "path": "local/reports/stock-discovery-repeat-20261010/protection-r1.txt",
+      "bytes": 11625,
+      "sha256": "e08f6d2dbbbf3559d3ec026ca9a972d5023d8b0cd97416e27b82d330bf712e31"
+    },
+    {
+      "path": "local/reports/stock-discovery-repeat-20261010/r2-conditioned-replay-r1.json",
+      "bytes": 3552639,
+      "sha256": "f996363ceb50bb7d13e3559983de47c47eaf44d8cb9d9f64a95597df49e5f9c1"
+    },
+    {
+      "path": "local/reports/stock-discovery-repeat-20261010/r2-conditioned-replay-r2.json",
+      "bytes": 3552670,
+      "sha256": "20bd6e542aa9b1809ef276a02e983b859a7f57f849a0b0961a21736a3a6d481a"
+    },
+    {
+      "path": "local/reports/stock-discovery-repeat-20261010/r2-default-replay-r1.json",
+      "bytes": 3552902,
+      "sha256": "2d96d33c6c7b0d291fc396b1d0184fd805c9089271c3a05a021fa3f0fc6178aa"
+    },
+    {
+      "path": "local/reports/stock-discovery-repeat-20261010/r2-default-replay-r2.json",
+      "bytes": 3552933,
+      "sha256": "93780d816c3b8e318ecfa8b87ad9c85b914f73fd01ef6f5a2f58eb687dde5ebd"
+    },
+    {
+      "path": "local/reports/stock-discovery-repeat-20261010/r3-default-replay-r1.json",
+      "bytes": 4384261,
+      "sha256": "d858dd4f5a27f3c76213910812fa9d3b72a46e27a21b74025a9b1da1808217b4"
+    },
+    {
+      "path": "local/reports/stock-discovery-repeat-20261010/r3-default-replay-r2.json",
+      "bytes": 4384292,
+      "sha256": "3f4f7c60493d2033486a8adba65e573f0d25b1c9a2b57d29af2c073041c9730d"
+    },
+    {
+      "path": "local/reports/stock-discovery-repeat-20261010/repeat-summary-r1.json",
+      "bytes": 2868,
+      "sha256": "a4c6ae003799e6b8af9fd42f0c03613fc080520741d13c14e8eb17b2826f6e90"
+    },
+    {
+      "path": "local/reports/stock-discovery-repeat-20261010/ruff-r1.txt",
+      "bytes": 20,
+      "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0"
+    },
+    {
+      "path": "local/reports/stock-discovery-repeat-20261010/stock-abstract-action-bytecode-r1.txt",
+      "bytes": 7281,
+      "sha256": "9f46bcbcc319fde044a621c600fbc54ec702f27523db7830fbb6ab6d69a323d2"
+    },
+    {
+      "path": "local/reports/stock-discovery-repeat-20261010/stock-shortest-r2.json",
+      "bytes": 10762155,
+      "sha256": "2791b9dda8cc4cb294636ae21599b1ded4a439e54769478e454b3f021d3ed1c5"
+    },
+    {
+      "path": "local/reports/stock-discovery-repeat-20261010/stock-shortest-r2.launch.json",
+      "bytes": 430,
+      "sha256": "47ebdffb113e1062e1739a2ab109ddc5ff0d80816db66de404abf9715d5787fd"
+    },
+    {
+      "path": "local/reports/stock-discovery-repeat-20261010/stock-shortest-r3.json",
+      "bytes": 13516512,
+      "sha256": "83e6c4dc47c49e07e53f148c66f91f3969ed0e62df5408c1e9070b9f0ab034fd"
+    },
+    {
+      "path": "local/reports/stock-discovery-repeat-20261010/stock-shortest-r3.launch.json",
+      "bytes": 430,
+      "sha256": "e01ae35ad7de63e11d719df5f81b40568081c23ecd857152c1a7559c7176b755"
+    },
+    {
+      "path": "local/reports/stock-discovery-repeat-20261010/vocab-r1.txt",
+      "bytes": 90,
+      "sha256": "253dc6855d58deb0497e2af67b1a8eee1c686e15b91f229bfd776126ea051933"
+    },
+    {
+      "path": "local/runs/oracle-qualification/runtime-backups/20261010T121347.529285Z/journal.json",
+      "bytes": 28204,
+      "sha256": "b5ff134a07e450dfb23f3cd3db1e157f7d291d888be50976af2ae979b9a928c0"
+    },
+    {
+      "path": "local/runs/oracle-qualification/runtime-backups/20261010T122723.808255Z/journal.json",
+      "bytes": 28205,
+      "sha256": "870d93143f95d96269efca52e0e6ef5871e0d7a3941bc4ecb91b3f26920627fb"
+    },
+    {
+      "path": "local/runs/oracle-qualification/runtime-backups/20261010T122954.325107Z/journal.json",
+      "bytes": 28205,
+      "sha256": "939a9deb2286c69b868f1cce2ac8e24f70cf6ea17fb3aee85e15919e4de64bcc"
+    },
+    {
+      "path": "local/verify_key_protection.py",
+      "bytes": 2110,
+      "sha256": "b5d28d3867bdcef259ff833d21f881725dd295dc2415a80d840c4428ff167a2a"
+    },
+    {
+      "path": "tests/audit/test_frozen_key_reference_replay.py",
+      "bytes": 7933,
+      "sha256": "e68f2e2dd960570450080b9e3a00fa47816271e31a02ee2db751716e4b147c76"
+    },
+    {
+      "path": "tests/fixtures/regressions/natural-three-key-stock-r1.json",
+      "bytes": 2376445,
+      "sha256": "d1cd26cf66dbb5c5a2c765bdf1ba00f3a561cd5ec49f6d9cc9c2e1799d4d7b62"
+    },
+    {
+      "path": "tests/simulator/test_natural_three_key_stock.py",
+      "bytes": 3108,
+      "sha256": "25bd212c45b6bc506aa71accd7f7f19ff5d59990bc15a7b39f11b3ca7e5c4f06"
+    },
+    {
+      "path": "tools/capture_frozen_key_reference.py",
+      "bytes": 6525,
+      "sha256": "ceaa12680a5e099d10125dd03d2c127651587497759b58dcd7f8546fc9ba3b95"
+    },
+    {
+      "path": "tools/replay_frozen_key_reference.py",
+      "bytes": 13091,
+      "sha256": "74c6718317266dc568a5f94a6f75354012700e84874270644faf29cd5553e0a7"
+    }
+  ]
+}
