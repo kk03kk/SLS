@@ -2,6 +2,8 @@
 
 本阶段完成原版真实燃烧精英战斗及取绿钥匙证据链，尚未完成 native 整场战斗、奖励、FullRun 恢复对照。受控强牌组是规则探针，不是自然开局轨迹、训练库或胜率样本。
 
+后续对照已完成，见 [GREEN-REPLAY.md](GREEN-REPLAY.md)：33个边界的明确语义范围及完整后缀恢复匹配，27个原始battle投影差异仍保留。下文保持本次原版采集阶段的状态与范围。
+
 ## 版本与执行
 
 Oracle 1.3.46 JAR SHA256 `4e05d182af0b21eb937afcdbe43d9e39cf08111794abb254a3bdfac1f9e23d8c`，原版 JAR `cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673`。新场景为 `fullrun-green-key-r2.json`，独立 seeds `[131200362,131200364)`；native 生产实现未改动。

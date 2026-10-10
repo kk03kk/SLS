@@ -1,0 +1,142 @@
+{
+  "schema": "sls-green-replay-evidence-v1",
+  "scope": "CONDITIONED_ENCOUNTER_AND_PERSISTENT_STREAMS_POOLS_INDEPENDENT_ROOM_CONSTRUCTOR",
+  "unqualified_initial_fields": [
+    "encounter_distribution",
+    "persistent_rng_generation",
+    "ordered_pool_generation"
+  ],
+  "native_source_sha256": "6805e8c991ff6e3ca1b57248678babbbc1ea904b6a1a35e17d631c426765dcc0",
+  "runs": [
+    {
+      "seed": 131200362,
+      "status": "ALL_CAPTURED_BOUNDARIES_MATCH",
+      "boundaries": 31,
+      "full_suffix_restore_matches": 31,
+      "raw_direct_diff_boundaries": 27,
+      "raw_direct_available_boundaries": 29
+    },
+    {
+      "seed": 131200363,
+      "status": "ALL_CAPTURED_BOUNDARIES_MATCH",
+      "boundaries": 2,
+      "full_suffix_restore_matches": 2,
+      "raw_direct_diff_boundaries": 0,
+      "raw_direct_available_boundaries": 2
+    }
+  ],
+  "training_gate": "NOT_QUALIFIED",
+  "training_eligible": false,
+  "files": [
+    {
+      "path": "local/build/oracle/green-key-r2.build.json",
+      "bytes": 19362,
+      "sha256": "fab05b98abd411b555b1ecfd5d901e083e4a22dc85a2744e8fa0e45043ef672b"
+    },
+    {
+      "path": "local/build/oracle/green-key-r2.jar",
+      "bytes": 185224,
+      "sha256": "4e05d182af0b21eb937afcdbe43d9e39cf08111794abb254a3bdfac1f9e23d8c"
+    },
+    {
+      "path": "local/build/probe-green-map-r1.exe",
+      "bytes": 865280,
+      "sha256": "3483ed9b0275cc8897f4a3d75bb5c426b9dcf6c6f473ad68ca1a815f5a406333"
+    },
+    {
+      "path": "local/generate_green_regression.py",
+      "bytes": 2157,
+      "sha256": "344e753469b0be52a636b5f128d092d460ce6e80bfd618da730e824ac5c5121b"
+    },
+    {
+      "path": "local/reports/green-key-20261010/cards.CardGroup-r1.json",
+      "bytes": 270,
+      "sha256": "a0248acd3eca01b9bce7596b39fdb45975a8a5124f51adbde8f530374e430909"
+    },
+    {
+      "path": "local/reports/green-key-20261010/cards.CardGroup-r1.txt",
+      "bytes": 241090,
+      "sha256": "372b48a4b22f25aa3a36739cb5cbe44b0eb967dc097b836dbf8c66616b661a42"
+    },
+    {
+      "path": "local/reports/green-key-20261010/native-map-r2.json",
+      "bytes": 1355,
+      "sha256": "3c9bcebfedc301ddecff2fd23f540cefcd48d2c1e5018f29a4d995472085b6de"
+    },
+    {
+      "path": "local/reports/green-key-20261010/native-replay-r1.json",
+      "bytes": 284051,
+      "sha256": "ea4ec00d110d1081f8e481657b19297c5619d5f996ef3ccca0fb613d231e7ae7"
+    },
+    {
+      "path": "local/reports/green-key-20261010/native-replay-r2.json",
+      "bytes": 873020,
+      "sha256": "0f051f03d696bc6ac802ab52bddc5dd77d83517417d643cd8231174d8ec6efbe"
+    },
+    {
+      "path": "local/reports/green-key-20261010/native-replay-r3.json",
+      "bytes": 3169748,
+      "sha256": "66984f28df407c4c5886d132cb803f03c7204db05d2defd492df35b166fdccca"
+    },
+    {
+      "path": "local/reports/green-key-20261010/native-replay-r4.json",
+      "bytes": 3171201,
+      "sha256": "d911c69d81e019df9fe7718409e0217f798350343fb31cbb31ee45a895e13983"
+    },
+    {
+      "path": "local/reports/green-key-20261010/native-replay-r5.json",
+      "bytes": 3175998,
+      "sha256": "3e69bf214415e194f81bf56cfc8804d874c5c595cb522be51d8aafb3de99f6b7"
+    },
+    {
+      "path": "local/reports/green-key-20261010/native-replay-r6.json",
+      "bytes": 3271113,
+      "sha256": "d02b7eb0add70c25c7a79b712cab822871bf7098ecd113be17ccda6c8d2314d5"
+    },
+    {
+      "path": "local/reports/green-key-20261010/protection-replay-r1.json",
+      "bytes": 5652,
+      "sha256": "edb3ec257334e271e5e0b018a94946a582aaba2a7aedc921d0fccef8c06fb5c1"
+    },
+    {
+      "path": "local/reports/green-key-20261010/stock-audit-r3.json",
+      "bytes": 1925,
+      "sha256": "f55343090fd95ad1b59e492d202d6430566282afcc0ac9064efed18147fab5ac"
+    },
+    {
+      "path": "local/reports/green-key-20261010/stock-combat-r2.json",
+      "bytes": 2897060,
+      "sha256": "e16e8471ffc509ece96523705b893deea18ec1d7bd8846ff88403aa3ba5de066"
+    },
+    {
+      "path": "local/reports/green-key-20261010/stock-combat-r2.launch.json",
+      "bytes": 430,
+      "sha256": "bdac5fc033d5bc9b7a95c98e71705e1397a68a16702e622729c4e1e19145334e"
+    },
+    {
+      "path": "tests/fixtures/regressions/green-key-stock-r2.json",
+      "bytes": 184571,
+      "sha256": "9137c9a2387920f8fa936a489d5f9221487d3ef0b0cff8e1000d6f780d93da85"
+    },
+    {
+      "path": "tests/simulator/test_green_stock_replay.py",
+      "bytes": 2258,
+      "sha256": "f83535bf6f43971187bf2143198719020fcf9278f9efcef227117672cb634427"
+    },
+    {
+      "path": "tools/replay_green_key_archive.py",
+      "bytes": 13245,
+      "sha256": "eb5851a8f8a9d8cf5bc4b38660e7138e6b185695ae003bf2defd640bcefc48e3"
+    }
+  ],
+  "bundle": {
+    "path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\green-key-replay-20261010-delivery-r1.zip",
+    "sha256": "54df392245f260bcc231c403eef4337ce82022937efb7cb993b850a4e89cf496"
+  },
+  "verification": {
+    "full_cpu_passed": 1628,
+    "skipped": 2,
+    "warnings": 4,
+    "ruff": "PASS"
+  }
+}
