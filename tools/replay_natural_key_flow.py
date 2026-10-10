@@ -116,6 +116,18 @@ def replay(capture, oracle):
                 public_boundaries=len(states), executed_actions=len(states)-1, suffixes=suffixes,
                 actual_key_actions=[dict(boundary=s['boundary'], action=s['selected_action']) for s in steps[:-1]
                                     if s['selected_action']['kind'] in {'RECALL','TAKE_BLUE_KEY'}],
+                actual_key_transitions=[dict(boundary=s['boundary'],action=s['selected_action'],key=key,
+                                             before=s['observation']['run'][key],after=s['next_observation']['run'][key])
+                                        for s in steps[:-1] for key in ['has_ruby_key','has_emerald_key','has_sapphire_key']
+                                        if s['observation']['run'][key] != s['next_observation']['run'][key]],
+                actual_burning_entries=[dict(boundary=s['boundary'],node=s['selected_action']['node_id'],
+                                              before_run=s['observation']['run'],
+                                              after_run=s['next_observation']['run'],
+                                              enemies=s['next_observation']['enemies'])
+                                         for s in steps[:-1] if s['selected_action']['kind'] == 'CHOOSE_MAP_NODE'
+                                         and any(n['node_id'] == s['selected_action']['node_id']
+                                                 and n['visible_room_type'] == 'BURNING_ELITE'
+                                                 for n in s['observation']['map_nodes'])],
                 timing_conditioned_actions=[s['boundary'] for s in steps[:-1] if s['validation_evidence']],
                 final_public_run=steps[-1]['observation']['run'], final_screen=steps[-1]['observation']['screen'],
                 natural_start=True,training_eligible=False,training_gate='NOT_QUALIFIED',diagnostic_not_winrate=True)

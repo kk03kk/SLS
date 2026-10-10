@@ -22,7 +22,11 @@
 
 每次验收分别标记原始状态、公开输入、合法动作、RNG、奖励/horizon、恢复结果。
 已补正常开局的红蓝钥匙连续取得及后续房间：两条实际原版路径 170 个边界、
-170 个 checkpoint 完整已记录后缀恢复通过；仍缺自然 Emerald 与完整后段转幕。
+170 个 checkpoint 完整已记录后缀恢复通过。
+另补正常开局击败 Regeneration 3 燃烧 Gremlin Nob、自然取得 Emerald 并继续下一房间，
+73 个边界及完整已记录后缀恢复通过；独立默认时钟重放也通过。
+仍缺同一局集齐三钥匙、其它燃烧 buff 与完整自然后段转幕。
+绿钥匙证据见 [NATURAL-EMERALD-FLOW.md](NATURAL-EMERALD-FLOW.md)。
 详情见 [NATURAL-KEY-FLOW.md](NATURAL-KEY-FLOW.md)，不代替正式胜率或全模拟器资格。
 人工强牌组只定位规则；不能用于能力分数、正式胜率或生产后段课程。
 报告绑定原版 JAR、Oracle、native 来源/二进制、fixture 和实际执行日志。

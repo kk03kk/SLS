@@ -9,8 +9,11 @@ from sls.contracts import Action
 from sls.curriculum import IRONCLAD_A20_HEART
 from tools.replay_ending_continuation import effective_rng
 
+CASES = [case for name in ['natural-key-flow-stock-r1','natural-emerald-flow-stock-r1']
+         for case in json.loads(Path('tests/fixtures/regressions/'+name+'.json').read_text())['cases']]
 
-@pytest.mark.parametrize('case',json.loads(Path('tests/fixtures/regressions/natural-key-flow-stock-r1.json').read_text())['cases'],
+
+@pytest.mark.parametrize('case',CASES,
                          ids=lambda c:str(c['seed']))
 def test_normal_start_stock_public_history_and_every_full_suffix(case):
     backend = SimulatorBackend(profile=IRONCLAD_A20_HEART)

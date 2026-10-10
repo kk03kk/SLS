@@ -27,6 +27,7 @@ def main():
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--max-actions', type=int, default=96)
     parser.add_argument('--device', choices=('cpu',), default='cpu')
+    parser.add_argument('--probe', choices=('ruby-blue','emerald'), default='ruby-blue')
     args = parser.parse_args()
     if not 1 <= args.max_actions <= 256:
         raise ValueError('invalid diagnostic limit')
@@ -39,6 +40,13 @@ def main():
     from sls.backends.simulator import SimulatorBackend, native
     from sls.rl.training_contract import native_source_digest
     from tools.replay_ending_continuation import effective_rng
+    if args.probe == 'emerald':
+        from sls.audit.natural_emerald_policy import choose_natural_emerald_action
+        select_action = choose_natural_emerald_action
+        policy_file = ROOT/'src/sls/audit/natural_emerald_policy.py'
+    else:
+        select_action = choose_natural_key_action
+        policy_file = ROOT/'src/sls/audit/natural_key_policy.py'
     session.payload = session.receive_ready()
     if native.NATIVE_SOURCE_SHA256 != native_source_digest():
         raise ValueError('native source identity mismatch')
@@ -46,7 +54,7 @@ def main():
                   native_source_sha256=native.NATIVE_SOURCE_SHA256,
                   native_binary_sha256=hashlib.sha256(Path(native.__file__).read_bytes()).hexdigest(),
                   source_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
-                  policy_sha256=hashlib.sha256((Path(__file__).resolve().parents[1]/'src/sls/audit/natural_key_policy.py').read_bytes()).hexdigest(),
+                  policy_sha256=hashlib.sha256(policy_file.read_bytes()).hexdigest(), probe=args.probe,
                   natural_start=True, device=args.device, training_eligible=False, training_gate='NOT_QUALIFIED',
                   diagnostic_not_winrate=True, max_actions=args.max_actions, steps=[])
     args.output.parent.mkdir(parents=True, exist_ok=True)
@@ -82,7 +90,7 @@ def main():
             if index == args.max_actions:
                 result.update(status='DIAGNOSTIC_LIMIT_UNFINISHED', game_failure=False)
                 break
-            action = choose_natural_key_action(decision)
+            action = select_action(decision)
             step['selected_action'] = action.to_dict()
             flush()
             actual = backend.step(action)
