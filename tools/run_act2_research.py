@@ -112,6 +112,8 @@ def main():
         return ["2" in row["act_entries"] for row in rows]
 
     if args.stage == "gpu-gate":
+        if (out / "gpu-gate.json").exists() or (out / "qualification-base.pt").exists():
+            raise FileExistsError("qualification artifacts already exist")
         from sls.backends.simulator import SimulatorBackend
         from sls.research.bank import score
         backend = SimulatorBackend(IRONCLAD_A20_ACT2)
@@ -288,18 +290,22 @@ def main():
                 "joint_completion": paired([r["success"] for r in reference], [r["success"] for r in results]),
                 "act2_arrival": paired(arrival(reference), arrival(results))}
         curriculum = comparisons["curriculum"]
-        positive = curriculum["joint_completion"]["paired_ci_95"][0] > 0
+        versus_control = {
+            "joint_completion": paired([r["success"] for r in arm_results["control"]], [r["success"] for r in arm_results["curriculum"]]),
+            "act2_arrival": paired(arrival(arm_results["control"]), arrival(arm_results["curriculum"]))}
+        positive = curriculum["joint_completion"]["paired_ci_95"][0] > 0 and curriculum["joint_completion"]["exact_p_two_sided"] < .05
+        distribution_gain = versus_control["joint_completion"]["paired_ci_95"][0] > 0 and versus_control["joint_completion"]["exact_p_two_sided"] < .05
         retained = curriculum["act2_arrival"]["paired_lower_one_sided_95"] > -.03
-        decision = ("promising_expand_candidate" if positive and retained else
+        decision = ("promising_expand_candidate" if positive and retained and distribution_gain else
+                    "joint_gain_but_distribution_effect_unconfirmed" if positive and retained else
                     "joint_gain_retention_failed" if positive else
                     "no_positive_gain_in_this_trial" if curriculum["joint_completion"]["paired_ci_95"][1] <= 0 else
                     "evidence_insufficient")
         write_json(out / "comparison.json", {"schema": "sls-act2-paired-exploration-v1", "common_updates": common,
             "comparisons": comparisons, "claim": "one training seed; exploratory development evaluation",
-            "curriculum_vs_control": {
-                "joint_completion": paired([r["success"] for r in arm_results["control"]], [r["success"] for r in arm_results["curriculum"]]),
-                "act2_arrival": paired(arrival(arm_results["control"]), arrival(arm_results["curriculum"]))},
-            "decision": decision, "recommend_expand": positive and retained})
+            "curriculum_vs_control": versus_control,
+            "decision": decision, "recommend_expand": positive and retained and distribution_gain,
+            "recommendation_rule": "exploratory; require joint gain vs parent and control (paired CI lower>0, exact p<.05), plus parent retention lower>-.03; never auto-expand"})
 
 
 if __name__ == "__main__":

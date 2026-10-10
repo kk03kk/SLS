@@ -53,10 +53,12 @@ def package(output, status):
 def supervise(commands, output, *, deadline, environment=None):
     """Signal the stage leader first so workers survive boundary checkpointing."""
     output.mkdir(parents=True, exist_ok=False)
-    stopped, child = False, None
+    stopped, child, shutdown_deadline = False, None, None
     def stop(signum, frame):
-        nonlocal stopped
+        nonlocal stopped, shutdown_deadline
         stopped = True
+        if shutdown_deadline is None:
+            shutdown_deadline = time.time() + 300
         if child is not None and child.poll() is None:
             if os.name == "posix":
                 os.kill(child.pid, signal.SIGTERM)
@@ -74,19 +76,20 @@ def supervise(commands, output, *, deadline, environment=None):
                 child = subprocess.Popen(command, cwd=ROOT, stdout=log, stderr=subprocess.STDOUT,
                     env={**os.environ, **(environment or {}), "SLS_RESEARCH_DEADLINE": str(deadline)},
                     start_new_session=os.name == "posix")
-                try:
-                    returncode = child.wait(timeout=max(1, deadline - time.time()))
-                except subprocess.TimeoutExpired:
-                    stop(signal.SIGTERM, None)
+                while True:
+                    if time.time() >= deadline and not stopped:
+                        stop(signal.SIGTERM, None)
                     try:
-                        returncode = child.wait(timeout=300)
+                        returncode = child.wait(timeout=1)
+                        break
                     except subprocess.TimeoutExpired:
-                        if os.name == "posix":
-                            os.killpg(child.pid, signal.SIGKILL)
-                        else:
-                            child.kill()
-                        child.wait()
-                        raise RuntimeError("stage did not save/exit within shutdown grace period")
+                        if shutdown_deadline is not None and time.time() >= shutdown_deadline:
+                            if os.name == "posix":
+                                os.killpg(child.pid, signal.SIGKILL)
+                            else:
+                                child.kill()
+                            child.wait()
+                            raise RuntimeError("stage did not save/exit within shutdown grace period")
             stages.append({"stage": name, "returncode": returncode, "wall_seconds": time.perf_counter() - began})
             if returncode or stopped:
                 if os.name == "posix":
@@ -114,7 +117,7 @@ def main():
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--execute-in-allocation", action="store_true")
     args = parser.parse_args()
-    from sls.rl.training_contract import git_state, native_source_digest
+    from sls.rl.training_contract import git_state, native_source_digest, source_sha256
     parent = args.source_root.resolve() / "local/runs/ironclad-a20-act1-win-90m-continuation/final.pt"
     if sha(parent) != PARENT_SHA256 or native_source_digest() != NATIVE_SHA256:
         raise ValueError("source environment or parent identity mismatch")
@@ -123,6 +126,11 @@ def main():
     acceptance = ROOT / "docs/results/act2-learning-research/local-acceptance.json"
     if not acceptance.is_file() or not json.loads(acceptance.read_text())["qualified"]:
         raise ValueError("local research qualification has not been sealed")
+    sealed = json.loads(acceptance.read_text())
+    for name, expected in sealed["source_sha256"].items():
+        path = (ROOT / name).resolve()
+        if not path.is_relative_to(ROOT.resolve()) or source_sha256(path) != expected:
+            raise ValueError(f"locally qualified research source changed: {name}")
     output = ROOT / "local/runs/act2-learning-research-r1"
     if output.exists() or output.with_suffix(".tar.gz").exists():
         raise FileExistsError("research execution namespace already exists")
