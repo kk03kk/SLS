@@ -1,0 +1,676 @@
+{
+  "schema": "sls-boss-act4-requalification-evidence-v1",
+  "code_commit": "1de82b6dc8c84e999f67d8cc01b15faa9fdfe27b",
+  "native_source_sha256": "6805e8c991ff6e3ca1b57248678babbbc1ea904b6a1a35e17d631c426765dcc0",
+  "native_binary_sha256": "ce8f500b5116980f2bca854488da334cac58a679a1c1c59e3a8f70410890f3e8",
+  "totals": {
+    "cases": 38,
+    "checkpoint_full_suffix_matches": 288,
+    "stock_endpoint_available": 35,
+    "aligned_combat": 174,
+    "raw_exact_matches": 106,
+    "raw_differences": 68,
+    "unaligned_ui": 76
+  },
+  "ordered_boss_pairs": [
+    [
+      "AWAKENED_ONE",
+      "DONU_AND_DECA"
+    ],
+    [
+      "AWAKENED_ONE",
+      "TIME_EATER"
+    ],
+    [
+      "DONU_AND_DECA",
+      "AWAKENED_ONE"
+    ],
+    [
+      "DONU_AND_DECA",
+      "TIME_EATER"
+    ],
+    [
+      "TIME_EATER",
+      "AWAKENED_ONE"
+    ],
+    [
+      "TIME_EATER",
+      "DONU_AND_DECA"
+    ]
+  ],
+  "raw_difference_classifications": {
+    "WITNESSED_DEAD_DECA_ARTIFACT_ANIMATION_CLEANUP_NOT_EXACT_STATE_EQUALITY": 32,
+    "WITNESSED_DEAD_CULTIST_RITUAL_ANIMATION_CLEANUP_NOT_EXACT_STATE_EQUALITY": 36
+  },
+  "native_heart_reasons": {
+    "None": 17,
+    "HEART_NOT_REACHED": 21
+  },
+  "rejected_scene": {
+    "seed": 131200248,
+    "declared_card_counter": 0,
+    "stock_actual_counter": 250,
+    "source_capture_retained": true
+  },
+  "training_gate": "NOT_QUALIFIED",
+  "training_eligible": false,
+  "natural_trajectory": false,
+  "verification": {
+    "full_cpu_passed": 1658,
+    "skipped": 2,
+    "warnings": 4,
+    "ruff": "PASS"
+  },
+  "files": [
+    {
+      "path": "historical/audits/fullrun-parity-20261007/double-boss-awakened-first-stock-r1.json",
+      "source_path": "D:\\SLS\\local\\audits\\fullrun-parity-20261007\\double-boss-awakened-first-stock-r1.json",
+      "bytes": 5590460,
+      "sha256": "783253b96c87338e96400c6f056a8bb24a9c98c1369b364f56b7387bdb3f7eb3"
+    },
+    {
+      "path": "historical/audits/fullrun-parity-20261007/double-boss-awakened-first-stock-r1.launch.json",
+      "source_path": "D:\\SLS\\local\\audits\\fullrun-parity-20261007\\double-boss-awakened-first-stock-r1.launch.json",
+      "bytes": 369,
+      "sha256": "3d85bd846321a754fa0f494ff495367b678491f52ff47a06aeef94bac029fb93"
+    },
+    {
+      "path": "historical/audits/fullrun-parity-20261007/double-boss-awakened-second-stock-r1.json",
+      "source_path": "D:\\SLS\\local\\audits\\fullrun-parity-20261007\\double-boss-awakened-second-stock-r1.json",
+      "bytes": 5323713,
+      "sha256": "916e23449cef5730e9525a327910291358609625100ef60d3483e426b7a1c617"
+    },
+    {
+      "path": "historical/audits/fullrun-parity-20261007/double-boss-awakened-second-stock-r1.launch.json",
+      "source_path": "D:\\SLS\\local\\audits\\fullrun-parity-20261007\\double-boss-awakened-second-stock-r1.launch.json",
+      "bytes": 369,
+      "sha256": "2180b18ad604cc10f624c9580741f212535bf3d1f295360792737205c5cbc204"
+    },
+    {
+      "path": "historical/audits/fullrun-parity-20261007/double-boss-complete-stock-r1.json",
+      "source_path": "D:\\SLS\\local\\audits\\fullrun-parity-20261007\\double-boss-complete-stock-r1.json",
+      "bytes": 1558341,
+      "sha256": "1e3d1a3af70a651f2c2f107300233307e1cba219c8571713ce9a9e8dbfeec602"
+    },
+    {
+      "path": "historical/audits/fullrun-parity-20261007/double-boss-complete-stock-r1.launch.json",
+      "source_path": "D:\\SLS\\local\\audits\\fullrun-parity-20261007\\double-boss-complete-stock-r1.launch.json",
+      "bytes": 369,
+      "sha256": "cc3cca31b07b237901bfc9ea490e57a05156f8bc84ea1d114f9bbcac2c471f73"
+    },
+    {
+      "path": "historical/audits/fullrun-parity-20261007/double-boss-reverse-stock-r1.json",
+      "source_path": "D:\\SLS\\local\\audits\\fullrun-parity-20261007\\double-boss-reverse-stock-r1.json",
+      "bytes": 1753921,
+      "sha256": "a4e58984c84a8b9413097c27b504f54f674619ca5e7c8a4b4224344e54257930"
+    },
+    {
+      "path": "historical/audits/fullrun-parity-20261007/double-boss-reverse-stock-r1.launch.json",
+      "source_path": "D:\\SLS\\local\\audits\\fullrun-parity-20261007\\double-boss-reverse-stock-r1.launch.json",
+      "bytes": 369,
+      "sha256": "733481d3efce9e3129bc11a18e52cef23239f040a21f15299630bdc524f7b58e"
+    },
+    {
+      "path": "historical/audits/fullrun-parity-20261007/double-boss-terminal-stock-r1.json",
+      "source_path": "D:\\SLS\\local\\audits\\fullrun-parity-20261007\\double-boss-terminal-stock-r1.json",
+      "bytes": 1704196,
+      "sha256": "2490d5c1cd27beaaeed7ce9da1317d6c9d63c243819fabafb6d2e0dba5b9bad7"
+    },
+    {
+      "path": "historical/audits/fullrun-parity-20261007/double-boss-terminal-stock-r1.launch.json",
+      "source_path": "D:\\SLS\\local\\audits\\fullrun-parity-20261007\\double-boss-terminal-stock-r1.launch.json",
+      "bytes": 369,
+      "sha256": "77170f9ae335332e84a956d7818e1c24e11747bb3a98b79cfe07d8f2a4f06d7a"
+    },
+    {
+      "path": "historical/audits/fullrun-parity-20261007/key-act4-boundaries-stock-r1.json",
+      "source_path": "D:\\SLS\\local\\audits\\fullrun-parity-20261007\\key-act4-boundaries-stock-r1.json",
+      "bytes": 8829773,
+      "sha256": "05ed6de42ab71e9143dbeae57cf0778f79c9d4df61fa2be5a0c54adb006f7056"
+    },
+    {
+      "path": "historical/audits/fullrun-parity-20261007/key-act4-boundaries-stock-r1.launch.json",
+      "source_path": "D:\\SLS\\local\\audits\\fullrun-parity-20261007\\key-act4-boundaries-stock-r1.launch.json",
+      "bytes": 369,
+      "sha256": "07dae4cecb87e7571c7e90ea9fc13ed483f229a5b091e785fbaf1e8481587181"
+    },
+    {
+      "path": "historical/audits/fullrun-parity-20261007/key-act4-entry-stock-r1.json",
+      "source_path": "D:\\SLS\\local\\audits\\fullrun-parity-20261007\\key-act4-entry-stock-r1.json",
+      "bytes": 2231933,
+      "sha256": "b5c316f4ead195f2fd4056fdf01ec7f6a11bdda470c67cc1b0c420460771754c"
+    },
+    {
+      "path": "historical/audits/fullrun-parity-20261007/key-act4-entry-stock-r1.launch.json",
+      "source_path": "D:\\SLS\\local\\audits\\fullrun-parity-20261007\\key-act4-entry-stock-r1.launch.json",
+      "bytes": 369,
+      "sha256": "0f609e7c13ed327a9aa5035215ee6a55b3db39197d1b5d2245c213130002c7da"
+    },
+    {
+      "path": "historical/audits/fullrun-parity-20261007/key-act4-zero-reset-stock-r2.json",
+      "source_path": "D:\\SLS\\local\\audits\\fullrun-parity-20261007\\key-act4-zero-reset-stock-r2.json",
+      "bytes": 2251919,
+      "sha256": "3fbed8214bb17810f9bd23f19017af3cee9a6afb74a8b738a6746f38e83f9fbc"
+    },
+    {
+      "path": "historical/audits/fullrun-parity-20261007/key-act4-zero-reset-stock-r2.launch.json",
+      "source_path": "D:\\SLS\\local\\audits\\fullrun-parity-20261007\\key-act4-zero-reset-stock-r2.launch.json",
+      "bytes": 369,
+      "sha256": "5ff3b11ca0d3effdf5b3de8985d85b905cf9fe3e152ea22d35d6c5a30851d87c"
+    },
+    {
+      "path": "historical/build/oracle/fullrun-double-boss-awakened-first-r1.build.json",
+      "source_path": "D:\\SLS\\local\\build\\oracle\\fullrun-double-boss-awakened-first-r1.build.json",
+      "bytes": 16861,
+      "sha256": "eddb4c9e43e591c08c3acba54d51f9bb0fc75c34e15413a6806815e66a066343"
+    },
+    {
+      "path": "historical/build/oracle/fullrun-double-boss-awakened-first-r1.jar",
+      "source_path": "D:\\SLS\\local\\build\\oracle\\fullrun-double-boss-awakened-first-r1.jar",
+      "bytes": 159983,
+      "sha256": "e0d66483c7f539880d780129a3bbb34711c41a5cc9fcc51d62fec14885c79813"
+    },
+    {
+      "path": "historical/build/oracle/fullrun-double-boss-awakened-second-r1.build.json",
+      "source_path": "D:\\SLS\\local\\build\\oracle\\fullrun-double-boss-awakened-second-r1.build.json",
+      "bytes": 17145,
+      "sha256": "ff4d7a5873c4ad2553fa2d3c80f93a39cb311e9447962140d560e6b685288455"
+    },
+    {
+      "path": "historical/build/oracle/fullrun-double-boss-awakened-second-r1.jar",
+      "source_path": "D:\\SLS\\local\\build\\oracle\\fullrun-double-boss-awakened-second-r1.jar",
+      "bytes": 162899,
+      "sha256": "a774f3de8a984731a0cf36220b009fb942caeb3f4db494b43d2a13e608670bee"
+    },
+    {
+      "path": "historical/build/oracle/fullrun-double-boss-complete-r1.build.json",
+      "source_path": "D:\\SLS\\local\\build\\oracle\\fullrun-double-boss-complete-r1.build.json",
+      "bytes": 16041,
+      "sha256": "f368f445bc5d56522214a4375159165917180d67472a071e0ab97500a06e4bd0"
+    },
+    {
+      "path": "historical/build/oracle/fullrun-double-boss-complete-r1.jar",
+      "source_path": "D:\\SLS\\local\\build\\oracle\\fullrun-double-boss-complete-r1.jar",
+      "bytes": 152169,
+      "sha256": "ed6a349609d518fec376a01ef5e7b98619272e91ffcdcb8e0fe5b00d19285a63"
+    },
+    {
+      "path": "historical/build/oracle/fullrun-double-boss-reverse-r1.build.json",
+      "source_path": "D:\\SLS\\local\\build\\oracle\\fullrun-double-boss-reverse-r1.build.json",
+      "bytes": 16579,
+      "sha256": "41c788ce90b443576ac10ee45c5cebe65a89c3583a9b2497e545b03978dd17a6"
+    },
+    {
+      "path": "historical/build/oracle/fullrun-double-boss-reverse-r1.jar",
+      "source_path": "D:\\SLS\\local\\build\\oracle\\fullrun-double-boss-reverse-r1.jar",
+      "bytes": 157104,
+      "sha256": "cb16b5baeef1b2ec2d86b5ab6a26e39c92b2d94c96029614aa307b0b50a872e4"
+    },
+    {
+      "path": "historical/build/oracle/fullrun-double-boss-terminal-r1.build.json",
+      "source_path": "D:\\SLS\\local\\build\\oracle\\fullrun-double-boss-terminal-r1.build.json",
+      "bytes": 16311,
+      "sha256": "77f95764e8d33148efb26537c3a5273a119f9f1489d9bed55ba3f77099ec5339"
+    },
+    {
+      "path": "historical/build/oracle/fullrun-double-boss-terminal-r1.jar",
+      "source_path": "D:\\SLS\\local\\build\\oracle\\fullrun-double-boss-terminal-r1.jar",
+      "bytes": 154639,
+      "sha256": "8b9b4265e3bac859a2649f2adfb53ff882c2b36ee26442021f18cab141f03a5f"
+    },
+    {
+      "path": "historical/build/oracle/fullrun-key-act4-boundaries-r1.build.json",
+      "source_path": "D:\\SLS\\local\\build\\oracle\\fullrun-key-act4-boundaries-r1.build.json",
+      "bytes": 17671,
+      "sha256": "5a5edcf809d8856c5c5b949a71502c23d67ae15e0e9e5da52a79de28092e7700"
+    },
+    {
+      "path": "historical/build/oracle/fullrun-key-act4-boundaries-r1.jar",
+      "source_path": "D:\\SLS\\local\\build\\oracle\\fullrun-key-act4-boundaries-r1.jar",
+      "bytes": 169149,
+      "sha256": "755a1a7d3186997a537597fb0e9267201e21d7188198b2dee00918e38a4ae22b"
+    },
+    {
+      "path": "historical/build/oracle/fullrun-key-act4-entry-r1.build.json",
+      "source_path": "D:\\SLS\\local\\build\\oracle\\fullrun-key-act4-entry-r1.build.json",
+      "bytes": 17403,
+      "sha256": "88597e7ff7ae4301772ac0c7e1ec54c9542c6479e0fc06bca57435edd591a7f3"
+    },
+    {
+      "path": "historical/build/oracle/fullrun-key-act4-entry-r1.jar",
+      "source_path": "D:\\SLS\\local\\build\\oracle\\fullrun-key-act4-entry-r1.jar",
+      "bytes": 165953,
+      "sha256": "c813dbd757df4f2a27a6aaa148a0d353a302161020ca00dc86b811b7698c40b8"
+    },
+    {
+      "path": "historical/build/oracle/fullrun-key-act4-zero-reset-r2.build.json",
+      "source_path": "D:\\SLS\\local\\build\\oracle\\fullrun-key-act4-zero-reset-r2.build.json",
+      "bytes": 17939,
+      "sha256": "fd582877cff98c36b4520fc12610a78dc720860c7d0e33dac3fc8777d4c5f589"
+    },
+    {
+      "path": "historical/build/oracle/fullrun-key-act4-zero-reset-r2.jar",
+      "source_path": "D:\\SLS\\local\\build\\oracle\\fullrun-key-act4-zero-reset-r2.jar",
+      "bytes": 171888,
+      "sha256": "844e3509773dd71809cfc6020191f33872ae8f06fc1518832adbfa35495b8e76"
+    },
+    {
+      "path": "local/generate_boss_suffix_regression.py",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\generate_boss_suffix_regression.py",
+      "bytes": 2627,
+      "sha256": "6a34ef130848c2bab678df1beeccf26c23bcbe5aa2394ab2beadd766cebc950a"
+    },
+    {
+      "path": "local/package_boss_act4.py",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\package_boss_act4.py",
+      "bytes": 5293,
+      "sha256": "fe26207bdda3a94ad7ede3d1ba16dfd1a0e78010e96d4260e8ce79dd5d51318c"
+    },
+    {
+      "path": "local/recheck_boss_archives.py",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\recheck_boss_archives.py",
+      "bytes": 4044,
+      "sha256": "4716960c0ce5a0812a8854a69740c5cc42bb8d99c567cf8aaed0353f0cd95ee9"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/cpu-tests-r1.txt",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\cpu-tests-r1.txt",
+      "bytes": 4113,
+      "sha256": "146e89ed984c27be321f60364e739212b1a087218bf24fe5c4b5ef377e39cea2"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/double-boss-awakened-first-stock-r1-entry-r1.json",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\double-boss-awakened-first-stock-r1-entry-r1.json",
+      "bytes": 1851499,
+      "sha256": "eb1c6ea1022a26de024987e1b86feb2ae0430a136b3c23aaf43c8a8655db6d66"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/double-boss-awakened-first-stock-r1-flow-r1.json",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\double-boss-awakened-first-stock-r1-flow-r1.json",
+      "bytes": 8152778,
+      "sha256": "8a6ec92da1fa57ef3a8890bc68d12ba73da3a4d1b9fbf1b0017f12088a228e13"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/double-boss-awakened-first-stock-r1-step0-r1.txt",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\double-boss-awakened-first-stock-r1-step0-r1.txt",
+      "bytes": 374,
+      "sha256": "196b483a1b2c0d29df266d74f8c0ec0ce0fa2995ed2ea6c9ea50af2d1d75568e"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/double-boss-awakened-first-stock-r1-step1-r1.txt",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\double-boss-awakened-first-stock-r1-step1-r1.txt",
+      "bytes": 989,
+      "sha256": "554ad3ba38d4348aaa29a7cb4e94c68f27ab26d102a49b769b03a117aade249a"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/double-boss-awakened-first-stock-r1-suffix-log-r2.txt",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\double-boss-awakened-first-stock-r1-suffix-log-r2.txt",
+      "bytes": 73,
+      "sha256": "8855792c68545321ceb2c3c158c0594120a5efdfe5779e2909fead1767128a41"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/double-boss-awakened-first-stock-r1-suffix-r2.json",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\double-boss-awakened-first-stock-r1-suffix-r2.json",
+      "bytes": 84236,
+      "sha256": "d53a068ecaec91fb984b07fc3506a7234bae8d53bcd8baad792c8160faef7e75"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/double-boss-awakened-second-stock-r1-entry-r1.json",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\double-boss-awakened-second-stock-r1-entry-r1.json",
+      "bytes": 1862664,
+      "sha256": "1449452af9d2053439f9396dc09ec04cc2bc219b9b10aa3f5ceb23544da026e6"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/double-boss-awakened-second-stock-r1-flow-r1.json",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\double-boss-awakened-second-stock-r1-flow-r1.json",
+      "bytes": 7296279,
+      "sha256": "eb696ba347480ae6db74ccedd9dfba590dffdf6598223626680f18cc7078f040"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/double-boss-awakened-second-stock-r1-step0-r1.txt",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\double-boss-awakened-second-stock-r1-step0-r1.txt",
+      "bytes": 374,
+      "sha256": "125a1dc8f7b95668eae5a1312da094dd190396833355038fa87fcfd312cefad4"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/double-boss-awakened-second-stock-r1-step1-r1.txt",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\double-boss-awakened-second-stock-r1-step1-r1.txt",
+      "bytes": 989,
+      "sha256": "7c3d0069343d4d67d181480d1d0577c8cc4cbe2edb8c9f8006c1c9bdf1823d2d"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/double-boss-awakened-second-stock-r1-suffix-log-r2.txt",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\double-boss-awakened-second-stock-r1-suffix-log-r2.txt",
+      "bytes": 73,
+      "sha256": "8855792c68545321ceb2c3c158c0594120a5efdfe5779e2909fead1767128a41"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/double-boss-awakened-second-stock-r1-suffix-r2.json",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\double-boss-awakened-second-stock-r1-suffix-r2.json",
+      "bytes": 84254,
+      "sha256": "bb64124529fef1973585618964f072c77d65fc4ea6815dbc46fa423cb964b77a"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/double-boss-complete-stock-r1-entry-r1.json",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\double-boss-complete-stock-r1-entry-r1.json",
+      "bytes": 863795,
+      "sha256": "27c568e11fcbae78c0f9570f8556ee7dfeaf7a2d61c9f3973f71388dc8d594b5"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/double-boss-complete-stock-r1-flow-r1.json",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\double-boss-complete-stock-r1-flow-r1.json",
+      "bytes": 1558015,
+      "sha256": "3eeead0ca55e055b6523073105eeb5c6c7d3db8c75d46f5ab94c3ed0925e695a"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/double-boss-complete-stock-r1-step0-r1.txt",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\double-boss-complete-stock-r1-step0-r1.txt",
+      "bytes": 188,
+      "sha256": "fb7848114b2fe956721f5d34c0943fc6367b795314fb8ed326ac511f4392608f"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/double-boss-complete-stock-r1-step1-r1.txt",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\double-boss-complete-stock-r1-step1-r1.txt",
+      "bytes": 503,
+      "sha256": "2960b5534b9229a2394bcb2be76c4eda1a704c8bec554f2c85e8fdb63340bc0d"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/double-boss-complete-stock-r1-suffix-log-r2.txt",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\double-boss-complete-stock-r1-suffix-log-r2.txt",
+      "bytes": 73,
+      "sha256": "5d888275cb225549d2a7010f4df26dd219dbc7e277d1e1c721130c6bda19ae50"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/double-boss-complete-stock-r1-suffix-r2.json",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\double-boss-complete-stock-r1-suffix-r2.json",
+      "bytes": 11933,
+      "sha256": "3781175d906c735e6a77fef5a9910d9c0556c9428c4605c3b2cd063814fd889c"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/double-boss-reverse-stock-r1-entry-r1.json",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\double-boss-reverse-stock-r1-entry-r1.json",
+      "bytes": 866548,
+      "sha256": "9366e802ebd8b13a6a9b0bd3b09f35d0b8d00de21eb37ff2b98976bc43cfe18f"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/double-boss-reverse-stock-r1-flow-r1.json",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\double-boss-reverse-stock-r1-flow-r1.json",
+      "bytes": 1756999,
+      "sha256": "fadf757e7f8706a97a16ba12ef6fda18b6ae07a7509f294e8cad55b883ef4591"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/double-boss-reverse-stock-r1-step0-r1.txt",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\double-boss-reverse-stock-r1-step0-r1.txt",
+      "bytes": 188,
+      "sha256": "cee0b5ebb922a21ce77cd17c520be2a9a89e6f5866ce43315d2c6aad2b6a3cb4"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/double-boss-reverse-stock-r1-step1-r1.txt",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\double-boss-reverse-stock-r1-step1-r1.txt",
+      "bytes": 398,
+      "sha256": "c390cd1d00de346641aa0471a9ea54e2aef41267249894b453d0d512a299fe3d"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/double-boss-reverse-stock-r1-suffix-log-r2.txt",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\double-boss-reverse-stock-r1-suffix-log-r2.txt",
+      "bytes": 73,
+      "sha256": "5d888275cb225549d2a7010f4df26dd219dbc7e277d1e1c721130c6bda19ae50"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/double-boss-reverse-stock-r1-suffix-r2.json",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\double-boss-reverse-stock-r1-suffix-r2.json",
+      "bytes": 33411,
+      "sha256": "579e89b0a6f99472daba22d85ed8f8f5a117faff5154744e462f7f69d9a929dd"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/double-boss-terminal-stock-r1-entry-r1.json",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\double-boss-terminal-stock-r1-entry-r1.json",
+      "bytes": 869378,
+      "sha256": "60f2c991b3e272a02bae42c0eb82f437c8a8c5add8c690b645b2ff29738ffde8"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/double-boss-terminal-stock-r1-flow-r1.json",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\double-boss-terminal-stock-r1-flow-r1.json",
+      "bytes": 1599179,
+      "sha256": "f57f402813812f1d77d036eba5af45de16546fd0456418be7ec13bd25baf54ee"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/double-boss-terminal-stock-r1-step0-r1.txt",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\double-boss-terminal-stock-r1-step0-r1.txt",
+      "bytes": 188,
+      "sha256": "b3f6f807ffb2e53f02e3b86d222b5280299af3d6d13325af35cd7641af988f8d"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/double-boss-terminal-stock-r1-step1-r1.txt",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\double-boss-terminal-stock-r1-step1-r1.txt",
+      "bytes": 398,
+      "sha256": "85651aa07933279b11d8b0de8cbf92000e678e17ac13222454ec23fcb07cf160"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/double-boss-terminal-stock-r1-suffix-log-r2.txt",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\double-boss-terminal-stock-r1-suffix-log-r2.txt",
+      "bytes": 73,
+      "sha256": "5d888275cb225549d2a7010f4df26dd219dbc7e277d1e1c721130c6bda19ae50"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/double-boss-terminal-stock-r1-suffix-r2.json",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\double-boss-terminal-stock-r1-suffix-r2.json",
+      "bytes": 33359,
+      "sha256": "07967b075df03161275a5ece65861d13e2f7f60d03ebc5dc3bd0f01e4e2374d2"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/inventory-r1.json",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\inventory-r1.json",
+      "bytes": 30146,
+      "sha256": "e8f0e406bbac799bc1e9a0af584eff875af268a40762f8113e8c6b2a1db026a4"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/key-act4-boundaries-stock-r1-step0-r1.txt",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\key-act4-boundaries-stock-r1-step0-r1.txt",
+      "bytes": 634,
+      "sha256": "e42a1f89321415fbfd7c950c8f5ed6ec61a6327d3a4f0519a87fd347c00959a6"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/key-act4-boundaries-valid-subset-entry-r1.json",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\key-act4-boundaries-valid-subset-entry-r1.json",
+      "bytes": 3161401,
+      "sha256": "b365d00c7b15782ed0587e33a9784298e4f17fecc68fe6af4d4cc6a51e926615"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/key-act4-boundaries-valid-subset-flow-r1.json",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\key-act4-boundaries-valid-subset-flow-r1.json",
+      "bytes": 5391919,
+      "sha256": "e75ea5be95ed7d89e88f143f43eb4e7860b5390a36ab796b22a89e6d4d10d6fe"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/key-act4-boundaries-valid-subset-suffix-log-r2.txt",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\key-act4-boundaries-valid-subset-suffix-log-r2.txt",
+      "bytes": 74,
+      "sha256": "1893fcf8f1c532a7d053cd1967b0ec3972de876e782b8f750b4f475472404eeb"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/key-act4-boundaries-valid-subset-suffix-r2.json",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\key-act4-boundaries-valid-subset-suffix-r2.json",
+      "bytes": 123839,
+      "sha256": "d442faa3196a5a94c1c32abd71107a5c3bf179862210369180b4781e966957b0"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/key-act4-entry-stock-r1-entry-r1.json",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\key-act4-entry-stock-r1-entry-r1.json",
+      "bytes": 866423,
+      "sha256": "d2e01581fb50b2865aee619dc5addd54111855261b40c7595acf09a793e6e598"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/key-act4-entry-stock-r1-flow-r1.json",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\key-act4-entry-stock-r1-flow-r1.json",
+      "bytes": 1480261,
+      "sha256": "2071240158f2769bb6da4653d80e27cff610d0b15e2d5ef21a779bc03893a4f4"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/key-act4-entry-stock-r1-step0-r1.txt",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\key-act4-entry-stock-r1-step0-r1.txt",
+      "bytes": 188,
+      "sha256": "8a63c661d8d73a2ca41532039092e4eec461cc2ed6bab9bf5b54d8d6d254aea2"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/key-act4-entry-stock-r1-step1-r1.txt",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\key-act4-entry-stock-r1-step1-r1.txt",
+      "bytes": 398,
+      "sha256": "51d4c61246612ebfca919ce1da572d1bb79a7b0eaddaa240a23e56962af8f5a9"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/key-act4-entry-stock-r1-suffix-log-r1.txt",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\key-act4-entry-stock-r1-suffix-log-r1.txt",
+      "bytes": 1069,
+      "sha256": "7b3fbe35db02ea725ea463847cf8e3a570fec93d943f66701cf7da184e704427"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/key-act4-entry-stock-r1-suffix-log-r2.txt",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\key-act4-entry-stock-r1-suffix-log-r2.txt",
+      "bytes": 73,
+      "sha256": "5d888275cb225549d2a7010f4df26dd219dbc7e277d1e1c721130c6bda19ae50"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/key-act4-entry-stock-r1-suffix-r2.json",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\key-act4-entry-stock-r1-suffix-r2.json",
+      "bytes": 34644,
+      "sha256": "8c4d2ffc722c5cfb5913651b63a69bec1ed54feee5a15e5b1753118711ce54c3"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/key-act4-zero-reset-stock-r2-entry-r1.json",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\key-act4-zero-reset-stock-r2-entry-r1.json",
+      "bytes": 869060,
+      "sha256": "860b5ba8100f15d8d8d8f6fd2f1f390c995318d6fecb2f20c6d24ffe7c99d92a"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/key-act4-zero-reset-stock-r2-flow-r1.json",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\key-act4-zero-reset-stock-r2-flow-r1.json",
+      "bytes": 1486204,
+      "sha256": "149a18b974b6be56bff4c0eae7cbb89aa51c2e7b49895cb1e84adc742367fe57"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/key-act4-zero-reset-stock-r2-step0-r1.txt",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\key-act4-zero-reset-stock-r2-step0-r1.txt",
+      "bytes": 188,
+      "sha256": "1a63acbb5838b3761e25fd6d12932f68bd9be465022b8726a5d70295b5a6e509"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/key-act4-zero-reset-stock-r2-step1-r1.txt",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\key-act4-zero-reset-stock-r2-step1-r1.txt",
+      "bytes": 398,
+      "sha256": "795ec774aca1438c1b42274017b79fba0ce8578d31dc323c44d5cf7b4d36149f"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/key-act4-zero-reset-stock-r2-suffix-log-r2.txt",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\key-act4-zero-reset-stock-r2-suffix-log-r2.txt",
+      "bytes": 73,
+      "sha256": "5d888275cb225549d2a7010f4df26dd219dbc7e277d1e1c721130c6bda19ae50"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/key-act4-zero-reset-stock-r2-suffix-r2.json",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\key-act4-zero-reset-stock-r2-suffix-r2.json",
+      "bytes": 34612,
+      "sha256": "7b5773d65928712d7cc224bf9846090eb053db9b0391f265935197029ba9b5d0"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/protection-r1.json",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\protection-r1.json",
+      "bytes": 7116,
+      "sha256": "f52a2d69d8b40f6a8d5685be9bc6a1c9cadb9d281a2efcd9fe8bad14410c7dfd"
+    },
+    {
+      "path": "local/reports/boss-act4-requalification-20261010/suffix-inventory-r2.json",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010\\suffix-inventory-r2.json",
+      "bytes": 5889,
+      "sha256": "72bf28d09f0a5ac7c87ca253129b05cf8c57048ae8e631a69da8e648e32bfeca"
+    },
+    {
+      "path": "local/verify_all_boss_suffixes.py",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\verify_all_boss_suffixes.py",
+      "bytes": 1887,
+      "sha256": "a507c8b103029099e2ea0df783f62eaf97efa68fbbd1a350a587729fb64fd78a"
+    },
+    {
+      "path": "native/oracle/resources/spirecomm/parity/fullrun-double-boss-awakened-first-r1.json",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\native\\oracle\\resources\\spirecomm\\parity\\fullrun-double-boss-awakened-first-r1.json",
+      "bytes": 16984,
+      "sha256": "8aed1dc9b5e500db52f412bba2ce0c49eed448bd9162c64fa4f82cf0ec9661fe"
+    },
+    {
+      "path": "native/oracle/resources/spirecomm/parity/fullrun-double-boss-awakened-second-r1.json",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\native\\oracle\\resources\\spirecomm\\parity\\fullrun-double-boss-awakened-second-r1.json",
+      "bytes": 17013,
+      "sha256": "47b5a64659b8841b9209688195ca0df2c1e247fcc2868ccbcbb653ea7b727f5f"
+    },
+    {
+      "path": "native/oracle/resources/spirecomm/parity/fullrun-double-boss-complete-r1.json",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\native\\oracle\\resources\\spirecomm\\parity\\fullrun-double-boss-complete-r1.json",
+      "bytes": 6825,
+      "sha256": "638fc5033e9ab5e81e30d2de5e24c3dcf221aa702682a28a6208c865e5459851"
+    },
+    {
+      "path": "native/oracle/resources/spirecomm/parity/fullrun-double-boss-reverse-r1.json",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\native\\oracle\\resources\\spirecomm\\parity\\fullrun-double-boss-reverse-r1.json",
+      "bytes": 7255,
+      "sha256": "352d750a0d42a019352ecb5097f4ab258d961df923f94473305218816a474864"
+    },
+    {
+      "path": "native/oracle/resources/spirecomm/parity/fullrun-double-boss-terminal-r1.json",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\native\\oracle\\resources\\spirecomm\\parity\\fullrun-double-boss-terminal-r1.json",
+      "bytes": 7458,
+      "sha256": "d80dff5cbb66c5f2776a78e98bcd8e287fa8ca30234d70c7c13da577c1ba4f36"
+    },
+    {
+      "path": "native/oracle/resources/spirecomm/parity/fullrun-key-act4-boundaries-r1.json",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\native\\oracle\\resources\\spirecomm\\parity\\fullrun-key-act4-boundaries-r1.json",
+      "bytes": 31396,
+      "sha256": "27dbe71f5ef19179ed968fe5fc8c37d1c372ff4439672314471d51c976fa067e"
+    },
+    {
+      "path": "native/oracle/resources/spirecomm/parity/fullrun-key-act4-entry-r1.json",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\native\\oracle\\resources\\spirecomm\\parity\\fullrun-key-act4-entry-r1.json",
+      "bytes": 7929,
+      "sha256": "dfab9344141979f51dcaf8db1ada7133afa0bfb54fe3797b9d974008aa0d38e4"
+    },
+    {
+      "path": "native/oracle/resources/spirecomm/parity/fullrun-key-act4-zero-reset-r2.json",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\native\\oracle\\resources\\spirecomm\\parity\\fullrun-key-act4-zero-reset-r2.json",
+      "bytes": 8193,
+      "sha256": "39815c7f1d6ab17385892cb483ce590de892df6235a92c588253ff2f6a43dae3"
+    },
+    {
+      "path": "tests/fixtures/regressions/boss-stock-suffix-r1.json",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\tests\\fixtures\\regressions\\boss-stock-suffix-r1.json",
+      "bytes": 2035613,
+      "sha256": "5538a7159b1a0f051328097056c1bd32d8bea452f609ac42d2796c4dcf6fa2ca"
+    },
+    {
+      "path": "tests/simulator/test_boss_stock_suffix.py",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\tests\\simulator\\test_boss_stock_suffix.py",
+      "bytes": 3335,
+      "sha256": "28a9e3869ed4d48f694dae09a876b1faf25d76ca18a2f1a134a9189017c4ab2a"
+    },
+    {
+      "path": "tools/reproduce_double_boss_entry.py",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\tools\\reproduce_double_boss_entry.py",
+      "bytes": 14721,
+      "sha256": "a577276906ef0c62fec01c4debe84c7cd9f6fd88ea48cb98b2cd241586cd42c9"
+    },
+    {
+      "path": "tools/reproduce_double_boss_flow.py",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\tools\\reproduce_double_boss_flow.py",
+      "bytes": 7935,
+      "sha256": "17141de5fd07e6a1614ae864a95015b716d66fcc0260bae3c19de9373e2d9ccb"
+    },
+    {
+      "path": "tools/verify_boss_flow_suffix.py",
+      "source_path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\tools\\verify_boss_flow_suffix.py",
+      "bytes": 10206,
+      "sha256": "220798b32d58b7fca51e3cd9446e5af1e8f9b16b43592cf3cb036da8184a857f"
+    }
+  ],
+  "bundle": {
+    "path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\boss-act4-requalification-20261010-delivery-r1.zip",
+    "sha256": "d72ac29d64831f9496e42cd76c5aa6c03b4fb3e0628694a8702cb3a36825996a"
+  }
+}
