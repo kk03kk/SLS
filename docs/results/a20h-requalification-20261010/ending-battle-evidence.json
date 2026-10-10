@@ -1,0 +1,209 @@
+{
+  "schema": "sls-ending-battle-suffix-evidence-v1",
+  "code_commit": "ee4936f3dd433925825f8c0bbfd536072f5137de",
+  "native_source_sha256": "6805e8c991ff6e3ca1b57248678babbbc1ea904b6a1a35e17d631c426765dcc0",
+  "native_binary_sha256": "ce8f500b5116980f2bca854488da334cac58a679a1c1c59e3a8f70410890f3e8",
+  "totals": {
+    "cases": 30,
+    "boundaries": 102,
+    "raw_different_boundaries": 3,
+    "supported_suffixes": 99,
+    "unsupported_suffixes": 3
+  },
+  "scope": "CONTROLLED_ISOLATED_ACT4_BATTLES_NOT_CONTINUOUS_ENDING_RUN",
+  "training_gate": "NOT_QUALIFIED",
+  "training_eligible": false,
+  "natural_trajectory": false,
+  "verification": {
+    "cpu_passed": 1707,
+    "skipped": 2,
+    "warnings": 4,
+    "ruff": "PASS"
+  },
+  "files": [
+    {
+      "path": "docs/results/a20h-requalification-20261010/ENDING-BATTLE-SUFFIX.md",
+      "bytes": 4106,
+      "sha256": "308882b791f0e6000adb2782cc3b7e606ea7e412e5d0e676f5e2c4a40a16df64"
+    },
+    {
+      "path": "historical/audits/fullrun-parity-20261007/ending-death-capture-r1.json",
+      "bytes": 1987829,
+      "sha256": "0d37d54649a5eea7616e005d5617b6db143c2e818ab1cf7860209ed0b3d1410f"
+    },
+    {
+      "path": "historical/audits/fullrun-parity-20261007/ending-death-capture-r1.launch.json",
+      "bytes": 369,
+      "sha256": "3934c05943110e2ee89e147f6e19c4292f9b7477040cf2983e0fa52b653957a3"
+    },
+    {
+      "path": "historical/audits/fullrun-parity-20261007/ending-interaction-capture-r2.json",
+      "bytes": 4345257,
+      "sha256": "e645e8998eed2ea1a8e7c8f17f4e0581b79f76faac7ea2035814f4cd44724ba9"
+    },
+    {
+      "path": "historical/audits/fullrun-parity-20261007/ending-interaction-capture-r2.launch.json",
+      "bytes": 369,
+      "sha256": "8e8b8f7572140396d546609e502227b737fd881dac7fb9bd3f99912d4616d6b5"
+    },
+    {
+      "path": "historical/audits/fullrun-parity-20261007/heart-lethal-capture-r1.json",
+      "bytes": 1105415,
+      "sha256": "a54be40958e50dc1837b09c5573470c1e81abccea500030b14be1d9df3112891"
+    },
+    {
+      "path": "historical/audits/fullrun-parity-20261007/heart-lethal-capture-r1.launch.json",
+      "bytes": 369,
+      "sha256": "132f9b63cc8d231fa3778f8ca141507be603cdc75cfefd066a290aaad2a254d5"
+    },
+    {
+      "path": "historical/audits/fullrun-parity-20261007/heart-loss-capture-r1.json",
+      "bytes": 1201922,
+      "sha256": "dd8a107e9bd949cd3d29b2b7827d6a6252139e0b3ef5e922b181f8e13809c9ba"
+    },
+    {
+      "path": "historical/audits/fullrun-parity-20261007/heart-loss-capture-r1.launch.json",
+      "bytes": 369,
+      "sha256": "c419ab031d8ac115027bc791c9272a5cca2e01a314113e8f19533ae37f7df28f"
+    },
+    {
+      "path": "historical/build/oracle/fullrun-parity-r12.build.json",
+      "bytes": 10531,
+      "sha256": "6e2b5dc254fa4ed3f244c353b2bd284b72252fd64c96d53ed2447c8b3aa03b0f"
+    },
+    {
+      "path": "historical/build/oracle/fullrun-parity-r12.jar",
+      "bytes": 111334,
+      "sha256": "5285e789598c93f169aa88e67fd4fdde4b60b27861f19b838dd0e245d9fb5a95"
+    },
+    {
+      "path": "historical/build/oracle/fullrun-parity-r13.build.json",
+      "bytes": 10787,
+      "sha256": "97e94f72eea4f6863bbc9610abac1e21364ab1660feefc7f4240b37df89736e1"
+    },
+    {
+      "path": "historical/build/oracle/fullrun-parity-r13.jar",
+      "bytes": 113077,
+      "sha256": "b4833c1b1b67a023baa4f0b49c74859d9925df4c4c752f016c16a23067984aa7"
+    },
+    {
+      "path": "historical/build/oracle/fullrun-parity-r14.build.json",
+      "bytes": 11037,
+      "sha256": "056953e5c40bb334cd4ee50facc841e5ece4259796750681bcd4cb3266225728"
+    },
+    {
+      "path": "historical/build/oracle/fullrun-parity-r14.jar",
+      "bytes": 114818,
+      "sha256": "99597568625a16b4c5b17492503ecf0f77d612fa3bdb8df912843e0848d5a4d5"
+    },
+    {
+      "path": "historical/build/oracle/fullrun-parity-r15.build.json",
+      "bytes": 11291,
+      "sha256": "f73bb535d7b64ef066948b553435d5a1cb0a4bb9cd7515d6573af3e9d95c4bb1"
+    },
+    {
+      "path": "historical/build/oracle/fullrun-parity-r15.jar",
+      "bytes": 116630,
+      "sha256": "28e46d47bc21721e54a4e6eb4ba5e55799cbe4cd53a296377d99cfe2ce1dad9f"
+    },
+    {
+      "path": "local/package_ending_suffix.py",
+      "bytes": 4628,
+      "sha256": "1d123d803f1052a018b78ec2a5113bd5dd9280a413ef54f9de6a13761b33c850"
+    },
+    {
+      "path": "local/reports/ending-archive-20261010/cpu-tests-r1.txt",
+      "bytes": 4113,
+      "sha256": "27b96654d5b9b7562130543f6f00b873e3828669d8d2f7731be43ec5b7a5422f"
+    },
+    {
+      "path": "local/reports/ending-archive-20261010/deaths-r1.json",
+      "bytes": 12745,
+      "sha256": "2151720a55c717c5a140a93e1828813168f90f2094c616ee4e34a0600c086757"
+    },
+    {
+      "path": "local/reports/ending-archive-20261010/deaths-r2.json",
+      "bytes": 12745,
+      "sha256": "3d4fdb4fe641ada3367e971902ce1c4931c988ea7df9b92651953b07c561548b"
+    },
+    {
+      "path": "local/reports/ending-archive-20261010/interactions-r1.json",
+      "bytes": 23797,
+      "sha256": "9e447bbab2a474e4dcbc7cafc8f4634f4bea9b8d9861b90bd5cede681c1f42c2"
+    },
+    {
+      "path": "local/reports/ending-archive-20261010/interactions-r2.json",
+      "bytes": 23797,
+      "sha256": "c46e2e4565bd2fb2a1de7848b1d29dd50605c90e14f9496622e9e14ced1fc5cd"
+    },
+    {
+      "path": "local/reports/ending-archive-20261010/lethal-r1-failure.txt",
+      "bytes": 469,
+      "sha256": "733690c3fcd5b805cdbae7a90e991a3a0d3436b0391b2c92a8e29a141f9f4e20"
+    },
+    {
+      "path": "local/reports/ending-archive-20261010/lethal-r2.json",
+      "bytes": 6616,
+      "sha256": "d9597c236335dda6c488b37c5f61fae3dd7e0fbeeb6ba1861272c3fa9f804eb7"
+    },
+    {
+      "path": "local/reports/ending-archive-20261010/lethal-r3.json",
+      "bytes": 6616,
+      "sha256": "01637e0730bc0988c76401a2621052e5c62d1ab40101bb8eb75b3842dbd7ec67"
+    },
+    {
+      "path": "local/reports/ending-archive-20261010/loss-r1.json",
+      "bytes": 6595,
+      "sha256": "80e5b3ab5c7cebe95b3b859f77279d6703ae60aa094fcaf967a4779d95abdb92"
+    },
+    {
+      "path": "local/reports/ending-archive-20261010/loss-r2.json",
+      "bytes": 6595,
+      "sha256": "df4e08e07afabf518808be290934b2071d2c3eb5e870584d7aa4b0808ea9ab2c"
+    },
+    {
+      "path": "local/reports/ending-archive-20261010/protection-r1.json",
+      "bytes": 7848,
+      "sha256": "56abf8a63b9c886b6409558449cf7657adde84aaf5059f9f9f4d9a75166c8c46"
+    },
+    {
+      "path": "local/verify_key_protection.py",
+      "bytes": 2110,
+      "sha256": "b5d28d3867bdcef259ff833d21f881725dd295dc2415a80d840c4428ff167a2a"
+    },
+    {
+      "path": "tests/fixtures/ending-death-stock.json",
+      "bytes": 337567,
+      "sha256": "3cf74b609cc85ea9f07009562bb626ef2eebfacbbd0158292b37cec0c7cf75f4"
+    },
+    {
+      "path": "tests/fixtures/ending-interaction-stock.json",
+      "bytes": 761093,
+      "sha256": "6de0ed6ffab0562e69797ad6e2b9a5ecd4bca0ea5b6b2cc0f4f5934c1066bd35"
+    },
+    {
+      "path": "tests/fixtures/heart-lethal-stock.json",
+      "bytes": 33556,
+      "sha256": "e0a3635587e3b9b99c4201db0e6a99a5a353a694f60dbd4834246ac02f853268"
+    },
+    {
+      "path": "tests/fixtures/heart-loss-stock.json",
+      "bytes": 167940,
+      "sha256": "f82b750891bcee902233c9c5d891f9cb931b58411db809c3ab2425c59638cc38"
+    },
+    {
+      "path": "tests/simulator/test_ending_checkpoint_suffix.py",
+      "bytes": 1787,
+      "sha256": "745d391cf53456dfdf5bdfb0f9a56996532444169249a991ddc911190564ec40"
+    },
+    {
+      "path": "tools/verify_ending_archive_suffix.py",
+      "bytes": 10327,
+      "sha256": "5b6c0a859eeb7712b17ebb2eee6249008b7578c8ac25c64e070a293c46169dd1"
+    }
+  ],
+  "bundle": {
+    "path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\ending-battle-suffix-20261010-delivery-r1.zip",
+    "sha256": "3e2b0bd7d2337bf239a65f75ad18639e75087169cdfb37723cd0b1264c6c183b"
+  }
+}
