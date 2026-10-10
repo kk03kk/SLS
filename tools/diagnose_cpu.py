@@ -21,6 +21,7 @@ from sls.diagnostics.cpu import (
     compare,
     cpu_runtime,
     load_models,
+    verify_greedy,
 )
 
 
@@ -41,7 +42,7 @@ def checkpoint_args(values, artifact_root):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("command", choices=("capture", "compare", "returns"))
+    parser.add_argument("command", choices=("capture", "compare", "returns", "verify"))
     parser.add_argument("--device", choices=("cpu",), default="cpu")
     parser.add_argument("--artifact-root", type=Path, default=ROOT)
     parser.add_argument("--checkpoint", action="append", metavar="LABEL=PATH")
@@ -61,11 +62,17 @@ def main():
         analyze_returns(args.corpus, args.output)
         return
     paths = checkpoint_args(args.checkpoint, args.artifact_root)
+    if args.command == "verify":
+        if args.corpus is None:
+            parser.error("verify requires --corpus")
+        verify_greedy(args.corpus, args.output, load_models(paths), runtime)
+        return
     if args.command == "capture":
         if args.seed_count <= 0 or not 0 < args.max_states <= 64:
             parser.error("seed count must be positive and states must be in 1..64")
         roots = [ROOT / "configs", ROOT / "local/runs", args.artifact_root / "configs",
-                 args.artifact_root / "local/runs"]
+                 args.artifact_root / "local/runs", ROOT / "local/reports",
+                 args.artifact_root / "local/reports"]
         scanned = check_seed_collisions(roots, args.seed_start, args.seed_count)
         maximum = 4096 if args.max_steps is None else args.max_steps
         if not 0 < maximum <= 4096:

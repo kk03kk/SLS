@@ -42,6 +42,31 @@ def test_public_roundtrip_and_duplicate_instances():
     assert restored == d and restored.observation.deck[0] != restored.observation.deck[1]
 
 
+def test_duplicate_multiselect_preserves_click_order_and_references():
+    from sls.contracts.observation import PublicEntity
+    from sls.model import PolicyBatch
+
+    d = decision()
+    selected = tuple(PublicEntity(f"SELECTED:{i}", "BASH",
+                                  (("deck_index", index), ("selected", True),
+                                   ("selected_order", i), ("source", "MASTER_DECK")))
+                     for i, index in enumerate((2, 0)))
+    options = tuple(PublicEntity(f"CHOICE:{i}", "BASH", (("deck_index", i),)) for i in range(3))
+    d = replace(d, observation=replace(d.observation, selected_cards=selected, choice_options=options),
+                actions=(Action(ActionKind.SELECT_CARD, subject_id="CHOICE:1"), Action(ActionKind.CONFIRM)))
+    restored = decision_from_record(json.loads(canonical(decision_record(d))))
+    assert restored == d
+    for a, b in zip(PolicyBatch.from_decisions((d,)).model_inputs(),
+                    PolicyBatch.from_decisions((restored,)).model_inputs(), strict=True):
+        assert torch.equal(a, b)
+
+
+def test_complete_return_uses_actual_training_float32_rewards():
+    reward = 0.1234567890123
+    target = complete_returns([{"shaped_reward": reward, "terminal": True}], {"complete": True})
+    assert target == [float(torch.tensor(reward, dtype=torch.float32))]
+
+
 def test_public_history_rejects_hidden_and_schema():
     row = decision_record(decision())
     row["observation"]["rng"] = 7

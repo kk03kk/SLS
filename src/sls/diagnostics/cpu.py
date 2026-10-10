@@ -91,9 +91,12 @@ def read_history(path: Path) -> tuple[list[dict], dict]:
     for i, row in enumerate(rows):
         if row.get("step") != i or row.get("record_type") != "decision":
             raise ValueError("non-contiguous public history")
-        decision = decision_from_record(row)
+        validate_policy_observation(row["observation"])
+        expected = {f.name for f in fields(Observation)}
+        if set(row["observation"]) != expected:
+            raise ValueError("public observation fields do not match current contract")
         action = Action.from_dict(row["chosen_action"])
-        if action.to_dict() not in [a.to_dict() for a in decision.actions]:
+        if action.to_dict() not in [Action.from_dict(a).to_dict() for a in row["actions"]]:
             raise ValueError("history selected an illegal action")
         if i != len(rows) - 1 and row["terminal"]:
             raise ValueError("history crosses an episode boundary")
@@ -252,7 +255,8 @@ def complete_returns(rows: list[dict], outcome: dict) -> list[float] | None:
         reward = row["shaped_reward"]
         if not math.isfinite(reward):
             raise ValueError("nonfinite return")
-        total += reward
+        # PPO stores shaped rewards as float32 before constructing its targets.
+        total += float(torch.tensor(reward, dtype=torch.float32))
         targets.append(total)
     return targets[::-1]
 
@@ -271,7 +275,7 @@ def select_states(trajectories: list[dict], directory: Path, maximum=64) -> list
             key = f"{trajectory['model']}:{trajectory['seed']}:{row['step']}"
             groups[stratum(row)].append({"id": hashlib.sha256(key.encode()).hexdigest(),
                                          "trajectory": trajectory["id"], "step": row["step"],
-                                         "stratum": stratum(row), "public_sha256": digest(decision_record(decision_from_record(row)))})
+                                         "stratum": stratum(row), "public_sha256": digest({k: row[k] for k in ("observation", "actions")})})
     for values in groups.values():
         values.sort(key=lambda v: v["id"])
     selected = []
@@ -298,11 +302,14 @@ def capture(directory: Path, models: dict, runtime: dict, *, seed_start=SEED_STA
             seed_count=SEED_COUNT, max_steps=4096, max_states=64, scanned=()):
     from sls.backends.simulator import SimulatorBackend
 
+    environment = identity(runtime)
     if directory.exists():
         raise FileExistsError("refuse to overwrite diagnostic evidence")
     directory.mkdir(parents=True)
     (directory / "public").mkdir()
     trajectories = []
+    encountered, selected_encounters = set(), set()
+    natural_strata, branch_coverage, choice_sources = Counter(), Counter(), set()
     for label, entry in models.items():
         for seed in range(seed_start, seed_start + seed_count):
             backend = SimulatorBackend(PROFILE)
@@ -330,6 +337,14 @@ def capture(directory: Path, models: dict, runtime: dict, *, seed_start=SEED_STA
                            "value": float(output.value[0]), "terminal": terminal}
                     stream.write(canonical(row).decode() + "\n")
                     rows.append(row)
+                    observation = row["observation"]
+                    natural_strata[stratum(row)] += 1
+                    encountered.update(e["monster_id"] for e in observation["enemies"])
+                    if observation["choice_options"]:
+                        sources = {str(e["properties"].get("source", "unspecified"))
+                                   for e in observation["choice_options"]}
+                        choice_sources.update(sources)
+                        branch_coverage[observation["screen"] + ":" + "+".join(sorted(sources))] += 1
                     tail.append({"step": step, "screen": decision.observation.screen.value,
                                  "floor": decision.observation.run.floor,
                                  "selected_cards": decision.observation.to_dict()["selected_cards"],
@@ -366,6 +381,7 @@ def capture(directory: Path, models: dict, runtime: dict, *, seed_start=SEED_STA
             if decision_record(decision) != {k: row[k] for k in ("observation", "actions")}:
                 raise ValueError("natural native replay differs from recorded public history")
             if row["step"] in wanted:
+                selected_encounters.update(e["monster_id"] for e in row["observation"]["enemies"])
                 state = wanted[row["step"]]
                 target = directory / "private" / f"{state['id']}.json.gz"
                 target.parent.mkdir(exist_ok=True)
@@ -377,21 +393,17 @@ def capture(directory: Path, models: dict, runtime: dict, *, seed_start=SEED_STA
             decision = transition.decision
             if not transition.terminated and not transition.truncated:
                 limits.observe(decision, max_steps=4096, max_boundary_visits=4)
-    encountered = {e["monster_id"] for t in trajectories
-                   for row in read_history(directory / t["public_path"])[0]
-                   for e in row["observation"]["enemies"]}
     required = {"THE_GUARDIAN", "HEXAGHOST", "SLIME_BOSS", "THE_CHAMP", "THE_COLLECTOR", "BRONZE_AUTOMATON"}
-    manifest = {"schema": CORPUS_SCHEMA, **identity(runtime),
+    manifest = {"schema": CORPUS_SCHEMA, **environment,
                 "seed_range": [seed_start, seed_start + seed_count],
                 "seed_scan_files": list(scanned), "models": {k: v["identity"] for k, v in models.items()},
                 "selection": "SHA256 round-robin act/screen/enemy strata; natural only",
                 "trajectories": trajectories, "states": selected,
-                "natural_strata": dict(Counter(stratum(row) for t in trajectories
-                                                for row in read_history(directory / t["public_path"])[0])),
-                "selection_branch_coverage": dict(Counter(
-                    str(row["observation"]["public_context"].get("selection_mode", "unspecified"))
-                    for t in trajectories for row in read_history(directory / t["public_path"])[0]
-                    if row["observation"]["selected_cards"])),
+                "natural_strata": dict(natural_strata),
+                "selection_branch_coverage": dict(branch_coverage),
+                "missing_known_choice_sources": sorted({"HAND", "MASTER_DECK", "GENERATED",
+                    "DISCARD_PILE", "EXHAUST_PILE", "DRAW_PILE"} - choice_sources),
+                "missing_selected_boss_contexts": sorted(required - selected_encounters),
                 "missing_boss_contexts": sorted(required - encountered)}
     write_json(directory / "manifest.json", manifest)
     return manifest
@@ -457,7 +469,8 @@ def compare(directory: Path, output: Path, models: dict, runtime: dict, *, max_s
                                "actions": [a.to_dict() for a in decision.actions],
                                "memory_history": "CURRENT_MODEL_PUBLIC_BEHAVIOR_PREFIX",
                                "chosen_action": decision.actions[int(policy.logits.argmax(1)[0])].to_dict()}
-                    if targets is not None and label == trajectory["model"]:
+                    if (targets is not None and label == trajectory["model"] and
+                            entry["identity"].get("sha256") == manifest["models"][label].get("sha256")):
                         values.append({"trajectory": trajectory["id"], "step": row["step"],
                                        "act": decision.observation.run.act, "model": label,
                                        "prediction": float(policy.value[0]), "mc_return": targets[row["step"]],
@@ -472,7 +485,7 @@ def compare(directory: Path, output: Path, models: dict, runtime: dict, *, max_s
                             transition.decision, max_steps=entry["ppo"]["max_episode_steps"],
                             max_boundary_visits=entry["ppo"]["max_boundary_visits"])
                         terminal = transition.terminated or transition.truncated or limit is not None
-                        total += learning_reward(continuation, transition, entry["ppo"], limit=limit)
+                        total += float(torch.tensor(learning_reward(continuation, transition, entry["ppo"], limit=limit), dtype=torch.float32))
                         trace.append({"screen": continuation.observation.screen.value,
                                       "floor": continuation.observation.run.floor,
                                       "selected_cards": continuation.observation.to_dict()["selected_cards"],
@@ -537,8 +550,51 @@ def analyze_returns(directory: Path, output: Path):
                                 for act in sorted({r["observation"]["run"]["act"] for r in history})}})
     result = {"schema": "sls-cpu-complete-return-v1", "profile": PROFILE.profile_id,
               "target_policy": "GREEDY_CAPTURE_POLICY", "gamma": 1,
+              "reward_precision": "TRAINER_FLOAT32_SHAPED_REWARDS_SUMMED_WITHOUT_BOOTSTRAP",
               "limitation": "Not stochastic training-policy calibration or a probability estimate",
               "corpus_sha256": sha256_file(directory / "manifest.json"), "trajectories": rows,
               "outcome_counts": dict(Counter(t["outcome"]["reason"] for t in manifest["trajectories"]))}
+    write_json(output, result)
+    return result
+
+
+def verify_greedy(directory: Path, output: Path, models: dict, runtime: dict):
+    """Verify one full captured policy trajectory per model after a source change."""
+    from sls.backends.simulator import SimulatorBackend
+
+    manifest = validated_corpus(directory)
+    results = []
+    for label, entry in models.items():
+        if entry["identity"]["sha256"] != manifest["models"][label]["sha256"]:
+            raise ValueError("greedy equivalence requires the exact captured checkpoint")
+        trajectory = next(t for t in manifest["trajectories"] if t["model"] == label)
+        rows, outcome = read_history(directory / trajectory["public_path"])
+        backend = SimulatorBackend(PROFILE)
+        decision = backend.reset(trajectory["seed"])
+        limits = EpisodeLimitState.initial(decision)
+        memory, pa, pr, deltas = entry["model"].initial_memory(1, "cpu"), 0, 0.0, []
+        for row in rows:
+            if decision_record(decision) != {k: row[k] for k in ("observation", "actions")}:
+                raise ValueError("greedy replay public state/actions differ")
+            policy = score(entry["model"], decision, memory, pa, pr, row["step"] == 0)
+            action = decision.actions[int(policy.logits.argmax(1)[0])]
+            if action.to_dict() != row["chosen_action"]:
+                raise ValueError("greedy policy trajectory changed")
+            deltas.append(abs(float(policy.value[0]) - row["value"]))
+            transition = backend.step(action)
+            reason = None if transition.terminated or transition.truncated else limits.observe(
+                transition.decision, max_steps=entry["ppo"]["max_episode_steps"],
+                max_boundary_visits=entry["ppo"]["max_boundary_visits"])
+            if row["terminal"] != bool(transition.terminated or transition.truncated or reason):
+                raise ValueError("greedy trajectory termination changed")
+            memory, pa, pr = policy.next_memory, ACTION_TYPE_IDS[action.kind.value] + 1, float(transition.reward)
+            decision = transition.decision
+        if decision.observation.to_dict() != outcome["final_observation"] or max(deltas) > 1e-6:
+            raise ValueError("greedy final observation or value changed")
+        results.append({"trajectory": trajectory["id"], "decisions": len(rows),
+                        "max_value_delta": max(deltas), "reason": outcome["reason"],
+                        "limiter": limits.to_dict()})
+    result = {"schema": "sls-cpu-greedy-equivalence-v1", **identity(runtime),
+              "corpus_sha256": sha256_file(directory / "manifest.json"), "trajectories": results}
     write_json(output, result)
     return result
