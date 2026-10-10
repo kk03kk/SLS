@@ -1,0 +1,325 @@
+{
+  "schema": "sls-green-capture-evidence-v1",
+  "stock_audit": {
+    "schema": "sls-green-stock-audit-v1",
+    "simulator_comparison": "NOT_YET_PERFORMED",
+    "capture_sha256": "e16e8471ffc509ece96523705b893deea18ec1d7bd8846ff88403aa3ba5de066",
+    "runs": [
+      {
+        "seed": 131200362,
+        "scene": "green-real-victory",
+        "status": "GREEN_KEY_ACQUIRED",
+        "actions": 30,
+        "drawn_buff": 2,
+        "buff_check": "ALL_STOCK_MONSTERS_HAVE_EXPECTED_POWER",
+        "inventory_scope": "DECK_MULTIPLICITY_AND_MODIFIERS_RELIC_ORDER_GOLD_HP",
+        "actual_master_deck_order": [
+          "AscendersBane",
+          "Bludgeon",
+          "Bludgeon",
+          "Bludgeon",
+          "Bludgeon",
+          "Bludgeon",
+          "Bludgeon",
+          "Bludgeon",
+          "Bludgeon",
+          "Bludgeon",
+          "Bludgeon"
+        ],
+        "map_rng_before": {
+          "counter": 95,
+          "seed0": 5037639165087250210,
+          "seed1": 14124583170291490205
+        },
+        "map_rng_after": {
+          "counter": 96,
+          "seed0": 14124583170291490205,
+          "seed1": 10469521420122236744
+        }
+      },
+      {
+        "seed": 131200363,
+        "scene": "green-real-death",
+        "status": "GAME_TERMINAL",
+        "actions": 1,
+        "drawn_buff": 2,
+        "buff_check": "ALL_STOCK_MONSTERS_HAVE_EXPECTED_POWER",
+        "inventory_scope": "DECK_MULTIPLICITY_AND_MODIFIERS_RELIC_ORDER_GOLD_HP",
+        "actual_master_deck_order": [
+          "AscendersBane",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R"
+        ],
+        "map_rng_before": {
+          "counter": 96,
+          "seed0": 4943145985129490872,
+          "seed1": 6253867971463339595
+        },
+        "map_rng_after": {
+          "counter": 97,
+          "seed0": 6253867971463339595,
+          "seed1": 11016231887426640369
+        }
+      }
+    ]
+  },
+  "native_map_probe": {
+    "scope": "TWO_SEED_MAP_CONSTRUCTOR_ONLY_NOT_COMBAT_OR_FULLRUN",
+    "native": [
+      {
+        "seed": 131200362,
+        "x": 2,
+        "y": 10,
+        "buff": 2
+      },
+      {
+        "seed": 131200363,
+        "x": 5,
+        "y": 5,
+        "buff": 2
+      }
+    ],
+    "stock": [
+      {
+        "seed": 131200362,
+        "x": 2,
+        "y": 10,
+        "buff": 2
+      },
+      {
+        "seed": 131200363,
+        "x": 5,
+        "y": 5,
+        "buff": 2
+      }
+    ],
+    "equal": true,
+    "inputs": {
+      "tools/probe_green_map.cpp": "cd1e1d2d2e8cb4641f4a2c4f07239b233223ab2420b243b12e7ac0d68cc9b329",
+      "native/simulator/src/game/Map.cpp": "9111e00fb9ea15261035c521ed733869897470a7aa22c5e14c8cc826e1aa59ad",
+      "native/simulator/include/game/Map.h": "4bb30a8aeac1f41c0dc3d7ec24906bb487d29bf415d9a7a41c44626f9f7f11fd",
+      "native/simulator/include/game/Random.h": "8b08322280850a8cac805e92623f83dd0b84604c8779a30c0baff53839824fe4",
+      "native/simulator/include/sts_common.h": "6fdd8da11f692b9cae1a5a2418ee64a2f310dd43dd7d989813073e744dfc78d5",
+      "native/simulator/include/constants/Rooms.h": "bb98993c2df04d66e5ba8cd54e9b5b3e6370e4dbc00f66197aeeee5a92ecfb92"
+    },
+    "compiler_sha256": "086ce9d47ba42f33a514e1a6e04eb1d4a8fa1d75e0868e0213caad447c91e864",
+    "executable_sha256": "3483ed9b0275cc8897f4a3d75bb5c426b9dcf6c6f473ad68ca1a815f5a406333"
+  },
+  "full_simulator_comparison": "NOT_YET_PERFORMED",
+  "training_eligible": false,
+  "files": [
+    {
+      "path": "local/build/oracle/green-key-r1.build.json",
+      "bytes": 19114,
+      "sha256": "e509a575504a546ef099bdb241bf1fbd229b40a82b34bc8c0849b10930f87ad1"
+    },
+    {
+      "path": "local/build/oracle/green-key-r1.jar",
+      "bytes": 183816,
+      "sha256": "867fc628903253208013d51317b90721d1fde0f2811049eb68e9a44d96ad8748"
+    },
+    {
+      "path": "local/build/oracle/green-key-r2.build.json",
+      "bytes": 19362,
+      "sha256": "fab05b98abd411b555b1ecfd5d901e083e4a22dc85a2744e8fa0e45043ef672b"
+    },
+    {
+      "path": "local/build/oracle/green-key-r2.jar",
+      "bytes": 185224,
+      "sha256": "4e05d182af0b21eb937afcdbe43d9e39cf08111794abb254a3bdfac1f9e23d8c"
+    },
+    {
+      "path": "local/build/probe-green-map-r1.exe",
+      "bytes": 865280,
+      "sha256": "3483ed9b0275cc8897f4a3d75bb5c426b9dcf6c6f473ad68ca1a815f5a406333"
+    },
+    {
+      "path": "local/reports/green-key-20261010/native-map-r1.json",
+      "bytes": 1355,
+      "sha256": "3c9bcebfedc301ddecff2fd23f540cefcd48d2c1e5018f29a4d995472085b6de"
+    },
+    {
+      "path": "local/reports/green-key-20261010/native-map-r2.json",
+      "bytes": 1355,
+      "sha256": "3c9bcebfedc301ddecff2fd23f540cefcd48d2c1e5018f29a4d995472085b6de"
+    },
+    {
+      "path": "local/reports/green-key-20261010/production-r45.json",
+      "bytes": 56605,
+      "sha256": "9befeee139d954715b7d944cc4304caa8eb9ef2b680e904f6d3a88dce582f1ff"
+    },
+    {
+      "path": "local/reports/green-key-20261010/production-r45.launch.json",
+      "bytes": 433,
+      "sha256": "ae22b85367311d58d140ab811973923c2f256b7fa4f7e00d0caefe1680459204"
+    },
+    {
+      "path": "local/reports/green-key-20261010/production-r46.json",
+      "bytes": 56605,
+      "sha256": "01cfdcfae28451b512005870ed5194ffd4a223f30cba7767bba50f71e3fd5972"
+    },
+    {
+      "path": "local/reports/green-key-20261010/production-r46.launch.json",
+      "bytes": 433,
+      "sha256": "104aab9ff8f96f0d1de1081ba5fed2c9dd61b127e803b2e5893d8d673ce8c25b"
+    },
+    {
+      "path": "local/reports/green-key-20261010/protection-r1.json",
+      "bytes": 5286,
+      "sha256": "d08c07ebaa0e220be4fae0c3e2021d3ecdd5a9e65ec37cae70608a0a082e894d"
+    },
+    {
+      "path": "local/reports/green-key-20261010/protection-r2.json",
+      "bytes": 5652,
+      "sha256": "edb3ec257334e271e5e0b018a94946a582aaba2a7aedc921d0fccef8c06fb5c1"
+    },
+    {
+      "path": "local/reports/green-key-20261010/stock-audit-r2.json",
+      "bytes": 1199,
+      "sha256": "4cc5d2b2b5cf673363ab97cf6faf04a37249939395819447f12bce58c08e6e8a"
+    },
+    {
+      "path": "local/reports/green-key-20261010/stock-audit-r3.json",
+      "bytes": 1925,
+      "sha256": "f55343090fd95ad1b59e492d202d6430566282afcc0ac9064efed18147fab5ac"
+    },
+    {
+      "path": "local/reports/green-key-20261010/stock-combat-r1.json",
+      "bytes": 1404512,
+      "sha256": "224dc1bcdb90f7237fccd538ef0ad8f20c87ad598b4738a83f9185f8810ac4c7"
+    },
+    {
+      "path": "local/reports/green-key-20261010/stock-combat-r1.launch.json",
+      "bytes": 430,
+      "sha256": "3f33dd11e4ca198621217bcbdca769df10579effd05e60fe325d4344ec83d32c"
+    },
+    {
+      "path": "local/reports/green-key-20261010/stock-combat-r2.json",
+      "bytes": 2897060,
+      "sha256": "e16e8471ffc509ece96523705b893deea18ec1d7bd8846ff88403aa3ba5de066"
+    },
+    {
+      "path": "local/reports/green-key-20261010/stock-combat-r2.launch.json",
+      "bytes": 430,
+      "sha256": "bdac5fc033d5bc9b7a95c98e71705e1397a68a16702e622729c4e1e19145334e"
+    },
+    {
+      "path": "local/reports/green-key-20261010/stock-sources-r1/dungeons.AbstractDungeon.txt",
+      "bytes": 530335,
+      "sha256": "0f3abd64e6930ca02064e7c0c30495a70bfddc9d875069422ac6509ef09677ae"
+    },
+    {
+      "path": "local/reports/green-key-20261010/stock-sources-r1/manifest.json",
+      "bytes": 3384,
+      "sha256": "7d5afcdee026fc8b04d1123bfdacdca71c9281ea9c380ffdaf0246b325a23d0e"
+    },
+    {
+      "path": "local/reports/green-key-20261010/stock-sources-r1/rewards.RewardItem.txt",
+      "bytes": 110693,
+      "sha256": "0a38de227b691bc6d5e871207e595ae60769a5c74b58a1104b6191e75bb7ee94"
+    },
+    {
+      "path": "local/reports/green-key-20261010/stock-sources-r1/rooms.AbstractRoom.txt",
+      "bytes": 141680,
+      "sha256": "33f8d8d045d0c4596d5b677c245024da6bc24aa454e33af6dbecb2ec457aee9c"
+    },
+    {
+      "path": "local/reports/green-key-20261010/stock-sources-r1/rooms.MonsterRoom.txt",
+      "bytes": 5593,
+      "sha256": "8529de56cc42de00ddfbc1d3250c0edf321a8930c0013a027d7688b00480084a"
+    },
+    {
+      "path": "local/reports/green-key-20261010/stock-sources-r1/rooms.MonsterRoomElite.txt",
+      "bytes": 18119,
+      "sha256": "75ad89da49ae705b08aa24d15cce3a972211d6cb5d7d77e4929e6fdcad3c7602"
+    },
+    {
+      "path": "local/reports/green-key-20261010/stock-sources-r1/vfx.ObtainKeyEffect.txt",
+      "bytes": 12569,
+      "sha256": "7e2b4b65768c60d4c3689ea0051db8d34c98e27cbaac48286e8669913c49a308"
+    },
+    {
+      "path": "local/runs/oracle-qualification/runtime-backups/20261010T083123.465491Z/journal.json",
+      "bytes": 28205,
+      "sha256": "e6850c36bb8fb90c645f8e94fc7d1e7695f5e1471e3af5fab8f014ded0bf959b"
+    },
+    {
+      "path": "local/runs/oracle-qualification/runtime-backups/20261010T083123.465491Z/stderr.log",
+      "bytes": 262,
+      "sha256": "140e6e533943fe5f821366e30fd8f851260eb6769d080eb0713185503e4c2703"
+    },
+    {
+      "path": "local/runs/oracle-qualification/runtime-backups/20261010T083123.465491Z/stdout.log",
+      "bytes": 632988,
+      "sha256": "b5422622e856c166709e81bd24277855389a76706173f236337a5e2e4209dc8d"
+    },
+    {
+      "path": "local/runs/oracle-qualification/runtime-backups/20261010T083212.146085Z/journal.json",
+      "bytes": 28205,
+      "sha256": "73ff3dff5b9af5390e9cb9be3dfe9336ca77378ce396405470c0bc60e5851318"
+    },
+    {
+      "path": "local/runs/oracle-qualification/runtime-backups/20261010T083212.146085Z/stderr.log",
+      "bytes": 262,
+      "sha256": "140e6e533943fe5f821366e30fd8f851260eb6769d080eb0713185503e4c2703"
+    },
+    {
+      "path": "local/runs/oracle-qualification/runtime-backups/20261010T083212.146085Z/stdout.log",
+      "bytes": 8081836,
+      "sha256": "b1d02918a9dc8b1179fdc36c2394ab014163802b80f58472db939df227749a51"
+    },
+    {
+      "path": "local/runs/oracle-qualification/runtime-backups/20261010T083550.071023Z/journal.json",
+      "bytes": 28205,
+      "sha256": "417edc1d76bc6c2d0c9a13ed4cbccbf3958a397575504b2d160e130900baf43d"
+    },
+    {
+      "path": "local/runs/oracle-qualification/runtime-backups/20261010T083550.071023Z/stderr.log",
+      "bytes": 262,
+      "sha256": "140e6e533943fe5f821366e30fd8f851260eb6769d080eb0713185503e4c2703"
+    },
+    {
+      "path": "local/runs/oracle-qualification/runtime-backups/20261010T083550.071023Z/stdout.log",
+      "bytes": 10874543,
+      "sha256": "16cbfb12606926559f2091daef7cb1c22a2462039787d213cbd609ebdd73c462"
+    },
+    {
+      "path": "local/runs/oracle-qualification/runtime-backups/20261010T083943.028036Z/journal.json",
+      "bytes": 28205,
+      "sha256": "7af2420e00060d95cfe5dbed711a531073a6edafbc5d810142696c6292d9a91e"
+    },
+    {
+      "path": "local/runs/oracle-qualification/runtime-backups/20261010T083943.028036Z/stderr.log",
+      "bytes": 262,
+      "sha256": "140e6e533943fe5f821366e30fd8f851260eb6769d080eb0713185503e4c2703"
+    },
+    {
+      "path": "local/runs/oracle-qualification/runtime-backups/20261010T083943.028036Z/stdout.log",
+      "bytes": 414861,
+      "sha256": "cca6820f241756dfe914cca34a2722987215120c22766dcbeabf814b928f80fe"
+    },
+    {
+      "path": "tools/probe_green_map.cpp",
+      "bytes": 487,
+      "sha256": "cd1e1d2d2e8cb4641f4a2c4f07239b233223ab2420b243b12e7ac0d68cc9b329"
+    }
+  ],
+  "bundle": {
+    "path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\green-key-20261010-delivery-r2.zip",
+    "sha256": "088664f960a6f7ca4089c2aee8a2e1dcaa684fac9ef69aa526495dfa2077550d"
+  },
+  "retained_prototype": "R1_INVALID_INITIAL_COMBAT_NO_PRE_BATTLE_PREP",
+  "uncovered_buffs": [
+    "STRENGTH",
+    "HP",
+    "REGENERATION"
+  ]
+}

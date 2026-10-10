@@ -2,6 +2,8 @@
 
 本阶段已从实际 stock JAR 重新反汇编六个类，绑定 JAR、class、javap 工具及文本 SHA256。工具 `tools/capture_green_key_sources.py` 只读 JAR，不启动游戏；拒绝错误输入摘要及覆盖已有目录。原始反汇编在 `local/reports/green-key-20261010/stock-sources-r1/`，摘要见 `green-source-evidence.json`。这是静态证据，不是运行等价认证。
 
+后续已完成两个原版真实战斗与实际取得/死亡案例、独立 map 构造比较及恢复保护验证，见 [GREEN-CAPTURE.md](GREEN-CAPTURE.md)。下文保留协议制定时的阶段与范围；整场 native 对照仍未完成。
+
 ## 已核对的规则
 
 1. AbstractDungeon.setEmeraldElite 仅在终幕已解锁且尚未持绿钥匙时指定节点。实际地图节点上的 hasEmeraldKey 是战斗/奖励规则依据，不凭界面文本推断。
