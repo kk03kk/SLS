@@ -1,0 +1,109 @@
+{
+  "schema": "sls-three-key-feasibility-evidence-v1",
+  "code_commit": "9c66457791aac1cafe91a84129e79fab5237dc31",
+  "native_source_sha256": "e4f8452ff3cea688e49a362488814d4c2e29d9b721bcc6cd71c8d9f1d9fa733a",
+  "native_binary_sha256": "6ee14bf97312bab04b66fcb0a6767f52c4a688eeb0c1fcf5953b5ab8764f570b",
+  "seed_namespace": [
+    131200510,
+    131200526
+  ],
+  "native_only_trials": 16,
+  "native_trial_deaths": 16,
+  "potential_joint_key_room_paths": 16,
+  "actual_same_run_three_keys": 0,
+  "actual_stock_runs": 0,
+  "reference_model_sha256": "ed9068343c8d628a13595a3919d8a15c5f9a19840be1042e07e5f12fcc8ca30c",
+  "reference_loaded_device": "cpu",
+  "reference_rollouts_executed": false,
+  "reference_training_native_source_sha256": "1e30bb6cfa32f600cd63c59983c14ab8928fac4452c1586d630295d2c6ff9453",
+  "next_direction": "FROZEN_MODEL_COMBAT_AND_BUILDING_WITH_PUBLIC_ROUTE_INTERVENTIONS_AND_ACTUAL_RECURRENT_CONTEXT",
+  "production_environment_changed": false,
+  "training_gate": "NOT_QUALIFIED",
+  "training_eligible": false,
+  "verification": {
+    "targeted_passed": 3,
+    "ruff": "PASS",
+    "full_suite": "NOT_RERUN_NO_PRODUCTION_CHANGE"
+  },
+  "files": [
+    {
+      "path": "docs/results/a20h-requalification-20261010/THREE-KEY-FEASIBILITY.md",
+      "bytes": 3878,
+      "sha256": "b2f54559757f8cc273483e30c5750fa9607393ea53f2cc76959152d7970c74bd"
+    },
+    {
+      "path": "docs/results/a20h-requalification-20261010/WAITING-SERVER-PLAN.md",
+      "bytes": 4526,
+      "sha256": "9e7cffdea3a763432293d3a3b76999784f4ae64a0f19b8cdeeba89a018ac2f6c"
+    },
+    {
+      "path": "local/analyze_three_key_map_feasibility.py",
+      "bytes": 3509,
+      "sha256": "69c702b6e35361b39f0968a042d870ade8fd278587724aa258b749249e6b13a3"
+    },
+    {
+      "path": "local/inspect_three_key_reference_model.py",
+      "bytes": 1319,
+      "sha256": "4aa1d6a2b7ac78e2051bf87434c2af7d2d5eb602240e7fd254c1d62fbd599c4b"
+    },
+    {
+      "path": "local/package_three_key_feasibility.py",
+      "bytes": 4329,
+      "sha256": "eaab541dbf9cec98aaf215b231f35f7e3a21ed97317e1ece90d1f2d0f3e08f30"
+    },
+    {
+      "path": "local/reports/natural-three-key-feasibility-20261010/native-seed-selection-r1.json",
+      "bytes": 418970,
+      "sha256": "97bcb37adbffd6e79b32c8d1645237426abb86e87b10c00884025bea7bc3e453"
+    },
+    {
+      "path": "local/reports/natural-three-key-feasibility-20261010/protection-r1.json",
+      "bytes": 12240,
+      "sha256": "f0f5b32d4daf86344913f733bf7f77f1f4a88e37aa22d9bc4594058affc6877f"
+    },
+    {
+      "path": "local/reports/natural-three-key-feasibility-20261010/public-map-feasibility-r1.json",
+      "bytes": 404371,
+      "sha256": "25138f3fe7e9138f565238f46869a79b6323d2ad5cdfe922d28e5580c29b850b"
+    },
+    {
+      "path": "local/reports/natural-three-key-feasibility-20261010/reference-model-r1.json",
+      "bytes": 2033,
+      "sha256": "9efd964014c302b379c6111641f30edfbf69ca2dcbe86d150d81247805acd4b8"
+    },
+    {
+      "path": "local/reports/natural-three-key-feasibility-20261010/targeted-tests-r1.txt",
+      "bytes": 100,
+      "sha256": "4c087f5ed6c17dc2efefeac81954fecea2bd82cdad3e368d995275bb4a15af55"
+    },
+    {
+      "path": "local/select_natural_three_key_seed.py",
+      "bytes": 3803,
+      "sha256": "0dc1453e5a50f3e1323f0d5de7864dd403864620542348d21408a636a50258a5"
+    },
+    {
+      "path": "local/verify_key_protection.py",
+      "bytes": 2110,
+      "sha256": "b5d28d3867bdcef259ff833d21f881725dd295dc2415a80d840c4428ff167a2a"
+    },
+    {
+      "path": "src/sls/audit/natural_key_policy.py",
+      "bytes": 2306,
+      "sha256": "c86bdfced52e0cb0014d80fffe62cc3ad99a2d21566d3355abca5621c8ecadf1"
+    },
+    {
+      "path": "src/sls/audit/natural_three_key_policy.py",
+      "bytes": 1994,
+      "sha256": "736103a60c518d243cb6d1a0ce52289ede658f73a210c7a7a062a26977033d2a"
+    },
+    {
+      "path": "tests/audit/test_natural_three_key_policy.py",
+      "bytes": 2083,
+      "sha256": "521f2304da258d787b040c3fbca58e0ef4a1b822a7eef955483ebe4a57357aed"
+    }
+  ],
+  "bundle": {
+    "path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\natural-three-key-feasibility-20261010-delivery-r1.zip",
+    "sha256": "c7ee4794594cba6f46ca000985f24df971f269955ded0c9a41c3e238b4298b1c"
+  }
+}
