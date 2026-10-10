@@ -1,0 +1,41 @@
+{
+  "schema": "sls-stopped-critic-qualification-v1",
+  "role": "STOPPED_CHECKPOINT_DEVELOPMENT_CONFIRMATION",
+  "profile": "IRONCLAD_A20_ACT2",
+  "native_source_sha256": "6efbb772958c06d1b9133f374d046d8838eaa256da1a146eaf7e1ee530eefd3d",
+  "seed_range": [
+    8000013000000,
+    8000013004096
+  ],
+  "batch_size": 128,
+  "environment_shards": 16,
+  "models": [
+    {
+      "label": "parent90",
+      "path": "FROZEN_PARENT",
+      "steps": 90013696,
+      "sha256": "274963f4fe32b75003c5a1b4ccd394b5185304156e6ea22a76aee2764d54f1e0"
+    },
+    {
+      "label": "criticbest",
+      "path": "stages/train/selection/best_progress.pt",
+      "steps": 92012544,
+      "sha256": "a804334af0060351a5e83a946c37a42a1a30445d809b21de3a220f2617e82870"
+    },
+    {
+      "label": "critic94",
+      "path": "checkpoint-steps-000094011392.pt",
+      "steps": 94011392,
+      "sha256": "70103ae500ebf154360fbb6ec16f897f300cebcb16ba6b8244082d946c45def1"
+    },
+    {
+      "label": "criticlatest",
+      "path": "latest.pt",
+      "steps": 97009664,
+      "sha256": "be05e515fc892e1b09a2d8a87e30cac430e2f295c7ce820f3f91c7f0a838693d"
+    }
+  ],
+  "archive_sha256": "4f8f1c7042946198619b9105c872917981925a9dc299bbebc786b2e1f67b726e",
+  "training": false,
+  "sealed_holdout": "UNUSED"
+}
