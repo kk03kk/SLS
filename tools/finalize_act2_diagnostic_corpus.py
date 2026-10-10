@@ -104,7 +104,7 @@ def main():
                 raise ValueError("global boundary differs from natural public history")
             if row["step"] in wanted:
                 state = wanted[row["step"]]
-                selected_enemies.update(e["monster_id"] for e in decision.observation.enemies)
+                selected_enemies.update(e.monster_id for e in decision.observation.enemies)
                 target = args.output / "private" / f"{state['id']}.json.gz"
                 target.parent.mkdir(exist_ok=True)
                 with gzip.open(target, "xt", encoding="utf-8") as stream:
