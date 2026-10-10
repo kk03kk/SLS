@@ -6,7 +6,7 @@ from sls.audit.ending_continuation import (
     choose_probe_action,
     collect_ending_continuation,
 )
-from sls.contracts import Action, ActionKind, Card, Enemy
+from sls.contracts import Action, ActionKind, Card, Enemy, ShopItem
 
 
 def test_probe_selects_actual_public_card_id_and_first_duplicate_instance():
@@ -43,3 +43,25 @@ def test_heart_end_turn_probe_uses_public_enemy_identity():
 def test_unreviewed_probe_policy_is_rejected_before_session_access():
     with pytest.raises(ValueError,match='policy'):
         collect_ending_continuation(None, {}, lambda:None,policy='FORCE_DEATH')
+
+
+def test_shop_probe_uses_cheapest_legal_public_item():
+    items = (ShopItem('shop-card:0','STRIKE','CARD',30),ShopItem('shop-card:1','DEFEND','CARD',20),
+             ShopItem('shop-card:2','ANGER','CARD',5,sold=True))
+    actions = tuple(Action(ActionKind.BUY_CARD,subject_id=item.instance_id) for item in items[:2])
+    decision = SimpleNamespace(observation=SimpleNamespace(screen='SHOP',shop_items=items),actions=actions)
+    assert choose_probe_action(decision,shop_action='BUY_CARD') == actions[1]
+
+
+def test_shop_removal_uses_real_confirmation_and_selection_actions():
+    confirm = Action(ActionKind.CONFIRM,option_id='shop-remove')
+    decision = SimpleNamespace(observation=SimpleNamespace(screen='SHOP'),actions=(confirm,))
+    assert choose_probe_action(decision,shop_action='REMOVE_CARD') == confirm
+    removal = Action(ActionKind.REMOVE_CARD,subject_id='select-card:0')
+    decision = SimpleNamespace(observation=SimpleNamespace(screen='CARD_REWARD'),actions=(removal,))
+    assert choose_probe_action(decision,shop_action='REMOVE_CARD') == removal
+
+
+def test_repeated_shop_plan_rejected_before_session_access():
+    with pytest.raises(ValueError,match='shop probe plan'):
+        collect_ending_continuation(None,{},lambda:None,shop_plan=['BUY_CARD','BUY_CARD'])

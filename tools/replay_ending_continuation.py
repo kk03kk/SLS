@@ -85,7 +85,15 @@ def replay(capture, build, entry, flow, *, diagnostic_continue=False):
         suffixes = []
         for start, state in enumerate(checkpoints):
             restored = SimulatorBackend(profile=IRONCLAD_A20_HEART)
-            restored.load_checkpoint(state)
+            try:
+                restored.load_checkpoint(state)
+            except (ValueError,RuntimeError) as error:
+                # Preserve rejected restores; do not drop an incomplete screen
+                # or replay from an invented replacement origin.
+                suffixes.append(dict(boundary=start,full_native_suffix_equal=False,
+                                     restoration_error=type(error).__name__+': '+str(error),
+                                     screen_info=state['screen_info'],replay_required=state['replay_required']))
+                continue
             equal = restored.checkpoint() == state
             for offset,(action,evidence) in enumerate(selected_actions[start:],start+1):
                 restored.step(action,validation_evidence=evidence)
@@ -121,7 +129,8 @@ def main():
         json.dump(result,stream,indent=2)
     print(json.dumps([dict(seed=r['seed'],first_difference=r['first_difference'],executed_actions=r['executed_actions'])
                       for r in result['runs']]))
-    return 0 if all(r['complete_public_trajectory_equal'] for r in result['runs']) else 2
+    return 0 if all(r['complete_public_trajectory_equal'] and all(s['full_native_suffix_equal'] for s in r['native_suffixes'])
+                    for r in result['runs']) else 2
 
 
 if __name__ == '__main__':

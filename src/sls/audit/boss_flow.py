@@ -54,6 +54,9 @@ def collect_key_gate_outcome(get_state, send_command, keys, *, timeout=30,
 
 def validate_boss_order(scene):
     initial = scene.get('initial', {})
+    if 'gold' in initial and (type(initial['gold']) is not int or initial['gold'] not in (99,1000)
+                              or initial['gold'] == 1000 and 'boss_order' not in initial):
+        raise ValueError('unreviewed initial boss-flow gold; no game launched')
     if 'boss_order' not in initial:
         if 'flow_master_deck' in initial or 'keys' in initial or 'card_rng_counter' in initial or scene.get('collect_act4_entry'):
             raise ValueError('flow deck/keys require reviewed boss order; no game launched')
@@ -86,6 +89,8 @@ def validate_boss_order(scene):
 
 def require_initial_boss_witness(payload, scene):
     validate_boss_order(scene)
+    if 'gold' in scene['initial'] and payload.get('game_state',{}).get('gold') != scene['initial']['gold']:
+        raise ValueError('stock initial gold differs from manifest')
     if 'keys' in scene['initial']:
         expected = scene['initial']['keys']
         if any(payload.get('_parity_run', {}).get(k.lower() + '_key') != (k in expected)

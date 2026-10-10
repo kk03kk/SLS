@@ -1835,6 +1835,14 @@ public final class OracleScenarioPatch {
             ? ((Number) initial.get("max_hp")).intValue() : player.currentHealth;
         player.currentBlock = ((Number) initial.get("block")).intValue();
         player.gold = 99;
+        if (initial.containsKey("gold")) {
+            Object gold = initial.get("gold");
+            if (!(gold instanceof Number) || !(((Number) gold).doubleValue() == 99.0
+                    || (bossOrder != null && ((Number) gold).doubleValue() == 1000.0))) {
+                throw new IllegalArgumentException("unreviewed initial boss-flow gold");
+            }
+            player.gold = ((Number) gold).intValue();
+        }
         if (initial.containsKey("flow_master_deck")) {
             if (bossOrder == null || !(initial.get("flow_master_deck") instanceof java.util.List)) {
                 throw new IllegalArgumentException("flow_master_deck requires reviewed boss_order fixture");

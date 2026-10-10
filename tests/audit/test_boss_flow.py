@@ -70,6 +70,26 @@ def test_initial_witness_and_tampering():
             require_initial_boss_witness(p, scene())
 
 
+def test_controlled_initial_gold_requires_matching_actual_witness():
+    s = scene()
+    s['initial']['gold'] = 1000
+    validate_boss_order(s)
+    p = payload()
+    p['game_state']['gold'] = 1000
+    require_initial_boss_witness(p,s)
+    p['game_state']['gold'] = 99
+    with pytest.raises(ValueError,match='gold differs'):
+        require_initial_boss_witness(p,s)
+
+
+@pytest.mark.parametrize('gold',[True,99.0,1000.0,1001,-1])
+def test_unreviewed_initial_gold_rejected(gold):
+    s = scene()
+    s['initial']['gold'] = gold
+    with pytest.raises(ValueError,match='gold'):
+        validate_boss_order(s)
+
+
 def test_waits_for_real_second_boundary():
     first = payload()
     second = copy.deepcopy(first)

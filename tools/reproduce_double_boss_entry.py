@@ -123,7 +123,7 @@ def main():
         initial['rng'] = copy.deepcopy(row['before']['_rng'])
         if 'card_rng_counter' in setup:
             initial['rng']['card'] = copy.deepcopy(stock['_rng']['card'])
-        initial['player_state'].update(current_hp=setup['hp'], max_hp=setup['max_hp'], gold=99)
+        initial['player_state'].update(current_hp=setup['hp'], max_hp=setup['max_hp'], gold=setup.get('gold',99))
         for color, key in (('red_key', 'RUBY'), ('green_key', 'EMERALD'), ('blue_key', 'SAPPHIRE')):
             initial['player_state'][color] = key in setup.get('keys', [])
 
@@ -151,6 +151,8 @@ def main():
         battle.set_card_piles(setup['hand'], setup['draw'], [], [])
         battle.set_potions([])
         state = battle.snapshot()
+        state['game_state']['gold'] = setup.get('gold',99)
+        state['game_state']['combat_state']['player']['_internal']['gold'] = setup.get('gold',99)
         # set_potions is an isolated probe API with a default three-slot
         # capacity. Pair the actual A20 stock capacity explicitly in this
         # initial fixture; do not hide a surplus slot in the differencer.
@@ -178,6 +180,8 @@ def main():
         stock_initial = stock['_stock_direct']
         own = before['combat_checkpoint']['game_state']['combat_state']['player']
         initial_pairs = {
+            'gold': (stock['game_state']['gold'], before['player_state']['gold']),
+            'combat_gold': (stock['game_state']['gold'], before['combat_checkpoint']['game_state']['gold']),
             'hp': (stock_initial['player']['current_hp'], own['current_hp']),
             'max_hp': (stock_initial['player']['max_hp'], own['max_hp']),
             'rng': (stock['_rng'], {**before['rng'], **before['combat_checkpoint']['rng']}),
