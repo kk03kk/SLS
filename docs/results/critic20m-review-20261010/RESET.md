@@ -22,6 +22,6 @@ python tools/qualify_natural_reset.py `
   --output local/reports/natural-reset-readiness-recheck.json --states 4 --device cpu
 ```
 
-6 项新测试覆盖 episode 加权、success/value 不参与选择、公开边界篡改、前缀跨终止、相同可见状态下 hidden RNG 篡改、循环/步数重置、当前参数记忆和 boundary mask。首轮新增检查后诊断集 108 通过、1 个历史编码检查跳过；随后完整 private 比对增强及 6 项针对性测试通过；最终重新运行结果见此次交付。Ruff 通过。
+6 项新测试覆盖 episode 加权、success/value 不参与选择、公开边界篡改、前缀跨终止、相同可见状态下 hidden RNG 篡改、循环/步数重置、当前参数记忆和 boundary mask。最终诊断测试集 **111 通过、1 个历史编码检查跳过**；全仓 Ruff 通过。干净代码 `2cb0aa6319bda4cfae0cffe6e02c8f8cd6409c85` 上的真实 4 状态完整回放证据见 [reset-readiness.json](reset-readiness.json)，其中来源/模型 hash、跨环境及 horizon 迁移均显式标注。
 
 下一步先取得 NUS 确认，确定 weights-only 起点；独立注册训练 seed、teacher 和采集预算后生成专用训练库。未来 sampler 必须明确以 seed/episode 为单位的权重、资源/构筑覆盖、正常开局比例、模型每次更新后的前缀重算费用；不得复制 teacher hidden memory。先用小 CPU smoke 验证 suffix reward/GAE、终止、worker reset 和 checkpoint 身份，再注册同预算正常开局对照。生产训练目前没有这个 sampler，本原型不提供启动训练的命令。

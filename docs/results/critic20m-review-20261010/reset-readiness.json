@@ -1,0 +1,145 @@
+{
+  "schema": "sls-natural-reset-readiness-v1",
+  "git": {
+    "commit": "2cb0aa6319bda4cfae0cffe6e02c8f8cd6409c85",
+    "branch": "codex/critic20m-evidence-followup",
+    "dirty": false
+  },
+  "runtime": {
+    "device": "cpu",
+    "torch": "2.10.0+cu130",
+    "python": "3.12.12",
+    "threads": 1,
+    "cuda_visible_devices": "-1",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "corpus_sha256": "6a545f9c73055bea0e27a60bd5c582b929af4f4d2316f8c9953e8b7270461ee9",
+  "native_source_sha256": "6efbb772958c06d1b9133f374d046d8838eaa256da1a146eaf7e1ee530eefd3d",
+  "model": {
+    "checkpoint": "D:\\SLS\\local\\runs\\ironclad-a20-act1-win-90m-continuation\\final.pt",
+    "sha256": "274963f4fe32b75003c5a1b4ccd394b5185304156e6ea22a76aee2764d54f1e0",
+    "trained_git_commit": "5435d4a2f423a1e3b445977a48fae41ac90b5837",
+    "encoding_schema": "sls-policy-input-v5",
+    "vocabulary_sha256": "04df4dc504ccf10d389b7b0e798ebc7a1ea2036edfc273a5cf5b11071b3b8ed0",
+    "model_config": {
+      "embedding_dim": 128,
+      "transformer_layers": 4,
+      "attention_heads": 4,
+      "feedforward_dim": 256,
+      "recurrent_hidden_dim": 256,
+      "recurrent_layers": 1,
+      "dropout": 0.0,
+      "architecture": "sls-recurrent-relational-policy-v5",
+      "encoding_schema": "sls-policy-input-v5",
+      "vocabulary_hash": "04df4dc504ccf10d389b7b0e798ebc7a1ea2036edfc273a5cf5b11071b3b8ed0"
+    },
+    "parameter_count": 1283076,
+    "steps": 90013696,
+    "trained_profile": "IRONCLAD_A20_ACT1",
+    "native_source_sha256": "1e30bb6cfa32f600cd63c59983c14ab8928fac4452c1586d630295d2c6ff9453",
+    "diagnostic_environment_migration": true,
+    "horizon_transfer": true,
+    "transfer": "READ_ONLY_WEIGHTS_NOT_TRAINING_RESUME",
+    "diagnostic_target": {
+      "profile": "IRONCLAD_A20_ACT2",
+      "gamma": 1.0,
+      "potential_shaping": true,
+      "potential_scale": 0.2,
+      "failure_progress_scale": 0.0,
+      "limit_failure_reward": -1.0,
+      "max_episode_steps": 4096,
+      "max_boundary_visits": 4,
+      "policy": "GREEDY_NOT_STOCHASTIC_TRAINING"
+    },
+    "training_value_target": {
+      "formula": "VALUE_PLUS_GAE_WITH_ROLLOUT_BOUNDARY_BOOTSTRAP",
+      "policy": "STOCHASTIC_TRAINING_POLICY",
+      "gamma": 1.0,
+      "gae_lambda": 0.98,
+      "rollout_steps": 256,
+      "trained_profile": "IRONCLAD_A20_ACT1"
+    }
+  },
+  "claim": "RESEARCH_ONLY_NOT_TRAINING_BANK_OR_WIN_RATE",
+  "training_eligible": false,
+  "training_blockers": [
+    "Existing diagnostic seeds and states must not enter training",
+    "No independently registered training-only corpus collected",
+    "Production sampler and matched experiment not implemented"
+  ],
+  "selected_act2_states": 8,
+  "available_episode_anchors": 4,
+  "unique_act2_seeds": 3,
+  "anchor_strata": {
+    "act2:COMBAT:CENTURION+MYSTIC": 1,
+    "act2:COMBAT:SHELLED_PARASITE": 1,
+    "act2:COMBAT:SNECKO": 1,
+    "act2:EVENT:-": 1
+  },
+  "prefix_decisions_median": 208.0,
+  "checks": [
+    {
+      "state": "00c28b84e521b20e9bad0bcbb2c65a2d6f6822d503ff7f4ec33dbf9a353b11ea",
+      "trajectory": "criticlatest-132300003",
+      "seed": 132300003,
+      "prefix_decisions": 301,
+      "prefix_cpu_seconds": 2.9278064998798072,
+      "preserved_episode_steps": 301,
+      "boundary_start_mask": false,
+      "boundary_value": 0.5299281477928162,
+      "public_sha256": "632e3b9cf7154c1fcc6716ea15717eba017bed0fc0e50f5e8462594413a419b3",
+      "recurrent_memory": "CURRENT_MODEL_FULL_PUBLIC_PREFIX_NO_TEACHER_MEMORY",
+      "full_private_state_matches_natural_replay": true,
+      "natural_replay_and_private_restore_equal": true
+    },
+    {
+      "state": "039af0dfe68578eaf1d7c478776273ca1e0d0f54decbc228129f4ee9b770fead",
+      "trajectory": "criticbest-132300000",
+      "seed": 132300000,
+      "prefix_decisions": 139,
+      "prefix_cpu_seconds": 1.184473300119862,
+      "preserved_episode_steps": 139,
+      "boundary_start_mask": false,
+      "boundary_value": 0.7243167161941528,
+      "public_sha256": "496fd92c194d831185a6e784fd3722baab3b69e009c063d3e0dc12dcf3c4da9d",
+      "recurrent_memory": "CURRENT_MODEL_FULL_PUBLIC_PREFIX_NO_TEACHER_MEMORY",
+      "full_private_state_matches_natural_replay": true,
+      "natural_replay_and_private_restore_equal": true
+    },
+    {
+      "state": "04183240b21e54e259cdc7cd12d5972e23c2355b8b6ead677f027db4771be727",
+      "trajectory": "parent90-132300001",
+      "seed": 132300001,
+      "prefix_decisions": 264,
+      "prefix_cpu_seconds": 2.664025800069794,
+      "preserved_episode_steps": 264,
+      "boundary_start_mask": false,
+      "boundary_value": 0.4502549171447754,
+      "public_sha256": "ec829575bb815e62d890dd406af7fca56f6e740addeae6df13175b38d2d9fff7",
+      "recurrent_memory": "CURRENT_MODEL_FULL_PUBLIC_PREFIX_NO_TEACHER_MEMORY",
+      "full_private_state_matches_natural_replay": true,
+      "natural_replay_and_private_restore_equal": true
+    },
+    {
+      "state": "185ba44a5a062430bed1b5ef9b13f779c45cf7859a9d04b1065b4e5cfaf675b0",
+      "trajectory": "criticlatest-132300000",
+      "seed": 132300000,
+      "prefix_decisions": 152,
+      "prefix_cpu_seconds": 1.3052467999514192,
+      "preserved_episode_steps": 152,
+      "boundary_start_mask": false,
+      "boundary_value": 0.8474868535995483,
+      "public_sha256": "aaa69e6b4675850986679dc0f2d41cae0beb1dddf3f669ceff150574258da298",
+      "recurrent_memory": "CURRENT_MODEL_FULL_PUBLIC_PREFIX_NO_TEACHER_MEMORY",
+      "full_private_state_matches_natural_replay": true,
+      "natural_replay_and_private_restore_equal": true
+    }
+  ],
+  "limitations": [
+    "Earliest selected anchor need not be the Act2 entry",
+    "Different teachers on the same seed are correlated",
+    "CPU prefix measurements include native replay and encoding; not NUS benchmarks",
+    "Prefix replay is extra compute and excluded from student PPO samples",
+    "Natural-start retention must be evaluated separately"
+  ]
+}
