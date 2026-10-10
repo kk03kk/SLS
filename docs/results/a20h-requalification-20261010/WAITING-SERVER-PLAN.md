@@ -27,6 +27,9 @@
 73 个边界及完整已记录后缀恢复通过；独立默认时钟重放也通过。
 仍缺同一局集齐三钥匙、其它燃烧 buff 与完整自然后段转幕。
 绿钥匙证据见 [NATURAL-EMERALD-FLOW.md](NATURAL-EMERALD-FLOW.md)。
+同局三钥匙的 16 条 native 小规模探针均失败，但独立公开地图核验均存在联合房间路径；
+下一轮优先复用冻结模型的战斗/构筑能力并记录实际 recurrent 上下文，
+详情见 [THREE-KEY-FEASIBILITY.md](THREE-KEY-FEASIBILITY.md)。
 详情见 [NATURAL-KEY-FLOW.md](NATURAL-KEY-FLOW.md)，不代替正式胜率或全模拟器资格。
 人工强牌组只定位规则；不能用于能力分数、正式胜率或生产后段课程。
 报告绑定原版 JAR、Oracle、native 来源/二进制、fixture 和实际执行日志。
