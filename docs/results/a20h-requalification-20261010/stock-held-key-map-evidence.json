@@ -1,0 +1,295 @@
+{
+  "schema": "sls-stock-held-key-map-evidence-v1",
+  "scope": "CONTROLLED_FLAGS_ACTUAL_STOCK_CONSTRUCTORS_AND_NATIVE_MAP_PHASE_NOT_NATURAL_TRANSITION",
+  "code_commit": "7ac865db7a0b74931827b901658568b2b8bbc51a",
+  "native_source_sha256": "6805e8c991ff6e3ca1b57248678babbbc1ea904b6a1a35e17d631c426765dcc0",
+  "native_binary_sha256": "ce8f500b5116980f2bca854488da334cac58a679a1c1c59e3a8f70410890f3e8",
+  "cases": [
+    {
+      "id": "act2-unheld-unlocked",
+      "act": 2,
+      "green_key": false,
+      "final_act_available": true,
+      "public_nodes": 58,
+      "stock_map_rng": {
+        "counter": 96,
+        "seed0": 11157452242896699053,
+        "seed1": 13237472069926900487
+      },
+      "native_phase_rng": {
+        "counter": 96,
+        "seed0": 11157452242896699053,
+        "seed1": 13237472069926900487
+      },
+      "structural_nodes_equal": true,
+      "ordered_children_equal": true,
+      "burning_coordinates_equal": true,
+      "map_rng_equal": true,
+      "rest_entry_map_rng_unchanged": true
+    },
+    {
+      "id": "act2-held-unlocked",
+      "act": 2,
+      "green_key": true,
+      "final_act_available": true,
+      "public_nodes": 58,
+      "stock_map_rng": {
+        "counter": 95,
+        "seed0": 16988089674081517172,
+        "seed1": 11157452242896699053
+      },
+      "native_phase_rng": {
+        "counter": 95,
+        "seed0": 16988089674081517172,
+        "seed1": 11157452242896699053
+      },
+      "structural_nodes_equal": true,
+      "ordered_children_equal": true,
+      "burning_coordinates_equal": true,
+      "map_rng_equal": true,
+      "rest_entry_map_rng_unchanged": true
+    },
+    {
+      "id": "act2-unheld-locked",
+      "act": 2,
+      "green_key": false,
+      "final_act_available": false,
+      "public_nodes": 58,
+      "stock_map_rng": {
+        "counter": 95,
+        "seed0": 16988089674081517172,
+        "seed1": 11157452242896699053
+      },
+      "native_phase_rng": {
+        "counter": 95,
+        "seed0": 16988089674081517172,
+        "seed1": 11157452242896699053
+      },
+      "structural_nodes_equal": true,
+      "ordered_children_equal": true,
+      "burning_coordinates_equal": true,
+      "map_rng_equal": true,
+      "rest_entry_map_rng_unchanged": true
+    },
+    {
+      "id": "act3-unheld-unlocked",
+      "act": 3,
+      "green_key": false,
+      "final_act_available": true,
+      "public_nodes": 62,
+      "stock_map_rng": {
+        "counter": 92,
+        "seed0": 11936493611115173279,
+        "seed1": 1125795910254867647
+      },
+      "native_phase_rng": {
+        "counter": 92,
+        "seed0": 11936493611115173279,
+        "seed1": 1125795910254867647
+      },
+      "structural_nodes_equal": true,
+      "ordered_children_equal": true,
+      "burning_coordinates_equal": true,
+      "map_rng_equal": true,
+      "rest_entry_map_rng_unchanged": true
+    },
+    {
+      "id": "act3-held-unlocked",
+      "act": 3,
+      "green_key": true,
+      "final_act_available": true,
+      "public_nodes": 62,
+      "stock_map_rng": {
+        "counter": 91,
+        "seed0": 11640349383880602925,
+        "seed1": 11936493611115173279
+      },
+      "native_phase_rng": {
+        "counter": 91,
+        "seed0": 11640349383880602925,
+        "seed1": 11936493611115173279
+      },
+      "structural_nodes_equal": true,
+      "ordered_children_equal": true,
+      "burning_coordinates_equal": true,
+      "map_rng_equal": true,
+      "rest_entry_map_rng_unchanged": true
+    },
+    {
+      "id": "act3-unheld-locked",
+      "act": 3,
+      "green_key": false,
+      "final_act_available": false,
+      "public_nodes": 62,
+      "stock_map_rng": {
+        "counter": 91,
+        "seed0": 11640349383880602925,
+        "seed1": 11936493611115173279
+      },
+      "native_phase_rng": {
+        "counter": 91,
+        "seed0": 11640349383880602925,
+        "seed1": 11936493611115173279
+      },
+      "structural_nodes_equal": true,
+      "ordered_children_equal": true,
+      "burning_coordinates_equal": true,
+      "map_rng_equal": true,
+      "rest_entry_map_rng_unchanged": true
+    }
+  ],
+  "pairs": [
+    {
+      "act": 2,
+      "held_locked_rng_equal": true,
+      "unheld_extra_selection_draws": 1,
+      "three_map_topologies_equal": true
+    },
+    {
+      "act": 3,
+      "held_locked_rng_equal": true,
+      "unheld_extra_selection_draws": 1,
+      "three_map_topologies_equal": true
+    }
+  ],
+  "gaps": [
+    "native final-act eligibility flag",
+    "natural key acquisition followed by actual Act transition",
+    "encounter lists, reward pools and boss distribution at the new Act"
+  ],
+  "training_gate": "NOT_QUALIFIED",
+  "training_eligible": false,
+  "natural_trajectory": false,
+  "verification": {
+    "full_cpu_passed": 1647,
+    "skipped": 2,
+    "warnings": 4,
+    "ruff": "PASS"
+  },
+  "files": [
+    {
+      "path": "local/build/oracle/held-key-map-r1.build.json",
+      "bytes": 20337,
+      "sha256": "11e544733a56df8833d54ed5a535208ebc30a620de677b2c06667d14ceb7b772"
+    },
+    {
+      "path": "local/build/oracle/held-key-map-r1.jar",
+      "bytes": 192617,
+      "sha256": "c1a50739d847afe65685b0a12f7d996c67f2f3e2bdbf2c5bb8fabcead280bc57"
+    },
+    {
+      "path": "local/build/probe-stock-map-rng-r1.exe",
+      "bytes": 868352,
+      "sha256": "7cb057bdbb55e499c504692be9ae7f124d9140bab488f2334cf63eb786fa9f68"
+    },
+    {
+      "path": "local/generate_held_map_manifest.py",
+      "bytes": 1516,
+      "sha256": "5ac429d184fd6e1c5241550f9dabc9ea3a2dc930bd46b6f520724bd458f52506"
+    },
+    {
+      "path": "local/generate_stock_map_regression.py",
+      "bytes": 2644,
+      "sha256": "56a63d0e64fd9b053dde872abace36e10471f69967381527ae4f37564aaf907b"
+    },
+    {
+      "path": "local/package_stock_key_map.py",
+      "bytes": 3319,
+      "sha256": "f6f574fd15d3bd9b445fb031647d90d7252338ebf709abaf176769f63dad52de"
+    },
+    {
+      "path": "local/reports/held-key-stock-map-20261010/comparison-r1.json",
+      "bytes": 61017,
+      "sha256": "a98002d40e4da56a053874949f55e637298f7d700e24ec970470abd1660c8610"
+    },
+    {
+      "path": "local/reports/held-key-stock-map-20261010/cpu-tests-r1.txt",
+      "bytes": 4032,
+      "sha256": "fc161d9d3e1ff2445e34c0f83734159d1e6fca4a3977735a50c1008e1fe754c4"
+    },
+    {
+      "path": "local/reports/held-key-stock-map-20261010/production-r48.json",
+      "bytes": 56605,
+      "sha256": "5e2098de07d4cc27c9c951d8d7bd70f9167828468b085d473910860c17ac4cae"
+    },
+    {
+      "path": "local/reports/held-key-stock-map-20261010/production-r48.launch.json",
+      "bytes": 433,
+      "sha256": "d6f5b01fec1ed8c250e21dfdbd7a2ae32444d4cb6ca8cf34c6b138afe9fb2bd0"
+    },
+    {
+      "path": "local/reports/held-key-stock-map-20261010/protection-r1.json",
+      "bytes": 7116,
+      "sha256": "f52a2d69d8b40f6a8d5685be9bc6a1c9cadb9d281a2efcd9fe8bad14410c7dfd"
+    },
+    {
+      "path": "local/reports/held-key-stock-map-20261010/stock-map-r1.json",
+      "bytes": 1825572,
+      "sha256": "8e7d2c7202941831b3fc822c9bb316b3d777485a99a9aab323f0974248bb8f6e"
+    },
+    {
+      "path": "local/reports/held-key-stock-map-20261010/stock-map-r1.launch.json",
+      "bytes": 430,
+      "sha256": "deffaaf75d9848027d97744cf5af4dea0df6a2621dc8560a6e51f78cabeee164"
+    },
+    {
+      "path": "local/runs/oracle-qualification/runtime-backups/20261010T093141.762631Z/journal.json",
+      "bytes": 28205,
+      "sha256": "c8fbc5f6c3846d738e2ed32583da09529ffca0182a4c7fc71d45b7dc0e4d0c73"
+    },
+    {
+      "path": "local/runs/oracle-qualification/runtime-backups/20261010T093218.002303Z/journal.json",
+      "bytes": 28204,
+      "sha256": "c957e2c7c5820d5d3e3724014a2002fd19e340bdcfb35f7bbd802cf20e4bc580"
+    },
+    {
+      "path": "native/oracle/resources/spirecomm/parity/fullrun-held-key-map-r1.json",
+      "bytes": 2219,
+      "sha256": "8ac360300d1b4fb13becf52b36936d4b8e23a95e8e81bb04378d1dfc1e5b2824"
+    },
+    {
+      "path": "native/oracle/src/spirecomm/parity/OracleMapRoom.java",
+      "bytes": 5854,
+      "sha256": "a215886184ef104d381dbffd54087a8e827308074f95d4f7873fc6bc8afd9aa0"
+    },
+    {
+      "path": "tests/audit/test_held_key_map.py",
+      "bytes": 1439,
+      "sha256": "8b05067b4d75723b7cca6becda69f3e59f3fdb88ed0247aa446b1bd2c64e3e8e"
+    },
+    {
+      "path": "tests/fixtures/regressions/held-key-stock-map-r1.json",
+      "bytes": 100894,
+      "sha256": "bcef53aace49d8e938a196031ddf50ae3930cac45878ecc85be7d5e41183c130"
+    },
+    {
+      "path": "tests/simulator/test_stock_held_key_map.py",
+      "bytes": 1685,
+      "sha256": "46107466d35ab6e5be2e86a835e61b4ab5ed83003d0f404cf54e428c3b516bb9"
+    },
+    {
+      "path": "tools/audit_held_key_map.py",
+      "bytes": 8644,
+      "sha256": "109728c375d3a4067ffaf471edfa98eafb58518fe0b9cee90e455a927a74af45"
+    },
+    {
+      "path": "tools/capture_held_key_map.py",
+      "bytes": 5101,
+      "sha256": "435c61db1a377aed5d4557ff5ac758a58456ab1f748f9143fb566b0aa00a2fff"
+    },
+    {
+      "path": "tools/probe_stock_map_rng.cpp",
+      "bytes": 2850,
+      "sha256": "0052ddf69f5a4d7f0453e8b2d878985ce527610726f4c9d828c299755b2154dd"
+    },
+    {
+      "path": "tools/run_held_key_map.py",
+      "bytes": 2528,
+      "sha256": "711d7b1ba04ac5b4c782bedb305aff34cbb4b02d55e5a4c352f3d52cbed9608e"
+    }
+  ],
+  "bundle": {
+    "path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\stock-held-key-map-20261010-delivery-r1.zip",
+    "sha256": "1a089014760cffd5134e99b4108b3a95a2e89e6e4f2e833679bc40a17bb3859c"
+  }
+}

@@ -1,5 +1,7 @@
 # 持绿钥匙后的换幕地图：静态规则与 native 续跑
 
+后续原版实际构造器与地图 RNG 对照见 [STOCK-HELD-KEY-MAP.md](STOCK-HELD-KEY-MAP.md)。本文保留原静态/native 探针范围，不把新证据改称自然换幕。
+
 日期：2026-10-10。独立诊断入口：`tools/probe_held_green_transition.py`；独立 C++ Map 构造探针：`tools/probe_key_map.cpp`。生产模拟器和恢复契约未改动。
 
 ## 原版证据与范围
