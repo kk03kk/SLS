@@ -4,15 +4,34 @@
 
 ## 准备与提交
 
-在原来的服务器 checkout 中获取研发分支，然后建立新的 detached worktree。首次执行；新目录已存在时先检查，不要删除或覆盖。执行代码固定为已验收并推送的 `6f926a8e2e169735bfc113b99689352a143b1d53`；分支之后追加的报告提交不改变这些工具。
+在原来的服务器 checkout 中获取研发分支，然后建立新的 detached worktree。首次执行；新目录已存在时使用下面的重试流程，不要删除或覆盖。执行代码固定为 `95b9414f42259ac96a40ce09807ec81d61b635fb`，包含登录节点导入隔离修复。
 
 ```bash
 (
 set -euo pipefail
 cd /home/h/hengzhi/SLS-act12-critic20m-20261009-fix2
 git fetch origin codex/critic20m-evidence-followup
-git worktree add --detach /home/h/hengzhi/SLS-critic-review-20261010 6f926a8e2e169735bfc113b99689352a143b1d53
+git worktree add --detach /home/h/hengzhi/SLS-critic-review-20261010 95b9414f42259ac96a40ce09807ec81d61b635fb
 cd /home/h/hengzhi/SLS-critic-review-20261010
+/home/h/hengzhi/venvs/sls/bin/python tools/submit_stopped_critic_qualification.py \
+  --source-root /home/h/hengzhi/SLS-act12-critic20m-20261009-fix2 --dry-run
+/home/h/hengzhi/venvs/sls/bin/python tools/submit_stopped_critic_qualification.py \
+  --source-root /home/h/hengzhi/SLS-act12-critic20m-20261009-fix2
+)
+```
+
+### 已建立工作树、在旧入口导入 Torch 时失败的重试
+
+旧版本 `6f926a8` 通过 `sls.diagnostics.__init__` 间接导入 Torch，登录节点报告 `libtorch_cuda.so: failed to map segment`。失败发生在参数解析和提交之前，没有写入 receipt，也没有提交作业。修复延迟加载 canary 模型依赖；独立进程禁止 Torch/NumPy 导入的回归测试通过，诊断测试集 105 通过、1 个既有历史编码检查跳过，全仓 Ruff 通过。无需更改服务器 Torch 环境或原训练 run。
+
+```bash
+(
+set -euo pipefail
+cd /home/h/hengzhi/SLS-critic-review-20261010
+git fetch origin codex/critic20m-evidence-followup
+test -z "$(git status --porcelain --untracked-files=all)"
+test ! -e local/operator/stopped-critic-qualification-submission.json
+git switch --detach 95b9414f42259ac96a40ce09807ec81d61b635fb
 /home/h/hengzhi/venvs/sls/bin/python tools/submit_stopped_critic_qualification.py \
   --source-root /home/h/hengzhi/SLS-act12-critic20m-20261009-fix2 --dry-run
 /home/h/hengzhi/venvs/sls/bin/python tools/submit_stopped_critic_qualification.py \
