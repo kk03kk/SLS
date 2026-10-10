@@ -1,0 +1,273 @@
+{
+  "schema": "sls-frozen-three-key-routes-evidence-v1",
+  "code_commit": "44cd24b80b072c738694d4b09a6cda3eafd413e2",
+  "native_source_sha256": "e4f8452ff3cea688e49a362488814d4c2e29d9b721bcc6cd71c8d9f1d9fa733a",
+  "native_binary_sha256": "6ee14bf97312bab04b66fcb0a6767f52c4a688eeb0c1fcf5953b5ab8764f570b",
+  "training_implementation_sha256": "d31392af86ba43bfae1686193d1c91b9861b11ebbf224b141be38f771ff90096",
+  "original_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "oracle_sha256": "0710d21de30dc28dc7c137d63c587eec0e0d16a4b0e96d6708bde89699044f44",
+  "model_sha256": "ed9068343c8d628a13595a3919d8a15c5f9a19840be1042e07e5f12fcc8ca30c",
+  "model_artifact_sha256": "2e8aa20ba50cab3fef7ea726db988137bd0018f9379c18637084faa65f5ce29f",
+  "diagnostic_migration": true,
+  "public_route_interventions": true,
+  "device": "cpu",
+  "training": false,
+  "native_runs": 4,
+  "native_three_key_diagnostic_stops": 3,
+  "native_deaths": 1,
+  "native_actions": 512,
+  "native_boundaries": 516,
+  "native_full_suffixes_equal": 516,
+  "actual_stock_runs": 1,
+  "actual_stock_boundaries": 60,
+  "actual_stock_actions": 59,
+  "actual_stock_same_run_three_keys_verified": false,
+  "first_stock_rng_divergence": 59,
+  "observed_discovery_updates": 15,
+  "native_default_discovery_updates": 14,
+  "clock_conditioned_matching_boundaries": 60,
+  "clock_analysis_full_suffixes_equal": 120,
+  "production_environment_changed": false,
+  "training_gate": "NOT_QUALIFIED",
+  "training_eligible": false,
+  "checks": {
+    "cpu_tests_passed": 1746,
+    "skipped": 2,
+    "warnings": 4,
+    "ruff": "PASS",
+    "vocabulary": "PASS",
+    "configs": "31/33_TWO_PREEXISTING_SOURCE_IDENTITY_FAILURES"
+  },
+  "bundle": {
+    "path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\frozen-three-key-routes-20261010-delivery-r1.zip",
+    "bytes": 5856583,
+    "sha256": "1900e72e46baa4fbdc2bf4bd17b509a1ed176d3c511310d6e83b4f3d5515f3c1"
+  },
+  "files": [
+    {
+      "path": "docs/results/a20h-requalification-20261010/FROZEN-THREE-KEY-ROUTES.md",
+      "bytes": 7040,
+      "sha256": "29c8e0f7e8e74794277a928515a4d999f9d939c6ac717c4b2fea6219a51f9988"
+    },
+    {
+      "path": "docs/results/a20h-requalification-20261010/WAITING-SERVER-PLAN.md",
+      "bytes": 5441,
+      "sha256": "2196bdbdaa6de63f9269f959bb4a507753b967140af41d6827b1d861c75ffdf3"
+    },
+    {
+      "path": "local/analyze_frozen_route_discovery.py",
+      "bytes": 4118,
+      "sha256": "45e6247573f1da94e70461467e2006e189908ed999f0f04b5fbcb1dadbfdcc30"
+    },
+    {
+      "path": "local/build/oracle/ending-continuous-shop-r1.build.json",
+      "bytes": 21411,
+      "sha256": "05f5408237dbdce37520f0be4cbc4fba5d9fcef3d28da0ecad4cd2e46315f9b1"
+    },
+    {
+      "path": "local/build/oracle/ending-continuous-shop-r1.jar",
+      "bytes": 204466,
+      "sha256": "0710d21de30dc28dc7c137d63c587eec0e0d16a4b0e96d6708bde89699044f44"
+    },
+    {
+      "path": "local/freeze_frozen_route_discovery.py",
+      "bytes": 1801,
+      "sha256": "e318ecd7d4aaf428f68c4c692f96658cb2203cf0221ebda2e6c20a06efc3b023"
+    },
+    {
+      "path": "local/package_frozen_three_key_routes.py",
+      "bytes": 7306,
+      "sha256": "17a36a4c7fa746d931c3ea9d66cf3a9f3734815b8592d50e35a25979174ca099"
+    },
+    {
+      "path": "local/reports/frozen-three-key-routes-20261010/131200530.native.jsonl",
+      "bytes": 4295941,
+      "sha256": "5848a110e436cf7fd6758b347f0d1d4aeccccbbec0f4453c12fc56c9efd069e5"
+    },
+    {
+      "path": "local/reports/frozen-three-key-routes-20261010/131200530.public.jsonl",
+      "bytes": 2503265,
+      "sha256": "450ed71eb113c9e02b9d5e4e952d0ca919445dd651b8c1d84f810bdfe5a2e672"
+    },
+    {
+      "path": "local/reports/frozen-three-key-routes-20261010/131200531.native.jsonl",
+      "bytes": 4063232,
+      "sha256": "ddf16b6d9e23c9bbd2d4e3e8ddce412d15ab8be145dc030ba96ef8cf480b3648"
+    },
+    {
+      "path": "local/reports/frozen-three-key-routes-20261010/131200531.public.jsonl",
+      "bytes": 2464010,
+      "sha256": "4a27e5e42a5341a8d75eeea78dcaa380a05ba0aef48cbe0288fd0099917fef17"
+    },
+    {
+      "path": "local/reports/frozen-three-key-routes-20261010/131200532.native.jsonl",
+      "bytes": 2320794,
+      "sha256": "161f18895826f4071116a246141c079204c55c6f4e7f924e259000fbdc9f7b43"
+    },
+    {
+      "path": "local/reports/frozen-three-key-routes-20261010/131200532.public.jsonl",
+      "bytes": 1475896,
+      "sha256": "304f5c0d57b99dfda766b325849f2c3531ef8ff04a342f376378a11773f6ca4d"
+    },
+    {
+      "path": "local/reports/frozen-three-key-routes-20261010/131200533.native.jsonl",
+      "bytes": 7762586,
+      "sha256": "cdd792295a26a4cca66bf508879777b4475d6435ee7a8ee39bb9c0ff1e48c8e0"
+    },
+    {
+      "path": "local/reports/frozen-three-key-routes-20261010/131200533.public.jsonl",
+      "bytes": 4479716,
+      "sha256": "0c538ccc701b3c2303e1e636db6d95b10c473f467ee8c762a78159f0f9e1c610"
+    },
+    {
+      "path": "local/reports/frozen-three-key-routes-20261010/configs-r1.txt",
+      "bytes": 1916,
+      "sha256": "956a0c983a0ec59ccd1967850ef195574b4bf14fedfd78ae46507d0e339333f7"
+    },
+    {
+      "path": "local/reports/frozen-three-key-routes-20261010/cpu-tests-r1.txt",
+      "bytes": 4195,
+      "sha256": "5d6b5c15bfbce86a85a1cd09c49b860cbbd3b268d6fc6ee7c8926809ec529827"
+    },
+    {
+      "path": "local/reports/frozen-three-key-routes-20261010/deterministic-replay-r1/131200530.native.jsonl",
+      "bytes": 4295941,
+      "sha256": "5848a110e436cf7fd6758b347f0d1d4aeccccbbec0f4453c12fc56c9efd069e5"
+    },
+    {
+      "path": "local/reports/frozen-three-key-routes-20261010/deterministic-replay-r1/131200530.public.jsonl",
+      "bytes": 2503265,
+      "sha256": "450ed71eb113c9e02b9d5e4e952d0ca919445dd651b8c1d84f810bdfe5a2e672"
+    },
+    {
+      "path": "local/reports/frozen-three-key-routes-20261010/deterministic-replay-r1/131200531.native.jsonl",
+      "bytes": 4063232,
+      "sha256": "ddf16b6d9e23c9bbd2d4e3e8ddce412d15ab8be145dc030ba96ef8cf480b3648"
+    },
+    {
+      "path": "local/reports/frozen-three-key-routes-20261010/deterministic-replay-r1/131200531.public.jsonl",
+      "bytes": 2464010,
+      "sha256": "4a27e5e42a5341a8d75eeea78dcaa380a05ba0aef48cbe0288fd0099917fef17"
+    },
+    {
+      "path": "local/reports/frozen-three-key-routes-20261010/deterministic-replay-r1/131200532.native.jsonl",
+      "bytes": 2320794,
+      "sha256": "161f18895826f4071116a246141c079204c55c6f4e7f924e259000fbdc9f7b43"
+    },
+    {
+      "path": "local/reports/frozen-three-key-routes-20261010/deterministic-replay-r1/131200532.public.jsonl",
+      "bytes": 1475896,
+      "sha256": "304f5c0d57b99dfda766b325849f2c3531ef8ff04a342f376378a11773f6ca4d"
+    },
+    {
+      "path": "local/reports/frozen-three-key-routes-20261010/deterministic-replay-r1/131200533.native.jsonl",
+      "bytes": 7762586,
+      "sha256": "cdd792295a26a4cca66bf508879777b4475d6435ee7a8ee39bb9c0ff1e48c8e0"
+    },
+    {
+      "path": "local/reports/frozen-three-key-routes-20261010/deterministic-replay-r1/131200533.public.jsonl",
+      "bytes": 4479716,
+      "sha256": "0c538ccc701b3c2303e1e636db6d95b10c473f467ee8c762a78159f0f9e1c610"
+    },
+    {
+      "path": "local/reports/frozen-three-key-routes-20261010/discovery-causal-r1.json",
+      "bytes": 8183390,
+      "sha256": "b0f08c628214b4723b367789129170a567255d8a7054da90e2334f54f4561a03"
+    },
+    {
+      "path": "local/reports/frozen-three-key-routes-20261010/protection-r1.json",
+      "bytes": 12606,
+      "sha256": "4446cf4fce9317052f08e61a33c539e82587257c7128856da533254c162b962a"
+    },
+    {
+      "path": "local/reports/frozen-three-key-routes-20261010/report.json",
+      "bytes": 5162,
+      "sha256": "a667ef622b81a2e09f96578ceb3ba2f96002bcea7620b49446b786ff670b2846"
+    },
+    {
+      "path": "local/reports/frozen-three-key-routes-20261010/ruff-r1.txt",
+      "bytes": 20,
+      "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0"
+    },
+    {
+      "path": "local/reports/frozen-three-key-routes-20261010/stock-discovery-bytecode-r1.txt",
+      "bytes": 24629,
+      "sha256": "fe60d0936af6e4a35eb7865867a90d6d5c24900b6b416b53c854c493ffce41fa"
+    },
+    {
+      "path": "local/reports/frozen-three-key-routes-20261010/stock-shortest-r1.json",
+      "bytes": 10761890,
+      "sha256": "6485c4823bd97d75aa27c99c2a432e79c4ed2695a7316513a9cd1e7e1fabe114"
+    },
+    {
+      "path": "local/reports/frozen-three-key-routes-20261010/stock-shortest-r1.launch.json",
+      "bytes": 430,
+      "sha256": "559a003c6dc9adbd59913b52d19b39968062ad27127f466b696eacbc28210928"
+    },
+    {
+      "path": "local/reports/frozen-three-key-routes-20261010/verification-r1.json",
+      "bytes": 49552,
+      "sha256": "becacf0ce14ddfd2e3ea5e0669ae7af9b7111de75fda2cfe7b741eec2ec06223"
+    },
+    {
+      "path": "local/reports/frozen-three-key-routes-20261010/vocab-r1.txt",
+      "bytes": 90,
+      "sha256": "253dc6855d58deb0497e2af67b1a8eee1c686e15b91f229bfd776126ea051933"
+    },
+    {
+      "path": "local/run_stock_frozen_three_key_reference.py",
+      "bytes": 701,
+      "sha256": "c4f60c86f405874380da0fe9aaf3d26a508a7f43bbc941407f390114d8c013b2"
+    },
+    {
+      "path": "local/runs/oracle-qualification/runtime-backups/20261010T121347.529285Z/journal.json",
+      "bytes": 28204,
+      "sha256": "b5ff134a07e450dfb23f3cd3db1e157f7d291d888be50976af2ae979b9a928c0"
+    },
+    {
+      "path": "local/verify_frozen_three_key_routes.py",
+      "bytes": 2977,
+      "sha256": "1e3781425f58276f3fd2b94b0f86217d3f840c9f12a0490954c0afaa52188a7c"
+    },
+    {
+      "path": "local/verify_key_protection.py",
+      "bytes": 2110,
+      "sha256": "b5d28d3867bdcef259ff833d21f881725dd295dc2415a80d840c4428ff167a2a"
+    },
+    {
+      "path": "src/sls/audit/natural_key_policy.py",
+      "bytes": 2306,
+      "sha256": "c86bdfced52e0cb0014d80fffe62cc3ad99a2d21566d3355abca5621c8ecadf1"
+    },
+    {
+      "path": "src/sls/audit/natural_three_key_policy.py",
+      "bytes": 1994,
+      "sha256": "736103a60c518d243cb6d1a0ce52289ede658f73a210c7a7a062a26977033d2a"
+    },
+    {
+      "path": "tests/audit/test_frozen_three_key_probe.py",
+      "bytes": 3021,
+      "sha256": "3e7a57cca7b9b1e0cc88a2a4c5fe766cd67bf05eae9e9adad0cefe77e2876e61"
+    },
+    {
+      "path": "tests/fixtures/regressions/natural-discovery-clock-stock-r1.json",
+      "bytes": 1902456,
+      "sha256": "6a2e38a95d98f6c85254b5633dc91a1143fc6e51d3ce694e745a6fbb4ce65f16"
+    },
+    {
+      "path": "tests/simulator/test_natural_discovery_clock_stock.py",
+      "bytes": 3050,
+      "sha256": "e81376c2f1e214e20d718d3e827eb4a58c62e505d8641cf08d914b62c5e24593"
+    },
+    {
+      "path": "tools/capture_frozen_key_reference.py",
+      "bytes": 6525,
+      "sha256": "ceaa12680a5e099d10125dd03d2c127651587497759b58dcd7f8546fc9ba3b95"
+    },
+    {
+      "path": "tools/probe_frozen_three_key_routes.py",
+      "bytes": 8222,
+      "sha256": "6a443c46551e5e21aeea84f4ea0c274ff6b9e1957ea90011a52b57223a29bb3c"
+    }
+  ]
+}
