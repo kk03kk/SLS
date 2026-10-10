@@ -1,0 +1,95 @@
+{
+  "schema": "sls-act12-offline-evidence-review-v1",
+  "audit_sha256": "33833b245167dbefbfdc7763d427a941aefd18695941d45729ff2d4cb71c68a9",
+  "verified_inputs": [
+    {
+      "name": "act12-scope-combat-controlled-r1.json",
+      "sha256": "7d00be82e230ae4121a2062a73770c2fc5e648646f6cb50ae3efb0735bdca8c8"
+    },
+    {
+      "name": "act12-scope-boss-controlled-r1.json",
+      "sha256": "2f620303bf7d0503dd62dc5b8a380f9b9ffad7836cda8e4c1e682f0ef8a8d3bd"
+    },
+    {
+      "name": "act12-scope-shared-controlled-r1.json",
+      "sha256": "89df65eb176fedc3f521229bbc7e7b1423b81a8a24032867dc785880d0bf80e0"
+    },
+    {
+      "name": "act12-scope-system-stock-policy-r23-transition-r1.json",
+      "sha256": "22582879978d3acb982c08cbfd3018fe08e4ae69bd73fec9d6d6f632a8ef6390"
+    },
+    {
+      "name": "act12-scope-system-stock-policy-r24-reward-r1.json",
+      "sha256": "d89ef9f45aff9d71a91b155d74336cee9015e6896c238e8995ef75ce4a7d2152"
+    },
+    {
+      "name": "act12-scope-system-stock-policy-r25-checkpoint-r1.json",
+      "sha256": "8bc3508654103bb5034bc58a7fb1e067b7a9f22c25badf9fb515389b54142b1b"
+    },
+    {
+      "name": "act12-scope-system-checkpoint-reward-r12-r1.json",
+      "sha256": "fd83cca7e3cf17bf019381b902ea37c670e204493d8f2d65251b81066d76227b"
+    },
+    {
+      "name": "act12-scope-production-r26-a-8000011000001-r1.json",
+      "sha256": "4b8dcf48680ecddeb2c27bb52943187007f6b5da293d53d7d5e39af1b6878201"
+    },
+    {
+      "name": "act12-scope-production-r26-a-8000011000002-r1.json",
+      "sha256": "3fa57b82f3164bd98aa7a8f5fe889bf7d9ce2eba3761b8eb0e2d4e8e672fb4f9"
+    },
+    {
+      "name": "act12-scope-production-r27-b-8000011000004-r1.json",
+      "sha256": "88f597a2b0ef14472806f84b75a059c4ab52369cad87db71abcbbcddf5876609"
+    },
+    {
+      "name": "act12-scope-production-r27-b-8000011000005-r1.json",
+      "sha256": "9e900a4bcd90aa41a42612dbc3b780eb30c8637e844e011e567735a8012da59e"
+    },
+    {
+      "name": "act12-scope-production-r27-b-8000011000007-r1.json",
+      "sha256": "6436225c2278d7c17eac19e4d02745c6d3d363c79ed3fbeec6bbd2643982441b"
+    },
+    {
+      "name": "act12-scope-collector-strict-r1.json",
+      "sha256": "8fb3bf9cbc7bfa2ce59da5101f6b78d50b43e29609fd26021c839373117ca717"
+    },
+    {
+      "name": "act12-scope-production-r26-a-8000011000000-r1.json",
+      "sha256": "5310c8b20fb62528167e65e2b754bef00002d9adcf3328912868b787ea53461e"
+    },
+    {
+      "name": "act12-scope-automaton-strict-r1.json",
+      "sha256": "71a8d0777b133658ae963d525465e77225307ccb66f1ab30f660e840c29d61d1"
+    },
+    {
+      "name": "act12-scope-automaton-witnessed-clock-r1.json",
+      "sha256": "22de8832a91f69904fc411885b8a8a049def67a1c5a5fd0d18c3d30e80e7ae78"
+    },
+    {
+      "name": "act12-source-scope-review-r1.json",
+      "sha256": "b2ee578ba567797199c4541fbbae37459ee365193798f06166104588eaec2d75"
+    }
+  ],
+  "automaton": {
+    "seed": 8000011000009,
+    "boundaries": 334,
+    "clock_inputs": [
+      {
+        "seed": 8000011000009,
+        "floor": 16,
+        "serial": 1,
+        "updates": 15
+      }
+    ],
+    "status": "ARCHIVED_CONDITIONAL_EVIDENCE_INTEGRITY_PASS",
+    "unconditional_production_pass": false,
+    "new_native_execution": false
+  },
+  "scope": "ARCHIVED_EVIDENCE_INTEGRITY_ONLY",
+  "new_model_or_native_execution": false,
+  "remaining": [
+    "unconditional Discovery frame-driven RNG parity",
+    "uncovered shared-mechanic/content branches"
+  ]
+}
