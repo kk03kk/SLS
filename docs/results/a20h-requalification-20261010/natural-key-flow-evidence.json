@@ -1,0 +1,291 @@
+{
+  "schema": "sls-natural-key-flow-evidence-v1",
+  "code_commit": "cc871e0dcb6ec709d020378d8a69ef5fa196834d",
+  "native_source_sha256": "e4f8452ff3cea688e49a362488814d4c2e29d9b721bcc6cd71c8d9f1d9fa733a",
+  "native_binary_sha256": "6ee14bf97312bab04b66fcb0a6767f52c4a688eeb0c1fcf5953b5ab8764f570b",
+  "oracle_sha256": "0710d21de30dc28dc7c137d63c587eec0e0d16a4b0e96d6708bde89699044f44",
+  "stock_game_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "seed_namespaces": [
+    [
+      131200480,
+      131200481
+    ],
+    [
+      131200481,
+      131200489
+    ]
+  ],
+  "actual_stock_seeds": [
+    131200480,
+    131200488
+  ],
+  "native_only_selection_runs": 8,
+  "natural_public_boundaries": 170,
+  "executed_actions": 168,
+  "full_native_suffix_matches": 170,
+  "natural_acquired_keys": [
+    "RUBY",
+    "SAPPHIRE"
+  ],
+  "emerald_natural": "NOT_COVERED",
+  "full_act1_act4_natural_transition": "NOT_COVERED",
+  "diagnostic_limits_not_game_failures": true,
+  "raw_combat_pairs": 122,
+  "raw_combat_exact": 82,
+  "raw_combat_differences": 40,
+  "raw_combat_unavailable": 48,
+  "raw_power_differences": 53,
+  "all_differing_power_owners_hp_zero": true,
+  "production_environment_changed": false,
+  "training_gate": "NOT_QUALIFIED",
+  "training_eligible": false,
+  "verification": {
+    "cpu_passed": 1735,
+    "skipped": 2,
+    "warnings": 4,
+    "ruff": "PASS",
+    "vocabulary": "PASS",
+    "configurations": "31/33; two preexisting identity mismatches"
+  },
+  "files": [
+    {
+      "path": "docs/results/a20h-requalification-20261010/NATURAL-KEY-FLOW.md",
+      "bytes": 4771,
+      "sha256": "3f122e21676256036b6b333fd6f3c00e54db29ed6c9a0f2079acaf73fe3a2d7a"
+    },
+    {
+      "path": "docs/results/a20h-requalification-20261010/WAITING-SERVER-PLAN.md",
+      "bytes": 3943,
+      "sha256": "1fe6ec74875fb25954451d0887aa851bcf83f6446ca59491f0174c483d2e9fd9"
+    },
+    {
+      "path": "local/build/oracle/ending-continuous-shop-r1.build.json",
+      "bytes": 21411,
+      "sha256": "05f5408237dbdce37520f0be4cbc4fba5d9fcef3d28da0ecad4cd2e46315f9b1"
+    },
+    {
+      "path": "local/build/oracle/ending-continuous-shop-r1.jar",
+      "bytes": 204466,
+      "sha256": "0710d21de30dc28dc7c137d63c587eec0e0d16a4b0e96d6708bde89699044f44"
+    },
+    {
+      "path": "local/classify_natural_raw_powers.py",
+      "bytes": 981,
+      "sha256": "e2b575b1ff7b2212a6a97fde132f67ae44414213648197a019767737082b526c"
+    },
+    {
+      "path": "local/compare_natural_key_raw.py",
+      "bytes": 2047,
+      "sha256": "06085b3114ded40bc368f3c6c8cb9b014229b08e5c1ac738385c99dcb3ed3f5e"
+    },
+    {
+      "path": "local/freeze_natural_key_flow.py",
+      "bytes": 1635,
+      "sha256": "025dfda36a8e2689495d33d58689cf6f8c278502cdf85a21b1f9223b55364fe1"
+    },
+    {
+      "path": "local/package_natural_key_flow.py",
+      "bytes": 6677,
+      "sha256": "b1fb30586d9896f10646426d26b688cb6e7b88e3e82e1119e0c768075d2c39b0"
+    },
+    {
+      "path": "local/preserve_natural_producer.py",
+      "bytes": 544,
+      "sha256": "ecbb8fc7a8c88dd271a85ac82eef6b624a220d125702a1f22d052193c7f08c7d"
+    },
+    {
+      "path": "local/preserve_natural_replayer.py",
+      "bytes": 811,
+      "sha256": "ab9f91d7d76909e3c1e1ff539f234e7b59dfdde986446bdef721e45a5d28e46f"
+    },
+    {
+      "path": "local/reports/natural-key-flow-20261010/config-check-r1.txt",
+      "bytes": 1916,
+      "sha256": "956a0c983a0ec59ccd1967850ef195574b4bf14fedfd78ae46507d0e339333f7"
+    },
+    {
+      "path": "local/reports/natural-key-flow-20261010/cpu-tests-r1.txt",
+      "bytes": 4195,
+      "sha256": "2cf7703f472e6abdb64c915701a5ff85d9b1dc21c80d1ca446e88a15b1efa9f9"
+    },
+    {
+      "path": "local/reports/natural-key-flow-20261010/cpu-tests-r2.txt",
+      "bytes": 4195,
+      "sha256": "b1e6d2cf367b62c42539a0c8a57d8a65bee6c42a322907f08c141fa660618a42"
+    },
+    {
+      "path": "local/reports/natural-key-flow-20261010/executed-producer-r1.py",
+      "bytes": 6264,
+      "sha256": "d635872efbd0fa253b955efe40d6ad010e7f9270b5ada4cbaa030440ae71efe8"
+    },
+    {
+      "path": "local/reports/natural-key-flow-20261010/executed-replayer-r1.py",
+      "bytes": 8060,
+      "sha256": "21b60af70a33f30caf5ed77222d917af536101df19aacc0b955e707aa754e29b"
+    },
+    {
+      "path": "local/reports/natural-key-flow-20261010/namespace-r1.json",
+      "bytes": 179,
+      "sha256": "a04b73e3bd825a968ccbe5c5a0cdbb07f25b591bd20fe92671e56c0d61e0245f"
+    },
+    {
+      "path": "local/reports/natural-key-flow-20261010/native-seed-selection-r1.json",
+      "bytes": 169624,
+      "sha256": "eff65bc0f8328fdb8e067c9647493eba211cd13ec0755962c9ea6b6ce2df2a43"
+    },
+    {
+      "path": "local/reports/natural-key-flow-20261010/producer-startup-failure-r2.txt",
+      "bytes": 469898,
+      "sha256": "6a6cc2b3a14b2aed4b288a5706f090cbdd5f6591f80e699adaa2a37a972809d9"
+    },
+    {
+      "path": "local/reports/natural-key-flow-20261010/protection-r1.json",
+      "bytes": 11874,
+      "sha256": "821495b64968e6167fcd017ecf3c62b5753e013129e43ec92cd558ffcb868e95"
+    },
+    {
+      "path": "local/reports/natural-key-flow-20261010/raw-combat-r1.json",
+      "bytes": 974218,
+      "sha256": "6cdaad3ad9b98296e3dda6225e46dfa2151839cc5fb57a614c6ddeeee1eeffba"
+    },
+    {
+      "path": "local/reports/natural-key-flow-20261010/raw-power-owners-r1.json",
+      "bytes": 15551,
+      "sha256": "c71d085d916fdcf63b5ef4039176dbd2a75fb67f41001c40f8b7522fa8b9599b"
+    },
+    {
+      "path": "local/reports/natural-key-flow-20261010/replay-r3.json",
+      "bytes": 7276,
+      "sha256": "73e634ffbe7c66b5ce308daffa2ced5e10ec9c1fbc7b33877921ab6fd5837c8a"
+    },
+    {
+      "path": "local/reports/natural-key-flow-20261010/replay-selected-r1.json",
+      "bytes": 9138,
+      "sha256": "c61a6c49c69d20cb4f6bbe538d9391eafc89bbd93d420c07600ba982af83b92f"
+    },
+    {
+      "path": "local/reports/natural-key-flow-20261010/stock-creature-bytecode-r1.txt",
+      "bytes": 188919,
+      "sha256": "3c77feaf226e9e555f976a7c5fc5e1fad853ef90c1d963c0d08cb82c932d3c0d"
+    },
+    {
+      "path": "local/reports/natural-key-flow-20261010/stock-monster-bytecode-r1.txt",
+      "bytes": 233105,
+      "sha256": "76b43e75dd95fce667e910d7844c3fc1de761ecbde1a46e0dabe9965867ae69e"
+    },
+    {
+      "path": "local/reports/natural-key-flow-20261010/stock-r1.launch.json",
+      "bytes": 578,
+      "sha256": "ef96a137556f18b261377f4ca47d0bb8a21873c717b279ecd390dbbd743a7737"
+    },
+    {
+      "path": "local/reports/natural-key-flow-20261010/stock-r2.launch.json",
+      "bytes": 587,
+      "sha256": "489158942bb5df4f9562fea8cdebf2b6b9fd57c0c5c9bbe79304c2f7673c369a"
+    },
+    {
+      "path": "local/reports/natural-key-flow-20261010/stock-r3.json",
+      "bytes": 18339282,
+      "sha256": "6b2cf1b694caf203e52d86200676f29a31bf68dc2d3a044614de8cab1014ea31"
+    },
+    {
+      "path": "local/reports/natural-key-flow-20261010/stock-r3.launch.json",
+      "bytes": 430,
+      "sha256": "ac8a68ea4e93f7cd2da677f3dd70c79d61050ff9448a68150d77a78cf3ef0d4d"
+    },
+    {
+      "path": "local/reports/natural-key-flow-20261010/stock-selected-r1.json",
+      "bytes": 19342714,
+      "sha256": "3a1e8eedc65f76490aa63437647d52674039effab83e2baaa0cdc9326df0ab54"
+    },
+    {
+      "path": "local/reports/natural-key-flow-20261010/stock-selected-r1.launch.json",
+      "bytes": 430,
+      "sha256": "8e9b8879dbc5d0dbfc40045af8919023f9c94a21d7cfd09ae6611acfe0477f25"
+    },
+    {
+      "path": "local/retry_natural_key_flow.py",
+      "bytes": 581,
+      "sha256": "c65c2f30cf8b7828de862e8de4eed37f0aeef1b993b9105d9d852c3d1b78bf3f"
+    },
+    {
+      "path": "local/run_natural_key_flow.py",
+      "bytes": 1143,
+      "sha256": "ac3fb7f4458b9a587b0efc5ad84da22c47a5d418f3b9c09934278c754c3f5de0"
+    },
+    {
+      "path": "local/run_selected_natural_key_flow.py",
+      "bytes": 786,
+      "sha256": "d1dfe5c8be9307fec3837caf8140681a8e1fe0d5be0964303b36312b8b083f96"
+    },
+    {
+      "path": "local/runs/oracle-qualification/runtime-backups/20261010T112427.406576Z/journal.json",
+      "bytes": 28205,
+      "sha256": "963e636fb79e0abb5dce12439aa0d6769921f9e89ebcc6e6b7a4edb884ad5ea3"
+    },
+    {
+      "path": "local/runs/oracle-qualification/runtime-backups/20261010T112537.526381Z/journal.json",
+      "bytes": 28205,
+      "sha256": "8c3bd772504bf7cd67637970dc7577e6f978e5b09c8b2aca08f0b03ed97e7c03"
+    },
+    {
+      "path": "local/runs/oracle-qualification/runtime-backups/20261010T112620.520115Z/journal.json",
+      "bytes": 28204,
+      "sha256": "2cd4fa22e6986d51d04cd0ef40307bdf27853a65846b3f6491bc66f2adbe00c1"
+    },
+    {
+      "path": "local/runs/oracle-qualification/runtime-backups/20261010T113131.666364Z/journal.json",
+      "bytes": 28205,
+      "sha256": "2459c89d4ac39fe2dbe359cd5ded2ab9f68f27790fb842e7159cbfd3e3c325f5"
+    },
+    {
+      "path": "local/select_natural_key_seed.py",
+      "bytes": 2236,
+      "sha256": "faa108e227395b28321292722f7ce55cc55343bee99d16214debfa12c01d61c0"
+    },
+    {
+      "path": "local/verify_key_protection.py",
+      "bytes": 2110,
+      "sha256": "b5d28d3867bdcef259ff833d21f881725dd295dc2415a80d840c4428ff167a2a"
+    },
+    {
+      "path": "src/sls/audit/natural_key_policy.py",
+      "bytes": 2306,
+      "sha256": "c86bdfced52e0cb0014d80fffe62cc3ad99a2d21566d3355abca5621c8ecadf1"
+    },
+    {
+      "path": "tests/audit/test_natural_key_cli.py",
+      "bytes": 2080,
+      "sha256": "3538f1b173b8189e679d3e58acba4b173006010c1d35118bb71ed9987923d1cd"
+    },
+    {
+      "path": "tests/audit/test_natural_key_policy.py",
+      "bytes": 1742,
+      "sha256": "bb0ba995fd2681159d13e3991f52abdf05160be30872c789f0e98a5f9e02c6b1"
+    },
+    {
+      "path": "tests/fixtures/regressions/natural-key-flow-stock-r1.json",
+      "bytes": 4770736,
+      "sha256": "62eea553280249858a1dea57d2dccf7f27221a7c29a6c04d5911f1d9007cb071"
+    },
+    {
+      "path": "tests/simulator/test_natural_key_flow_stock.py",
+      "bytes": 2373,
+      "sha256": "a9a21fe9a59bc561f7dcded78ecfcdedb1c0cd97c2c132523cb94287a1451ed7"
+    },
+    {
+      "path": "tools/capture_natural_key_flow.py",
+      "bytes": 6456,
+      "sha256": "09f7d7aa35c9827e95fdd98a06e42c551d85144a33d16c772feba0bbd8cce3f9"
+    },
+    {
+      "path": "tools/replay_natural_key_flow.py",
+      "bytes": 8247,
+      "sha256": "56e6881f290d698baeb0309cafbddd08f7c5a56078642a64f9a636bec653ebed"
+    }
+  ],
+  "bundle": {
+    "path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\natural-key-flow-20261010-delivery-r1.zip",
+    "sha256": "92a772a4ae5707e47519cab122a9ff499859435f9b22bd9bbd0287a9634957cc"
+  }
+}
