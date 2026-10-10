@@ -1,0 +1,22 @@
+{
+  "schema": "sls-critic-review-delivery-v1",
+  "path": "C:\\Users\\黄\\.codex\\worktrees\\cpu-diagnostics-performance\\SLS\\local\\reports\\critic20m-followup-20261010-delivery.zip",
+  "bytes": 10348852,
+  "sha256": "5dfe05f46c81cc11aa1309a0118bdeb0782db6d1413da3d3e1fd29e24b9d3d82",
+  "files": 69,
+  "source_archive_sha256": "4f8f1c7042946198619b9105c872917981925a9dc299bbebc786b2e1f67b726e",
+  "includes": [
+    "raw stopped-run JSON metrics, config and Slurm logs",
+    "new natural public trajectories and separate private states",
+    "full same-battle traces and actual shaped returns",
+    "CPU tests and qualification smoke",
+    "prior CPU delivery as replay input"
+  ],
+  "excludes": [
+    "training model weights",
+    "stock Java sources",
+    "native binaries"
+  ],
+  "server_execution_code_commit": "6f926a8e2e169735bfc113b99689352a143b1d53",
+  "GPU_qualification": "NOT_YET_EXECUTED"
+}

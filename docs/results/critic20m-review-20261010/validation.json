@@ -1,0 +1,42 @@
+{
+  "schema": "sls-stopped-critic-local-validation-v1",
+  "full_tests": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "2",
+    "tests": "1378",
+    "time": "302.372",
+    "timestamp": "2026-10-10T13:46:57.029883+08:00",
+    "hostname": "FZYSSY"
+  },
+  "passed": 1376,
+  "gzip_final_targeted_tests": "15 passed",
+  "ruff": "PASS",
+  "vocabulary": "PASS",
+  "native_source_sha256": "6efbb772958c06d1b9133f374d046d8838eaa256da1a146eaf7e1ee530eefd3d",
+  "training_implementation_sha256": "8f04388a202fe099f41c8ab94415f36d241df677f04ab7f636dd037a9627d0e6",
+  "native_restores_checked": 576,
+  "configuration_check": "34/35: existing critic20m bound source guard retained from CPU optimization branch",
+  "full_test_code_commit": "fde9612e9026ca2efc8684b107a66dd60ea5f047",
+  "gzip_audit_code_commit": "6f926a8e2e169735bfc113b99689352a143b1d53",
+  "protected_production_paths_unchanged_from": "0103cc6",
+  "artifact_sha256": {
+    "archive-audit-accepted.json": "e5d14d1907d379ffa9e887032ac2d232f157dfcd91459d631d29ca975578469a",
+    "same-battle-final.json": "dd70a2906d2c7b653c51b92be13c4d063766bca4981695a103f28126a040fa5a",
+    "natural-returns.json": "fbc0ff0f90a26d4f8be4f3c3f6d10b98e0136529afa6500daa9801f015f4dcbb",
+    "natural-corpus/manifest.json": "6a545f9c73055bea0e27a60bd5c582b929af4f4d2316f8c9953e8b7270461ee9",
+    "pytest.xml": "63f433624f73ab2e06e8fab3ca88ed539bb5851138296d8fce35ced17593392a",
+    "pytest.log": "d911a09e33aa19b1b216e0dcb56694abe5003118fe78819442216ca44b5aa25f",
+    "pytest-gzip-final.log": "34419c5f6b93d23f6ae6dafdfa2af880c8d1bb46b0bf87705fc5edb9f182c817",
+    "ruff.log": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0",
+    "vocabulary-final.log": "253dc6855d58deb0497e2af67b1a8eee1c686e15b91f229bfd776126ea051933",
+    "configs.log": "3ced71bc7d85d91ee1d1264c4a10fe57801dd73665d1ddac82f586677efb1f3b",
+    "qualification-smoke/summary.json": "91ed47e3fb972fba47aa366be819896fd84828833de59e3f0a0c0367e78924f0"
+  },
+  "scope": "LOCAL_CPU_ONLY; GPU_QUALIFICATION_NOT_YET_EXECUTED",
+  "same_battle_input_corpus": {
+    "manifest_sha256": "3f13f8e4687d80ebe649ac56a6770b504a176d8fa0d4c706b0e41374adf49317",
+    "delivery_sha256": "0b5cc3f209576094093a33736b7d73b3faa7a7ca6f8cb0ea6acfef82c863bb9f"
+  }
+}

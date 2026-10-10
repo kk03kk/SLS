@@ -1,0 +1,255 @@
+{
+  "schema": "sls-stopped-critic-research-summary-v1",
+  "claim": "DIAGNOSTICS_NOT_FORMAL_WIN_RATE",
+  "same_battle": {
+    "parent90": {
+      "states": 12,
+      "outcomes": {
+        "SURVIVED_BATTLE_EXIT": 8,
+        "DEATH": 4
+      },
+      "max_decisions": 40
+    },
+    "criticbest": {
+      "states": 12,
+      "outcomes": {
+        "SURVIVED_BATTLE_EXIT": 8,
+        "DEATH": 4
+      },
+      "max_decisions": 42
+    },
+    "criticlatest": {
+      "states": 12,
+      "outcomes": {
+        "SURVIVED_BATTLE_EXIT": 7,
+        "DEATH": 5
+      },
+      "max_decisions": 38
+    }
+  },
+  "natural_small_window": {
+    "parent90": {
+      "episodes": 4,
+      "reached_act2": 3,
+      "decisions": 967,
+      "outcomes": {
+        "DEATH": 4
+      },
+      "initial_value_mean": 0.5871770083904266,
+      "initial_mc_mean": -1.0362666555665783,
+      "decision_weighted_mc_mse": 2.4945267932663118
+    },
+    "criticbest": {
+      "episodes": 4,
+      "reached_act2": 2,
+      "decisions": 790,
+      "outcomes": {
+        "DEATH": 4
+      },
+      "initial_value_mean": -1.0173693597316742,
+      "initial_mc_mean": -1.0362666410583188,
+      "decision_weighted_mc_mse": 0.003239182866191367
+    },
+    "criticlatest": {
+      "episodes": 4,
+      "reached_act2": 2,
+      "decisions": 821,
+      "outcomes": {
+        "DEATH": 4
+      },
+      "initial_value_mean": -1.0239269733428955,
+      "initial_mc_mean": -1.036266694245569,
+      "decision_weighted_mc_mse": 0.0011554926255145622
+    }
+  },
+  "periodic_curve": [
+    {
+      "steps": 90013696,
+      "episodes": 512,
+      "wins": 2,
+      "reached_act2": 352,
+      "cycles": 47,
+      "cycle_contexts": {
+        "17:CARD_REWARD": 44,
+        "22:CARD_REWARD": 1,
+        "21:CARD_REWARD": 1,
+        "20:CARD_REWARD": 1
+      },
+      "median_failure_floor": 21.0,
+      "paired_success": {
+        "paired_seeds": 512,
+        "lost": 0,
+        "gained": 0,
+        "net": 0,
+        "exact_mcnemar_p": 1.0
+      },
+      "paired_reached_act2": {
+        "paired_seeds": 512,
+        "lost": 0,
+        "gained": 0,
+        "net": 0,
+        "exact_mcnemar_p": 1.0
+      },
+      "boss_encounter_entries": {
+        "ACT_1:HEXAGHOST": 169,
+        "ACT_1:SLIME_BOSS": 162,
+        "ACT_1:THE_GUARDIAN": 137,
+        "ACT_2:AUTOMATON": 11,
+        "ACT_2:CHAMP": 16,
+        "ACT_2:COLLECTOR": 12
+      },
+      "actual_act2_boss_entries": 39,
+      "boss_assignment_counts": {
+        "ACT_1:HEXAGHOST": 184,
+        "ACT_1:SLIME_BOSS": 176,
+        "ACT_1:THE_GUARDIAN": 152,
+        "ACT_2:AUTOMATON": 113,
+        "ACT_2:CHAMP": 128,
+        "ACT_2:COLLECTOR": 111
+      },
+      "act2_entry_mean_deck_size": 19.673295454545453,
+      "act2_entry_mean_hp": 69.71022727272727,
+      "act2_entry_mean_value": 0.6718845036177133
+    },
+    {
+      "steps": 92012544,
+      "episodes": 512,
+      "wins": 3,
+      "reached_act2": 301,
+      "cycles": 36,
+      "cycle_contexts": {
+        "17:CARD_REWARD": 35,
+        "20:CARD_REWARD": 1
+      },
+      "median_failure_floor": 20,
+      "paired_success": {
+        "paired_seeds": 512,
+        "lost": 1,
+        "gained": 2,
+        "net": 1,
+        "exact_mcnemar_p": 1.0
+      },
+      "paired_reached_act2": {
+        "paired_seeds": 512,
+        "lost": 103,
+        "gained": 52,
+        "net": -51,
+        "exact_mcnemar_p": 5.120483494372965e-05
+      },
+      "boss_encounter_entries": {
+        "ACT_1:HEXAGHOST": 164,
+        "ACT_1:SLIME_BOSS": 156,
+        "ACT_1:THE_GUARDIAN": 133,
+        "ACT_2:AUTOMATON": 16,
+        "ACT_2:CHAMP": 14,
+        "ACT_2:COLLECTOR": 14
+      },
+      "actual_act2_boss_entries": 44,
+      "boss_assignment_counts": {
+        "ACT_1:HEXAGHOST": 184,
+        "ACT_1:SLIME_BOSS": 176,
+        "ACT_1:THE_GUARDIAN": 152,
+        "ACT_2:AUTOMATON": 103,
+        "ACT_2:CHAMP": 100,
+        "ACT_2:COLLECTOR": 98
+      },
+      "act2_entry_mean_deck_size": 19.976744186046513,
+      "act2_entry_mean_hp": 68.78405315614619,
+      "act2_entry_mean_value": -1.108841174464685
+    },
+    {
+      "steps": 94011392,
+      "episodes": 512,
+      "wins": 3,
+      "reached_act2": 260,
+      "cycles": 18,
+      "cycle_contexts": {
+        "17:CARD_REWARD": 11,
+        "22:CARD_REWARD": 2,
+        "20:CARD_REWARD": 2,
+        "21:CARD_REWARD": 1,
+        "19:CARD_REWARD": 2
+      },
+      "median_failure_floor": 18,
+      "paired_success": {
+        "paired_seeds": 512,
+        "lost": 1,
+        "gained": 2,
+        "net": 1,
+        "exact_mcnemar_p": 1.0
+      },
+      "paired_reached_act2": {
+        "paired_seeds": 512,
+        "lost": 136,
+        "gained": 44,
+        "net": -92,
+        "exact_mcnemar_p": 3.945592409973741e-12
+      },
+      "boss_encounter_entries": {
+        "ACT_1:HEXAGHOST": 151,
+        "ACT_1:SLIME_BOSS": 149,
+        "ACT_1:THE_GUARDIAN": 114,
+        "ACT_2:AUTOMATON": 7,
+        "ACT_2:CHAMP": 14,
+        "ACT_2:COLLECTOR": 11
+      },
+      "actual_act2_boss_entries": 32,
+      "boss_assignment_counts": {
+        "ACT_1:HEXAGHOST": 184,
+        "ACT_1:SLIME_BOSS": 176,
+        "ACT_1:THE_GUARDIAN": 152,
+        "ACT_2:AUTOMATON": 81,
+        "ACT_2:CHAMP": 92,
+        "ACT_2:COLLECTOR": 87
+      },
+      "act2_entry_mean_deck_size": 19.915384615384614,
+      "act2_entry_mean_hp": 68.71153846153847,
+      "act2_entry_mean_value": -1.1021577697533829
+    },
+    {
+      "steps": 96010240,
+      "episodes": 512,
+      "wins": 0,
+      "reached_act2": 236,
+      "cycles": 5,
+      "cycle_contexts": {
+        "17:CARD_REWARD": 5
+      },
+      "median_failure_floor": 16.0,
+      "paired_success": {
+        "paired_seeds": 512,
+        "lost": 2,
+        "gained": 0,
+        "net": -2,
+        "exact_mcnemar_p": 0.5
+      },
+      "paired_reached_act2": {
+        "paired_seeds": 512,
+        "lost": 166,
+        "gained": 50,
+        "net": -116,
+        "exact_mcnemar_p": 9.87411356872572e-16
+      },
+      "boss_encounter_entries": {
+        "ACT_1:HEXAGHOST": 141,
+        "ACT_1:SLIME_BOSS": 142,
+        "ACT_1:THE_GUARDIAN": 117,
+        "ACT_2:AUTOMATON": 5,
+        "ACT_2:CHAMP": 8,
+        "ACT_2:COLLECTOR": 12
+      },
+      "actual_act2_boss_entries": 25,
+      "boss_assignment_counts": {
+        "ACT_1:HEXAGHOST": 184,
+        "ACT_1:SLIME_BOSS": 176,
+        "ACT_1:THE_GUARDIAN": 152,
+        "ACT_2:AUTOMATON": 78,
+        "ACT_2:CHAMP": 73,
+        "ACT_2:COLLECTOR": 85
+      },
+      "act2_entry_mean_deck_size": 20.114406779661017,
+      "act2_entry_mean_hp": 67.79237288135593,
+      "act2_entry_mean_value": -1.1073220963195218
+    }
+  ]
+}

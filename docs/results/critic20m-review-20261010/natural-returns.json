@@ -1,0 +1,234 @@
+{
+  "schema": "sls-cpu-complete-return-v1",
+  "profile": "IRONCLAD_A20_ACT2",
+  "target_policy": "GREEDY_CAPTURE_POLICY",
+  "gamma": 1,
+  "reward_precision": "TRAINER_FLOAT32_SHAPED_REWARDS_SUMMED_WITHOUT_BOOTSTRAP",
+  "limitation": "Not stochastic training-policy calibration or a probability estimate",
+  "corpus_sha256": "6a545f9c73055bea0e27a60bd5c582b929af4f4d2316f8c9953e8b7270461ee9",
+  "trajectories": [
+    {
+      "trajectory": "parent90-132300000",
+      "model": "parent90",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 179,
+      "initial_prediction": 0.5609055161476135,
+      "initial_mc_return": -1.0362666548462585,
+      "mse": 2.828995853862203,
+      "by_act": {
+        "1": {
+          "samples": 126,
+          "mse": 2.8274097269109966
+        },
+        "2": {
+          "samples": 53,
+          "mse": 2.832766646236769
+        }
+      }
+    },
+    {
+      "trajectory": "parent90-132300001",
+      "model": "parent90",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 329,
+      "initial_prediction": 0.7269275784492493,
+      "initial_mc_return": -1.036266615439672,
+      "mse": 2.482958000287354,
+      "by_act": {
+        "1": {
+          "samples": 158,
+          "mse": 3.0283210354374375
+        },
+        "2": {
+          "samples": 171,
+          "mse": 1.9790553128387394
+        }
+      }
+    },
+    {
+      "trajectory": "parent90-132300002",
+      "model": "parent90",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 124,
+      "initial_prediction": 0.5480483174324036,
+      "initial_mc_return": -1.0362666661967523,
+      "mse": 1.1863943265346106,
+      "by_act": {
+        "1": {
+          "samples": 124,
+          "mse": 1.1863943265346106
+        }
+      }
+    },
+    {
+      "trajectory": "parent90-132300003",
+      "model": "parent90",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 335,
+      "initial_prediction": 0.5128266215324402,
+      "initial_mc_return": -1.0362666857836302,
+      "mse": 2.8113763363055466,
+      "by_act": {
+        "1": {
+          "samples": 214,
+          "mse": 2.8757842332697527
+        },
+        "2": {
+          "samples": 121,
+          "mse": 2.697464849112653
+        }
+      }
+    },
+    {
+      "trajectory": "criticbest-132300000",
+      "model": "criticbest",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 185,
+      "initial_prediction": -1.0247070789337158,
+      "initial_mc_return": -1.0362666560104117,
+      "mse": 0.0020870355053820497,
+      "by_act": {
+        "1": {
+          "samples": 131,
+          "mse": 0.0017702461358698224
+        },
+        "2": {
+          "samples": 54,
+          "mse": 0.0028555430499394895
+        }
+      }
+    },
+    {
+      "trajectory": "criticbest-132300001",
+      "model": "criticbest",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 146,
+      "initial_prediction": -0.9803842306137085,
+      "initial_mc_return": -1.0362666177097708,
+      "mse": 0.004745276793099016,
+      "by_act": {
+        "1": {
+          "samples": 146,
+          "mse": 0.004745276793099016
+        }
+      }
+    },
+    {
+      "trajectory": "criticbest-132300002",
+      "model": "criticbest",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 127,
+      "initial_prediction": -1.0344181060791016,
+      "initial_mc_return": -1.0362666084547527,
+      "mse": 0.006233459951136735,
+      "by_act": {
+        "1": {
+          "samples": 127,
+          "mse": 0.006233459951136735
+        }
+      }
+    },
+    {
+      "trajectory": "criticbest-132300003",
+      "model": "criticbest",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 332,
+      "initial_prediction": -1.029968023300171,
+      "initial_mc_return": -1.03626668205834,
+      "mse": 0.0020734731030381905,
+      "by_act": {
+        "1": {
+          "samples": 252,
+          "mse": 0.0020157203356901392
+        },
+        "2": {
+          "samples": 80,
+          "mse": 0.002255394320184553
+        }
+      }
+    },
+    {
+      "trajectory": "criticlatest-132300000",
+      "model": "criticlatest",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 219,
+      "initial_prediction": -1.0383976697921753,
+      "initial_mc_return": -1.036266702460125,
+      "mse": 0.0017658520083656303,
+      "by_act": {
+        "1": {
+          "samples": 132,
+          "mse": 0.0013976118170010334
+        },
+        "2": {
+          "samples": 87,
+          "mse": 0.0023245612642291565
+        }
+      }
+    },
+    {
+      "trajectory": "criticlatest-132300001",
+      "model": "criticlatest",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 132,
+      "initial_prediction": -0.9988713264465332,
+      "initial_mc_return": -1.0362667189911008,
+      "mse": 0.0024152771989908884,
+      "by_act": {
+        "1": {
+          "samples": 132,
+          "mse": 0.0024152771989908884
+        }
+      }
+    },
+    {
+      "trajectory": "criticlatest-132300002",
+      "model": "criticlatest",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 124,
+      "initial_prediction": -1.034268856048584,
+      "initial_mc_return": -1.0362666934961453,
+      "mse": 0.00029472555429816165,
+      "by_act": {
+        "1": {
+          "samples": 124,
+          "mse": 0.00029472555429816165
+        }
+      }
+    },
+    {
+      "trajectory": "criticlatest-132300003",
+      "model": "criticlatest",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 346,
+      "initial_prediction": -1.0241700410842896,
+      "initial_mc_return": -1.0362666620349046,
+      "mse": 0.000597038429813911,
+      "by_act": {
+        "1": {
+          "samples": 223,
+          "mse": 0.0005713038182904046
+        },
+        "2": {
+          "samples": 123,
+          "mse": 0.0006436954897305118
+        }
+      }
+    }
+  ],
+  "outcome_counts": {
+    "DEATH": 12
+  }
+}
