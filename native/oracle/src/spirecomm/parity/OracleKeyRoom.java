@@ -41,10 +41,14 @@ public final class OracleKeyRoom {
     @SuppressWarnings("unchecked")
     private static void prepare(String identifier, String corpus) {
         if (!("fullrun-key-acquisition-r1".equals(corpus)
-                || "fullrun-key-acquisition-r2".equals(corpus))) {
+                || "fullrun-key-acquisition-r2".equals(corpus)
+                || "fullrun-green-key-r1".equals(corpus)
+                || "fullrun-green-key-r2".equals(corpus))) {
             throw new IllegalArgumentException("undeclared key room corpus");
         }
-        boolean reachableFixture = "fullrun-key-acquisition-r2".equals(corpus);
+        boolean stockCombatFixture = "fullrun-green-key-r2".equals(corpus);
+        boolean greenFixture = "fullrun-green-key-r1".equals(corpus) || stockCombatFixture;
+        boolean reachableFixture = "fullrun-key-acquisition-r2".equals(corpus) || greenFixture;
         InputStream resource = OracleKeyRoom.class.getResourceAsStream(
             "/spirecomm/parity/" + corpus + ".json");
         if (resource == null) throw new IllegalStateException("missing key room resource");
@@ -55,9 +59,10 @@ public final class OracleKeyRoom {
             throw new IllegalStateException("cannot read frozen key room resource", error);
         }
         Map<String, Object> scene = null;
-        String schema = reachableFixture ? "sls-key-room-scenes-v2" : "sls-key-room-scenes-v1";
+        String schema = stockCombatFixture ? "sls-green-key-scenes-v2" : greenFixture ? "sls-green-key-scenes-v1"
+            : reachableFixture ? "sls-key-room-scenes-v2" : "sls-key-room-scenes-v1";
         if (!schema.equals(manifest.get("schema")) || (reachableFixture
-                && (!"FIRST_ROOT_REACHABLE_ROOM".equals(manifest.get("map_node_policy"))
+                && (!(greenFixture ? "ROOT_REACHABLE_STOCK_BURNING_ELITE" : "FIRST_ROOT_REACHABLE_ROOM").equals(manifest.get("map_node_policy"))
                 || !"STOCK_SEED_PLUS_DERIVED_FLOOR_FIVE_STREAMS".equals(manifest.get("room_rng_policy"))))) {
             throw new IllegalArgumentException("unsupported key room schema");
         }
@@ -75,7 +80,7 @@ public final class OracleKeyRoom {
         }
         if (!seedAllowed) throw new IllegalArgumentException("undeclared key room seed");
         String kind = (String) scene.get("room");
-        if (!("REST".equals(kind) || "TREASURE".equals(kind))) {
+        if (!("REST".equals(kind) || "TREASURE".equals(kind) || (greenFixture && "ELITE".equals(kind)))) {
             throw new IllegalArgumentException("unsupported controlled key room type");
         }
         Map<String, Object> initial = (Map<String, Object>) scene.get("initial");
@@ -115,7 +120,8 @@ public final class OracleKeyRoom {
         for (ArrayList<MapRoomNode> row : AbstractDungeon.map) {
             for (MapRoomNode node : row) {
                 if (selected == null && ("REST".equals(kind) ? node.room instanceof RestRoom
-                        : node.room instanceof TreasureRoom)
+                        : "TREASURE".equals(kind) ? node.room instanceof TreasureRoom
+                        : node.room instanceof com.megacrit.cardcrawl.rooms.MonsterRoomElite && node.hasEmeraldKey)
                         && (!reachableFixture || rootReachable(node))) selected = node;
             }
         }
@@ -157,11 +163,16 @@ public final class OracleKeyRoom {
         evidence.put("source", "controlled-stock-room-entry");
         evidence.put("manifest_schema", manifest.get("schema"));
         evidence.put("corpus", corpus);
-        evidence.put("map_node_policy", reachableFixture ? "FIRST_ROOT_REACHABLE_ROOM" : "LEGACY_FIRST_ROOM");
+        evidence.put("map_node_policy", greenFixture ? "ROOT_REACHABLE_STOCK_BURNING_ELITE"
+            : reachableFixture ? "FIRST_ROOT_REACHABLE_ROOM" : "LEGACY_FIRST_ROOM");
+        if (greenFixture) evidence.put("map_rng_before_entry", ParityRng.state(AbstractDungeon.mapRng));
         OracleScenarioPatch.activeScenario = evidence;
         // This is the actual stock entry method, including campfire options,
         // onEnterRestRoom callbacks or stock getRandomChest generation.
         AbstractDungeon.getCurrRoom().onPlayerEntry();
+        // AbstractDungeon.nextRoomTransition invokes these stock routines
+        // in this order. Only R2 includes the real player battle preparation.
+        if (stockCombatFixture) AbstractDungeon.player.preBattlePrep();
         CommunicationMod.mustSendGameState = true;
         GameStateListener.registerStateChange();
     }

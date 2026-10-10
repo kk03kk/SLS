@@ -1,0 +1,120 @@
+{
+  "schema": "sls-green-key-scenes-v2",
+  "namespace": [
+    131200362,
+    131200364
+  ],
+  "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "source_evidence": {
+    "com.megacrit.cardcrawl.dungeons.AbstractDungeon": {
+      "class_sha256": "5452fdd7b33fa47dcea5c2e58d5d521dfde3acefba006c095ad5b01c60eda369"
+    },
+    "com.megacrit.cardcrawl.rooms.MonsterRoom": {
+      "class_sha256": "4cf14cb7209f50dcf37c03594d262a4675078f0d658487342771aa7789feec33"
+    },
+    "com.megacrit.cardcrawl.rooms.MonsterRoomElite": {
+      "class_sha256": "3c25131c9038ed639eabb818adcec4552de8de378a997b8ab4192087cc0fa90c"
+    },
+    "com.megacrit.cardcrawl.rooms.AbstractRoom": {
+      "class_sha256": "22214900fc051a2e8e73b72532ee561abc95a77f7172b105b68d3afeca0a74f6"
+    },
+    "com.megacrit.cardcrawl.rewards.RewardItem": {
+      "class_sha256": "7f5abc79015ab6a6cb6781776fc1752a5e5143f47be61b4ee8bcf9cb057daf55"
+    },
+    "com.megacrit.cardcrawl.vfx.ObtainKeyEffect": {
+      "class_sha256": "80f1b69ac0405fe96c6ac6fb6bada786062a139405dd7b3568964d7e4e80ea9e"
+    },
+    "com.megacrit.cardcrawl.dungeons.TheCity": {
+      "class_sha256": "b8e4ba9a20779d96052d4d44eae09d84d2cf8e153c02e013d8d42e258f956e32"
+    },
+    "com.megacrit.cardcrawl.map.MapRoomNode": {
+      "class_sha256": "f54cf19e2206bc20db7f77de724e3c54c6853ce0c878f3ba24cf3fb2036e2efd"
+    },
+    "com.megacrit.cardcrawl.characters.AbstractPlayer": {
+      "class_sha256": "5dbefe89175f3e03fdd133d498b653d66073645a8c7fc109f3f4b717d10c266f"
+    }
+  },
+  "map_node_policy": "ROOT_REACHABLE_STOCK_BURNING_ELITE",
+  "room_rng_policy": "STOCK_SEED_PLUS_DERIVED_FLOOR_FIVE_STREAMS",
+  "natural_trajectory": false,
+  "training_eligible": false,
+  "scenes": [
+    {
+      "id": "green-real-victory",
+      "seeds": [
+        131200362
+      ],
+      "room": "ELITE",
+      "act": 2,
+      "ascension": 20,
+      "floor_policy": "ACT2_MAP_Y_PLUS_18",
+      "max_decisions": 128,
+      "strategy": "PLAY_ATTACKS_THEN_END",
+      "initial": {
+        "hp": 400,
+        "max_hp": 400,
+        "gold": 99,
+        "deck": [
+          "Bludgeon",
+          "Bludgeon",
+          "Bludgeon",
+          "Bludgeon",
+          "Bludgeon",
+          "Bludgeon",
+          "Bludgeon",
+          "Bludgeon",
+          "Bludgeon",
+          "Bludgeon",
+          "AscendersBane"
+        ],
+        "relics": [
+          "Burning Blood",
+          "Necronomicon",
+          "Lantern"
+        ],
+        "final_act_available": true,
+        "ruby_key": false,
+        "sapphire_key": false,
+        "emerald_key": false
+      }
+    },
+    {
+      "id": "green-real-death",
+      "seeds": [
+        131200363
+      ],
+      "room": "ELITE",
+      "act": 2,
+      "ascension": 20,
+      "floor_policy": "ACT2_MAP_Y_PLUS_18",
+      "max_decisions": 128,
+      "strategy": "END_TURN_ONLY",
+      "initial": {
+        "hp": 1,
+        "max_hp": 80,
+        "gold": 99,
+        "deck": [
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "AscendersBane"
+        ],
+        "relics": [
+          "Burning Blood"
+        ],
+        "final_act_available": true,
+        "ruby_key": false,
+        "sapphire_key": false,
+        "emerald_key": false
+      }
+    }
+  ],
+  "entry_policy": "STOCK_ROOM_ON_ENTRY_AND_PRE_BATTLE_PREP"
+}

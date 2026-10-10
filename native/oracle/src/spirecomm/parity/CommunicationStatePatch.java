@@ -117,6 +117,8 @@ public final class CommunicationStatePatch {
         result.put("floor", AbstractDungeon.floorNum);
         result.put("key_room_evidence_schema", "sls-stock-key-room-v1");
         result.put("final_act_available", Settings.isFinalActAvailable);
+        result.put("map_rng", ParityRng.state(AbstractDungeon.mapRng));
+        result.put("current_node_has_emerald_key", AbstractDungeon.getCurrMapNode().hasEmeraldKey);
         Map<String, Object> pools = new LinkedHashMap<String, Object>();
         pools.put("common_relics", new ArrayList<String>(AbstractDungeon.commonRelicPool));
         pools.put("uncommon_relics", new ArrayList<String>(AbstractDungeon.uncommonRelicPool));
