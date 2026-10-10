@@ -11,8 +11,8 @@ from tools.verify_oracle import install, require_no_running_game
 
 def test_committed_oracle_resources_are_complete_and_unique():
     payloads = resource_payloads()
-    assert len(payloads) == 49
-    assert json.loads(payloads['ModTheSpire.json'])['version'] == '1.3.49'
+    assert len(payloads) == 50
+    assert json.loads(payloads['ModTheSpire.json'])['version'] == '1.3.50'
     key_manifest = 'spirecomm/parity/fullrun-key-acquisition-r1.json'
     key_seeds = {seed for scene in json.loads(payloads[key_manifest])['scenes']
                  for seed in scene['seeds']}

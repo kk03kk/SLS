@@ -157,6 +157,15 @@ def main() -> int:
                     lambda: session.execute('state'), session.execute, scene['initial']['keys'])
                 if row['key_gate_outcome']['status'] == 'ACT4_MAP_ENTRY':
                     row['act4_entry'] = row['key_gate_outcome']['boundary']
+            if scene and scene.get('collect_ending_continuation'):
+                if 'act4_entry' not in row:
+                    raise ValueError('ending continuation needs an actual Act4 entry')
+                from sls.audit.ending_continuation import collect_ending_continuation
+                row['ending_continuation'] = {}
+                def flush_continuation():
+                    args.output.parent.mkdir(parents=True, exist_ok=True)
+                    args.output.write_text(json.dumps(result, indent=2) + '\n', encoding='utf-8')
+                collect_ending_continuation(session, row['ending_continuation'], flush_continuation)
             # Flush raw evidence after each completed run; append only in this
             # exclusively-created result, never replace evidence from prior runs.
             args.output.parent.mkdir(parents=True, exist_ok=True)
