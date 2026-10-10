@@ -14,12 +14,19 @@ EPISODE_LIMIT_SCHEMA = "sls-fullrun-episode-limit-v2"
 TERMINATION_REASONS = ("success", "death", "backend_truncated", "step_limit", "cycle_limit")
 
 
+_SORT_JSON_ENCODER = json.JSONEncoder(sort_keys=True, separators=(",", ":"))
+_PAYLOAD_JSON_ENCODER = json.JSONEncoder(sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+
+
 def _canonical(value: Any) -> Any:
+    # Primitive public values need no ABC mapping check or recursive serialization.
+    if value is None or isinstance(value, (str, int, float, bool)):
+        return value
     if isinstance(value, Mapping):
         return {str(key): _canonical(item) for key, item in sorted(value.items())}
     if isinstance(value, (tuple, list)):
         items = [_canonical(item) for item in value]
-        return sorted(items, key=lambda item: json.dumps(item, sort_keys=True, separators=(",", ":")))
+        return sorted(items, key=_SORT_JSON_ENCODER.encode)
     return value
 
 
@@ -30,7 +37,7 @@ def policy_boundary_fingerprint(decision: Decision) -> str:
         "observation": _canonical(decision.observation.to_dict()),
         "actions": _canonical([action.to_dict() for action in decision.actions]),
     }
-    encoded = json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+    encoded = _PAYLOAD_JSON_ENCODER.encode(payload)
     return hashlib.sha256(encoded.encode("utf-8")).hexdigest()
 
 
