@@ -62,10 +62,16 @@ def main():
     parser.add_argument('--manifest', type=Path,
                         default=Path('native/oracle/resources/spirecomm/parity/fullrun-double-boss-entry-r1.json'))
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--seeds', type=int, nargs='+', help='Explicit subset; original capture stays intact')
     args = parser.parse_args()
     if args.output.exists():
         raise FileExistsError('refuse to overwrite evidence')
     data = json.loads(args.capture.read_text(encoding='utf-8'))
+    source_runs = data['runs']
+    if args.seeds is not None and (len(set(args.seeds)) != len(args.seeds)
+            or not set(args.seeds) <= {r['seed'] for r in source_runs}):
+        raise ValueError('duplicate or unknown explicit seed selection')
+    selected_runs = [r for r in source_runs if args.seeds is None or r['seed'] in args.seeds]
     launch = json.loads(args.capture.with_suffix('.launch.json').read_text(encoding='utf-8'))
     build = json.loads(args.oracle_build.read_text(encoding='utf-8'))
     jar = args.oracle_build.with_name(args.oracle_build.name.removesuffix('.build.json') + '.jar')
@@ -87,7 +93,7 @@ def main():
     encounters = enum_ids(constants / 'MonsterEncounters.h', 'enum class MonsterEncounter : std::int8_t {')
     template = json.loads((root / 'tests/fixtures/regressions/act2-smoke-victory-heal-131100063.json').read_text())['before']
     runs = []
-    for row in data['runs']:
+    for row in selected_runs:
         scene, stock = row['scene'], row['boundaries'][0]
         resource = 'spirecomm/parity/' + args.manifest.name
         with zipfile.ZipFile(jar) as archive:
@@ -228,7 +234,10 @@ def main():
                                      for k, v in comparisons.items()},
                      'scope': 'ENUMERATED_SECOND_ENTRY_FIELDS_INITIAL_NOT_FULLY_QUALIFIED'})
     result = {'native_source_sha256': native.NATIVE_SOURCE_SHA256,
-              'capture_sha256': hashlib.sha256(args.capture.read_bytes()).hexdigest(), 'runs': runs}
+              'capture_sha256': hashlib.sha256(args.capture.read_bytes()).hexdigest(), 'runs': runs,
+              'source_runs': len(source_runs), 'selected_seeds': [r['seed'] for r in selected_runs],
+              'excluded_seeds': [r['seed'] for r in source_runs if r not in selected_runs],
+              'source_file_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest()}
     args.output.write_text(json.dumps(result, indent=2) + '\n', encoding='utf-8')
     print(json.dumps([{'seed': r['seed'], 'first_difference': r.get('first_difference'),
                       'unequal': [k for k, v in r['comparisons'].items()

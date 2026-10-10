@@ -24,18 +24,26 @@ def main():
     parser.add_argument('--capture', type=Path, required=True)
     parser.add_argument('--entry-report', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--seeds', type=int, nargs='+', help='Must match explicit entry-report selection')
     args = parser.parse_args()
     if args.output.exists():
         raise FileExistsError('refuse to overwrite evidence')
     stock = json.loads(args.capture.read_text(encoding='utf-8'))
     entry = json.loads(args.entry_report.read_text(encoding='utf-8'))
+    source_runs = stock['runs']
+    if args.seeds is not None and (len(set(args.seeds)) != len(args.seeds)
+            or not set(args.seeds) <= {r['seed'] for r in source_runs}):
+        raise ValueError('duplicate or unknown explicit seed selection')
+    selected_runs = [r for r in source_runs if args.seeds is None or r['seed'] in args.seeds]
+    if [r['seed'] for r in selected_runs] != [r['seed'] for r in entry['runs']]:
+        raise ValueError('flow selection differs from entry report')
     if (native.NATIVE_SOURCE_SHA256 != native_source_digest()
             or entry['native_source_sha256'] != native.NATIVE_SOURCE_SHA256
             or entry['capture_sha256'] != hashlib.sha256(args.capture.read_bytes()).hexdigest()
             or not stock.get('execution_complete')):
         raise ValueError('stale source or capture identity')
     results = []
-    for row, first in zip(stock['runs'], entry['runs'], strict=True):
+    for row, first in zip(selected_runs, entry['runs'], strict=True):
         if (row['seed'] != first['seed'] or row['actions'] != row['scene']['actions']
                 or any(not v['equal'] for v in first['initial_comparisons'].values())
                 or any(not v['equal'] for v in first['comparisons'].values())):
@@ -112,7 +120,10 @@ def main():
     report = {'schema': 'sls-double-boss-flow-replay-v1', 'runs': results,
               'native_source_sha256': native.NATIVE_SOURCE_SHA256,
               'capture_sha256': entry['capture_sha256'],
-              'entry_report_sha256': hashlib.sha256(args.entry_report.read_bytes()).hexdigest()}
+              'entry_report_sha256': hashlib.sha256(args.entry_report.read_bytes()).hexdigest(),
+              'source_runs': len(source_runs), 'selected_seeds': [r['seed'] for r in selected_runs],
+              'excluded_seeds': [r['seed'] for r in source_runs if r not in selected_runs],
+              'source_file_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest()}
     args.output.write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
     print(json.dumps([{'seed': x['seed'], 'boundary_matches': [b.get('equal') for b in x['boundaries']],
                       'endpoint_status': x['endpoint_status']} for x in results]))
