@@ -34,7 +34,8 @@ def test_setup_finds_workshop_mods_and_exported_model(tmp_path: Path, monkeypatc
     }))
     inspector = Path(__file__).resolve().parents[2] / "tools" / "play_live_inspector.py"
     config.write_text(
-        f'command="{sys.executable}" "{inspector.as_posix()}"\nrunAtGameStart=true\n'
+        f'command="{sys.executable}" "{inspector.as_posix()}"\nrunAtGameStart=true\n',
+        encoding="utf-8",
     )
     monkeypatch.setattr(live_setup, "discover_policy_artifacts", lambda _roots: ({
         "name": "example", "path": str(tmp_path / "model" / "example.pt"),
