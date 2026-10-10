@@ -1,0 +1,276 @@
+{
+  "schema": "sls-fullrun-scenes-v1",
+  "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "scenes": [
+    {
+      "id": "act3-donu-deca-kill-deca",
+      "encounter": "DONU_AND_DECA",
+      "ascension": 20,
+      "act": 3,
+      "floor": 50,
+      "room": "BOSS",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Anger"
+        ],
+        "draw": [
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger"
+        ],
+        "monster_hp": {
+          "DECA": 1
+        }
+      },
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "stock_classes": [
+        "dungeons.TheBeyond",
+        "monsters.beyond.Donu",
+        "monsters.beyond.Deca",
+        "cards.red.Anger",
+        "powers.ArtifactPower",
+        "powers.StrengthPower",
+        "actions.common.ApplyPowerAction",
+        "actions.common.GainBlockAction"
+      ],
+      "stock_methods": {
+        "monsters.beyond.Donu": [
+          "takeTurn",
+          "getMove"
+        ],
+        "monsters.beyond.Deca": [
+          "takeTurn",
+          "getMove"
+        ],
+        "cards.red.Anger": [
+          "use"
+        ]
+      },
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheBeyond": {
+          "class_sha256": "e8e7819f75bc2ee347c9dbfa5316b42160c2c50ef4f3bae3b4115e2c4a9a6502",
+          "bytecode_sha256": "c2584927eb19266caf64d97926c9144a0d9a988d30b66099eb5a0e126234c35b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.Donu": {
+          "class_sha256": "e7992a037cf0b971bfe03d99a1ec4b16709dbeaea545df588091869ff50bb7b4",
+          "bytecode_sha256": "bae6c788f54ee02ac4905d8b414d54c7aac1c09d07dd5a43125514dbc383f888"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.Deca": {
+          "class_sha256": "0f290c6b5815b831c9a11e7dbc8b99e1d19d42ef8664a9c49563a33bcbca8c4d",
+          "bytecode_sha256": "afaf90604e3948d554815084b5ba96a060ee21b0e17548b00331fc4e8df34a9a"
+        },
+        "com.megacrit.cardcrawl.cards.red.Anger": {
+          "class_sha256": "cf446c5b763c790ec924fbbd010a6be8f1175f4e2d818805b5b599d78a04cb27",
+          "bytecode_sha256": "0ce0b704dea97674876fe6b2df815fadc463607d7442e29881f43ebbcde17dae"
+        },
+        "com.megacrit.cardcrawl.powers.ArtifactPower": {
+          "class_sha256": "10f5213bd20ff83c80d9484093129048f1150e2edce6e392fb6171e4af235210",
+          "bytecode_sha256": "8f78c0ff00095de85096f0685bb06d0f997be6355c8022a75815874420882229"
+        },
+        "com.megacrit.cardcrawl.powers.StrengthPower": {
+          "class_sha256": "d65bc71fdfd7ef22d87a029c388781729f9a5de1ef2e6b019ca2f31a8b8a9b07",
+          "bytecode_sha256": "41f2118d4ec6038d3328e6ec3ee4ef378bcd71f9497fc7805e10cf50c24a627c"
+        },
+        "com.megacrit.cardcrawl.actions.common.ApplyPowerAction": {
+          "class_sha256": "214eb89268082c4a13181ca9cec8dfa2b73ae25a0d7b246710984ecc6afab13d",
+          "bytecode_sha256": "a115f25e720e703a9b8804943d1a65a71a9869767eac136814754a02d24ee164"
+        },
+        "com.megacrit.cardcrawl.actions.common.GainBlockAction": {
+          "class_sha256": "d91cb77dfa7447d9f533ca2cb029233c2d785d614c9ac8c7650dff0e2bf6e082",
+          "bytecode_sha256": "ec00ace9f1fe4b9b70f7988a62b0554d96abd118255717ec8cb9916f1b576af7"
+        }
+      },
+      "seeds": [
+        131200150,
+        131200151,
+        131200152
+      ],
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "obligation": "Kill one boss; survivor Strength/block support and multi-hit attack/Dazed cycle, dead-target callback handling, masks and RNG.",
+      "qualification_scope": "CONTROLLED_ONE_SURVIVOR_NOT_FINAL_BOSS_FLOW"
+    },
+    {
+      "id": "act3-donu-deca-kill-donu",
+      "encounter": "DONU_AND_DECA",
+      "ascension": 20,
+      "act": 3,
+      "floor": 50,
+      "room": "BOSS",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Anger"
+        ],
+        "draw": [
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger"
+        ],
+        "monster_hp": {
+          "DONU": 1
+        }
+      },
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 1
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "stock_classes": [
+        "dungeons.TheBeyond",
+        "monsters.beyond.Donu",
+        "monsters.beyond.Deca",
+        "cards.red.Anger",
+        "powers.ArtifactPower",
+        "powers.StrengthPower",
+        "actions.common.ApplyPowerAction",
+        "actions.common.GainBlockAction"
+      ],
+      "stock_methods": {
+        "monsters.beyond.Donu": [
+          "takeTurn",
+          "getMove"
+        ],
+        "monsters.beyond.Deca": [
+          "takeTurn",
+          "getMove"
+        ],
+        "cards.red.Anger": [
+          "use"
+        ]
+      },
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheBeyond": {
+          "class_sha256": "e8e7819f75bc2ee347c9dbfa5316b42160c2c50ef4f3bae3b4115e2c4a9a6502",
+          "bytecode_sha256": "c2584927eb19266caf64d97926c9144a0d9a988d30b66099eb5a0e126234c35b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.Donu": {
+          "class_sha256": "e7992a037cf0b971bfe03d99a1ec4b16709dbeaea545df588091869ff50bb7b4",
+          "bytecode_sha256": "bae6c788f54ee02ac4905d8b414d54c7aac1c09d07dd5a43125514dbc383f888"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.Deca": {
+          "class_sha256": "0f290c6b5815b831c9a11e7dbc8b99e1d19d42ef8664a9c49563a33bcbca8c4d",
+          "bytecode_sha256": "afaf90604e3948d554815084b5ba96a060ee21b0e17548b00331fc4e8df34a9a"
+        },
+        "com.megacrit.cardcrawl.cards.red.Anger": {
+          "class_sha256": "cf446c5b763c790ec924fbbd010a6be8f1175f4e2d818805b5b599d78a04cb27",
+          "bytecode_sha256": "0ce0b704dea97674876fe6b2df815fadc463607d7442e29881f43ebbcde17dae"
+        },
+        "com.megacrit.cardcrawl.powers.ArtifactPower": {
+          "class_sha256": "10f5213bd20ff83c80d9484093129048f1150e2edce6e392fb6171e4af235210",
+          "bytecode_sha256": "8f78c0ff00095de85096f0685bb06d0f997be6355c8022a75815874420882229"
+        },
+        "com.megacrit.cardcrawl.powers.StrengthPower": {
+          "class_sha256": "d65bc71fdfd7ef22d87a029c388781729f9a5de1ef2e6b019ca2f31a8b8a9b07",
+          "bytecode_sha256": "41f2118d4ec6038d3328e6ec3ee4ef378bcd71f9497fc7805e10cf50c24a627c"
+        },
+        "com.megacrit.cardcrawl.actions.common.ApplyPowerAction": {
+          "class_sha256": "214eb89268082c4a13181ca9cec8dfa2b73ae25a0d7b246710984ecc6afab13d",
+          "bytecode_sha256": "a115f25e720e703a9b8804943d1a65a71a9869767eac136814754a02d24ee164"
+        },
+        "com.megacrit.cardcrawl.actions.common.GainBlockAction": {
+          "class_sha256": "d91cb77dfa7447d9f533ca2cb029233c2d785d614c9ac8c7650dff0e2bf6e082",
+          "bytecode_sha256": "ec00ace9f1fe4b9b70f7988a62b0554d96abd118255717ec8cb9916f1b576af7"
+        }
+      },
+      "seeds": [
+        131200153,
+        131200154,
+        131200155
+      ],
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "obligation": "Kill one boss; survivor Strength/block support and multi-hit attack/Dazed cycle, dead-target callback handling, masks and RNG.",
+      "qualification_scope": "CONTROLLED_ONE_SURVIVOR_NOT_FINAL_BOSS_FLOW"
+    }
+  ],
+  "qualification": false,
+  "final_holdout_used": false
+}

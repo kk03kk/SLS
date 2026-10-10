@@ -17,6 +17,10 @@ def main() -> int:
                         required=True,
                         help="identify early captures through their source-built launch evidence")
     parser.add_argument("--manifest", type=Path)
+    parser.add_argument('--native-view', choices=('lossless', 'production-public'), default='lossless',
+                        help='production-public reads the exact full-run presentation; raw checkpoint snapshot remains separate')
+    parser.add_argument('--continue-after-divergence', action='store_true',
+                        help='diagnostic only: retain the first failure and inspect later scripted boundaries')
     args = parser.parse_args()
     if args.output.exists():
         raise FileExistsError("refuse to overwrite differential evidence")
@@ -51,9 +55,19 @@ def main() -> int:
             raise ValueError("run initial state differs from immutable scene inventory")
         if row["actions"] != scene["actions"]:
             raise ValueError("run action script differs from immutable scene inventory")
-    rows = [replay_controlled_run(row) for row in data["runs"]]
+    rows = [replay_controlled_run(row, production_projection=args.native_view == 'production-public',
+                                  continue_after_divergence=args.continue_after_divergence)
+            for row in data["runs"]]
+    root = Path(__file__).resolve().parents[1]
+    audit_sources = {name: hashlib.sha256((root / name).read_bytes()).hexdigest()
+                     for name in ("src/sls/audit/act2_differential.py",
+                     "src/sls/audit/semantic_actions.py",
+                                  "tools/replay_act2_encounter_batch.py")}
     args.output.write_text(json.dumps({"schema": "sls-act2-differential-v1",
         "native_source_sha256": native_source_digest(), "runs": rows,
+        'native_view': args.native_view,
+        'continue_after_divergence': args.continue_after_divergence,
+        "audit_sources": audit_sources,
         "stock_capture_sha256": hashlib.sha256(args.capture.read_bytes()).hexdigest(),
         "oracle_build_sha256": build["output_sha256"],
         "launch_evidence_sha256": hashlib.sha256(args.capture.with_suffix(".launch.json").read_bytes()).hexdigest(),

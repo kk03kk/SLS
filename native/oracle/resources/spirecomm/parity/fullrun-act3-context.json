@@ -1,0 +1,190 @@
+{
+  "schema": "sls-fullrun-scenes-v1",
+  "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "scenes": [
+    {
+      "id": "act3-darkling-basic",
+      "encounter": "THREE_DARKLINGS",
+      "ascension": 20,
+      "act": 3,
+      "floor": 40,
+      "room": "MONSTER",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R"
+        ]
+      },
+      "stock_classes": [
+        "dungeons.TheBeyond",
+        "monsters.beyond.Darkling"
+      ],
+      "stock_methods": {
+        "dungeons.TheBeyond": [
+          "TheBeyond"
+        ],
+        "monsters.beyond.Darkling": [
+          "usePreBattleAction",
+          "getMove",
+          "takeTurn"
+        ]
+      },
+      "actions": [
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "obligation": "Actual dungeon/room and first four stock enemy turns; special damage/death branches remain untested",
+      "qualification_scope": "CONTROLLED_ACTUAL_DUNGEON_BASIC_COMBAT_NOT_NATURAL_FLOW",
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "seeds": [
+        131200039,
+        131200040,
+        131200041
+      ],
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheBeyond": {
+          "class_sha256": "e8e7819f75bc2ee347c9dbfa5316b42160c2c50ef4f3bae3b4115e2c4a9a6502",
+          "bytecode_sha256": "c2584927eb19266caf64d97926c9144a0d9a988d30b66099eb5a0e126234c35b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.Darkling": {
+          "class_sha256": "dd71f024e39417e7733083d0bad5f10fff47694918ac86beae46e2c8dcec7a46",
+          "bytecode_sha256": "b7fb498c5893c1bb24eedc53dfa3525998c4b0e3430768b13f1a3e257c9dc386"
+        }
+      }
+    },
+    {
+      "id": "act3-nemesis-basic",
+      "encounter": "NEMESIS",
+      "ascension": 20,
+      "act": 3,
+      "floor": 40,
+      "room": "ELITE",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R"
+        ]
+      },
+      "stock_classes": [
+        "dungeons.TheBeyond",
+        "monsters.beyond.Nemesis"
+      ],
+      "stock_methods": {
+        "dungeons.TheBeyond": [
+          "TheBeyond"
+        ],
+        "monsters.beyond.Nemesis": [
+          "usePreBattleAction",
+          "getMove",
+          "takeTurn"
+        ]
+      },
+      "actions": [
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "obligation": "Actual dungeon/room and first four stock enemy turns; special damage/death branches remain untested",
+      "qualification_scope": "CONTROLLED_ACTUAL_DUNGEON_BASIC_COMBAT_NOT_NATURAL_FLOW",
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "seeds": [
+        131200042,
+        131200043,
+        131200044
+      ],
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheBeyond": {
+          "class_sha256": "e8e7819f75bc2ee347c9dbfa5316b42160c2c50ef4f3bae3b4115e2c4a9a6502",
+          "bytecode_sha256": "c2584927eb19266caf64d97926c9144a0d9a988d30b66099eb5a0e126234c35b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.Nemesis": {
+          "class_sha256": "e35247b30376aeba76d7b0e8ea1bfa5217ab0336333ce000d5e5a64cefa41c42",
+          "bytecode_sha256": "fce1f7dcc1ff1b0afd44661668da212f76dd5cbaa497022e3589a7bd68bbf45c"
+        }
+      }
+    }
+  ],
+  "qualification": false,
+  "final_holdout_used": false
+}

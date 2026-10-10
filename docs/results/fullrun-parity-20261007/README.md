@@ -1,5 +1,14 @@
 # A20 Ironclad full-run parity: first implementation batch
 
+**Current entry point:** [STATUS.md](STATUS.md). Read it for the latest source,
+completed obligations and remaining scope. This README is a historical first batch.
+
+**Historical first-batch record.** Later local work adds actual Act3/Act4
+contexts and production rule corrections. See [latest bounded progress](act3-act4-progress.md)
+and [Reptomancer follow-up](reptomancer-progress.md) for current identities,
+observed coverage and open issues. The statements below
+describe the initial batch and do not certify the current implementation.
+
 This is an **in-progress audit**, not a three-act/Heart qualification. Server job
 916291 remains on `6e54adbc0aa6fca81b994490837db382b245e42b`. No PPO, reward,
 network, training distribution or native production rules changed in this batch.

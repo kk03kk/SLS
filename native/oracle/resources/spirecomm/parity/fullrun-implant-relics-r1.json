@@ -1,0 +1,460 @@
+{
+  "schema": "sls-fullrun-scenes-v1",
+  "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "scenes": [
+    {
+      "id": "act3-implant-omamori-active",
+      "encounter": "WRITHING_MASS",
+      "ascension": 20,
+      "act": 3,
+      "floor": 40,
+      "room": "MONSTER",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 700,
+        "max_hp": 1000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R"
+        ],
+        "moves": {
+          "WRITHING_MASS": {
+            "stock": 4,
+            "native": "WRITHING_MASS_IMPLANT",
+            "damage": -1,
+            "hits": 1
+          }
+        },
+        "relics": [
+          "Burning Blood",
+          "Omamori"
+        ],
+        "relic_counters": {
+          "Omamori": 2
+        }
+      },
+      "actions": [
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "stock_classes": [
+        "dungeons.TheBeyond",
+        "monsters.beyond.WrithingMass",
+        "powers.ReactivePower",
+        "powers.MalleablePower",
+        "cards.red.Anger",
+        "potions.FirePotion",
+        "actions.unique.AddCardToDeckAction",
+        "vfx.cardManip.ShowCardAndObtainEffect",
+        "relics.Omamori",
+        "relics.DarkstonePeriapt",
+        "relics.CeramicFish",
+        "relics.DuVuDoll"
+      ],
+      "stock_methods": {
+        "powers.ReactivePower": [
+          "onAttacked"
+        ],
+        "powers.MalleablePower": [
+          "onAttacked",
+          "atEndOfTurn"
+        ],
+        "monsters.beyond.WrithingMass": [
+          "takeTurn",
+          "getMove"
+        ],
+        "actions.unique.AddCardToDeckAction": [
+          "update"
+        ],
+        "vfx.cardManip.ShowCardAndObtainEffect": [
+          "<init>",
+          "update"
+        ]
+      },
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheBeyond": {
+          "class_sha256": "e8e7819f75bc2ee347c9dbfa5316b42160c2c50ef4f3bae3b4115e2c4a9a6502",
+          "bytecode_sha256": "c2584927eb19266caf64d97926c9144a0d9a988d30b66099eb5a0e126234c35b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.WrithingMass": {
+          "class_sha256": "8cd629117c79acf26547550ae4535654bc383ea2e39ec19daf4e8e989e8fc9ce",
+          "bytecode_sha256": "3f43dbab2d2af8eae20b7ed8be69822f84870dd2890c38339f6d90e716268a07"
+        },
+        "com.megacrit.cardcrawl.powers.ReactivePower": {
+          "class_sha256": "ccbe0e69ece4233ce68f9de3bdf6a67334a6075936a111db213ea1a41f3b3391",
+          "bytecode_sha256": "377eb0026c7dcf329d8ad3007e9e0942eda10950d037b071ba45bb479feefc48"
+        },
+        "com.megacrit.cardcrawl.powers.MalleablePower": {
+          "class_sha256": "50f1332c948908dc6f862f7ddeae876e4698e2980a6cdd492dc5ba75333a2bf1",
+          "bytecode_sha256": "3cc5bf126ffbacb32faad0b97ac3402eeb737d334745d7d258f15ab287fc5901"
+        },
+        "com.megacrit.cardcrawl.cards.red.Anger": {
+          "class_sha256": "cf446c5b763c790ec924fbbd010a6be8f1175f4e2d818805b5b599d78a04cb27",
+          "bytecode_sha256": "0ce0b704dea97674876fe6b2df815fadc463607d7442e29881f43ebbcde17dae"
+        },
+        "com.megacrit.cardcrawl.potions.FirePotion": {
+          "class_sha256": "0391a17323526250a23da24553b135b2f9a785feaa0ce168b9155c33f2bbd0f6",
+          "bytecode_sha256": "351ef53fe1c75fdb83c84c97b772c43d0c39740188641f7951a3257276123155"
+        },
+        "com.megacrit.cardcrawl.actions.unique.AddCardToDeckAction": {
+          "class_sha256": "318c0953a3b85054134d12600859a575410d6cb8f823b7b688e2b2e664699ecb",
+          "bytecode_sha256": "3aebc30f25fee7e605076cf39feaae53792eba28921b5bdb0e18b988351753bc"
+        },
+        "com.megacrit.cardcrawl.vfx.cardManip.ShowCardAndObtainEffect": {
+          "class_sha256": "8872d4f3787ebb63ef51a927f008289b6d73e235ef195997ecedead7b7624773",
+          "bytecode_sha256": "0c87e9c271bdfbf3eef43bd130019842a53b96dbc8bed0f56a71598a1d64d2d0"
+        },
+        "com.megacrit.cardcrawl.relics.Omamori": {
+          "class_sha256": "9d10611e20cb6233e3d2bbb5cbca03ad02769f485ce0a84e67c8e98224f8e03b",
+          "bytecode_sha256": "b04a68dc7d870e3597c19165037b949736366bc8cee2205e427d5a8fcc1d3d12"
+        },
+        "com.megacrit.cardcrawl.relics.DarkstonePeriapt": {
+          "class_sha256": "17b02e4ece75442c831acd38e6bc8d7146a65c03edcc38e7ebb5eb504be53fd9",
+          "bytecode_sha256": "af797d999b1cd0bd474532174432cc36c527ad5e2f1186116812032bda38c381"
+        },
+        "com.megacrit.cardcrawl.relics.CeramicFish": {
+          "class_sha256": "83cd44d29a43e2d59f0286b1d8b6ab112d8261df78b5270f07094b07838591b2",
+          "bytecode_sha256": "58ca48caa871d9e1746362e9f00cd26c8bd565da3a775f60cec7104a76409f24"
+        },
+        "com.megacrit.cardcrawl.relics.DuVuDoll": {
+          "class_sha256": "b296403943e325c0859656bbd1f52d260e681187f30fbe9666e18b03cbb714a5",
+          "bytecode_sha256": "cb665b5880313eb61f40a24e6f9bfa29c9fc3bf4fcea8e386d82516da452b4ae"
+        }
+      },
+      "seeds": [
+        131200201,
+        131200202,
+        131200203
+      ],
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "obligation": "During Implant obtain, independently read permanent deck, relic counters, HP/maxHP and gold at subsequent stable boundaries: omamori-active",
+      "qualification_scope": "CONTROLLED_IMPLANT_OBTAIN_NEIGHBOR_NOT_ALL_RELIC_COMBINATIONS"
+    },
+    {
+      "id": "act3-implant-omamori-exhausted",
+      "encounter": "WRITHING_MASS",
+      "ascension": 20,
+      "act": 3,
+      "floor": 40,
+      "room": "MONSTER",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 700,
+        "max_hp": 1000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R"
+        ],
+        "moves": {
+          "WRITHING_MASS": {
+            "stock": 4,
+            "native": "WRITHING_MASS_IMPLANT",
+            "damage": -1,
+            "hits": 1
+          }
+        },
+        "relics": [
+          "Burning Blood",
+          "Omamori"
+        ],
+        "relic_counters": {
+          "Omamori": 0
+        }
+      },
+      "actions": [
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "stock_classes": [
+        "dungeons.TheBeyond",
+        "monsters.beyond.WrithingMass",
+        "powers.ReactivePower",
+        "powers.MalleablePower",
+        "cards.red.Anger",
+        "potions.FirePotion",
+        "actions.unique.AddCardToDeckAction",
+        "vfx.cardManip.ShowCardAndObtainEffect",
+        "relics.Omamori",
+        "relics.DarkstonePeriapt",
+        "relics.CeramicFish",
+        "relics.DuVuDoll"
+      ],
+      "stock_methods": {
+        "powers.ReactivePower": [
+          "onAttacked"
+        ],
+        "powers.MalleablePower": [
+          "onAttacked",
+          "atEndOfTurn"
+        ],
+        "monsters.beyond.WrithingMass": [
+          "takeTurn",
+          "getMove"
+        ],
+        "actions.unique.AddCardToDeckAction": [
+          "update"
+        ],
+        "vfx.cardManip.ShowCardAndObtainEffect": [
+          "<init>",
+          "update"
+        ]
+      },
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheBeyond": {
+          "class_sha256": "e8e7819f75bc2ee347c9dbfa5316b42160c2c50ef4f3bae3b4115e2c4a9a6502",
+          "bytecode_sha256": "c2584927eb19266caf64d97926c9144a0d9a988d30b66099eb5a0e126234c35b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.WrithingMass": {
+          "class_sha256": "8cd629117c79acf26547550ae4535654bc383ea2e39ec19daf4e8e989e8fc9ce",
+          "bytecode_sha256": "3f43dbab2d2af8eae20b7ed8be69822f84870dd2890c38339f6d90e716268a07"
+        },
+        "com.megacrit.cardcrawl.powers.ReactivePower": {
+          "class_sha256": "ccbe0e69ece4233ce68f9de3bdf6a67334a6075936a111db213ea1a41f3b3391",
+          "bytecode_sha256": "377eb0026c7dcf329d8ad3007e9e0942eda10950d037b071ba45bb479feefc48"
+        },
+        "com.megacrit.cardcrawl.powers.MalleablePower": {
+          "class_sha256": "50f1332c948908dc6f862f7ddeae876e4698e2980a6cdd492dc5ba75333a2bf1",
+          "bytecode_sha256": "3cc5bf126ffbacb32faad0b97ac3402eeb737d334745d7d258f15ab287fc5901"
+        },
+        "com.megacrit.cardcrawl.cards.red.Anger": {
+          "class_sha256": "cf446c5b763c790ec924fbbd010a6be8f1175f4e2d818805b5b599d78a04cb27",
+          "bytecode_sha256": "0ce0b704dea97674876fe6b2df815fadc463607d7442e29881f43ebbcde17dae"
+        },
+        "com.megacrit.cardcrawl.potions.FirePotion": {
+          "class_sha256": "0391a17323526250a23da24553b135b2f9a785feaa0ce168b9155c33f2bbd0f6",
+          "bytecode_sha256": "351ef53fe1c75fdb83c84c97b772c43d0c39740188641f7951a3257276123155"
+        },
+        "com.megacrit.cardcrawl.actions.unique.AddCardToDeckAction": {
+          "class_sha256": "318c0953a3b85054134d12600859a575410d6cb8f823b7b688e2b2e664699ecb",
+          "bytecode_sha256": "3aebc30f25fee7e605076cf39feaae53792eba28921b5bdb0e18b988351753bc"
+        },
+        "com.megacrit.cardcrawl.vfx.cardManip.ShowCardAndObtainEffect": {
+          "class_sha256": "8872d4f3787ebb63ef51a927f008289b6d73e235ef195997ecedead7b7624773",
+          "bytecode_sha256": "0c87e9c271bdfbf3eef43bd130019842a53b96dbc8bed0f56a71598a1d64d2d0"
+        },
+        "com.megacrit.cardcrawl.relics.Omamori": {
+          "class_sha256": "9d10611e20cb6233e3d2bbb5cbca03ad02769f485ce0a84e67c8e98224f8e03b",
+          "bytecode_sha256": "b04a68dc7d870e3597c19165037b949736366bc8cee2205e427d5a8fcc1d3d12"
+        },
+        "com.megacrit.cardcrawl.relics.DarkstonePeriapt": {
+          "class_sha256": "17b02e4ece75442c831acd38e6bc8d7146a65c03edcc38e7ebb5eb504be53fd9",
+          "bytecode_sha256": "af797d999b1cd0bd474532174432cc36c527ad5e2f1186116812032bda38c381"
+        },
+        "com.megacrit.cardcrawl.relics.CeramicFish": {
+          "class_sha256": "83cd44d29a43e2d59f0286b1d8b6ab112d8261df78b5270f07094b07838591b2",
+          "bytecode_sha256": "58ca48caa871d9e1746362e9f00cd26c8bd565da3a775f60cec7104a76409f24"
+        },
+        "com.megacrit.cardcrawl.relics.DuVuDoll": {
+          "class_sha256": "b296403943e325c0859656bbd1f52d260e681187f30fbe9666e18b03cbb714a5",
+          "bytecode_sha256": "cb665b5880313eb61f40a24e6f9bfa29c9fc3bf4fcea8e386d82516da452b4ae"
+        }
+      },
+      "seeds": [
+        131200204,
+        131200205,
+        131200206
+      ],
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "obligation": "During Implant obtain, independently read permanent deck, relic counters, HP/maxHP and gold at subsequent stable boundaries: omamori-exhausted",
+      "qualification_scope": "CONTROLLED_IMPLANT_OBTAIN_NEIGHBOR_NOT_ALL_RELIC_COMBINATIONS"
+    },
+    {
+      "id": "act3-implant-obtain-relics",
+      "encounter": "WRITHING_MASS",
+      "ascension": 20,
+      "act": 3,
+      "floor": 40,
+      "room": "MONSTER",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 700,
+        "max_hp": 1000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R"
+        ],
+        "moves": {
+          "WRITHING_MASS": {
+            "stock": 4,
+            "native": "WRITHING_MASS_IMPLANT",
+            "damage": -1,
+            "hits": 1
+          }
+        },
+        "relics": [
+          "Burning Blood",
+          "CeramicFish",
+          "Darkstone Periapt",
+          "Du-Vu Doll"
+        ],
+        "relic_counters": {
+          "Du-Vu Doll": 1
+        }
+      },
+      "actions": [
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "stock_classes": [
+        "dungeons.TheBeyond",
+        "monsters.beyond.WrithingMass",
+        "powers.ReactivePower",
+        "powers.MalleablePower",
+        "cards.red.Anger",
+        "potions.FirePotion",
+        "actions.unique.AddCardToDeckAction",
+        "vfx.cardManip.ShowCardAndObtainEffect",
+        "relics.Omamori",
+        "relics.DarkstonePeriapt",
+        "relics.CeramicFish",
+        "relics.DuVuDoll"
+      ],
+      "stock_methods": {
+        "powers.ReactivePower": [
+          "onAttacked"
+        ],
+        "powers.MalleablePower": [
+          "onAttacked",
+          "atEndOfTurn"
+        ],
+        "monsters.beyond.WrithingMass": [
+          "takeTurn",
+          "getMove"
+        ],
+        "actions.unique.AddCardToDeckAction": [
+          "update"
+        ],
+        "vfx.cardManip.ShowCardAndObtainEffect": [
+          "<init>",
+          "update"
+        ]
+      },
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheBeyond": {
+          "class_sha256": "e8e7819f75bc2ee347c9dbfa5316b42160c2c50ef4f3bae3b4115e2c4a9a6502",
+          "bytecode_sha256": "c2584927eb19266caf64d97926c9144a0d9a988d30b66099eb5a0e126234c35b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.WrithingMass": {
+          "class_sha256": "8cd629117c79acf26547550ae4535654bc383ea2e39ec19daf4e8e989e8fc9ce",
+          "bytecode_sha256": "3f43dbab2d2af8eae20b7ed8be69822f84870dd2890c38339f6d90e716268a07"
+        },
+        "com.megacrit.cardcrawl.powers.ReactivePower": {
+          "class_sha256": "ccbe0e69ece4233ce68f9de3bdf6a67334a6075936a111db213ea1a41f3b3391",
+          "bytecode_sha256": "377eb0026c7dcf329d8ad3007e9e0942eda10950d037b071ba45bb479feefc48"
+        },
+        "com.megacrit.cardcrawl.powers.MalleablePower": {
+          "class_sha256": "50f1332c948908dc6f862f7ddeae876e4698e2980a6cdd492dc5ba75333a2bf1",
+          "bytecode_sha256": "3cc5bf126ffbacb32faad0b97ac3402eeb737d334745d7d258f15ab287fc5901"
+        },
+        "com.megacrit.cardcrawl.cards.red.Anger": {
+          "class_sha256": "cf446c5b763c790ec924fbbd010a6be8f1175f4e2d818805b5b599d78a04cb27",
+          "bytecode_sha256": "0ce0b704dea97674876fe6b2df815fadc463607d7442e29881f43ebbcde17dae"
+        },
+        "com.megacrit.cardcrawl.potions.FirePotion": {
+          "class_sha256": "0391a17323526250a23da24553b135b2f9a785feaa0ce168b9155c33f2bbd0f6",
+          "bytecode_sha256": "351ef53fe1c75fdb83c84c97b772c43d0c39740188641f7951a3257276123155"
+        },
+        "com.megacrit.cardcrawl.actions.unique.AddCardToDeckAction": {
+          "class_sha256": "318c0953a3b85054134d12600859a575410d6cb8f823b7b688e2b2e664699ecb",
+          "bytecode_sha256": "3aebc30f25fee7e605076cf39feaae53792eba28921b5bdb0e18b988351753bc"
+        },
+        "com.megacrit.cardcrawl.vfx.cardManip.ShowCardAndObtainEffect": {
+          "class_sha256": "8872d4f3787ebb63ef51a927f008289b6d73e235ef195997ecedead7b7624773",
+          "bytecode_sha256": "0c87e9c271bdfbf3eef43bd130019842a53b96dbc8bed0f56a71598a1d64d2d0"
+        },
+        "com.megacrit.cardcrawl.relics.Omamori": {
+          "class_sha256": "9d10611e20cb6233e3d2bbb5cbca03ad02769f485ce0a84e67c8e98224f8e03b",
+          "bytecode_sha256": "b04a68dc7d870e3597c19165037b949736366bc8cee2205e427d5a8fcc1d3d12"
+        },
+        "com.megacrit.cardcrawl.relics.DarkstonePeriapt": {
+          "class_sha256": "17b02e4ece75442c831acd38e6bc8d7146a65c03edcc38e7ebb5eb504be53fd9",
+          "bytecode_sha256": "af797d999b1cd0bd474532174432cc36c527ad5e2f1186116812032bda38c381"
+        },
+        "com.megacrit.cardcrawl.relics.CeramicFish": {
+          "class_sha256": "83cd44d29a43e2d59f0286b1d8b6ab112d8261df78b5270f07094b07838591b2",
+          "bytecode_sha256": "58ca48caa871d9e1746362e9f00cd26c8bd565da3a775f60cec7104a76409f24"
+        },
+        "com.megacrit.cardcrawl.relics.DuVuDoll": {
+          "class_sha256": "b296403943e325c0859656bbd1f52d260e681187f30fbe9666e18b03cbb714a5",
+          "bytecode_sha256": "cb665b5880313eb61f40a24e6f9bfa29c9fc3bf4fcea8e386d82516da452b4ae"
+        }
+      },
+      "seeds": [
+        131200207,
+        131200208,
+        131200209
+      ],
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "obligation": "During Implant obtain, independently read permanent deck, relic counters, HP/maxHP and gold at subsequent stable boundaries: obtain-relics",
+      "qualification_scope": "CONTROLLED_IMPLANT_OBTAIN_NEIGHBOR_NOT_ALL_RELIC_COMBINATIONS"
+    }
+  ],
+  "qualification": false,
+  "final_holdout_used": false
+}

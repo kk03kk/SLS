@@ -1,0 +1,155 @@
+{
+  "schema": "sls-awakened-second-double-boss-qualification-v1",
+  "native_source_sha256": "9bbf5664d5efa1eb65fdbfde8ebdf5f16b6a0d3507f2231aad2da001d35ae606",
+  "scope": "Last two of six ordered A20 boss pairs, controlled initial deck; actual callbacks, not natural runs or all random branches",
+  "runs": [
+    {
+      "seed": 131200237,
+      "endpoint_fields_equal": true,
+      "all_boundary_restores_equal": true,
+      "raw_classified_differences": [
+        {
+          "boundary": 6,
+          "classification": "WITNESSED_DEAD_CULTIST_RITUAL_ANIMATION_CLEANUP_NOT_EXACT_STATE_EQUALITY"
+        },
+        {
+          "boundary": 7,
+          "classification": "WITNESSED_DEAD_CULTIST_RITUAL_ANIMATION_CLEANUP_NOT_EXACT_STATE_EQUALITY"
+        },
+        {
+          "boundary": 8,
+          "classification": "WITNESSED_DEAD_CULTIST_RITUAL_ANIMATION_CLEANUP_NOT_EXACT_STATE_EQUALITY"
+        }
+      ]
+    },
+    {
+      "seed": 131200238,
+      "endpoint_fields_equal": true,
+      "all_boundary_restores_equal": true,
+      "raw_classified_differences": [
+        {
+          "boundary": 6,
+          "classification": "WITNESSED_DEAD_CULTIST_RITUAL_ANIMATION_CLEANUP_NOT_EXACT_STATE_EQUALITY"
+        },
+        {
+          "boundary": 7,
+          "classification": "WITNESSED_DEAD_CULTIST_RITUAL_ANIMATION_CLEANUP_NOT_EXACT_STATE_EQUALITY"
+        },
+        {
+          "boundary": 8,
+          "classification": "WITNESSED_DEAD_CULTIST_RITUAL_ANIMATION_CLEANUP_NOT_EXACT_STATE_EQUALITY"
+        }
+      ]
+    },
+    {
+      "seed": 131200239,
+      "endpoint_fields_equal": true,
+      "all_boundary_restores_equal": true,
+      "raw_classified_differences": [
+        {
+          "boundary": 6,
+          "classification": "WITNESSED_DEAD_CULTIST_RITUAL_ANIMATION_CLEANUP_NOT_EXACT_STATE_EQUALITY"
+        },
+        {
+          "boundary": 7,
+          "classification": "WITNESSED_DEAD_CULTIST_RITUAL_ANIMATION_CLEANUP_NOT_EXACT_STATE_EQUALITY"
+        },
+        {
+          "boundary": 8,
+          "classification": "WITNESSED_DEAD_CULTIST_RITUAL_ANIMATION_CLEANUP_NOT_EXACT_STATE_EQUALITY"
+        }
+      ]
+    },
+    {
+      "seed": 131200240,
+      "endpoint_fields_equal": true,
+      "all_boundary_restores_equal": true,
+      "raw_classified_differences": [
+        {
+          "boundary": 2,
+          "classification": "WITNESSED_DEAD_DECA_ARTIFACT_ANIMATION_CLEANUP_NOT_EXACT_STATE_EQUALITY"
+        },
+        {
+          "boundary": 8,
+          "classification": "WITNESSED_DEAD_CULTIST_RITUAL_ANIMATION_CLEANUP_NOT_EXACT_STATE_EQUALITY"
+        },
+        {
+          "boundary": 9,
+          "classification": "WITNESSED_DEAD_CULTIST_RITUAL_ANIMATION_CLEANUP_NOT_EXACT_STATE_EQUALITY"
+        },
+        {
+          "boundary": 10,
+          "classification": "WITNESSED_DEAD_CULTIST_RITUAL_ANIMATION_CLEANUP_NOT_EXACT_STATE_EQUALITY"
+        }
+      ]
+    },
+    {
+      "seed": 131200241,
+      "endpoint_fields_equal": true,
+      "all_boundary_restores_equal": true,
+      "raw_classified_differences": [
+        {
+          "boundary": 2,
+          "classification": "WITNESSED_DEAD_DECA_ARTIFACT_ANIMATION_CLEANUP_NOT_EXACT_STATE_EQUALITY"
+        },
+        {
+          "boundary": 8,
+          "classification": "WITNESSED_DEAD_CULTIST_RITUAL_ANIMATION_CLEANUP_NOT_EXACT_STATE_EQUALITY"
+        },
+        {
+          "boundary": 9,
+          "classification": "WITNESSED_DEAD_CULTIST_RITUAL_ANIMATION_CLEANUP_NOT_EXACT_STATE_EQUALITY"
+        },
+        {
+          "boundary": 10,
+          "classification": "WITNESSED_DEAD_CULTIST_RITUAL_ANIMATION_CLEANUP_NOT_EXACT_STATE_EQUALITY"
+        }
+      ]
+    },
+    {
+      "seed": 131200242,
+      "endpoint_fields_equal": true,
+      "all_boundary_restores_equal": true,
+      "raw_classified_differences": [
+        {
+          "boundary": 2,
+          "classification": "WITNESSED_DEAD_DECA_ARTIFACT_ANIMATION_CLEANUP_NOT_EXACT_STATE_EQUALITY"
+        },
+        {
+          "boundary": 8,
+          "classification": "WITNESSED_DEAD_CULTIST_RITUAL_ANIMATION_CLEANUP_NOT_EXACT_STATE_EQUALITY"
+        },
+        {
+          "boundary": 9,
+          "classification": "WITNESSED_DEAD_CULTIST_RITUAL_ANIMATION_CLEANUP_NOT_EXACT_STATE_EQUALITY"
+        },
+        {
+          "boundary": 10,
+          "classification": "WITNESSED_DEAD_CULTIST_RITUAL_ANIMATION_CLEANUP_NOT_EXACT_STATE_EQUALITY"
+        }
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "path": "local/audits/fullrun-parity-20261007/double-boss-awakened-second-stock-r1.json",
+      "sha256": "916e23449cef5730e9525a327910291358609625100ef60d3483e426b7a1c617"
+    },
+    {
+      "path": "local/audits/fullrun-parity-20261007/double-boss-awakened-second-native-entry-r1.json",
+      "sha256": "209c5016e8cd3848004b39c181ab311b42d423a19e5bc342a94bb2229c5a36cd"
+    },
+    {
+      "path": "local/audits/fullrun-parity-20261007/double-boss-awakened-second-native-flow-r1.json",
+      "sha256": "d6ca792b04d33848079b011bc8cd470959493c407ac7948f5da361eeacf6d059"
+    },
+    {
+      "path": "local/audits/fullrun-parity-20261007/double-boss-awakened-second-production-smoke-r1.json",
+      "sha256": "b1c62817d8a98e8c1e31ccf05e23ab22a88912d3892a2cdd9be9bd8f677a2d9b"
+    },
+    {
+      "path": "local/audits/fullrun-parity-20261007/double-boss-awakened-second-production-smoke-r1.independent-recovery-r1.json",
+      "sha256": "eac032f3cf5df89de26bcb9bae650971f751d65f465963828cc0fc13c08cbae5"
+    }
+  ]
+}

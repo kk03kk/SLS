@@ -5,44 +5,15 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import re
-import zipfile
 from pathlib import Path
 
-from sls.diagnostics.canary import read_trajectory
-from tools.replay_act2_production_trajectory import replay
-
-PATTERN = re.compile(
-    r'SLS_DISCOVERY_CLOCK_V1 seed=(\d+) floor=(\d+) serial=(\d+) updates=(\d+)'
-)
-
-
-def verify_sealed_oracle(oracle: Path, build: dict) -> None:
-    """Offline historical evidence; launching/installing still requires current source."""
-    if (build.get('schema') != 'sls-oracle-build-v1'
-            or build.get('used_existing_oracle') is not False
-            or not build.get('sources')
-            or hashlib.sha256(oracle.read_bytes()).hexdigest() != build.get('output_sha256')):
-        raise ValueError('sealed Oracle build identity failure')
-    with zipfile.ZipFile(oracle) as archive:
-        if (len(archive.namelist()) != len(set(archive.namelist()))
-                or set(archive.namelist()) != set(build.get('members', {}))
-                or any(hashlib.sha256(archive.read(name)).hexdigest() != digest
-                       for name, digest in build['members'].items())):
-            raise ValueError('sealed Oracle member identity failure')
-
-
-def stock_clock_rows(payload: str, seed: int) -> list[dict]:
-    rows = [dict(zip(('seed', 'floor', 'serial', 'updates'), map(int, match)))
-            for match in PATTERN.findall(payload)]
-    if len({row['serial'] for row in rows}) != len(rows):
-        raise ValueError('duplicate Discovery completion serial')
-    if any(not 1 <= row['updates'] <= 120 for row in rows):
-        raise ValueError('invalid Discovery clock count')
-    return [row for row in rows if row['seed'] == seed]
+from sls.audit.stock_clock import stock_clock_rows, verify_sealed_oracle
 
 
 def main() -> int:
+    from sls.audit.trajectory_reader import read_trajectory
+    from tools.replay_act2_production_trajectory import replay
+
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('trajectory', type=Path)
     parser.add_argument('--oracle-build', type=Path, required=True)

@@ -9,8 +9,17 @@ import sys
 import zipfile
 from pathlib import Path
 
+from sls.audit.boss_flow import validate_boss_order
 from tools.run_original_canary import original_runtime_paths
 from tools.verify_oracle import inspect, runtime_smoke
+
+
+def verify_scene_encounters(manifest: dict, selected: list[str], allowlist: str) -> None:
+    """Reject wrong manifest encounter IDs before any game/save mutation."""
+    allowed = {line.split('\t')[0] for line in allowlist.splitlines() if line.strip()}
+    for scene in manifest['scenes']:
+        if scene['id'] in selected and scene.get('encounter') not in allowed:
+            raise ValueError('scene encounter is not in Oracle allowlist; no game launched')
 
 
 def verify_scene_sources(manifest: dict, selected: list[str], stock_jar: Path) -> None:
@@ -47,6 +56,9 @@ def main() -> int:
             else "spirecomm/parity/act2-scenes.json")
     if hashlib.sha256(args.manifest.read_bytes()).hexdigest() != report["members"][name]:
         raise ValueError("scene manifest differs from source-built Oracle")
+    with zipfile.ZipFile(args.oracle) as archive:
+        verify_scene_encounters(manifest, args.scenes, archive.read(
+            'spirecomm/parity/scenario-encounter-allowlist.tsv').decode('utf-8'))
     _, game = original_runtime_paths(None)
     with (game / "desktop-1.0.jar").open("rb") as stream:
         actual_stock = hashlib.file_digest(stream, "sha256").hexdigest()
@@ -59,8 +71,13 @@ def main() -> int:
         for scene in manifest["scenes"]:
             if scene["id"] not in args.scenes:
                 continue
+            validate_boss_order(scene)
+            if (any(a.get('kind') == 'proceed_to_second_boss' for a in scene.get('actions', []))
+                    and 'boss_order' not in scene.get('initial', {})):
+                raise ValueError('second boss action requires consumed-list initial fixture; no game launched')
             if (scene.get("status") != "READY_FOR_CONTROLLED_EXECUTION"
-                    or scene.get("ascension") != 20 or scene.get("act") != 2
+                    or scene.get("ascension") != 20 or scene.get("act") not in (2, 3, 4)
+                    or (scene.get('act') in (3, 4) and not scene.get('actual_dungeon_required'))
                     or not scene.get("source_evidence") or not scene.get("actions")):
                 raise ValueError("missing source/script or unsupported actual late-act context; no game launched")
         verify_scene_sources(manifest, args.scenes, game / "desktop-1.0.jar")

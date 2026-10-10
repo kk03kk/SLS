@@ -1,0 +1,466 @@
+{
+  "schema": "sls-darkling-stock-regression-v1",
+  "stock_capture_sha256": "0c159e617ece2ed58d716dbe76ee381084a42db91bfe80a06e0372bdc15da618",
+  "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "cases": [
+    {
+      "seed": 131200039,
+      "initial_rng": {
+        "ai": {
+          "counter": 1,
+          "seed0": 7342867588246663812,
+          "seed1": 7210586892316135249
+        },
+        "card_random": {
+          "counter": 0,
+          "seed0": 5741269962297151115,
+          "seed1": 7342867588246663812
+        },
+        "card": {
+          "counter": 0,
+          "seed0": 3879392203485663220,
+          "seed1": 18253556311242327391
+        },
+        "event": {
+          "counter": 0,
+          "seed0": 3879392203485663220,
+          "seed1": 18253556311242327391
+        },
+        "math_util": {
+          "counter": 0,
+          "seed0": 3285873089564760559,
+          "seed1": 10753350627270098805
+        },
+        "merchant": {
+          "counter": 0,
+          "seed0": 3879392203485663220,
+          "seed1": 18253556311242327391
+        },
+        "misc": {
+          "counter": 3,
+          "seed0": 18099074505974702419,
+          "seed1": 2233706599119062884
+        },
+        "monster_hp": {
+          "counter": 1,
+          "seed0": 7342867588246663812,
+          "seed1": 7210586892316135249
+        },
+        "monster": {
+          "counter": 67,
+          "seed0": 17916172483090234659,
+          "seed1": 9734757243380083639
+        },
+        "neow": {
+          "counter": 11,
+          "seed0": 12643777861541165222,
+          "seed1": 10696420819200533622
+        },
+        "potion": {
+          "counter": 0,
+          "seed0": 3879392203485663220,
+          "seed1": 18253556311242327391
+        },
+        "relic": {
+          "counter": 5,
+          "seed0": 12690585058295376142,
+          "seed1": 13329249924624267022
+        },
+        "shuffle": {
+          "counter": 0,
+          "seed0": 5741269962297151115,
+          "seed1": 7342867588246663812
+        },
+        "treasure": {
+          "counter": 0,
+          "seed0": 3879392203485663220,
+          "seed1": 18253556311242327391
+        }
+      },
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R"
+        ]
+      },
+      "expected": [
+        {
+          "hp": 5000,
+          "intent_damage": [
+            0,
+            0,
+            13
+          ]
+        },
+        {
+          "hp": 4987,
+          "intent_damage": [
+            11,
+            12,
+            13
+          ]
+        },
+        {
+          "hp": 4940,
+          "intent_damage": [
+            0,
+            12,
+            9
+          ]
+        },
+        {
+          "hp": 4910,
+          "intent_damage": [
+            16,
+            0,
+            13
+          ]
+        },
+        {
+          "hp": 4881,
+          "intent_damage": [
+            16,
+            14,
+            9
+          ]
+        }
+      ]
+    },
+    {
+      "seed": 131200040,
+      "initial_rng": {
+        "ai": {
+          "counter": 1,
+          "seed0": 9078556734755672046,
+          "seed1": 6152563421587466319
+        },
+        "card_random": {
+          "counter": 0,
+          "seed0": 2874512755117635567,
+          "seed1": 9078556734755672046
+        },
+        "card": {
+          "counter": 0,
+          "seed0": 9901182264037405385,
+          "seed1": 17101425815167950451
+        },
+        "event": {
+          "counter": 0,
+          "seed0": 9901182264037405385,
+          "seed1": 17101425815167950451
+        },
+        "math_util": {
+          "counter": 0,
+          "seed0": 11796371523087973318,
+          "seed1": 16923193400134783757
+        },
+        "merchant": {
+          "counter": 0,
+          "seed0": 9901182264037405385,
+          "seed1": 17101425815167950451
+        },
+        "misc": {
+          "counter": 2,
+          "seed0": 6543928412008448346,
+          "seed1": 3710292169991881202
+        },
+        "monster_hp": {
+          "counter": 1,
+          "seed0": 9078556734755672046,
+          "seed1": 6152563421587466319
+        },
+        "monster": {
+          "counter": 74,
+          "seed0": 13061421570034348677,
+          "seed1": 14567149274861124554
+        },
+        "neow": {
+          "counter": 5,
+          "seed0": 14606017597592454979,
+          "seed1": 18219071279330026690
+        },
+        "potion": {
+          "counter": 0,
+          "seed0": 9901182264037405385,
+          "seed1": 17101425815167950451
+        },
+        "relic": {
+          "counter": 5,
+          "seed0": 14606017597592454979,
+          "seed1": 18219071279330026690
+        },
+        "shuffle": {
+          "counter": 0,
+          "seed0": 2874512755117635567,
+          "seed1": 9078556734755672046
+        },
+        "treasure": {
+          "counter": 0,
+          "seed0": 9901182264037405385,
+          "seed1": 17101425815167950451
+        }
+      },
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R"
+        ]
+      },
+      "expected": [
+        {
+          "hp": 5000,
+          "intent_damage": [
+            0,
+            9,
+            10
+          ]
+        },
+        {
+          "hp": 4981,
+          "intent_damage": [
+            11,
+            9,
+            0
+          ]
+        },
+        {
+          "hp": 4950,
+          "intent_damage": [
+            12,
+            0,
+            12
+          ]
+        },
+        {
+          "hp": 4926,
+          "intent_damage": [
+            11,
+            11,
+            0
+          ]
+        },
+        {
+          "hp": 4893,
+          "intent_damage": [
+            0,
+            0,
+            13
+          ]
+        }
+      ]
+    },
+    {
+      "seed": 131200041,
+      "initial_rng": {
+        "ai": {
+          "counter": 1,
+          "seed0": 17416783899229600938,
+          "seed1": 11481863422054768523
+        },
+        "card_random": {
+          "counter": 0,
+          "seed0": 1307958113962153583,
+          "seed1": 17416783899229600938
+        },
+        "card": {
+          "counter": 0,
+          "seed0": 6066452209563042211,
+          "seed1": 2067777757634756679
+        },
+        "event": {
+          "counter": 0,
+          "seed0": 6066452209563042211,
+          "seed1": 2067777757634756679
+        },
+        "math_util": {
+          "counter": 0,
+          "seed0": 969087585013444147,
+          "seed1": 3250981209098722376
+        },
+        "merchant": {
+          "counter": 0,
+          "seed0": 6066452209563042211,
+          "seed1": 2067777757634756679
+        },
+        "misc": {
+          "counter": 1,
+          "seed0": 14023449846907189662,
+          "seed1": 13349028299533780348
+        },
+        "monster_hp": {
+          "counter": 1,
+          "seed0": 17416783899229600938,
+          "seed1": 11481863422054768523
+        },
+        "monster": {
+          "counter": 73,
+          "seed0": 5573407490593451404,
+          "seed1": 682046781731586686
+        },
+        "neow": {
+          "counter": 6,
+          "seed0": 18111927178296043412,
+          "seed1": 10356911179710167900
+        },
+        "potion": {
+          "counter": 0,
+          "seed0": 6066452209563042211,
+          "seed1": 2067777757634756679
+        },
+        "relic": {
+          "counter": 5,
+          "seed0": 14970745223125294406,
+          "seed1": 18111927178296043412
+        },
+        "shuffle": {
+          "counter": 0,
+          "seed0": 1307958113962153583,
+          "seed1": 17416783899229600938
+        },
+        "treasure": {
+          "counter": 0,
+          "seed0": 6066452209563042211,
+          "seed1": 2067777757634756679
+        }
+      },
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R"
+        ]
+      },
+      "expected": [
+        {
+          "hp": 5000,
+          "intent_damage": [
+            11,
+            0,
+            10
+          ]
+        },
+        {
+          "hp": 4979,
+          "intent_damage": [
+            9,
+            11,
+            0
+          ]
+        },
+        {
+          "hp": 4950,
+          "intent_damage": [
+            0,
+            11,
+            12
+          ]
+        },
+        {
+          "hp": 4927,
+          "intent_damage": [
+            13,
+            0,
+            0
+          ]
+        },
+        {
+          "hp": 4914,
+          "intent_damage": [
+            0,
+            13,
+            14
+          ]
+        }
+      ]
+    }
+  ]
+}

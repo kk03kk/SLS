@@ -1,0 +1,150 @@
+{
+  "schema": "sls-card-rng-boundary-correction-v1",
+  "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "stock_method": "com.megacrit.cardcrawl.dungeons.AbstractDungeon.dungeonTransitionSetup",
+  "stock_rule": "(0,250)->250; (250,500)->500; (500,750)->750; exact 0/250/500/750 unchanged",
+  "native_method": "GameContext::transitionToAct",
+  "before_native_source_sha256": "9bbf5664d5efa1eb65fdbfde8ebdf5f16b6a0d3507f2231aad2da001d35ae606",
+  "after_native_source_sha256": "6805e8c991ff6e3ca1b57248678babbbc1ea904b6a1a35e17d631c426765dcc0",
+  "computed_source_equal": true,
+  "environment_change": true,
+  "exact_resume_allowed": false,
+  "scope": "Actual controlled A20 two-boss completion and Act4 entry, independently read stock RNG. Shared transition code also serves Act1 to Act2. Does not measure natural-run frequency or win-rate impact.",
+  "invalid_initialization": {
+    "seed": 131200248,
+    "requested_counter": 0,
+    "actual_counter": 250,
+    "status": "EXCLUDED_EXECUTION_FAILURE_NOT_PASS",
+    "reason": "Oracle setCounter cannot rewind existing RNG; v1.3.41 resets controlled initial stream and requires independent initial witness."
+  },
+  "regressions": {
+    "before": {
+      "failed": 11,
+      "passed": 3
+    },
+    "after": {
+      "passed": 14
+    },
+    "focused_suite": {
+      "passed": 157,
+      "runtime_seconds": 2.86
+    }
+  },
+  "evidence": [
+    {
+      "path": "local/audits/fullrun-parity-20261007/key-act4-entry-stock-r1.json",
+      "sha256": "b5c316f4ead195f2fd4056fdf01ec7f6a11bdda470c67cc1b0c420460771754c"
+    },
+    {
+      "path": "local/audits/fullrun-parity-20261007/key-act4-boundaries-stock-r1.json",
+      "sha256": "05ed6de42ab71e9143dbeae57cf0778f79c9d4df61fa2be5a0c54adb006f7056"
+    },
+    {
+      "path": "local/audits/fullrun-parity-20261007/key-act4-boundaries-native-before-entry-r1.json",
+      "sha256": "78fd460fc19f7428b90c20979e506b5b8bf5782c4134142b171a11f2f36df355"
+    },
+    {
+      "path": "local/audits/fullrun-parity-20261007/key-act4-boundaries-native-before-flow-r1.json",
+      "sha256": "4146beeef30e001e2d5c9abfb714aec9b5e435bafeb2ee5f0d95db2dab6d67e0"
+    },
+    {
+      "path": "local/audits/fullrun-parity-20261007/key-act4-boundaries-stock-r1.independent-recovery.json",
+      "sha256": "9638ce8b3f096f6ca50e38f77926dfad8826561820fa399d0be9a61cd3931b30"
+    },
+    {
+      "path": "local/audits/fullrun-parity-20261007/card-rng-boundaries-before-9bbf/pytest-boundaries-before.log",
+      "sha256": "b015c90d5c21b59f188c10fb2b1e79441ad8aa439fa100f6f7d9d56c39249def"
+    },
+    {
+      "path": "local/audits/fullrun-parity-20261007/card-rng-boundaries-build-after.log",
+      "sha256": "2c146abfb36173b3264b5e0d0ddf54447ef1b66d3bd4b3f2cd31ec531f14e2cf"
+    },
+    {
+      "path": "local/audits/fullrun-parity-20261007/card-rng-boundaries-before-9bbf/pytest-shared-transition-before.log",
+      "sha256": "d3637639d88a347ba9f89840873183134f675162c3b0e883502843cdbdd53828"
+    },
+    {
+      "path": "local/audits/fullrun-parity-20261007/critic20m-isolated-native-build-20261008.log",
+      "sha256": "865e7cfc1b76693a606a106984b02f978fc879ed3d46b3fcdcadc8d3aabd72c0"
+    },
+    {
+      "path": "local/audits/fullrun-parity-20261007/critic20m-isolated-tests-20261008.log",
+      "sha256": "be6793488c9287475f4bae87b47fcdf8feaaf380f1a1fa287e0e772360850d5e"
+    },
+    {
+      "path": "local/audits/fullrun-parity-20261007/key-act4-zero-reset-stock-r2.json",
+      "sha256": "3fbed8214bb17810f9bd23f19017af3cee9a6afb74a8b738a6746f38e83f9fbc"
+    },
+    {
+      "path": "local/audits/fullrun-parity-20261007/key-act4-zero-reset-stock-r2.independent-recovery.json",
+      "sha256": "63413e7ccb5cf43dcae4271cd7ed2b298c135ddcb27ed04c7fde45b5b34fc753"
+    },
+    {
+      "path": "local/audits/fullrun-parity-20261007/key-act4-zero-reset-native-entry-r2.json",
+      "sha256": "860b5ba8100f15d8d8d8f6fd2f1f390c995318d6fecb2f20c6d24ffe7c99d92a"
+    },
+    {
+      "path": "local/audits/fullrun-parity-20261007/key-act4-zero-reset-native-flow-r2.json",
+      "sha256": "149a18b974b6be56bff4c0eae7cbb89aa51c2e7b49895cb1e84adc742367fe57"
+    }
+  ],
+  "corrected_oracle_initialization": {
+    "version": "1.3.41",
+    "seeds": [
+      131200258,
+      131200259,
+      131200260
+    ],
+    "initial_counter_all_zero": true,
+    "native_entry_and_endpoint_fields_equal": true,
+    "all_boundary_restores_equal": true,
+    "restored_files": 63,
+    "restore_differences": 0
+  },
+  "shared_transition_probes": {
+    "scope": "Synthetic counter overrides in stock-derived boss reward checkpoint, actual native Act1 to Act2 and Act2 to Act3 transition; not original captured trajectories",
+    "before_native_source_sha256": "9bbf5664d5efa1eb65fdbfde8ebdf5f16b6a0d3507f2231aad2da001d35ae606",
+    "before": {
+      "failed": 6,
+      "passed": 16
+    },
+    "after": {
+      "passed": 22
+    },
+    "counter_cases": [
+      0,
+      1,
+      249,
+      250,
+      251,
+      499,
+      500,
+      501,
+      749,
+      750,
+      751
+    ]
+  },
+  "isolated_training_release": {
+    "status": "UNPUBLISHED_BINDINGS_PENDING",
+    "native_source_sha256": "6efbb772958c06d1b9133f374d046d8838eaa256da1a146eaf7e1ee530eefd3d",
+    "scope": "b100 baseline plus thief potion correction and strict cardRng intervals only",
+    "single_job_build": "PASS",
+    "focused_native_and_lightweight_checks": {
+      "passed": 82
+    },
+    "compute_gate": "NOT_RUN",
+    "exact_resume_allowed": false
+  },
+  "stock_class_sha256": "5452fdd7b33fa47dcea5c2e58d5d521dfde3acefba006c095ad5b01c60eda369",
+  "local_bytecode_evidence": {
+    "path": "local/audits/fullrun-parity-20261007/stock-double-boss-r2/dungeons.AbstractDungeon.txt",
+    "sha256": "be440b70a41da50c747d240101168e6e0aad5a6eec66906f38ecb82f47c238dc"
+  },
+  "production_isolation_smoke": {
+    "oracle_version": "1.3.41",
+    "status": "PASS",
+    "restored_files": 63,
+    "restore_differences": 0
+  }
+}

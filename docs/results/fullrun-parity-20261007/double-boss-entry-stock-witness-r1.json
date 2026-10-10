@@ -1,0 +1,64 @@
+{
+  "schema": "sls-stock-double-boss-entry-witness-v1",
+  "scope": "STOCK_CAPTURE_ONLY_NATIVE_UNCOMPARED_SECOND_BOSS_UNFINISHED",
+  "capture_sha256": "3d532f556e6991e04b672cbf77925072da3084403fede148f6f38876e486f2fa",
+  "oracle_sha256": "201f10de724c42f77faff2631570ee02ef62679efd7f0cfc0a8a47bc75681b3c",
+  "runs": [
+    {
+      "seed": 131200219,
+      "first": "TIME_EATER",
+      "second": "DONU_AND_DECA",
+      "floor": 51,
+      "boss_key": "Donu and Deca",
+      "remaining_bosses": [
+        "Awakened One"
+      ],
+      "stable_phase": "WAITING_ON_USER",
+      "boundaries": 3
+    },
+    {
+      "seed": 131200220,
+      "first": "TIME_EATER",
+      "second": "DONU_AND_DECA",
+      "floor": 51,
+      "boss_key": "Donu and Deca",
+      "remaining_bosses": [
+        "Awakened One"
+      ],
+      "stable_phase": "WAITING_ON_USER",
+      "boundaries": 3
+    },
+    {
+      "seed": 131200221,
+      "first": "TIME_EATER",
+      "second": "DONU_AND_DECA",
+      "floor": 51,
+      "boss_key": "Donu and Deca",
+      "remaining_bosses": [
+        "Awakened One"
+      ],
+      "stable_phase": "WAITING_ON_USER",
+      "boundaries": 3
+    }
+  ],
+  "recovery": [
+    {
+      "launch": "double-boss-entry-stock-r1",
+      "entries": 63,
+      "mismatches": [],
+      "completion": {
+        "exit_code": 2,
+        "error": "TimeoutError: stock reward boundary did not stabilize; execution failure"
+      }
+    },
+    {
+      "launch": "double-boss-entry-stock-r2",
+      "entries": 63,
+      "mismatches": [],
+      "completion": {
+        "exit_code": 0,
+        "error": null
+      }
+    }
+  ]
+}

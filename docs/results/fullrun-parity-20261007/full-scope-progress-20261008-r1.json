@@ -1,0 +1,49 @@
+{
+  "schema": "sls-full-scope-progress-v1",
+  "overall_status": "IN_PROGRESS",
+  "native_source_sha256": "c07116cc51b0a720978e0f5bf7d591fbdaf976cffc32a6b7edf33ac8dc70276a",
+  "giant_head_late": {
+    "status": "CONTROLLED_BRANCH_MATCH",
+    "seeds": [
+      131200195,
+      131200196,
+      131200197
+    ],
+    "boundaries": 39,
+    "production_rule_changed": false
+  },
+  "writhing_implant": {
+    "status": "CONFIRMED_NATIVE_DIFFERENCE_UNFIXED",
+    "seeds": [
+      131200198,
+      131200199,
+      131200200
+    ],
+    "first_difference": 1,
+    "scope": "PERMANENT_DECK_COMPOSITION_TIMING"
+  },
+  "input_sha256": {
+    "giant-late-r1.json": "2552073bc003e5270bba06363eae6dd1c5097572b6ad8ef22b989f2c3631ecec",
+    "giant-late-r1.launch.json": "ec936c20519e729b8daa07c7ef7cffef9a7930ab17b9c7330151300251baf554",
+    "giant-late-replay-r1.json": "73d06f1c8dbd3e8c167d65a3df1b44988c679fb732b4ffbdc9d56fb39e53bd49",
+    "giant-late-r1-restoration-final.json": "d750459e1d82dc814be5af775ef301c0d51e0a3bed442823b45196a938bba452",
+    "implant-timing-r1.json": "46a1d0c5b5c7935b4661884d8ac72c5885ba2e45d90a4e4ce7455b1415f88163",
+    "implant-timing-r1.launch.json": "621fcdce3471dc8423c13019a4015ff1b13fcfb37ceef86725450690c3c4339a",
+    "implant-timing-native-before-r1.json": "1480ada494c2a4b9c3996b534cacc9c3ca2c6e43e6daa1f51a25f4cbaeeca609",
+    "implant-timing-r1-restoration-final.json": "de17453ef841415f4d83795d3d7a2f404d4510dbfa977818d2be1515f95ed50a",
+    "implant-oracle-production-r1.json": "860e67cea71962840eef25a47ef083d2d5d9f5ae97a94654d6022e223798db4c",
+    "implant-oracle-production-r1.launch.json": "ae2469249c3091d8d976533caab59d6eebf5b9ff6404855150b713a6ae346add",
+    "implant-oracle-production-restoration-r1.json": "13879b949b857d9e84f79fca0c8f071d48116668ca30c3f0372b63eecf677eab"
+  },
+  "server_checkout_changed": false,
+  "natural_win_rate_measured": false,
+  "oracle_production_smoke": {
+    "version": "1.3.28",
+    "sha256": "945742d8f1a1a94dfc3dfb16a28973bd0a5948f5704d329df7967a3eb3c2c326",
+    "status": "PASS",
+    "protected_entries": 63,
+    "restore_mismatches": 0
+  },
+  "focused_tests_passed": 32,
+  "ruff": "PASS"
+}

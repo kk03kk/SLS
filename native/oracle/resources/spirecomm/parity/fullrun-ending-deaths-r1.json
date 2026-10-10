@@ -1,0 +1,270 @@
+{
+  "schema": "sls-fullrun-scenes-v1",
+  "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "scenes": [
+    {
+      "id": "act4-death-spire_shield",
+      "encounter": "SHIELD_AND_SPEAR",
+      "ascension": 20,
+      "act": 4,
+      "floor": 54,
+      "room": "ELITE",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Anger",
+          "Anger"
+        ],
+        "draw": [
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger"
+        ],
+        "monster_hp": {
+          "SPIRE_SHIELD": 1
+        }
+      },
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "stock_classes": [
+        "dungeons.TheEnding",
+        "monsters.ending.SpireShield",
+        "monsters.ending.SpireSpear",
+        "powers.SurroundedPower",
+        "powers.BackAttackPower",
+        "cards.red.Anger"
+      ],
+      "stock_methods": {
+        "dungeons.TheEnding": [
+          "TheEnding"
+        ],
+        "monsters.ending.SpireShield": [
+          "takeTurn",
+          "die"
+        ],
+        "monsters.ending.SpireSpear": [
+          "takeTurn",
+          "die"
+        ],
+        "powers.SurroundedPower": [
+          "SurroundedPower"
+        ],
+        "powers.BackAttackPower": [
+          "BackAttackPower"
+        ],
+        "cards.red.Anger": [
+          "use"
+        ]
+      },
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheEnding": {
+          "class_sha256": "0d1b79587089b6604d6e485a13349d5e575f159eb7b70a749575933f464b512a",
+          "bytecode_sha256": "49d91abe96193ef6fd6ea8371593395c555cdc5995f61506159c35a6481ad0ed"
+        },
+        "com.megacrit.cardcrawl.monsters.ending.SpireShield": {
+          "class_sha256": "f4055a62edacb9cd3cab8baead34c32aeb3f2df6cb1a772321d900ea74569a5e",
+          "bytecode_sha256": "fac402da617be078acfb8ef7f6c15e6fc6e2a632d2b79b4a03e995b24de962cc"
+        },
+        "com.megacrit.cardcrawl.monsters.ending.SpireSpear": {
+          "class_sha256": "99b2c952947fe6cd985091782a6df2a29b88e5b49b5022f06686dc56189c35fb",
+          "bytecode_sha256": "1f5a6b654b57dbf8a23b9853af1381d148d0b5805238bd2e1551811512ac70df"
+        },
+        "com.megacrit.cardcrawl.powers.SurroundedPower": {
+          "class_sha256": "76071a3971476b8d8d0fed13a22a10287dc215b57d5f1eb47834e8873c3b6428",
+          "bytecode_sha256": "e6ce9eaa954439e07d2a033d9421f3c93093e26de9ff09de21e0929550e02d30"
+        },
+        "com.megacrit.cardcrawl.powers.BackAttackPower": {
+          "class_sha256": "f532ae703c44bb8d8c30eefec74197f0e5744878db986775e150de007248f394",
+          "bytecode_sha256": "02156dcb0305c1b43efa08b9492abfbe6ab89ca93f2f5bb895a4c8825452f39d"
+        },
+        "com.megacrit.cardcrawl.cards.red.Anger": {
+          "class_sha256": "cf446c5b763c790ec924fbbd010a6be8f1175f4e2d818805b5b599d78a04cb27",
+          "bytecode_sha256": "0ce0b704dea97674876fe6b2df815fadc463607d7442e29881f43ebbcde17dae"
+        }
+      },
+      "seeds": [
+        131200114,
+        131200115,
+        131200116
+      ],
+      "obligation": "Kill one enemy through stock Anger; inspect Surrounded/BackAttack removal and surviving enemy turns. No full encounter terminal claim.",
+      "qualification_scope": "CONTROLLED_ONE_SURVIVOR_DEATH_NOT_TERMINAL_FLOW",
+      "status": "READY_FOR_CONTROLLED_EXECUTION"
+    },
+    {
+      "id": "act4-death-spire_spear",
+      "encounter": "SHIELD_AND_SPEAR",
+      "ascension": 20,
+      "act": 4,
+      "floor": 54,
+      "room": "ELITE",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Anger",
+          "Anger"
+        ],
+        "draw": [
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger"
+        ],
+        "monster_hp": {
+          "SPIRE_SPEAR": 1
+        }
+      },
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 1
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "stock_classes": [
+        "dungeons.TheEnding",
+        "monsters.ending.SpireShield",
+        "monsters.ending.SpireSpear",
+        "powers.SurroundedPower",
+        "powers.BackAttackPower",
+        "cards.red.Anger"
+      ],
+      "stock_methods": {
+        "dungeons.TheEnding": [
+          "TheEnding"
+        ],
+        "monsters.ending.SpireShield": [
+          "takeTurn",
+          "die"
+        ],
+        "monsters.ending.SpireSpear": [
+          "takeTurn",
+          "die"
+        ],
+        "powers.SurroundedPower": [
+          "SurroundedPower"
+        ],
+        "powers.BackAttackPower": [
+          "BackAttackPower"
+        ],
+        "cards.red.Anger": [
+          "use"
+        ]
+      },
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheEnding": {
+          "class_sha256": "0d1b79587089b6604d6e485a13349d5e575f159eb7b70a749575933f464b512a",
+          "bytecode_sha256": "49d91abe96193ef6fd6ea8371593395c555cdc5995f61506159c35a6481ad0ed"
+        },
+        "com.megacrit.cardcrawl.monsters.ending.SpireShield": {
+          "class_sha256": "f4055a62edacb9cd3cab8baead34c32aeb3f2df6cb1a772321d900ea74569a5e",
+          "bytecode_sha256": "fac402da617be078acfb8ef7f6c15e6fc6e2a632d2b79b4a03e995b24de962cc"
+        },
+        "com.megacrit.cardcrawl.monsters.ending.SpireSpear": {
+          "class_sha256": "99b2c952947fe6cd985091782a6df2a29b88e5b49b5022f06686dc56189c35fb",
+          "bytecode_sha256": "1f5a6b654b57dbf8a23b9853af1381d148d0b5805238bd2e1551811512ac70df"
+        },
+        "com.megacrit.cardcrawl.powers.SurroundedPower": {
+          "class_sha256": "76071a3971476b8d8d0fed13a22a10287dc215b57d5f1eb47834e8873c3b6428",
+          "bytecode_sha256": "e6ce9eaa954439e07d2a033d9421f3c93093e26de9ff09de21e0929550e02d30"
+        },
+        "com.megacrit.cardcrawl.powers.BackAttackPower": {
+          "class_sha256": "f532ae703c44bb8d8c30eefec74197f0e5744878db986775e150de007248f394",
+          "bytecode_sha256": "02156dcb0305c1b43efa08b9492abfbe6ab89ca93f2f5bb895a4c8825452f39d"
+        },
+        "com.megacrit.cardcrawl.cards.red.Anger": {
+          "class_sha256": "cf446c5b763c790ec924fbbd010a6be8f1175f4e2d818805b5b599d78a04cb27",
+          "bytecode_sha256": "0ce0b704dea97674876fe6b2df815fadc463607d7442e29881f43ebbcde17dae"
+        }
+      },
+      "seeds": [
+        131200117,
+        131200118,
+        131200119
+      ],
+      "obligation": "Kill one enemy through stock Anger; inspect Surrounded/BackAttack removal and surviving enemy turns. No full encounter terminal claim.",
+      "qualification_scope": "CONTROLLED_ONE_SURVIVOR_DEATH_NOT_TERMINAL_FLOW",
+      "status": "READY_FOR_CONTROLLED_EXECUTION"
+    }
+  ],
+  "qualification": false,
+  "final_holdout_used": false
+}

@@ -1,0 +1,96 @@
+{
+  "schema": "sls-double-boss-terminal-qualification-v1",
+  "native_source_sha256": "9bbf5664d5efa1eb65fdbfde8ebdf5f16b6a0d3507f2231aad2da001d35ae606",
+  "oracle_version": "1.3.35",
+  "oracle_sha256": "8b9b4265e3bac859a2649f2adfb53ff882c2b36ee26442021f18cab141f03a5f",
+  "scope": "Controlled A20 Time Eater -> Donu/Deca -> VictoryRoom entry; extreme initial upgraded deck; not normal-start evidence",
+  "seeds": [
+    131200225,
+    131200226,
+    131200227
+  ],
+  "evidence": [
+    {
+      "path": "local\\audits\\fullrun-parity-20261007\\double-boss-terminal-stock-r1.json",
+      "sha256": "2490d5c1cd27beaaeed7ce9da1317d6c9d63c243819fabafb6d2e0dba5b9bad7"
+    },
+    {
+      "path": "local\\audits\\fullrun-parity-20261007\\double-boss-terminal-stock-r1.launch.json",
+      "sha256": "77170f9ae335332e84a956d7818e1c24e11747bb3a98b79cfe07d8f2a4f06d7a"
+    },
+    {
+      "path": "local\\audits\\fullrun-parity-20261007\\double-boss-terminal-native-entry-r1.json",
+      "sha256": "3fa41ba442d4ab3b72ea3bae268c7d34578afecdca4b9a9f64541d843d492735"
+    },
+    {
+      "path": "local\\audits\\fullrun-parity-20261007\\double-boss-terminal-native-flow-r2.json",
+      "sha256": "430ca25bf4d85d29fce9f50d41113b592c4893167bed37c70f5d7e98838b90f5"
+    },
+    {
+      "path": "local\\audits\\fullrun-parity-20261007\\double-boss-terminal-production-smoke-r1.json",
+      "sha256": "4a3b9a5b358385e2934d4f0b6118a8635a913434d145ca4ec8f42b6acd317d90"
+    },
+    {
+      "path": "local\\audits\\fullrun-parity-20261007\\double-boss-terminal-stock-r1.independent-recovery-r1.json",
+      "sha256": "f8e892fac77100508eeddf077502ba3176f2b23468122a6c06e1a1b3ea0d8aee"
+    },
+    {
+      "path": "local\\audits\\fullrun-parity-20261007\\double-boss-terminal-production-smoke-r1.independent-recovery-r1.json",
+      "sha256": "4960b38c9a2dc21bad17c7c1e6e66ac9f559eb3888904c90a8878e6fcaabeaca"
+    }
+  ],
+  "independent_stock_exports": [
+    {
+      "path": "local\\audits\\fullrun-parity-20261007\\stock-double-boss-entry-r1\\monsters.AbstractMonster-powers.txt",
+      "sha256": "76b43e75dd95fce667e910d7844c3fc1de761ecbde1a46e0dabe9965867ae69e"
+    },
+    {
+      "path": "local\\audits\\fullrun-parity-20261007\\stock-double-boss-entry-r1\\monsters.MonsterGroup-powers.txt",
+      "sha256": "594826a9c18b2582f66451d772c0e507c52dfee954eff50e862b714b301092dc"
+    },
+    {
+      "path": "local\\audits\\fullrun-parity-20261007\\stock-double-boss-entry-r1\\events.beyond.SpireHeart-terminal.txt",
+      "sha256": "8d3a57263aadc0b5605c478dfb5d2d956ee4c7397c62f2ae9e15eabd12dc79fd"
+    },
+    {
+      "path": "local\\audits\\fullrun-parity-20261007\\stock-double-boss-entry-r1\\rooms.VictoryRoom-terminal.txt",
+      "sha256": "964c598574941c08ba1eebd114d5b3293fa2ec81480dcf7c7ae92374888c6eaa"
+    },
+    {
+      "path": "local\\audits\\fullrun-parity-20261007\\stock-double-boss-entry-r1\\core.AbstractCreature-death.txt",
+      "sha256": "3c77feaf226e9e555f976a7c5fc5e1fad853ef90c1d963c0d08cb82c932d3c0d"
+    }
+  ],
+  "endpoint_fields": [
+    "floor",
+    "hp",
+    "max_hp",
+    "gold",
+    "rng",
+    "deck_ids_and_upgrades"
+  ],
+  "all_endpoint_fields_match": true,
+  "all_boundary_restores_match": true,
+  "raw_projection_difference_retained": true,
+  "accepted_bounded_difference": "Dead Deca Artifact3 after end turn: stock updateDeathAnimation clears powers; native retains corpse power, excluded from policy input and turn callbacks. Exact direct-state equality remains false. Classifier rejects all other differences.",
+  "checks": {
+    "focused_tests": 53,
+    "ruff": "PASS",
+    "recovery_checked_each": 63,
+    "recovery_mismatches": 0,
+    "production_smoke": "PASS",
+    "full_python_suite": "NOT_RUN"
+  },
+  "unverified": [
+    "Other five ordered pairs",
+    "Full Boss phase coverage",
+    "Occupied potion and arbitrary relic carry-over",
+    "VictoryRoom dialogue and score",
+    "Keys and complete Act4 transition",
+    "Normal-start late-act trajectories",
+    "Full reachable content coverage"
+  ],
+  "resume_waiver": false,
+  "server_checkout_modified": false,
+  "training_effect_claim": false
+}

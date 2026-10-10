@@ -1,0 +1,3228 @@
+{
+  "schema": "sls-a20h-first-requalification-evidence-v1",
+  "native": {
+    "path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\build\\native\\cpython-312\\_lightspeed.cp312-win_amd64.pyd",
+    "sha256": "ce8f500b5116980f2bca854488da334cac58a679a1c1c59e3a8f70410890f3e8",
+    "source_sha256": "6805e8c991ff6e3ca1b57248678babbbc1ea904b6a1a35e17d631c426765dcc0",
+    "git_commit": "e1902d6a1bb56166bc55f6d7c646c6b560dfe541"
+  },
+  "native_source_sha256": "6805e8c991ff6e3ca1b57248678babbbc1ea904b6a1a35e17d631c426765dcc0",
+  "implementation_sha256": "d31392af86ba43bfae1686193d1c91b9861b11ebbf224b141be38f771ff90096",
+  "archive_replays": {
+    "schema": "sls-bounded-a20h-requalification-v1",
+    "native_source_sha256": "6805e8c991ff6e3ca1b57248678babbbc1ea904b6a1a35e17d631c426765dcc0",
+    "native": {
+      "path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\build\\native\\cpython-312\\_lightspeed.cp312-win_amd64.pyd",
+      "sha256": "ce8f500b5116980f2bca854488da334cac58a679a1c1c59e3a8f70410890f3e8",
+      "source_sha256": "6805e8c991ff6e3ca1b57248678babbbc1ea904b6a1a35e17d631c426765dcc0",
+      "git_commit": "e1902d6a1bb56166bc55f6d7c646c6b560dfe541"
+    },
+    "original_game_launched": false,
+    "gpu_used": false,
+    "results": [
+      {
+        "capture": "act3-basic-ordinary-r1",
+        "command": [
+          "D:\\Anaconda\\envs\\DL\\python.exe",
+          "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\tools\\replay_act2_encounter_batch.py",
+          "D:\\SLS\\local\\audits\\fullrun-parity-20261007\\act3-basic-ordinary-r1.json",
+          "--oracle-build",
+          "D:\\SLS\\local\\build\\oracle\\fullrun-parity-r7.build.json",
+          "--manifest",
+          "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\native\\oracle\\resources\\spirecomm\\parity\\fullrun-act3-basic.json",
+          "--native-view",
+          "production-public",
+          "--continue-after-divergence",
+          "--output",
+          "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\a20h-requalification-20261010\\act3-basic-ordinary-r1-replay.json"
+        ],
+        "exit_code": 0,
+        "inputs_sha256": {
+          "D:\\SLS\\local\\audits\\fullrun-parity-20261007\\act3-basic-ordinary-r1.json": "9673728620d4fe275e9ba255c5bd73e7bc0f5423291bbc6abf03248eca119f7f",
+          "D:\\SLS\\local\\audits\\fullrun-parity-20261007\\act3-basic-ordinary-r1.launch.json": "c47f41a64f6ededb446ce0b6d922da3ec1638b1bb359903a6ecd0d8926160489",
+          "D:\\SLS\\local\\build\\oracle\\fullrun-parity-r7.build.json": "8160819526bd9985eb31395aa6592351bc6b07d93f7bbc247c0daa8a67929155",
+          "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\native\\oracle\\resources\\spirecomm\\parity\\fullrun-act3-basic.json": "8ec8cdb780b06cca2eca738f0e76d6e946146e38bda663a5f0b771c799241713"
+        },
+        "report_sha256": "4c3051108f61941a504635b29eb95c3f9f44eff1f560e5d922f256dab8d32f4e",
+        "report_schema": "sls-act2-differential-v1",
+        "summary": null,
+        "runs": [
+          {
+            "seed": 131200051,
+            "status": "SEMANTIC_DIFFERENCE",
+            "first_divergence": {
+              "boundary": 3,
+              "differences": [
+                {
+                  "path": "$.direct.monsters[3].powers",
+                  "original": [
+                    {
+                      "id": "EXPLOSIVE",
+                      "amount": 1
+                    }
+                  ],
+                  "simulator": []
+                }
+              ]
+            }
+          },
+          {
+            "seed": 131200052,
+            "status": "SEMANTIC_DIFFERENCE",
+            "first_divergence": {
+              "boundary": 3,
+              "differences": [
+                {
+                  "path": "$.direct.monsters[3].powers",
+                  "original": [
+                    {
+                      "id": "EXPLOSIVE",
+                      "amount": 1
+                    }
+                  ],
+                  "simulator": []
+                }
+              ]
+            }
+          },
+          {
+            "seed": 131200053,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200057,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200058,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200059,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200060,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200061,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200062,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200063,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200064,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200065,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200069,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200070,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200071,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200072,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200073,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200074,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200075,
+            "status": "SEMANTIC_DIFFERENCE",
+            "first_divergence": {
+              "boundary": 3,
+              "differences": [
+                {
+                  "path": "$.direct.monsters[2].powers",
+                  "original": [
+                    {
+                      "id": "EXPLOSIVE",
+                      "amount": 1
+                    }
+                  ],
+                  "simulator": []
+                }
+              ]
+            }
+          },
+          {
+            "seed": 131200076,
+            "status": "SEMANTIC_DIFFERENCE",
+            "first_divergence": {
+              "boundary": 3,
+              "differences": [
+                {
+                  "path": "$.direct.monsters[2].powers",
+                  "original": [
+                    {
+                      "id": "EXPLOSIVE",
+                      "amount": 1
+                    }
+                  ],
+                  "simulator": []
+                }
+              ]
+            }
+          },
+          {
+            "seed": 131200077,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          }
+        ],
+        "counts": {
+          "SEMANTIC_DIFFERENCE": 4,
+          "HARNESS_MATCH": 17
+        },
+        "boundaries": 105
+      },
+      {
+        "capture": "act3-basic-boss-elite-r1",
+        "command": [
+          "D:\\Anaconda\\envs\\DL\\python.exe",
+          "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\tools\\replay_act2_encounter_batch.py",
+          "D:\\SLS\\local\\audits\\fullrun-parity-20261007\\act3-basic-boss-elite-r1.json",
+          "--oracle-build",
+          "D:\\SLS\\local\\build\\oracle\\fullrun-parity-r8.build.json",
+          "--manifest",
+          "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\native\\oracle\\resources\\spirecomm\\parity\\fullrun-act3-basic.json",
+          "--native-view",
+          "production-public",
+          "--continue-after-divergence",
+          "--output",
+          "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\a20h-requalification-20261010\\act3-basic-boss-elite-r1-replay.json"
+        ],
+        "exit_code": 0,
+        "inputs_sha256": {
+          "D:\\SLS\\local\\audits\\fullrun-parity-20261007\\act3-basic-boss-elite-r1.json": "d3c8dccbe38d9b6b08b632552706df0fe885234b2c26b044e241ce2bbb0513d0",
+          "D:\\SLS\\local\\audits\\fullrun-parity-20261007\\act3-basic-boss-elite-r1.launch.json": "71840c27a605f2ad9ecb3df3697ba9f0b254f9125d769aa027edb8f5c710c3de",
+          "D:\\SLS\\local\\build\\oracle\\fullrun-parity-r8.build.json": "0f0c3fda8446b321b708418e0bfa922e1dca60708ea14c831921e01300a54f61",
+          "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\native\\oracle\\resources\\spirecomm\\parity\\fullrun-act3-basic.json": "8ec8cdb780b06cca2eca738f0e76d6e946146e38bda663a5f0b771c799241713"
+        },
+        "report_sha256": "fc861a6cde850c4a3d29c0afb740e0562c06ac028a072cc572aab609c36d0c78",
+        "report_schema": "sls-act2-differential-v1",
+        "summary": null,
+        "runs": [
+          {
+            "seed": 131200045,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200046,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200047,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200048,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200049,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200050,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200054,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200055,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200056,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200066,
+            "status": "SEMANTIC_DIFFERENCE",
+            "first_divergence": {
+              "boundary": 2,
+              "differences": [
+                {
+                  "path": "$.direct.monsters[1].powers",
+                  "original": [],
+                  "simulator": [
+                    {
+                      "id": "MINION",
+                      "amount": 1
+                    }
+                  ]
+                },
+                {
+                  "path": "$.direct.monsters[4].powers",
+                  "original": [],
+                  "simulator": [
+                    {
+                      "id": "MINION",
+                      "amount": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "seed": 131200067,
+            "status": "SEMANTIC_DIFFERENCE",
+            "first_divergence": {
+              "boundary": 2,
+              "differences": [
+                {
+                  "path": "$.direct.monsters[1].powers",
+                  "original": [],
+                  "simulator": [
+                    {
+                      "id": "MINION",
+                      "amount": 1
+                    }
+                  ]
+                },
+                {
+                  "path": "$.direct.monsters[4].powers",
+                  "original": [],
+                  "simulator": [
+                    {
+                      "id": "MINION",
+                      "amount": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "seed": 131200068,
+            "status": "SEMANTIC_DIFFERENCE",
+            "first_divergence": {
+              "boundary": 2,
+              "differences": [
+                {
+                  "path": "$.direct.monsters[1].powers",
+                  "original": [],
+                  "simulator": [
+                    {
+                      "id": "MINION",
+                      "amount": 1
+                    }
+                  ]
+                },
+                {
+                  "path": "$.direct.monsters[4].powers",
+                  "original": [],
+                  "simulator": [
+                    {
+                      "id": "MINION",
+                      "amount": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "seed": 131200078,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200079,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200080,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200081,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200082,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200083,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200084,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200085,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200086,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          }
+        ],
+        "counts": {
+          "HARNESS_MATCH": 18,
+          "SEMANTIC_DIFFERENCE": 3
+        },
+        "boundaries": 105
+      },
+      {
+        "capture": "ending-interaction-capture-r2",
+        "command": [
+          "D:\\Anaconda\\envs\\DL\\python.exe",
+          "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\tools\\replay_act2_encounter_batch.py",
+          "D:\\SLS\\local\\audits\\fullrun-parity-20261007\\ending-interaction-capture-r2.json",
+          "--oracle-build",
+          "D:\\SLS\\local\\build\\oracle\\fullrun-parity-r12.build.json",
+          "--manifest",
+          "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\native\\oracle\\resources\\spirecomm\\parity\\fullrun-ending-interactions-r1.json",
+          "--native-view",
+          "production-public",
+          "--continue-after-divergence",
+          "--output",
+          "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\a20h-requalification-20261010\\ending-interaction-capture-r2-replay.json"
+        ],
+        "exit_code": 0,
+        "inputs_sha256": {
+          "D:\\SLS\\local\\audits\\fullrun-parity-20261007\\ending-interaction-capture-r2.json": "e645e8998eed2ea1a8e7c8f17f4e0581b79f76faac7ea2035814f4cd44724ba9",
+          "D:\\SLS\\local\\audits\\fullrun-parity-20261007\\ending-interaction-capture-r2.launch.json": "8e8b8f7572140396d546609e502227b737fd881dac7fb9bd3f99912d4616d6b5",
+          "D:\\SLS\\local\\build\\oracle\\fullrun-parity-r12.build.json": "6e2b5dc254fa4ed3f244c353b2bd284b72252fd64c96d53ed2447c8b3aa03b0f",
+          "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\native\\oracle\\resources\\spirecomm\\parity\\fullrun-ending-interactions-r1.json": "06df6adcc3749099730624ff4d391201971cf2f93055224c1825ce45ffc4eb00"
+        },
+        "report_sha256": "83c89c338729eb148d6226b52785d4fc553a454c912868892a211d46339780bd",
+        "report_schema": "sls-act2-differential-v1",
+        "summary": null,
+        "runs": [
+          {
+            "seed": 131200102,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200103,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200104,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200105,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200106,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200107,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200108,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200109,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200110,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200111,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200112,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200113,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          }
+        ],
+        "counts": {
+          "HARNESS_MATCH": 12
+        },
+        "boundaries": 54
+      },
+      {
+        "capture": "heart-loss-capture-r1",
+        "command": [
+          "D:\\Anaconda\\envs\\DL\\python.exe",
+          "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\tools\\replay_act2_encounter_batch.py",
+          "D:\\SLS\\local\\audits\\fullrun-parity-20261007\\heart-loss-capture-r1.json",
+          "--oracle-build",
+          "D:\\SLS\\local\\build\\oracle\\fullrun-parity-r14.build.json",
+          "--manifest",
+          "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\native\\oracle\\resources\\spirecomm\\parity\\fullrun-heart-loss-r1.json",
+          "--native-view",
+          "production-public",
+          "--continue-after-divergence",
+          "--output",
+          "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\a20h-requalification-20261010\\heart-loss-capture-r1-replay.json"
+        ],
+        "exit_code": 0,
+        "inputs_sha256": {
+          "D:\\SLS\\local\\audits\\fullrun-parity-20261007\\heart-loss-capture-r1.json": "dd8a107e9bd949cd3d29b2b7827d6a6252139e0b3ef5e922b181f8e13809c9ba",
+          "D:\\SLS\\local\\audits\\fullrun-parity-20261007\\heart-loss-capture-r1.launch.json": "c419ab031d8ac115027bc791c9272a5cca2e01a314113e8f19533ae37f7df28f",
+          "D:\\SLS\\local\\build\\oracle\\fullrun-parity-r14.build.json": "056953e5c40bb334cd4ee50facc841e5ece4259796750681bcd4cb3266225728",
+          "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\native\\oracle\\resources\\spirecomm\\parity\\fullrun-heart-loss-r1.json": "2ca745c1a54e50e430e9b12a9b6d951d78d67d9b4e7f6614fe5336aa6ec5fcfb"
+        },
+        "report_sha256": "009adfa98d3fc5e22e54482a85ade48cf19ecb2c952f346608057bb0c2c58c4b",
+        "report_schema": "sls-act2-differential-v1",
+        "summary": null,
+        "runs": [
+          {
+            "seed": 131200120,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200121,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200122,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200123,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200124,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200125,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          }
+        ],
+        "counts": {
+          "HARNESS_MATCH": 6
+        },
+        "boundaries": 12
+      },
+      {
+        "capture": "heart-lethal-capture-r1",
+        "command": [
+          "D:\\Anaconda\\envs\\DL\\python.exe",
+          "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\tools\\replay_act2_encounter_batch.py",
+          "D:\\SLS\\local\\audits\\fullrun-parity-20261007\\heart-lethal-capture-r1.json",
+          "--oracle-build",
+          "D:\\SLS\\local\\build\\oracle\\fullrun-parity-r15.build.json",
+          "--manifest",
+          "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\native\\oracle\\resources\\spirecomm\\parity\\fullrun-heart-lethal-r1.json",
+          "--native-view",
+          "production-public",
+          "--continue-after-divergence",
+          "--output",
+          "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\a20h-requalification-20261010\\heart-lethal-capture-r1-replay.json"
+        ],
+        "exit_code": 1,
+        "inputs_sha256": {
+          "D:\\SLS\\local\\audits\\fullrun-parity-20261007\\heart-lethal-capture-r1.json": "a54be40958e50dc1837b09c5573470c1e81abccea500030b14be1d9df3112891",
+          "D:\\SLS\\local\\audits\\fullrun-parity-20261007\\heart-lethal-capture-r1.launch.json": "132f9b63cc8d231fa3778f8ca141507be603cdc75cfefd066a290aaad2a254d5",
+          "D:\\SLS\\local\\build\\oracle\\fullrun-parity-r15.build.json": "f73bb535d7b64ef066948b553435d5a1cb0a4bb9cd7515d6573af3e9d95c4bb1",
+          "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\native\\oracle\\resources\\spirecomm\\parity\\fullrun-heart-lethal-r1.json": "1f08870e00d7e07cb023c8bd6ddc810cf986788577fc3deaec11d45cf86c1b27"
+        }
+      },
+      {
+        "capture": "awakened-rebirth-capture-r1",
+        "command": [
+          "D:\\Anaconda\\envs\\DL\\python.exe",
+          "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\tools\\replay_act2_encounter_batch.py",
+          "D:\\SLS\\local\\audits\\fullrun-parity-20261007\\awakened-rebirth-capture-r1.json",
+          "--oracle-build",
+          "D:\\SLS\\local\\build\\oracle\\fullrun-parity-r17.build.json",
+          "--manifest",
+          "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\native\\oracle\\resources\\spirecomm\\parity\\fullrun-awakened-rebirth-r1.json",
+          "--native-view",
+          "production-public",
+          "--continue-after-divergence",
+          "--output",
+          "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\a20h-requalification-20261010\\awakened-rebirth-capture-r1-replay.json"
+        ],
+        "exit_code": 0,
+        "inputs_sha256": {
+          "D:\\SLS\\local\\audits\\fullrun-parity-20261007\\awakened-rebirth-capture-r1.json": "f1a0aa16ad3ef36dcae0eefbb970c4d3c02d82cfcc83bdb931290f84827ae675",
+          "D:\\SLS\\local\\audits\\fullrun-parity-20261007\\awakened-rebirth-capture-r1.launch.json": "d488d816c8b0ea42dc857058d0250831d30aec5316819a0749887752f42d6768",
+          "D:\\SLS\\local\\build\\oracle\\fullrun-parity-r17.build.json": "25dd9920dae8f7a236055a9056c8afcffd456a23c8188444c714623b22b8a38c",
+          "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\native\\oracle\\resources\\spirecomm\\parity\\fullrun-awakened-rebirth-r1.json": "ec435329e236e46ec4ecf827ba31ed865cbc2a2bc4fe49e8c28fd23b9b026b1a"
+        },
+        "report_sha256": "9558ca1f77cb7401558d974322258399d31f5646251cd73c3532222d2463f7fb",
+        "report_schema": "sls-act2-differential-v1",
+        "summary": null,
+        "runs": [
+          {
+            "seed": 131200138,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200139,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200140,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200141,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200142,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200143,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          }
+        ],
+        "counts": {
+          "HARNESS_MATCH": 6
+        },
+        "boundaries": 30
+      },
+      {
+        "capture": "darkling-revival-capture-r1",
+        "command": [
+          "D:\\Anaconda\\envs\\DL\\python.exe",
+          "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\tools\\replay_act2_encounter_batch.py",
+          "D:\\SLS\\local\\audits\\fullrun-parity-20261007\\darkling-revival-capture-r1.json",
+          "--oracle-build",
+          "D:\\SLS\\local\\build\\oracle\\fullrun-parity-r16.build.json",
+          "--manifest",
+          "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\native\\oracle\\resources\\spirecomm\\parity\\fullrun-darkling-revival-r1.json",
+          "--native-view",
+          "production-public",
+          "--continue-after-divergence",
+          "--output",
+          "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\a20h-requalification-20261010\\darkling-revival-capture-r1-replay.json"
+        ],
+        "exit_code": 0,
+        "inputs_sha256": {
+          "D:\\SLS\\local\\audits\\fullrun-parity-20261007\\darkling-revival-capture-r1.json": "1e4f6fda89fe6344b01e19861283c7a96405b79cb31fa130babc92d51904bb01",
+          "D:\\SLS\\local\\audits\\fullrun-parity-20261007\\darkling-revival-capture-r1.launch.json": "7c388843d865947a2e656e701c125160603a4f5708cd8756e9f55e43c95972a2",
+          "D:\\SLS\\local\\build\\oracle\\fullrun-parity-r16.build.json": "f90f04e9cfbcfa6284c0932772a65b4e73254d670c7c235fe11ae7501da08d72",
+          "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\native\\oracle\\resources\\spirecomm\\parity\\fullrun-darkling-revival-r1.json": "c765a6f93803728cd90ce7dab221e5fd8ed17cbef256fa061d4c76864a32892a"
+        },
+        "report_sha256": "627a52d231510ceacb5d3bc78a9c4122a5d7a9062b24b2237fb1a934d0ded3f5",
+        "report_schema": "sls-act2-differential-v1",
+        "summary": null,
+        "runs": [
+          {
+            "seed": 131200132,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200133,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200134,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200135,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200136,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          },
+          {
+            "seed": 131200137,
+            "status": "HARNESS_MATCH",
+            "first_divergence": null
+          }
+        ],
+        "counts": {
+          "HARNESS_MATCH": 6
+        },
+        "boundaries": 30
+      },
+      {
+        "capture": "repto-target-capture-r1",
+        "command": [
+          "D:\\Anaconda\\envs\\DL\\python.exe",
+          "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\tools\\replay_act2_encounter_batch.py",
+          "D:\\SLS\\local\\audits\\fullrun-parity-20261007\\repto-target-capture-r1.json",
+          "--oracle-build",
+          "D:\\SLS\\local\\build\\oracle\\fullrun-parity-r10.build.json",
+          "--manifest",
+          "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\native\\oracle\\resources\\spirecomm\\parity\\fullrun-repto-targets-r1.json",
+          "--native-view",
+          "production-public",
+          "--continue-after-divergence",
+          "--output",
+          "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\a20h-requalification-20261010\\repto-target-capture-r1-replay.json"
+        ],
+        "exit_code": 0,
+        "inputs_sha256": {
+          "D:\\SLS\\local\\audits\\fullrun-parity-20261007\\repto-target-capture-r1.json": "b4f4376dc795e32df07e21f6d94fef1ffd7235d492f5d336ed37c41bca92f76b",
+          "D:\\SLS\\local\\audits\\fullrun-parity-20261007\\repto-target-capture-r1.launch.json": "1072448ef58255f3ca6ff7311ed495744cd3d4bc3eb79241c090c43b4e295dcd",
+          "D:\\SLS\\local\\build\\oracle\\fullrun-parity-r10.build.json": "01981110c8d740dbb185df1041ed6026435055f58fea1e71bfc33d681eac8172",
+          "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\native\\oracle\\resources\\spirecomm\\parity\\fullrun-repto-targets-r1.json": "e573274d0d59e8f5eaf45b76669d53263058d239bc59e1e8c36daca40056f339"
+        },
+        "report_sha256": "1bfa1c90c1988061beeac0fb6b2d1ee89cf9ee821af022a95a280a091714623b",
+        "report_schema": "sls-act2-differential-v1",
+        "summary": null,
+        "runs": [
+          {
+            "seed": 131200099,
+            "status": "SEMANTIC_DIFFERENCE",
+            "first_divergence": {
+              "boundary": 2,
+              "differences": [
+                {
+                  "path": "$.direct.monsters[1].powers",
+                  "original": [],
+                  "simulator": [
+                    {
+                      "id": "MINION",
+                      "amount": 1
+                    }
+                  ]
+                },
+                {
+                  "path": "$.direct.monsters[4].powers",
+                  "original": [],
+                  "simulator": [
+                    {
+                      "id": "MINION",
+                      "amount": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "seed": 131200100,
+            "status": "SEMANTIC_DIFFERENCE",
+            "first_divergence": {
+              "boundary": 2,
+              "differences": [
+                {
+                  "path": "$.direct.monsters[1].powers",
+                  "original": [],
+                  "simulator": [
+                    {
+                      "id": "MINION",
+                      "amount": 1
+                    }
+                  ]
+                },
+                {
+                  "path": "$.direct.monsters[4].powers",
+                  "original": [],
+                  "simulator": [
+                    {
+                      "id": "MINION",
+                      "amount": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "seed": 131200101,
+            "status": "SEMANTIC_DIFFERENCE",
+            "first_divergence": {
+              "boundary": 2,
+              "differences": [
+                {
+                  "path": "$.direct.monsters[1].powers",
+                  "original": [],
+                  "simulator": [
+                    {
+                      "id": "MINION",
+                      "amount": 1
+                    }
+                  ]
+                },
+                {
+                  "path": "$.direct.monsters[4].powers",
+                  "original": [],
+                  "simulator": [
+                    {
+                      "id": "MINION",
+                      "amount": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ],
+        "counts": {
+          "SEMANTIC_DIFFERENCE": 3
+        },
+        "boundaries": 24
+      }
+    ],
+    "qualification": "BOUNDED_CONTROLLED_ARCHIVE_REPLAY_NOT_FULL_A20H_CERTIFICATION"
+  },
+  "heart_terminal": {
+    "schema": "sls-heart-terminal-archive-replay-v1",
+    "native": {
+      "path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\build\\native\\cpython-312\\_lightspeed.cp312-win_amd64.pyd",
+      "sha256": "ce8f500b5116980f2bca854488da334cac58a679a1c1c59e3a8f70410890f3e8",
+      "source_sha256": "6805e8c991ff6e3ca1b57248678babbbc1ea904b6a1a35e17d631c426765dcc0",
+      "git_commit": "e1902d6a1bb56166bc55f6d7c646c6b560dfe541"
+    },
+    "native_source_sha256": "6805e8c991ff6e3ca1b57248678babbbc1ea904b6a1a35e17d631c426765dcc0",
+    "cuda_visible_devices": "-1",
+    "scope": "TERMINAL_HP_OUTCOME_POTIONS_RNG_AND_RESTORE_ONLY",
+    "original_game_launched": false,
+    "full_a20h_qualification": false,
+    "inputs_sha256": {
+      "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\tests\\fixtures\\heart-lethal-stock.json": "e0a3635587e3b9b99c4201db0e6a99a5a353a694f60dbd4834246ac02f853268",
+      "D:\\SLS\\local\\audits\\fullrun-parity-20261007\\heart-lethal-capture-r1.json": "a54be40958e50dc1837b09c5573470c1e81abccea500030b14be1d9df3112891",
+      "D:\\SLS\\local\\build\\oracle\\fullrun-parity-r15.build.json": "f73bb535d7b64ef066948b553435d5a1cb0a4bb9cd7515d6573af3e9d95c4bb1",
+      "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\native\\oracle\\resources\\spirecomm\\parity\\fullrun-heart-lethal-r1.json": "1f08870e00d7e07cb023c8bd6ddc810cf986788577fc3deaec11d45cf86c1b27",
+      "D:\\SLS\\local\\audits\\fullrun-parity-20261007\\heart-lethal-capture-r1.launch.json": "132f9b63cc8d231fa3778f8ca141507be603cdc75cfefd066a290aaad2a254d5"
+    },
+    "runs": [
+      {
+        "seed": 131200126,
+        "stock": {
+          "outcome": "PLAYER_LOSS",
+          "hp": 0,
+          "max_hp": 80,
+          "potions": [
+            "EMPTY_POTION_SLOT",
+            "EMPTY_POTION_SLOT"
+          ],
+          "rng": {
+            "ai": {
+              "counter": 2,
+              "seed0": 1935747343163172021,
+              "seed1": 4753767087397893262
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 3580787935237911720,
+              "seed1": 17920732519136343096
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 18054164860469766260,
+              "seed1": 3234030697654974996
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 18054164860469766260,
+              "seed1": 3234030697654974996
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 3996375531018264647,
+              "seed1": 14827519667814477633
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 18054164860469766260,
+              "seed1": 3234030697654974996
+            },
+            "misc": {
+              "counter": 2,
+              "seed0": 12265773034524826219,
+              "seed1": 4695765288766342079
+            },
+            "monster_hp": {
+              "counter": 2,
+              "seed0": 1935747343163172021,
+              "seed1": 4753767087397893262
+            },
+            "monster": {
+              "counter": 36,
+              "seed0": 587536136777230373,
+              "seed1": 17437350056255465896
+            },
+            "neow": {
+              "counter": 5,
+              "seed0": 281051866372925814,
+              "seed1": 6453739803100432082
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 18054164860469766260,
+              "seed1": 3234030697654974996
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 281051866372925814,
+              "seed1": 6453739803100432082
+            },
+            "shuffle": {
+              "counter": 0,
+              "seed0": 3580787935237911720,
+              "seed1": 17920732519136343096
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 18054164860469766260,
+              "seed1": 3234030697654974996
+            }
+          }
+        },
+        "native": {
+          "outcome": "PLAYER_LOSS",
+          "hp": 0,
+          "max_hp": 80,
+          "potions": [
+            "EMPTY_POTION_SLOT",
+            "EMPTY_POTION_SLOT"
+          ],
+          "rng": {
+            "ai": {
+              "counter": 2,
+              "seed0": 1935747343163172021,
+              "seed1": 4753767087397893262
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 3580787935237911720,
+              "seed1": 17920732519136343096
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 18054164860469766260,
+              "seed1": 3234030697654974996
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 18054164860469766260,
+              "seed1": 3234030697654974996
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 3996375531018264647,
+              "seed1": 14827519667814477633
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 18054164860469766260,
+              "seed1": 3234030697654974996
+            },
+            "misc": {
+              "counter": 2,
+              "seed0": 12265773034524826219,
+              "seed1": 4695765288766342079
+            },
+            "monster_hp": {
+              "counter": 2,
+              "seed0": 1935747343163172021,
+              "seed1": 4753767087397893262
+            },
+            "monster": {
+              "counter": 36,
+              "seed0": 587536136777230373,
+              "seed1": 17437350056255465896
+            },
+            "neow": {
+              "counter": 5,
+              "seed0": 281051866372925814,
+              "seed1": 6453739803100432082
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 18054164860469766260,
+              "seed1": 3234030697654974996
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 281051866372925814,
+              "seed1": 6453739803100432082
+            },
+            "shuffle": {
+              "counter": 0,
+              "seed0": 3580787935237911720,
+              "seed1": 17920732519136343096
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 18054164860469766260,
+              "seed1": 3234030697654974996
+            }
+          }
+        },
+        "differences": [],
+        "isolated_terminal_restore": {
+          "supported": true,
+          "equal": true
+        }
+      },
+      {
+        "seed": 131200127,
+        "stock": {
+          "outcome": "PLAYER_LOSS",
+          "hp": 0,
+          "max_hp": 80,
+          "potions": [
+            "EMPTY_POTION_SLOT",
+            "EMPTY_POTION_SLOT"
+          ],
+          "rng": {
+            "ai": {
+              "counter": 2,
+              "seed0": 11631315316240995236,
+              "seed1": 9535022597492118640
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 6204556497009201823,
+              "seed1": 6202946414980299748
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 11703747822104324658,
+              "seed1": 6421584842228887420
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 11703747822104324658,
+              "seed1": 6421584842228887420
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 2951388295619797267,
+              "seed1": 6194614354727525797
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 11703747822104324658,
+              "seed1": 6421584842228887420
+            },
+            "misc": {
+              "counter": 0,
+              "seed0": 14602561267496564903,
+              "seed1": 5974914741009851022
+            },
+            "monster_hp": {
+              "counter": 2,
+              "seed0": 11631315316240995236,
+              "seed1": 9535022597492118640
+            },
+            "monster": {
+              "counter": 33,
+              "seed0": 9477404613959124185,
+              "seed1": 14337338299028670058
+            },
+            "neow": {
+              "counter": 5,
+              "seed0": 12838998248160243678,
+              "seed1": 7758731606142569654
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 11703747822104324658,
+              "seed1": 6421584842228887420
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 12838998248160243678,
+              "seed1": 7758731606142569654
+            },
+            "shuffle": {
+              "counter": 0,
+              "seed0": 6204556497009201823,
+              "seed1": 6202946414980299748
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 11703747822104324658,
+              "seed1": 6421584842228887420
+            }
+          }
+        },
+        "native": {
+          "outcome": "PLAYER_LOSS",
+          "hp": 0,
+          "max_hp": 80,
+          "potions": [
+            "EMPTY_POTION_SLOT",
+            "EMPTY_POTION_SLOT"
+          ],
+          "rng": {
+            "ai": {
+              "counter": 2,
+              "seed0": 11631315316240995236,
+              "seed1": 9535022597492118640
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 6204556497009201823,
+              "seed1": 6202946414980299748
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 11703747822104324658,
+              "seed1": 6421584842228887420
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 11703747822104324658,
+              "seed1": 6421584842228887420
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 2951388295619797267,
+              "seed1": 6194614354727525797
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 11703747822104324658,
+              "seed1": 6421584842228887420
+            },
+            "misc": {
+              "counter": 0,
+              "seed0": 14602561267496564903,
+              "seed1": 5974914741009851022
+            },
+            "monster_hp": {
+              "counter": 2,
+              "seed0": 11631315316240995236,
+              "seed1": 9535022597492118640
+            },
+            "monster": {
+              "counter": 33,
+              "seed0": 9477404613959124185,
+              "seed1": 14337338299028670058
+            },
+            "neow": {
+              "counter": 5,
+              "seed0": 12838998248160243678,
+              "seed1": 7758731606142569654
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 11703747822104324658,
+              "seed1": 6421584842228887420
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 12838998248160243678,
+              "seed1": 7758731606142569654
+            },
+            "shuffle": {
+              "counter": 0,
+              "seed0": 6204556497009201823,
+              "seed1": 6202946414980299748
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 11703747822104324658,
+              "seed1": 6421584842228887420
+            }
+          }
+        },
+        "differences": [],
+        "isolated_terminal_restore": {
+          "supported": true,
+          "equal": true
+        }
+      },
+      {
+        "seed": 131200128,
+        "stock": {
+          "outcome": "PLAYER_LOSS",
+          "hp": 0,
+          "max_hp": 80,
+          "potions": [
+            "EMPTY_POTION_SLOT",
+            "EMPTY_POTION_SLOT"
+          ],
+          "rng": {
+            "ai": {
+              "counter": 2,
+              "seed0": 5872313360666328394,
+              "seed1": 13382172286574731450
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 6189136800410610529,
+              "seed1": 10730282376259388185
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 14602561267496564903,
+              "seed1": 5974914741009851022
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 14602561267496564903,
+              "seed1": 5974914741009851022
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 13500075866206399202,
+              "seed1": 10378075348036887389
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 14602561267496564903,
+              "seed1": 5974914741009851022
+            },
+            "misc": {
+              "counter": 1,
+              "seed0": 7656127316411809106,
+              "seed1": 13755412860178404683
+            },
+            "monster_hp": {
+              "counter": 2,
+              "seed0": 5872313360666328394,
+              "seed1": 13382172286574731450
+            },
+            "monster": {
+              "counter": 42,
+              "seed0": 14607005232822589064,
+              "seed1": 9819450030947426723
+            },
+            "neow": {
+              "counter": 6,
+              "seed0": 799950010879994214,
+              "seed1": 10507481863877583252
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 14602561267496564903,
+              "seed1": 5974914741009851022
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 14854486383681675605,
+              "seed1": 799950010879994214
+            },
+            "shuffle": {
+              "counter": 0,
+              "seed0": 6189136800410610529,
+              "seed1": 10730282376259388185
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 14602561267496564903,
+              "seed1": 5974914741009851022
+            }
+          }
+        },
+        "native": {
+          "outcome": "PLAYER_LOSS",
+          "hp": 0,
+          "max_hp": 80,
+          "potions": [
+            "EMPTY_POTION_SLOT",
+            "EMPTY_POTION_SLOT"
+          ],
+          "rng": {
+            "ai": {
+              "counter": 2,
+              "seed0": 5872313360666328394,
+              "seed1": 13382172286574731450
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 6189136800410610529,
+              "seed1": 10730282376259388185
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 14602561267496564903,
+              "seed1": 5974914741009851022
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 14602561267496564903,
+              "seed1": 5974914741009851022
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 13500075866206399202,
+              "seed1": 10378075348036887389
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 14602561267496564903,
+              "seed1": 5974914741009851022
+            },
+            "misc": {
+              "counter": 1,
+              "seed0": 7656127316411809106,
+              "seed1": 13755412860178404683
+            },
+            "monster_hp": {
+              "counter": 2,
+              "seed0": 5872313360666328394,
+              "seed1": 13382172286574731450
+            },
+            "monster": {
+              "counter": 42,
+              "seed0": 14607005232822589064,
+              "seed1": 9819450030947426723
+            },
+            "neow": {
+              "counter": 6,
+              "seed0": 799950010879994214,
+              "seed1": 10507481863877583252
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 14602561267496564903,
+              "seed1": 5974914741009851022
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 14854486383681675605,
+              "seed1": 799950010879994214
+            },
+            "shuffle": {
+              "counter": 0,
+              "seed0": 6189136800410610529,
+              "seed1": 10730282376259388185
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 14602561267496564903,
+              "seed1": 5974914741009851022
+            }
+          }
+        },
+        "differences": [],
+        "isolated_terminal_restore": {
+          "supported": true,
+          "equal": true
+        }
+      },
+      {
+        "seed": 131200129,
+        "stock": {
+          "outcome": "PLAYER_VICTORY",
+          "hp": 7,
+          "max_hp": 80,
+          "potions": [
+            "EMPTY_POTION_SLOT",
+            "EMPTY_POTION_SLOT"
+          ],
+          "rng": {
+            "ai": {
+              "counter": 2,
+              "seed0": 13689541467908680242,
+              "seed1": 7433990269315098305
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 15080168126211991613,
+              "seed1": 17087409532799617202
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 1115045217608905006,
+              "seed1": 7656127316411809106
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 1115045217608905006,
+              "seed1": 7656127316411809106
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 11963826633138208376,
+              "seed1": 12549744599231544654
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 1115045217608905006,
+              "seed1": 7656127316411809106
+            },
+            "misc": {
+              "counter": 1,
+              "seed0": 14342971274482157816,
+              "seed1": 15914101806087885011
+            },
+            "monster_hp": {
+              "counter": 2,
+              "seed0": 13689541467908680242,
+              "seed1": 7433990269315098305
+            },
+            "monster": {
+              "counter": 42,
+              "seed0": 617831521229485348,
+              "seed1": 7653845892822978392
+            },
+            "neow": {
+              "counter": 6,
+              "seed0": 5526069436756734564,
+              "seed1": 8757669586192735917
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 1115045217608905006,
+              "seed1": 7656127316411809106
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 300699259643382046,
+              "seed1": 5526069436756734564
+            },
+            "shuffle": {
+              "counter": 0,
+              "seed0": 15080168126211991613,
+              "seed1": 17087409532799617202
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 1115045217608905006,
+              "seed1": 7656127316411809106
+            }
+          }
+        },
+        "native": {
+          "outcome": "PLAYER_VICTORY",
+          "hp": 7,
+          "max_hp": 80,
+          "potions": [
+            "EMPTY_POTION_SLOT",
+            "EMPTY_POTION_SLOT"
+          ],
+          "rng": {
+            "ai": {
+              "counter": 2,
+              "seed0": 13689541467908680242,
+              "seed1": 7433990269315098305
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 15080168126211991613,
+              "seed1": 17087409532799617202
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 1115045217608905006,
+              "seed1": 7656127316411809106
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 1115045217608905006,
+              "seed1": 7656127316411809106
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 11963826633138208376,
+              "seed1": 12549744599231544654
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 1115045217608905006,
+              "seed1": 7656127316411809106
+            },
+            "misc": {
+              "counter": 1,
+              "seed0": 14342971274482157816,
+              "seed1": 15914101806087885011
+            },
+            "monster_hp": {
+              "counter": 2,
+              "seed0": 13689541467908680242,
+              "seed1": 7433990269315098305
+            },
+            "monster": {
+              "counter": 42,
+              "seed0": 617831521229485348,
+              "seed1": 7653845892822978392
+            },
+            "neow": {
+              "counter": 6,
+              "seed0": 5526069436756734564,
+              "seed1": 8757669586192735917
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 1115045217608905006,
+              "seed1": 7656127316411809106
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 300699259643382046,
+              "seed1": 5526069436756734564
+            },
+            "shuffle": {
+              "counter": 0,
+              "seed0": 15080168126211991613,
+              "seed1": 17087409532799617202
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 1115045217608905006,
+              "seed1": 7656127316411809106
+            }
+          }
+        },
+        "differences": [],
+        "isolated_terminal_restore": {
+          "supported": false,
+          "equal": null,
+          "reason": "ISOLATED_BATTLE_LOADER_REQUIRES_COMBAT_STATE_NOT_FULLRUN_RESTORE"
+        }
+      },
+      {
+        "seed": 131200130,
+        "stock": {
+          "outcome": "PLAYER_VICTORY",
+          "hp": 7,
+          "max_hp": 80,
+          "potions": [
+            "EMPTY_POTION_SLOT",
+            "EMPTY_POTION_SLOT"
+          ],
+          "rng": {
+            "ai": {
+              "counter": 2,
+              "seed0": 13407957044978249860,
+              "seed1": 16607035547785242207
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 11773494929359689862,
+              "seed1": 13279945181343629630
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 863646731257101124,
+              "seed1": 14342971274482157816
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 863646731257101124,
+              "seed1": 14342971274482157816
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 16757697250772044090,
+              "seed1": 7684203520741120149
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 863646731257101124,
+              "seed1": 14342971274482157816
+            },
+            "misc": {
+              "counter": 3,
+              "seed0": 13302173664389014775,
+              "seed1": 1018588465397676121
+            },
+            "monster_hp": {
+              "counter": 2,
+              "seed0": 13407957044978249860,
+              "seed1": 16607035547785242207
+            },
+            "monster": {
+              "counter": 36,
+              "seed0": 6369193570640055626,
+              "seed1": 11361316646271871024
+            },
+            "neow": {
+              "counter": 6,
+              "seed0": 4209939153899796311,
+              "seed1": 5573194716839408601
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 863646731257101124,
+              "seed1": 14342971274482157816
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 97503508999071853,
+              "seed1": 4209939153899796311
+            },
+            "shuffle": {
+              "counter": 0,
+              "seed0": 11773494929359689862,
+              "seed1": 13279945181343629630
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 863646731257101124,
+              "seed1": 14342971274482157816
+            }
+          }
+        },
+        "native": {
+          "outcome": "PLAYER_VICTORY",
+          "hp": 7,
+          "max_hp": 80,
+          "potions": [
+            "EMPTY_POTION_SLOT",
+            "EMPTY_POTION_SLOT"
+          ],
+          "rng": {
+            "ai": {
+              "counter": 2,
+              "seed0": 13407957044978249860,
+              "seed1": 16607035547785242207
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 11773494929359689862,
+              "seed1": 13279945181343629630
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 863646731257101124,
+              "seed1": 14342971274482157816
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 863646731257101124,
+              "seed1": 14342971274482157816
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 16757697250772044090,
+              "seed1": 7684203520741120149
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 863646731257101124,
+              "seed1": 14342971274482157816
+            },
+            "misc": {
+              "counter": 3,
+              "seed0": 13302173664389014775,
+              "seed1": 1018588465397676121
+            },
+            "monster_hp": {
+              "counter": 2,
+              "seed0": 13407957044978249860,
+              "seed1": 16607035547785242207
+            },
+            "monster": {
+              "counter": 36,
+              "seed0": 6369193570640055626,
+              "seed1": 11361316646271871024
+            },
+            "neow": {
+              "counter": 6,
+              "seed0": 4209939153899796311,
+              "seed1": 5573194716839408601
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 863646731257101124,
+              "seed1": 14342971274482157816
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 97503508999071853,
+              "seed1": 4209939153899796311
+            },
+            "shuffle": {
+              "counter": 0,
+              "seed0": 11773494929359689862,
+              "seed1": 13279945181343629630
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 863646731257101124,
+              "seed1": 14342971274482157816
+            }
+          }
+        },
+        "differences": [],
+        "isolated_terminal_restore": {
+          "supported": false,
+          "equal": null,
+          "reason": "ISOLATED_BATTLE_LOADER_REQUIRES_COMBAT_STATE_NOT_FULLRUN_RESTORE"
+        }
+      },
+      {
+        "seed": 131200131,
+        "stock": {
+          "outcome": "PLAYER_VICTORY",
+          "hp": 7,
+          "max_hp": 80,
+          "potions": [
+            "EMPTY_POTION_SLOT",
+            "EMPTY_POTION_SLOT"
+          ],
+          "rng": {
+            "ai": {
+              "counter": 2,
+              "seed0": 6042065713524760721,
+              "seed1": 4314434329060282838
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 14998384834554055783,
+              "seed1": 5087763958547825761
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 2030783904543256342,
+              "seed1": 10878531189933152472
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 2030783904543256342,
+              "seed1": 10878531189933152472
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 14767410426576484272,
+              "seed1": 7390853568873181070
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 2030783904543256342,
+              "seed1": 10878531189933152472
+            },
+            "misc": {
+              "counter": 3,
+              "seed0": 2352620898319212270,
+              "seed1": 8530208141221809300
+            },
+            "monster_hp": {
+              "counter": 2,
+              "seed0": 6042065713524760721,
+              "seed1": 4314434329060282838
+            },
+            "monster": {
+              "counter": 34,
+              "seed0": 6902800083869955658,
+              "seed1": 9329683551297278524
+            },
+            "neow": {
+              "counter": 5,
+              "seed0": 9987692757164308052,
+              "seed1": 17058422746327806775
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 2030783904543256342,
+              "seed1": 10878531189933152472
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 9987692757164308052,
+              "seed1": 17058422746327806775
+            },
+            "shuffle": {
+              "counter": 0,
+              "seed0": 14998384834554055783,
+              "seed1": 5087763958547825761
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 2030783904543256342,
+              "seed1": 10878531189933152472
+            }
+          }
+        },
+        "native": {
+          "outcome": "PLAYER_VICTORY",
+          "hp": 7,
+          "max_hp": 80,
+          "potions": [
+            "EMPTY_POTION_SLOT",
+            "EMPTY_POTION_SLOT"
+          ],
+          "rng": {
+            "ai": {
+              "counter": 2,
+              "seed0": 6042065713524760721,
+              "seed1": 4314434329060282838
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 14998384834554055783,
+              "seed1": 5087763958547825761
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 2030783904543256342,
+              "seed1": 10878531189933152472
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 2030783904543256342,
+              "seed1": 10878531189933152472
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 14767410426576484272,
+              "seed1": 7390853568873181070
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 2030783904543256342,
+              "seed1": 10878531189933152472
+            },
+            "misc": {
+              "counter": 3,
+              "seed0": 2352620898319212270,
+              "seed1": 8530208141221809300
+            },
+            "monster_hp": {
+              "counter": 2,
+              "seed0": 6042065713524760721,
+              "seed1": 4314434329060282838
+            },
+            "monster": {
+              "counter": 34,
+              "seed0": 6902800083869955658,
+              "seed1": 9329683551297278524
+            },
+            "neow": {
+              "counter": 5,
+              "seed0": 9987692757164308052,
+              "seed1": 17058422746327806775
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 2030783904543256342,
+              "seed1": 10878531189933152472
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 9987692757164308052,
+              "seed1": 17058422746327806775
+            },
+            "shuffle": {
+              "counter": 0,
+              "seed0": 14998384834554055783,
+              "seed1": 5087763958547825761
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 2030783904543256342,
+              "seed1": 10878531189933152472
+            }
+          }
+        },
+        "differences": [],
+        "isolated_terminal_restore": {
+          "supported": false,
+          "equal": null,
+          "reason": "ISOLATED_BATTLE_LOADER_REQUIRES_COMBAT_STATE_NOT_FULLRUN_RESTORE"
+        }
+      }
+    ]
+  },
+  "validation": {
+    "full_cpu_tests_passed": 1600,
+    "skipped": 2,
+    "warnings": 4,
+    "ruff": "PASS",
+    "configs_passed": 31,
+    "configs_total": 33,
+    "config_rejections": {
+      "act12-lambda-control-r1.json": "bound implementation changed",
+      "act12-lambda-experimental-r1.json": "bound implementation changed"
+    },
+    "cuda_visible_devices": "-1",
+    "original_pending_file_hashes_rechecked": 197,
+    "original_game_launched": false
+  },
+  "log_sha256": {
+    "pytest-full.log": "fc538cbd5e5c4e51939d169e13266bd8025bc9bd91a1179c411fa6a5b2c92a26",
+    "pytest-accepted.log": "b07db649ff394426b812fb5e9e22807df4742afba32f5b00c6cdee0e92988a0f",
+    "pytest-accepted.xml": "e0a97e0ac3f311697dd5273802f93f3932fd91098907bf023e6fcfa45aba2153",
+    "ruff.log": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0",
+    "configs.log": "956a0c983a0ec59ccd1967850ef195574b4bf14fedfd78ae46507d0e339333f7"
+  },
+  "source_snapshot": {
+    "schema": "sls-parity-source-snapshot-v1",
+    "original_root": "D:\\SLS",
+    "original_head": "e1902d6a1bb56166bc55f6d7c646c6b560dfe541",
+    "original_status_sha256": "6b1f02bd72a4a7b61d798f72d52a437166905358bde2a0d83cf2999b1429a0f6",
+    "files": [
+      {
+        "path": "docs/README.md",
+        "git_status": " M",
+        "sha256": "09d874e885363399df0940b609fb33bb9185a78ee8223cdfa5a55bb675e71019",
+        "copied_to_isolated_candidate": false
+      },
+      {
+        "path": "docs/local-artifacts.md",
+        "git_status": " M",
+        "sha256": "4e676439b31dbda0d055629e750cc495b559a87c2821d6de32ce7fa483ceadff",
+        "copied_to_isolated_candidate": false
+      },
+      {
+        "path": "docs/results/act12-long20m-20261007/README.md",
+        "git_status": " M",
+        "sha256": "14932b976578083da59c017abafaddf469437c3c9df0dec165ff4f1c2b54fd04",
+        "copied_to_isolated_candidate": false
+      },
+      {
+        "path": "docs/results/fullrun-parity-20261007/README.md",
+        "git_status": " M",
+        "sha256": "5fa884a009fedc131c5ef84ef265c55d2d9c04ec50a6487039ee9f89fd01e63b",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "model/README.md",
+        "git_status": " M",
+        "sha256": "cd8d14d10d8f940410b35f72556573035b1c6eb72215af88fd4d25996302457d",
+        "copied_to_isolated_candidate": false
+      },
+      {
+        "path": "native/oracle/ModTheSpire.json",
+        "git_status": " M",
+        "sha256": "f46e1fccc104b74c2ac5c8dab3cebb90d5f5f760367be2d37bda1d72d5dde65d",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "native/oracle/src/spirecomm/parity/CommunicationStatePatch.java",
+        "git_status": " M",
+        "sha256": "bd67c1246ebe8cad45a37355b498a498710ddd67a64985ffb8250cbe74ad0d61",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "native/oracle/src/spirecomm/parity/OracleScenarioPatch.java",
+        "git_status": " M",
+        "sha256": "de4ea7c4e1697f0619a69c5c199a211471b2697491abddd4fb76d62bdb3d6692",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "native/simulator/include/combat/BattleContext.h",
+        "git_status": " M",
+        "sha256": "29f7f978abe169564ab278f65840d1d7590c7750634ae097cf9edf70cfba05be",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "native/simulator/python/module.cpp",
+        "git_status": " M",
+        "sha256": "b437821d6980f2a86a2ad274a4215638e6a5fb4d9fb6183ba9f43c6198dbce1d",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "native/simulator/src/combat/BattleContext.cpp",
+        "git_status": " M",
+        "sha256": "055967d64b3364d31b17ddbd1bee9ca1dd32fb64a5f697c62dd752c0bd6a2d85",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "native/simulator/src/combat/Monster.cpp",
+        "git_status": " M",
+        "sha256": "4daa0dc092b0e12645658398b535c8403521c21a53ead2f41510fd7a82eefb54",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "native/simulator/src/combat/MonsterMoveDamage.cpp",
+        "git_status": " M",
+        "sha256": "6911e7fb3fd415735ff5a2c3e24cddfdedad7639c247fed782c41d157d61b621",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "native/simulator/src/combat/MonsterSpecific.cpp",
+        "git_status": " M",
+        "sha256": "370add83af4bb988a422fe16933fdefd823bc557b3b4e1f7384e77a0399d3ee9",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "native/simulator/src/game/GameContext.cpp",
+        "git_status": " M",
+        "sha256": "8ffdb58f966a45167ef4e7fc0fd5ed14961fc1bb313a7d95e2512fb612cbcefb",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "src/sls/audit/act2_differential.py",
+        "git_status": " M",
+        "sha256": "200257cf3da6f589f55975ac5d583cb19e5c8954b6db510f74f2d2e03346d51e",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "src/sls/backends/original/live.py",
+        "git_status": " M",
+        "sha256": "05589a497a5f24d8a2ee90f7827a32a8d9f9ccd787ab1a06eabeb83d2367235a",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "src/sls/contracts/observation.py",
+        "git_status": " M",
+        "sha256": "daf9d36dd68ba93d8b74cfb5bfe815e514a0a80e6c450c179a469afe1d96d57d",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/audit/test_act2_differential.py",
+        "git_status": " M",
+        "sha256": "5cbc851b64052fb34c010c656d5916a392538b6c007fcc69eeebfc5d9276eda2",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/audit/test_stock_discovery_clock.py",
+        "git_status": " M",
+        "sha256": "79557c33f9c661c9682019e4ec684bf1a185168c4ac759110355e4a303c6a50c",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/original/test_live_backend.py",
+        "git_status": " M",
+        "sha256": "706067f333a2c4dcb30a211ea7684fcf0d889f3c80c038357039d4a796168305",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/test_build_oracle.py",
+        "git_status": " M",
+        "sha256": "d212f6861211c7627b582d63379c9ca82d4acba22388d77c727876e50dbce0d5",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tools/capture_act2_encounter_batch.py",
+        "git_status": " M",
+        "sha256": "745fa3eb6f1b6cc8ad3f666b6d2cc56e9621f5ba740538144e8fc2136000f1a7",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tools/capture_act2_production_batch.py",
+        "git_status": " M",
+        "sha256": "475b6a88793a5697b3f50fa45f7532745e8b0043e8be30dd37fedc8ad401aeb6",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tools/capture_oracle_smoke.py",
+        "git_status": " M",
+        "sha256": "7f36c927c45d478e6f9af7251c5a1a4f3fba6072e398932df9a9a65bc0eb0218",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tools/replay_act2_clock_conditioned_trajectory.py",
+        "git_status": " M",
+        "sha256": "c246f345b9024f50829bac7b51b332411e43e2b6ba6753b112baf5382666c04e",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tools/replay_act2_encounter_batch.py",
+        "git_status": " M",
+        "sha256": "8e5f8aa584aaf03dd9ee2d718cbd48053e8591f1e0fd53fe197a4d434fb2f977",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tools/replay_act2_production_trajectory.py",
+        "git_status": " M",
+        "sha256": "3fabc9507aa052464504cd2de9d97b912c8e9d9acf752c4c9bf13d7aa8282104",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tools/run_act2_encounter_batch.py",
+        "git_status": " M",
+        "sha256": "5cd5a9cd2fc3d45fb4d535d759da742e4b7a77ef25e1ecc01acb2da1b436616f",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "docs/results/act12-lambda-20261008/README.md",
+        "git_status": "??",
+        "sha256": "acdb65002e3551d190e92c3743b01a9f77a2104554b798bc4a4da7d7076fd130",
+        "copied_to_isolated_candidate": false
+      },
+      {
+        "path": "docs/results/act12-lambda-20261008/archive-inventory.json",
+        "git_status": "??",
+        "sha256": "a01a8625184a16e330a0ea018d3f5b6e4c78630dc1b3d8605d85fc771c876f18",
+        "copied_to_isolated_candidate": false
+      },
+      {
+        "path": "docs/results/act12-lambda-20261008/cycle-trace-evidence.json",
+        "git_status": "??",
+        "sha256": "3bdc0f173363a5f9cda4d3d25559f19bac6e787719d24e64f3daeba195e5e1b0",
+        "copied_to_isolated_candidate": false
+      },
+      {
+        "path": "docs/results/act12-lambda-20261008/local-validation.json",
+        "git_status": "??",
+        "sha256": "293aeff54f98a86643ce93b0f21cb58f047dfec5ecb7b36619dde424b57ac646",
+        "copied_to_isolated_candidate": false
+      },
+      {
+        "path": "docs/results/act12-lambda-20261008/summary.json",
+        "git_status": "??",
+        "sha256": "fbcc578b277840846d9702975b58b45e600fdc9fb8c8af3fa058e581c1070e82",
+        "copied_to_isolated_candidate": false
+      },
+      {
+        "path": "docs/results/act12-long20m-20261007/TRAINING_RELEASE_20261009.md",
+        "git_status": "??",
+        "sha256": "09f2fcc16047a552cc9256f44e33e45dbe1d4d7e0652f9d6b10024b2ae7a4b21",
+        "copied_to_isolated_candidate": false
+      },
+      {
+        "path": "docs/results/act12-long20m-20261007/TRAINING_RESTART_20261008.md",
+        "git_status": "??",
+        "sha256": "8a4bc45bf023ef9fe3b1117879fec401d6b89e493635ac96efbffd9e8fc197e8",
+        "copied_to_isolated_candidate": false
+      },
+      {
+        "path": "docs/results/fullrun-parity-20261007/ACT12_CLOSEOUT.md",
+        "git_status": "??",
+        "sha256": "47e706adc51066acfc86fc1e53e1c0fad9b4f46da8bb8fc662ece5ae0a56edc4",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "docs/results/fullrun-parity-20261007/ACT12_CONTINUATION_20261008.md",
+        "git_status": "??",
+        "sha256": "df5937acff37b7f8a922a2ffb1952020c6eff4e408ac9a36c1771e2ccc345122",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "docs/results/fullrun-parity-20261007/ACT12_REWARD_CLOSEOUT_20261008.md",
+        "git_status": "??",
+        "sha256": "ee8e2f867e6e5edf824f2a0f80fecb57ca1ac5165a53b54e9d4881bcd4a53d94",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "docs/results/fullrun-parity-20261007/ACT12_TRAINING_SCOPE.md",
+        "git_status": "??",
+        "sha256": "2078a0bd06717a75f3509018a416c16884a09d8d3fbb7c12c60a19271ca2d28b",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "docs/results/fullrun-parity-20261007/FULL_SCOPE_RESUMED_20261008.md",
+        "git_status": "??",
+        "sha256": "37fe1825077860644bcb331eab321c1981188a76ca5613d8d2f6af975de6f7ae",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "docs/results/fullrun-parity-20261007/PAUSED_20261008.md",
+        "git_status": "??",
+        "sha256": "672e1bd058d554cf8f7f8aa4a237b56c5d92c2b27e959daa6bc465ea1957a4c1",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "docs/results/fullrun-parity-20261007/STATUS.md",
+        "git_status": "??",
+        "sha256": "c1c5a92acbde8c968e512ba334d4bb1ccc9bb68489a0d12c6dd4f74a74f2a4d9",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "docs/results/fullrun-parity-20261007/THIEF_REWARD_REOPEN_20261008.md",
+        "git_status": "??",
+        "sha256": "19a7f9956eb3b4824b523c087548d33fab03c0df2fa18caaffef8436ddc3dcb7",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "docs/results/fullrun-parity-20261007/act12-reward-closeout-r1.json",
+        "git_status": "??",
+        "sha256": "9520f5c6ad1ff6892203219edbdb4b9151efc362e6787d2a8d587efaa4df9294",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "docs/results/fullrun-parity-20261007/act12-training-audit-r1.json",
+        "git_status": "??",
+        "sha256": "33833b245167dbefbfdc7763d427a941aefd18695941d45729ff2d4cb71c68a9",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "docs/results/fullrun-parity-20261007/act3-act4-progress.md",
+        "git_status": "??",
+        "sha256": "61571af65f9bc23083a1396cf99b2ce5b8e3fa7782fed491b7ed71f3bc70ac30",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "docs/results/fullrun-parity-20261007/card-rng-boundary-correction-r1.json",
+        "git_status": "??",
+        "sha256": "199b089aa1b6d0f8c6ad95312207152356b304197cd52a4e8e9a54e6739a2113",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "docs/results/fullrun-parity-20261007/donu-deca-deaths-progress.md",
+        "git_status": "??",
+        "sha256": "8585b09c63cda649009ad7901c5f3ca4debbc3951f5e96cfc657a4f871b8e649",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "docs/results/fullrun-parity-20261007/double-boss-awakened-first-qualification-r1.json",
+        "git_status": "??",
+        "sha256": "7aa68b64338b171e3167a16ee1447f18d9dea68618a1f177d9d495d4de6b3777",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "docs/results/fullrun-parity-20261007/double-boss-awakened-second-qualification-r1.json",
+        "git_status": "??",
+        "sha256": "9cce792a89d0cc62f26e6bad023f8b4b61afc0db1a9b7ed018ad868fde6e356a",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "docs/results/fullrun-parity-20261007/double-boss-entry-extended-evidence-r1.json",
+        "git_status": "??",
+        "sha256": "61bc97232a7901356c2dcd23a7af32fd92f927d239dfaaecd12816211280aaa4",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "docs/results/fullrun-parity-20261007/double-boss-entry-stock-witness-r1.json",
+        "git_status": "??",
+        "sha256": "6d41f9277d09386dac34abcd77baad7cf17af482feb0598f260351bb0ae6d789",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "docs/results/fullrun-parity-20261007/double-boss-flow-card-source-r1.json",
+        "git_status": "??",
+        "sha256": "e4a1251e78834d359dd70a9aae6b24fbabc3528e51d234b3db91a016f154e7ec",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "docs/results/fullrun-parity-20261007/double-boss-progress.md",
+        "git_status": "??",
+        "sha256": "6ee6630292a6991356de2da8b6cbb40d0cb9d8199c2218c314b036c68ca362b6",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "docs/results/fullrun-parity-20261007/double-boss-reverse-qualification-r1.json",
+        "git_status": "??",
+        "sha256": "603f68c008ca0eb3cc0270ee9bf78307be5eef69b1ba7f0f815c9d5c76fabae9",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "docs/results/fullrun-parity-20261007/double-boss-source-review-r1.json",
+        "git_status": "??",
+        "sha256": "cf2226106f601a81fccdd3d9b636ac5dd52d26ec76e4e26995a3926db0c165da",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "docs/results/fullrun-parity-20261007/double-boss-source-transition-r1.json",
+        "git_status": "??",
+        "sha256": "38cffd87553f3f35b09c2f628d89ed0c9434f692b403a1d29062ee5cdfa5c650",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "docs/results/fullrun-parity-20261007/double-boss-terminal-qualification-r1.json",
+        "git_status": "??",
+        "sha256": "da45cd62a33457308ae3cc89b177b8a4ea4afe403389b7b2ffb723920ba4dbe9",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "docs/results/fullrun-parity-20261007/double-boss-terminal-source-transition-r1.json",
+        "git_status": "??",
+        "sha256": "268912d493fd1b3348e48c51c1c50dd3651b4d1c9766426cc2c988fd0edd45b3",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "docs/results/fullrun-parity-20261007/ending-death-progress.md",
+        "git_status": "??",
+        "sha256": "bdef41226d88aa219594e0085ef3467c55cf05f476f7517e7e6f10e678fc51da",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "docs/results/fullrun-parity-20261007/full-scope-progress-20261008-r1.json",
+        "git_status": "??",
+        "sha256": "871f58a0764f81271ce7ea816c55d751105eaf70ec5939378d449eae412ee0f5",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "docs/results/fullrun-parity-20261007/giant-head-late-progress.md",
+        "git_status": "??",
+        "sha256": "0c4e7940c03614eb0eaf901468f003ee4ff1fff3fcdf98bc685f2a830785fdba",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "docs/results/fullrun-parity-20261007/giant-head-slow-progress.md",
+        "git_status": "??",
+        "sha256": "79b1fdca9f468f282b6b2c3bf5338a53367ab546f0b7b0cd8c6913093cdab982",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "docs/results/fullrun-parity-20261007/implant-source-transition-r1.json",
+        "git_status": "??",
+        "sha256": "74a42bf623846d6b1bb6de951ecd7231d02a908613d038bc2b002560f0cccee9",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "docs/results/fullrun-parity-20261007/implant-victory-evidence-r1.json",
+        "git_status": "??",
+        "sha256": "4a09e2bbeab1ce489ed17efe3993fb07eb7f6691212fd22c4e62c9b3649660f9",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "docs/results/fullrun-parity-20261007/inventory-current-20261008.json",
+        "git_status": "??",
+        "sha256": "c386ef8bea082ae8943ce429e1438af24f7cedf7f9a7be0d9021200ea162a1d8",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "docs/results/fullrun-parity-20261007/key-flow-source-inventory-r1.json",
+        "git_status": "??",
+        "sha256": "fe782b5b6cfd83fa1bad1edb919f009c85f13ce17096c8a1ebd2b815cd87dda6",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "docs/results/fullrun-parity-20261007/late-terminal-progress.md",
+        "git_status": "??",
+        "sha256": "a571fefd2b7239103aeb6b7db58e9c8c3248871ac0832cf19047b84ecaf9bdbf",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "docs/results/fullrun-parity-20261007/reptomancer-progress.md",
+        "git_status": "??",
+        "sha256": "1e9827071fe6e9dca2d598d9e816cd6efafa1a6752d8efaea43a5d251a52dada",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "docs/results/fullrun-parity-20261007/revival-progress.md",
+        "git_status": "??",
+        "sha256": "6878f4e550edd992f725ccbc2bbc5569b89edce983b32ff52edd16c99a9badcb",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "docs/results/fullrun-parity-20261007/time-eater-haste-progress.md",
+        "git_status": "??",
+        "sha256": "543a1ab5e8c3f6cb8ff63f47d696decea81486a4e3a2628be3baea66ed7ddcb5",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "docs/results/fullrun-parity-20261007/writhing-implant-progress.md",
+        "git_status": "??",
+        "sha256": "0d66af3416efe319615c9a8b260d0da79c990fcfe9de7af54ff78f4363face02",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "docs/results/fullrun-parity-20261007/writhing-reaction-progress.md",
+        "git_status": "??",
+        "sha256": "e18538b8d3765ddf422aaaa6b6737d2b99ebe56602b8ba3f63589f2212125f61",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "docs/results/public-serialization-20261007/README.md",
+        "git_status": "??",
+        "sha256": "febd168fc725d81d0194ff1e19b230a4f877b28e3d3880e5632ff6ef8f3e25bf",
+        "copied_to_isolated_candidate": false
+      },
+      {
+        "path": "native/oracle/resources/spirecomm/parity/fullrun-act3-basic.json",
+        "git_status": "??",
+        "sha256": "8ec8cdb780b06cca2eca738f0e76d6e946146e38bda663a5f0b771c799241713",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "native/oracle/resources/spirecomm/parity/fullrun-act3-context.json",
+        "git_status": "??",
+        "sha256": "7b2af93915bc53252d39ac077db60b5a72cf64c51d3e8351c7e16efcdbf2fd95",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "native/oracle/resources/spirecomm/parity/fullrun-awakened-rebirth-r1.json",
+        "git_status": "??",
+        "sha256": "ec435329e236e46ec4ecf827ba31ed865cbc2a2bc4fe49e8c28fd23b9b026b1a",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "native/oracle/resources/spirecomm/parity/fullrun-darkling-revival-r1.json",
+        "git_status": "??",
+        "sha256": "c765a6f93803728cd90ce7dab221e5fd8ed17cbef256fa061d4c76864a32892a",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "native/oracle/resources/spirecomm/parity/fullrun-donu-deca-deaths-r1.json",
+        "git_status": "??",
+        "sha256": "3e7b0abb87eeff3db310be7c152596043c695d1ab98fff2f62c1011cec8c2b32",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "native/oracle/resources/spirecomm/parity/fullrun-double-boss-awakened-first-r1.json",
+        "git_status": "??",
+        "sha256": "8aed1dc9b5e500db52f412bba2ce0c49eed448bd9162c64fa4f82cf0ec9661fe",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "native/oracle/resources/spirecomm/parity/fullrun-double-boss-awakened-second-r1.json",
+        "git_status": "??",
+        "sha256": "47b5a64659b8841b9209688195ca0df2c1e247fcc2868ccbcbb653ea7b727f5f",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "native/oracle/resources/spirecomm/parity/fullrun-double-boss-complete-r1.json",
+        "git_status": "??",
+        "sha256": "638fc5033e9ab5e81e30d2de5e24c3dcf221aa702682a28a6208c865e5459851",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "native/oracle/resources/spirecomm/parity/fullrun-double-boss-entry-r1.json",
+        "git_status": "??",
+        "sha256": "c7ae6483acc521df4b22a12441f7881bc21e2700b5a4b8a57157190363f1dddb",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "native/oracle/resources/spirecomm/parity/fullrun-double-boss-reverse-r1.json",
+        "git_status": "??",
+        "sha256": "352d750a0d42a019352ecb5097f4ab258d961df923f94473305218816a474864",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "native/oracle/resources/spirecomm/parity/fullrun-double-boss-terminal-r1.json",
+        "git_status": "??",
+        "sha256": "d80dff5cbb66c5f2776a78e98bcd8e287fa8ca30234d70c7c13da577c1ba4f36",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "native/oracle/resources/spirecomm/parity/fullrun-ending-deaths-r1.json",
+        "git_status": "??",
+        "sha256": "62401beff25a112d18003f8b00e3a9812413075596e74a99b23f32913f144e9a",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "native/oracle/resources/spirecomm/parity/fullrun-ending-interactions-r1.json",
+        "git_status": "??",
+        "sha256": "06df6adcc3749099730624ff4d391201971cf2f93055224c1825ce45ffc4eb00",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "native/oracle/resources/spirecomm/parity/fullrun-giant-head-late-r1.json",
+        "git_status": "??",
+        "sha256": "f58ffe9be6b00ebf4c79133b4df1d39733d8f37526b87cf37a6ee73518e7604f",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "native/oracle/resources/spirecomm/parity/fullrun-giant-head-slow-r2.json",
+        "git_status": "??",
+        "sha256": "cafd6544cac6940a98acb2464c6596c331da8168c727d1318d9827f175481766",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "native/oracle/resources/spirecomm/parity/fullrun-heart-lethal-r1.json",
+        "git_status": "??",
+        "sha256": "1f08870e00d7e07cb023c8bd6ddc810cf986788577fc3deaec11d45cf86c1b27",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "native/oracle/resources/spirecomm/parity/fullrun-heart-loss-r1.json",
+        "git_status": "??",
+        "sha256": "2ca745c1a54e50e430e9b12a9b6d951d78d67d9b4e7f6614fe5336aa6ec5fcfb",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "native/oracle/resources/spirecomm/parity/fullrun-implant-relics-r1.json",
+        "git_status": "??",
+        "sha256": "9278c528e9678a1941dbe9cd86bf92f1b3c1c27133ba98f3e51788deadbdb6bb",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "native/oracle/resources/spirecomm/parity/fullrun-implant-victory-r1.json",
+        "git_status": "??",
+        "sha256": "9b87ae31dffc52946b5b932bae295ddd8c3593d445e4d0900aa464a8bc37ea88",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "native/oracle/resources/spirecomm/parity/fullrun-key-act4-boundaries-r1.json",
+        "git_status": "??",
+        "sha256": "27dbe71f5ef19179ed968fe5fc8c37d1c372ff4439672314471d51c976fa067e",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "native/oracle/resources/spirecomm/parity/fullrun-key-act4-entry-r1.json",
+        "git_status": "??",
+        "sha256": "dfab9344141979f51dcaf8db1ada7133afa0bfb54fe3797b9d974008aa0d38e4",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "native/oracle/resources/spirecomm/parity/fullrun-key-act4-zero-reset-r2.json",
+        "git_status": "??",
+        "sha256": "39815c7f1d6ab17385892cb483ce590de892df6235a92c588253ff2f6a43dae3",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "native/oracle/resources/spirecomm/parity/fullrun-late-key-r1.json",
+        "git_status": "??",
+        "sha256": "afd25eea9f295257d9bfe4c8da7b309da01579466160c1f2e7926f24432160ce",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "native/oracle/resources/spirecomm/parity/fullrun-late-terminal-r2.json",
+        "git_status": "??",
+        "sha256": "1509c4f27fe1717fe38ca2bd40a3b2e8ef26abca9d809b70bd3a2327056e0393",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "native/oracle/resources/spirecomm/parity/fullrun-repto-targets-r1.json",
+        "git_status": "??",
+        "sha256": "e573274d0d59e8f5eaf45b76669d53263058d239bc59e1e8c36daca40056f339",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "native/oracle/resources/spirecomm/parity/fullrun-thief-city-r1.json",
+        "git_status": "??",
+        "sha256": "7c83ec12b986ed510a32d0f75520514d100b02c64cb0f735586b207d4de953b0",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "native/oracle/resources/spirecomm/parity/fullrun-thief-neighbors-r1.json",
+        "git_status": "??",
+        "sha256": "690c73b477d63a445568737816140c081928129e74916ecbd45004dec7f5655b",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "native/oracle/resources/spirecomm/parity/fullrun-thief-neighbors-r2.json",
+        "git_status": "??",
+        "sha256": "e1095b5bc16f71e8f5795fe5f78c710c0d09f8e5bcad07a62d5d87227b836a92",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "native/oracle/resources/spirecomm/parity/fullrun-thief-rewards-r1.json",
+        "git_status": "??",
+        "sha256": "d98e6496be5e5e5c5232400d44f6e934ca93908a3886387118526aaf73a2324c",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "native/oracle/resources/spirecomm/parity/fullrun-time-eater-haste-r2.json",
+        "git_status": "??",
+        "sha256": "7774c680009fef590105a3e09f5d402e2fb1870526365756dbb1b4a7c9fb5812",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "native/oracle/resources/spirecomm/parity/fullrun-writhing-blocked-r1.json",
+        "git_status": "??",
+        "sha256": "8f94588c1a7dbe9f83ca9950225be1c414a58672dc1c58bd728a50ca2fb5ca13",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "native/oracle/resources/spirecomm/parity/fullrun-writhing-implant-r1.json",
+        "git_status": "??",
+        "sha256": "a0792dd545401d828b76431bf118689d23c82761584b73634683833c948b2cbf",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "native/oracle/resources/spirecomm/parity/fullrun-writhing-react-r1.json",
+        "git_status": "??",
+        "sha256": "b6e675ba8667ec08316ab7ee2956766a71bba4400f20cca3ea337c805b7accc4",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "native/oracle/src/spirecomm/parity/OracleDungeonContext.java",
+        "git_status": "??",
+        "sha256": "6492dc5e27ffaae72b3dc5c28ff732363e45b24cf6651bc09b1731c8a3ceab0b",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "src/sls/audit/awakened_flow.py",
+        "git_status": "??",
+        "sha256": "e3c1d612aab830b61ced7aa1ea8d2d543936aad728f1fec236e9e4111c2bb2ff",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "src/sls/audit/boss_flow.py",
+        "git_status": "??",
+        "sha256": "314b097755edebe414a31ebc3712c8d1e74b33e9b0f7ed25ea04d4ac13e2afd4",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "src/sls/audit/corpse_cleanup.py",
+        "git_status": "??",
+        "sha256": "499de53ef853b309327ef1c645c787bfa082fac7ee844559211881e8e86d35ba",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "src/sls/audit/reward_boundary.py",
+        "git_status": "??",
+        "sha256": "aa85d0b9513c0959a40c4925d61d6afee0047f53368c892fbdacdb4e88e947b4",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "src/sls/audit/semantic_actions.py",
+        "git_status": "??",
+        "sha256": "7818c99e6e41c2ebeb645dba93096b87ff72e468b64651c3f51a3ae8c1fbe618",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "src/sls/audit/stock_clock.py",
+        "git_status": "??",
+        "sha256": "6cca79a15a0142a083390de2fe31266b00dded16dbdaaad761173f751a38a486",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "src/sls/audit/stock_potion_reward.py",
+        "git_status": "??",
+        "sha256": "8e41a35877073948d00c4cd0e4fbabdd1a2855122e719a6d1d41cafab0d36664",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "src/sls/audit/trajectory_reader.py",
+        "git_status": "??",
+        "sha256": "6c46e576911c3b2db3974e9261a3830d9a0c78882864ddb7b764e7ffb085d0bf",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/audit/test_archived_clock_evidence.py",
+        "git_status": "??",
+        "sha256": "7c5c9632ccd19e1e68559fe257ea9fa7d14b925fabef3a8849a5669fd47bb602",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/audit/test_awakened_flow.py",
+        "git_status": "??",
+        "sha256": "862be72374a5529fc09e1be6c7b1e9f917918c60ff6a1ce061c2eb78cd8b328a",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/audit/test_boss_flow.py",
+        "git_status": "??",
+        "sha256": "106eea59c4fa15fee8c8f5f0a5b6fd4b382d0b9f4586aa1a9c5d24e1e98ecaf1",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/audit/test_corpse_cleanup.py",
+        "git_status": "??",
+        "sha256": "5b1cff64ae0359d9d53a7460c19d2e66acf1c128ae281d5670ace809083a774a",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/audit/test_cultist_cleanup.py",
+        "git_status": "??",
+        "sha256": "7537b8c73e18a31d362cc9b166a5d89f647278094b61b12b2a3bc38b945f446f",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/audit/test_double_boss_recorded_actions.py",
+        "git_status": "??",
+        "sha256": "254d6b951a48ab3a718ba6f3e4bcf7d6306c582e227b6e829dc09edf7126cfa1",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/audit/test_reward_boundary.py",
+        "git_status": "??",
+        "sha256": "62454620e4e5bf8761fd56602e3a6d7b6d2a6b384ab2e3cd7e34b57aeabbea7b",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/audit/test_semantic_actions.py",
+        "git_status": "??",
+        "sha256": "b765b8b3e3fd120d56215fb5eef50a4835ed46950e90c8f6bc52a069d490725b",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/audit/test_stock_potion_reward.py",
+        "git_status": "??",
+        "sha256": "d38bba4260cc1f76eae773b0af3e54afb36f6dd0c1af2c1e2c871e87f10a5d64",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/audit/test_trajectory_reader.py",
+        "git_status": "??",
+        "sha256": "541506bb7a106b1185ff45c345349226d729207f9a69d3a4bcaab377c17b1e2d",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/contracts/test_serialization_metadata.py",
+        "git_status": "??",
+        "sha256": "479302ec631156a9acdcc7eee8badcc841902ed81aa088a566590d157499e16c",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/fixtures/awakened-rebirth-stock.json",
+        "git_status": "??",
+        "sha256": "2b793cc033c3fbb72e5102a50b90ea9ec45a5c6fee91eab170eece7aa891ecff",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/fixtures/darkling-nip-stock.json",
+        "git_status": "??",
+        "sha256": "d5ec610fc6abbf1fcc994d0527c912d58237f294a9e0f5eeead1f8a72fa87a89",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/fixtures/darkling-revival-stock.json",
+        "git_status": "??",
+        "sha256": "7a1529cbefa8191c555433b8b4c349e9d4d0fb9f23ced080a7f9e7429abd93e2",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/fixtures/donu-deca-deaths-stock.json",
+        "git_status": "??",
+        "sha256": "26aaa10de07f53e1a5a7e78c1fabfd018feff377aa6530e807cf6fc000bf45a5",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/fixtures/ending-death-stock.json",
+        "git_status": "??",
+        "sha256": "3cf74b609cc85ea9f07009562bb626ef2eebfacbbd0158292b37cec0c7cf75f4",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/fixtures/ending-interaction-stock.json",
+        "git_status": "??",
+        "sha256": "6de0ed6ffab0562e69797ad6e2b9a5ecd4bca0ea5b6b2cc0f4f5934c1066bd35",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/fixtures/giant-head-late-stock.json",
+        "git_status": "??",
+        "sha256": "6802c30c5d175c74b16b519e6023fe583b6ef5513532169cec7483b8e2ebc28f",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/fixtures/giant-head-slow-stock.json",
+        "git_status": "??",
+        "sha256": "3c257a32f8d884ab0c9b4caeb1403c9ef3baba1c7f8a72baac49a3e250462402",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/fixtures/heart-lethal-stock.json",
+        "git_status": "??",
+        "sha256": "e0a3635587e3b9b99c4201db0e6a99a5a353a694f60dbd4834246ac02f853268",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/fixtures/heart-loss-stock.json",
+        "git_status": "??",
+        "sha256": "f82b750891bcee902233c9c5d891f9cb931b58411db809c3ab2425c59638cc38",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/fixtures/late-encounter-terminal-stock.json",
+        "git_status": "??",
+        "sha256": "7ffc0e64094cb3c9f0bac99279980fa0f8ce42649bb20cf5dabae84af4ff65d6",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/fixtures/regressions/act12-all-thieves-escaped-131200180.json",
+        "git_status": "??",
+        "sha256": "6cc2a6173f6801c666dc0cc8c7f6b212ee629f6c7ed2658a07ac1669f99cecc2",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/fixtures/regressions/act12-thief-city-rewards-131200180.json",
+        "git_status": "??",
+        "sha256": "7042a6d1407ee54fed32d75bb5bf2f1a20850cc69dc96b2b5922ced22e3376cc",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/fixtures/regressions/double-boss-awakened-first-stock.json",
+        "git_status": "??",
+        "sha256": "233e651229ac923486bef672d323155d52ef27bb7c4024c809cffdf597c64a30",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/fixtures/regressions/double-boss-awakened-second-stock.json",
+        "git_status": "??",
+        "sha256": "2551c27dcdc7bc483c35ad7c1f966bc03021d77dbab41b9a685fae289fbe7ba6",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/fixtures/regressions/double-boss-complete-initial.json",
+        "git_status": "??",
+        "sha256": "9e3f06eb9f21c974d10c26916e047069dadd92ff2ba223d2560186f2f0d24d9a",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/fixtures/regressions/double-boss-entry-stock-extended.json",
+        "git_status": "??",
+        "sha256": "9b7d46bc0f16afcfcbda5e53febda53e2fa60a87400de2380398d1d57a72e5de",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/fixtures/regressions/double-boss-reverse-stock.json",
+        "git_status": "??",
+        "sha256": "05aa5623ec26cb77e3121aa2e5d78c99b5f152cf131ae1d98c47bbd6e67b0ca8",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/fixtures/regressions/double-boss-terminal-stock.json",
+        "git_status": "??",
+        "sha256": "86a10850ab13c65d843464b89abb1d69a6a0ef3a22e3a1f0624db4bbae209b48",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/fixtures/regressions/double-boss-transition-before.json",
+        "git_status": "??",
+        "sha256": "aa47ae6dae3563a68beadade2cbcb3fd9b57168223888659d1ab994255cdd87a",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/fixtures/regressions/key-act4-boundaries-stock.json",
+        "git_status": "??",
+        "sha256": "b1d465f4feccd3f48ddcb496d37925d74a78387808a9b820a81167059639c0bb",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/fixtures/regressions/key-act4-entry-stock.json",
+        "git_status": "??",
+        "sha256": "7ae797a86c98dd3382afdacff75c635fe5305d7913d64bdc28c583d65e9acef9",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/fixtures/regressions/writhing-implant-stock-131200198.json",
+        "git_status": "??",
+        "sha256": "a3807997a587d6124e612f0144e50ae9b6a2b838c78875e0565880faf559ca23",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/fixtures/regressions/writhing-implant-victory-stock.json",
+        "git_status": "??",
+        "sha256": "c816a49e4b33b305306f1d6bcfb732113028a9b4cdbe1e81d6924fe547f255d1",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/fixtures/reptomancer-stock-public.json",
+        "git_status": "??",
+        "sha256": "e3793ae4f1744fffc0278635819fdbaf1d55e2914e2c508d00348ed4018edabc",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/fixtures/time-eater-haste-stock.json",
+        "git_status": "??",
+        "sha256": "859b99aba1d79a5d44255614cf238485197dea20859a19c204c6a77bb972ccff",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/fixtures/writhing-blocked-stock.json",
+        "git_status": "??",
+        "sha256": "1675f2763a49f7ae42bb6c1f33c87786c0cbd97800c89c20651855afea5a74bd",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/fixtures/writhing-flail-stock.json",
+        "git_status": "??",
+        "sha256": "0e42e3c11bf5ba2778bf49dbbac537f5ef95b49e16ec73b1d3f749a21fc5d04c",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/fixtures/writhing-fourturn-stock.json",
+        "git_status": "??",
+        "sha256": "8193ebdf6bde5c628d28b19a30f90f158e349d9385d9b239fa79bca7756a2382",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/fixtures/writhing-react-stock.json",
+        "git_status": "??",
+        "sha256": "1321b045696638b3749b6385e11efb76b18193118a6a168c72f3bdeebf047feb",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/simulator/test_awakened_stock_rebirth.py",
+        "git_status": "??",
+        "sha256": "a8fefdc2b0c130ce599fe06874dfe1e5a0a8a8eadaaeab2a564f6df6436a3f9d",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/simulator/test_card_rng_transition_boundaries.py",
+        "git_status": "??",
+        "sha256": "20066e3666821be330bbf2b1d554df53b2fbbf19c64fee304ebd059d6763f7da",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/simulator/test_darkling_stock_nip.py",
+        "git_status": "??",
+        "sha256": "512ba2a71e816b2fd780bf1b58db16042006a1cd86c0d4c9d87ce9ea8c237d86",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/simulator/test_darkling_stock_revival.py",
+        "git_status": "??",
+        "sha256": "ef2068e8e41045404ae0a52f8fab67493b9392ddcd317a5140bce9fa3c779014",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/simulator/test_donu_deca_stock_deaths.py",
+        "git_status": "??",
+        "sha256": "770dade2ad1f643d50a44df7aeae8d8b83636771084a7f2b681aa8717896d682",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/simulator/test_double_boss_awakened_first_stock.py",
+        "git_status": "??",
+        "sha256": "e2a1f10f54a3afe40fad6c02de6c018c937d0fcbfad95de0b1b08d55f6022ae7",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/simulator/test_double_boss_awakened_second_stock.py",
+        "git_status": "??",
+        "sha256": "bc70b6e8d85a83e88ac95570289c8530af35c47221ed95ad68470fab8ba1f566",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/simulator/test_double_boss_reverse_stock.py",
+        "git_status": "??",
+        "sha256": "93bef7f26dec3f4b5f1c0a427f8de0e959e1afb28625d23dac1828441d072b7d",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/simulator/test_double_boss_stock_endpoint.py",
+        "git_status": "??",
+        "sha256": "82a815a63ef7b063d20ba85c863a02877b77472a43b4532147a99196128922fd",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/simulator/test_double_boss_stock_extended.py",
+        "git_status": "??",
+        "sha256": "22424719945e2d169a0e8365baed8eab5c7d130a9975236e19e494fe30fd828b",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/simulator/test_double_boss_terminal_restore.py",
+        "git_status": "??",
+        "sha256": "b0add26e13dcd7d4194f3b7731cfd64ed296326e5512c8a28ae9b396be30a9e4",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/simulator/test_double_boss_transition.py",
+        "git_status": "??",
+        "sha256": "76abbd42fd0acae080e12f2e26717f66845d3f1fb087de7acdecaa0ee3e87983",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/simulator/test_ending_stock_deaths.py",
+        "git_status": "??",
+        "sha256": "c880940ad6a152d26d72b4a49de9462120d5be064e41ea21719cdbb3dda4ec09",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/simulator/test_ending_stock_interactions.py",
+        "git_status": "??",
+        "sha256": "92d447ba8c10834f41a25f4298c74b6f956b7dff3549bf7e25258576da848dc4",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/simulator/test_giant_head_stock_late.py",
+        "git_status": "??",
+        "sha256": "8d5e634477c891108f63ee43e38d258026ed449927574a45dfcea82b226354e4",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/simulator/test_giant_head_stock_slow.py",
+        "git_status": "??",
+        "sha256": "c1234983f977646543a83b2c5dc2c3d1b85d2505158e75d3b70c9b6804a23f70",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/simulator/test_heart_lethal_stock.py",
+        "git_status": "??",
+        "sha256": "052ab09fd68bb4a687a72571321a834daeb9391f2a4a6c85db783e2645de0d36",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/simulator/test_key_act4_entry_stock.py",
+        "git_status": "??",
+        "sha256": "22f547039f95751c525c4ba94fcd2f676281388ff16bbef06ecc7460354b7b95",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/simulator/test_late_encounter_stock_terminal.py",
+        "git_status": "??",
+        "sha256": "395d220a9bdbf55bbe5e568e0e55223cdc58902b9f758267cc4e2f8c1f8ef04b",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/simulator/test_reptomancer_public_probe.py",
+        "git_status": "??",
+        "sha256": "05f741633d5258e04caa43db2814c4b8576951faf262a1bd81dd0d3f439fc2ae",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/simulator/test_thief_city_rewards.py",
+        "git_status": "??",
+        "sha256": "a5649d143cdd0c52386fce6254866d4c34879774aafd0e0e652f41505c7fb521",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/simulator/test_thief_escape_potion_reward.py",
+        "git_status": "??",
+        "sha256": "ba63e85d15368bfd0a1e02324955723f584fcca9d417141c48ce3fa29cf7d4b7",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/simulator/test_time_eater_stock_haste.py",
+        "git_status": "??",
+        "sha256": "886d1ee450d8cbec569dc76c5f111dab1abe1ad2c4970ccec5e4475547c2d0d3",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/simulator/test_writhing_implant_stock.py",
+        "git_status": "??",
+        "sha256": "1bf83ed84c33bb52012d99c1117ef678507a0bb29fc3d25fe5c74471aeca950f",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/simulator/test_writhing_implant_victory_stock.py",
+        "git_status": "??",
+        "sha256": "cd414fd38b98ac610f96677943aa852e88f3029a269c6f439ce0d7701ad2c4a1",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/simulator/test_writhing_mass_stock_flail.py",
+        "git_status": "??",
+        "sha256": "692ed1b4164135488e99435ce5fe62528c007bf0b9051a90186ad51100da2b00",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/simulator/test_writhing_mass_stock_rng.py",
+        "git_status": "??",
+        "sha256": "98102f001d511125664ea16f4bc1173038888385ebca3936719cce8827ebcf83",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/simulator/test_writhing_stock_blocked.py",
+        "git_status": "??",
+        "sha256": "198407644bd731146ce571e196f8f17dd4759e7c5854d65375c9dc9cbbfa820a",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/simulator/test_writhing_stock_reaction.py",
+        "git_status": "??",
+        "sha256": "22b521cf511b495cde85d5778838553e1a46c99a592ecbe8161f1f143dd0189a",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tests/test_downloaded_act12_analysis.py",
+        "git_status": "??",
+        "sha256": "ea995ab310e91a14f7f3ef0eabce0e2c2f0e86f74e5d4dc18e97fe257736dac7",
+        "copied_to_isolated_candidate": false
+      },
+      {
+        "path": "tests/test_encounter_manifest_preflight.py",
+        "git_status": "??",
+        "sha256": "c009f5c577c4a511c297c3d26abd241ec05200fd4f6adaab217becd0d5aad6d9",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tools/analyze_downloaded_act12_study.py",
+        "git_status": "??",
+        "sha256": "c41ac7bc9466d32f3076129a2bdec45e7eb88c298add040ff44e1dc26254ce11",
+        "copied_to_isolated_candidate": false
+      },
+      {
+        "path": "tools/audit_stock_double_boss.py",
+        "git_status": "??",
+        "sha256": "62d05f519c167e10bbbd13d95c72b1b74d987e20a57efbe13276034e48fadfce",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tools/audit_stock_potion_reward_prefix.py",
+        "git_status": "??",
+        "sha256": "3a3b752454992a9fa75415112f24d546fcbb90eaedb86a9e4c7a81f28dbedef1",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tools/reproduce_double_boss_entry.py",
+        "git_status": "??",
+        "sha256": "a12afabe35cb7ed4a23f11a06355f4c4c8da4dc1e0a1b00db3da8694aff5cb64",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tools/reproduce_double_boss_flow.py",
+        "git_status": "??",
+        "sha256": "cab7fa998aef23be4cf459e81505fa54dbfcbc10be24507807c08e200700121c",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tools/reproduce_thief_reward_flow.py",
+        "git_status": "??",
+        "sha256": "fe2e6c683cbdee6bc0b3e8af233c69503201aa2ee2f8e887611b56bdbe7f5989",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tools/reproduce_writhing_implant.py",
+        "git_status": "??",
+        "sha256": "6962aa8624ec874d6caae4fbc0a2c5a37c54bbd920698a722b61150584e179d7",
+        "copied_to_isolated_candidate": true
+      },
+      {
+        "path": "tools/verify_act12_archived_evidence.py",
+        "git_status": "??",
+        "sha256": "cd7a87c4e425555b4ae88e85667b515e14cb744563e4f7a4ae2310cd8903b061",
+        "copied_to_isolated_candidate": true
+      }
+    ],
+    "snapshot_zip_sha256": "66695a54d7fbc1575d01b012ccb1f5fa041f706544a8a813a4816a5eca540275",
+    "original_modified": false,
+    "historical_results_are_not_current_validation": true
+  },
+  "line_ending_transform_receipts": [
+    [
+      {
+        "path": "native/simulator/include/combat/BattleContext.h",
+        "before_sha256": "29f7f978abe169564ab278f65840d1d7590c7750634ae097cf9edf70cfba05be",
+        "after_sha256": "a2ca25440144dbcc59de2ab4451fd8004a5c4e9dac2cc062cd4f63e516021009",
+        "change": "MATCH_HEAD_CRLF_ONLY"
+      },
+      {
+        "path": "native/simulator/python/module.cpp",
+        "before_sha256": "b437821d6980f2a86a2ad274a4215638e6a5fb4d9fb6183ba9f43c6198dbce1d",
+        "after_sha256": "f0f89b5cfeb073d17b94d47b89ca5d8210c570785a3f73a677d1050e162ecb90",
+        "change": "MATCH_HEAD_CRLF_ONLY"
+      },
+      {
+        "path": "native/simulator/src/combat/BattleContext.cpp",
+        "before_sha256": "055967d64b3364d31b17ddbd1bee9ca1dd32fb64a5f697c62dd752c0bd6a2d85",
+        "after_sha256": "d3e391ebfd63e0f3430872c92e0f7f0cafd9771177305108c5ec67f9ed35bf53",
+        "change": "MATCH_HEAD_CRLF_ONLY"
+      },
+      {
+        "path": "native/simulator/src/combat/MonsterSpecific.cpp",
+        "before_sha256": "370add83af4bb988a422fe16933fdefd823bc557b3b4e1f7384e77a0399d3ee9",
+        "after_sha256": "360def8bbdca704a8811c98c4d5830409fb6aa0259391ee162c200811631441f",
+        "change": "MATCH_HEAD_CRLF_ONLY"
+      },
+      {
+        "path": "native/simulator/src/game/GameContext.cpp",
+        "before_sha256": "8ffdb58f966a45167ef4e7fc0fd5ed14961fc1bb313a7d95e2512fb612cbcefb",
+        "after_sha256": "ad234c85ca20028ad0588ea4e5fe9696a6e6563f2c1ab6e52b38df734890f2bb",
+        "change": "MATCH_HEAD_CRLF_ONLY"
+      },
+      {
+        "path": "src/sls/backends/original/live.py",
+        "before_sha256": "05589a497a5f24d8a2ee90f7827a32a8d9f9ccd787ab1a06eabeb83d2367235a",
+        "after_sha256": "a1e58638cf209c7f7762370cf88a9ae10bd6c231f51d57d06412cfc4b706698e",
+        "change": "MATCH_HEAD_CRLF_ONLY"
+      },
+      {
+        "path": "tests/original/test_live_backend.py",
+        "before_sha256": "706067f333a2c4dcb30a211ea7684fcf0d889f3c80c038357039d4a796168305",
+        "after_sha256": "0aeb2d474223723e074d08180c907c7e7daaa78053ce8fbe7e32228b2da9c741",
+        "change": "MATCH_HEAD_CRLF_ONLY"
+      }
+    ],
+    [
+      {
+        "path": "native/oracle/ModTheSpire.json",
+        "before_sha256": "f46e1fccc104b74c2ac5c8dab3cebb90d5f5f760367be2d37bda1d72d5dde65d",
+        "after_sha256": "328d93f4a7c1463d22ea4b774dd2df0d89c268376455a55d9e4536a4f1b22194",
+        "change": "BASELINE_MAJORITY_LINE_ENDING_ONLY"
+      },
+      {
+        "path": "native/oracle/src/spirecomm/parity/OracleScenarioPatch.java",
+        "before_sha256": "de4ea7c4e1697f0619a69c5c199a211471b2697491abddd4fb76d62bdb3d6692",
+        "after_sha256": "b340dae997f12c91661aed8eec9558ee98cc7f5034594d5784054a9e23cb35c1",
+        "change": "BASELINE_MAJORITY_LINE_ENDING_ONLY"
+      },
+      {
+        "path": "native/simulator/src/combat/Monster.cpp",
+        "before_sha256": "4daa0dc092b0e12645658398b535c8403521c21a53ead2f41510fd7a82eefb54",
+        "after_sha256": "c8d010ad306507ca8a991cf9f35eec7119c2164427886719014c2db8c57b5008",
+        "change": "BASELINE_MAJORITY_LINE_ENDING_ONLY"
+      },
+      {
+        "path": "native/simulator/src/combat/MonsterMoveDamage.cpp",
+        "before_sha256": "6911e7fb3fd415735ff5a2c3e24cddfdedad7639c247fed782c41d157d61b621",
+        "after_sha256": "256e65ef326e7c6e815af8a2b73a2a976c80a9b5a60e164933b25d239a45a56d",
+        "change": "BASELINE_MAJORITY_LINE_ENDING_ONLY"
+      },
+      {
+        "path": "src/sls/contracts/observation.py",
+        "before_sha256": "daf9d36dd68ba93d8b74cfb5bfe815e514a0a80e6c450c179a469afe1d96d57d",
+        "after_sha256": "12048dc6b1e0baeee424d1122926a1b273222b6ecfe3a58c2912a8ec9540a5ac",
+        "change": "BASELINE_MAJORITY_LINE_ENDING_ONLY"
+      },
+      {
+        "path": "tests/test_build_oracle.py",
+        "before_sha256": "d212f6861211c7627b582d63379c9ca82d4acba22388d77c727876e50dbce0d5",
+        "after_sha256": "32c872bac9d83b3a59d8528280e30f5cca6bd6a8702633f5973cbedd9e78ef88",
+        "change": "BASELINE_MAJORITY_LINE_ENDING_ONLY"
+      }
+    ]
+  ],
+  "local_stock_inputs": [
+    {
+      "path": "local/audits/stock-decompilation-tree/desktop-1.0/source/com/megacrit/cardcrawl/dungeons/AbstractDungeon.java",
+      "sha256": "8fa0712818487a360c72950d053fe77e1a35efa967080723d15c69037092fd26",
+      "source": "D:\\SLS\\local\\audits\\stock-decompilation-tree\\desktop-1.0\\source\\com\\megacrit\\cardcrawl\\dungeons\\AbstractDungeon.java"
+    },
+    {
+      "path": "local/audits/stock-decompilation-tree/desktop-1.0/source/com/megacrit/cardcrawl/dungeons/Exordium.java",
+      "sha256": "93808b9da69b76da6b8f0471cc3533fa113fa28298939bbc48eb55566a976c08",
+      "source": "D:\\SLS\\local\\audits\\stock-decompilation-tree\\desktop-1.0\\source\\com\\megacrit\\cardcrawl\\dungeons\\Exordium.java"
+    },
+    {
+      "path": "local/audits/stock-decompilation-tree/desktop-1.0/source/com/megacrit/cardcrawl/helpers/PotionHelper.java",
+      "sha256": "159ffee06ab09c24063b992f5babe57907916a99a23f4a3ad721b8c922be2a2f",
+      "source": "D:\\SLS\\local\\audits\\stock-decompilation-tree\\desktop-1.0\\source\\com\\megacrit\\cardcrawl\\helpers\\PotionHelper.java"
+    },
+    {
+      "path": "local/audits/act2-qualification-20261006/bytecode-r29/rooms.AbstractRoom.txt",
+      "sha256": "62453410540607634c82dc0b5e1a84c504e606dbbd17e3ef1ca4848ee857d8bd",
+      "source": "D:\\SLS\\local\\audits\\act2-qualification-20261006\\bytecode-r29\\rooms.AbstractRoom.txt"
+    }
+  ],
+  "full_a20h_qualification": false,
+  "training_release_updated": false,
+  "server_execution_performed": false
+}

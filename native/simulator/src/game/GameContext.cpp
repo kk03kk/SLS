@@ -722,11 +722,11 @@ void GameContext::populateFirstStrongEnemy(const MonsterEncounter monsters[], co
 void GameContext::transitionToAct(int targetAct) {
     act = targetAct;
 
-    if (cardRng.counter < 250) {
+    if (cardRng.counter > 0 && cardRng.counter < 250) {
         cardRng.setCounter(250);
-    } else if (cardRng.counter < 500) {
+    } else if (cardRng.counter > 250 && cardRng.counter < 500) {
         cardRng.setCounter(500);
-    } else if (cardRng.counter < 750) {
+    } else if (cardRng.counter > 500 && cardRng.counter < 750) {
         cardRng.setCounter(750);
     }
 
@@ -1240,6 +1240,11 @@ void GameContext::afterBattle() {
                 }
 
             } else if (act == 4) {
+                // Stock AbstractRoom.update still constructs the boss gold
+                // RewardItem before final completion, although Heart victory
+                // never exposes a normal reward screen. Preserve that misc
+                // draw without granting gold or rolling cards/potions.
+                miscRng.random(-5, 5);
                 outcome = GameOutcome::PLAYER_VICTORY;
 
             }
@@ -1938,8 +1943,11 @@ MonsterEncounter GameContext::getEliteForRoomCreation() {
 }
 
 void GameContext::addPotionRewards(Rewards &r) {
-    // assume if in a monsters room, they didnt escape
-    int chance = 40 + potionChance;
+    // AbstractRoom.addPotionToRewards leaves chance at0 when every monster
+    // escaped. This differs from Smoke Bomb: smoking does not set all enemy
+    // escaped flags. White Beast Statue and the reward-count cap apply after.
+    int chance = (curRoom == Room::MONSTER && info.suppressCombatGold)
+        ? 0 : 40 + potionChance;
 
     if (hasRelic(RelicId::WHITE_BEAST_STATUE)) {
         chance = 100;

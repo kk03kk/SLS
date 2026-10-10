@@ -1496,8 +1496,9 @@ void Monster::takeTurn(BattleContext &bc) {     // todo, maybe for monsters that
             break;
 
         case MMID::DARKLING_NIP: {
-            const auto damage = miscInfo + (asc2 ? 2 : 0); // todo maybe make d part of the miscInfo at prebattle
-            attackPlayerHelper(bc, damage);
+            // Stock constructor stores the final A2+ range (9..13) in nipDmg.
+            // initMiscInfo mirrors it; do not add the difficulty bonus twice.
+            attackPlayerHelper(bc, miscInfo);
             bc.addToBot( Actions::RollMove(idx) );
             break;
         }
@@ -1560,13 +1561,19 @@ void Monster::takeTurn(BattleContext &bc) {     // todo, maybe for monsters that
 
         case MMID::WRITHING_MASS_FLAIL: // 2
             attackPlayerHelper(bc, asc2 ? 16 : 15);
-            bc.addToBot( Actions::MonsterGainBlock(idx, asc2 ? 18 : 16) );
+            // Stock takeTurn uses damage[2].base for GainBlockAction as well
+            // as the Flail attack: 16 at A2+, otherwise 15.
+            bc.addToBot( Actions::MonsterGainBlock(idx, asc2 ? 16 : 15) );
             bc.addToBot( Actions::RollMove(idx) );
             break;
 
         case MMID::WRITHING_MASS_IMPLANT: // 4
             miscInfo = true;
             if (!bc.player.hasRelic<R::OMAMORI>()) {
+                // ShowCardAndObtainEffect invokes relic hooks during combat.
+                if (bc.player.hasRelic<R::CERAMIC_FISH>()) {
+                    bc.player.gainGold(bc, 9);
+                }
                 if (bc.player.hasRelic<R::DARKSTONE_PERIAPT>()) {
                     bc.player.increaseMaxHp(6);
                 }
@@ -1708,7 +1715,10 @@ void Monster::takeTurn(BattleContext &bc) {     // todo, maybe for monsters that
             break;
 
         case MMID::DONU_CIRCLE_OF_POWER:
-            bc.monsters.arr[0].buff<MS::STRENGTH>(3); // shouldn't matter if deca is dead
+            // Stock ApplyPowerAction skips dead/escaped targets.
+            if (!bc.monsters.arr[0].isDeadOrEscaped()) {
+                bc.monsters.arr[0].buff<MS::STRENGTH>(3);
+            }
             buff<MS::STRENGTH>(3);
             bc.aiRng.random(0, 99);
             setMove(MonsterMoveId::DONU_BEAM);
@@ -1725,10 +1735,15 @@ void Monster::takeTurn(BattleContext &bc) {     // todo, maybe for monsters that
             auto &deca = *this;
             auto &donu = bc.monsters.arr[1];
             deca.addBlock(16);
-            donu.addBlock(16);
+            // GainBlockAction and ApplyPowerAction both reject a dead partner.
+            if (!donu.isDeadOrEscaped()) {
+                donu.addBlock(16);
+            }
             if (asc19) {
                 deca.buff<MS::PLATED_ARMOR>(3);
-                donu.buff<MS::PLATED_ARMOR>(3);
+                if (!donu.isDeadOrEscaped()) {
+                    donu.buff<MS::PLATED_ARMOR>(3);
+                }
             }
             bc.aiRng.random(0, 99);
             setMove(MonsterMoveId::DECA_BEAM);
@@ -3231,7 +3246,11 @@ MMID Monster::getMoveForRoll(BattleContext &bc, int &monsterData, const int roll
                     return MMID::WRITHING_MASS_FLAIL;
 
                 } else {
-                    return (MMID::WRITHING_MASS_WITHER);
+                    // Stock recursively rerolls getMove(aiRng.random(69))
+                    // after a rejected consecutive Flail. Preserve the draw
+                    // and re-enter every branch instead of forcing Wither.
+                    myRoll = bc.aiRng.random(69);
+                    continue;
                 }
             }
         }

@@ -18,6 +18,23 @@ class ScriptedTransport:
         return next(self.payloads)
 
 
+@pytest.mark.parametrize('schema', ['spirecomm-parity-v11', 'spirecomm-parity-v12', 'spirecomm-parity-v13'])
+def test_production_oracle_supports_diagnostic_versions(schema):
+    LiveGameBackend._require_production_oracle({
+        'in_game': True, '_parity_schema': schema,
+        '_oracle_contract': 'sls-oracle-mode-v1', '_oracle_mode': 'production',
+    })
+
+
+@pytest.mark.parametrize('field', ['_stock_reward_state', '_stock_direct', '_parity_scenario'])
+def test_production_oracle_rejects_independent_hidden_evidence(field):
+    with pytest.raises(ValueError, match='production mode'):
+        LiveGameBackend._require_production_oracle({
+            'in_game': True, '_parity_schema': 'spirecomm-parity-v12',
+            '_oracle_contract': 'sls-oracle-mode-v1', '_oracle_mode': 'production', field: {},
+        })
+
+
 def game_payload(choices: list[str]) -> dict:
     return {
         "_parity_schema": "spirecomm-parity-v11", "_oracle_contract": "sls-oracle-mode-v1",

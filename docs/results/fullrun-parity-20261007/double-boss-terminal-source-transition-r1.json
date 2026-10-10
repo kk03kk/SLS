@@ -1,0 +1,61 @@
+{
+  "schema": "sls-double-boss-terminal-source-transition-v1",
+  "native_before": "81e83de9b8870847e5dccc74e7631004d21f9343b7f2a8c27d7646f6eaf2d42b",
+  "native_after": "9bbf5664d5efa1eb65fdbfde8ebdf5f16b6a0d3507f2231aad2da001d35ae606",
+  "environment_semantics_changed": true,
+  "checkpoint_layout_changed": false,
+  "observation_action_layout_changed": false,
+  "automatic_resume_permission": false,
+  "state_preserving_transition": false,
+  "change": "Do not create combat when restoring terminal victory whose retained screen_state is BATTLE; preserve loss combat checkpoint path.",
+  "before_tests_failed": 3,
+  "current_targeted_tests_passed": 131,
+  "capture_sha256": "1e3d1a3af70a651f2c2f107300233307e1cba219c8571713ce9a9e8dbfeec602",
+  "replay_sha256": "5d8e26e01d2ad7789bbf4ed61be38f9fac63ef42a2ae1ed789b85c838c04df72",
+  "oracle_sha256": "ed6a349609d518fec376a01ef5e7b98619272e91ffcdcb8e0fe5b00d19285a63",
+  "runs": [
+    {
+      "seed": 131200222,
+      "all_restore_equal": true,
+      "decision_boundary_comparison": [
+        null,
+        true,
+        true,
+        false,
+        null
+      ],
+      "endpoint_status": "REQUIRES_STOCK_VICTORY_ROOM_ENTRY_FOR_FINAL_RNG_AND_RESOURCE_ALIGNMENT"
+    },
+    {
+      "seed": 131200223,
+      "all_restore_equal": true,
+      "decision_boundary_comparison": [
+        null,
+        true,
+        true,
+        false,
+        null
+      ],
+      "endpoint_status": "REQUIRES_STOCK_VICTORY_ROOM_ENTRY_FOR_FINAL_RNG_AND_RESOURCE_ALIGNMENT"
+    },
+    {
+      "seed": 131200224,
+      "all_restore_equal": true,
+      "decision_boundary_comparison": [
+        null,
+        true,
+        true,
+        false,
+        null
+      ],
+      "endpoint_status": "REQUIRES_STOCK_VICTORY_ROOM_ENTRY_FOR_FINAL_RNG_AND_RESOURCE_ALIGNMENT"
+    }
+  ],
+  "open_differences": [
+    "After Deca death and subsequent end turn stock clears corpse powers; native direct state retainsArtifact3, adapted/action projections match. Gameplay impact not yet classified.",
+    "Stock second victory floor51 and native direct victory-room floor52 not aligned: final resources/RNG require actual stock proceed capture."
+  ],
+  "status": "FIXED_TERMINAL_RESTORE_COMPLETE_PAIR_QUALIFICATION_OPEN",
+  "full_computational_suite": "NOT_RUN",
+  "server_checkout_modified": false
+}

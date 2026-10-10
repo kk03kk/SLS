@@ -10,10 +10,10 @@ from pathlib import Path
 from sls.audit.act2_differential import pending_stock_intents
 from sls.audit.card_parity import structured_differences
 from sls.audit.decision_identity import canonical_projection, mapped_action
+from sls.audit.trajectory_reader import read_trajectory
 from sls.backends.original import ORIGINAL_EXECUTION_CONTRACT
 from sls.backends.simulator import SimulatorBackend, native
 from sls.curriculum import IRONCLAD_A20_ACT2
-from sls.diagnostics.canary import read_trajectory
 from sls.rl.training_contract import native_source_digest
 from tools.capture_act2_production_batch import ProductionBackend
 

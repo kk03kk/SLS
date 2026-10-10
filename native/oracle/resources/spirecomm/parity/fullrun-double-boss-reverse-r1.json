@@ -1,0 +1,206 @@
+{
+  "schema": "sls-fullrun-scenes-v1",
+  "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "scenes": [
+    {
+      "id": "act3-donu-time-eater-victory-room",
+      "encounter": "DONU_AND_DECA",
+      "ascension": 20,
+      "act": 3,
+      "floor": 50,
+      "room": "BOSS",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 700,
+        "max_hp": 1000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Searing Blow+30",
+          "Searing Blow+30",
+          "Searing Blow+30",
+          "Searing Blow+30",
+          "Searing Blow+30"
+        ],
+        "draw": [
+          "Searing Blow+30",
+          "Searing Blow+30",
+          "Searing Blow+30",
+          "Searing Blow+30",
+          "Searing Blow+30",
+          "Searing Blow+30",
+          "Searing Blow+30",
+          "Searing Blow+30",
+          "Searing Blow+30",
+          "Searing Blow+30",
+          "Searing Blow+30",
+          "Searing Blow+30",
+          "Searing Blow+30",
+          "Searing Blow+30",
+          "Searing Blow+30"
+        ],
+        "monster_hp": {},
+        "boss_order": [
+          "DONU_AND_DECA",
+          "TIME_EATER",
+          "AWAKENED_ONE"
+        ],
+        "relics": [
+          "Burning Blood",
+          "MawBank"
+        ],
+        "flow_master_deck": [
+          "Searing Blow+30",
+          "Searing Blow+30",
+          "Searing Blow+30",
+          "Searing Blow+30",
+          "Searing Blow+30",
+          "Searing Blow+30",
+          "Searing Blow+30",
+          "Searing Blow+30",
+          "Searing Blow+30",
+          "Searing Blow+30"
+        ]
+      },
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target": {
+            "monster_id": "DECA",
+            "alive_ordinal": 0
+          }
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target": {
+            "monster_id": "DONU",
+            "alive_ordinal": 0
+          }
+        },
+        {
+          "kind": "proceed_to_second_boss"
+        },
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target": {
+            "monster_id": "TIME_EATER",
+            "alive_ordinal": 0
+          }
+        }
+      ],
+      "stock_classes": [
+        "ui.buttons.ProceedButton",
+        "rooms.MonsterRoomBoss",
+        "dungeons.AbstractDungeon",
+        "dungeons.TheBeyond",
+        "monsters.beyond.TimeEater",
+        "monsters.beyond.Donu",
+        "monsters.beyond.Deca",
+        "cards.red.Anger",
+        "rooms.AbstractRoom",
+        "rewards.RewardItem",
+        "cards.red.SearingBlow",
+        "relics.MawBank",
+        "relics.BurningBlood",
+        "rooms.VictoryRoom",
+        "events.beyond.SpireHeart"
+      ],
+      "source_evidence": {
+        "com.megacrit.cardcrawl.ui.buttons.ProceedButton": {
+          "class_sha256": "e3be20a12a9f9466a81d44c2dcc895a5b6018709aa82d0da8a093b4ce0e8b8fd",
+          "bytecode_sha256": "fffc3e3e08dd4fa53a9d65181433e24cdbd527beda9ccaadce28f7e8657e1c3f"
+        },
+        "com.megacrit.cardcrawl.rooms.MonsterRoomBoss": {
+          "class_sha256": "c1673b950a48f5ee08088395867e299226b0845f637044c7a49259c79d756a9f",
+          "bytecode_sha256": "7f74f073cf8638463d68beef49bdd213c853e199051ff226d010b169ba775d95"
+        },
+        "com.megacrit.cardcrawl.dungeons.AbstractDungeon": {
+          "class_sha256": "5452fdd7b33fa47dcea5c2e58d5d521dfde3acefba006c095ad5b01c60eda369",
+          "bytecode_sha256": "be440b70a41da50c747d240101168e6e0aad5a6eec66906f38ecb82f47c238dc"
+        },
+        "com.megacrit.cardcrawl.dungeons.TheBeyond": {
+          "class_sha256": "e8e7819f75bc2ee347c9dbfa5316b42160c2c50ef4f3bae3b4115e2c4a9a6502",
+          "bytecode_sha256": "c2584927eb19266caf64d97926c9144a0d9a988d30b66099eb5a0e126234c35b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.TimeEater": {
+          "class_sha256": "9cb8975671f6aa31ce9ad1a24b6116276d716275a9ca3063d4c18b61f9e576ce",
+          "bytecode_sha256": "5682a97260a05d8c90e57b238df346c38682c0d17561f25da72b2fcf7baa86d8"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.Donu": {
+          "class_sha256": "e7992a037cf0b971bfe03d99a1ec4b16709dbeaea545df588091869ff50bb7b4",
+          "bytecode_sha256": "bae6c788f54ee02ac4905d8b414d54c7aac1c09d07dd5a43125514dbc383f888"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.Deca": {
+          "class_sha256": "0f290c6b5815b831c9a11e7dbc8b99e1d19d42ef8664a9c49563a33bcbca8c4d",
+          "bytecode_sha256": "afaf90604e3948d554815084b5ba96a060ee21b0e17548b00331fc4e8df34a9a"
+        },
+        "com.megacrit.cardcrawl.cards.red.Anger": {
+          "class_sha256": "cf446c5b763c790ec924fbbd010a6be8f1175f4e2d818805b5b599d78a04cb27",
+          "bytecode_sha256": "0ce0b704dea97674876fe6b2df815fadc463607d7442e29881f43ebbcde17dae"
+        },
+        "com.megacrit.cardcrawl.rooms.AbstractRoom": {
+          "class_sha256": "22214900fc051a2e8e73b72532ee561abc95a77f7172b105b68d3afeca0a74f6",
+          "bytecode_sha256": "62453410540607634c82dc0b5e1a84c504e606dbbd17e3ef1ca4848ee857d8bd"
+        },
+        "com.megacrit.cardcrawl.rewards.RewardItem": {
+          "class_sha256": "7f5abc79015ab6a6cb6781776fc1752a5e5143f47be61b4ee8bcf9cb057daf55",
+          "bytecode_sha256": "46e0773520dcb47a5776f8fce04334a87ef7fbe5fe6fc58b76825459e6de3428"
+        },
+        "com.megacrit.cardcrawl.cards.red.SearingBlow": {
+          "class_sha256": "b445e4403fa4ac6435a6a5988f12244216c534c00fdc4f1f5f83151df1afbf54"
+        },
+        "com.megacrit.cardcrawl.relics.MawBank": {
+          "class_sha256": "76eae8dad8336cdd3de4a3da05b06bb6bb7e5ce23f8f77a4147040631c6dd70f"
+        },
+        "com.megacrit.cardcrawl.relics.BurningBlood": {
+          "class_sha256": "3810c46bfae43debd4bebb087f3b8624e5fdcf16b509459c13e3788046697732"
+        },
+        "com.megacrit.cardcrawl.rooms.VictoryRoom": {
+          "class_sha256": "915b8d46678fa41b33b773842e2590ed473cec6aa60612d117158b93c68e80ef",
+          "bytecode_sha256": "964c598574941c08ba1eebd114d5b3293fa2ec81480dcf7c7ae92374888c6eaa"
+        },
+        "com.megacrit.cardcrawl.events.beyond.SpireHeart": {
+          "class_sha256": "406c380de01d98c78ff3df8b7683df50ff8b97f9256e2969db148d3d0b2b394c",
+          "bytecode_sha256": "8d3a57263aadc0b5605c478dfb5d2d956ee4c7397c62f2ae9e15eabd12dc79fd"
+        }
+      },
+      "stock_methods": {
+        "ui.buttons.ProceedButton": [
+          "update",
+          "goToDoubleBoss"
+        ],
+        "rooms.MonsterRoomBoss": [
+          "onPlayerEntry"
+        ],
+        "dungeons.AbstractDungeon": [
+          "nextRoomTransition"
+        ],
+        "cards.red.SearingBlow": [
+          "upgrade",
+          "use"
+        ],
+        "relics.MawBank": [
+          "onEnterRoom"
+        ],
+        "relics.BurningBlood": [
+          "onVictory"
+        ]
+      },
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "seeds": [
+        131200228,
+        131200229,
+        131200230
+      ],
+      "scope": "CONTROLLED_TWO_COMBATS_AND_VICTORY_ROOM_ENTRY_NOT_NATURAL_OR_COMPLETE_HEART_ROUTE",
+      "collect_second_boss_victory": true,
+      "collect_victory_room_entry": true
+    }
+  ]
+}

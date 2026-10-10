@@ -1,0 +1,170 @@
+{
+  "schema": "sls-fullrun-scenes-v1",
+  "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "scenes": [
+    {
+      "id": "act3-reptomancer-reused-live-targets",
+      "encounter": "REPTOMANCER",
+      "ascension": 20,
+      "act": 3,
+      "floor": 40,
+      "room": "ELITE",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Anger"
+        ],
+        "draw": [
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger"
+        ],
+        "potion": "Fire Potion"
+      },
+      "seeds": [
+        131200099,
+        131200100,
+        131200101
+      ],
+      "stock_classes": [
+        "dungeons.TheBeyond",
+        "monsters.beyond.Reptomancer",
+        "monsters.beyond.SnakeDagger",
+        "actions.common.SpawnMonsterAction",
+        "cards.red.Anger",
+        "potions.FirePotion"
+      ],
+      "stock_methods": {
+        "dungeons.TheBeyond": [
+          "TheBeyond"
+        ],
+        "monsters.beyond.Reptomancer": [
+          "takeTurn",
+          "getMove"
+        ],
+        "monsters.beyond.SnakeDagger": [
+          "takeTurn"
+        ],
+        "actions.common.SpawnMonsterAction": [
+          "update"
+        ],
+        "cards.red.Anger": [
+          "use"
+        ],
+        "potions.FirePotion": [
+          "use"
+        ]
+      },
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheBeyond": {
+          "class_sha256": "e8e7819f75bc2ee347c9dbfa5316b42160c2c50ef4f3bae3b4115e2c4a9a6502",
+          "bytecode_sha256": "c2584927eb19266caf64d97926c9144a0d9a988d30b66099eb5a0e126234c35b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.Reptomancer": {
+          "class_sha256": "972f9bb9c71256597beb725fa4feaad812e1d5bfe97df0f44141f66788715d52",
+          "bytecode_sha256": "62dcacf98ca8bea17bc4d1a699fa0e8f35a15ecf2d58c70824115ddecc58ee7b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.SnakeDagger": {
+          "class_sha256": "d7a00e8ffefea878dfc2793f6fa3d2ffa51f8ba2590d56c3e29ae86cc8aee562",
+          "bytecode_sha256": "a27d09693237e1ce26c9ae1c521be3dbdb9017b842fc6efb8684316b8aeec7a2"
+        },
+        "com.megacrit.cardcrawl.actions.common.SpawnMonsterAction": {
+          "class_sha256": "a61a4c7f57066fedab535803a162701124353b60562a4d25957df0da774f2b93",
+          "bytecode_sha256": "c0992463af0ca059df7249490905bf7be067a5657b61702d1c5f64f6d82c097c"
+        },
+        "com.megacrit.cardcrawl.cards.red.Anger": {
+          "class_sha256": "cf446c5b763c790ec924fbbd010a6be8f1175f4e2d818805b5b599d78a04cb27",
+          "bytecode_sha256": "0ce0b704dea97674876fe6b2df815fadc463607d7442e29881f43ebbcde17dae"
+        },
+        "com.megacrit.cardcrawl.potions.FirePotion": {
+          "class_sha256": "0391a17323526250a23da24553b135b2f9a785feaa0ce168b9155c33f2bbd0f6",
+          "bytecode_sha256": "351ef53fe1c75fdb83c84c97b772c43d0c39740188641f7951a3257276123155"
+        }
+      },
+      "actions": [
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target": {
+            "monster_id": "DAGGER",
+            "alive_ordinal": 0
+          }
+        },
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target": {
+            "monster_id": "DAGGER",
+            "alive_ordinal": 1
+          }
+        },
+        {
+          "kind": "potion",
+          "potion_index": 0,
+          "target": {
+            "monster_id": "DAGGER",
+            "alive_ordinal": 1
+          }
+        }
+      ],
+      "obligation": "After original dagger self-deaths and replacement summons, target both live daggers using the same content/rank script, then kill the second by potion.",
+      "qualification_scope": "CONTROLLED_TARGET_MAPPING_AND_STATE_NOT_NATURAL_FLOW",
+      "status": "READY_FOR_CONTROLLED_EXECUTION"
+    }
+  ],
+  "qualification": false,
+  "final_holdout_used": false
+}

@@ -1,0 +1,392 @@
+{
+  "schema": "sls-fullrun-scenes-v1",
+  "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "scenes": [
+    {
+      "id": "thief-all-escape-positive-pity",
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "encounter": "TWO_THIEVES",
+      "ascension": 20,
+      "act": 2,
+      "floor": 20,
+      "room": "MONSTER",
+      "actual_dungeon_required": true,
+      "scope": "CONTROLLED_ACT2_THECITY_REWARD_FLOW_NOT_NORMAL_START",
+      "stock_classes": [
+        "rooms.AbstractRoom",
+        "monsters.MonsterGroup",
+        "monsters.exordium.Looter",
+        "monsters.city.Mugger",
+        "actions.common.EscapeAction"
+      ],
+      "source_evidence": {
+        "com.megacrit.cardcrawl.rooms.AbstractRoom": {
+          "class_sha256": "22214900fc051a2e8e73b72532ee561abc95a77f7172b105b68d3afeca0a74f6",
+          "bytecode_sha256": "62453410540607634c82dc0b5e1a84c504e606dbbd17e3ef1ca4848ee857d8bd"
+        },
+        "com.megacrit.cardcrawl.monsters.MonsterGroup": {
+          "class_sha256": "6e101c438673eff716edfa8ec12a8a2a00d0c7b9b363cc4f4fa1b1f673b37fc8",
+          "bytecode_sha256": "594826a9c18b2582f66451d772c0e507c52dfee954eff50e862b714b301092dc"
+        },
+        "com.megacrit.cardcrawl.monsters.exordium.Looter": {
+          "class_sha256": "d52eb2e33225886513620d97eae01935e6b7383cdddce36719adeaafeebbc702",
+          "bytecode_sha256": "1b422e587f3320d42f4333118f0cae96b613b67258ce01309910ff637caf38ff"
+        },
+        "com.megacrit.cardcrawl.monsters.city.Mugger": {
+          "class_sha256": "da89eb55eefff691fde960a74beb3c49df06ebaa9a89262e8a832f53e603617f",
+          "bytecode_sha256": "004d9224375fe343a75fdf8300387d49b9bc81d0a4868accda6a5edb46916792"
+        },
+        "com.megacrit.cardcrawl.actions.common.EscapeAction": {
+          "class_sha256": "981affd19dca143195e0e32263ba74775f990d256da640c41fdd8af7b9f2c9db",
+          "bytecode_sha256": "491035928c7b1f0496da81e09385c2caeacb22ec0b584e0c22d8520b037f0705"
+        }
+      },
+      "seeds": [
+        131200180,
+        131200181,
+        131200182
+      ],
+      "initial": {
+        "hp": 200,
+        "max_hp": 200,
+        "block": 0,
+        "energy": 3,
+        "hand": [
+          "Defend_R"
+        ],
+        "draw": [],
+        "potion_modifier": 100
+      },
+      "actions": [
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "collect_reward_boundary": true,
+      "stop_at_reward_boundary": true
+    },
+    {
+      "id": "thief-all-escape-zero-pity",
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "encounter": "TWO_THIEVES",
+      "ascension": 20,
+      "act": 2,
+      "floor": 20,
+      "room": "MONSTER",
+      "actual_dungeon_required": true,
+      "scope": "CONTROLLED_ACT2_THECITY_REWARD_FLOW_NOT_NORMAL_START",
+      "stock_classes": [
+        "rooms.AbstractRoom",
+        "monsters.MonsterGroup",
+        "monsters.exordium.Looter",
+        "monsters.city.Mugger",
+        "actions.common.EscapeAction"
+      ],
+      "source_evidence": {
+        "com.megacrit.cardcrawl.rooms.AbstractRoom": {
+          "class_sha256": "22214900fc051a2e8e73b72532ee561abc95a77f7172b105b68d3afeca0a74f6",
+          "bytecode_sha256": "62453410540607634c82dc0b5e1a84c504e606dbbd17e3ef1ca4848ee857d8bd"
+        },
+        "com.megacrit.cardcrawl.monsters.MonsterGroup": {
+          "class_sha256": "6e101c438673eff716edfa8ec12a8a2a00d0c7b9b363cc4f4fa1b1f673b37fc8",
+          "bytecode_sha256": "594826a9c18b2582f66451d772c0e507c52dfee954eff50e862b714b301092dc"
+        },
+        "com.megacrit.cardcrawl.monsters.exordium.Looter": {
+          "class_sha256": "d52eb2e33225886513620d97eae01935e6b7383cdddce36719adeaafeebbc702",
+          "bytecode_sha256": "1b422e587f3320d42f4333118f0cae96b613b67258ce01309910ff637caf38ff"
+        },
+        "com.megacrit.cardcrawl.monsters.city.Mugger": {
+          "class_sha256": "da89eb55eefff691fde960a74beb3c49df06ebaa9a89262e8a832f53e603617f",
+          "bytecode_sha256": "004d9224375fe343a75fdf8300387d49b9bc81d0a4868accda6a5edb46916792"
+        },
+        "com.megacrit.cardcrawl.actions.common.EscapeAction": {
+          "class_sha256": "981affd19dca143195e0e32263ba74775f990d256da640c41fdd8af7b9f2c9db",
+          "bytecode_sha256": "491035928c7b1f0496da81e09385c2caeacb22ec0b584e0c22d8520b037f0705"
+        }
+      },
+      "seeds": [
+        131200183,
+        131200184,
+        131200185
+      ],
+      "initial": {
+        "hp": 200,
+        "max_hp": 200,
+        "block": 0,
+        "energy": 3,
+        "hand": [
+          "Defend_R"
+        ],
+        "draw": [],
+        "potion_modifier": 0
+      },
+      "actions": [
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "collect_reward_boundary": true,
+      "stop_at_reward_boundary": true
+    },
+    {
+      "id": "thief-all-escape-white-statue",
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "encounter": "TWO_THIEVES",
+      "ascension": 20,
+      "act": 2,
+      "floor": 20,
+      "room": "MONSTER",
+      "actual_dungeon_required": true,
+      "scope": "CONTROLLED_ACT2_THECITY_REWARD_FLOW_NOT_NORMAL_START",
+      "stock_classes": [
+        "rooms.AbstractRoom",
+        "monsters.MonsterGroup",
+        "monsters.exordium.Looter",
+        "monsters.city.Mugger",
+        "actions.common.EscapeAction"
+      ],
+      "source_evidence": {
+        "com.megacrit.cardcrawl.rooms.AbstractRoom": {
+          "class_sha256": "22214900fc051a2e8e73b72532ee561abc95a77f7172b105b68d3afeca0a74f6",
+          "bytecode_sha256": "62453410540607634c82dc0b5e1a84c504e606dbbd17e3ef1ca4848ee857d8bd"
+        },
+        "com.megacrit.cardcrawl.monsters.MonsterGroup": {
+          "class_sha256": "6e101c438673eff716edfa8ec12a8a2a00d0c7b9b363cc4f4fa1b1f673b37fc8",
+          "bytecode_sha256": "594826a9c18b2582f66451d772c0e507c52dfee954eff50e862b714b301092dc"
+        },
+        "com.megacrit.cardcrawl.monsters.exordium.Looter": {
+          "class_sha256": "d52eb2e33225886513620d97eae01935e6b7383cdddce36719adeaafeebbc702",
+          "bytecode_sha256": "1b422e587f3320d42f4333118f0cae96b613b67258ce01309910ff637caf38ff"
+        },
+        "com.megacrit.cardcrawl.monsters.city.Mugger": {
+          "class_sha256": "da89eb55eefff691fde960a74beb3c49df06ebaa9a89262e8a832f53e603617f",
+          "bytecode_sha256": "004d9224375fe343a75fdf8300387d49b9bc81d0a4868accda6a5edb46916792"
+        },
+        "com.megacrit.cardcrawl.actions.common.EscapeAction": {
+          "class_sha256": "981affd19dca143195e0e32263ba74775f990d256da640c41fdd8af7b9f2c9db",
+          "bytecode_sha256": "491035928c7b1f0496da81e09385c2caeacb22ec0b584e0c22d8520b037f0705"
+        }
+      },
+      "seeds": [
+        131200186,
+        131200187,
+        131200188
+      ],
+      "initial": {
+        "hp": 200,
+        "max_hp": 200,
+        "block": 0,
+        "energy": 3,
+        "hand": [
+          "Defend_R"
+        ],
+        "draw": [],
+        "potion_modifier": 0,
+        "relics": [
+          "White Beast Statue"
+        ]
+      },
+      "actions": [
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "collect_reward_boundary": true,
+      "stop_at_reward_boundary": true
+    },
+    {
+      "id": "thief-one-killed-one-escape",
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "encounter": "TWO_THIEVES",
+      "ascension": 20,
+      "act": 2,
+      "floor": 20,
+      "room": "MONSTER",
+      "actual_dungeon_required": true,
+      "scope": "CONTROLLED_ACT2_THECITY_REWARD_FLOW_NOT_NORMAL_START",
+      "stock_classes": [
+        "rooms.AbstractRoom",
+        "monsters.MonsterGroup",
+        "monsters.exordium.Looter",
+        "monsters.city.Mugger",
+        "actions.common.EscapeAction"
+      ],
+      "source_evidence": {
+        "com.megacrit.cardcrawl.rooms.AbstractRoom": {
+          "class_sha256": "22214900fc051a2e8e73b72532ee561abc95a77f7172b105b68d3afeca0a74f6",
+          "bytecode_sha256": "62453410540607634c82dc0b5e1a84c504e606dbbd17e3ef1ca4848ee857d8bd"
+        },
+        "com.megacrit.cardcrawl.monsters.MonsterGroup": {
+          "class_sha256": "6e101c438673eff716edfa8ec12a8a2a00d0c7b9b363cc4f4fa1b1f673b37fc8",
+          "bytecode_sha256": "594826a9c18b2582f66451d772c0e507c52dfee954eff50e862b714b301092dc"
+        },
+        "com.megacrit.cardcrawl.monsters.exordium.Looter": {
+          "class_sha256": "d52eb2e33225886513620d97eae01935e6b7383cdddce36719adeaafeebbc702",
+          "bytecode_sha256": "1b422e587f3320d42f4333118f0cae96b613b67258ce01309910ff637caf38ff"
+        },
+        "com.megacrit.cardcrawl.monsters.city.Mugger": {
+          "class_sha256": "da89eb55eefff691fde960a74beb3c49df06ebaa9a89262e8a832f53e603617f",
+          "bytecode_sha256": "004d9224375fe343a75fdf8300387d49b9bc81d0a4868accda6a5edb46916792"
+        },
+        "com.megacrit.cardcrawl.actions.common.EscapeAction": {
+          "class_sha256": "981affd19dca143195e0e32263ba74775f990d256da640c41fdd8af7b9f2c9db",
+          "bytecode_sha256": "491035928c7b1f0496da81e09385c2caeacb22ec0b584e0c22d8520b037f0705"
+        }
+      },
+      "seeds": [
+        131200189,
+        131200190,
+        131200191
+      ],
+      "initial": {
+        "hp": 200,
+        "max_hp": 200,
+        "block": 0,
+        "energy": 3,
+        "hand": [
+          "Strike_R"
+        ],
+        "draw": [],
+        "potion_modifier": 0,
+        "monster_hp": {
+          "LOOTER": 1
+        }
+      },
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "collect_reward_boundary": true,
+      "stop_at_reward_boundary": true
+    },
+    {
+      "id": "thief-both-killed",
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "encounter": "TWO_THIEVES",
+      "ascension": 20,
+      "act": 2,
+      "floor": 20,
+      "room": "MONSTER",
+      "actual_dungeon_required": true,
+      "scope": "CONTROLLED_ACT2_THECITY_REWARD_FLOW_NOT_NORMAL_START",
+      "stock_classes": [
+        "rooms.AbstractRoom",
+        "monsters.MonsterGroup",
+        "monsters.exordium.Looter",
+        "monsters.city.Mugger",
+        "actions.common.EscapeAction"
+      ],
+      "source_evidence": {
+        "com.megacrit.cardcrawl.rooms.AbstractRoom": {
+          "class_sha256": "22214900fc051a2e8e73b72532ee561abc95a77f7172b105b68d3afeca0a74f6",
+          "bytecode_sha256": "62453410540607634c82dc0b5e1a84c504e606dbbd17e3ef1ca4848ee857d8bd"
+        },
+        "com.megacrit.cardcrawl.monsters.MonsterGroup": {
+          "class_sha256": "6e101c438673eff716edfa8ec12a8a2a00d0c7b9b363cc4f4fa1b1f673b37fc8",
+          "bytecode_sha256": "594826a9c18b2582f66451d772c0e507c52dfee954eff50e862b714b301092dc"
+        },
+        "com.megacrit.cardcrawl.monsters.exordium.Looter": {
+          "class_sha256": "d52eb2e33225886513620d97eae01935e6b7383cdddce36719adeaafeebbc702",
+          "bytecode_sha256": "1b422e587f3320d42f4333118f0cae96b613b67258ce01309910ff637caf38ff"
+        },
+        "com.megacrit.cardcrawl.monsters.city.Mugger": {
+          "class_sha256": "da89eb55eefff691fde960a74beb3c49df06ebaa9a89262e8a832f53e603617f",
+          "bytecode_sha256": "004d9224375fe343a75fdf8300387d49b9bc81d0a4868accda6a5edb46916792"
+        },
+        "com.megacrit.cardcrawl.actions.common.EscapeAction": {
+          "class_sha256": "981affd19dca143195e0e32263ba74775f990d256da640c41fdd8af7b9f2c9db",
+          "bytecode_sha256": "491035928c7b1f0496da81e09385c2caeacb22ec0b584e0c22d8520b037f0705"
+        }
+      },
+      "seeds": [
+        131200192,
+        131200193,
+        131200194
+      ],
+      "initial": {
+        "hp": 200,
+        "max_hp": 200,
+        "block": 0,
+        "energy": 3,
+        "hand": [
+          "Strike_R",
+          "Strike_R"
+        ],
+        "draw": [],
+        "potion_modifier": 0,
+        "monster_hp": {
+          "LOOTER": 1,
+          "MUGGER": 1
+        }
+      },
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        },
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 1
+        }
+      ],
+      "collect_reward_boundary": true,
+      "stop_at_reward_boundary": true
+    }
+  ]
+}
