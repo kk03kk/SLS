@@ -1,0 +1,4301 @@
+{
+  "schema": "sls-stock-held-key-map-regression-v1",
+  "training_eligible": false,
+  "natural_trajectory": false,
+  "capture_sha256": "8e7d2c7202941831b3fc822c9bb316b3d777485a99a9aab323f0974248bb8f6e",
+  "scope": "STOCK_PUBLIC_MAP_TARGETS_CONDITIONED_NATIVE_TRANSITION_RNG_NOT_NATURAL",
+  "conditioned_initial_fields": [
+    "key_flag",
+    "act",
+    "seed",
+    "persistent_rng",
+    "inventory",
+    "boss_reward"
+  ],
+  "excluded_observation_fields": [
+    "reachable"
+  ],
+  "missing_branch": "FINAL_ACT_LOCKED_UNSUPPORTED_IN_NATIVE_CONTRACT",
+  "cases": [
+    {
+      "id": "act2-unheld-unlocked",
+      "initial": {
+        "derived_rng": {
+          "map": {
+            "act": 1,
+            "algorithm": "sts.RandomXS128/Map.fromSeed:v1",
+            "ascension": 20,
+            "assign_burning_elite": true,
+            "base_seed": 131200410,
+            "derived_seed": 131200411
+          }
+        },
+        "ordered_pools": {
+          "boss_relics": [
+            98,
+            108,
+            172,
+            156,
+            57,
+            134,
+            133,
+            114,
+            100,
+            17,
+            81,
+            85,
+            56,
+            127,
+            62,
+            58,
+            102,
+            140,
+            64
+          ],
+          "colorless_cards": [
+            94,
+            281,
+            242,
+            344,
+            121,
+            188,
+            335,
+            36,
+            21,
+            290,
+            100,
+            352,
+            241,
+            291,
+            12,
+            218,
+            177,
+            155,
+            166,
+            131,
+            259,
+            240,
+            343,
+            64,
+            113,
+            150,
+            213,
+            216,
+            173,
+            327,
+            200,
+            223,
+            225,
+            336,
+            212
+          ],
+          "common_relics": [
+            91,
+            113,
+            121,
+            52,
+            144,
+            93,
+            9,
+            1,
+            159,
+            149,
+            174,
+            0,
+            148,
+            119,
+            70,
+            171,
+            163,
+            46,
+            175,
+            76,
+            89,
+            132,
+            48,
+            97,
+            90,
+            8,
+            55,
+            139,
+            169,
+            92
+          ],
+          "elite_encounters": [
+            15,
+            16,
+            15,
+            17,
+            16,
+            17,
+            16,
+            17,
+            16,
+            15
+          ],
+          "events": [
+            10,
+            43,
+            14,
+            23,
+            25,
+            56,
+            28,
+            33,
+            39,
+            42
+          ],
+          "normal_encounters": [
+            3,
+            1,
+            4,
+            13,
+            10,
+            8,
+            13,
+            6,
+            14,
+            7,
+            11,
+            14,
+            6,
+            5,
+            9,
+            14
+          ],
+          "rare_relics": [
+            74,
+            54,
+            109,
+            77,
+            165,
+            15,
+            21,
+            11,
+            160,
+            35,
+            2,
+            36,
+            131,
+            65,
+            154,
+            29,
+            6,
+            30,
+            105,
+            107,
+            146,
+            7,
+            157,
+            78,
+            22,
+            177,
+            10,
+            80
+          ],
+          "shop_relics": [
+            136,
+            138,
+            38,
+            66,
+            150,
+            20,
+            128,
+            73,
+            12,
+            5,
+            155,
+            47,
+            25,
+            145,
+            99,
+            161
+          ],
+          "shrines": [
+            31,
+            24,
+            50,
+            38,
+            54
+          ],
+          "special_one_time_events": [
+            6,
+            11,
+            15,
+            17,
+            18,
+            21,
+            26,
+            27,
+            36,
+            40,
+            44,
+            53,
+            48
+          ],
+          "uncommon_relics": [
+            96,
+            147,
+            51,
+            34,
+            14,
+            24,
+            33,
+            94,
+            40,
+            151,
+            60,
+            170,
+            31,
+            142,
+            95,
+            166,
+            141,
+            87,
+            41,
+            67,
+            173,
+            68,
+            49,
+            162,
+            176,
+            4,
+            158,
+            61,
+            27
+          ]
+        },
+        "player_state": {
+          "blue_key": false,
+          "bottle_indices": [
+            -1,
+            -1,
+            -1
+          ],
+          "current_hp": 75,
+          "deck": [
+            {
+              "id": 15,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 321,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 321,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 321,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 321,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 321,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 104,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 104,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 104,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 104,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 25,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 191,
+              "misc": 0,
+              "upgraded": true
+            },
+            {
+              "id": 152,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 11,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 244,
+              "misc": 0,
+              "upgraded": true
+            },
+            {
+              "id": 152,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 27,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 249,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 154,
+              "misc": 0,
+              "upgraded": true
+            },
+            {
+              "id": 14,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 40,
+              "misc": 0,
+              "upgraded": false
+            }
+          ],
+          "gold": 189,
+          "green_key": false,
+          "max_hp": 75,
+          "potion_capacity": 2,
+          "potion_count": 2,
+          "potions": [
+            36,
+            35
+          ],
+          "red_key": false,
+          "relics": [
+            {
+              "data": 0,
+              "id": 86
+            },
+            {
+              "data": 0,
+              "id": 116
+            },
+            {
+              "data": 0,
+              "id": 26
+            }
+          ]
+        },
+        "progress_state": {
+          "boss": 18,
+          "card_rarity_factor": 5,
+          "current_event": 0,
+          "current_map_x": 0,
+          "current_map_y": 15,
+          "current_room": 7,
+          "last_room": 1,
+          "monster_chance": 0.30000001192092896,
+          "outcome": 1,
+          "potion_chance": 20,
+          "screen_continuation_serialized": true,
+          "screen_state": 3,
+          "shop_chance": 0.08999999612569809,
+          "shop_remove_count": 0,
+          "speedrun_pace": false,
+          "treasure_chance": 0.05999999865889549
+        },
+        "rng": {
+          "ai": {
+            "counter": 0,
+            "seed0": 13288775205653600183,
+            "seed1": 15305131519507321865
+          },
+          "card": {
+            "counter": 82,
+            "seed0": 16310351596283314323,
+            "seed1": 5524297790917434916
+          },
+          "card_random": {
+            "counter": 0,
+            "seed0": 13288775205653600183,
+            "seed1": 15305131519507321865
+          },
+          "event": {
+            "counter": 2,
+            "seed0": 6988983097101036736,
+            "seed1": 6188795937038656160
+          },
+          "math_util": {
+            "counter": 0,
+            "seed0": 15556541967390064193,
+            "seed1": 6077879108210242183
+          },
+          "merchant": {
+            "counter": 16,
+            "seed0": 17460510524406916375,
+            "seed1": 18259532471470025709
+          },
+          "misc": {
+            "counter": 0,
+            "seed0": 13288775205653600183,
+            "seed1": 15305131519507321865
+          },
+          "monster": {
+            "counter": 33,
+            "seed0": 2504236146697888020,
+            "seed1": 14119613366411699647
+          },
+          "monster_hp": {
+            "counter": 0,
+            "seed0": 13288775205653600183,
+            "seed1": 15305131519507321865
+          },
+          "neow": {
+            "counter": 5,
+            "seed0": 7078389128633382016,
+            "seed1": 6348232442850941232
+          },
+          "potion": {
+            "counter": 37,
+            "seed0": 3440147209492117381,
+            "seed1": 8209531708349834810
+          },
+          "relic": {
+            "counter": 6,
+            "seed0": 6348232442850941232,
+            "seed1": 10254541775952007624
+          },
+          "shuffle": {
+            "counter": 0,
+            "seed0": 13288775205653600183,
+            "seed1": 15305131519507321865
+          },
+          "treasure": {
+            "counter": 10,
+            "seed0": 12266766167016616705,
+            "seed1": 2521320498601041531
+          }
+        },
+        "run_state": {
+          "act": 1,
+          "ascension": 20,
+          "burning_elite_buff": 2,
+          "burning_elite_x": 4,
+          "burning_elite_y": 5,
+          "elite_monster_list_offset": 1,
+          "event_start_context": {
+            "note_card": "IRON_WAVE",
+            "portal_eligible": true
+          },
+          "floor": 16,
+          "map": "\n           /  /   \\  \\     \n14        R  R     R  R    \n        /    | \\     \\  \\  \n13     ?     M  ?     ?  M \n         \\ /    |   /    | \n12        M     ?  M     ? \n        / |       \\|   /   \n11     ?  M        M  R    \n       |    \\    / |/      \n10     E     M  ?  M       \n         \\ / |    \\| \\     \n9         M  E     M  E    \n            \\  \\     \\  \\  \n8            T  T     T  T \n           /   \\  \\ / |  | \n7         M     M  R  M  R \n        /     /    |    \\| \n6      E     R     M     $ \n       |       \\   | \\ / | \n5      R        E  E  R  E \n         \\      |    \\| \\| \n4         $     ?     M  ? \n          |       \\ / |/   \n3         M        M  $    \n            \\      |  | \\  \n2            M     M  ?  M \n           /     /    |/   \n1         ?     ?     M    \n        /       |   /      \n0      M        M  M       ",
+          "math_seed": 130302513,
+          "monster_list_offset": 6,
+          "second_boss": 0,
+          "seed": 131200410
+        },
+        "screen_info": {
+          "boss_relics": [
+            53,
+            59,
+            135
+          ],
+          "complete": true,
+          "screen_state": 3
+        }
+      },
+      "expected_public_map": [
+        {
+          "node_id": "map:0:0",
+          "x": 0,
+          "y": 0,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:0:1"
+          ]
+        },
+        {
+          "node_id": "map:3:0",
+          "x": 3,
+          "y": 0,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:3:1",
+            "map:4:1"
+          ]
+        },
+        {
+          "node_id": "map:4:0",
+          "x": 4,
+          "y": 0,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:5:1"
+          ]
+        },
+        {
+          "node_id": "map:0:1",
+          "x": 0,
+          "y": 1,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:0:2"
+          ]
+        },
+        {
+          "node_id": "map:3:1",
+          "x": 3,
+          "y": 1,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:4:2"
+          ]
+        },
+        {
+          "node_id": "map:4:1",
+          "x": 4,
+          "y": 1,
+          "visible_room_type": "SHOP",
+          "outgoing_node_ids": [
+            "map:4:2"
+          ]
+        },
+        {
+          "node_id": "map:5:1",
+          "x": 5,
+          "y": 1,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:4:2",
+            "map:5:2",
+            "map:6:2"
+          ]
+        },
+        {
+          "node_id": "map:0:2",
+          "x": 0,
+          "y": 2,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:1:3"
+          ]
+        },
+        {
+          "node_id": "map:4:2",
+          "x": 4,
+          "y": 2,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:3:3",
+            "map:4:3",
+            "map:5:3"
+          ]
+        },
+        {
+          "node_id": "map:5:2",
+          "x": 5,
+          "y": 2,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:5:3"
+          ]
+        },
+        {
+          "node_id": "map:6:2",
+          "x": 6,
+          "y": 2,
+          "visible_room_type": "SHOP",
+          "outgoing_node_ids": [
+            "map:5:3"
+          ]
+        },
+        {
+          "node_id": "map:1:3",
+          "x": 1,
+          "y": 3,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:0:4"
+          ]
+        },
+        {
+          "node_id": "map:3:3",
+          "x": 3,
+          "y": 3,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:2:4"
+          ]
+        },
+        {
+          "node_id": "map:4:3",
+          "x": 4,
+          "y": 3,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:4:4"
+          ]
+        },
+        {
+          "node_id": "map:5:3",
+          "x": 5,
+          "y": 3,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:4:4",
+            "map:5:4",
+            "map:6:4"
+          ]
+        },
+        {
+          "node_id": "map:0:4",
+          "x": 0,
+          "y": 4,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:0:5"
+          ]
+        },
+        {
+          "node_id": "map:2:4",
+          "x": 2,
+          "y": 4,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:3:5"
+          ]
+        },
+        {
+          "node_id": "map:4:4",
+          "x": 4,
+          "y": 4,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:4:5"
+          ]
+        },
+        {
+          "node_id": "map:5:4",
+          "x": 5,
+          "y": 4,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:5:5"
+          ]
+        },
+        {
+          "node_id": "map:6:4",
+          "x": 6,
+          "y": 4,
+          "visible_room_type": "SHOP",
+          "outgoing_node_ids": [
+            "map:6:5"
+          ]
+        },
+        {
+          "node_id": "map:0:5",
+          "x": 0,
+          "y": 5,
+          "visible_room_type": "REST",
+          "outgoing_node_ids": [
+            "map:1:6"
+          ]
+        },
+        {
+          "node_id": "map:3:5",
+          "x": 3,
+          "y": 5,
+          "visible_room_type": "REST",
+          "outgoing_node_ids": [
+            "map:4:6"
+          ]
+        },
+        {
+          "node_id": "map:4:5",
+          "x": 4,
+          "y": 5,
+          "visible_room_type": "ELITE",
+          "outgoing_node_ids": [
+            "map:4:6"
+          ]
+        },
+        {
+          "node_id": "map:5:5",
+          "x": 5,
+          "y": 5,
+          "visible_room_type": "ELITE",
+          "outgoing_node_ids": [
+            "map:4:6"
+          ]
+        },
+        {
+          "node_id": "map:6:5",
+          "x": 6,
+          "y": 5,
+          "visible_room_type": "ELITE",
+          "outgoing_node_ids": [
+            "map:5:6"
+          ]
+        },
+        {
+          "node_id": "map:1:6",
+          "x": 1,
+          "y": 6,
+          "visible_room_type": "ELITE",
+          "outgoing_node_ids": [
+            "map:1:7"
+          ]
+        },
+        {
+          "node_id": "map:4:6",
+          "x": 4,
+          "y": 6,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:3:7",
+            "map:4:7"
+          ]
+        },
+        {
+          "node_id": "map:5:6",
+          "x": 5,
+          "y": 6,
+          "visible_room_type": "REST",
+          "outgoing_node_ids": [
+            "map:5:7"
+          ]
+        },
+        {
+          "node_id": "map:1:7",
+          "x": 1,
+          "y": 7,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:2:8"
+          ]
+        },
+        {
+          "node_id": "map:3:7",
+          "x": 3,
+          "y": 7,
+          "visible_room_type": "REST",
+          "outgoing_node_ids": [
+            "map:2:8",
+            "map:3:8"
+          ]
+        },
+        {
+          "node_id": "map:4:7",
+          "x": 4,
+          "y": 7,
+          "visible_room_type": "ELITE",
+          "outgoing_node_ids": [
+            "map:3:8"
+          ]
+        },
+        {
+          "node_id": "map:5:7",
+          "x": 5,
+          "y": 7,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:5:8"
+          ]
+        },
+        {
+          "node_id": "map:2:8",
+          "x": 2,
+          "y": 8,
+          "visible_room_type": "TREASURE",
+          "outgoing_node_ids": [
+            "map:2:9",
+            "map:3:9"
+          ]
+        },
+        {
+          "node_id": "map:3:8",
+          "x": 3,
+          "y": 8,
+          "visible_room_type": "TREASURE",
+          "outgoing_node_ids": [
+            "map:3:9"
+          ]
+        },
+        {
+          "node_id": "map:5:8",
+          "x": 5,
+          "y": 8,
+          "visible_room_type": "TREASURE",
+          "outgoing_node_ids": [
+            "map:4:9"
+          ]
+        },
+        {
+          "node_id": "map:2:9",
+          "x": 2,
+          "y": 9,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:1:10",
+            "map:3:10"
+          ]
+        },
+        {
+          "node_id": "map:3:9",
+          "x": 3,
+          "y": 9,
+          "visible_room_type": "REST",
+          "outgoing_node_ids": [
+            "map:3:10",
+            "map:4:10"
+          ]
+        },
+        {
+          "node_id": "map:4:9",
+          "x": 4,
+          "y": 9,
+          "visible_room_type": "REST",
+          "outgoing_node_ids": [
+            "map:5:10"
+          ]
+        },
+        {
+          "node_id": "map:1:10",
+          "x": 1,
+          "y": 10,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:2:11"
+          ]
+        },
+        {
+          "node_id": "map:3:10",
+          "x": 3,
+          "y": 10,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:3:11",
+            "map:4:11"
+          ]
+        },
+        {
+          "node_id": "map:4:10",
+          "x": 4,
+          "y": 10,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:5:11"
+          ]
+        },
+        {
+          "node_id": "map:5:10",
+          "x": 5,
+          "y": 10,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:5:11"
+          ]
+        },
+        {
+          "node_id": "map:2:11",
+          "x": 2,
+          "y": 11,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:2:12"
+          ]
+        },
+        {
+          "node_id": "map:3:11",
+          "x": 3,
+          "y": 11,
+          "visible_room_type": "BURNING_ELITE",
+          "outgoing_node_ids": [
+            "map:2:12"
+          ]
+        },
+        {
+          "node_id": "map:4:11",
+          "x": 4,
+          "y": 11,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:4:12"
+          ]
+        },
+        {
+          "node_id": "map:5:11",
+          "x": 5,
+          "y": 11,
+          "visible_room_type": "ELITE",
+          "outgoing_node_ids": [
+            "map:4:12",
+            "map:6:12"
+          ]
+        },
+        {
+          "node_id": "map:2:12",
+          "x": 2,
+          "y": 12,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:1:13"
+          ]
+        },
+        {
+          "node_id": "map:4:12",
+          "x": 4,
+          "y": 12,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:4:13",
+            "map:5:13"
+          ]
+        },
+        {
+          "node_id": "map:6:12",
+          "x": 6,
+          "y": 12,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:6:13"
+          ]
+        },
+        {
+          "node_id": "map:1:13",
+          "x": 1,
+          "y": 13,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:0:14",
+            "map:1:14"
+          ]
+        },
+        {
+          "node_id": "map:4:13",
+          "x": 4,
+          "y": 13,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:4:14"
+          ]
+        },
+        {
+          "node_id": "map:5:13",
+          "x": 5,
+          "y": 13,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:5:14"
+          ]
+        },
+        {
+          "node_id": "map:6:13",
+          "x": 6,
+          "y": 13,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:6:14"
+          ]
+        },
+        {
+          "node_id": "map:0:14",
+          "x": 0,
+          "y": 14,
+          "visible_room_type": "REST",
+          "outgoing_node_ids": [
+            "map:boss"
+          ]
+        },
+        {
+          "node_id": "map:1:14",
+          "x": 1,
+          "y": 14,
+          "visible_room_type": "REST",
+          "outgoing_node_ids": [
+            "map:boss"
+          ]
+        },
+        {
+          "node_id": "map:4:14",
+          "x": 4,
+          "y": 14,
+          "visible_room_type": "REST",
+          "outgoing_node_ids": [
+            "map:boss"
+          ]
+        },
+        {
+          "node_id": "map:5:14",
+          "x": 5,
+          "y": 14,
+          "visible_room_type": "REST",
+          "outgoing_node_ids": [
+            "map:boss"
+          ]
+        },
+        {
+          "node_id": "map:6:14",
+          "x": 6,
+          "y": 14,
+          "visible_room_type": "REST",
+          "outgoing_node_ids": [
+            "map:boss"
+          ]
+        }
+      ],
+      "actual_stock_map_rng": {
+        "counter": 96,
+        "seed0": 11157452242896699053,
+        "seed1": 13237472069926900487
+      }
+    },
+    {
+      "id": "act2-held-unlocked",
+      "initial": {
+        "derived_rng": {
+          "map": {
+            "act": 1,
+            "algorithm": "sts.RandomXS128/Map.fromSeed:v1",
+            "ascension": 20,
+            "assign_burning_elite": true,
+            "base_seed": 131200410,
+            "derived_seed": 131200411
+          }
+        },
+        "ordered_pools": {
+          "boss_relics": [
+            98,
+            108,
+            172,
+            156,
+            57,
+            134,
+            133,
+            114,
+            100,
+            17,
+            81,
+            85,
+            56,
+            127,
+            62,
+            58,
+            102,
+            140,
+            64
+          ],
+          "colorless_cards": [
+            94,
+            281,
+            242,
+            344,
+            121,
+            188,
+            335,
+            36,
+            21,
+            290,
+            100,
+            352,
+            241,
+            291,
+            12,
+            218,
+            177,
+            155,
+            166,
+            131,
+            259,
+            240,
+            343,
+            64,
+            113,
+            150,
+            213,
+            216,
+            173,
+            327,
+            200,
+            223,
+            225,
+            336,
+            212
+          ],
+          "common_relics": [
+            91,
+            113,
+            121,
+            52,
+            144,
+            93,
+            9,
+            1,
+            159,
+            149,
+            174,
+            0,
+            148,
+            119,
+            70,
+            171,
+            163,
+            46,
+            175,
+            76,
+            89,
+            132,
+            48,
+            97,
+            90,
+            8,
+            55,
+            139,
+            169,
+            92
+          ],
+          "elite_encounters": [
+            15,
+            16,
+            15,
+            17,
+            16,
+            17,
+            16,
+            17,
+            16,
+            15
+          ],
+          "events": [
+            10,
+            43,
+            14,
+            23,
+            25,
+            56,
+            28,
+            33,
+            39,
+            42
+          ],
+          "normal_encounters": [
+            3,
+            1,
+            4,
+            13,
+            10,
+            8,
+            13,
+            6,
+            14,
+            7,
+            11,
+            14,
+            6,
+            5,
+            9,
+            14
+          ],
+          "rare_relics": [
+            74,
+            54,
+            109,
+            77,
+            165,
+            15,
+            21,
+            11,
+            160,
+            35,
+            2,
+            36,
+            131,
+            65,
+            154,
+            29,
+            6,
+            30,
+            105,
+            107,
+            146,
+            7,
+            157,
+            78,
+            22,
+            177,
+            10,
+            80
+          ],
+          "shop_relics": [
+            136,
+            138,
+            38,
+            66,
+            150,
+            20,
+            128,
+            73,
+            12,
+            5,
+            155,
+            47,
+            25,
+            145,
+            99,
+            161
+          ],
+          "shrines": [
+            31,
+            24,
+            50,
+            38,
+            54
+          ],
+          "special_one_time_events": [
+            6,
+            11,
+            15,
+            17,
+            18,
+            21,
+            26,
+            27,
+            36,
+            40,
+            44,
+            53,
+            48
+          ],
+          "uncommon_relics": [
+            96,
+            147,
+            51,
+            34,
+            14,
+            24,
+            33,
+            94,
+            40,
+            151,
+            60,
+            170,
+            31,
+            142,
+            95,
+            166,
+            141,
+            87,
+            41,
+            67,
+            173,
+            68,
+            49,
+            162,
+            176,
+            4,
+            158,
+            61,
+            27
+          ]
+        },
+        "player_state": {
+          "blue_key": false,
+          "bottle_indices": [
+            -1,
+            -1,
+            -1
+          ],
+          "current_hp": 75,
+          "deck": [
+            {
+              "id": 15,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 321,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 321,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 321,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 321,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 321,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 104,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 104,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 104,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 104,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 25,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 191,
+              "misc": 0,
+              "upgraded": true
+            },
+            {
+              "id": 152,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 11,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 244,
+              "misc": 0,
+              "upgraded": true
+            },
+            {
+              "id": 152,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 27,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 249,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 154,
+              "misc": 0,
+              "upgraded": true
+            },
+            {
+              "id": 14,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 40,
+              "misc": 0,
+              "upgraded": false
+            }
+          ],
+          "gold": 189,
+          "green_key": true,
+          "max_hp": 75,
+          "potion_capacity": 2,
+          "potion_count": 2,
+          "potions": [
+            36,
+            35
+          ],
+          "red_key": false,
+          "relics": [
+            {
+              "data": 0,
+              "id": 86
+            },
+            {
+              "data": 0,
+              "id": 116
+            },
+            {
+              "data": 0,
+              "id": 26
+            }
+          ]
+        },
+        "progress_state": {
+          "boss": 18,
+          "card_rarity_factor": 5,
+          "current_event": 0,
+          "current_map_x": 0,
+          "current_map_y": 15,
+          "current_room": 7,
+          "last_room": 1,
+          "monster_chance": 0.30000001192092896,
+          "outcome": 1,
+          "potion_chance": 20,
+          "screen_continuation_serialized": true,
+          "screen_state": 3,
+          "shop_chance": 0.08999999612569809,
+          "shop_remove_count": 0,
+          "speedrun_pace": false,
+          "treasure_chance": 0.05999999865889549
+        },
+        "rng": {
+          "ai": {
+            "counter": 0,
+            "seed0": 13288775205653600183,
+            "seed1": 15305131519507321865
+          },
+          "card": {
+            "counter": 82,
+            "seed0": 16310351596283314323,
+            "seed1": 5524297790917434916
+          },
+          "card_random": {
+            "counter": 0,
+            "seed0": 13288775205653600183,
+            "seed1": 15305131519507321865
+          },
+          "event": {
+            "counter": 2,
+            "seed0": 6988983097101036736,
+            "seed1": 6188795937038656160
+          },
+          "math_util": {
+            "counter": 0,
+            "seed0": 15556541967390064193,
+            "seed1": 6077879108210242183
+          },
+          "merchant": {
+            "counter": 16,
+            "seed0": 17460510524406916375,
+            "seed1": 18259532471470025709
+          },
+          "misc": {
+            "counter": 0,
+            "seed0": 13288775205653600183,
+            "seed1": 15305131519507321865
+          },
+          "monster": {
+            "counter": 33,
+            "seed0": 2504236146697888020,
+            "seed1": 14119613366411699647
+          },
+          "monster_hp": {
+            "counter": 0,
+            "seed0": 13288775205653600183,
+            "seed1": 15305131519507321865
+          },
+          "neow": {
+            "counter": 5,
+            "seed0": 7078389128633382016,
+            "seed1": 6348232442850941232
+          },
+          "potion": {
+            "counter": 37,
+            "seed0": 3440147209492117381,
+            "seed1": 8209531708349834810
+          },
+          "relic": {
+            "counter": 6,
+            "seed0": 6348232442850941232,
+            "seed1": 10254541775952007624
+          },
+          "shuffle": {
+            "counter": 0,
+            "seed0": 13288775205653600183,
+            "seed1": 15305131519507321865
+          },
+          "treasure": {
+            "counter": 10,
+            "seed0": 12266766167016616705,
+            "seed1": 2521320498601041531
+          }
+        },
+        "run_state": {
+          "act": 1,
+          "ascension": 20,
+          "burning_elite_buff": 2,
+          "burning_elite_x": 4,
+          "burning_elite_y": 5,
+          "elite_monster_list_offset": 1,
+          "event_start_context": {
+            "note_card": "IRON_WAVE",
+            "portal_eligible": true
+          },
+          "floor": 16,
+          "map": "\n           /  /   \\  \\     \n14        R  R     R  R    \n        /    | \\     \\  \\  \n13     ?     M  ?     ?  M \n         \\ /    |   /    | \n12        M     ?  M     ? \n        / |       \\|   /   \n11     ?  M        M  R    \n       |    \\    / |/      \n10     E     M  ?  M       \n         \\ / |    \\| \\     \n9         M  E     M  E    \n            \\  \\     \\  \\  \n8            T  T     T  T \n           /   \\  \\ / |  | \n7         M     M  R  M  R \n        /     /    |    \\| \n6      E     R     M     $ \n       |       \\   | \\ / | \n5      R        E  E  R  E \n         \\      |    \\| \\| \n4         $     ?     M  ? \n          |       \\ / |/   \n3         M        M  $    \n            \\      |  | \\  \n2            M     M  ?  M \n           /     /    |/   \n1         ?     ?     M    \n        /       |   /      \n0      M        M  M       ",
+          "math_seed": 130302513,
+          "monster_list_offset": 6,
+          "second_boss": 0,
+          "seed": 131200410
+        },
+        "screen_info": {
+          "boss_relics": [
+            53,
+            59,
+            135
+          ],
+          "complete": true,
+          "screen_state": 3
+        }
+      },
+      "expected_public_map": [
+        {
+          "node_id": "map:0:0",
+          "x": 0,
+          "y": 0,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:0:1"
+          ]
+        },
+        {
+          "node_id": "map:3:0",
+          "x": 3,
+          "y": 0,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:3:1",
+            "map:4:1"
+          ]
+        },
+        {
+          "node_id": "map:4:0",
+          "x": 4,
+          "y": 0,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:5:1"
+          ]
+        },
+        {
+          "node_id": "map:0:1",
+          "x": 0,
+          "y": 1,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:0:2"
+          ]
+        },
+        {
+          "node_id": "map:3:1",
+          "x": 3,
+          "y": 1,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:4:2"
+          ]
+        },
+        {
+          "node_id": "map:4:1",
+          "x": 4,
+          "y": 1,
+          "visible_room_type": "SHOP",
+          "outgoing_node_ids": [
+            "map:4:2"
+          ]
+        },
+        {
+          "node_id": "map:5:1",
+          "x": 5,
+          "y": 1,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:4:2",
+            "map:5:2",
+            "map:6:2"
+          ]
+        },
+        {
+          "node_id": "map:0:2",
+          "x": 0,
+          "y": 2,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:1:3"
+          ]
+        },
+        {
+          "node_id": "map:4:2",
+          "x": 4,
+          "y": 2,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:3:3",
+            "map:4:3",
+            "map:5:3"
+          ]
+        },
+        {
+          "node_id": "map:5:2",
+          "x": 5,
+          "y": 2,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:5:3"
+          ]
+        },
+        {
+          "node_id": "map:6:2",
+          "x": 6,
+          "y": 2,
+          "visible_room_type": "SHOP",
+          "outgoing_node_ids": [
+            "map:5:3"
+          ]
+        },
+        {
+          "node_id": "map:1:3",
+          "x": 1,
+          "y": 3,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:0:4"
+          ]
+        },
+        {
+          "node_id": "map:3:3",
+          "x": 3,
+          "y": 3,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:2:4"
+          ]
+        },
+        {
+          "node_id": "map:4:3",
+          "x": 4,
+          "y": 3,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:4:4"
+          ]
+        },
+        {
+          "node_id": "map:5:3",
+          "x": 5,
+          "y": 3,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:4:4",
+            "map:5:4",
+            "map:6:4"
+          ]
+        },
+        {
+          "node_id": "map:0:4",
+          "x": 0,
+          "y": 4,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:0:5"
+          ]
+        },
+        {
+          "node_id": "map:2:4",
+          "x": 2,
+          "y": 4,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:3:5"
+          ]
+        },
+        {
+          "node_id": "map:4:4",
+          "x": 4,
+          "y": 4,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:4:5"
+          ]
+        },
+        {
+          "node_id": "map:5:4",
+          "x": 5,
+          "y": 4,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:5:5"
+          ]
+        },
+        {
+          "node_id": "map:6:4",
+          "x": 6,
+          "y": 4,
+          "visible_room_type": "SHOP",
+          "outgoing_node_ids": [
+            "map:6:5"
+          ]
+        },
+        {
+          "node_id": "map:0:5",
+          "x": 0,
+          "y": 5,
+          "visible_room_type": "REST",
+          "outgoing_node_ids": [
+            "map:1:6"
+          ]
+        },
+        {
+          "node_id": "map:3:5",
+          "x": 3,
+          "y": 5,
+          "visible_room_type": "REST",
+          "outgoing_node_ids": [
+            "map:4:6"
+          ]
+        },
+        {
+          "node_id": "map:4:5",
+          "x": 4,
+          "y": 5,
+          "visible_room_type": "ELITE",
+          "outgoing_node_ids": [
+            "map:4:6"
+          ]
+        },
+        {
+          "node_id": "map:5:5",
+          "x": 5,
+          "y": 5,
+          "visible_room_type": "ELITE",
+          "outgoing_node_ids": [
+            "map:4:6"
+          ]
+        },
+        {
+          "node_id": "map:6:5",
+          "x": 6,
+          "y": 5,
+          "visible_room_type": "ELITE",
+          "outgoing_node_ids": [
+            "map:5:6"
+          ]
+        },
+        {
+          "node_id": "map:1:6",
+          "x": 1,
+          "y": 6,
+          "visible_room_type": "ELITE",
+          "outgoing_node_ids": [
+            "map:1:7"
+          ]
+        },
+        {
+          "node_id": "map:4:6",
+          "x": 4,
+          "y": 6,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:3:7",
+            "map:4:7"
+          ]
+        },
+        {
+          "node_id": "map:5:6",
+          "x": 5,
+          "y": 6,
+          "visible_room_type": "REST",
+          "outgoing_node_ids": [
+            "map:5:7"
+          ]
+        },
+        {
+          "node_id": "map:1:7",
+          "x": 1,
+          "y": 7,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:2:8"
+          ]
+        },
+        {
+          "node_id": "map:3:7",
+          "x": 3,
+          "y": 7,
+          "visible_room_type": "REST",
+          "outgoing_node_ids": [
+            "map:2:8",
+            "map:3:8"
+          ]
+        },
+        {
+          "node_id": "map:4:7",
+          "x": 4,
+          "y": 7,
+          "visible_room_type": "ELITE",
+          "outgoing_node_ids": [
+            "map:3:8"
+          ]
+        },
+        {
+          "node_id": "map:5:7",
+          "x": 5,
+          "y": 7,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:5:8"
+          ]
+        },
+        {
+          "node_id": "map:2:8",
+          "x": 2,
+          "y": 8,
+          "visible_room_type": "TREASURE",
+          "outgoing_node_ids": [
+            "map:2:9",
+            "map:3:9"
+          ]
+        },
+        {
+          "node_id": "map:3:8",
+          "x": 3,
+          "y": 8,
+          "visible_room_type": "TREASURE",
+          "outgoing_node_ids": [
+            "map:3:9"
+          ]
+        },
+        {
+          "node_id": "map:5:8",
+          "x": 5,
+          "y": 8,
+          "visible_room_type": "TREASURE",
+          "outgoing_node_ids": [
+            "map:4:9"
+          ]
+        },
+        {
+          "node_id": "map:2:9",
+          "x": 2,
+          "y": 9,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:1:10",
+            "map:3:10"
+          ]
+        },
+        {
+          "node_id": "map:3:9",
+          "x": 3,
+          "y": 9,
+          "visible_room_type": "REST",
+          "outgoing_node_ids": [
+            "map:3:10",
+            "map:4:10"
+          ]
+        },
+        {
+          "node_id": "map:4:9",
+          "x": 4,
+          "y": 9,
+          "visible_room_type": "REST",
+          "outgoing_node_ids": [
+            "map:5:10"
+          ]
+        },
+        {
+          "node_id": "map:1:10",
+          "x": 1,
+          "y": 10,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:2:11"
+          ]
+        },
+        {
+          "node_id": "map:3:10",
+          "x": 3,
+          "y": 10,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:3:11",
+            "map:4:11"
+          ]
+        },
+        {
+          "node_id": "map:4:10",
+          "x": 4,
+          "y": 10,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:5:11"
+          ]
+        },
+        {
+          "node_id": "map:5:10",
+          "x": 5,
+          "y": 10,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:5:11"
+          ]
+        },
+        {
+          "node_id": "map:2:11",
+          "x": 2,
+          "y": 11,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:2:12"
+          ]
+        },
+        {
+          "node_id": "map:3:11",
+          "x": 3,
+          "y": 11,
+          "visible_room_type": "ELITE",
+          "outgoing_node_ids": [
+            "map:2:12"
+          ]
+        },
+        {
+          "node_id": "map:4:11",
+          "x": 4,
+          "y": 11,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:4:12"
+          ]
+        },
+        {
+          "node_id": "map:5:11",
+          "x": 5,
+          "y": 11,
+          "visible_room_type": "ELITE",
+          "outgoing_node_ids": [
+            "map:4:12",
+            "map:6:12"
+          ]
+        },
+        {
+          "node_id": "map:2:12",
+          "x": 2,
+          "y": 12,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:1:13"
+          ]
+        },
+        {
+          "node_id": "map:4:12",
+          "x": 4,
+          "y": 12,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:4:13",
+            "map:5:13"
+          ]
+        },
+        {
+          "node_id": "map:6:12",
+          "x": 6,
+          "y": 12,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:6:13"
+          ]
+        },
+        {
+          "node_id": "map:1:13",
+          "x": 1,
+          "y": 13,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:0:14",
+            "map:1:14"
+          ]
+        },
+        {
+          "node_id": "map:4:13",
+          "x": 4,
+          "y": 13,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:4:14"
+          ]
+        },
+        {
+          "node_id": "map:5:13",
+          "x": 5,
+          "y": 13,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:5:14"
+          ]
+        },
+        {
+          "node_id": "map:6:13",
+          "x": 6,
+          "y": 13,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:6:14"
+          ]
+        },
+        {
+          "node_id": "map:0:14",
+          "x": 0,
+          "y": 14,
+          "visible_room_type": "REST",
+          "outgoing_node_ids": [
+            "map:boss"
+          ]
+        },
+        {
+          "node_id": "map:1:14",
+          "x": 1,
+          "y": 14,
+          "visible_room_type": "REST",
+          "outgoing_node_ids": [
+            "map:boss"
+          ]
+        },
+        {
+          "node_id": "map:4:14",
+          "x": 4,
+          "y": 14,
+          "visible_room_type": "REST",
+          "outgoing_node_ids": [
+            "map:boss"
+          ]
+        },
+        {
+          "node_id": "map:5:14",
+          "x": 5,
+          "y": 14,
+          "visible_room_type": "REST",
+          "outgoing_node_ids": [
+            "map:boss"
+          ]
+        },
+        {
+          "node_id": "map:6:14",
+          "x": 6,
+          "y": 14,
+          "visible_room_type": "REST",
+          "outgoing_node_ids": [
+            "map:boss"
+          ]
+        }
+      ],
+      "actual_stock_map_rng": {
+        "counter": 95,
+        "seed0": 16988089674081517172,
+        "seed1": 11157452242896699053
+      }
+    },
+    {
+      "id": "act3-unheld-unlocked",
+      "initial": {
+        "derived_rng": {
+          "map": {
+            "act": 2,
+            "algorithm": "sts.RandomXS128/Map.fromSeed:v1",
+            "ascension": 20,
+            "assign_burning_elite": true,
+            "base_seed": 131200410,
+            "derived_seed": 131200610
+          }
+        },
+        "ordered_pools": {
+          "boss_relics": [
+            98,
+            108,
+            172,
+            156,
+            57,
+            134,
+            133,
+            114,
+            100,
+            17,
+            81,
+            85,
+            56,
+            127,
+            62,
+            58,
+            102,
+            140,
+            64
+          ],
+          "colorless_cards": [
+            94,
+            281,
+            242,
+            344,
+            121,
+            188,
+            335,
+            36,
+            21,
+            290,
+            100,
+            352,
+            241,
+            291,
+            12,
+            218,
+            177,
+            155,
+            166,
+            131,
+            259,
+            240,
+            343,
+            64,
+            113,
+            150,
+            213,
+            216,
+            173,
+            327,
+            200,
+            223,
+            225,
+            336,
+            212
+          ],
+          "common_relics": [
+            91,
+            113,
+            121,
+            52,
+            144,
+            93,
+            9,
+            1,
+            159,
+            149,
+            174,
+            0,
+            148,
+            119,
+            70,
+            171,
+            163,
+            46,
+            175,
+            76,
+            89,
+            132,
+            48,
+            97,
+            90,
+            8,
+            55,
+            139,
+            169,
+            92
+          ],
+          "elite_encounters": [
+            15,
+            16,
+            15,
+            17,
+            16,
+            17,
+            16,
+            17,
+            16,
+            15
+          ],
+          "events": [
+            10,
+            43,
+            14,
+            23,
+            25,
+            56,
+            28,
+            33,
+            39,
+            42
+          ],
+          "normal_encounters": [
+            3,
+            1,
+            4,
+            13,
+            10,
+            8,
+            13,
+            6,
+            14,
+            7,
+            11,
+            14,
+            6,
+            5,
+            9,
+            14
+          ],
+          "rare_relics": [
+            74,
+            54,
+            109,
+            77,
+            165,
+            15,
+            21,
+            11,
+            160,
+            35,
+            2,
+            36,
+            131,
+            65,
+            154,
+            29,
+            6,
+            30,
+            105,
+            107,
+            146,
+            7,
+            157,
+            78,
+            22,
+            177,
+            10,
+            80
+          ],
+          "shop_relics": [
+            136,
+            138,
+            38,
+            66,
+            150,
+            20,
+            128,
+            73,
+            12,
+            5,
+            155,
+            47,
+            25,
+            145,
+            99,
+            161
+          ],
+          "shrines": [
+            31,
+            24,
+            50,
+            38,
+            54
+          ],
+          "special_one_time_events": [
+            6,
+            11,
+            15,
+            17,
+            18,
+            21,
+            26,
+            27,
+            36,
+            40,
+            44,
+            53,
+            48
+          ],
+          "uncommon_relics": [
+            96,
+            147,
+            51,
+            34,
+            14,
+            24,
+            33,
+            94,
+            40,
+            151,
+            60,
+            170,
+            31,
+            142,
+            95,
+            166,
+            141,
+            87,
+            41,
+            67,
+            173,
+            68,
+            49,
+            162,
+            176,
+            4,
+            158,
+            61,
+            27
+          ]
+        },
+        "player_state": {
+          "blue_key": false,
+          "bottle_indices": [
+            -1,
+            -1,
+            -1
+          ],
+          "current_hp": 75,
+          "deck": [
+            {
+              "id": 15,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 321,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 321,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 321,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 321,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 321,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 104,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 104,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 104,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 104,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 25,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 191,
+              "misc": 0,
+              "upgraded": true
+            },
+            {
+              "id": 152,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 11,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 244,
+              "misc": 0,
+              "upgraded": true
+            },
+            {
+              "id": 152,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 27,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 249,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 154,
+              "misc": 0,
+              "upgraded": true
+            },
+            {
+              "id": 14,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 40,
+              "misc": 0,
+              "upgraded": false
+            }
+          ],
+          "gold": 189,
+          "green_key": false,
+          "max_hp": 75,
+          "potion_capacity": 2,
+          "potion_count": 2,
+          "potions": [
+            36,
+            35
+          ],
+          "red_key": false,
+          "relics": [
+            {
+              "data": 0,
+              "id": 86
+            },
+            {
+              "data": 0,
+              "id": 116
+            },
+            {
+              "data": 0,
+              "id": 26
+            }
+          ]
+        },
+        "progress_state": {
+          "boss": 18,
+          "card_rarity_factor": 5,
+          "current_event": 0,
+          "current_map_x": 0,
+          "current_map_y": 15,
+          "current_room": 7,
+          "last_room": 1,
+          "monster_chance": 0.30000001192092896,
+          "outcome": 1,
+          "potion_chance": 20,
+          "screen_continuation_serialized": true,
+          "screen_state": 3,
+          "shop_chance": 0.08999999612569809,
+          "shop_remove_count": 0,
+          "speedrun_pace": false,
+          "treasure_chance": 0.05999999865889549
+        },
+        "rng": {
+          "ai": {
+            "counter": 0,
+            "seed0": 13288775205653600183,
+            "seed1": 15305131519507321865
+          },
+          "card": {
+            "counter": 82,
+            "seed0": 16310351596283314323,
+            "seed1": 5524297790917434916
+          },
+          "card_random": {
+            "counter": 0,
+            "seed0": 13288775205653600183,
+            "seed1": 15305131519507321865
+          },
+          "event": {
+            "counter": 2,
+            "seed0": 6988983097101036736,
+            "seed1": 6188795937038656160
+          },
+          "math_util": {
+            "counter": 0,
+            "seed0": 15556541967390064193,
+            "seed1": 6077879108210242183
+          },
+          "merchant": {
+            "counter": 16,
+            "seed0": 17460510524406916375,
+            "seed1": 18259532471470025709
+          },
+          "misc": {
+            "counter": 0,
+            "seed0": 13288775205653600183,
+            "seed1": 15305131519507321865
+          },
+          "monster": {
+            "counter": 33,
+            "seed0": 2504236146697888020,
+            "seed1": 14119613366411699647
+          },
+          "monster_hp": {
+            "counter": 0,
+            "seed0": 13288775205653600183,
+            "seed1": 15305131519507321865
+          },
+          "neow": {
+            "counter": 5,
+            "seed0": 7078389128633382016,
+            "seed1": 6348232442850941232
+          },
+          "potion": {
+            "counter": 37,
+            "seed0": 3440147209492117381,
+            "seed1": 8209531708349834810
+          },
+          "relic": {
+            "counter": 6,
+            "seed0": 6348232442850941232,
+            "seed1": 10254541775952007624
+          },
+          "shuffle": {
+            "counter": 0,
+            "seed0": 13288775205653600183,
+            "seed1": 15305131519507321865
+          },
+          "treasure": {
+            "counter": 10,
+            "seed0": 12266766167016616705,
+            "seed1": 2521320498601041531
+          }
+        },
+        "run_state": {
+          "act": 2,
+          "ascension": 20,
+          "burning_elite_buff": 2,
+          "burning_elite_x": 4,
+          "burning_elite_y": 5,
+          "elite_monster_list_offset": 1,
+          "event_start_context": {
+            "note_card": "IRON_WAVE",
+            "portal_eligible": true
+          },
+          "floor": 33,
+          "map": "\n           /  /   \\  \\     \n14        R  R     R  R    \n        /    | \\     \\  \\  \n13     ?     M  ?     ?  M \n         \\ /    |   /    | \n12        M     ?  M     ? \n        / |       \\|   /   \n11     ?  M        M  R    \n       |    \\    / |/      \n10     E     M  ?  M       \n         \\ / |    \\| \\     \n9         M  E     M  E    \n            \\  \\     \\  \\  \n8            T  T     T  T \n           /   \\  \\ / |  | \n7         M     M  R  M  R \n        /     /    |    \\| \n6      E     R     M     $ \n       |       \\   | \\ / | \n5      R        E  E  R  E \n         \\      |    \\| \\| \n4         $     ?     M  ? \n          |       \\ / |/   \n3         M        M  $    \n            \\      |  | \\  \n2            M     M  ?  M \n           /     /    |/   \n1         ?     ?     M    \n        /       |   /      \n0      M        M  M       ",
+          "math_seed": 130302513,
+          "monster_list_offset": 6,
+          "second_boss": 0,
+          "seed": 131200410
+        },
+        "screen_info": {
+          "boss_relics": [
+            53,
+            59,
+            135
+          ],
+          "complete": true,
+          "screen_state": 3
+        }
+      },
+      "expected_public_map": [
+        {
+          "node_id": "map:0:0",
+          "x": 0,
+          "y": 0,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:1:1"
+          ]
+        },
+        {
+          "node_id": "map:2:0",
+          "x": 2,
+          "y": 0,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:2:1"
+          ]
+        },
+        {
+          "node_id": "map:4:0",
+          "x": 4,
+          "y": 0,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:4:1"
+          ]
+        },
+        {
+          "node_id": "map:5:0",
+          "x": 5,
+          "y": 0,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:5:1"
+          ]
+        },
+        {
+          "node_id": "map:1:1",
+          "x": 1,
+          "y": 1,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:2:2"
+          ]
+        },
+        {
+          "node_id": "map:2:1",
+          "x": 2,
+          "y": 1,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:2:2"
+          ]
+        },
+        {
+          "node_id": "map:4:1",
+          "x": 4,
+          "y": 1,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:4:2"
+          ]
+        },
+        {
+          "node_id": "map:5:1",
+          "x": 5,
+          "y": 1,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:4:2",
+            "map:6:2"
+          ]
+        },
+        {
+          "node_id": "map:2:2",
+          "x": 2,
+          "y": 2,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:2:3",
+            "map:3:3"
+          ]
+        },
+        {
+          "node_id": "map:4:2",
+          "x": 4,
+          "y": 2,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:3:3",
+            "map:5:3"
+          ]
+        },
+        {
+          "node_id": "map:6:2",
+          "x": 6,
+          "y": 2,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:5:3",
+            "map:6:3"
+          ]
+        },
+        {
+          "node_id": "map:2:3",
+          "x": 2,
+          "y": 3,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:1:4"
+          ]
+        },
+        {
+          "node_id": "map:3:3",
+          "x": 3,
+          "y": 3,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:2:4",
+            "map:4:4"
+          ]
+        },
+        {
+          "node_id": "map:5:3",
+          "x": 5,
+          "y": 3,
+          "visible_room_type": "SHOP",
+          "outgoing_node_ids": [
+            "map:5:4",
+            "map:6:4"
+          ]
+        },
+        {
+          "node_id": "map:6:3",
+          "x": 6,
+          "y": 3,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:6:4"
+          ]
+        },
+        {
+          "node_id": "map:1:4",
+          "x": 1,
+          "y": 4,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:1:5"
+          ]
+        },
+        {
+          "node_id": "map:2:4",
+          "x": 2,
+          "y": 4,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:1:5"
+          ]
+        },
+        {
+          "node_id": "map:4:4",
+          "x": 4,
+          "y": 4,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:3:5"
+          ]
+        },
+        {
+          "node_id": "map:5:4",
+          "x": 5,
+          "y": 4,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:4:5"
+          ]
+        },
+        {
+          "node_id": "map:6:4",
+          "x": 6,
+          "y": 4,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:5:5"
+          ]
+        },
+        {
+          "node_id": "map:1:5",
+          "x": 1,
+          "y": 5,
+          "visible_room_type": "ELITE",
+          "outgoing_node_ids": [
+            "map:0:6",
+            "map:2:6"
+          ]
+        },
+        {
+          "node_id": "map:3:5",
+          "x": 3,
+          "y": 5,
+          "visible_room_type": "REST",
+          "outgoing_node_ids": [
+            "map:3:6"
+          ]
+        },
+        {
+          "node_id": "map:4:5",
+          "x": 4,
+          "y": 5,
+          "visible_room_type": "BURNING_ELITE",
+          "outgoing_node_ids": [
+            "map:4:6"
+          ]
+        },
+        {
+          "node_id": "map:5:5",
+          "x": 5,
+          "y": 5,
+          "visible_room_type": "REST",
+          "outgoing_node_ids": [
+            "map:4:6",
+            "map:5:6"
+          ]
+        },
+        {
+          "node_id": "map:0:6",
+          "x": 0,
+          "y": 6,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:1:7"
+          ]
+        },
+        {
+          "node_id": "map:2:6",
+          "x": 2,
+          "y": 6,
+          "visible_room_type": "REST",
+          "outgoing_node_ids": [
+            "map:2:7"
+          ]
+        },
+        {
+          "node_id": "map:3:6",
+          "x": 3,
+          "y": 6,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:2:7"
+          ]
+        },
+        {
+          "node_id": "map:4:6",
+          "x": 4,
+          "y": 6,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:4:7"
+          ]
+        },
+        {
+          "node_id": "map:5:6",
+          "x": 5,
+          "y": 6,
+          "visible_room_type": "SHOP",
+          "outgoing_node_ids": [
+            "map:5:7"
+          ]
+        },
+        {
+          "node_id": "map:1:7",
+          "x": 1,
+          "y": 7,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:1:8"
+          ]
+        },
+        {
+          "node_id": "map:2:7",
+          "x": 2,
+          "y": 7,
+          "visible_room_type": "ELITE",
+          "outgoing_node_ids": [
+            "map:1:8",
+            "map:3:8"
+          ]
+        },
+        {
+          "node_id": "map:4:7",
+          "x": 4,
+          "y": 7,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:3:8",
+            "map:5:8"
+          ]
+        },
+        {
+          "node_id": "map:5:7",
+          "x": 5,
+          "y": 7,
+          "visible_room_type": "REST",
+          "outgoing_node_ids": [
+            "map:5:8"
+          ]
+        },
+        {
+          "node_id": "map:1:8",
+          "x": 1,
+          "y": 8,
+          "visible_room_type": "TREASURE",
+          "outgoing_node_ids": [
+            "map:1:9"
+          ]
+        },
+        {
+          "node_id": "map:3:8",
+          "x": 3,
+          "y": 8,
+          "visible_room_type": "TREASURE",
+          "outgoing_node_ids": [
+            "map:2:9"
+          ]
+        },
+        {
+          "node_id": "map:5:8",
+          "x": 5,
+          "y": 8,
+          "visible_room_type": "TREASURE",
+          "outgoing_node_ids": [
+            "map:5:9",
+            "map:6:9"
+          ]
+        },
+        {
+          "node_id": "map:1:9",
+          "x": 1,
+          "y": 9,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:0:10",
+            "map:1:10"
+          ]
+        },
+        {
+          "node_id": "map:2:9",
+          "x": 2,
+          "y": 9,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:2:10"
+          ]
+        },
+        {
+          "node_id": "map:5:9",
+          "x": 5,
+          "y": 9,
+          "visible_room_type": "SHOP",
+          "outgoing_node_ids": [
+            "map:5:10"
+          ]
+        },
+        {
+          "node_id": "map:6:9",
+          "x": 6,
+          "y": 9,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:6:10"
+          ]
+        },
+        {
+          "node_id": "map:0:10",
+          "x": 0,
+          "y": 10,
+          "visible_room_type": "ELITE",
+          "outgoing_node_ids": [
+            "map:1:11"
+          ]
+        },
+        {
+          "node_id": "map:1:10",
+          "x": 1,
+          "y": 10,
+          "visible_room_type": "REST",
+          "outgoing_node_ids": [
+            "map:2:11"
+          ]
+        },
+        {
+          "node_id": "map:2:10",
+          "x": 2,
+          "y": 10,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:2:11",
+            "map:3:11"
+          ]
+        },
+        {
+          "node_id": "map:5:10",
+          "x": 5,
+          "y": 10,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:4:11"
+          ]
+        },
+        {
+          "node_id": "map:6:10",
+          "x": 6,
+          "y": 10,
+          "visible_room_type": "REST",
+          "outgoing_node_ids": [
+            "map:5:11"
+          ]
+        },
+        {
+          "node_id": "map:1:11",
+          "x": 1,
+          "y": 11,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:1:12"
+          ]
+        },
+        {
+          "node_id": "map:2:11",
+          "x": 2,
+          "y": 11,
+          "visible_room_type": "ELITE",
+          "outgoing_node_ids": [
+            "map:2:12",
+            "map:3:12"
+          ]
+        },
+        {
+          "node_id": "map:3:11",
+          "x": 3,
+          "y": 11,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:3:12"
+          ]
+        },
+        {
+          "node_id": "map:4:11",
+          "x": 4,
+          "y": 11,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:3:12"
+          ]
+        },
+        {
+          "node_id": "map:5:11",
+          "x": 5,
+          "y": 11,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:5:12"
+          ]
+        },
+        {
+          "node_id": "map:1:12",
+          "x": 1,
+          "y": 12,
+          "visible_room_type": "REST",
+          "outgoing_node_ids": [
+            "map:0:13"
+          ]
+        },
+        {
+          "node_id": "map:2:12",
+          "x": 2,
+          "y": 12,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:2:13"
+          ]
+        },
+        {
+          "node_id": "map:3:12",
+          "x": 3,
+          "y": 12,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:2:13",
+            "map:3:13"
+          ]
+        },
+        {
+          "node_id": "map:5:12",
+          "x": 5,
+          "y": 12,
+          "visible_room_type": "ELITE",
+          "outgoing_node_ids": [
+            "map:4:13"
+          ]
+        },
+        {
+          "node_id": "map:0:13",
+          "x": 0,
+          "y": 13,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:0:14"
+          ]
+        },
+        {
+          "node_id": "map:2:13",
+          "x": 2,
+          "y": 13,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:1:14",
+            "map:2:14"
+          ]
+        },
+        {
+          "node_id": "map:3:13",
+          "x": 3,
+          "y": 13,
+          "visible_room_type": "ELITE",
+          "outgoing_node_ids": [
+            "map:3:14"
+          ]
+        },
+        {
+          "node_id": "map:4:13",
+          "x": 4,
+          "y": 13,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:3:14"
+          ]
+        },
+        {
+          "node_id": "map:0:14",
+          "x": 0,
+          "y": 14,
+          "visible_room_type": "REST",
+          "outgoing_node_ids": [
+            "map:boss"
+          ]
+        },
+        {
+          "node_id": "map:1:14",
+          "x": 1,
+          "y": 14,
+          "visible_room_type": "REST",
+          "outgoing_node_ids": [
+            "map:boss"
+          ]
+        },
+        {
+          "node_id": "map:2:14",
+          "x": 2,
+          "y": 14,
+          "visible_room_type": "REST",
+          "outgoing_node_ids": [
+            "map:boss"
+          ]
+        },
+        {
+          "node_id": "map:3:14",
+          "x": 3,
+          "y": 14,
+          "visible_room_type": "REST",
+          "outgoing_node_ids": [
+            "map:boss"
+          ]
+        }
+      ],
+      "actual_stock_map_rng": {
+        "counter": 92,
+        "seed0": 11936493611115173279,
+        "seed1": 1125795910254867647
+      }
+    },
+    {
+      "id": "act3-held-unlocked",
+      "initial": {
+        "derived_rng": {
+          "map": {
+            "act": 2,
+            "algorithm": "sts.RandomXS128/Map.fromSeed:v1",
+            "ascension": 20,
+            "assign_burning_elite": true,
+            "base_seed": 131200410,
+            "derived_seed": 131200610
+          }
+        },
+        "ordered_pools": {
+          "boss_relics": [
+            98,
+            108,
+            172,
+            156,
+            57,
+            134,
+            133,
+            114,
+            100,
+            17,
+            81,
+            85,
+            56,
+            127,
+            62,
+            58,
+            102,
+            140,
+            64
+          ],
+          "colorless_cards": [
+            94,
+            281,
+            242,
+            344,
+            121,
+            188,
+            335,
+            36,
+            21,
+            290,
+            100,
+            352,
+            241,
+            291,
+            12,
+            218,
+            177,
+            155,
+            166,
+            131,
+            259,
+            240,
+            343,
+            64,
+            113,
+            150,
+            213,
+            216,
+            173,
+            327,
+            200,
+            223,
+            225,
+            336,
+            212
+          ],
+          "common_relics": [
+            91,
+            113,
+            121,
+            52,
+            144,
+            93,
+            9,
+            1,
+            159,
+            149,
+            174,
+            0,
+            148,
+            119,
+            70,
+            171,
+            163,
+            46,
+            175,
+            76,
+            89,
+            132,
+            48,
+            97,
+            90,
+            8,
+            55,
+            139,
+            169,
+            92
+          ],
+          "elite_encounters": [
+            15,
+            16,
+            15,
+            17,
+            16,
+            17,
+            16,
+            17,
+            16,
+            15
+          ],
+          "events": [
+            10,
+            43,
+            14,
+            23,
+            25,
+            56,
+            28,
+            33,
+            39,
+            42
+          ],
+          "normal_encounters": [
+            3,
+            1,
+            4,
+            13,
+            10,
+            8,
+            13,
+            6,
+            14,
+            7,
+            11,
+            14,
+            6,
+            5,
+            9,
+            14
+          ],
+          "rare_relics": [
+            74,
+            54,
+            109,
+            77,
+            165,
+            15,
+            21,
+            11,
+            160,
+            35,
+            2,
+            36,
+            131,
+            65,
+            154,
+            29,
+            6,
+            30,
+            105,
+            107,
+            146,
+            7,
+            157,
+            78,
+            22,
+            177,
+            10,
+            80
+          ],
+          "shop_relics": [
+            136,
+            138,
+            38,
+            66,
+            150,
+            20,
+            128,
+            73,
+            12,
+            5,
+            155,
+            47,
+            25,
+            145,
+            99,
+            161
+          ],
+          "shrines": [
+            31,
+            24,
+            50,
+            38,
+            54
+          ],
+          "special_one_time_events": [
+            6,
+            11,
+            15,
+            17,
+            18,
+            21,
+            26,
+            27,
+            36,
+            40,
+            44,
+            53,
+            48
+          ],
+          "uncommon_relics": [
+            96,
+            147,
+            51,
+            34,
+            14,
+            24,
+            33,
+            94,
+            40,
+            151,
+            60,
+            170,
+            31,
+            142,
+            95,
+            166,
+            141,
+            87,
+            41,
+            67,
+            173,
+            68,
+            49,
+            162,
+            176,
+            4,
+            158,
+            61,
+            27
+          ]
+        },
+        "player_state": {
+          "blue_key": false,
+          "bottle_indices": [
+            -1,
+            -1,
+            -1
+          ],
+          "current_hp": 75,
+          "deck": [
+            {
+              "id": 15,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 321,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 321,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 321,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 321,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 321,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 104,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 104,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 104,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 104,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 25,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 191,
+              "misc": 0,
+              "upgraded": true
+            },
+            {
+              "id": 152,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 11,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 244,
+              "misc": 0,
+              "upgraded": true
+            },
+            {
+              "id": 152,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 27,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 249,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 154,
+              "misc": 0,
+              "upgraded": true
+            },
+            {
+              "id": 14,
+              "misc": 0,
+              "upgraded": false
+            },
+            {
+              "id": 40,
+              "misc": 0,
+              "upgraded": false
+            }
+          ],
+          "gold": 189,
+          "green_key": true,
+          "max_hp": 75,
+          "potion_capacity": 2,
+          "potion_count": 2,
+          "potions": [
+            36,
+            35
+          ],
+          "red_key": false,
+          "relics": [
+            {
+              "data": 0,
+              "id": 86
+            },
+            {
+              "data": 0,
+              "id": 116
+            },
+            {
+              "data": 0,
+              "id": 26
+            }
+          ]
+        },
+        "progress_state": {
+          "boss": 18,
+          "card_rarity_factor": 5,
+          "current_event": 0,
+          "current_map_x": 0,
+          "current_map_y": 15,
+          "current_room": 7,
+          "last_room": 1,
+          "monster_chance": 0.30000001192092896,
+          "outcome": 1,
+          "potion_chance": 20,
+          "screen_continuation_serialized": true,
+          "screen_state": 3,
+          "shop_chance": 0.08999999612569809,
+          "shop_remove_count": 0,
+          "speedrun_pace": false,
+          "treasure_chance": 0.05999999865889549
+        },
+        "rng": {
+          "ai": {
+            "counter": 0,
+            "seed0": 13288775205653600183,
+            "seed1": 15305131519507321865
+          },
+          "card": {
+            "counter": 82,
+            "seed0": 16310351596283314323,
+            "seed1": 5524297790917434916
+          },
+          "card_random": {
+            "counter": 0,
+            "seed0": 13288775205653600183,
+            "seed1": 15305131519507321865
+          },
+          "event": {
+            "counter": 2,
+            "seed0": 6988983097101036736,
+            "seed1": 6188795937038656160
+          },
+          "math_util": {
+            "counter": 0,
+            "seed0": 15556541967390064193,
+            "seed1": 6077879108210242183
+          },
+          "merchant": {
+            "counter": 16,
+            "seed0": 17460510524406916375,
+            "seed1": 18259532471470025709
+          },
+          "misc": {
+            "counter": 0,
+            "seed0": 13288775205653600183,
+            "seed1": 15305131519507321865
+          },
+          "monster": {
+            "counter": 33,
+            "seed0": 2504236146697888020,
+            "seed1": 14119613366411699647
+          },
+          "monster_hp": {
+            "counter": 0,
+            "seed0": 13288775205653600183,
+            "seed1": 15305131519507321865
+          },
+          "neow": {
+            "counter": 5,
+            "seed0": 7078389128633382016,
+            "seed1": 6348232442850941232
+          },
+          "potion": {
+            "counter": 37,
+            "seed0": 3440147209492117381,
+            "seed1": 8209531708349834810
+          },
+          "relic": {
+            "counter": 6,
+            "seed0": 6348232442850941232,
+            "seed1": 10254541775952007624
+          },
+          "shuffle": {
+            "counter": 0,
+            "seed0": 13288775205653600183,
+            "seed1": 15305131519507321865
+          },
+          "treasure": {
+            "counter": 10,
+            "seed0": 12266766167016616705,
+            "seed1": 2521320498601041531
+          }
+        },
+        "run_state": {
+          "act": 2,
+          "ascension": 20,
+          "burning_elite_buff": 2,
+          "burning_elite_x": 4,
+          "burning_elite_y": 5,
+          "elite_monster_list_offset": 1,
+          "event_start_context": {
+            "note_card": "IRON_WAVE",
+            "portal_eligible": true
+          },
+          "floor": 33,
+          "map": "\n           /  /   \\  \\     \n14        R  R     R  R    \n        /    | \\     \\  \\  \n13     ?     M  ?     ?  M \n         \\ /    |   /    | \n12        M     ?  M     ? \n        / |       \\|   /   \n11     ?  M        M  R    \n       |    \\    / |/      \n10     E     M  ?  M       \n         \\ / |    \\| \\     \n9         M  E     M  E    \n            \\  \\     \\  \\  \n8            T  T     T  T \n           /   \\  \\ / |  | \n7         M     M  R  M  R \n        /     /    |    \\| \n6      E     R     M     $ \n       |       \\   | \\ / | \n5      R        E  E  R  E \n         \\      |    \\| \\| \n4         $     ?     M  ? \n          |       \\ / |/   \n3         M        M  $    \n            \\      |  | \\  \n2            M     M  ?  M \n           /     /    |/   \n1         ?     ?     M    \n        /       |   /      \n0      M        M  M       ",
+          "math_seed": 130302513,
+          "monster_list_offset": 6,
+          "second_boss": 0,
+          "seed": 131200410
+        },
+        "screen_info": {
+          "boss_relics": [
+            53,
+            59,
+            135
+          ],
+          "complete": true,
+          "screen_state": 3
+        }
+      },
+      "expected_public_map": [
+        {
+          "node_id": "map:0:0",
+          "x": 0,
+          "y": 0,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:1:1"
+          ]
+        },
+        {
+          "node_id": "map:2:0",
+          "x": 2,
+          "y": 0,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:2:1"
+          ]
+        },
+        {
+          "node_id": "map:4:0",
+          "x": 4,
+          "y": 0,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:4:1"
+          ]
+        },
+        {
+          "node_id": "map:5:0",
+          "x": 5,
+          "y": 0,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:5:1"
+          ]
+        },
+        {
+          "node_id": "map:1:1",
+          "x": 1,
+          "y": 1,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:2:2"
+          ]
+        },
+        {
+          "node_id": "map:2:1",
+          "x": 2,
+          "y": 1,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:2:2"
+          ]
+        },
+        {
+          "node_id": "map:4:1",
+          "x": 4,
+          "y": 1,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:4:2"
+          ]
+        },
+        {
+          "node_id": "map:5:1",
+          "x": 5,
+          "y": 1,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:4:2",
+            "map:6:2"
+          ]
+        },
+        {
+          "node_id": "map:2:2",
+          "x": 2,
+          "y": 2,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:2:3",
+            "map:3:3"
+          ]
+        },
+        {
+          "node_id": "map:4:2",
+          "x": 4,
+          "y": 2,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:3:3",
+            "map:5:3"
+          ]
+        },
+        {
+          "node_id": "map:6:2",
+          "x": 6,
+          "y": 2,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:5:3",
+            "map:6:3"
+          ]
+        },
+        {
+          "node_id": "map:2:3",
+          "x": 2,
+          "y": 3,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:1:4"
+          ]
+        },
+        {
+          "node_id": "map:3:3",
+          "x": 3,
+          "y": 3,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:2:4",
+            "map:4:4"
+          ]
+        },
+        {
+          "node_id": "map:5:3",
+          "x": 5,
+          "y": 3,
+          "visible_room_type": "SHOP",
+          "outgoing_node_ids": [
+            "map:5:4",
+            "map:6:4"
+          ]
+        },
+        {
+          "node_id": "map:6:3",
+          "x": 6,
+          "y": 3,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:6:4"
+          ]
+        },
+        {
+          "node_id": "map:1:4",
+          "x": 1,
+          "y": 4,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:1:5"
+          ]
+        },
+        {
+          "node_id": "map:2:4",
+          "x": 2,
+          "y": 4,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:1:5"
+          ]
+        },
+        {
+          "node_id": "map:4:4",
+          "x": 4,
+          "y": 4,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:3:5"
+          ]
+        },
+        {
+          "node_id": "map:5:4",
+          "x": 5,
+          "y": 4,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:4:5"
+          ]
+        },
+        {
+          "node_id": "map:6:4",
+          "x": 6,
+          "y": 4,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:5:5"
+          ]
+        },
+        {
+          "node_id": "map:1:5",
+          "x": 1,
+          "y": 5,
+          "visible_room_type": "ELITE",
+          "outgoing_node_ids": [
+            "map:0:6",
+            "map:2:6"
+          ]
+        },
+        {
+          "node_id": "map:3:5",
+          "x": 3,
+          "y": 5,
+          "visible_room_type": "REST",
+          "outgoing_node_ids": [
+            "map:3:6"
+          ]
+        },
+        {
+          "node_id": "map:4:5",
+          "x": 4,
+          "y": 5,
+          "visible_room_type": "ELITE",
+          "outgoing_node_ids": [
+            "map:4:6"
+          ]
+        },
+        {
+          "node_id": "map:5:5",
+          "x": 5,
+          "y": 5,
+          "visible_room_type": "REST",
+          "outgoing_node_ids": [
+            "map:4:6",
+            "map:5:6"
+          ]
+        },
+        {
+          "node_id": "map:0:6",
+          "x": 0,
+          "y": 6,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:1:7"
+          ]
+        },
+        {
+          "node_id": "map:2:6",
+          "x": 2,
+          "y": 6,
+          "visible_room_type": "REST",
+          "outgoing_node_ids": [
+            "map:2:7"
+          ]
+        },
+        {
+          "node_id": "map:3:6",
+          "x": 3,
+          "y": 6,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:2:7"
+          ]
+        },
+        {
+          "node_id": "map:4:6",
+          "x": 4,
+          "y": 6,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:4:7"
+          ]
+        },
+        {
+          "node_id": "map:5:6",
+          "x": 5,
+          "y": 6,
+          "visible_room_type": "SHOP",
+          "outgoing_node_ids": [
+            "map:5:7"
+          ]
+        },
+        {
+          "node_id": "map:1:7",
+          "x": 1,
+          "y": 7,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:1:8"
+          ]
+        },
+        {
+          "node_id": "map:2:7",
+          "x": 2,
+          "y": 7,
+          "visible_room_type": "ELITE",
+          "outgoing_node_ids": [
+            "map:1:8",
+            "map:3:8"
+          ]
+        },
+        {
+          "node_id": "map:4:7",
+          "x": 4,
+          "y": 7,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:3:8",
+            "map:5:8"
+          ]
+        },
+        {
+          "node_id": "map:5:7",
+          "x": 5,
+          "y": 7,
+          "visible_room_type": "REST",
+          "outgoing_node_ids": [
+            "map:5:8"
+          ]
+        },
+        {
+          "node_id": "map:1:8",
+          "x": 1,
+          "y": 8,
+          "visible_room_type": "TREASURE",
+          "outgoing_node_ids": [
+            "map:1:9"
+          ]
+        },
+        {
+          "node_id": "map:3:8",
+          "x": 3,
+          "y": 8,
+          "visible_room_type": "TREASURE",
+          "outgoing_node_ids": [
+            "map:2:9"
+          ]
+        },
+        {
+          "node_id": "map:5:8",
+          "x": 5,
+          "y": 8,
+          "visible_room_type": "TREASURE",
+          "outgoing_node_ids": [
+            "map:5:9",
+            "map:6:9"
+          ]
+        },
+        {
+          "node_id": "map:1:9",
+          "x": 1,
+          "y": 9,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:0:10",
+            "map:1:10"
+          ]
+        },
+        {
+          "node_id": "map:2:9",
+          "x": 2,
+          "y": 9,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:2:10"
+          ]
+        },
+        {
+          "node_id": "map:5:9",
+          "x": 5,
+          "y": 9,
+          "visible_room_type": "SHOP",
+          "outgoing_node_ids": [
+            "map:5:10"
+          ]
+        },
+        {
+          "node_id": "map:6:9",
+          "x": 6,
+          "y": 9,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:6:10"
+          ]
+        },
+        {
+          "node_id": "map:0:10",
+          "x": 0,
+          "y": 10,
+          "visible_room_type": "ELITE",
+          "outgoing_node_ids": [
+            "map:1:11"
+          ]
+        },
+        {
+          "node_id": "map:1:10",
+          "x": 1,
+          "y": 10,
+          "visible_room_type": "REST",
+          "outgoing_node_ids": [
+            "map:2:11"
+          ]
+        },
+        {
+          "node_id": "map:2:10",
+          "x": 2,
+          "y": 10,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:2:11",
+            "map:3:11"
+          ]
+        },
+        {
+          "node_id": "map:5:10",
+          "x": 5,
+          "y": 10,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:4:11"
+          ]
+        },
+        {
+          "node_id": "map:6:10",
+          "x": 6,
+          "y": 10,
+          "visible_room_type": "REST",
+          "outgoing_node_ids": [
+            "map:5:11"
+          ]
+        },
+        {
+          "node_id": "map:1:11",
+          "x": 1,
+          "y": 11,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:1:12"
+          ]
+        },
+        {
+          "node_id": "map:2:11",
+          "x": 2,
+          "y": 11,
+          "visible_room_type": "ELITE",
+          "outgoing_node_ids": [
+            "map:2:12",
+            "map:3:12"
+          ]
+        },
+        {
+          "node_id": "map:3:11",
+          "x": 3,
+          "y": 11,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:3:12"
+          ]
+        },
+        {
+          "node_id": "map:4:11",
+          "x": 4,
+          "y": 11,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:3:12"
+          ]
+        },
+        {
+          "node_id": "map:5:11",
+          "x": 5,
+          "y": 11,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:5:12"
+          ]
+        },
+        {
+          "node_id": "map:1:12",
+          "x": 1,
+          "y": 12,
+          "visible_room_type": "REST",
+          "outgoing_node_ids": [
+            "map:0:13"
+          ]
+        },
+        {
+          "node_id": "map:2:12",
+          "x": 2,
+          "y": 12,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:2:13"
+          ]
+        },
+        {
+          "node_id": "map:3:12",
+          "x": 3,
+          "y": 12,
+          "visible_room_type": "EVENT",
+          "outgoing_node_ids": [
+            "map:2:13",
+            "map:3:13"
+          ]
+        },
+        {
+          "node_id": "map:5:12",
+          "x": 5,
+          "y": 12,
+          "visible_room_type": "ELITE",
+          "outgoing_node_ids": [
+            "map:4:13"
+          ]
+        },
+        {
+          "node_id": "map:0:13",
+          "x": 0,
+          "y": 13,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:0:14"
+          ]
+        },
+        {
+          "node_id": "map:2:13",
+          "x": 2,
+          "y": 13,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:1:14",
+            "map:2:14"
+          ]
+        },
+        {
+          "node_id": "map:3:13",
+          "x": 3,
+          "y": 13,
+          "visible_room_type": "ELITE",
+          "outgoing_node_ids": [
+            "map:3:14"
+          ]
+        },
+        {
+          "node_id": "map:4:13",
+          "x": 4,
+          "y": 13,
+          "visible_room_type": "MONSTER",
+          "outgoing_node_ids": [
+            "map:3:14"
+          ]
+        },
+        {
+          "node_id": "map:0:14",
+          "x": 0,
+          "y": 14,
+          "visible_room_type": "REST",
+          "outgoing_node_ids": [
+            "map:boss"
+          ]
+        },
+        {
+          "node_id": "map:1:14",
+          "x": 1,
+          "y": 14,
+          "visible_room_type": "REST",
+          "outgoing_node_ids": [
+            "map:boss"
+          ]
+        },
+        {
+          "node_id": "map:2:14",
+          "x": 2,
+          "y": 14,
+          "visible_room_type": "REST",
+          "outgoing_node_ids": [
+            "map:boss"
+          ]
+        },
+        {
+          "node_id": "map:3:14",
+          "x": 3,
+          "y": 14,
+          "visible_room_type": "REST",
+          "outgoing_node_ids": [
+            "map:boss"
+          ]
+        }
+      ],
+      "actual_stock_map_rng": {
+        "counter": 91,
+        "seed0": 11640349383880602925,
+        "seed1": 11936493611115173279
+      }
+    }
+  ]
+}

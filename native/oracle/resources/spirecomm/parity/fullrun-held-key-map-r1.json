@@ -1,0 +1,78 @@
+{
+  "schema": "sls-held-key-map-scenes-v1",
+  "seed_namespace": [
+    131200410,
+    131200411
+  ],
+  "repeated_seed_policy": "EXPLICIT_SAME_SEED_PAIRED_FLAGS_AND_ACTS",
+  "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "source_evidence": {
+    "com.megacrit.cardcrawl.dungeons.AbstractDungeon": {
+      "class_sha256": "5452fdd7b33fa47dcea5c2e58d5d521dfde3acefba006c095ad5b01c60eda369"
+    },
+    "com.megacrit.cardcrawl.dungeons.TheCity": {
+      "class_sha256": "b8e4ba9a20779d96052d4d44eae09d84d2cf8e153c02e013d8d42e258f956e32"
+    },
+    "com.megacrit.cardcrawl.dungeons.TheBeyond": {
+      "class_sha256": "e8e7819f75bc2ee347c9dbfa5316b42160c2c50ef4f3bae3b4115e2c4a9a6502"
+    },
+    "com.megacrit.cardcrawl.map.MapRoomNode": {
+      "class_sha256": "f54cf19e2206bc20db7f77de724e3c54c6853ce0c878f3ba24cf3fb2036e2efd"
+    },
+    "com.megacrit.cardcrawl.rooms.RestRoom": {
+      "class_sha256": "4aab27dcd7b5f7bcd9d9baa953fd2b92db4d001004dfea3ebac5f376ff589957"
+    }
+  },
+  "natural_trajectory": false,
+  "training_eligible": false,
+  "scenes": [
+    {
+      "id": "act2-unheld-unlocked",
+      "seed": 131200410,
+      "act": 2,
+      "ascension": 20,
+      "emerald_key": false,
+      "final_act_available": true
+    },
+    {
+      "id": "act2-held-unlocked",
+      "seed": 131200410,
+      "act": 2,
+      "ascension": 20,
+      "emerald_key": true,
+      "final_act_available": true
+    },
+    {
+      "id": "act2-unheld-locked",
+      "seed": 131200410,
+      "act": 2,
+      "ascension": 20,
+      "emerald_key": false,
+      "final_act_available": false
+    },
+    {
+      "id": "act3-unheld-unlocked",
+      "seed": 131200410,
+      "act": 3,
+      "ascension": 20,
+      "emerald_key": false,
+      "final_act_available": true
+    },
+    {
+      "id": "act3-held-unlocked",
+      "seed": 131200410,
+      "act": 3,
+      "ascension": 20,
+      "emerald_key": true,
+      "final_act_available": true
+    },
+    {
+      "id": "act3-unheld-locked",
+      "seed": 131200410,
+      "act": 3,
+      "ascension": 20,
+      "emerald_key": false,
+      "final_act_available": false
+    }
+  ]
+}
