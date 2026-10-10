@@ -1,0 +1,86 @@
+{
+  "schema": "sls-green-key-source-evidence-v1",
+  "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "javap_binary_sha256": "f87c22763907b019cefc5db416168f4e9f355afbfd7ca8777e9c5433533c3378",
+  "scope": "STATIC_BYTECODE_ONLY_NOT_RUNTIME_QUALIFICATION",
+  "classes": [
+    {
+      "name": "com.megacrit.cardcrawl.dungeons.AbstractDungeon",
+      "class_sha256": "5452fdd7b33fa47dcea5c2e58d5d521dfde3acefba006c095ad5b01c60eda369",
+      "disassembly_sha256": "0f3abd64e6930ca02064e7c0c30495a70bfddc9d875069422ac6509ef09677ae",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.dungeons.AbstractDungeon"
+      ]
+    },
+    {
+      "name": "com.megacrit.cardcrawl.rooms.MonsterRoom",
+      "class_sha256": "4cf14cb7209f50dcf37c03594d262a4675078f0d658487342771aa7789feec33",
+      "disassembly_sha256": "8529de56cc42de00ddfbc1d3250c0edf321a8930c0013a027d7688b00480084a",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.rooms.MonsterRoom"
+      ]
+    },
+    {
+      "name": "com.megacrit.cardcrawl.rooms.MonsterRoomElite",
+      "class_sha256": "3c25131c9038ed639eabb818adcec4552de8de378a997b8ab4192087cc0fa90c",
+      "disassembly_sha256": "75ad89da49ae705b08aa24d15cce3a972211d6cb5d7d77e4929e6fdcad3c7602",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.rooms.MonsterRoomElite"
+      ]
+    },
+    {
+      "name": "com.megacrit.cardcrawl.rooms.AbstractRoom",
+      "class_sha256": "22214900fc051a2e8e73b72532ee561abc95a77f7172b105b68d3afeca0a74f6",
+      "disassembly_sha256": "33f8d8d045d0c4596d5b677c245024da6bc24aa454e33af6dbecb2ec457aee9c",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.rooms.AbstractRoom"
+      ]
+    },
+    {
+      "name": "com.megacrit.cardcrawl.rewards.RewardItem",
+      "class_sha256": "7f5abc79015ab6a6cb6781776fc1752a5e5143f47be61b4ee8bcf9cb057daf55",
+      "disassembly_sha256": "0a38de227b691bc6d5e871207e595ae60769a5c74b58a1104b6191e75bb7ee94",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.rewards.RewardItem"
+      ]
+    },
+    {
+      "name": "com.megacrit.cardcrawl.vfx.ObtainKeyEffect",
+      "class_sha256": "80f1b69ac0405fe96c6ac6fb6bada786062a139405dd7b3568964d7e4e80ea9e",
+      "disassembly_sha256": "7e2b4b65768c60d4c3689ea0051db8d34c98e27cbaac48286e8669913c49a308",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.vfx.ObtainKeyEffect"
+      ]
+    }
+  ]
+}
