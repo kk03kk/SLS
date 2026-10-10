@@ -1,0 +1,225 @@
+{
+  "schema": "sls-continuous-ending-death-evidence-v1",
+  "code_commit": "e5f238a4e7feeb52ee5a765b4d5eb79a2f9786bc",
+  "native_source_sha256": "e4f8452ff3cea688e49a362488814d4c2e29d9b721bcc6cd71c8d9f1d9fa733a",
+  "native_binary_sha256": "6ee14bf97312bab04b66fcb0a6767f52c4a688eeb0c1fcf5953b5ab8764f570b",
+  "oracle_sha256": "75379f4d1930ebfee58849be4445c245ac645bfd86c2abadf3f3bbb5c2c8f7c7",
+  "capture_sha256": "faed7624ef330c4aebf6f66f4896519b8f14ac45903ed5c35fb6595cffb5851f",
+  "seed_namespace": [
+    131200450,
+    131200451
+  ],
+  "actual_public_decisions": 29,
+  "actual_heart_end_turns": 17,
+  "actual_terminal": {
+    "reason": "DEATH",
+    "success": false
+  },
+  "full_public_trajectory_equal": true,
+  "fullrun_checkpoint_full_suffix_matches": 30,
+  "raw_combat_pairs": 21,
+  "raw_combat_exact": 19,
+  "raw_combat_differences": 2,
+  "raw_combat_unavailable": 9,
+  "production_environment_changed": false,
+  "training_gate": "NOT_QUALIFIED",
+  "training_eligible": false,
+  "natural_trajectory": false,
+  "verification": {
+    "cpu_passed": 1714,
+    "skipped": 2,
+    "warnings": 4,
+    "ruff": "PASS"
+  },
+  "files": [
+    {
+      "path": "docs/results/a20h-requalification-20261010/ENDING-CONTINUOUS-DEATH.md",
+      "bytes": 4200,
+      "sha256": "33efb816870d78c43a27061be6e3f6b72cb0097cea96d8f25253101a605803b1"
+    },
+    {
+      "path": "local/build/oracle/ending-continuous-death-r1.build.json",
+      "bytes": 21137,
+      "sha256": "17622cda4c081cc53bb04bde11ac7b45a0ddfcc899b64c5c7614b2d16600ca5f"
+    },
+    {
+      "path": "local/build/oracle/ending-continuous-death-r1.jar",
+      "bytes": 201578,
+      "sha256": "75379f4d1930ebfee58849be4445c245ac645bfd86c2abadf3f3bbb5c2c8f7c7"
+    },
+    {
+      "path": "local/compare_continuous_death_raw.py",
+      "bytes": 2392,
+      "sha256": "d89ab74586d8a455476befe045151bdf592bf8fbc60188817333f88d6dfa265e"
+    },
+    {
+      "path": "local/freeze_ending_death_continuation.py",
+      "bytes": 1618,
+      "sha256": "6304c3a8478ee0a156320535922796d3f52ccbc78b2164fffa0626fa970bb5db"
+    },
+    {
+      "path": "local/package_ending_death_continuous.py",
+      "bytes": 5522,
+      "sha256": "3ee04ec461f1123868bcf42d428fc74b9a35e24031f57a0e0ba530e7c45ad359"
+    },
+    {
+      "path": "local/prepare_ending_death_continuous.py",
+      "bytes": 1080,
+      "sha256": "3c56753d2e1a2f024ae6c82780ab5baa42a3866a4cba93e7ed3ef94cb199975d"
+    },
+    {
+      "path": "local/reports/ending-death-continuous-20261010/cpu-tests-r1.txt",
+      "bytes": 4114,
+      "sha256": "4069c30661007cbdf08cbfa1217570124a5aacacb85ac8f0616f27c614527a93"
+    },
+    {
+      "path": "local/reports/ending-death-continuous-20261010/diff-check-r1.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "local/reports/ending-death-continuous-20261010/native-boss-flow-r1.json",
+      "bytes": 493765,
+      "sha256": "20812cb5b2b24ed93c8369f8b173e47da4b08a68809b3120ba2247cbbe0c1051"
+    },
+    {
+      "path": "local/reports/ending-death-continuous-20261010/native-entry-r1.json",
+      "bytes": 286989,
+      "sha256": "41f782451a045783dfe34dd144eb15fa8badd3bfd88a2c80d30b190abb0eb08d"
+    },
+    {
+      "path": "local/reports/ending-death-continuous-20261010/production-r51.json",
+      "bytes": 56605,
+      "sha256": "82a6ed9e222697797cae444b3f2d23a76b748e9cef0a8fb751563f845fecab49"
+    },
+    {
+      "path": "local/reports/ending-death-continuous-20261010/production-r51.launch.json",
+      "bytes": 433,
+      "sha256": "d422d5370e8e0c50e80850abdb24f277bc3b2578ae6a49678fb2b98526d47908"
+    },
+    {
+      "path": "local/reports/ending-death-continuous-20261010/protection-check-r1.txt",
+      "bytes": 8435,
+      "sha256": "62ece42504f13bc00eb0abec291a91c38b641785490ff80c8d0a92e6d755eaeb"
+    },
+    {
+      "path": "local/reports/ending-death-continuous-20261010/protection-r1.json",
+      "bytes": 9678,
+      "sha256": "b9098f37f422160ef823a35c82ac16d07835787f5967fab931eecd04f03cf0f6"
+    },
+    {
+      "path": "local/reports/ending-death-continuous-20261010/public-replay-r1.json",
+      "bytes": 3513658,
+      "sha256": "a4a3ab456712800453a794dbd32666680d2a71e9b9c4774cb1846bf8f270d66e"
+    },
+    {
+      "path": "local/reports/ending-death-continuous-20261010/raw-combat-r1.json",
+      "bytes": 305316,
+      "sha256": "ade801667fd6074f6d1ddd8216411a48b56f61886fd2f9c4cbcc05398f1818db"
+    },
+    {
+      "path": "local/reports/ending-death-continuous-20261010/staged-check-r1.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "local/reports/ending-death-continuous-20261010/stock-r1.json",
+      "bytes": 5440652,
+      "sha256": "faed7624ef330c4aebf6f66f4896519b8f14ac45903ed5c35fb6595cffb5851f"
+    },
+    {
+      "path": "local/reports/ending-death-continuous-20261010/stock-r1.launch.json",
+      "bytes": 430,
+      "sha256": "28f0c93d922cfdd508839ad97ce44b7d44a3a27240d9ece4d86f61356e8053a4"
+    },
+    {
+      "path": "local/run_ending_death_continuous.py",
+      "bytes": 735,
+      "sha256": "4bd9cb7f6b966ca5a43b0b4ccb1458e77a79685a99dc02912c66d501d3903adc"
+    },
+    {
+      "path": "local/runs/oracle-qualification/runtime-backups/20261010T104639.135966Z/journal.json",
+      "bytes": 28205,
+      "sha256": "fe5ff841d57e384904141c360b1ea95442549e06f6f4a9c68bd401ced1118087"
+    },
+    {
+      "path": "local/runs/oracle-qualification/runtime-backups/20261010T104712.497968Z/journal.json",
+      "bytes": 28205,
+      "sha256": "1d157878684ee5cdb2690fb9cbea1a3753ae50e95828b22bc64dcd45d4e2ff5a"
+    },
+    {
+      "path": "local/verify_key_protection.py",
+      "bytes": 2110,
+      "sha256": "b5d28d3867bdcef259ff833d21f881725dd295dc2415a80d840c4428ff167a2a"
+    },
+    {
+      "path": "native/oracle/ModTheSpire.json",
+      "bytes": 381,
+      "sha256": "e5afad7d6779dc64f2ff26abb6dc73c6fdb3f6af98f4c54877015435aae588e0"
+    },
+    {
+      "path": "native/oracle/resources/spirecomm/parity/fullrun-ending-continuous-death-r1.json",
+      "bytes": 8052,
+      "sha256": "67b1b0fa0ff366102e4b1ed12208c1313f1a1f143f953ccd15b31866ef96971b"
+    },
+    {
+      "path": "src/sls/audit/ending_continuation.py",
+      "bytes": 3570,
+      "sha256": "b098409ecc9a0f888222a58c0cb9dce8a3f20ee34b4d4fa82193f8dd85a8c7ed"
+    },
+    {
+      "path": "tests/audit/test_ending_continuation.py",
+      "bytes": 2121,
+      "sha256": "fe4bb7fb2ce197d22f303b52b68bfca332c74245e67ea1d49b488f282dc6b19a"
+    },
+    {
+      "path": "tests/fixtures/regressions/ending-continuous-death-stock-r1.json",
+      "bytes": 1181498,
+      "sha256": "4ac11e73b0982b09a599dc472190af2a4d98f649b6b2bddb88990a671f6eefc1"
+    },
+    {
+      "path": "tests/fixtures/regressions/ending-continuous-stock-r1.json",
+      "bytes": 601850,
+      "sha256": "45bc7fb9f286614bc58d7c623d6098e2211a7ab9d3eaa66222502bee5e80c9b1"
+    },
+    {
+      "path": "tests/simulator/test_continuous_ending_stock.py",
+      "bytes": 2626,
+      "sha256": "11db69772e09a4ded5b3bf28a3b73b404bcfa93a4901e84acda734918cfc7890"
+    },
+    {
+      "path": "tests/test_build_oracle.py",
+      "bytes": 6521,
+      "sha256": "481f5edac7d151db56f16a6289f55979856263245f9069536e706274e7e89ca5"
+    },
+    {
+      "path": "tools/capture_act2_encounter_batch.py",
+      "bytes": 10963,
+      "sha256": "7fdd64fb350fc921f095483fdf9d7381a6b724ad4caf87802820745bfbc0ef28"
+    },
+    {
+      "path": "tools/replay_ending_continuation.py",
+      "bytes": 7169,
+      "sha256": "95d0105093e4509985c0c8cbef6a9f90f3b090c88004716dc351c0781bc9ea25"
+    },
+    {
+      "path": "tools/reproduce_double_boss_entry.py",
+      "bytes": 14721,
+      "sha256": "a577276906ef0c62fec01c4debe84c7cd9f6fd88ea48cb98b2cd241586cd42c9"
+    },
+    {
+      "path": "tools/reproduce_double_boss_flow.py",
+      "bytes": 7935,
+      "sha256": "17141de5fd07e6a1614ae864a95015b716d66fcc0260bae3c19de9373e2d9ccb"
+    },
+    {
+      "path": "tools/verify_boss_flow_suffix.py",
+      "bytes": 10206,
+      "sha256": "220798b32d58b7fca51e3cd9446e5af1e8f9b16b43592cf3cb036da8184a857f"
+    }
+  ],
+  "bundle": {
+    "path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\ending-continuous-death-20261010-delivery-r1.zip",
+    "sha256": "e897a1761e6cb259c5c7bf0c7b0c4e51da41a11bd90dad137518e01415e7a858"
+  }
+}
