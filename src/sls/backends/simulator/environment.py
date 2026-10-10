@@ -396,6 +396,9 @@ class SimulatorBackend:
                 ),
             )
             for node in raw["public_map"]
+            # The Ending exposes its boss separately when boss_available,
+            # rather than as a fourth ordinary map node.
+            if not (int(public_run["act"]) == 4 and str(node["room_type"]) == "BOSS")
         )
         if any(action.node_id == "map:boss" for action in actions):
             map_nodes += (MapNode("map:boss", 0, 15, "BOSS", True),)
@@ -822,7 +825,8 @@ def _run_action(
         )
     if screen is ScreenType.MAP:
         y = int(progress["current_map_y"])
-        node_id = f"map:{idx1}:{y + 1}" if y < 14 else "map:boss"
+        last_regular_row = 2 if int(raw["public_run"]["act"]) == 4 else 14
+        node_id = f"map:{idx1}:{y + 1}" if y < last_regular_row else "map:boss"
         return Action(ActionKind.CHOOSE_MAP_NODE, node_id=node_id)
     if screen is ScreenType.COMBAT_REWARD:
         if reward_type == 0:
