@@ -1,0 +1,6435 @@
+{
+  "schema": "sls-green-stock-regression-v1",
+  "stock_capture_sha256": "e16e8471ffc509ece96523705b893deea18ec1d7bd8846ff88403aa3ba5de066",
+  "replay_sha256": "3e69bf214415e194f81bf56cfc8804d874c5c595cb522be51d8aafb3de99f6b7",
+  "native_source_sha256": "6805e8c991ff6e3ca1b57248678babbbc1ea904b6a1a35e17d631c426765dcc0",
+  "cases": [
+    {
+      "seed": 131200362,
+      "initial": {
+        "run_state": {
+          "seed": 131200362,
+          "math_seed": 130302465,
+          "event_start_context": {
+            "note_card": "IRON_WAVE",
+            "portal_eligible": true
+          },
+          "ascension": 20,
+          "act": 2,
+          "floor": 28,
+          "monster_list_offset": 0,
+          "elite_monster_list_offset": 0,
+          "second_boss": 0,
+          "map": "\n           /    |    \\     \n14        R     R     R    \n            \\ /     / | \\  \n13           M     M  M  E \n           / |   /  /    | \n12        M  $  E  M     ? \n        /      \\|    \\ / | \n11     R        M     ?  M \n         \\        \\ /  /   \n10        M        ?  $    \n        /        / |/      \n9      R        M  R       \n       |      / | \\| \\     \n8      T     T  T  T  T    \n       |     |    \\| \\  \\  \n7      R     E     M  R  E \n         \\ /     /   \\  \\| \n6         M     E     R  M \n          | \\ /         \\| \n5         E  R           E \n          |/   \\       /   \n4         ?     ?     ?    \n        / |     |   / | \\  \n3      M  ?     M  M  ?  M \n       |/     /      \\|  | \n2      M     ?        M  M \n       | \\ /        / |  | \n1      $  ?        ?  M  ? \n         \\|        |    \\| \n0         M        M     M ",
+          "burning_elite_x": 2,
+          "burning_elite_y": 10,
+          "burning_elite_buff": 2
+        },
+        "rng": {
+          "ai": {
+            "counter": 0,
+            "seed0": 17202878666799960537,
+            "seed1": 15738037314014447020
+          },
+          "card_random": {
+            "counter": 0,
+            "seed0": 17202878666799960537,
+            "seed1": 15738037314014447020
+          },
+          "card": {
+            "counter": 0,
+            "seed0": 6227493315951396386,
+            "seed1": 14976981038293813066
+          },
+          "event": {
+            "counter": 0,
+            "seed0": 6227493315951396386,
+            "seed1": 14976981038293813066
+          },
+          "math_util": {
+            "counter": 0,
+            "seed0": 17624756652269447394,
+            "seed1": 6278680684921016432
+          },
+          "merchant": {
+            "counter": 0,
+            "seed0": 6227493315951396386,
+            "seed1": 14976981038293813066
+          },
+          "misc": {
+            "counter": 0,
+            "seed0": 17202878666799960537,
+            "seed1": 15738037314014447020
+          },
+          "monster_hp": {
+            "counter": 0,
+            "seed0": 17202878666799960537,
+            "seed1": 15738037314014447020
+          },
+          "monster": {
+            "counter": 71,
+            "seed0": 4707241891528526889,
+            "seed1": 2997423820717640009
+          },
+          "neow": {
+            "counter": 5,
+            "seed0": 2219763158006849939,
+            "seed1": 1296900914265655629
+          },
+          "potion": {
+            "counter": 0,
+            "seed0": 6227493315951396386,
+            "seed1": 14976981038293813066
+          },
+          "relic": {
+            "counter": 5,
+            "seed0": 2219763158006849939,
+            "seed1": 1296900914265655629
+          },
+          "shuffle": {
+            "counter": 0,
+            "seed0": 17202878666799960537,
+            "seed1": 15738037314014447020
+          },
+          "treasure": {
+            "counter": 0,
+            "seed0": 6227493315951396386,
+            "seed1": 14976981038293813066
+          }
+        },
+        "derived_rng": {
+          "map": {
+            "algorithm": "sts.RandomXS128/Map.fromSeed:v1",
+            "base_seed": 131200362,
+            "derived_seed": 131200562,
+            "act": 2,
+            "ascension": 20,
+            "assign_burning_elite": true
+          }
+        },
+        "ordered_pools": {
+          "events": [
+            10,
+            43,
+            14,
+            23,
+            25,
+            56,
+            28,
+            29,
+            33,
+            39,
+            42
+          ],
+          "shrines": [
+            31,
+            24,
+            50,
+            38,
+            51,
+            54
+          ],
+          "special_one_time_events": [
+            6,
+            11,
+            15,
+            17,
+            18,
+            21,
+            26,
+            27,
+            36,
+            40,
+            44,
+            53,
+            48
+          ],
+          "common_relics": [
+            175,
+            132,
+            46,
+            149,
+            139,
+            89,
+            8,
+            26,
+            52,
+            93,
+            76,
+            163,
+            148,
+            92,
+            159,
+            97,
+            121,
+            44,
+            90,
+            169,
+            91,
+            113,
+            0,
+            48,
+            1,
+            144,
+            174,
+            70,
+            171,
+            9,
+            55,
+            167,
+            119
+          ],
+          "uncommon_relics": [
+            95,
+            4,
+            173,
+            68,
+            176,
+            141,
+            24,
+            162,
+            34,
+            120,
+            14,
+            33,
+            67,
+            41,
+            87,
+            166,
+            51,
+            61,
+            170,
+            31,
+            94,
+            40,
+            49,
+            60,
+            151,
+            142,
+            158,
+            27,
+            147,
+            96
+          ],
+          "rare_relics": [
+            30,
+            74,
+            160,
+            154,
+            22,
+            65,
+            80,
+            6,
+            11,
+            146,
+            77,
+            36,
+            107,
+            10,
+            15,
+            78,
+            21,
+            109,
+            131,
+            54,
+            157,
+            165,
+            105,
+            2,
+            35,
+            177,
+            29,
+            7
+          ],
+          "shop_relics": [
+            66,
+            155,
+            5,
+            47,
+            138,
+            161,
+            136,
+            128,
+            69,
+            99,
+            38,
+            73,
+            25,
+            150,
+            12,
+            20,
+            145
+          ],
+          "boss_relics": [
+            56,
+            133,
+            53,
+            135,
+            64,
+            98,
+            134,
+            100,
+            59,
+            57,
+            102,
+            114,
+            85,
+            140,
+            62,
+            156,
+            127,
+            172,
+            81,
+            58,
+            17,
+            108
+          ],
+          "colorless_cards": [
+            94,
+            281,
+            242,
+            344,
+            121,
+            188,
+            335,
+            36,
+            21,
+            290,
+            100,
+            352,
+            241,
+            291,
+            12,
+            218,
+            177,
+            155,
+            166,
+            131,
+            259,
+            240,
+            343,
+            64,
+            113,
+            150,
+            213,
+            216,
+            173,
+            327,
+            200,
+            223,
+            225,
+            336,
+            212
+          ],
+          "normal_encounters": [
+            2,
+            4,
+            1,
+            5,
+            7,
+            8,
+            11,
+            12,
+            8,
+            7,
+            14,
+            9,
+            5,
+            6,
+            12,
+            13
+          ],
+          "elite_encounters": [
+            15,
+            16,
+            15,
+            16,
+            15,
+            16,
+            17,
+            15,
+            17,
+            15
+          ]
+        },
+        "player_state": {
+          "current_hp": 400,
+          "max_hp": 400,
+          "gold": 99,
+          "potion_count": 0,
+          "potion_capacity": 2,
+          "potions": [
+            1,
+            1
+          ],
+          "relics": [
+            {
+              "id": 86,
+              "data": 0
+            },
+            {
+              "id": 42,
+              "data": 0
+            },
+            {
+              "id": 113,
+              "data": 0
+            }
+          ],
+          "deck": [
+            {
+              "id": 15,
+              "upgraded": false,
+              "misc": 0
+            },
+            {
+              "id": 40,
+              "upgraded": false,
+              "misc": 0
+            },
+            {
+              "id": 40,
+              "upgraded": false,
+              "misc": 0
+            },
+            {
+              "id": 40,
+              "upgraded": false,
+              "misc": 0
+            },
+            {
+              "id": 40,
+              "upgraded": false,
+              "misc": 0
+            },
+            {
+              "id": 40,
+              "upgraded": false,
+              "misc": 0
+            },
+            {
+              "id": 40,
+              "upgraded": false,
+              "misc": 0
+            },
+            {
+              "id": 40,
+              "upgraded": false,
+              "misc": 0
+            },
+            {
+              "id": 40,
+              "upgraded": false,
+              "misc": 0
+            },
+            {
+              "id": 40,
+              "upgraded": false,
+              "misc": 0
+            },
+            {
+              "id": 40,
+              "upgraded": false,
+              "misc": 0
+            }
+          ],
+          "bottle_indices": [
+            -1,
+            -1,
+            -1
+          ],
+          "blue_key": false,
+          "green_key": false,
+          "red_key": false
+        },
+        "progress_state": {
+          "outcome": 1,
+          "screen_state": 9,
+          "last_room": 9,
+          "current_room": 3,
+          "current_event": 0,
+          "boss": 38,
+          "current_map_x": 2,
+          "current_map_y": 10,
+          "monster_chance": 0.10000000149011612,
+          "shop_chance": 0.029999999329447746,
+          "treasure_chance": 0.019999999552965164,
+          "potion_chance": 0,
+          "card_rarity_factor": 5,
+          "shop_remove_count": 0,
+          "speedrun_pace": false,
+          "screen_continuation_serialized": true
+        },
+        "screen_info": {
+          "screen_state": 9,
+          "complete": true,
+          "encounter": 34
+        },
+        "replay_actions": [],
+        "replay_required": false
+      },
+      "bits": [
+        65536,
+        2147483648,
+        131072,
+        2147483648,
+        65536,
+        2147483648,
+        131072,
+        2147483648,
+        196608,
+        2147483648,
+        65536,
+        2147483648,
+        131072,
+        2147483648,
+        196608,
+        2147483648,
+        65536,
+        2147483648,
+        131072,
+        2147483648,
+        65536,
+        2147483648,
+        131072,
+        2147483648,
+        65536,
+        2147483648,
+        131072,
+        2147483648,
+        196608,
+        268435456
+      ],
+      "expected": [
+        {
+          "observation_sha256": "bf9272107b3e8126df3383515474cf58ddfbf54a8a53a2ad9932ad0bf5f0bcb3",
+          "actions_sha256": "9394bee7aacab1f6453b5870b1fec5098d9a819560218fb185a23df034db66da",
+          "resources": {
+            "hp": 400,
+            "max_hp": 400,
+            "gold": 99,
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "deck": [
+              {
+                "id": "ASCENDERS_BANE",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              }
+            ],
+            "relics": [
+              {
+                "id": "BURNING_BLOOD",
+                "counter": 0
+              },
+              {
+                "id": "NECRONOMICON",
+                "counter": 0
+              },
+              {
+                "id": "LANTERN",
+                "counter": 0
+              }
+            ],
+            "potions": [
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 0
+              },
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 1
+              }
+            ]
+          },
+          "rng": {
+            "ai": {
+              "counter": 3,
+              "seed0": 12119583099063265806,
+              "seed1": 10100004514213170331
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 17202878666799960537,
+              "seed1": 15738037314014447020
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 17624756652269447394,
+              "seed1": 6278680684921016432
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "misc": {
+              "counter": 2,
+              "seed0": 13009787859726899519,
+              "seed1": 12119583099063265806
+            },
+            "monster_hp": {
+              "counter": 3,
+              "seed0": 12119583099063265806,
+              "seed1": 10100004514213170331
+            },
+            "monster": {
+              "counter": 71,
+              "seed0": 4707241891528526889,
+              "seed1": 2997423820717640009
+            },
+            "neow": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "shuffle": {
+              "counter": 1,
+              "seed0": 15738037314014447020,
+              "seed1": 13009787859726899519
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            }
+          },
+          "terminal": false
+        },
+        {
+          "observation_sha256": "de4fd2e16051e9fb6975c1212010ee24ee2340cf4142ed1464c133425fb04c8d",
+          "actions_sha256": "2326475f592188af868afca4365be2f200c3d8ffb1e28c52187aab41e6f048b3",
+          "resources": {
+            "hp": 400,
+            "max_hp": 400,
+            "gold": 99,
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "deck": [
+              {
+                "id": "ASCENDERS_BANE",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              }
+            ],
+            "relics": [
+              {
+                "id": "BURNING_BLOOD",
+                "counter": 0
+              },
+              {
+                "id": "NECRONOMICON",
+                "counter": 0
+              },
+              {
+                "id": "LANTERN",
+                "counter": 0
+              }
+            ],
+            "potions": [
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 0
+              },
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 1
+              }
+            ]
+          },
+          "rng": {
+            "ai": {
+              "counter": 3,
+              "seed0": 12119583099063265806,
+              "seed1": 10100004514213170331
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 17202878666799960537,
+              "seed1": 15738037314014447020
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 17624756652269447394,
+              "seed1": 6278680684921016432
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "misc": {
+              "counter": 2,
+              "seed0": 13009787859726899519,
+              "seed1": 12119583099063265806
+            },
+            "monster_hp": {
+              "counter": 3,
+              "seed0": 12119583099063265806,
+              "seed1": 10100004514213170331
+            },
+            "monster": {
+              "counter": 71,
+              "seed0": 4707241891528526889,
+              "seed1": 2997423820717640009
+            },
+            "neow": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "shuffle": {
+              "counter": 1,
+              "seed0": 15738037314014447020,
+              "seed1": 13009787859726899519
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            }
+          },
+          "terminal": false
+        },
+        {
+          "observation_sha256": "41d9538ab07efa0814f54af84e45555b98c2d4feb689b23b7f25206018b40bed",
+          "actions_sha256": "4def29157faef60df6a8ce9b8cc3b637931876586d112d441195748b77708000",
+          "resources": {
+            "hp": 400,
+            "max_hp": 400,
+            "gold": 99,
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "deck": [
+              {
+                "id": "ASCENDERS_BANE",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              }
+            ],
+            "relics": [
+              {
+                "id": "BURNING_BLOOD",
+                "counter": 0
+              },
+              {
+                "id": "NECRONOMICON",
+                "counter": 0
+              },
+              {
+                "id": "LANTERN",
+                "counter": 0
+              }
+            ],
+            "potions": [
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 0
+              },
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 1
+              }
+            ]
+          },
+          "rng": {
+            "ai": {
+              "counter": 6,
+              "seed0": 12477791588932381883,
+              "seed1": 18247389217439966966
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 17202878666799960537,
+              "seed1": 15738037314014447020
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 17624756652269447394,
+              "seed1": 6278680684921016432
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "misc": {
+              "counter": 2,
+              "seed0": 13009787859726899519,
+              "seed1": 12119583099063265806
+            },
+            "monster_hp": {
+              "counter": 3,
+              "seed0": 12119583099063265806,
+              "seed1": 10100004514213170331
+            },
+            "monster": {
+              "counter": 71,
+              "seed0": 4707241891528526889,
+              "seed1": 2997423820717640009
+            },
+            "neow": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "shuffle": {
+              "counter": 1,
+              "seed0": 15738037314014447020,
+              "seed1": 13009787859726899519
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            }
+          },
+          "terminal": false
+        },
+        {
+          "observation_sha256": "ba24879043dc97deddfc17b74265c765ae4aa26e43e00e6359aadcf4b900d8ea",
+          "actions_sha256": "2326475f592188af868afca4365be2f200c3d8ffb1e28c52187aab41e6f048b3",
+          "resources": {
+            "hp": 400,
+            "max_hp": 400,
+            "gold": 99,
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "deck": [
+              {
+                "id": "ASCENDERS_BANE",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              }
+            ],
+            "relics": [
+              {
+                "id": "BURNING_BLOOD",
+                "counter": 0
+              },
+              {
+                "id": "NECRONOMICON",
+                "counter": 0
+              },
+              {
+                "id": "LANTERN",
+                "counter": 0
+              }
+            ],
+            "potions": [
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 0
+              },
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 1
+              }
+            ]
+          },
+          "rng": {
+            "ai": {
+              "counter": 6,
+              "seed0": 12477791588932381883,
+              "seed1": 18247389217439966966
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 17202878666799960537,
+              "seed1": 15738037314014447020
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 17624756652269447394,
+              "seed1": 6278680684921016432
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "misc": {
+              "counter": 2,
+              "seed0": 13009787859726899519,
+              "seed1": 12119583099063265806
+            },
+            "monster_hp": {
+              "counter": 3,
+              "seed0": 12119583099063265806,
+              "seed1": 10100004514213170331
+            },
+            "monster": {
+              "counter": 71,
+              "seed0": 4707241891528526889,
+              "seed1": 2997423820717640009
+            },
+            "neow": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "shuffle": {
+              "counter": 1,
+              "seed0": 15738037314014447020,
+              "seed1": 13009787859726899519
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            }
+          },
+          "terminal": false
+        },
+        {
+          "observation_sha256": "5ee6a366ec95b640334be85493d5fbb942f01368d0b6487084d925e89889ca39",
+          "actions_sha256": "06927b52d7d950fea2f4bba5e3d567fa57ca97b475b7f997c8311ad399228d48",
+          "resources": {
+            "hp": 400,
+            "max_hp": 400,
+            "gold": 99,
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "deck": [
+              {
+                "id": "ASCENDERS_BANE",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              }
+            ],
+            "relics": [
+              {
+                "id": "BURNING_BLOOD",
+                "counter": 0
+              },
+              {
+                "id": "NECRONOMICON",
+                "counter": 0
+              },
+              {
+                "id": "LANTERN",
+                "counter": 0
+              }
+            ],
+            "potions": [
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 0
+              },
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 1
+              }
+            ]
+          },
+          "rng": {
+            "ai": {
+              "counter": 11,
+              "seed0": 1473911448523526509,
+              "seed1": 4477909743976557861
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 17202878666799960537,
+              "seed1": 15738037314014447020
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 17624756652269447394,
+              "seed1": 6278680684921016432
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "misc": {
+              "counter": 2,
+              "seed0": 13009787859726899519,
+              "seed1": 12119583099063265806
+            },
+            "monster_hp": {
+              "counter": 5,
+              "seed0": 7708412645559607894,
+              "seed1": 12477791588932381883
+            },
+            "monster": {
+              "counter": 71,
+              "seed0": 4707241891528526889,
+              "seed1": 2997423820717640009
+            },
+            "neow": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "shuffle": {
+              "counter": 2,
+              "seed0": 13009787859726899519,
+              "seed1": 12119583099063265806
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            }
+          },
+          "terminal": false
+        },
+        {
+          "observation_sha256": "c64cdb2ad1f46f48766d7f6879a1258469cc7670dd4d685eea7379557995873c",
+          "actions_sha256": "2326475f592188af868afca4365be2f200c3d8ffb1e28c52187aab41e6f048b3",
+          "resources": {
+            "hp": 400,
+            "max_hp": 400,
+            "gold": 99,
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "deck": [
+              {
+                "id": "ASCENDERS_BANE",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              }
+            ],
+            "relics": [
+              {
+                "id": "BURNING_BLOOD",
+                "counter": 0
+              },
+              {
+                "id": "NECRONOMICON",
+                "counter": 0
+              },
+              {
+                "id": "LANTERN",
+                "counter": 0
+              }
+            ],
+            "potions": [
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 0
+              },
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 1
+              }
+            ]
+          },
+          "rng": {
+            "ai": {
+              "counter": 11,
+              "seed0": 1473911448523526509,
+              "seed1": 4477909743976557861
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 17202878666799960537,
+              "seed1": 15738037314014447020
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 17624756652269447394,
+              "seed1": 6278680684921016432
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "misc": {
+              "counter": 2,
+              "seed0": 13009787859726899519,
+              "seed1": 12119583099063265806
+            },
+            "monster_hp": {
+              "counter": 5,
+              "seed0": 7708412645559607894,
+              "seed1": 12477791588932381883
+            },
+            "monster": {
+              "counter": 71,
+              "seed0": 4707241891528526889,
+              "seed1": 2997423820717640009
+            },
+            "neow": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "shuffle": {
+              "counter": 2,
+              "seed0": 13009787859726899519,
+              "seed1": 12119583099063265806
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            }
+          },
+          "terminal": false
+        },
+        {
+          "observation_sha256": "2cfa21be961a274fd269a741a90376ae18c112b959a657ae6e06414d35c53211",
+          "actions_sha256": "a5b50d1e1422c163cf4307f1c8eea56393ed6bca93c093dddc86c173bb153408",
+          "resources": {
+            "hp": 367,
+            "max_hp": 400,
+            "gold": 99,
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "deck": [
+              {
+                "id": "ASCENDERS_BANE",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              }
+            ],
+            "relics": [
+              {
+                "id": "BURNING_BLOOD",
+                "counter": 0
+              },
+              {
+                "id": "NECRONOMICON",
+                "counter": 0
+              },
+              {
+                "id": "LANTERN",
+                "counter": 0
+              }
+            ],
+            "potions": [
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 0
+              },
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 1
+              }
+            ]
+          },
+          "rng": {
+            "ai": {
+              "counter": 12,
+              "seed0": 4477909743976557861,
+              "seed1": 8777280765620843298
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 17202878666799960537,
+              "seed1": 15738037314014447020
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 17624756652269447394,
+              "seed1": 6278680684921016432
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "misc": {
+              "counter": 2,
+              "seed0": 13009787859726899519,
+              "seed1": 12119583099063265806
+            },
+            "monster_hp": {
+              "counter": 5,
+              "seed0": 7708412645559607894,
+              "seed1": 12477791588932381883
+            },
+            "monster": {
+              "counter": 71,
+              "seed0": 4707241891528526889,
+              "seed1": 2997423820717640009
+            },
+            "neow": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "shuffle": {
+              "counter": 2,
+              "seed0": 13009787859726899519,
+              "seed1": 12119583099063265806
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            }
+          },
+          "terminal": false
+        },
+        {
+          "observation_sha256": "be3477400291b0b0067bf54163764c4e07be4b97dde1802ff0c3ca17519df7e1",
+          "actions_sha256": "2326475f592188af868afca4365be2f200c3d8ffb1e28c52187aab41e6f048b3",
+          "resources": {
+            "hp": 367,
+            "max_hp": 400,
+            "gold": 99,
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "deck": [
+              {
+                "id": "ASCENDERS_BANE",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              }
+            ],
+            "relics": [
+              {
+                "id": "BURNING_BLOOD",
+                "counter": 0
+              },
+              {
+                "id": "NECRONOMICON",
+                "counter": 0
+              },
+              {
+                "id": "LANTERN",
+                "counter": 0
+              }
+            ],
+            "potions": [
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 0
+              },
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 1
+              }
+            ]
+          },
+          "rng": {
+            "ai": {
+              "counter": 12,
+              "seed0": 4477909743976557861,
+              "seed1": 8777280765620843298
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 17202878666799960537,
+              "seed1": 15738037314014447020
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 17624756652269447394,
+              "seed1": 6278680684921016432
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "misc": {
+              "counter": 2,
+              "seed0": 13009787859726899519,
+              "seed1": 12119583099063265806
+            },
+            "monster_hp": {
+              "counter": 5,
+              "seed0": 7708412645559607894,
+              "seed1": 12477791588932381883
+            },
+            "monster": {
+              "counter": 71,
+              "seed0": 4707241891528526889,
+              "seed1": 2997423820717640009
+            },
+            "neow": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "shuffle": {
+              "counter": 2,
+              "seed0": 13009787859726899519,
+              "seed1": 12119583099063265806
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            }
+          },
+          "terminal": false
+        },
+        {
+          "observation_sha256": "48d6748cd82ea6d629375db878df85f81db512413117d00cee01d428a30c7efe",
+          "actions_sha256": "22453de084d4d76d6136d5b89177fed48dc54cd64a98bbd8d006f9683cab7d8a",
+          "resources": {
+            "hp": 367,
+            "max_hp": 400,
+            "gold": 99,
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "deck": [
+              {
+                "id": "ASCENDERS_BANE",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              }
+            ],
+            "relics": [
+              {
+                "id": "BURNING_BLOOD",
+                "counter": 0
+              },
+              {
+                "id": "NECRONOMICON",
+                "counter": 0
+              },
+              {
+                "id": "LANTERN",
+                "counter": 0
+              }
+            ],
+            "potions": [
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 0
+              },
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 1
+              }
+            ]
+          },
+          "rng": {
+            "ai": {
+              "counter": 14,
+              "seed0": 14996767222351754550,
+              "seed1": 9568004237146866571
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 17202878666799960537,
+              "seed1": 15738037314014447020
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 17624756652269447394,
+              "seed1": 6278680684921016432
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "misc": {
+              "counter": 2,
+              "seed0": 13009787859726899519,
+              "seed1": 12119583099063265806
+            },
+            "monster_hp": {
+              "counter": 5,
+              "seed0": 7708412645559607894,
+              "seed1": 12477791588932381883
+            },
+            "monster": {
+              "counter": 71,
+              "seed0": 4707241891528526889,
+              "seed1": 2997423820717640009
+            },
+            "neow": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "shuffle": {
+              "counter": 3,
+              "seed0": 12119583099063265806,
+              "seed1": 10100004514213170331
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            }
+          },
+          "terminal": false
+        },
+        {
+          "observation_sha256": "dd9d489f4df076d4b3b9333b2ec1a8b94d8072526979e9039f0a85c0acd4e14f",
+          "actions_sha256": "2326475f592188af868afca4365be2f200c3d8ffb1e28c52187aab41e6f048b3",
+          "resources": {
+            "hp": 367,
+            "max_hp": 400,
+            "gold": 99,
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "deck": [
+              {
+                "id": "ASCENDERS_BANE",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              }
+            ],
+            "relics": [
+              {
+                "id": "BURNING_BLOOD",
+                "counter": 0
+              },
+              {
+                "id": "NECRONOMICON",
+                "counter": 0
+              },
+              {
+                "id": "LANTERN",
+                "counter": 0
+              }
+            ],
+            "potions": [
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 0
+              },
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 1
+              }
+            ]
+          },
+          "rng": {
+            "ai": {
+              "counter": 14,
+              "seed0": 14996767222351754550,
+              "seed1": 9568004237146866571
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 17202878666799960537,
+              "seed1": 15738037314014447020
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 17624756652269447394,
+              "seed1": 6278680684921016432
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "misc": {
+              "counter": 2,
+              "seed0": 13009787859726899519,
+              "seed1": 12119583099063265806
+            },
+            "monster_hp": {
+              "counter": 5,
+              "seed0": 7708412645559607894,
+              "seed1": 12477791588932381883
+            },
+            "monster": {
+              "counter": 71,
+              "seed0": 4707241891528526889,
+              "seed1": 2997423820717640009
+            },
+            "neow": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "shuffle": {
+              "counter": 3,
+              "seed0": 12119583099063265806,
+              "seed1": 10100004514213170331
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            }
+          },
+          "terminal": false
+        },
+        {
+          "observation_sha256": "79cc64997bdf12ee1ab933d62c2071df696a24af1a733a81ffebe855db4a6275",
+          "actions_sha256": "d645cbcc5dda12fb956f243d9cceff40c049c3228e5c032443de26ad827e6038",
+          "resources": {
+            "hp": 367,
+            "max_hp": 400,
+            "gold": 99,
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "deck": [
+              {
+                "id": "ASCENDERS_BANE",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              }
+            ],
+            "relics": [
+              {
+                "id": "BURNING_BLOOD",
+                "counter": 0
+              },
+              {
+                "id": "NECRONOMICON",
+                "counter": 0
+              },
+              {
+                "id": "LANTERN",
+                "counter": 0
+              }
+            ],
+            "potions": [
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 0
+              },
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 1
+              }
+            ]
+          },
+          "rng": {
+            "ai": {
+              "counter": 19,
+              "seed0": 7456632038955297820,
+              "seed1": 6025284048168369659
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 17202878666799960537,
+              "seed1": 15738037314014447020
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 17624756652269447394,
+              "seed1": 6278680684921016432
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "misc": {
+              "counter": 2,
+              "seed0": 13009787859726899519,
+              "seed1": 12119583099063265806
+            },
+            "monster_hp": {
+              "counter": 7,
+              "seed0": 18247389217439966966,
+              "seed1": 18127670311248319303
+            },
+            "monster": {
+              "counter": 71,
+              "seed0": 4707241891528526889,
+              "seed1": 2997423820717640009
+            },
+            "neow": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "shuffle": {
+              "counter": 3,
+              "seed0": 12119583099063265806,
+              "seed1": 10100004514213170331
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            }
+          },
+          "terminal": false
+        },
+        {
+          "observation_sha256": "93a3953db49cf6cb15d930027b9183c4b7b94c91067c37c9c905bb2485bd61b7",
+          "actions_sha256": "2326475f592188af868afca4365be2f200c3d8ffb1e28c52187aab41e6f048b3",
+          "resources": {
+            "hp": 367,
+            "max_hp": 400,
+            "gold": 99,
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "deck": [
+              {
+                "id": "ASCENDERS_BANE",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              }
+            ],
+            "relics": [
+              {
+                "id": "BURNING_BLOOD",
+                "counter": 0
+              },
+              {
+                "id": "NECRONOMICON",
+                "counter": 0
+              },
+              {
+                "id": "LANTERN",
+                "counter": 0
+              }
+            ],
+            "potions": [
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 0
+              },
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 1
+              }
+            ]
+          },
+          "rng": {
+            "ai": {
+              "counter": 19,
+              "seed0": 7456632038955297820,
+              "seed1": 6025284048168369659
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 17202878666799960537,
+              "seed1": 15738037314014447020
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 17624756652269447394,
+              "seed1": 6278680684921016432
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "misc": {
+              "counter": 2,
+              "seed0": 13009787859726899519,
+              "seed1": 12119583099063265806
+            },
+            "monster_hp": {
+              "counter": 7,
+              "seed0": 18247389217439966966,
+              "seed1": 18127670311248319303
+            },
+            "monster": {
+              "counter": 71,
+              "seed0": 4707241891528526889,
+              "seed1": 2997423820717640009
+            },
+            "neow": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "shuffle": {
+              "counter": 3,
+              "seed0": 12119583099063265806,
+              "seed1": 10100004514213170331
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            }
+          },
+          "terminal": false
+        },
+        {
+          "observation_sha256": "c6af4d29105bf6349dafe6def2ed3b4c5a6e2bae6db8c442f4b81e521e52e8fa",
+          "actions_sha256": "4fee0a0ef3e7296441f6f85a98e801aa2879a215146450998f2ef1a60e412126",
+          "resources": {
+            "hp": 367,
+            "max_hp": 400,
+            "gold": 99,
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "deck": [
+              {
+                "id": "ASCENDERS_BANE",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              }
+            ],
+            "relics": [
+              {
+                "id": "BURNING_BLOOD",
+                "counter": 0
+              },
+              {
+                "id": "NECRONOMICON",
+                "counter": 0
+              },
+              {
+                "id": "LANTERN",
+                "counter": 0
+              }
+            ],
+            "potions": [
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 0
+              },
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 1
+              }
+            ]
+          },
+          "rng": {
+            "ai": {
+              "counter": 21,
+              "seed0": 11415049759559934834,
+              "seed1": 4063614741870698764
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 17202878666799960537,
+              "seed1": 15738037314014447020
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 17624756652269447394,
+              "seed1": 6278680684921016432
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "misc": {
+              "counter": 2,
+              "seed0": 13009787859726899519,
+              "seed1": 12119583099063265806
+            },
+            "monster_hp": {
+              "counter": 7,
+              "seed0": 18247389217439966966,
+              "seed1": 18127670311248319303
+            },
+            "monster": {
+              "counter": 71,
+              "seed0": 4707241891528526889,
+              "seed1": 2997423820717640009
+            },
+            "neow": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "shuffle": {
+              "counter": 4,
+              "seed0": 10100004514213170331,
+              "seed1": 7708412645559607894
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            }
+          },
+          "terminal": false
+        },
+        {
+          "observation_sha256": "6159de30c2924f30ccaa6587e3bc9bcde5e2390fb3a6c3b4e90e862f7c6da0b4",
+          "actions_sha256": "2326475f592188af868afca4365be2f200c3d8ffb1e28c52187aab41e6f048b3",
+          "resources": {
+            "hp": 367,
+            "max_hp": 400,
+            "gold": 99,
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "deck": [
+              {
+                "id": "ASCENDERS_BANE",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              }
+            ],
+            "relics": [
+              {
+                "id": "BURNING_BLOOD",
+                "counter": 0
+              },
+              {
+                "id": "NECRONOMICON",
+                "counter": 0
+              },
+              {
+                "id": "LANTERN",
+                "counter": 0
+              }
+            ],
+            "potions": [
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 0
+              },
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 1
+              }
+            ]
+          },
+          "rng": {
+            "ai": {
+              "counter": 21,
+              "seed0": 11415049759559934834,
+              "seed1": 4063614741870698764
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 17202878666799960537,
+              "seed1": 15738037314014447020
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 17624756652269447394,
+              "seed1": 6278680684921016432
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "misc": {
+              "counter": 2,
+              "seed0": 13009787859726899519,
+              "seed1": 12119583099063265806
+            },
+            "monster_hp": {
+              "counter": 7,
+              "seed0": 18247389217439966966,
+              "seed1": 18127670311248319303
+            },
+            "monster": {
+              "counter": 71,
+              "seed0": 4707241891528526889,
+              "seed1": 2997423820717640009
+            },
+            "neow": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "shuffle": {
+              "counter": 4,
+              "seed0": 10100004514213170331,
+              "seed1": 7708412645559607894
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            }
+          },
+          "terminal": false
+        },
+        {
+          "observation_sha256": "ff5d3576d5014e420755285e0ac1270ab2be2c8bb5e680029d66b58380e2249d",
+          "actions_sha256": "e84935772c78a0252cb6d70382e769f67a04ef7a19b913eb72d5057e455ca0a2",
+          "resources": {
+            "hp": 304,
+            "max_hp": 400,
+            "gold": 99,
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "deck": [
+              {
+                "id": "ASCENDERS_BANE",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              }
+            ],
+            "relics": [
+              {
+                "id": "BURNING_BLOOD",
+                "counter": 0
+              },
+              {
+                "id": "NECRONOMICON",
+                "counter": 0
+              },
+              {
+                "id": "LANTERN",
+                "counter": 0
+              }
+            ],
+            "potions": [
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 0
+              },
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 1
+              }
+            ]
+          },
+          "rng": {
+            "ai": {
+              "counter": 22,
+              "seed0": 4063614741870698764,
+              "seed1": 388251752241608697
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 17202878666799960537,
+              "seed1": 15738037314014447020
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 17624756652269447394,
+              "seed1": 6278680684921016432
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "misc": {
+              "counter": 2,
+              "seed0": 13009787859726899519,
+              "seed1": 12119583099063265806
+            },
+            "monster_hp": {
+              "counter": 7,
+              "seed0": 18247389217439966966,
+              "seed1": 18127670311248319303
+            },
+            "monster": {
+              "counter": 71,
+              "seed0": 4707241891528526889,
+              "seed1": 2997423820717640009
+            },
+            "neow": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "shuffle": {
+              "counter": 4,
+              "seed0": 10100004514213170331,
+              "seed1": 7708412645559607894
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            }
+          },
+          "terminal": false
+        },
+        {
+          "observation_sha256": "7feadb1f7e6151fe24ea14a822a14beba12076086bc8bc6dd31f4bbfc69d670f",
+          "actions_sha256": "2326475f592188af868afca4365be2f200c3d8ffb1e28c52187aab41e6f048b3",
+          "resources": {
+            "hp": 304,
+            "max_hp": 400,
+            "gold": 99,
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "deck": [
+              {
+                "id": "ASCENDERS_BANE",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              }
+            ],
+            "relics": [
+              {
+                "id": "BURNING_BLOOD",
+                "counter": 0
+              },
+              {
+                "id": "NECRONOMICON",
+                "counter": 0
+              },
+              {
+                "id": "LANTERN",
+                "counter": 0
+              }
+            ],
+            "potions": [
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 0
+              },
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 1
+              }
+            ]
+          },
+          "rng": {
+            "ai": {
+              "counter": 22,
+              "seed0": 4063614741870698764,
+              "seed1": 388251752241608697
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 17202878666799960537,
+              "seed1": 15738037314014447020
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 17624756652269447394,
+              "seed1": 6278680684921016432
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "misc": {
+              "counter": 2,
+              "seed0": 13009787859726899519,
+              "seed1": 12119583099063265806
+            },
+            "monster_hp": {
+              "counter": 7,
+              "seed0": 18247389217439966966,
+              "seed1": 18127670311248319303
+            },
+            "monster": {
+              "counter": 71,
+              "seed0": 4707241891528526889,
+              "seed1": 2997423820717640009
+            },
+            "neow": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "shuffle": {
+              "counter": 4,
+              "seed0": 10100004514213170331,
+              "seed1": 7708412645559607894
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            }
+          },
+          "terminal": false
+        },
+        {
+          "observation_sha256": "7dc611e16794e3f9b324e0f2dfa42b87faee09e15342f37edc2c1843ef81491f",
+          "actions_sha256": "f6c80eb53a3e5be0e50494a2ea21cdf5b79d8309ff115b5eb466a86fd5da8513",
+          "resources": {
+            "hp": 304,
+            "max_hp": 400,
+            "gold": 99,
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "deck": [
+              {
+                "id": "ASCENDERS_BANE",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              }
+            ],
+            "relics": [
+              {
+                "id": "BURNING_BLOOD",
+                "counter": 0
+              },
+              {
+                "id": "NECRONOMICON",
+                "counter": 0
+              },
+              {
+                "id": "LANTERN",
+                "counter": 0
+              }
+            ],
+            "potions": [
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 0
+              },
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 1
+              }
+            ]
+          },
+          "rng": {
+            "ai": {
+              "counter": 27,
+              "seed0": 1734947071782575368,
+              "seed1": 14917359186804416405
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 17202878666799960537,
+              "seed1": 15738037314014447020
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 17624756652269447394,
+              "seed1": 6278680684921016432
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "misc": {
+              "counter": 2,
+              "seed0": 13009787859726899519,
+              "seed1": 12119583099063265806
+            },
+            "monster_hp": {
+              "counter": 9,
+              "seed0": 17191998744212418935,
+              "seed1": 1748949596049081103
+            },
+            "monster": {
+              "counter": 71,
+              "seed0": 4707241891528526889,
+              "seed1": 2997423820717640009
+            },
+            "neow": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "shuffle": {
+              "counter": 5,
+              "seed0": 7708412645559607894,
+              "seed1": 12477791588932381883
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            }
+          },
+          "terminal": false
+        },
+        {
+          "observation_sha256": "e3c8abda3a4ac65fef524a64ba43f62b8f5e41fe2dccf11393c752cb3c724834",
+          "actions_sha256": "2326475f592188af868afca4365be2f200c3d8ffb1e28c52187aab41e6f048b3",
+          "resources": {
+            "hp": 304,
+            "max_hp": 400,
+            "gold": 99,
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "deck": [
+              {
+                "id": "ASCENDERS_BANE",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              }
+            ],
+            "relics": [
+              {
+                "id": "BURNING_BLOOD",
+                "counter": 0
+              },
+              {
+                "id": "NECRONOMICON",
+                "counter": 0
+              },
+              {
+                "id": "LANTERN",
+                "counter": 0
+              }
+            ],
+            "potions": [
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 0
+              },
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 1
+              }
+            ]
+          },
+          "rng": {
+            "ai": {
+              "counter": 27,
+              "seed0": 1734947071782575368,
+              "seed1": 14917359186804416405
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 17202878666799960537,
+              "seed1": 15738037314014447020
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 17624756652269447394,
+              "seed1": 6278680684921016432
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "misc": {
+              "counter": 2,
+              "seed0": 13009787859726899519,
+              "seed1": 12119583099063265806
+            },
+            "monster_hp": {
+              "counter": 9,
+              "seed0": 17191998744212418935,
+              "seed1": 1748949596049081103
+            },
+            "monster": {
+              "counter": 71,
+              "seed0": 4707241891528526889,
+              "seed1": 2997423820717640009
+            },
+            "neow": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "shuffle": {
+              "counter": 5,
+              "seed0": 7708412645559607894,
+              "seed1": 12477791588932381883
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            }
+          },
+          "terminal": false
+        },
+        {
+          "observation_sha256": "9603ee5d2c11c8fec138bffb1fdb5eaffff1687e67f86420b1bac544f4df93c2",
+          "actions_sha256": "b507ca5504f710100121c54d8e979b4a23c367aeb121cc0b5f09216fac5b7d26",
+          "resources": {
+            "hp": 241,
+            "max_hp": 400,
+            "gold": 99,
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "deck": [
+              {
+                "id": "ASCENDERS_BANE",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              }
+            ],
+            "relics": [
+              {
+                "id": "BURNING_BLOOD",
+                "counter": 0
+              },
+              {
+                "id": "NECRONOMICON",
+                "counter": 0
+              },
+              {
+                "id": "LANTERN",
+                "counter": 0
+              }
+            ],
+            "potions": [
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 0
+              },
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 1
+              }
+            ]
+          },
+          "rng": {
+            "ai": {
+              "counter": 28,
+              "seed0": 14917359186804416405,
+              "seed1": 4800910602477469442
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 17202878666799960537,
+              "seed1": 15738037314014447020
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 17624756652269447394,
+              "seed1": 6278680684921016432
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "misc": {
+              "counter": 2,
+              "seed0": 13009787859726899519,
+              "seed1": 12119583099063265806
+            },
+            "monster_hp": {
+              "counter": 9,
+              "seed0": 17191998744212418935,
+              "seed1": 1748949596049081103
+            },
+            "monster": {
+              "counter": 71,
+              "seed0": 4707241891528526889,
+              "seed1": 2997423820717640009
+            },
+            "neow": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "shuffle": {
+              "counter": 5,
+              "seed0": 7708412645559607894,
+              "seed1": 12477791588932381883
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            }
+          },
+          "terminal": false
+        },
+        {
+          "observation_sha256": "333fe0113c063094146c2ad5a0aa98f8db435a887402ac3c15221697703c71a0",
+          "actions_sha256": "2326475f592188af868afca4365be2f200c3d8ffb1e28c52187aab41e6f048b3",
+          "resources": {
+            "hp": 241,
+            "max_hp": 400,
+            "gold": 99,
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "deck": [
+              {
+                "id": "ASCENDERS_BANE",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              }
+            ],
+            "relics": [
+              {
+                "id": "BURNING_BLOOD",
+                "counter": 0
+              },
+              {
+                "id": "NECRONOMICON",
+                "counter": 0
+              },
+              {
+                "id": "LANTERN",
+                "counter": 0
+              }
+            ],
+            "potions": [
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 0
+              },
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 1
+              }
+            ]
+          },
+          "rng": {
+            "ai": {
+              "counter": 28,
+              "seed0": 14917359186804416405,
+              "seed1": 4800910602477469442
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 17202878666799960537,
+              "seed1": 15738037314014447020
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 17624756652269447394,
+              "seed1": 6278680684921016432
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "misc": {
+              "counter": 2,
+              "seed0": 13009787859726899519,
+              "seed1": 12119583099063265806
+            },
+            "monster_hp": {
+              "counter": 9,
+              "seed0": 17191998744212418935,
+              "seed1": 1748949596049081103
+            },
+            "monster": {
+              "counter": 71,
+              "seed0": 4707241891528526889,
+              "seed1": 2997423820717640009
+            },
+            "neow": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "shuffle": {
+              "counter": 5,
+              "seed0": 7708412645559607894,
+              "seed1": 12477791588932381883
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            }
+          },
+          "terminal": false
+        },
+        {
+          "observation_sha256": "4e5193f0d463e587f5c394eed0c3b695b044afdb8f1dd6998ff90689843b1790",
+          "actions_sha256": "6c319bfb93b0a2e2e56eda1913300b3561ae4e5e1d3f0e1163d2b3f2aaf3f93e",
+          "resources": {
+            "hp": 241,
+            "max_hp": 400,
+            "gold": 99,
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "deck": [
+              {
+                "id": "ASCENDERS_BANE",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              }
+            ],
+            "relics": [
+              {
+                "id": "BURNING_BLOOD",
+                "counter": 0
+              },
+              {
+                "id": "NECRONOMICON",
+                "counter": 0
+              },
+              {
+                "id": "LANTERN",
+                "counter": 0
+              }
+            ],
+            "potions": [
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 0
+              },
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 1
+              }
+            ]
+          },
+          "rng": {
+            "ai": {
+              "counter": 33,
+              "seed0": 4440962869825785255,
+              "seed1": 5400262478013339679
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 17202878666799960537,
+              "seed1": 15738037314014447020
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 17624756652269447394,
+              "seed1": 6278680684921016432
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "misc": {
+              "counter": 2,
+              "seed0": 13009787859726899519,
+              "seed1": 12119583099063265806
+            },
+            "monster_hp": {
+              "counter": 11,
+              "seed0": 1473911448523526509,
+              "seed1": 4477909743976557861
+            },
+            "monster": {
+              "counter": 71,
+              "seed0": 4707241891528526889,
+              "seed1": 2997423820717640009
+            },
+            "neow": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "shuffle": {
+              "counter": 6,
+              "seed0": 12477791588932381883,
+              "seed1": 18247389217439966966
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            }
+          },
+          "terminal": false
+        },
+        {
+          "observation_sha256": "b6b1ab43fb7c54661339704d95678293a0a33c70aaa93cda505ba9a828084f7a",
+          "actions_sha256": "2326475f592188af868afca4365be2f200c3d8ffb1e28c52187aab41e6f048b3",
+          "resources": {
+            "hp": 241,
+            "max_hp": 400,
+            "gold": 99,
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "deck": [
+              {
+                "id": "ASCENDERS_BANE",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              }
+            ],
+            "relics": [
+              {
+                "id": "BURNING_BLOOD",
+                "counter": 0
+              },
+              {
+                "id": "NECRONOMICON",
+                "counter": 0
+              },
+              {
+                "id": "LANTERN",
+                "counter": 0
+              }
+            ],
+            "potions": [
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 0
+              },
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 1
+              }
+            ]
+          },
+          "rng": {
+            "ai": {
+              "counter": 33,
+              "seed0": 4440962869825785255,
+              "seed1": 5400262478013339679
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 17202878666799960537,
+              "seed1": 15738037314014447020
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 17624756652269447394,
+              "seed1": 6278680684921016432
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "misc": {
+              "counter": 2,
+              "seed0": 13009787859726899519,
+              "seed1": 12119583099063265806
+            },
+            "monster_hp": {
+              "counter": 11,
+              "seed0": 1473911448523526509,
+              "seed1": 4477909743976557861
+            },
+            "monster": {
+              "counter": 71,
+              "seed0": 4707241891528526889,
+              "seed1": 2997423820717640009
+            },
+            "neow": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "shuffle": {
+              "counter": 6,
+              "seed0": 12477791588932381883,
+              "seed1": 18247389217439966966
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            }
+          },
+          "terminal": false
+        },
+        {
+          "observation_sha256": "3de9d4ac0fd9be4fa826456d3d3ad2c541a266d2752375645981b269c95230b2",
+          "actions_sha256": "ab581189e1f67e9775907a9d4b6edfddcedc459908bf10494b9ca35296d33f74",
+          "resources": {
+            "hp": 178,
+            "max_hp": 400,
+            "gold": 99,
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "deck": [
+              {
+                "id": "ASCENDERS_BANE",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              }
+            ],
+            "relics": [
+              {
+                "id": "BURNING_BLOOD",
+                "counter": 0
+              },
+              {
+                "id": "NECRONOMICON",
+                "counter": 0
+              },
+              {
+                "id": "LANTERN",
+                "counter": 0
+              }
+            ],
+            "potions": [
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 0
+              },
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 1
+              }
+            ]
+          },
+          "rng": {
+            "ai": {
+              "counter": 34,
+              "seed0": 5400262478013339679,
+              "seed1": 7991260475840924932
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 17202878666799960537,
+              "seed1": 15738037314014447020
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 17624756652269447394,
+              "seed1": 6278680684921016432
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "misc": {
+              "counter": 2,
+              "seed0": 13009787859726899519,
+              "seed1": 12119583099063265806
+            },
+            "monster_hp": {
+              "counter": 11,
+              "seed0": 1473911448523526509,
+              "seed1": 4477909743976557861
+            },
+            "monster": {
+              "counter": 71,
+              "seed0": 4707241891528526889,
+              "seed1": 2997423820717640009
+            },
+            "neow": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "shuffle": {
+              "counter": 6,
+              "seed0": 12477791588932381883,
+              "seed1": 18247389217439966966
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            }
+          },
+          "terminal": false
+        },
+        {
+          "observation_sha256": "d2e88a109434a074e10649ff23c6239a1ac9df8bb781b78802257850a9815ced",
+          "actions_sha256": "2326475f592188af868afca4365be2f200c3d8ffb1e28c52187aab41e6f048b3",
+          "resources": {
+            "hp": 178,
+            "max_hp": 400,
+            "gold": 99,
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "deck": [
+              {
+                "id": "ASCENDERS_BANE",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              }
+            ],
+            "relics": [
+              {
+                "id": "BURNING_BLOOD",
+                "counter": 0
+              },
+              {
+                "id": "NECRONOMICON",
+                "counter": 0
+              },
+              {
+                "id": "LANTERN",
+                "counter": 0
+              }
+            ],
+            "potions": [
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 0
+              },
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 1
+              }
+            ]
+          },
+          "rng": {
+            "ai": {
+              "counter": 34,
+              "seed0": 5400262478013339679,
+              "seed1": 7991260475840924932
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 17202878666799960537,
+              "seed1": 15738037314014447020
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 17624756652269447394,
+              "seed1": 6278680684921016432
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "misc": {
+              "counter": 2,
+              "seed0": 13009787859726899519,
+              "seed1": 12119583099063265806
+            },
+            "monster_hp": {
+              "counter": 11,
+              "seed0": 1473911448523526509,
+              "seed1": 4477909743976557861
+            },
+            "monster": {
+              "counter": 71,
+              "seed0": 4707241891528526889,
+              "seed1": 2997423820717640009
+            },
+            "neow": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "shuffle": {
+              "counter": 6,
+              "seed0": 12477791588932381883,
+              "seed1": 18247389217439966966
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            }
+          },
+          "terminal": false
+        },
+        {
+          "observation_sha256": "8b59980343509ae17c8d746ede9f4ddd19beb3a245e061aed34df61682224543",
+          "actions_sha256": "e9e75df21c31adf4aec0e2afd5d4bc2ebc788988e15122e6e1a1d2a788a08e76",
+          "resources": {
+            "hp": 178,
+            "max_hp": 400,
+            "gold": 99,
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "deck": [
+              {
+                "id": "ASCENDERS_BANE",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              }
+            ],
+            "relics": [
+              {
+                "id": "BURNING_BLOOD",
+                "counter": 0
+              },
+              {
+                "id": "NECRONOMICON",
+                "counter": 0
+              },
+              {
+                "id": "LANTERN",
+                "counter": 0
+              }
+            ],
+            "potions": [
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 0
+              },
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 1
+              }
+            ]
+          },
+          "rng": {
+            "ai": {
+              "counter": 39,
+              "seed0": 11222354447893932217,
+              "seed1": 11787345786325524389
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 17202878666799960537,
+              "seed1": 15738037314014447020
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 17624756652269447394,
+              "seed1": 6278680684921016432
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "misc": {
+              "counter": 2,
+              "seed0": 13009787859726899519,
+              "seed1": 12119583099063265806
+            },
+            "monster_hp": {
+              "counter": 13,
+              "seed0": 8777280765620843298,
+              "seed1": 14996767222351754550
+            },
+            "monster": {
+              "counter": 71,
+              "seed0": 4707241891528526889,
+              "seed1": 2997423820717640009
+            },
+            "neow": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "shuffle": {
+              "counter": 7,
+              "seed0": 18247389217439966966,
+              "seed1": 18127670311248319303
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            }
+          },
+          "terminal": false
+        },
+        {
+          "observation_sha256": "4944aa4ed030fba7919ce71f23fa95704ba78fe1f108e13da1cb0e9b6170e055",
+          "actions_sha256": "2326475f592188af868afca4365be2f200c3d8ffb1e28c52187aab41e6f048b3",
+          "resources": {
+            "hp": 178,
+            "max_hp": 400,
+            "gold": 99,
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "deck": [
+              {
+                "id": "ASCENDERS_BANE",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              }
+            ],
+            "relics": [
+              {
+                "id": "BURNING_BLOOD",
+                "counter": 0
+              },
+              {
+                "id": "NECRONOMICON",
+                "counter": 0
+              },
+              {
+                "id": "LANTERN",
+                "counter": 0
+              }
+            ],
+            "potions": [
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 0
+              },
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 1
+              }
+            ]
+          },
+          "rng": {
+            "ai": {
+              "counter": 39,
+              "seed0": 11222354447893932217,
+              "seed1": 11787345786325524389
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 17202878666799960537,
+              "seed1": 15738037314014447020
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 17624756652269447394,
+              "seed1": 6278680684921016432
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "misc": {
+              "counter": 2,
+              "seed0": 13009787859726899519,
+              "seed1": 12119583099063265806
+            },
+            "monster_hp": {
+              "counter": 13,
+              "seed0": 8777280765620843298,
+              "seed1": 14996767222351754550
+            },
+            "monster": {
+              "counter": 71,
+              "seed0": 4707241891528526889,
+              "seed1": 2997423820717640009
+            },
+            "neow": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "shuffle": {
+              "counter": 7,
+              "seed0": 18247389217439966966,
+              "seed1": 18127670311248319303
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            }
+          },
+          "terminal": false
+        },
+        {
+          "observation_sha256": "406f464aeb42d4e58f67dc0f4934ec5b0111b5073a0e97625188a7d14b5e4cef",
+          "actions_sha256": "5a5f8f1f7d735f6cb71c2738570c388c5fbcf050b9e7c01e114251bc5c306094",
+          "resources": {
+            "hp": 110,
+            "max_hp": 400,
+            "gold": 99,
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "deck": [
+              {
+                "id": "ASCENDERS_BANE",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              }
+            ],
+            "relics": [
+              {
+                "id": "BURNING_BLOOD",
+                "counter": 0
+              },
+              {
+                "id": "NECRONOMICON",
+                "counter": 0
+              },
+              {
+                "id": "LANTERN",
+                "counter": 0
+              }
+            ],
+            "potions": [
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 0
+              },
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 1
+              }
+            ]
+          },
+          "rng": {
+            "ai": {
+              "counter": 40,
+              "seed0": 11787345786325524389,
+              "seed1": 14744213278761012954
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 17202878666799960537,
+              "seed1": 15738037314014447020
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 17624756652269447394,
+              "seed1": 6278680684921016432
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "misc": {
+              "counter": 2,
+              "seed0": 13009787859726899519,
+              "seed1": 12119583099063265806
+            },
+            "monster_hp": {
+              "counter": 13,
+              "seed0": 8777280765620843298,
+              "seed1": 14996767222351754550
+            },
+            "monster": {
+              "counter": 71,
+              "seed0": 4707241891528526889,
+              "seed1": 2997423820717640009
+            },
+            "neow": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "shuffle": {
+              "counter": 7,
+              "seed0": 18247389217439966966,
+              "seed1": 18127670311248319303
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            }
+          },
+          "terminal": false
+        },
+        {
+          "observation_sha256": "5ceae3dba3fd27592571c821311a1a4721a61c66a225d44de43cc20827217a55",
+          "actions_sha256": "2326475f592188af868afca4365be2f200c3d8ffb1e28c52187aab41e6f048b3",
+          "resources": {
+            "hp": 110,
+            "max_hp": 400,
+            "gold": 99,
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "deck": [
+              {
+                "id": "ASCENDERS_BANE",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              }
+            ],
+            "relics": [
+              {
+                "id": "BURNING_BLOOD",
+                "counter": 0
+              },
+              {
+                "id": "NECRONOMICON",
+                "counter": 0
+              },
+              {
+                "id": "LANTERN",
+                "counter": 0
+              }
+            ],
+            "potions": [
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 0
+              },
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 1
+              }
+            ]
+          },
+          "rng": {
+            "ai": {
+              "counter": 40,
+              "seed0": 11787345786325524389,
+              "seed1": 14744213278761012954
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 17202878666799960537,
+              "seed1": 15738037314014447020
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 17624756652269447394,
+              "seed1": 6278680684921016432
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "misc": {
+              "counter": 2,
+              "seed0": 13009787859726899519,
+              "seed1": 12119583099063265806
+            },
+            "monster_hp": {
+              "counter": 13,
+              "seed0": 8777280765620843298,
+              "seed1": 14996767222351754550
+            },
+            "monster": {
+              "counter": 71,
+              "seed0": 4707241891528526889,
+              "seed1": 2997423820717640009
+            },
+            "neow": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "shuffle": {
+              "counter": 7,
+              "seed0": 18247389217439966966,
+              "seed1": 18127670311248319303
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            }
+          },
+          "terminal": false
+        },
+        {
+          "observation_sha256": "c3b6855ed71b0f8d5fad4ca00aad72213c97aa7a07644bdfcbdc29c1256a0f7a",
+          "actions_sha256": "69dd22843faf3ab167bdc92cf480fd0db198f483812c0bb7ff290e1bf9d9708d",
+          "resources": {
+            "hp": 110,
+            "max_hp": 400,
+            "gold": 99,
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "deck": [
+              {
+                "id": "ASCENDERS_BANE",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              }
+            ],
+            "relics": [
+              {
+                "id": "BURNING_BLOOD",
+                "counter": 0
+              },
+              {
+                "id": "NECRONOMICON",
+                "counter": 0
+              },
+              {
+                "id": "LANTERN",
+                "counter": 0
+              }
+            ],
+            "potions": [
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 0
+              },
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 1
+              }
+            ]
+          },
+          "rng": {
+            "ai": {
+              "counter": 42,
+              "seed0": 3043242157955333528,
+              "seed1": 813094423106751691
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 17202878666799960537,
+              "seed1": 15738037314014447020
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 17624756652269447394,
+              "seed1": 6278680684921016432
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "misc": {
+              "counter": 2,
+              "seed0": 13009787859726899519,
+              "seed1": 12119583099063265806
+            },
+            "monster_hp": {
+              "counter": 13,
+              "seed0": 8777280765620843298,
+              "seed1": 14996767222351754550
+            },
+            "monster": {
+              "counter": 71,
+              "seed0": 4707241891528526889,
+              "seed1": 2997423820717640009
+            },
+            "neow": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "shuffle": {
+              "counter": 8,
+              "seed0": 18127670311248319303,
+              "seed1": 17191998744212418935
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            }
+          },
+          "terminal": false
+        },
+        {
+          "observation_sha256": "bdb2e27bbde9a560eab114ee242aa37a4b0ac10b999eb09361e6c31236594264",
+          "actions_sha256": "917ff62f3127b2b58eba7de72d9c2dad448b8e3ba727e72534324987bc5dfb55",
+          "resources": {
+            "hp": 116,
+            "max_hp": 400,
+            "gold": 99,
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "deck": [
+              {
+                "id": "ASCENDERS_BANE",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              }
+            ],
+            "relics": [
+              {
+                "id": "BURNING_BLOOD",
+                "counter": 0
+              },
+              {
+                "id": "NECRONOMICON",
+                "counter": 0
+              },
+              {
+                "id": "LANTERN",
+                "counter": 0
+              }
+            ],
+            "potions": [
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 0
+              },
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 1
+              }
+            ]
+          },
+          "rng": {
+            "ai": {
+              "counter": 42,
+              "seed0": 3043242157955333528,
+              "seed1": 813094423106751691
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 17202878666799960537,
+              "seed1": 15738037314014447020
+            },
+            "card": {
+              "counter": 9,
+              "seed0": 9839138514837118474,
+              "seed1": 14337726091597364947
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 17624756652269447394,
+              "seed1": 6278680684921016432
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "misc": {
+              "counter": 2,
+              "seed0": 13009787859726899519,
+              "seed1": 12119583099063265806
+            },
+            "monster_hp": {
+              "counter": 13,
+              "seed0": 8777280765620843298,
+              "seed1": 14996767222351754550
+            },
+            "monster": {
+              "counter": 71,
+              "seed0": 4707241891528526889,
+              "seed1": 2997423820717640009
+            },
+            "neow": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "potion": {
+              "counter": 1,
+              "seed0": 14976981038293813066,
+              "seed1": 10320419702153198867
+            },
+            "relic": {
+              "counter": 6,
+              "seed0": 1296900914265655629,
+              "seed1": 7303342918180489094
+            },
+            "shuffle": {
+              "counter": 8,
+              "seed0": 18127670311248319303,
+              "seed1": 17191998744212418935
+            },
+            "treasure": {
+              "counter": 1,
+              "seed0": 14976981038293813066,
+              "seed1": 10320419702153198867
+            }
+          },
+          "terminal": false
+        },
+        {
+          "observation_sha256": "0138a700a73e58557b39bd90bf6bb55b13bdd568bb7df6ad69836195bc65b738",
+          "actions_sha256": "510b0eeb0c9784c6149792af1b6411b6066db0c455fbcd5657a62786c506ee94",
+          "resources": {
+            "hp": 116,
+            "max_hp": 400,
+            "gold": 99,
+            "ruby_key": false,
+            "emerald_key": true,
+            "sapphire_key": false,
+            "deck": [
+              {
+                "id": "ASCENDERS_BANE",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "BLUDGEON",
+                "upgrades": 0,
+                "special_data": 0
+              }
+            ],
+            "relics": [
+              {
+                "id": "BURNING_BLOOD",
+                "counter": 0
+              },
+              {
+                "id": "NECRONOMICON",
+                "counter": 0
+              },
+              {
+                "id": "LANTERN",
+                "counter": 0
+              }
+            ],
+            "potions": [
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 0
+              },
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 1
+              }
+            ]
+          },
+          "rng": {
+            "ai": {
+              "counter": 42,
+              "seed0": 3043242157955333528,
+              "seed1": 813094423106751691
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 17202878666799960537,
+              "seed1": 15738037314014447020
+            },
+            "card": {
+              "counter": 9,
+              "seed0": 9839138514837118474,
+              "seed1": 14337726091597364947
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 17624756652269447394,
+              "seed1": 6278680684921016432
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 6227493315951396386,
+              "seed1": 14976981038293813066
+            },
+            "misc": {
+              "counter": 2,
+              "seed0": 13009787859726899519,
+              "seed1": 12119583099063265806
+            },
+            "monster_hp": {
+              "counter": 13,
+              "seed0": 8777280765620843298,
+              "seed1": 14996767222351754550
+            },
+            "monster": {
+              "counter": 71,
+              "seed0": 4707241891528526889,
+              "seed1": 2997423820717640009
+            },
+            "neow": {
+              "counter": 5,
+              "seed0": 2219763158006849939,
+              "seed1": 1296900914265655629
+            },
+            "potion": {
+              "counter": 1,
+              "seed0": 14976981038293813066,
+              "seed1": 10320419702153198867
+            },
+            "relic": {
+              "counter": 6,
+              "seed0": 1296900914265655629,
+              "seed1": 7303342918180489094
+            },
+            "shuffle": {
+              "counter": 8,
+              "seed0": 18127670311248319303,
+              "seed1": 17191998744212418935
+            },
+            "treasure": {
+              "counter": 1,
+              "seed0": 14976981038293813066,
+              "seed1": 10320419702153198867
+            }
+          },
+          "terminal": false
+        }
+      ],
+      "status": "GREEN_KEY_ACQUIRED"
+    },
+    {
+      "seed": 131200363,
+      "initial": {
+        "run_state": {
+          "seed": 131200363,
+          "math_seed": 130302466,
+          "event_start_context": {
+            "note_card": "IRON_WAVE",
+            "portal_eligible": true
+          },
+          "ascension": 20,
+          "act": 2,
+          "floor": 23,
+          "monster_list_offset": 0,
+          "elite_monster_list_offset": 0,
+          "second_boss": 0,
+          "map": "\n           /    | \\        \n14        R     R  R       \n          |   / |/         \n13        M  E  ?          \n        /    |/ | \\        \n12     R     ?  M  ?       \n         \\   | \\| \\|       \n11        M  ?  R  E       \n        /  /    |  | \\     \n10     M  E     $  ?  $    \n       |  |   /    |    \\  \n9      E  M  ?     M     M \n         \\|/     /       | \n8         T     T        T \n          | \\ /          | \n7         M  ?           M \n        / |/ |           | \n6      E  M  E           R \n       |/ |/           /   \n5      R  R           ?    \n       | \\  \\       /      \n4      M  M  ?     M       \n         \\  \\  \\ /         \n3         M  ?  M          \n            \\|/ | \\        \n2            ?  M  $       \n           / |  |/         \n1         M  M  M          \n        /  /    |          \n0      M  M     M          ",
+          "burning_elite_x": 5,
+          "burning_elite_y": 5,
+          "burning_elite_buff": 2
+        },
+        "rng": {
+          "ai": {
+            "counter": 0,
+            "seed0": 5713901887402208154,
+            "seed1": 6431377736325951956
+          },
+          "card_random": {
+            "counter": 0,
+            "seed0": 5713901887402208154,
+            "seed1": 6431377736325951956
+          },
+          "card": {
+            "counter": 0,
+            "seed0": 483722054160856493,
+            "seed1": 227647255439716359
+          },
+          "event": {
+            "counter": 0,
+            "seed0": 483722054160856493,
+            "seed1": 227647255439716359
+          },
+          "math_util": {
+            "counter": 0,
+            "seed0": 14242785405947917596,
+            "seed1": 2149952973282836292
+          },
+          "merchant": {
+            "counter": 0,
+            "seed0": 483722054160856493,
+            "seed1": 227647255439716359
+          },
+          "misc": {
+            "counter": 0,
+            "seed0": 5713901887402208154,
+            "seed1": 6431377736325951956
+          },
+          "monster_hp": {
+            "counter": 0,
+            "seed0": 5713901887402208154,
+            "seed1": 6431377736325951956
+          },
+          "monster": {
+            "counter": 83,
+            "seed0": 13288209421434162346,
+            "seed1": 7365595772506032735
+          },
+          "neow": {
+            "counter": 5,
+            "seed0": 12033621825757217475,
+            "seed1": 11037954408547456272
+          },
+          "potion": {
+            "counter": 0,
+            "seed0": 483722054160856493,
+            "seed1": 227647255439716359
+          },
+          "relic": {
+            "counter": 5,
+            "seed0": 12033621825757217475,
+            "seed1": 11037954408547456272
+          },
+          "shuffle": {
+            "counter": 0,
+            "seed0": 5713901887402208154,
+            "seed1": 6431377736325951956
+          },
+          "treasure": {
+            "counter": 0,
+            "seed0": 483722054160856493,
+            "seed1": 227647255439716359
+          }
+        },
+        "derived_rng": {
+          "map": {
+            "algorithm": "sts.RandomXS128/Map.fromSeed:v1",
+            "base_seed": 131200363,
+            "derived_seed": 131200563,
+            "act": 2,
+            "ascension": 20,
+            "assign_burning_elite": true
+          }
+        },
+        "ordered_pools": {
+          "events": [
+            10,
+            43,
+            14,
+            23,
+            25,
+            56,
+            28,
+            29,
+            33,
+            39,
+            42
+          ],
+          "shrines": [
+            31,
+            24,
+            50,
+            38,
+            51,
+            54
+          ],
+          "special_one_time_events": [
+            6,
+            11,
+            15,
+            17,
+            18,
+            21,
+            26,
+            27,
+            36,
+            40,
+            44,
+            53,
+            48
+          ],
+          "common_relics": [
+            174,
+            167,
+            0,
+            97,
+            91,
+            175,
+            90,
+            159,
+            171,
+            169,
+            52,
+            93,
+            163,
+            55,
+            44,
+            8,
+            70,
+            89,
+            113,
+            26,
+            148,
+            46,
+            48,
+            76,
+            119,
+            121,
+            144,
+            9,
+            1,
+            92,
+            139,
+            132,
+            149
+          ],
+          "uncommon_relics": [
+            40,
+            34,
+            31,
+            33,
+            170,
+            166,
+            27,
+            151,
+            61,
+            147,
+            141,
+            41,
+            51,
+            142,
+            95,
+            68,
+            60,
+            120,
+            162,
+            176,
+            173,
+            94,
+            96,
+            49,
+            67,
+            4,
+            14,
+            24,
+            87,
+            158
+          ],
+          "rare_relics": [
+            80,
+            11,
+            107,
+            6,
+            7,
+            78,
+            54,
+            77,
+            29,
+            160,
+            2,
+            30,
+            74,
+            36,
+            154,
+            21,
+            109,
+            157,
+            10,
+            35,
+            131,
+            105,
+            177,
+            165,
+            146,
+            15,
+            22,
+            65
+          ],
+          "shop_relics": [
+            20,
+            38,
+            12,
+            99,
+            155,
+            128,
+            66,
+            136,
+            47,
+            73,
+            150,
+            5,
+            25,
+            145,
+            138,
+            161,
+            69
+          ],
+          "boss_relics": [
+            17,
+            102,
+            135,
+            133,
+            140,
+            62,
+            172,
+            57,
+            81,
+            156,
+            58,
+            127,
+            98,
+            100,
+            64,
+            114,
+            56,
+            85,
+            53,
+            59,
+            108,
+            134
+          ],
+          "colorless_cards": [
+            94,
+            281,
+            242,
+            344,
+            121,
+            188,
+            335,
+            36,
+            21,
+            290,
+            100,
+            352,
+            241,
+            291,
+            12,
+            218,
+            177,
+            155,
+            166,
+            131,
+            259,
+            240,
+            343,
+            64,
+            113,
+            150,
+            213,
+            216,
+            173,
+            327,
+            200,
+            223,
+            225,
+            336,
+            212
+          ],
+          "normal_encounters": [
+            2,
+            4,
+            1,
+            12,
+            5,
+            9,
+            11,
+            14,
+            9,
+            5,
+            13,
+            7,
+            5,
+            9,
+            13,
+            5
+          ],
+          "elite_encounters": [
+            17,
+            15,
+            17,
+            15,
+            16,
+            15,
+            17,
+            15,
+            16,
+            17
+          ]
+        },
+        "player_state": {
+          "current_hp": 1,
+          "max_hp": 80,
+          "gold": 99,
+          "potion_count": 0,
+          "potion_capacity": 2,
+          "potions": [
+            1,
+            1
+          ],
+          "relics": [
+            {
+              "id": 86,
+              "data": 0
+            }
+          ],
+          "deck": [
+            {
+              "id": 15,
+              "upgraded": false,
+              "misc": 0
+            },
+            {
+              "id": 104,
+              "upgraded": false,
+              "misc": 0
+            },
+            {
+              "id": 104,
+              "upgraded": false,
+              "misc": 0
+            },
+            {
+              "id": 104,
+              "upgraded": false,
+              "misc": 0
+            },
+            {
+              "id": 104,
+              "upgraded": false,
+              "misc": 0
+            },
+            {
+              "id": 104,
+              "upgraded": false,
+              "misc": 0
+            },
+            {
+              "id": 104,
+              "upgraded": false,
+              "misc": 0
+            },
+            {
+              "id": 104,
+              "upgraded": false,
+              "misc": 0
+            },
+            {
+              "id": 104,
+              "upgraded": false,
+              "misc": 0
+            },
+            {
+              "id": 104,
+              "upgraded": false,
+              "misc": 0
+            },
+            {
+              "id": 104,
+              "upgraded": false,
+              "misc": 0
+            }
+          ],
+          "bottle_indices": [
+            -1,
+            -1,
+            -1
+          ],
+          "blue_key": false,
+          "green_key": false,
+          "red_key": false
+        },
+        "progress_state": {
+          "outcome": 1,
+          "screen_state": 9,
+          "last_room": 9,
+          "current_room": 3,
+          "current_event": 0,
+          "boss": 39,
+          "current_map_x": 5,
+          "current_map_y": 5,
+          "monster_chance": 0.10000000149011612,
+          "shop_chance": 0.029999999329447746,
+          "treasure_chance": 0.019999999552965164,
+          "potion_chance": 0,
+          "card_rarity_factor": 5,
+          "shop_remove_count": 0,
+          "speedrun_pace": false,
+          "screen_continuation_serialized": true
+        },
+        "screen_info": {
+          "screen_state": 9,
+          "complete": true,
+          "encounter": 35
+        },
+        "replay_actions": [],
+        "replay_required": false
+      },
+      "bits": [
+        2147483648
+      ],
+      "expected": [
+        {
+          "observation_sha256": "226aa325309ba08cba7136d22ae1d16135ce5491d63fffe4fe1d050ecfd97e26",
+          "actions_sha256": "72a0dea5d3643a73b6fcac02ddd3f677564c54dbb6af66f6dd01b01da0fc9464",
+          "resources": {
+            "hp": 1,
+            "max_hp": 80,
+            "gold": 99,
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "deck": [
+              {
+                "id": "ASCENDERS_BANE",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "DEFEND_RED",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "DEFEND_RED",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "DEFEND_RED",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "DEFEND_RED",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "DEFEND_RED",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "DEFEND_RED",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "DEFEND_RED",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "DEFEND_RED",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "DEFEND_RED",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "DEFEND_RED",
+                "upgrades": 0,
+                "special_data": 0
+              }
+            ],
+            "relics": [
+              {
+                "id": "BURNING_BLOOD",
+                "counter": 0
+              }
+            ],
+            "potions": [
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 0
+              },
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 1
+              }
+            ]
+          },
+          "rng": {
+            "ai": {
+              "counter": 3,
+              "seed0": 910005297043873413,
+              "seed1": 4784440316538372578
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 5713901887402208154,
+              "seed1": 6431377736325951956
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 483722054160856493,
+              "seed1": 227647255439716359
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 483722054160856493,
+              "seed1": 227647255439716359
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 14242785405947917596,
+              "seed1": 2149952973282836292
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 483722054160856493,
+              "seed1": 227647255439716359
+            },
+            "misc": {
+              "counter": 0,
+              "seed0": 5713901887402208154,
+              "seed1": 6431377736325951956
+            },
+            "monster_hp": {
+              "counter": 4,
+              "seed0": 4784440316538372578,
+              "seed1": 3548970012243016895
+            },
+            "monster": {
+              "counter": 83,
+              "seed0": 13288209421434162346,
+              "seed1": 7365595772506032735
+            },
+            "neow": {
+              "counter": 5,
+              "seed0": 12033621825757217475,
+              "seed1": 11037954408547456272
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 483722054160856493,
+              "seed1": 227647255439716359
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 12033621825757217475,
+              "seed1": 11037954408547456272
+            },
+            "shuffle": {
+              "counter": 1,
+              "seed0": 6431377736325951956,
+              "seed1": 12184332453500591792
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 483722054160856493,
+              "seed1": 227647255439716359
+            }
+          },
+          "terminal": false
+        },
+        {
+          "observation_sha256": "8fae33768491d792ecdcedde41a737b559dde3160bc79b941300a98076b4d3b3",
+          "actions_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "resources": {
+            "hp": 0,
+            "max_hp": 80,
+            "gold": 99,
+            "ruby_key": false,
+            "emerald_key": false,
+            "sapphire_key": false,
+            "deck": [
+              {
+                "id": "ASCENDERS_BANE",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "DEFEND_RED",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "DEFEND_RED",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "DEFEND_RED",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "DEFEND_RED",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "DEFEND_RED",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "DEFEND_RED",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "DEFEND_RED",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "DEFEND_RED",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "DEFEND_RED",
+                "upgrades": 0,
+                "special_data": 0
+              },
+              {
+                "id": "DEFEND_RED",
+                "upgrades": 0,
+                "special_data": 0
+              }
+            ],
+            "relics": [
+              {
+                "id": "BURNING_BLOOD",
+                "counter": 0
+              }
+            ],
+            "potions": [
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 0
+              },
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 1
+              }
+            ]
+          },
+          "rng": {
+            "ai": {
+              "counter": 3,
+              "seed0": 910005297043873413,
+              "seed1": 4784440316538372578
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 5713901887402208154,
+              "seed1": 6431377736325951956
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 483722054160856493,
+              "seed1": 227647255439716359
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 483722054160856493,
+              "seed1": 227647255439716359
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 14242785405947917596,
+              "seed1": 2149952973282836292
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 483722054160856493,
+              "seed1": 227647255439716359
+            },
+            "misc": {
+              "counter": 0,
+              "seed0": 5713901887402208154,
+              "seed1": 6431377736325951956
+            },
+            "monster_hp": {
+              "counter": 4,
+              "seed0": 4784440316538372578,
+              "seed1": 3548970012243016895
+            },
+            "monster": {
+              "counter": 83,
+              "seed0": 13288209421434162346,
+              "seed1": 7365595772506032735
+            },
+            "neow": {
+              "counter": 5,
+              "seed0": 12033621825757217475,
+              "seed1": 11037954408547456272
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 483722054160856493,
+              "seed1": 227647255439716359
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 12033621825757217475,
+              "seed1": 11037954408547456272
+            },
+            "shuffle": {
+              "counter": 1,
+              "seed0": 6431377736325951956,
+              "seed1": 12184332453500591792
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 483722054160856493,
+              "seed1": 227647255439716359
+            }
+          },
+          "terminal": true
+        }
+      ],
+      "status": "GAME_TERMINAL"
+    }
+  ],
+  "scope": "CONDITIONED_ENCOUNTER_AND_PERSISTENT_STREAMS_POOLS_INDEPENDENT_ROOM_CONSTRUCTOR",
+  "training_eligible": false
+}
