@@ -1,5 +1,7 @@
 # 绿钥匙完整动作回放：语义匹配与保留的原始差异
 
+后续四种强化扩展见 [GREEN-EXPANSION.md](GREEN-EXPANSION.md)。本文保留 R2 原始身份和计数。
+
 对 Oracle 1.3.46 的原版 R2 capture 执行 CPU native 回放：胜利案例30动作/31边界、死亡案例1动作/2边界。两个案例的33个边界在所列比较范围内全部匹配，每个边界恢复后执行完整剩余后缀也得到同一最终 native 状态。Gremlin Leader 的原始 battle serializer 仍有27个边界差异，不能写成全状态逐字节匹配或完整A20H认证。
 
 ## 独立构造及明确条件

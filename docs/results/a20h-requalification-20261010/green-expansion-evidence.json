@@ -1,0 +1,200 @@
+{
+  "schema": "sls-green-expansion-evidence-v1",
+  "scope": "CONDITIONED_ENCOUNTER_AND_PERSISTENT_STREAMS_POOLS_INDEPENDENT_ROOM_CONSTRUCTOR",
+  "unqualified_initial_fields": [
+    "encounter_distribution",
+    "persistent_rng_generation",
+    "ordered_pool_generation"
+  ],
+  "native_source_sha256": "6805e8c991ff6e3ca1b57248678babbbc1ea904b6a1a35e17d631c426765dcc0",
+  "runs": [
+    {
+      "seed": 131200372,
+      "status": "ALL_CAPTURED_BOUNDARIES_MATCH",
+      "boundaries": 7,
+      "hp_buff_constructor": null,
+      "full_suffix_restore_matches": 7,
+      "raw_direct_diff_boundaries": 0,
+      "raw_direct_available_boundaries": 5
+    },
+    {
+      "seed": 131200371,
+      "status": "ALL_CAPTURED_BOUNDARIES_MATCH",
+      "boundaries": 9,
+      "hp_buff_constructor": {
+        "native_base_hp": [
+          172
+        ],
+        "independently_expected_hp": [
+          215
+        ],
+        "stock_hp": [
+          215
+        ],
+        "equal": true
+      },
+      "full_suffix_restore_matches": 9,
+      "raw_direct_diff_boundaries": 0,
+      "raw_direct_available_boundaries": 7
+    },
+    {
+      "seed": 131200373,
+      "status": "ALL_CAPTURED_BOUNDARIES_MATCH",
+      "boundaries": 7,
+      "hp_buff_constructor": null,
+      "full_suffix_restore_matches": 7,
+      "raw_direct_diff_boundaries": 0,
+      "raw_direct_available_boundaries": 5
+    }
+  ],
+  "training_gate": "NOT_QUALIFIED",
+  "training_eligible": false,
+  "natural_trajectory": false,
+  "files": [
+    {
+      "path": "local/build/oracle/green-key-r3.build.json",
+      "bytes": 19610,
+      "sha256": "88bb8cefae271aba9021ac30989d0d41cf1bcc027c49ea28a23f557f08f0cfac"
+    },
+    {
+      "path": "local/build/oracle/green-key-r3.jar",
+      "bytes": 186661,
+      "sha256": "5028e598b60717533d13529a1dbcd9d9c358fe6470f601330c2411036b40b20a"
+    },
+    {
+      "path": "local/build/probe-burning-map-range-r1.exe",
+      "bytes": 868352,
+      "sha256": "6d624402ef614e6fc5e39c42964a9ca7d8dc713038b320e5aea28ac3d9f6dacf"
+    },
+    {
+      "path": "local/generate_green_expansion.py",
+      "bytes": 1626,
+      "sha256": "05b450a4c99c87bac4316326d9acd5f4ba2ef330977b4af28277900b592f1fe2"
+    },
+    {
+      "path": "local/generate_green_expansion_regression.py",
+      "bytes": 2200,
+      "sha256": "288924e019e54d58fd23bab4d8d981a70a8954e9f6e4b7b7a1f9d6ed065691de"
+    },
+    {
+      "path": "local/package_green_expansion.py",
+      "bytes": 3434,
+      "sha256": "e358b518f5d834fd9bc50c83084163997685a5a1d88acd39c3b8226885e56b0d"
+    },
+    {
+      "path": "local/reports/green-expansion-20261010/cpu-tests-r1.txt",
+      "bytes": 4033,
+      "sha256": "4f276cfccca66023b87b7ed3194bf166b66881017d090ab2b2bcde048b8fe1ff"
+    },
+    {
+      "path": "local/reports/green-expansion-20261010/legacy-r2-replay-r1.json",
+      "bytes": 3271113,
+      "sha256": "981a8057ce18e5075e26cfc0cd06e4241531ba205a68df4e1ccea288addc26a9"
+    },
+    {
+      "path": "local/reports/green-expansion-20261010/native-map-r1.json",
+      "bytes": 5320,
+      "sha256": "051c582685c7c90abc2ccaf01e9eb33f3838b29d0ed6862baad53f204d5fd0a7"
+    },
+    {
+      "path": "local/reports/green-expansion-20261010/native-replay-r1.json",
+      "bytes": 1866929,
+      "sha256": "efca30ba5258894287d42e3fc728761b30df8489ab17fe4b56bc6c94b183ee71"
+    },
+    {
+      "path": "local/reports/green-expansion-20261010/native-seed-selection-r1.json",
+      "bytes": 4532,
+      "sha256": "d254884b1bd3718fd57f7918561470684014897e475868019160b02514a029e2"
+    },
+    {
+      "path": "local/reports/green-expansion-20261010/production-r47.json",
+      "bytes": 56605,
+      "sha256": "f3f60b27955624b460ec67765f5fea50990417131bb0fa624320f192eebc6cc8"
+    },
+    {
+      "path": "local/reports/green-expansion-20261010/production-r47.launch.json",
+      "bytes": 433,
+      "sha256": "04085917acf5d1a7a27192200a84bd7e2eb0af5bfeb8cb5e4ad1a9ea35d0c769"
+    },
+    {
+      "path": "local/reports/green-expansion-20261010/protection-r1.json",
+      "bytes": 6384,
+      "sha256": "d89b7a352a31fa154938092d54cad545e9e4c5179e62007dd45debbc91b86aae"
+    },
+    {
+      "path": "local/reports/green-expansion-20261010/stock-audit-r1.json",
+      "bytes": 2799,
+      "sha256": "6a966e4ea114b023421333a2cd4af69e4bbaf55a047150bff8ef4552a2c2d10d"
+    },
+    {
+      "path": "local/reports/green-expansion-20261010/stock-combat-r1.json",
+      "bytes": 2199782,
+      "sha256": "f21e12b12e57388f2862f8bd37c95a8e0fb63d731fac0e4c41acaf039120b859"
+    },
+    {
+      "path": "local/reports/green-expansion-20261010/stock-combat-r1.launch.json",
+      "bytes": 430,
+      "sha256": "092b54fed25056862c86e7af2c0a29a05185cae4554610e4061a62817a5fafe1"
+    },
+    {
+      "path": "local/runs/oracle-qualification/runtime-backups/20261010T090853.469258Z/journal.json",
+      "bytes": 28205,
+      "sha256": "977bb6c1fe792064b398fca1488b26ddfd980131c7e691db91457cf347c4245f"
+    },
+    {
+      "path": "local/runs/oracle-qualification/runtime-backups/20261010T090932.591433Z/journal.json",
+      "bytes": 28205,
+      "sha256": "3aa6c830813770cc2a85dacdaabf4fd1cba898ad40fc165ae63e8b5d2a74106b"
+    },
+    {
+      "path": "local/seal_green_expansion_map.py",
+      "bytes": 1478,
+      "sha256": "d3f887fba0f7a890529554638ebc20f8ccf4b160ad2b362a6bbfcf3dff5f33e0"
+    },
+    {
+      "path": "native/oracle/resources/spirecomm/parity/fullrun-green-key-r3.json",
+      "bytes": 4799,
+      "sha256": "36e8f3e1b7866576ca018b6480c1e4e4cf7acb3271d1adeaaefc296e90a5b648"
+    },
+    {
+      "path": "tests/fixtures/regressions/green-key-stock-r3.json",
+      "bytes": 147194,
+      "sha256": "a6a3d60bbe22b7f3595de500539e533eafb7d5caff5d66dbb685fdee05d7ad06"
+    },
+    {
+      "path": "tests/simulator/test_green_stock_replay.py",
+      "bytes": 2390,
+      "sha256": "c7896639a61930ade540324bad9b85e09e5c635795b97abbb7850933c74f123c"
+    },
+    {
+      "path": "tools/capture_green_key_batch.py",
+      "bytes": 7049,
+      "sha256": "3f34e9c90e82e78c31ec4e0ace90bad0b5b4d1b14cdec058b6ccfa122327cc2d"
+    },
+    {
+      "path": "tools/probe_burning_map_range.cpp",
+      "bytes": 1582,
+      "sha256": "65d2e7b07b5f5aca8149f990a2c43722a55f3167c9772f3305f16af0c0d02d38"
+    },
+    {
+      "path": "tools/replay_green_key_archive.py",
+      "bytes": 15168,
+      "sha256": "f83c8afac5e575896e7cf002239b765dbc2eab6b9d25ddbc0d157da23dffac41"
+    },
+    {
+      "path": "tools/run_green_key_batch.py",
+      "bytes": 4898,
+      "sha256": "d47cd4c96e74da35b51635e18c11b2c45c981032d1c4534e851cd390e111ad4f"
+    }
+  ],
+  "bundle": {
+    "path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\green-expansion-20261010-delivery-r1.zip",
+    "sha256": "75adc99157daa262791562ea37fc3b6cda0ee1647dca84a03f90c12f37c84998"
+  },
+  "verification": {
+    "full_cpu_passed": 1633,
+    "skipped": 2,
+    "warnings": 4,
+    "ruff": "PASS"
+  }
+}
