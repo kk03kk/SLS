@@ -5,9 +5,17 @@ from __future__ import annotations
 from collections.abc import Mapping
 from dataclasses import dataclass, field, fields, is_dataclass
 from enum import Enum
+from functools import lru_cache
 from typing import Any
 
 OBSERVATION_SCHEMA_VERSION = 2
+
+# Reused by every recursive validation call; contains no observation values.
+_FORBIDDEN_PUBLIC_FIELDS = frozenset({
+    "seed", "math_seed", "rng", "rng_state", "rng_counter", "internal",
+    "future_events", "encounter_queue", "unrevealed_rewards", "backend_action",
+    "action_bits", "simulator_state",
+})
 
 
 class ScreenType(str, Enum):
@@ -161,13 +169,19 @@ def validate_policy_observation(value: Mapping[str, Any]) -> None:
     _assert_public_tree(value)
 
 
+@lru_cache(maxsize=128)
+def _dataclass_fields(cls: type):
+    """Cache type metadata only; observation values are always read afresh."""
+    return fields(cls)
+
+
 def _json_value(value: Any) -> Any:
     if isinstance(value, Enum):
         return value.value
     if is_dataclass(value):
         return {
             item.name: _json_value(getattr(value, item.name))
-            for item in fields(value)
+            for item in _dataclass_fields(value if isinstance(value, type) else type(value))
         }
     if isinstance(value, tuple):
         # Property tuples are represented as JSON objects.
@@ -182,15 +196,10 @@ def _json_value(value: Any) -> Any:
 
 
 def _assert_public_tree(value: Any, path: str = "observation") -> None:
-    forbidden = {
-        "seed", "math_seed", "rng", "rng_state", "rng_counter", "internal",
-        "future_events", "encounter_queue", "unrevealed_rewards", "backend_action",
-        "action_bits", "simulator_state",
-    }
     if isinstance(value, Mapping):
         for key, item in value.items():
             normalized = str(key).lower().lstrip("_")
-            if normalized in forbidden or normalized.startswith("rng_"):
+            if normalized in _FORBIDDEN_PUBLIC_FIELDS or normalized.startswith("rng_"):
                 raise ValueError(f"hidden field is forbidden at {path}.{key}")
             _assert_public_tree(item, f"{path}.{key}")
     elif isinstance(value, (tuple, list)):
