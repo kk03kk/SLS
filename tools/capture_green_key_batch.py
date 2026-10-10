@@ -20,9 +20,12 @@ from tools.run_key_room_batch import root_path
 
 
 def choose(decision, strategy):
-    if strategy == 'PLAY_ATTACKS_THEN_END':
+    if strategy in {'PLAY_ATTACKS_THEN_END', 'PLAY_MAX_HP_TARGET_THEN_END'}:
         attacks = [action for action in decision.actions if action.kind is ActionKind.PLAY_CARD]
         if attacks:
+            if strategy == 'PLAY_MAX_HP_TARGET_THEN_END':
+                health = {enemy.instance_id:enemy.max_hp for enemy in decision.observation.enemies}
+                return max(attacks, key=lambda action: health.get(action.target_id, -1))
             return attacks[0]
     ends = [action for action in decision.actions if action.kind is ActionKind.END_TURN]
     if len(ends) != 1:
@@ -33,7 +36,7 @@ def choose(decision, strategy):
 def initial_ready(payload):
     direct = payload.get('_stock_direct', {})
     return (direct.get('act') == 2 and direct.get('current_node_has_emerald_key') is True
-            and payload.get('_parity_scenario', {}).get('corpus') == 'fullrun-green-key-r2'
+            and payload.get('_parity_scenario', {}).get('corpus') in {'fullrun-green-key-r2', 'fullrun-green-key-r3'}
             and direct.get('turn') == 1
             and direct.get('monsters') and all(m['next_move'] >= 0 for m in direct['monsters'])
             and (payload.get('game_state', {}).get('combat_state', {}).get('hand'))

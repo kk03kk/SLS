@@ -14,13 +14,14 @@ from tools.verify_oracle import inspect, runtime_smoke
 
 
 def validate(manifest):
-    if (manifest.get('schema') not in {'sls-green-key-scenes-v1', 'sls-green-key-scenes-v2'}
+    if (manifest.get('schema') not in {'sls-green-key-scenes-v1', 'sls-green-key-scenes-v2', 'sls-green-key-scenes-v3'}
             or manifest.get('map_node_policy') != 'ROOT_REACHABLE_STOCK_BURNING_ELITE'
             or manifest.get('room_rng_policy') != 'STOCK_SEED_PLUS_DERIVED_FLOOR_FIVE_STREAMS'
             or manifest.get('natural_trajectory') is not False
             or manifest.get('training_eligible') is not False):
         raise ValueError('undeclared controlled green corpus')
-    v2 = manifest['schema'] == 'sls-green-key-scenes-v2'
+    v3 = manifest['schema'] == 'sls-green-key-scenes-v3'
+    v2 = manifest['schema'] in {'sls-green-key-scenes-v2', 'sls-green-key-scenes-v3'}
     if v2 and manifest.get('entry_policy') != 'STOCK_ROOM_ON_ENTRY_AND_PRE_BATTLE_PREP':
         raise ValueError('undeclared actual stock combat entry')
     seeds, identifiers = [], []
@@ -30,13 +31,14 @@ def validate(manifest):
                 or scene.get('floor_policy') != 'ACT2_MAP_Y_PLUS_18'
                 or 'floor' in scene or not 0 < initial['hp'] <= initial['max_hp'] <= 1000
                 or initial['emerald_key'] or initial['final_act_available'] is not True
-                or scene['strategy'] not in {'PLAY_ATTACKS_THEN_END', 'END_TURN_ONLY'}
+                or scene['strategy'] not in {'PLAY_ATTACKS_THEN_END', 'END_TURN_ONLY', 'PLAY_MAX_HP_TARGET_THEN_END'}
                 or not 1 <= scene['max_decisions'] <= 256):
             raise ValueError('unsupported green initial state or strategy')
         seeds.extend(scene['seeds'])
         identifiers.append(scene['id'])
     if (not seeds or len(seeds) != len(set(seeds)) or len(identifiers) != len(set(identifiers))
-            or any(type(seed) is not int or not (131200362 <= seed < 131200364 if v2
+            or any(type(seed) is not int or not (131200370 <= seed < 131200402 if v3 else
+                                               131200362 <= seed < 131200364 if v2
                                                else 131200360 <= seed < 131200362) for seed in seeds)):
         raise ValueError('green seed namespace collision or invalid selection')
 
@@ -51,7 +53,7 @@ def main():
         raise FileExistsError('refuse to overwrite capture')
     manifest = json.loads(args.manifest.read_text())
     validate(manifest)
-    if manifest['schema'] != 'sls-green-key-scenes-v2':
+    if manifest['schema'] not in {'sls-green-key-scenes-v2', 'sls-green-key-scenes-v3'}:
         raise ValueError('R1 is retained prototype evidence; new execution requires R2')
     report = inspect(args.oracle)
     member = 'spirecomm/parity/' + args.manifest.name
@@ -65,7 +67,7 @@ def main():
     required = {'dungeons.AbstractDungeon', 'rooms.MonsterRoom', 'rooms.MonsterRoomElite',
                 'rooms.AbstractRoom', 'rewards.RewardItem', 'vfx.ObtainKeyEffect',
                 'map.MapRoomNode', 'dungeons.TheCity'}
-    if manifest['schema'] == 'sls-green-key-scenes-v2':
+    if manifest['schema'] in {'sls-green-key-scenes-v2', 'sls-green-key-scenes-v3'}:
         required.add('characters.AbstractPlayer')
     if set(manifest['source_evidence']) != {'com.megacrit.cardcrawl.' + name for name in required}:
         raise ValueError('missing green source evidence')

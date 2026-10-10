@@ -11,13 +11,14 @@ from sls.curriculum import IRONCLAD_A20_HEART
 from tools.replay_green_key_archive import active_resources, stock_bottom_order
 
 FIXTURE = json.loads((Path(__file__).parents[1] / 'fixtures/regressions/green-key-stock-r2.json').read_text())
+EXPANDED = json.loads((Path(__file__).parents[1] / 'fixtures/regressions/green-key-stock-r3.json').read_text())
 
 
 def digest(value):
     return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
 
 
-@pytest.mark.parametrize('case', FIXTURE['cases'], ids=lambda c: str(c['seed']))
+@pytest.mark.parametrize('case', FIXTURE['cases'] + EXPANDED['cases'], ids=lambda c: str(c['seed']))
 def test_real_stock_green_trace_public_state_rng_and_full_suffix_restore(case):
     assert FIXTURE['training_eligible'] is False
     run = native.LightspeedRunState()

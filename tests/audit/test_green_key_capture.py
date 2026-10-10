@@ -80,3 +80,29 @@ def test_entry_wait_rejects_old_idle_manager_and_empty_hand(monkeypatch):
     assert not capture_green_key_batch.initial_ready(raw)
     raw['game_state']['combat_state']['hand'] = [{'id': 'Bludgeon'}]
     assert capture_green_key_batch.initial_ready(raw)
+
+
+def test_expanded_manifest_namespace_is_disjoint_and_does_not_inject_buff():
+    folder = ROOT / 'native/oracle/resources/spirecomm/parity'
+    path = folder / 'fullrun-green-key-r3.json'
+    manifest = json.loads(path.read_text())
+    validate(manifest)
+    seeds = {seed for s in manifest['scenes'] for seed in s['seeds']}
+    assert seeds == {131200371,131200372,131200373}
+    assert all('buff' not in s and 'encounter' not in s for s in manifest['scenes'])
+    for other in folder.glob('*.json'):
+        if other != path:
+            content = json.loads(other.read_text())
+            assert not seeds.intersection(seed for s in content.get('scenes', []) for seed in s.get('seeds', []))
+
+
+def test_max_hp_target_rule_reads_public_enemies_and_selects_a_legal_action():
+    small = SimpleNamespace(kind=ActionKind.PLAY_CARD, target_id='MONSTER:0')
+    big = SimpleNamespace(kind=ActionKind.PLAY_CARD, target_id='MONSTER:1')
+    end = SimpleNamespace(kind=ActionKind.END_TURN)
+    observation = SimpleNamespace(enemies=[SimpleNamespace(instance_id='MONSTER:0',max_hp=15),
+                                           SimpleNamespace(instance_id='MONSTER:1',max_hp=151)])
+    decision = SimpleNamespace(actions=[small,big,end], observation=observation)
+    assert choose(decision, 'PLAY_MAX_HP_TARGET_THEN_END') is big
+    decision.actions = [small,end]
+    assert choose(decision, 'PLAY_MAX_HP_TARGET_THEN_END') is small

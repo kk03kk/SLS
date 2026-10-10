@@ -16,6 +16,7 @@ from sls.content.normalize import (
     normalize_card_id,
     normalize_content_id,
     normalize_monster_id,
+    normalize_potion_id,
 )
 from sls.curriculum import IRONCLAD_A20_HEART
 from tools.audit_green_key_capture import audit
@@ -38,22 +39,22 @@ def stock_bottom_order(cards):
     return list(reversed(cards))
 
 
-def reward_projection(stock, state, cards, relics):
+def reward_projection(stock, state, cards, relics, potions):
     rows = stock['_stock_reward_state']['screen_rewards']
-    if any(r['done'] or r['ignored'] or r['type'] not in {'GOLD', 'RELIC', 'CARD', 'EMERALD_KEY'} for r in rows):
+    if any(r['done'] or r['ignored'] or r['type'] not in {'GOLD', 'RELIC', 'CARD', 'EMERALD_KEY', 'POTION'} for r in rows):
         raise ValueError('unsupported stock reward boundary in frozen green corpus')
     expected = dict(gold=[r['gold'] + r['bonus_gold'] for r in rows if r['type'] == 'GOLD'],
                     relics=[normalize_content_id(r['relic']) for r in rows if r['type'] == 'RELIC'],
                     card_rewards=[[dict(id=normalize_card_id(c['id']), upgraded=bool(c['upgrades']), misc=c['misc'])
                                    for c in r['cards']] for r in rows if r['type'] == 'CARD'],
-                    potions=[], emerald_key=any(r['type'] == 'EMERALD_KEY' for r in rows), sapphire_key=False)
+                    potions=[normalize_potion_id(r['potion']) for r in rows if r['type'] == 'POTION'],
+                    emerald_key=any(r['type'] == 'EMERALD_KEY' for r in rows), sapphire_key=False)
     rewards = copy.deepcopy(state['screen_info']['rewards'])
     rewards['relics'] = [relics[r] for r in rewards['relics']]
     for group in rewards['card_rewards']:
         for card in group:
             card['id'] = cards[card['id']]
-    if rewards['potions']:
-        raise ValueError('unexpected native potion reward in frozen green corpus')
+    rewards['potions'] = [potions[p] for p in rewards['potions']]
     return differences(expected, rewards)
 
 
@@ -124,10 +125,20 @@ def main():
     for name, digest in maps['inputs'].items():
         if hashlib.sha256((ROOT / name).read_bytes()).hexdigest() != digest:
             raise ValueError('map constructor source differs from measured probe')
-    executable = ROOT / 'local/build/probe-green-map-r1.exe'
+    expanded = maps.get('producer') == 'sls-burning-map-range-v1'
+    executable = ROOT / ('local/build/probe-burning-map-range-r1.exe' if expanded
+                         else 'local/build/probe-green-map-r1.exe')
+    command = [str(executable), '131200370', '32'] if expanded else [str(executable)]
+    produced = json.loads(subprocess.check_output(command, timeout=30))
+    expected_produced = maps['scan'] if expanded else maps['native']
     if (hashlib.sha256(executable.read_bytes()).hexdigest() != maps['executable_sha256']
-            or json.loads(subprocess.check_output([str(executable)])) != maps['native']):
+            or produced != expected_produced):
         raise ValueError('map constructor executable identity or output mismatch')
+    if expanded:
+        by_seed = {r['seed']:r for r in produced}
+        selected = [{k:by_seed[r['seed']][k] for k in ('seed','x','y','buff')} for r in maps['native']]
+        if selected != maps['native']:
+            raise ValueError('map constructor selection differs from measured range')
     from sls.backends.simulator import SimulatorBackend, native
     from sls.rl.training_contract import native_source_digest
     if native.NATIVE_SOURCE_SHA256 != native_source_digest():
@@ -138,12 +149,24 @@ def main():
     include = ROOT / 'native/simulator/include/constants'
     cards = {v:k for k,v in enum_ids(include / 'Cards.h', 'enum class CardId : std::uint16_t {').items()}
     relics = {v:k for k,v in enum_ids(include / 'Relics.h', 'enum class RelicId : std::uint8_t {').items()}
+    potions = {v:k for k,v in enum_ids(include / 'Potions.h', 'enum class Potion : std::uint8_t {').items()}
     for row in capture['runs']:
         run, initial, encounter = construct(row, map_rows[row['seed']], native)
         backend = SimulatorBackend(profile=IRONCLAD_A20_HEART)
         result = dict(seed=row['seed'], encounter=encounter, initial=initial, boundaries=[],
                       first_divergence=None, status='IN_PROGRESS')
         results.append(result)
+        if map_rows[row['seed']]['buff'] == 1:
+            # Independent native no-buff constructor, with identical RNG and
+            # scene inputs. Never derive baseHP by undoing observed stockHP.
+            unbuffed, _, _ = construct(row, dict(map_rows[row['seed']], buff=-1), native)
+            base = unbuffed.snapshot()['public_combat']['monsters']
+            stock_monsters = row['boundaries'][0]['_stock_direct']['monsters']
+            expected_hp = [m['max_hp'] + (m['max_hp'] + 2) // 4 for m in base]
+            actual_hp = [m['max_hp'] for m in stock_monsters]
+            result['hp_buff_constructor'] = dict(native_base_hp=[m['max_hp'] for m in base],
+                                                 independently_expected_hp=expected_hp,
+                                                 stock_hp=actual_hp, equal=expected_hp == actual_hp)
         previous_observation = None
         for index, stock in enumerate(row['boundaries']):
             current = run.snapshot()
@@ -156,6 +179,9 @@ def main():
                           resources=differences(stock_resources(stock), active_resources(current)),
                           rng=differences(stock['_rng'], rng))
             checks['terminal'] = differences(original.terminal, decision.terminal)
+            if index == 0 and 'hp_buff_constructor' in result:
+                hp = result['hp_buff_constructor']
+                checks['hp_constructor'] = differences(hp['independently_expected_hp'], hp['stock_hp'])
             if previous_observation is not None:
                 transition = backend._transition_from_raw(previous_observation, current)
                 checks['transition_info'] = differences(row['actions'][index - 1]['info'],
@@ -166,7 +192,7 @@ def main():
                 {name:[relics[v] for v in current['ordered_pools'][name]] for name in
                  stock['_stock_direct']['ordered_relic_pools']})
             if current['progress_state']['screen_state'] == 2 and not decision.terminal:
-                checks['rewards'] = reward_projection(stock, current, cards, relics)
+                checks['rewards'] = reward_projection(stock, current, cards, relics, potions)
             restored = native.LightspeedRunState()
             restored.load_state(current)
             boundary = dict(index=index, differences=checks, checkpoint_restored_equal=restored.snapshot() == current,

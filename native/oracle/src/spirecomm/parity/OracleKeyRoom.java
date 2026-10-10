@@ -43,10 +43,12 @@ public final class OracleKeyRoom {
         if (!("fullrun-key-acquisition-r1".equals(corpus)
                 || "fullrun-key-acquisition-r2".equals(corpus)
                 || "fullrun-green-key-r1".equals(corpus)
-                || "fullrun-green-key-r2".equals(corpus))) {
+                || "fullrun-green-key-r2".equals(corpus)
+                || "fullrun-green-key-r3".equals(corpus))) {
             throw new IllegalArgumentException("undeclared key room corpus");
         }
-        boolean stockCombatFixture = "fullrun-green-key-r2".equals(corpus);
+        boolean expandedGreenFixture = "fullrun-green-key-r3".equals(corpus);
+        boolean stockCombatFixture = "fullrun-green-key-r2".equals(corpus) || expandedGreenFixture;
         boolean greenFixture = "fullrun-green-key-r1".equals(corpus) || stockCombatFixture;
         boolean reachableFixture = "fullrun-key-acquisition-r2".equals(corpus) || greenFixture;
         InputStream resource = OracleKeyRoom.class.getResourceAsStream(
@@ -59,7 +61,8 @@ public final class OracleKeyRoom {
             throw new IllegalStateException("cannot read frozen key room resource", error);
         }
         Map<String, Object> scene = null;
-        String schema = stockCombatFixture ? "sls-green-key-scenes-v2" : greenFixture ? "sls-green-key-scenes-v1"
+        String schema = expandedGreenFixture ? "sls-green-key-scenes-v3"
+            : stockCombatFixture ? "sls-green-key-scenes-v2" : greenFixture ? "sls-green-key-scenes-v1"
             : reachableFixture ? "sls-key-room-scenes-v2" : "sls-key-room-scenes-v1";
         if (!schema.equals(manifest.get("schema")) || (reachableFixture
                 && (!(greenFixture ? "ROOT_REACHABLE_STOCK_BURNING_ELITE" : "FIRST_ROOT_REACHABLE_ROOM").equals(manifest.get("map_node_policy"))
