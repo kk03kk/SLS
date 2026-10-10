@@ -1,6 +1,7 @@
 """Independent stopped-run evidence checks; never restore a training process."""
 from __future__ import annotations
 
+import gzip
 import hashlib
 import json
 import math
@@ -53,7 +54,14 @@ def extract_archive(archive: Path, destination: Path, *, verify_existing=False):
                     target.write(data)
             inventory.append({"name": member.name, "bytes": len(data),
                               "sha256": hashlib.sha256(data).hexdigest()})
-    return {"sha256": sha(archive), "files": inventory}
+    # Read through gzip EOF as well as TAR EOF, validating its CRC/trailer.
+    inflated, inflated_hash = 0, hashlib.sha256()
+    with gzip.open(archive, "rb") as stream:
+        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
+            inflated += len(chunk)
+            inflated_hash.update(chunk)
+    return {"sha256": sha(archive), "uncompressed_tar_bytes": inflated,
+            "uncompressed_tar_sha256": inflated_hash.hexdigest(), "files": inventory}
 
 
 def paired_binary(reference, candidate, key):
