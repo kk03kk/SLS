@@ -117,6 +117,10 @@ def summarize(corpus, comparison, returns, output):
                                "unfinished": sum(not r["complete"] for r in rows),
                                "reasons": dict(Counter(r["reason"] for r in rows)),
                                "complete_return_mean": average([r["shaped_return"] for r in rows if r["complete"]])}
+    boss_states = {state: models for state, models in by_state.items()
+                   if next(iter(models.values()))["stratum"].startswith("act2:COMBAT:") and
+                   any(boss in next(iter(models.values()))["stratum"] for boss in
+                       ("THE_CHAMP", "THE_COLLECTOR", "BRONZE_AUTOMATON"))}
     result = {"schema": "sls-cpu-diagnostic-summary-v1", "corpus_sha256": corpus_hash,
               "comparison_sha256": sha256_file(comparison), "returns_sha256": sha256_file(returns),
               "native_source_sha256": manifest["native_source_sha256"],
@@ -125,6 +129,13 @@ def summarize(corpus, comparison, returns, output):
               "selected_encounters": sorted(selected_bosses),
               "states_by_stratum": dict(Counter(s["stratum"] for s in manifest["states"])),
               "pairwise_by_screen": pairwise, "matched_continuations": continuations,
+              "act2_boss_combat_controls": {
+                  "states": len(boss_states),
+                  "scope": "SAME_STARTING_DECK_RESOURCES_HISTORY_AND_NATIVE_STATE; ACT2_HORIZON_ENDS_AT_BOSS_CLEAR",
+                  "models": {label: {"successes": sum(rows[label]["continuation"]["success"] for rows in boss_states.values()),
+                                     "unfinished": sum(not rows[label]["continuation"]["complete"] for rows in boss_states.values())}
+                             for label in labels},
+                  "state_ids": sorted(boss_states)},
               "jointly_completed_states": sum(all(r["continuation"]["complete"] for r in models.values())
                                                for models in by_state.values()),
               "conditional_success_states": {state: [label for label, row in models.items()

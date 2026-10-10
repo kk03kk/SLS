@@ -217,6 +217,11 @@ def load_models(checkpoints: dict[str, Path]) -> dict:
             "max_episode_steps": config["max_episode_steps"],
             "max_boundary_visits": config["max_boundary_visits"],
             "policy": "GREEDY_NOT_STOCHASTIC_TRAINING"}
+        result[label]["identity"]["training_value_target"] = {
+            "formula": "VALUE_PLUS_GAE_WITH_ROLLOUT_BOUNDARY_BOOTSTRAP",
+            "policy": "STOCHASTIC_TRAINING_POLICY", "gamma": config["gamma"],
+            "gae_lambda": config["gae_lambda"], "rollout_steps": config["rollout_steps"],
+            "trained_profile": result[label]["identity"]["trained_profile"]}
     return result
 
 
@@ -433,6 +438,7 @@ def compare(directory: Path, output: Path, models: dict, runtime: dict, *, max_s
     from sls.backends.simulator import SimulatorBackend
 
     manifest = validated_corpus(directory)
+    environment = identity(runtime)
     if output.exists():
         raise FileExistsError("refuse to overwrite matched-state results")
     groups = defaultdict(dict)
@@ -515,7 +521,7 @@ def compare(directory: Path, output: Path, models: dict, runtime: dict, *, max_s
         entries = [v for v in values if v["model"] == label]
         calibrated[label] = {"samples": len(entries),
                              "mse": statistics.mean((v["prediction"] - v["mc_return"]) ** 2 for v in entries) if entries else None}
-    result = {"schema": COMPARISON_SCHEMA, **identity(runtime),
+    result = {"schema": COMPARISON_SCHEMA, **environment,
               "corpus_sha256": sha256_file(directory / "manifest.json"),
               "models": {k: v["identity"] for k, v in models.items()},
               "max_continuation_decisions": max_steps, "states": results,
