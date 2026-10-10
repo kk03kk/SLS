@@ -179,6 +179,9 @@ def checkpoint_contract_diff(
 
 
 def save_checkpoint(path: str | Path, trainer: PPOTrainer) -> Path:
+    if (getattr(trainer, "episode_initializer", None) is not None or
+            getattr(trainer, "research_hooks", None) is not None) and not getattr(trainer, "_research_checkpoint_envelope", False):
+        raise ValueError("research trainer requires its bank/sampler/history checkpoint envelope")
     if trainer._warmup_ready:
         raise ValueError("cannot checkpoint before completed-trajectory critic update")
     target = Path(path)
@@ -220,6 +223,9 @@ def _load_checkpoint_exact(
     *,
     allowed_contract_changes: frozenset[str] = frozenset(),
 ) -> Mapping[str, Any]:
+    if (getattr(trainer, "episode_initializer", None) is not None or
+            getattr(trainer, "research_hooks", None) is not None) and not getattr(trainer, "_research_checkpoint_envelope", False):
+        raise ValueError("research trainer requires its bank/sampler/history checkpoint envelope")
     # RNG states are CPU ByteTensors even when the trainer runs on CUDA.
     # Loading the whole payload directly onto the trainer device corrupts that
     # contract; model and optimizer loaders already move their own tensors.

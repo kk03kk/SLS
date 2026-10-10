@@ -21,6 +21,7 @@ NATIVE_SOURCE_PATHS = (
     "tools/build_native.py",
 )
 TRAINING_IMPLEMENTATION_PATHS = (
+    "src/sls/research",
     "src/sls/__init__.py", "src/sls/rl", "src/sls/model",
     "src/sls/contracts", "src/sls/curriculum.py",
     "src/sls/backends/__init__.py", "src/sls/backends/protocol.py",

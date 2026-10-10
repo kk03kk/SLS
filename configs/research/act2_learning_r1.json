@@ -1,0 +1,88 @@
+{
+  "protocol": {
+    "schema": "sls-act2-learning-protocol-v1",
+    "base_commit": "ce7713673629f45381da5b195f2fab8dde833505",
+    "native_sha256": "6efbb772958c06d1b9133f374d046d8838eaa256da1a146eaf7e1ee530eefd3d",
+    "parent_sha256": "274963f4fe32b75003c5a1b4ccd394b5185304156e6ea22a76aee2764d54f1e0",
+    "updates": 128,
+    "warmup_updates": 32,
+    "workers": 64,
+    "shards": 16,
+    "rollout_steps": 256,
+    "student_decisions": 2097152,
+    "curriculum_episode_probability": 0.25,
+    "ranges": {
+      "training": [
+        6100100000000,
+        6100101000000
+      ],
+      "bank": [
+        6100110000000,
+        6100110002048
+      ],
+      "periodic": [
+        8000014000000,
+        8000014000512
+      ],
+      "confirmation": [
+        8000015000000,
+        8000015004096
+      ]
+    },
+    "minimum_seeds_per_stratum": 32,
+    "boss_kinds": 3,
+    "periodic_updates": 32,
+    "retention_margin": -0.03,
+    "stop_p": 0.01,
+    "stop_consecutive": 2,
+    "training_seeds": 1,
+    "conclusion": "exploratory"
+  },
+  "model": {
+    "embedding_dim": 128,
+    "transformer_layers": 4,
+    "attention_heads": 4,
+    "feedforward_dim": 256,
+    "recurrent_hidden_dim": 256,
+    "recurrent_layers": 1,
+    "dropout": 0.0,
+    "architecture": "sls-recurrent-relational-policy-v5"
+  },
+  "ppo": {
+    "rollout_steps": 256,
+    "recurrent_sequence_length": 64,
+    "minibatch_sequences": 16,
+    "learning_rate": 3.125e-05,
+    "gamma": 1.0,
+    "gae_lambda": 0.98,
+    "clip_ratio": 0.2,
+    "value_coefficient": 0.5,
+    "entropy_coefficient": 0.002,
+    "entropy_final": 0.002,
+    "entropy_decay_steps": 4000000,
+    "entropy_schedule_start_steps": 56000512,
+    "target_kl": 0.02,
+    "final_kl_samples": 4096,
+    "value_clip_ratio": 0.2,
+    "max_gradient_norm": 0.5,
+    "epochs": 2,
+    "potential_shaping": true,
+    "potential_scale": 0.2,
+    "failure_progress_scale": 0.0,
+    "reward_schema": "sls-curriculum-win-v1",
+    "episode_limit_schema": "sls-fullrun-episode-limit-v2",
+    "max_episode_steps": 4096,
+    "max_boundary_visits": 4,
+    "limit_failure_reward": -1.0
+  },
+  "critic_warmup": {
+    "rollout_updates": 32,
+    "epochs": 2,
+    "batch_size": 1024
+  },
+  "parent_environment_steps": 90013696,
+  "training_rng_seed": 6100100000000,
+  "sampler_rng_seed": 20261010,
+  "diagnostic_prefix_workers": 4,
+  "schema": "sls-act2-learning-recipe-v1"
+}

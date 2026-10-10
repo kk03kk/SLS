@@ -324,6 +324,16 @@ def test_login_node_validation_rejects_corrupt_supporting_proof(tmp_path):
         destination = tmp_path / name
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(ROOT / name, destination)
+    # This temporary proof-corruption fixture copies the current operator tools.
+    # Research may change those tools: real historical bindings must still reject
+    # them. Bind only this disposable test copy to isolate the supporting-proof gate.
+    from sls.rl.training_contract import source_sha256
+    if any(source_sha256(tmp_path / name) != expected
+           for name, expected in plan['operator_sha256'].items()):
+        with pytest.raises(ValueError, match='bound operator changed'):
+            validate(root=tmp_path, check_sources=False)
+    plan['operator_sha256'] = {name: source_sha256(tmp_path / name) for name in OPERATOR_PATHS}
+    (tmp_path / PLAN).write_text(json.dumps(plan), encoding='utf-8')
     validate(root=tmp_path, check_sources=False)
     proof = tmp_path / 'docs/results/act12-critic20m-20261007/simulator-qualification-r1.json'
     proof.write_bytes(proof.read_bytes() + b'corruption')

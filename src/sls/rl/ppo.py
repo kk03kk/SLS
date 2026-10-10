@@ -247,6 +247,8 @@ class PPOTrainer:
         training_config_digest: str = "TEST_OR_UNSPECIFIED",
         training_seed_limit: int | None = None,
         critic_warmup: CriticWarmupConfig | None = None,
+        research_hooks=None,
+        episode_initializer=None,
     ) -> None:
         self.model = model.to(device)
         self.workers = workers
@@ -276,6 +278,10 @@ class PPOTrainer:
         self.critic_warmup = CriticWarmupState(warm, workers.size, config.max_episode_steps)
         self._warmup_ready = []
         self.warmup_target_validator = None  # Optional independent compute-node probe.
+        self.research_hooks = research_hooks
+        self.episode_initializer = episode_initializer
+        if episode_initializer is not None:
+            episode_initializer.record_initial(workers.size, warmup=self.critic_warmup.active)
         self._apply_warmup_freeze()
 
     def _apply_warmup_freeze(self):
@@ -299,6 +305,8 @@ class PPOTrainer:
                 if not torch.isfinite(loss):
                     raise RuntimeError("nonfinite critic warmup loss")
                 self.optimizer.zero_grad(set_to_none=True)
+                if self.research_hooks is not None and batches == 0:
+                    self.research_hooks.warmup_gradient(self, loss)
                 loss.backward()
                 torch.nn.utils.clip_grad_norm_(self.model.value_head.parameters(), self.config.max_gradient_norm,
                                                error_if_nonfinite=True)
@@ -458,6 +466,9 @@ class PPOTrainer:
                     reward = float(torch.tensor(reward, dtype=torch.float32))
                 rewards.append(reward)
                 terminals.append(terminal)
+                if self.research_hooks is not None:
+                    self.research_hooks.transition(index, current,
+                        current.actions[int(actions_cpu[index])], item, reward, reason)
                 if warm_features is not None:
                     validation_rewards = ([r for _, r in self.critic_warmup.pending[index]] + [reward]
                                           if terminal and self.warmup_target_validator is not None else None)
@@ -486,7 +497,9 @@ class PPOTrainer:
                 dtype=torch.float32, device=self.device,
             )
             reset_started = time.perf_counter()
-            reset_decisions = self.workers.reset_many(
+            initializations = self.episode_initializer.reset_many(self, reset_indices) if (
+                self.episode_initializer is not None and reset_indices) else None
+            reset_decisions = [item.decision for item in initializations] if initializations is not None else self.workers.reset_many(
                 reset_indices, self._take_seeds(len(reset_indices)),
             ) if reset_indices else []
             reset_seconds = time.perf_counter() - reset_started
@@ -498,6 +511,16 @@ class PPOTrainer:
                 next_episode_starts[index] = True
                 next_previous_actions[index] = 0
                 next_previous_rewards[index] = 0.0
+                if initializations is not None:
+                    initial = initializations[reset_indices.index(index)]
+                    self.episode_limits[index] = initial.limits
+                    next_memory[index] = initial.memory[0]
+                    next_episode_starts[index] = initial.start
+                    next_previous_actions[index] = initial.previous_action
+                    next_previous_rewards[index] = initial.previous_reward
+                if self.research_hooks is not None:
+                    initial = initializations[reset_indices.index(index)] if initializations is not None else None
+                    self.research_hooks.reset(index, initial)
                 self.episodes += 1
             self.decisions = next_decisions
             self.memory = next_memory
@@ -552,6 +575,8 @@ class PPOTrainer:
         )
 
     def optimize(self, rollout: RolloutBatch) -> dict[str, float]:
+        if self.research_hooks is not None:
+            self.research_hooks.before_update(self, rollout)
         chunks = self._sequence_chunks(rollout)
         normalized_advantages = normalize_advantages_by_domain(
             rollout.advantages, rollout.encoded_decisions,
@@ -618,6 +643,9 @@ class PPOTrainer:
                     - entropy_coefficient * entropy
                 )
                 self.optimizer.zero_grad(set_to_none=True)
+                if self.research_hooks is not None and updates == 0:
+                    self.research_hooks.gradients(self, policy_loss,
+                        self.config.value_coefficient * value_loss, loss)
                 loss.backward()
                 gradient_norm = torch.nn.utils.clip_grad_norm_(
                     self.model.parameters(), self.config.max_gradient_norm,
@@ -658,6 +686,8 @@ class PPOTrainer:
             if epoch_kl > self.config.target_kl:
                 break
         self.update += 1
+        if self.research_hooks is not None:
+            self.research_hooks.after_update(self)
         reduced = torch.stack(tuple(totals[key] for key in metric_names)).div(updates)
         result = dict(zip(metric_names, reduced.detach().cpu().tolist()))
         result["epochs_completed"] = epochs_completed

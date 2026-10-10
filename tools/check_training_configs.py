@@ -79,6 +79,19 @@ def validate_json(path: Path, payload: object) -> list[str]:
     if not isinstance(payload, dict):
         return ["experiment plan is not an object"]
     schema = payload.get("schema")
+    if schema == "sls-act2-learning-recipe-v1":
+        from sls.research.protocol import PROTOCOL, RANGES
+        if payload.get("protocol") != json.loads(json.dumps(PROTOCOL)):
+            problems.append("Act2 research preregistration changed")
+        baseline = tomllib.loads((ROOT / "configs/train/ironclad_a20_act12_critic20m_r1.toml").read_text())
+        for key in ("model", "ppo", "critic_warmup"):
+            if payload.get(key) != baseline[key]:
+                problems.append(f"Act2 research changes frozen {key}")
+        if payload.get("parent_environment_steps") != 90013696 or payload.get("training_rng_seed") != RANGES["training"][0]:
+            problems.append("Act2 research parent/RNG binding changed")
+        if payload.get("diagnostic_prefix_workers") != 4:
+            problems.append("Act2 research diagnostic layout changed")
+        return problems
     if schema == "sls-act12-critic20m-plan-v1":
         from tools.act12_critic20m_contract import validate as validate_critic20m
         try:

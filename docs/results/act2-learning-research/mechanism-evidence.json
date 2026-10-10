@@ -1,0 +1,4847 @@
+{
+  "schema": "sls-act2-mechanism-evidence-v1",
+  "input_manifest": [
+    {
+      "path": "8000013004053/manifest.json",
+      "sha256": "aed433efb60b7d3bb0c4fd5c376b23c58397673ac517002950503ce649214481"
+    },
+    {
+      "path": "8000013004053/comparison.json",
+      "sha256": "eb9f7098a313956e57581d9744dc9c0ecb227bbd1cd538fee43e2b27d5528c41"
+    },
+    {
+      "path": "8000013004053/returns.json",
+      "sha256": "59227ce94060153def880c8dbf6bb4fdf44b4177141e466920fbc8e67552b896"
+    },
+    {
+      "path": "8000013003903/manifest.json",
+      "sha256": "04315b16091ab3898a7e532acd38769f2d8a204fe5730453181a3591a4f173f6"
+    },
+    {
+      "path": "8000013003903/comparison.json",
+      "sha256": "f80139776375032d0020659e196d02a65bd77606afb0ac9704e45e0487ad3fe1"
+    },
+    {
+      "path": "8000013003903/returns.json",
+      "sha256": "09598fce033d737ece1e16112358fb4f8546104306b8b39995d2296cc478059c"
+    },
+    {
+      "path": "8000013001221/manifest.json",
+      "sha256": "357fee999b9f1c9576ea0abcefd5959f30e0136743b71593b6a06310c07a7d8a"
+    },
+    {
+      "path": "8000013001221/comparison.json",
+      "sha256": "78457c670eeafbb4c85036db6a8af9b614669cd526d4d515c53df729abd4e094"
+    },
+    {
+      "path": "8000013001221/returns.json",
+      "sha256": "68ae7d49df40564da92bf0fab4ee1f50f0676e49a73a955b4a1b5537635196a9"
+    },
+    {
+      "path": "8000013003896/manifest.json",
+      "sha256": "ce94389fd8f2abf5eb9dc7fe0d02974d89f49c35ef780e7952031e1801a0952c"
+    },
+    {
+      "path": "8000013003896/comparison.json",
+      "sha256": "7a9d17db4f7c904c8b430d7facd3f2d3e365f633d8c53abec8131411d33925a5"
+    },
+    {
+      "path": "8000013003896/returns.json",
+      "sha256": "3c8595dc2cc2065764bd98ff2eb41b8e97574edbdfdbaf9317d42c4410ab581b"
+    },
+    {
+      "path": "8000013004047/manifest.json",
+      "sha256": "25fa0072e0c624d222aafc5fd0d024ea0390baf8a0fee7c1b3b77f6f4013e5a5"
+    },
+    {
+      "path": "8000013004047/comparison.json",
+      "sha256": "16ddbec6f40b95cc0a92d1870850ecd0ed816d1928062eeca9ac6f86ad986075"
+    },
+    {
+      "path": "8000013004047/returns.json",
+      "sha256": "11d9ca5fe6f6cdeeb0bedaf5c1d89990911d49939b2f6d792161b91d42d3caeb"
+    },
+    {
+      "path": "8000013001510/manifest.json",
+      "sha256": "f17f0c24bdd9c10d76b4872a13e21c52c0d8269ac7bbac5d5d989f806bc26cd6"
+    },
+    {
+      "path": "8000013001510/comparison.json",
+      "sha256": "e1fb7796125a1f24112a38114fed1fe73e752bd8d859e3ef40058fe3a7e65e58"
+    },
+    {
+      "path": "8000013001510/returns.json",
+      "sha256": "f5e7391b20e78ca2806ef6997d53357ea4e9a3e66c1a46e7cb484165a4456de4"
+    },
+    {
+      "path": "8000013000210/manifest.json",
+      "sha256": "931eb9cf7d43927948141ce0900bf09c70af0b8bf9da0daa091e21d4014199cf"
+    },
+    {
+      "path": "8000013000210/comparison.json",
+      "sha256": "aeb4e8c1ac0517bfa008c0f225a6533e2f2ababa1ef1a606cf22c17d7253eb71"
+    },
+    {
+      "path": "8000013000210/returns.json",
+      "sha256": "a7b86f5f21c464137589e5b916f7d4987d5bbc01d872b46dda98ac05f0609e14"
+    },
+    {
+      "path": "8000013003061/manifest.json",
+      "sha256": "18ff5147fab8093c0d04deacf73521b56c044ae845083abb6aa18276119c00b1"
+    },
+    {
+      "path": "8000013003061/comparison.json",
+      "sha256": "bfff0c3cdbcd61b7672e8e6db04b4fb8e411e9cf6abbf9bd584c1f1ff2e4c100"
+    },
+    {
+      "path": "8000013003061/returns.json",
+      "sha256": "db347ea05511bc84ef7a185c9e62767d6f447a195c7c57f8e2a7dbc0499be3ae"
+    },
+    {
+      "path": "8000013002280/manifest.json",
+      "sha256": "1bab5cbab26ae062b7e17777224cf38fac884ee5aca756eb2c0909b0e8cef4ae"
+    },
+    {
+      "path": "8000013002280/comparison.json",
+      "sha256": "7e47cba70d9aa096c5188a9edbe83ce361da2abf48a9e48bed55fa66f6deaa21"
+    },
+    {
+      "path": "8000013002280/returns.json",
+      "sha256": "6b9605b35ba9d322e0f8dd3c8380edf9d6b899320800ec8e62901ba77ea10714"
+    },
+    {
+      "path": "8000013002201/manifest.json",
+      "sha256": "151fcbbdb78c120a09b17b86c9f0cfac599c80ae7740d0185ca59168691d9936"
+    },
+    {
+      "path": "8000013002201/comparison.json",
+      "sha256": "e5a3784f2251bfaa4c0975986f6f8ede2cefa7ece5deeb229d3653e18697b516"
+    },
+    {
+      "path": "8000013002201/returns.json",
+      "sha256": "73685c1e579197b1e15f1b72c43d7cbeb3ab2ed2b18cfbe017098be68e8ddd43"
+    },
+    {
+      "path": "8000013000765/manifest.json",
+      "sha256": "f4bbfe2e357437fe8a077d235522f369e5473081111e4367f502d5ac949775db"
+    },
+    {
+      "path": "8000013000765/comparison.json",
+      "sha256": "bd502b07f37f2337eddc52a07a1bab855a4511244fa7394efe2cd8cd0901a246"
+    },
+    {
+      "path": "8000013000765/returns.json",
+      "sha256": "e9013a3ce1da875ad81f3fddccc5702e9926104dd0d33bfc5ba5346e64e4bfb0"
+    },
+    {
+      "path": "8000013001516/manifest.json",
+      "sha256": "511ffca3625b225740100a153b78a81afa40281582231e595d25d25fc69e03c3"
+    },
+    {
+      "path": "8000013001516/comparison.json",
+      "sha256": "513de0dd8245d11383dd0ae2d8e6d41fd3f20a62d2f9fc4d6a2c9eb99bca2ad3"
+    },
+    {
+      "path": "8000013001516/returns.json",
+      "sha256": "a1a54ee188def0fd44a5bb1bb07d420ec3a2c2e37723b759fbda0a7481c95aed"
+    },
+    {
+      "path": "8000013000969/manifest.json",
+      "sha256": "91e11a4b204372790114c992e72014c43f3d52ac8e560cbc1bb617fadb003548"
+    },
+    {
+      "path": "8000013000969/comparison.json",
+      "sha256": "c90d2c99a88e6b0299c4caae5635181802821f6481496eeaa8ec452e03195869"
+    },
+    {
+      "path": "8000013000969/returns.json",
+      "sha256": "746bda8722e3db1c3b586a8f56e2f6db930194f4883185fd903b06fbcaa72598"
+    },
+    {
+      "path": "8000013000469/manifest.json",
+      "sha256": "02e2dadb7570f17c94cea6e542dfaabbf83a1682451f58075e8c91ef355128c4"
+    },
+    {
+      "path": "8000013000469/comparison.json",
+      "sha256": "c281cf65ba3013d02bdf75824d0634bd926eed61cd0a47e173678d58d5458822"
+    },
+    {
+      "path": "8000013000469/returns.json",
+      "sha256": "672fe80ea57590ed5c09c6649b489db0453a4584d1c9733892593019bdcef21b"
+    },
+    {
+      "path": "8000013002245/manifest.json",
+      "sha256": "9731a3a7ef235afb70934373e9a662143da6cf4c8f5c4f8924e27094132510e3"
+    },
+    {
+      "path": "8000013002245/comparison.json",
+      "sha256": "792d4ee150d6446621821916e291a0b406d46fd1b50862603078e82b5a7c28ed"
+    },
+    {
+      "path": "8000013002245/returns.json",
+      "sha256": "c211b47ae464e0c9583d2fb82c1f0003ea5186306ed8d33b0ad02a2b8f35f95f"
+    },
+    {
+      "path": "8000013003081/manifest.json",
+      "sha256": "c4e5ffbb51caa441ec019318fcf5e1574b52f09d082f27bd7b303a04ac628d50"
+    },
+    {
+      "path": "8000013003081/comparison.json",
+      "sha256": "6af26e6960b91e0a7d11b2d865a773f1462b9a7b92ef1e6bced24548e548cea5"
+    },
+    {
+      "path": "8000013003081/returns.json",
+      "sha256": "377dcb9abce79598d13772c33022ac869ea7e0ac310b222e4a1486e3c88272f0"
+    }
+  ],
+  "seeds": 16,
+  "trajectories": 64,
+  "same_states": 64,
+  "model_state_scores": 256,
+  "unfinished_continuations": 23,
+  "runtime_differences": [
+    {
+      "seed": 8000013001510,
+      "model": "parent90",
+      "fields": {
+        "steps": [
+          198,
+          195
+        ]
+      }
+    },
+    {
+      "seed": 8000013001510,
+      "model": "criticlatest",
+      "fields": {
+        "floor": [
+          16,
+          28
+        ],
+        "steps": [
+          200,
+          314
+        ]
+      }
+    },
+    {
+      "seed": 8000013001516,
+      "model": "critic94",
+      "fields": {
+        "steps": [
+          236,
+          235
+        ]
+      }
+    },
+    {
+      "seed": 8000013003081,
+      "model": "critic94",
+      "fields": {
+        "floor": [
+          24,
+          33
+        ],
+        "steps": [
+          223,
+          327
+        ]
+      }
+    },
+    {
+      "seed": 8000013003081,
+      "model": "criticlatest",
+      "fields": {
+        "steps": [
+          245,
+          246
+        ]
+      }
+    }
+  ],
+  "selected_strata": {
+    "act1:REST:-": 16,
+    "act2:COMBAT:SPHERIC_GUARDIAN": 1,
+    "act1:COMBAT:CULTIST": 13,
+    "act2:SHOP:-": 9,
+    "act1:COMBAT:SPIKE_SLIME_L+ACID_SLIME_M+SLIME_BOSS+ACID_SLIME_L+ACID_SLIME_M": 7,
+    "act2:COMBAT:LOOTER+MUGGER": 6,
+    "act1:COMBAT:RED_LOUSE+GREEN_LOUSE+GREEN_LOUSE": 1,
+    "act2:COMBAT:CULTIST+CULTIST+CULTIST": 2,
+    "act2:COMBAT:THE_COLLECTOR": 3,
+    "act1:COMBAT:RED_LOUSE+GREEN_LOUSE": 1,
+    "act1:COMBAT:FUNGI_BEAST+FUNGI_BEAST": 1,
+    "act1:COMBAT:GREEN_LOUSE+RED_LOUSE+RED_LOUSE": 1,
+    "act2:COMBAT:SNECKO": 3
+  },
+  "natural_decision_strata": {
+    "act1:NEOW:-": 64,
+    "act1:MAP:-": 991,
+    "act1:COMBAT:GREEN_LOUSE+RED_LOUSE": 70,
+    "act1:COMBAT_REWARD:-": 1872,
+    "act1:SHOP:-": 226,
+    "act1:COMBAT:ACID_SLIME_S+SPIKE_SLIME_M": 479,
+    "act1:COMBAT:CULTIST": 539,
+    "act1:REST:-": 200,
+    "act1:CARD_REWARD:-": 203,
+    "act1:EVENT:-": 145,
+    "act1:TREASURE:-": 83,
+    "act1:COMBAT:RED_SLAVER": 152,
+    "act1:COMBAT:HEXAGHOST": 435,
+    "act1:BOSS_REWARD:-": 48,
+    "act2:MAP:-": 361,
+    "act2:COMBAT:SPHERIC_GUARDIAN": 218,
+    "act2:COMBAT_REWARD:-": 511,
+    "act2:EVENT:-": 90,
+    "act2:COMBAT:SHELLED_PARASITE": 406,
+    "act2:COMBAT:SENTRY+SPHERIC_GUARDIAN": 118,
+    "act2:SHOP:-": 123,
+    "act2:REST:-": 58,
+    "act2:COMBAT:BLUE_SLAVER+TASKMASTER+RED_SLAVER": 102,
+    "act2:COMBAT:BYRD+CHOSEN": 32,
+    "act1:COMBAT:RED_LOUSE+GREEN_LOUSE": 248,
+    "act1:COMBAT:SPIKE_SLIME_S+ACID_SLIME_M": 262,
+    "act1:COMBAT:LOOTER": 325,
+    "act1:COMBAT:SENTRY+SENTRY+SENTRY": 365,
+    "act1:COMBAT:FAT_GREMLIN+SNEAKY_GREMLIN+GREMLIN_WIZARD+SNEAKY_GREMLIN": 54,
+    "act1:COMBAT:SPIKE_SLIME_S+ACID_SLIME_S+SPIKE_SLIME_S+SPIKE_SLIME_S+ACID_SLIME_S": 67,
+    "act1:COMBAT:LAGAVULIN": 301,
+    "act1:COMBAT:BLUE_SLAVER": 307,
+    "act1:COMBAT:SLIME_BOSS": 337,
+    "act1:COMBAT:SPIKE_SLIME_L+SLIME_BOSS+ACID_SLIME_L": 128,
+    "act1:COMBAT:SPIKE_SLIME_L+ACID_SLIME_M+SLIME_BOSS+ACID_SLIME_L+ACID_SLIME_M": 98,
+    "act1:COMBAT:SPIKE_SLIME_M+SPIKE_SLIME_L+SPIKE_SLIME_M+ACID_SLIME_M+SLIME_BOSS+ACID_SLIME_L+ACID_SLIME_M": 80,
+    "act2:COMBAT:BYRD+BYRD+BYRD": 306,
+    "act2:TREASURE:-": 17,
+    "act2:COMBAT:LOOTER+MUGGER": 275,
+    "act2:COMBAT:CULTIST+CULTIST+CULTIST": 96,
+    "act1:COMBAT:JAW_WORM": 493,
+    "act1:COMBAT:FUNGI_BEAST+SPIKE_SLIME_M": 57,
+    "act1:COMBAT:RED_LOUSE+GREEN_LOUSE+GREEN_LOUSE": 43,
+    "act2:COMBAT:POINTY+ROMEO+BEAR": 39,
+    "act2:CARD_REWARD:-": 18,
+    "act2:COMBAT:BLUE_SLAVER+RED_SLAVER": 38,
+    "act2:COMBAT:TASKMASTER+GREMLIN_NOB": 18,
+    "act2:COMBAT:CENTURION+MYSTIC": 344,
+    "act2:COMBAT:THE_CHAMP": 69,
+    "act1:COMBAT:GREMLIN_NOB": 95,
+    "act2:COMBAT:CULTIST+CHOSEN": 123,
+    "act1:COMBAT:FUNGI_BEAST+FUNGI_BEAST": 320,
+    "act1:COMBAT:SPIKE_SLIME_L": 56,
+    "act1:COMBAT:SPIKE_SLIME_M+SPIKE_SLIME_L+SPIKE_SLIME_M": 74,
+    "act1:COMBAT:RED_LOUSE+BLUE_SLAVER": 45,
+    "act1:COMBAT:THE_GUARDIAN": 819,
+    "act2:COMBAT:SNAKE_PLANT": 174,
+    "act2:COMBAT:SHELLED_PARASITE+FUNGI_BEAST": 36,
+    "act2:COMBAT:THE_COLLECTOR": 16,
+    "act2:COMBAT:TORCH_HEAD+TORCH_HEAD+THE_COLLECTOR": 87,
+    "act1:COMBAT:RED_LOUSE+RED_LOUSE+RED_LOUSE": 29,
+    "act1:COMBAT:GREEN_LOUSE+RED_LOUSE+GREEN_LOUSE": 40,
+    "act1:COMBAT:RED_LOUSE+RED_LOUSE+GREEN_LOUSE": 17,
+    "act1:COMBAT:GREEN_LOUSE+GREEN_LOUSE+RED_LOUSE": 213,
+    "act2:COMBAT:CHOSEN": 158,
+    "act1:COMBAT:ACID_SLIME_M+LOOTER": 40,
+    "act1:COMBAT:SNEAKY_GREMLIN+FAT_GREMLIN+GREMLIN_WIZARD+SHIELD_GREMLIN": 32,
+    "act1:COMBAT:SPIKE_SLIME_M+CULTIST": 15,
+    "act1:COMBAT:MAD_GREMLIN+SNEAKY_GREMLIN+FAT_GREMLIN+SHIELD_GREMLIN": 16,
+    "act1:COMBAT:JAW_WORM+ACID_SLIME_M": 16,
+    "act1:COMBAT:RED_LOUSE+RED_LOUSE": 63,
+    "act1:COMBAT:FUNGI_BEAST+GREEN_LOUSE": 16,
+    "act1:COMBAT:SPIKE_SLIME_M+SPIKE_SLIME_L+SPIKE_SLIME_M+SLIME_BOSS+ACID_SLIME_L": 27,
+    "act2:COMBAT:BOOK_OF_STABBING": 270,
+    "act1:COMBAT:FUNGI_BEAST+ACID_SLIME_M": 74,
+    "act1:COMBAT:RED_LOUSE+CULTIST": 83,
+    "act1:COMBAT:FAT_GREMLIN+MAD_GREMLIN+FAT_GREMLIN+SNEAKY_GREMLIN": 34,
+    "act2:COMBAT:MAD_GREMLIN+FAT_GREMLIN+GREMLIN_LEADER": 37,
+    "act2:COMBAT:SNEAKY_GREMLIN+MAD_GREMLIN+SNEAKY_GREMLIN+FAT_GREMLIN+GREMLIN_LEADER": 16,
+    "act1:COMBAT:GREMLIN_WIZARD+MAD_GREMLIN+SNEAKY_GREMLIN+FAT_GREMLIN": 103,
+    "act1:COMBAT:MAD_GREMLIN+MAD_GREMLIN+SNEAKY_GREMLIN+FAT_GREMLIN": 74,
+    "act1:COMBAT:ACID_SLIME_M+BLUE_SLAVER": 77,
+    "act1:COMBAT:GREEN_LOUSE+RED_LOUSE+RED_LOUSE": 47,
+    "act2:COMBAT:SNECKO": 147,
+    "act2:COMBAT:BRONZE_AUTOMATON": 16,
+    "act2:COMBAT:BRONZE_ORB+BRONZE_AUTOMATON+BRONZE_ORB": 70,
+    "act2:COMBAT:TORCH_HEAD+TORCH_HEAD+TORCH_HEAD+TORCH_HEAD+THE_COLLECTOR": 5,
+    "act1:COMBAT:ACID_SLIME_S+SPIKE_SLIME_S+SPIKE_SLIME_S+SPIKE_SLIME_S+ACID_SLIME_S": 40,
+    "act1:COMBAT:SPIKE_SLIME_S+SPIKE_SLIME_S+ACID_SLIME_S+SPIKE_SLIME_S+ACID_SLIME_S": 5
+  },
+  "missing_natural_bosses": [],
+  "missing_selected_bosses": [
+    "BRONZE_AUTOMATON",
+    "HEXAGHOST",
+    "THE_CHAMP",
+    "THE_GUARDIAN"
+  ],
+  "first_policy_forks": [
+    {
+      "seed": 8000013004053,
+      "model": "criticbest",
+      "first_differing_decision": 2,
+      "act": 1,
+      "screen": "COMBAT",
+      "parent_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:2",
+        "target_id": null
+      },
+      "candidate_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:0",
+        "target_id": "MONSTER:0"
+      }
+    },
+    {
+      "seed": 8000013004053,
+      "model": "critic94",
+      "first_differing_decision": 2,
+      "act": 1,
+      "screen": "COMBAT",
+      "parent_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:2",
+        "target_id": null
+      },
+      "candidate_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:0",
+        "target_id": "MONSTER:0"
+      }
+    },
+    {
+      "seed": 8000013004053,
+      "model": "criticlatest",
+      "first_differing_decision": 2,
+      "act": 1,
+      "screen": "COMBAT",
+      "parent_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:2",
+        "target_id": null
+      },
+      "candidate_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:0",
+        "target_id": "MONSTER:0"
+      }
+    },
+    {
+      "seed": 8000013003903,
+      "model": "criticbest",
+      "first_differing_decision": 0,
+      "act": 1,
+      "screen": "NEOW",
+      "parent_action": {
+        "kind": "CHOOSE_NEOW_OPTION",
+        "metadata": {},
+        "node_id": null,
+        "option_id": "event-option:0",
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": null,
+        "target_id": null
+      },
+      "candidate_action": {
+        "kind": "CHOOSE_NEOW_OPTION",
+        "metadata": {},
+        "node_id": null,
+        "option_id": "event-option:1",
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": null,
+        "target_id": null
+      }
+    },
+    {
+      "seed": 8000013003903,
+      "model": "critic94",
+      "first_differing_decision": 0,
+      "act": 1,
+      "screen": "NEOW",
+      "parent_action": {
+        "kind": "CHOOSE_NEOW_OPTION",
+        "metadata": {},
+        "node_id": null,
+        "option_id": "event-option:0",
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": null,
+        "target_id": null
+      },
+      "candidate_action": {
+        "kind": "CHOOSE_NEOW_OPTION",
+        "metadata": {},
+        "node_id": null,
+        "option_id": "event-option:1",
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": null,
+        "target_id": null
+      }
+    },
+    {
+      "seed": 8000013003903,
+      "model": "criticlatest",
+      "first_differing_decision": 2,
+      "act": 1,
+      "screen": "MAP",
+      "parent_action": {
+        "kind": "CHOOSE_MAP_NODE",
+        "metadata": {},
+        "node_id": "map:5:0",
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": null,
+        "target_id": null
+      },
+      "candidate_action": {
+        "kind": "CHOOSE_MAP_NODE",
+        "metadata": {},
+        "node_id": "map:4:0",
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": null,
+        "target_id": null
+      }
+    },
+    {
+      "seed": 8000013001221,
+      "model": "criticbest",
+      "first_differing_decision": 2,
+      "act": 1,
+      "screen": "COMBAT",
+      "parent_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:0",
+        "target_id": "MONSTER:0"
+      },
+      "candidate_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:2",
+        "target_id": "MONSTER:0"
+      }
+    },
+    {
+      "seed": 8000013001221,
+      "model": "critic94",
+      "first_differing_decision": 11,
+      "act": 1,
+      "screen": "COMBAT",
+      "parent_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:1",
+        "target_id": "MONSTER:1"
+      },
+      "candidate_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:0",
+        "target_id": null
+      }
+    },
+    {
+      "seed": 8000013001221,
+      "model": "criticlatest",
+      "first_differing_decision": 7,
+      "act": 1,
+      "screen": "SHOP",
+      "parent_action": {
+        "kind": "BUY_POTION",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "shop-potion:2",
+        "target_id": null
+      },
+      "candidate_action": {
+        "kind": "LEAVE_SHOP",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": null,
+        "target_id": null
+      }
+    },
+    {
+      "seed": 8000013003896,
+      "model": "criticbest",
+      "first_differing_decision": 0,
+      "act": 1,
+      "screen": "NEOW",
+      "parent_action": {
+        "kind": "CHOOSE_NEOW_OPTION",
+        "metadata": {},
+        "node_id": null,
+        "option_id": "event-option:0",
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": null,
+        "target_id": null
+      },
+      "candidate_action": {
+        "kind": "CHOOSE_NEOW_OPTION",
+        "metadata": {},
+        "node_id": null,
+        "option_id": "event-option:1",
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": null,
+        "target_id": null
+      }
+    },
+    {
+      "seed": 8000013003896,
+      "model": "critic94",
+      "first_differing_decision": 0,
+      "act": 1,
+      "screen": "NEOW",
+      "parent_action": {
+        "kind": "CHOOSE_NEOW_OPTION",
+        "metadata": {},
+        "node_id": null,
+        "option_id": "event-option:0",
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": null,
+        "target_id": null
+      },
+      "candidate_action": {
+        "kind": "CHOOSE_NEOW_OPTION",
+        "metadata": {},
+        "node_id": null,
+        "option_id": "event-option:1",
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": null,
+        "target_id": null
+      }
+    },
+    {
+      "seed": 8000013003896,
+      "model": "criticlatest",
+      "first_differing_decision": 18,
+      "act": 1,
+      "screen": "COMBAT_REWARD",
+      "parent_action": {
+        "kind": "SKIP_REWARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": null,
+        "target_id": null
+      },
+      "candidate_action": {
+        "kind": "TAKE_REWARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": "reward-potion:0",
+        "schema_version": 1,
+        "subject_id": null,
+        "target_id": null
+      }
+    },
+    {
+      "seed": 8000013004047,
+      "model": "criticbest",
+      "first_differing_decision": 10,
+      "act": 1,
+      "screen": "COMBAT",
+      "parent_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:0",
+        "target_id": null
+      },
+      "candidate_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:4",
+        "target_id": null
+      }
+    },
+    {
+      "seed": 8000013004047,
+      "model": "critic94",
+      "first_differing_decision": 4,
+      "act": 1,
+      "screen": "COMBAT",
+      "parent_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:2",
+        "target_id": "MONSTER:0"
+      },
+      "candidate_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:1",
+        "target_id": "MONSTER:0"
+      }
+    },
+    {
+      "seed": 8000013004047,
+      "model": "criticlatest",
+      "first_differing_decision": 4,
+      "act": 1,
+      "screen": "COMBAT",
+      "parent_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:2",
+        "target_id": "MONSTER:0"
+      },
+      "candidate_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:1",
+        "target_id": "MONSTER:0"
+      }
+    },
+    {
+      "seed": 8000013001510,
+      "model": "criticbest",
+      "first_differing_decision": 43,
+      "act": 1,
+      "screen": "COMBAT",
+      "parent_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:4",
+        "target_id": "MONSTER:0"
+      },
+      "candidate_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:1",
+        "target_id": "MONSTER:0"
+      }
+    },
+    {
+      "seed": 8000013001510,
+      "model": "critic94",
+      "first_differing_decision": 39,
+      "act": 1,
+      "screen": "COMBAT",
+      "parent_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:4",
+        "target_id": null
+      },
+      "candidate_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:1",
+        "target_id": "MONSTER:0"
+      }
+    },
+    {
+      "seed": 8000013001510,
+      "model": "criticlatest",
+      "first_differing_decision": 32,
+      "act": 1,
+      "screen": "COMBAT",
+      "parent_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:0",
+        "target_id": null
+      },
+      "candidate_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:2",
+        "target_id": "MONSTER:0"
+      }
+    },
+    {
+      "seed": 8000013000210,
+      "model": "criticbest",
+      "first_differing_decision": 7,
+      "act": 1,
+      "screen": "COMBAT",
+      "parent_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:0",
+        "target_id": "MONSTER:1"
+      },
+      "candidate_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:3",
+        "target_id": "MONSTER:0"
+      }
+    },
+    {
+      "seed": 8000013000210,
+      "model": "critic94",
+      "first_differing_decision": 3,
+      "act": 1,
+      "screen": "COMBAT",
+      "parent_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:2",
+        "target_id": "MONSTER:1"
+      },
+      "candidate_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:0",
+        "target_id": null
+      }
+    },
+    {
+      "seed": 8000013000210,
+      "model": "criticlatest",
+      "first_differing_decision": 11,
+      "act": 1,
+      "screen": "COMBAT",
+      "parent_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:0",
+        "target_id": "MONSTER:0"
+      },
+      "candidate_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:1",
+        "target_id": null
+      }
+    },
+    {
+      "seed": 8000013003061,
+      "model": "criticbest",
+      "first_differing_decision": 25,
+      "act": 1,
+      "screen": "COMBAT",
+      "parent_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:0",
+        "target_id": "MONSTER:1"
+      },
+      "candidate_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:2",
+        "target_id": null
+      }
+    },
+    {
+      "seed": 8000013003061,
+      "model": "critic94",
+      "first_differing_decision": 7,
+      "act": 1,
+      "screen": "COMBAT",
+      "parent_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:0",
+        "target_id": "MONSTER:0"
+      },
+      "candidate_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:1",
+        "target_id": null
+      }
+    },
+    {
+      "seed": 8000013003061,
+      "model": "criticlatest",
+      "first_differing_decision": 23,
+      "act": 1,
+      "screen": "COMBAT",
+      "parent_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:4",
+        "target_id": null
+      },
+      "candidate_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:3",
+        "target_id": null
+      }
+    },
+    {
+      "seed": 8000013002280,
+      "model": "criticbest",
+      "first_differing_decision": 1,
+      "act": 1,
+      "screen": "MAP",
+      "parent_action": {
+        "kind": "CHOOSE_MAP_NODE",
+        "metadata": {},
+        "node_id": "map:6:0",
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": null,
+        "target_id": null
+      },
+      "candidate_action": {
+        "kind": "CHOOSE_MAP_NODE",
+        "metadata": {},
+        "node_id": "map:4:0",
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": null,
+        "target_id": null
+      }
+    },
+    {
+      "seed": 8000013002280,
+      "model": "critic94",
+      "first_differing_decision": 1,
+      "act": 1,
+      "screen": "MAP",
+      "parent_action": {
+        "kind": "CHOOSE_MAP_NODE",
+        "metadata": {},
+        "node_id": "map:6:0",
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": null,
+        "target_id": null
+      },
+      "candidate_action": {
+        "kind": "CHOOSE_MAP_NODE",
+        "metadata": {},
+        "node_id": "map:4:0",
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": null,
+        "target_id": null
+      }
+    },
+    {
+      "seed": 8000013002280,
+      "model": "criticlatest",
+      "first_differing_decision": 1,
+      "act": 1,
+      "screen": "MAP",
+      "parent_action": {
+        "kind": "CHOOSE_MAP_NODE",
+        "metadata": {},
+        "node_id": "map:6:0",
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": null,
+        "target_id": null
+      },
+      "candidate_action": {
+        "kind": "CHOOSE_MAP_NODE",
+        "metadata": {},
+        "node_id": "map:4:0",
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": null,
+        "target_id": null
+      }
+    },
+    {
+      "seed": 8000013002201,
+      "model": "criticbest",
+      "first_differing_decision": 31,
+      "act": 1,
+      "screen": "COMBAT",
+      "parent_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:4",
+        "target_id": null
+      },
+      "candidate_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:1",
+        "target_id": null
+      }
+    },
+    {
+      "seed": 8000013002201,
+      "model": "critic94",
+      "first_differing_decision": 10,
+      "act": 1,
+      "screen": "COMBAT",
+      "parent_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:0",
+        "target_id": "MONSTER:0"
+      },
+      "candidate_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:1",
+        "target_id": null
+      }
+    },
+    {
+      "seed": 8000013002201,
+      "model": "criticlatest",
+      "first_differing_decision": 16,
+      "act": 1,
+      "screen": "COMBAT_REWARD",
+      "parent_action": {
+        "kind": "SKIP_REWARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": null,
+        "target_id": null
+      },
+      "candidate_action": {
+        "kind": "TAKE_REWARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": "reward-potion:0",
+        "schema_version": 1,
+        "subject_id": null,
+        "target_id": null
+      }
+    },
+    {
+      "seed": 8000013000765,
+      "model": "criticbest",
+      "first_differing_decision": 2,
+      "act": 1,
+      "screen": "COMBAT",
+      "parent_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:3",
+        "target_id": "MONSTER:0"
+      },
+      "candidate_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:0",
+        "target_id": null
+      }
+    },
+    {
+      "seed": 8000013000765,
+      "model": "critic94",
+      "first_differing_decision": 2,
+      "act": 1,
+      "screen": "COMBAT",
+      "parent_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:3",
+        "target_id": "MONSTER:0"
+      },
+      "candidate_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:0",
+        "target_id": null
+      }
+    },
+    {
+      "seed": 8000013000765,
+      "model": "criticlatest",
+      "first_differing_decision": 7,
+      "act": 1,
+      "screen": "COMBAT",
+      "parent_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:1",
+        "target_id": null
+      },
+      "candidate_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:0",
+        "target_id": null
+      }
+    },
+    {
+      "seed": 8000013001516,
+      "model": "criticbest",
+      "first_differing_decision": 6,
+      "act": 1,
+      "screen": "COMBAT",
+      "parent_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:0",
+        "target_id": "MONSTER:0"
+      },
+      "candidate_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:1",
+        "target_id": null
+      }
+    },
+    {
+      "seed": 8000013001516,
+      "model": "critic94",
+      "first_differing_decision": 6,
+      "act": 1,
+      "screen": "COMBAT",
+      "parent_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:0",
+        "target_id": "MONSTER:0"
+      },
+      "candidate_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:1",
+        "target_id": null
+      }
+    },
+    {
+      "seed": 8000013001516,
+      "model": "criticlatest",
+      "first_differing_decision": 12,
+      "act": 1,
+      "screen": "COMBAT_REWARD",
+      "parent_action": {
+        "kind": "TAKE_REWARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": "reward-potion:0",
+        "schema_version": 1,
+        "subject_id": null,
+        "target_id": null
+      },
+      "candidate_action": {
+        "kind": "CHOOSE_CARD_REWARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "reward-card:0:2",
+        "target_id": null
+      }
+    },
+    {
+      "seed": 8000013000969,
+      "model": "criticbest",
+      "first_differing_decision": 14,
+      "act": 1,
+      "screen": "COMBAT",
+      "parent_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:0",
+        "target_id": "MONSTER:1"
+      },
+      "candidate_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:1",
+        "target_id": null
+      }
+    },
+    {
+      "seed": 8000013000969,
+      "model": "critic94",
+      "first_differing_decision": 14,
+      "act": 1,
+      "screen": "COMBAT",
+      "parent_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:0",
+        "target_id": "MONSTER:1"
+      },
+      "candidate_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:1",
+        "target_id": null
+      }
+    },
+    {
+      "seed": 8000013000969,
+      "model": "criticlatest",
+      "first_differing_decision": 2,
+      "act": 1,
+      "screen": "COMBAT",
+      "parent_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:1",
+        "target_id": null
+      },
+      "candidate_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:0",
+        "target_id": "MONSTER:0"
+      }
+    },
+    {
+      "seed": 8000013000469,
+      "model": "criticbest",
+      "first_differing_decision": 8,
+      "act": 1,
+      "screen": "SHOP",
+      "parent_action": {
+        "kind": "BUY_POTION",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "shop-potion:0",
+        "target_id": null
+      },
+      "candidate_action": {
+        "kind": "BUY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "shop-card:1",
+        "target_id": null
+      }
+    },
+    {
+      "seed": 8000013000469,
+      "model": "critic94",
+      "first_differing_decision": 2,
+      "act": 1,
+      "screen": "COMBAT",
+      "parent_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:0",
+        "target_id": "MONSTER:0"
+      },
+      "candidate_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:4",
+        "target_id": "MONSTER:0"
+      }
+    },
+    {
+      "seed": 8000013000469,
+      "model": "criticlatest",
+      "first_differing_decision": 6,
+      "act": 1,
+      "screen": "COMBAT_REWARD",
+      "parent_action": {
+        "kind": "SKIP_REWARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": null,
+        "target_id": null
+      },
+      "candidate_action": {
+        "kind": "DISCARD_POTION",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "POTION:0",
+        "target_id": null
+      }
+    },
+    {
+      "seed": 8000013002245,
+      "model": "criticbest",
+      "first_differing_decision": 2,
+      "act": 1,
+      "screen": "COMBAT",
+      "parent_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:0",
+        "target_id": "MONSTER:0"
+      },
+      "candidate_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:3",
+        "target_id": "MONSTER:0"
+      }
+    },
+    {
+      "seed": 8000013002245,
+      "model": "critic94",
+      "first_differing_decision": 2,
+      "act": 1,
+      "screen": "COMBAT",
+      "parent_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:0",
+        "target_id": "MONSTER:0"
+      },
+      "candidate_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:3",
+        "target_id": "MONSTER:0"
+      }
+    },
+    {
+      "seed": 8000013002245,
+      "model": "criticlatest",
+      "first_differing_decision": 2,
+      "act": 1,
+      "screen": "COMBAT",
+      "parent_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:0",
+        "target_id": "MONSTER:0"
+      },
+      "candidate_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:3",
+        "target_id": "MONSTER:0"
+      }
+    },
+    {
+      "seed": 8000013003081,
+      "model": "criticbest",
+      "first_differing_decision": 1,
+      "act": 1,
+      "screen": "MAP",
+      "parent_action": {
+        "kind": "CHOOSE_MAP_NODE",
+        "metadata": {},
+        "node_id": "map:4:0",
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": null,
+        "target_id": null
+      },
+      "candidate_action": {
+        "kind": "CHOOSE_MAP_NODE",
+        "metadata": {},
+        "node_id": "map:5:0",
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": null,
+        "target_id": null
+      }
+    },
+    {
+      "seed": 8000013003081,
+      "model": "critic94",
+      "first_differing_decision": 7,
+      "act": 1,
+      "screen": "COMBAT",
+      "parent_action": {
+        "kind": "PLAY_CARD",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": "HAND:0",
+        "target_id": "MONSTER:1"
+      },
+      "candidate_action": {
+        "kind": "END_TURN",
+        "metadata": {},
+        "node_id": null,
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": null,
+        "target_id": null
+      }
+    },
+    {
+      "seed": 8000013003081,
+      "model": "criticlatest",
+      "first_differing_decision": 1,
+      "act": 1,
+      "screen": "MAP",
+      "parent_action": {
+        "kind": "CHOOSE_MAP_NODE",
+        "metadata": {},
+        "node_id": "map:4:0",
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": null,
+        "target_id": null
+      },
+      "candidate_action": {
+        "kind": "CHOOSE_MAP_NODE",
+        "metadata": {},
+        "node_id": "map:5:0",
+        "option_id": null,
+        "reward_id": null,
+        "schema_version": 1,
+        "subject_id": null,
+        "target_id": null
+      }
+    }
+  ],
+  "cycle_evidence": [
+    {
+      "seed": 8000013004047,
+      "model": "parent90",
+      "floor": 17,
+      "selected_card_counts": [
+        0,
+        1,
+        0,
+        1,
+        0,
+        1,
+        0,
+        1
+      ],
+      "last_actions": [
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:15",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:15",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:15",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:15",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:15",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:15",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:15",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:15",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        }
+      ]
+    },
+    {
+      "seed": 8000013004047,
+      "model": "criticbest",
+      "floor": 17,
+      "selected_card_counts": [
+        0,
+        1,
+        0,
+        1,
+        0,
+        1,
+        0,
+        1
+      ],
+      "last_actions": [
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:15",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:15",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:15",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:15",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:15",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:15",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:15",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:15",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        }
+      ]
+    },
+    {
+      "seed": 8000013001510,
+      "model": "parent90",
+      "floor": 17,
+      "selected_card_counts": [
+        0,
+        1,
+        0,
+        1,
+        0,
+        1,
+        0,
+        1
+      ],
+      "last_actions": [
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:11",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:11",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:11",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:11",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:11",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:11",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:11",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:11",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        }
+      ]
+    },
+    {
+      "seed": 8000013000210,
+      "model": "parent90",
+      "floor": 17,
+      "selected_card_counts": [
+        0,
+        1,
+        0,
+        1,
+        0,
+        1,
+        0,
+        1
+      ],
+      "last_actions": [
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:11",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:11",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:11",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:11",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:11",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:11",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:11",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:11",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        }
+      ]
+    },
+    {
+      "seed": 8000013000210,
+      "model": "criticbest",
+      "floor": 17,
+      "selected_card_counts": [
+        0,
+        1,
+        0,
+        1,
+        0,
+        1,
+        0,
+        1
+      ],
+      "last_actions": [
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:11",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:11",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:11",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:11",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:11",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:11",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:11",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:11",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        }
+      ]
+    },
+    {
+      "seed": 8000013000210,
+      "model": "critic94",
+      "floor": 17,
+      "selected_card_counts": [
+        0,
+        1,
+        0,
+        1,
+        0,
+        1,
+        0,
+        1
+      ],
+      "last_actions": [
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:11",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:11",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:11",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:11",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:11",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:11",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:11",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:11",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        }
+      ]
+    },
+    {
+      "seed": 8000013003061,
+      "model": "parent90",
+      "floor": 17,
+      "selected_card_counts": [
+        0,
+        1,
+        0,
+        1,
+        0,
+        1,
+        0,
+        1
+      ],
+      "last_actions": [
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:20",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:20",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:12",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:12",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:12",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:12",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:12",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:12",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        }
+      ]
+    },
+    {
+      "seed": 8000013003061,
+      "model": "critic94",
+      "floor": 17,
+      "selected_card_counts": [
+        0,
+        1,
+        0,
+        1,
+        0,
+        1,
+        0,
+        1
+      ],
+      "last_actions": [
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:19",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:19",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:19",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:19",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:19",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:19",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:19",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        },
+        {
+          "schema_version": 1,
+          "kind": "REMOVE_CARD",
+          "subject_id": "select-card:19",
+          "target_id": null,
+          "option_id": null,
+          "node_id": null,
+          "reward_id": null,
+          "metadata": {}
+        }
+      ]
+    }
+  ],
+  "same_state_comparisons": {
+    "criticbest": {
+      "states": 64,
+      "nonforced_states": 58,
+      "different_argmax": 14,
+      "mean_probability_total_variation": 0.22089829803140276,
+      "act2_combat_states": 15,
+      "act2_combat_continuations": [
+        {
+          "state": "0c7b2b84181b5c8d8ff65b0ce977f1e519fecdb92ade9b02ed0b461d42db4428",
+          "stratum": "act2:COMBAT:SPHERIC_GUARDIAN",
+          "parent": {
+            "steps": 75,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1187727509532124,
+            "final_act": 2,
+            "final_floor": 22,
+            "final_hp": 0,
+            "cycle_tail": []
+          },
+          "candidate": {
+            "steps": 76,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1187727509532124,
+            "final_act": 2,
+            "final_floor": 22,
+            "final_hp": 0,
+            "cycle_tail": []
+          }
+        },
+        {
+          "state": "3799c73ded2a1042119a948139c8c48ddf1619e860ede48dc40c4129ed44488c",
+          "stratum": "act2:COMBAT:LOOTER+MUGGER",
+          "parent": {
+            "steps": 59,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1156363832415082,
+            "final_act": 2,
+            "final_floor": 25,
+            "final_hp": 0,
+            "cycle_tail": []
+          },
+          "candidate": {
+            "steps": 61,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1156363419722766,
+            "final_act": 2,
+            "final_floor": 25,
+            "final_hp": 0,
+            "cycle_tail": []
+          }
+        },
+        {
+          "state": "15cd5524a4947d0bed6f46f4a46e4abc313d26ea6b6815f7f6f217d479501e75",
+          "stratum": "act2:COMBAT:LOOTER+MUGGER",
+          "parent": {
+            "steps": 182,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1198060943279415,
+            "final_act": 2,
+            "final_floor": 33,
+            "final_hp": 0,
+            "cycle_tail": []
+          },
+          "candidate": {
+            "steps": 162,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.119806052884087,
+            "final_act": 2,
+            "final_floor": 33,
+            "final_hp": 0,
+            "cycle_tail": []
+          }
+        },
+        {
+          "state": "2b4aac4e11156cc88d5dabbc1ab92fc1a3219355136ddb384f1559000bc40740",
+          "stratum": "act2:COMBAT:CULTIST+CULTIST+CULTIST",
+          "parent": {
+            "steps": 34,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1500121569260955,
+            "final_act": 2,
+            "final_floor": 27,
+            "final_hp": 0,
+            "cycle_tail": []
+          },
+          "candidate": {
+            "steps": 52,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.150012100348249,
+            "final_act": 2,
+            "final_floor": 28,
+            "final_hp": 0,
+            "cycle_tail": []
+          }
+        },
+        {
+          "state": "649e2ad34a6d0115227e55576c0186a1876fcda27ceeebcc6d7b63d489151ff4",
+          "stratum": "act2:COMBAT:THE_COLLECTOR",
+          "parent": {
+            "steps": 24,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1866666118148714,
+            "final_act": 2,
+            "final_floor": 33,
+            "final_hp": 0,
+            "cycle_tail": []
+          },
+          "candidate": {
+            "steps": 24,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1866666118148714,
+            "final_act": 2,
+            "final_floor": 33,
+            "final_hp": 0,
+            "cycle_tail": []
+          }
+        },
+        {
+          "state": "0af084b7b56c0523653ad3bf23e551cbb34bedfa8290f46465ab2accc5ad6041",
+          "stratum": "act2:COMBAT:LOOTER+MUGGER",
+          "parent": {
+            "steps": 20,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1076718564145267,
+            "final_act": 2,
+            "final_floor": 22,
+            "final_hp": 0,
+            "cycle_tail": []
+          },
+          "candidate": {
+            "steps": 64,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1076718247495592,
+            "final_act": 2,
+            "final_floor": 28,
+            "final_hp": 0,
+            "cycle_tail": []
+          }
+        },
+        {
+          "state": "223e389085f942ee9c953a8db7c2479ce462cceb1022d28ed102c6a6d3083d9d",
+          "stratum": "act2:COMBAT:CULTIST+CULTIST+CULTIST",
+          "parent": {
+            "steps": 38,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1563636689679697,
+            "final_act": 2,
+            "final_floor": 27,
+            "final_hp": 0,
+            "cycle_tail": []
+          },
+          "candidate": {
+            "steps": 38,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1563636689679697,
+            "final_act": 2,
+            "final_floor": 27,
+            "final_hp": 0,
+            "cycle_tail": []
+          }
+        },
+        {
+          "state": "029e0efad372daa086e8bcc9ec1a2da72544e15d3d14d669a6f742e008560043",
+          "stratum": "act2:COMBAT:LOOTER+MUGGER",
+          "parent": {
+            "steps": 64,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1209312821738422,
+            "final_act": 2,
+            "final_floor": 21,
+            "final_hp": 0,
+            "cycle_tail": []
+          },
+          "candidate": {
+            "steps": 106,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1209312584251165,
+            "final_act": 2,
+            "final_floor": 24,
+            "final_hp": 0,
+            "cycle_tail": []
+          }
+        },
+        {
+          "state": "124f3daf1911f81463e30612db0117d9d22dbb9f8269a5e05afe66dbc63d3e3c",
+          "stratum": "act2:COMBAT:LOOTER+MUGGER",
+          "parent": {
+            "steps": 46,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1226749909692444,
+            "final_act": 2,
+            "final_floor": 21,
+            "final_hp": 0,
+            "cycle_tail": []
+          },
+          "candidate": {
+            "steps": 69,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1226750732166693,
+            "final_act": 2,
+            "final_floor": 24,
+            "final_hp": 0,
+            "cycle_tail": []
+          }
+        },
+        {
+          "state": "089d59f887b77bb9d843d16b0f32b4ba373518a6f65e0a6b19104261adaf27c4",
+          "stratum": "act2:COMBAT:SNECKO",
+          "parent": {
+            "steps": 56,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1486061062314548,
+            "final_act": 2,
+            "final_floor": 33,
+            "final_hp": 0,
+            "cycle_tail": []
+          },
+          "candidate": {
+            "steps": 55,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1486061169416644,
+            "final_act": 2,
+            "final_floor": 33,
+            "final_hp": 0,
+            "cycle_tail": []
+          }
+        },
+        {
+          "state": "3101683cba45b3eecd32ffebc9be39cc5ff893d1a0f21170226b046b5b34f869",
+          "stratum": "act2:COMBAT:THE_COLLECTOR",
+          "parent": {
+            "steps": 37,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1827907292172313,
+            "final_act": 2,
+            "final_floor": 33,
+            "final_hp": 0,
+            "cycle_tail": []
+          },
+          "candidate": {
+            "steps": 37,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.182790725142695,
+            "final_act": 2,
+            "final_floor": 33,
+            "final_hp": 0,
+            "cycle_tail": []
+          }
+        },
+        {
+          "state": "018118cb273976281170db13d39658eb609bb6a1be0eff84aedad404425616c3",
+          "stratum": "act2:COMBAT:LOOTER+MUGGER",
+          "parent": {
+            "steps": 64,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1102727189427242,
+            "final_act": 2,
+            "final_floor": 24,
+            "final_hp": 0,
+            "cycle_tail": []
+          },
+          "candidate": {
+            "steps": 58,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1102727664401755,
+            "final_act": 2,
+            "final_floor": 24,
+            "final_hp": 0,
+            "cycle_tail": []
+          }
+        },
+        {
+          "state": "02b495f22c6197956ef3cb308ad920aaf610a15800f10f4fead30346890e064e",
+          "stratum": "act2:COMBAT:SNECKO",
+          "parent": {
+            "steps": 101,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.117666696663946,
+            "final_act": 2,
+            "final_floor": 33,
+            "final_hp": 0,
+            "cycle_tail": []
+          },
+          "candidate": {
+            "steps": 107,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1176666964311153,
+            "final_act": 2,
+            "final_floor": 33,
+            "final_hp": 0,
+            "cycle_tail": []
+          }
+        },
+        {
+          "state": "002a597d49c498993e55a5dae8230cfbb8c9ac83f7a4c1a67b83f10a841f4f4c",
+          "stratum": "act2:COMBAT:SNECKO",
+          "parent": {
+            "steps": 129,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1355636744992808,
+            "final_act": 2,
+            "final_floor": 33,
+            "final_hp": 0,
+            "cycle_tail": []
+          },
+          "candidate": {
+            "steps": 120,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1355635924264789,
+            "final_act": 2,
+            "final_floor": 33,
+            "final_hp": 0,
+            "cycle_tail": []
+          }
+        },
+        {
+          "state": "00c8061b3cde3814d855f37ca0c64c9de8318662963b30d04de77f88bb0e2c62",
+          "stratum": "act2:COMBAT:THE_COLLECTOR",
+          "parent": {
+            "steps": 21,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1957333348691463,
+            "final_act": 2,
+            "final_floor": 33,
+            "final_hp": 0,
+            "cycle_tail": []
+          },
+          "candidate": {
+            "steps": 20,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1957333348691463,
+            "final_act": 2,
+            "final_floor": 33,
+            "final_hp": 0,
+            "cycle_tail": []
+          }
+        }
+      ]
+    },
+    "critic94": {
+      "states": 64,
+      "nonforced_states": 58,
+      "different_argmax": 22,
+      "mean_probability_total_variation": 0.3696763619233847,
+      "act2_combat_states": 15,
+      "act2_combat_continuations": [
+        {
+          "state": "0c7b2b84181b5c8d8ff65b0ce977f1e519fecdb92ade9b02ed0b461d42db4428",
+          "stratum": "act2:COMBAT:SPHERIC_GUARDIAN",
+          "parent": {
+            "steps": 75,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1187727509532124,
+            "final_act": 2,
+            "final_floor": 22,
+            "final_hp": 0,
+            "cycle_tail": []
+          },
+          "candidate": {
+            "steps": 60,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1187726983916946,
+            "final_act": 2,
+            "final_floor": 21,
+            "final_hp": 0,
+            "cycle_tail": []
+          }
+        },
+        {
+          "state": "3799c73ded2a1042119a948139c8c48ddf1619e860ede48dc40c4129ed44488c",
+          "stratum": "act2:COMBAT:LOOTER+MUGGER",
+          "parent": {
+            "steps": 59,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1156363832415082,
+            "final_act": 2,
+            "final_floor": 25,
+            "final_hp": 0,
+            "cycle_tail": []
+          },
+          "candidate": {
+            "steps": 152,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1156363424961455,
+            "final_act": 2,
+            "final_floor": 33,
+            "final_hp": 0,
+            "cycle_tail": []
+          }
+        },
+        {
+          "state": "15cd5524a4947d0bed6f46f4a46e4abc313d26ea6b6815f7f6f217d479501e75",
+          "stratum": "act2:COMBAT:LOOTER+MUGGER",
+          "parent": {
+            "steps": 182,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1198060943279415,
+            "final_act": 2,
+            "final_floor": 33,
+            "final_hp": 0,
+            "cycle_tail": []
+          },
+          "candidate": {
+            "steps": 174,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1198060014285147,
+            "final_act": 2,
+            "final_floor": 33,
+            "final_hp": 0,
+            "cycle_tail": []
+          }
+        },
+        {
+          "state": "2b4aac4e11156cc88d5dabbc1ab92fc1a3219355136ddb384f1559000bc40740",
+          "stratum": "act2:COMBAT:CULTIST+CULTIST+CULTIST",
+          "parent": {
+            "steps": 34,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1500121569260955,
+            "final_act": 2,
+            "final_floor": 27,
+            "final_hp": 0,
+            "cycle_tail": []
+          },
+          "candidate": {
+            "steps": 33,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1500121569260955,
+            "final_act": 2,
+            "final_floor": 27,
+            "final_hp": 0,
+            "cycle_tail": []
+          }
+        },
+        {
+          "state": "649e2ad34a6d0115227e55576c0186a1876fcda27ceeebcc6d7b63d489151ff4",
+          "stratum": "act2:COMBAT:THE_COLLECTOR",
+          "parent": {
+            "steps": 24,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1866666118148714,
+            "final_act": 2,
+            "final_floor": 33,
+            "final_hp": 0,
+            "cycle_tail": []
+          },
+          "candidate": {
+            "steps": 22,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1866666786372662,
+            "final_act": 2,
+            "final_floor": 33,
+            "final_hp": 0,
+            "cycle_tail": []
+          }
+        },
+        {
+          "state": "0af084b7b56c0523653ad3bf23e551cbb34bedfa8290f46465ab2accc5ad6041",
+          "stratum": "act2:COMBAT:LOOTER+MUGGER",
+          "parent": {
+            "steps": 20,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1076718564145267,
+            "final_act": 2,
+            "final_floor": 22,
+            "final_hp": 0,
+            "cycle_tail": []
+          },
+          "candidate": {
+            "steps": 57,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1076718247495592,
+            "final_act": 2,
+            "final_floor": 28,
+            "final_hp": 0,
+            "cycle_tail": []
+          }
+        },
+        {
+          "state": "223e389085f942ee9c953a8db7c2479ce462cceb1022d28ed102c6a6d3083d9d",
+          "stratum": "act2:COMBAT:CULTIST+CULTIST+CULTIST",
+          "parent": {
+            "steps": 38,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1563636689679697,
+            "final_act": 2,
+            "final_floor": 27,
+            "final_hp": 0,
+            "cycle_tail": []
+          },
+          "candidate": {
+            "steps": 20,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1563636547653005,
+            "final_act": 2,
+            "final_floor": 24,
+            "final_hp": 0,
+            "cycle_tail": []
+          }
+        },
+        {
+          "state": "029e0efad372daa086e8bcc9ec1a2da72544e15d3d14d669a6f742e008560043",
+          "stratum": "act2:COMBAT:LOOTER+MUGGER",
+          "parent": {
+            "steps": 64,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1209312821738422,
+            "final_act": 2,
+            "final_floor": 21,
+            "final_hp": 0,
+            "cycle_tail": []
+          },
+          "candidate": {
+            "steps": 98,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1209312602877617,
+            "final_act": 2,
+            "final_floor": 24,
+            "final_hp": 0,
+            "cycle_tail": []
+          }
+        },
+        {
+          "state": "124f3daf1911f81463e30612db0117d9d22dbb9f8269a5e05afe66dbc63d3e3c",
+          "stratum": "act2:COMBAT:LOOTER+MUGGER",
+          "parent": {
+            "steps": 46,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1226749909692444,
+            "final_act": 2,
+            "final_floor": 21,
+            "final_hp": 0,
+            "cycle_tail": []
+          },
+          "candidate": {
+            "steps": 70,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1226749732741155,
+            "final_act": 2,
+            "final_floor": 24,
+            "final_hp": 0,
+            "cycle_tail": []
+          }
+        },
+        {
+          "state": "089d59f887b77bb9d843d16b0f32b4ba373518a6f65e0a6b19104261adaf27c4",
+          "stratum": "act2:COMBAT:SNECKO",
+          "parent": {
+            "steps": 56,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1486061062314548,
+            "final_act": 2,
+            "final_floor": 33,
+            "final_hp": 0,
+            "cycle_tail": []
+          },
+          "candidate": {
+            "steps": 58,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1486060881870799,
+            "final_act": 2,
+            "final_floor": 33,
+            "final_hp": 0,
+            "cycle_tail": []
+          }
+        },
+        {
+          "state": "3101683cba45b3eecd32ffebc9be39cc5ff893d1a0f21170226b046b5b34f869",
+          "stratum": "act2:COMBAT:THE_COLLECTOR",
+          "parent": {
+            "steps": 37,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1827907292172313,
+            "final_act": 2,
+            "final_floor": 33,
+            "final_hp": 0,
+            "cycle_tail": []
+          },
+          "candidate": {
+            "steps": 27,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1827906959224492,
+            "final_act": 2,
+            "final_floor": 33,
+            "final_hp": 0,
+            "cycle_tail": []
+          }
+        },
+        {
+          "state": "018118cb273976281170db13d39658eb609bb6a1be0eff84aedad404425616c3",
+          "stratum": "act2:COMBAT:LOOTER+MUGGER",
+          "parent": {
+            "steps": 64,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1102727189427242,
+            "final_act": 2,
+            "final_floor": 24,
+            "final_hp": 0,
+            "cycle_tail": []
+          },
+          "candidate": {
+            "steps": 88,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1102727147517726,
+            "final_act": 2,
+            "final_floor": 25,
+            "final_hp": 0,
+            "cycle_tail": []
+          }
+        },
+        {
+          "state": "02b495f22c6197956ef3cb308ad920aaf610a15800f10f4fead30346890e064e",
+          "stratum": "act2:COMBAT:SNECKO",
+          "parent": {
+            "steps": 101,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.117666696663946,
+            "final_act": 2,
+            "final_floor": 33,
+            "final_hp": 0,
+            "cycle_tail": []
+          },
+          "candidate": {
+            "steps": 104,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.11766665475443,
+            "final_act": 2,
+            "final_floor": 33,
+            "final_hp": 0,
+            "cycle_tail": []
+          }
+        },
+        {
+          "state": "002a597d49c498993e55a5dae8230cfbb8c9ac83f7a4c1a67b83f10a841f4f4c",
+          "stratum": "act2:COMBAT:SNECKO",
+          "parent": {
+            "steps": 129,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1355636744992808,
+            "final_act": 2,
+            "final_floor": 33,
+            "final_hp": 0,
+            "cycle_tail": []
+          },
+          "candidate": {
+            "steps": 121,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1355636372463778,
+            "final_act": 2,
+            "final_floor": 33,
+            "final_hp": 0,
+            "cycle_tail": []
+          }
+        },
+        {
+          "state": "00c8061b3cde3814d855f37ca0c64c9de8318662963b30d04de77f88bb0e2c62",
+          "stratum": "act2:COMBAT:THE_COLLECTOR",
+          "parent": {
+            "steps": 21,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1957333348691463,
+            "final_act": 2,
+            "final_floor": 33,
+            "final_hp": 0,
+            "cycle_tail": []
+          },
+          "candidate": {
+            "steps": 21,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1957333348691463,
+            "final_act": 2,
+            "final_floor": 33,
+            "final_hp": 0,
+            "cycle_tail": []
+          }
+        }
+      ]
+    },
+    "criticlatest": {
+      "states": 64,
+      "nonforced_states": 58,
+      "different_argmax": 23,
+      "mean_probability_total_variation": 0.4011551703034815,
+      "act2_combat_states": 15,
+      "act2_combat_continuations": [
+        {
+          "state": "0c7b2b84181b5c8d8ff65b0ce977f1e519fecdb92ade9b02ed0b461d42db4428",
+          "stratum": "act2:COMBAT:SPHERIC_GUARDIAN",
+          "parent": {
+            "steps": 75,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1187727509532124,
+            "final_act": 2,
+            "final_floor": 22,
+            "final_hp": 0,
+            "cycle_tail": []
+          },
+          "candidate": {
+            "steps": 75,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1187727509532124,
+            "final_act": 2,
+            "final_floor": 22,
+            "final_hp": 0,
+            "cycle_tail": []
+          }
+        },
+        {
+          "state": "3799c73ded2a1042119a948139c8c48ddf1619e860ede48dc40c4129ed44488c",
+          "stratum": "act2:COMBAT:LOOTER+MUGGER",
+          "parent": {
+            "steps": 59,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1156363832415082,
+            "final_act": 2,
+            "final_floor": 25,
+            "final_hp": 0,
+            "cycle_tail": []
+          },
+          "candidate": {
+            "steps": 161,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.115636397851631,
+            "final_act": 2,
+            "final_floor": 33,
+            "final_hp": 0,
+            "cycle_tail": []
+          }
+        },
+        {
+          "state": "15cd5524a4947d0bed6f46f4a46e4abc313d26ea6b6815f7f6f217d479501e75",
+          "stratum": "act2:COMBAT:LOOTER+MUGGER",
+          "parent": {
+            "steps": 182,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1198060943279415,
+            "final_act": 2,
+            "final_floor": 33,
+            "final_hp": 0,
+            "cycle_tail": []
+          },
+          "candidate": {
+            "steps": 76,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1198060166789219,
+            "final_act": 2,
+            "final_floor": 28,
+            "final_hp": 0,
+            "cycle_tail": []
+          }
+        },
+        {
+          "state": "2b4aac4e11156cc88d5dabbc1ab92fc1a3219355136ddb384f1559000bc40740",
+          "stratum": "act2:COMBAT:CULTIST+CULTIST+CULTIST",
+          "parent": {
+            "steps": 34,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1500121569260955,
+            "final_act": 2,
+            "final_floor": 27,
+            "final_hp": 0,
+            "cycle_tail": []
+          },
+          "candidate": {
+            "steps": 54,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.150012100348249,
+            "final_act": 2,
+            "final_floor": 28,
+            "final_hp": 0,
+            "cycle_tail": []
+          }
+        },
+        {
+          "state": "649e2ad34a6d0115227e55576c0186a1876fcda27ceeebcc6d7b63d489151ff4",
+          "stratum": "act2:COMBAT:THE_COLLECTOR",
+          "parent": {
+            "steps": 24,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1866666118148714,
+            "final_act": 2,
+            "final_floor": 33,
+            "final_hp": 0,
+            "cycle_tail": []
+          },
+          "candidate": {
+            "steps": 23,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1866666118148714,
+            "final_act": 2,
+            "final_floor": 33,
+            "final_hp": 0,
+            "cycle_tail": []
+          }
+        },
+        {
+          "state": "0af084b7b56c0523653ad3bf23e551cbb34bedfa8290f46465ab2accc5ad6041",
+          "stratum": "act2:COMBAT:LOOTER+MUGGER",
+          "parent": {
+            "steps": 20,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1076718564145267,
+            "final_act": 2,
+            "final_floor": 22,
+            "final_hp": 0,
+            "cycle_tail": []
+          },
+          "candidate": {
+            "steps": 68,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1076718280091882,
+            "final_act": 2,
+            "final_floor": 28,
+            "final_hp": 0,
+            "cycle_tail": []
+          }
+        },
+        {
+          "state": "223e389085f942ee9c953a8db7c2479ce462cceb1022d28ed102c6a6d3083d9d",
+          "stratum": "act2:COMBAT:CULTIST+CULTIST+CULTIST",
+          "parent": {
+            "steps": 38,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1563636689679697,
+            "final_act": 2,
+            "final_floor": 27,
+            "final_hp": 0,
+            "cycle_tail": []
+          },
+          "candidate": {
+            "steps": 15,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1563636591890827,
+            "final_act": 2,
+            "final_floor": 24,
+            "final_hp": 0,
+            "cycle_tail": []
+          }
+        },
+        {
+          "state": "029e0efad372daa086e8bcc9ec1a2da72544e15d3d14d669a6f742e008560043",
+          "stratum": "act2:COMBAT:LOOTER+MUGGER",
+          "parent": {
+            "steps": 64,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1209312821738422,
+            "final_act": 2,
+            "final_floor": 21,
+            "final_hp": 0,
+            "cycle_tail": []
+          },
+          "candidate": {
+            "steps": 46,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1209312877617776,
+            "final_act": 2,
+            "final_floor": 20,
+            "final_hp": 0,
+            "cycle_tail": []
+          }
+        },
+        {
+          "state": "124f3daf1911f81463e30612db0117d9d22dbb9f8269a5e05afe66dbc63d3e3c",
+          "stratum": "act2:COMBAT:LOOTER+MUGGER",
+          "parent": {
+            "steps": 46,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1226749909692444,
+            "final_act": 2,
+            "final_floor": 21,
+            "final_hp": 0,
+            "cycle_tail": []
+          },
+          "candidate": {
+            "steps": 67,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1226749823545106,
+            "final_act": 2,
+            "final_floor": 24,
+            "final_hp": 0,
+            "cycle_tail": []
+          }
+        },
+        {
+          "state": "089d59f887b77bb9d843d16b0f32b4ba373518a6f65e0a6b19104261adaf27c4",
+          "stratum": "act2:COMBAT:SNECKO",
+          "parent": {
+            "steps": 56,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1486061062314548,
+            "final_act": 2,
+            "final_floor": 33,
+            "final_hp": 0,
+            "cycle_tail": []
+          },
+          "candidate": {
+            "steps": 56,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1486060043680482,
+            "final_act": 2,
+            "final_floor": 33,
+            "final_hp": 0,
+            "cycle_tail": []
+          }
+        },
+        {
+          "state": "3101683cba45b3eecd32ffebc9be39cc5ff893d1a0f21170226b046b5b34f869",
+          "stratum": "act2:COMBAT:THE_COLLECTOR",
+          "parent": {
+            "steps": 37,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1827907292172313,
+            "final_act": 2,
+            "final_floor": 33,
+            "final_hp": 0,
+            "cycle_tail": []
+          },
+          "candidate": {
+            "steps": 37,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.182790678110905,
+            "final_act": 2,
+            "final_floor": 33,
+            "final_hp": 0,
+            "cycle_tail": []
+          }
+        },
+        {
+          "state": "018118cb273976281170db13d39658eb609bb6a1be0eff84aedad404425616c3",
+          "stratum": "act2:COMBAT:LOOTER+MUGGER",
+          "parent": {
+            "steps": 64,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1102727189427242,
+            "final_act": 2,
+            "final_floor": 24,
+            "final_hp": 0,
+            "cycle_tail": []
+          },
+          "candidate": {
+            "steps": 77,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1102727103279904,
+            "final_act": 2,
+            "final_floor": 25,
+            "final_hp": 0,
+            "cycle_tail": []
+          }
+        },
+        {
+          "state": "02b495f22c6197956ef3cb308ad920aaf610a15800f10f4fead30346890e064e",
+          "stratum": "act2:COMBAT:SNECKO",
+          "parent": {
+            "steps": 101,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.117666696663946,
+            "final_act": 2,
+            "final_floor": 33,
+            "final_hp": 0,
+            "cycle_tail": []
+          },
+          "candidate": {
+            "steps": 98,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1176666490500793,
+            "final_act": 2,
+            "final_floor": 33,
+            "final_hp": 0,
+            "cycle_tail": []
+          }
+        },
+        {
+          "state": "002a597d49c498993e55a5dae8230cfbb8c9ac83f7a4c1a67b83f10a841f4f4c",
+          "stratum": "act2:COMBAT:SNECKO",
+          "parent": {
+            "steps": 129,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1355636744992808,
+            "final_act": 2,
+            "final_floor": 33,
+            "final_hp": 0,
+            "cycle_tail": []
+          },
+          "candidate": {
+            "steps": 120,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1355636924272403,
+            "final_act": 2,
+            "final_floor": 33,
+            "final_hp": 0,
+            "cycle_tail": []
+          }
+        },
+        {
+          "state": "00c8061b3cde3814d855f37ca0c64c9de8318662963b30d04de77f88bb0e2c62",
+          "stratum": "act2:COMBAT:THE_COLLECTOR",
+          "parent": {
+            "steps": 21,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1957333348691463,
+            "final_act": 2,
+            "final_floor": 33,
+            "final_hp": 0,
+            "cycle_tail": []
+          },
+          "candidate": {
+            "steps": 21,
+            "complete": true,
+            "reason": "DEATH",
+            "success": false,
+            "shaped_return": -1.1957333348691463,
+            "final_act": 2,
+            "final_floor": 33,
+            "final_hp": 0,
+            "cycle_tail": []
+          }
+        }
+      ]
+    }
+  },
+  "complete_behavior_returns": [
+    {
+      "trajectory": "parent90-8000013004053",
+      "model": "parent90",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 176,
+      "initial_prediction": 0.5630782842636108,
+      "initial_mc_return": -1.0362666376167908,
+      "mse": 2.335126626138464,
+      "by_act": {
+        "1": {
+          "samples": 93,
+          "mse": 2.834387097781112
+        },
+        "2": {
+          "samples": 83,
+          "mse": 1.7757142904424852
+        }
+      }
+    },
+    {
+      "trajectory": "criticbest-8000013004053",
+      "model": "criticbest",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 169,
+      "initial_prediction": -0.960018515586853,
+      "initial_mc_return": -1.0362666905857623,
+      "mse": 0.002259539493330227,
+      "by_act": {
+        "1": {
+          "samples": 89,
+          "mse": 0.0025280043555643062
+        },
+        "2": {
+          "samples": 80,
+          "mse": 0.001960872334094814
+        }
+      }
+    },
+    {
+      "trajectory": "critic94-8000013004053",
+      "model": "critic94",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 169,
+      "initial_prediction": -0.9869488477706909,
+      "initial_mc_return": -1.0362666866276413,
+      "mse": 0.0005270109419599784,
+      "by_act": {
+        "1": {
+          "samples": 99,
+          "mse": 0.0005069976396466894
+        },
+        "2": {
+          "samples": 70,
+          "mse": 0.0005553154695173442
+        }
+      }
+    },
+    {
+      "trajectory": "criticlatest-8000013004053",
+      "model": "criticlatest",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 104,
+      "initial_prediction": -1.0025386810302734,
+      "initial_mc_return": -1.0362666401197203,
+      "mse": 0.0007254159589486416,
+      "by_act": {
+        "1": {
+          "samples": 104,
+          "mse": 0.0007254159589486416
+        }
+      }
+    },
+    {
+      "trajectory": "parent90-8000013003903",
+      "model": "parent90",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 309,
+      "initial_prediction": 0.6162857413291931,
+      "initial_mc_return": -1.0362666871515103,
+      "mse": 2.8162842902983516,
+      "by_act": {
+        "1": {
+          "samples": 227,
+          "mse": 2.732184641008587
+        },
+        "2": {
+          "samples": 82,
+          "mse": 3.04909673406392
+        }
+      }
+    },
+    {
+      "trajectory": "criticbest-8000013003903",
+      "model": "criticbest",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 180,
+      "initial_prediction": -1.0054248571395874,
+      "initial_mc_return": -1.0362667221052106,
+      "mse": 0.0019043253511559603,
+      "by_act": {
+        "1": {
+          "samples": 180,
+          "mse": 0.0019043253511559603
+        }
+      }
+    },
+    {
+      "trajectory": "critic94-8000013003903",
+      "model": "critic94",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 227,
+      "initial_prediction": -1.0123999118804932,
+      "initial_mc_return": -1.0362667044100817,
+      "mse": 0.000522696656634268,
+      "by_act": {
+        "1": {
+          "samples": 227,
+          "mse": 0.000522696656634268
+        }
+      }
+    },
+    {
+      "trajectory": "criticlatest-8000013003903",
+      "model": "criticlatest",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 125,
+      "initial_prediction": -1.021396517753601,
+      "initial_mc_return": -1.0362666657892987,
+      "mse": 0.0004364603773583927,
+      "by_act": {
+        "1": {
+          "samples": 125,
+          "mse": 0.0004364603773583927
+        }
+      }
+    },
+    {
+      "trajectory": "parent90-8000013001221",
+      "model": "parent90",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 317,
+      "initial_prediction": 0.5564900636672974,
+      "initial_mc_return": -1.0362667001318187,
+      "mse": 2.1605917151395735,
+      "by_act": {
+        "1": {
+          "samples": 132,
+          "mse": 2.003334366688615
+        },
+        "2": {
+          "samples": 185,
+          "mse": 2.2727969583586356
+        }
+      }
+    },
+    {
+      "trajectory": "criticbest-8000013001221",
+      "model": "criticbest",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 139,
+      "initial_prediction": -0.9705764055252075,
+      "initial_mc_return": -1.0362667079316452,
+      "mse": 0.001908979909795657,
+      "by_act": {
+        "1": {
+          "samples": 139,
+          "mse": 0.001908979909795657
+        }
+      }
+    },
+    {
+      "trajectory": "critic94-8000013001221",
+      "model": "critic94",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 150,
+      "initial_prediction": -0.9940310716629028,
+      "initial_mc_return": -1.036266626091674,
+      "mse": 0.0012000929423456454,
+      "by_act": {
+        "1": {
+          "samples": 150,
+          "mse": 0.0012000929423456454
+        }
+      }
+    },
+    {
+      "trajectory": "criticlatest-8000013001221",
+      "model": "criticlatest",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 144,
+      "initial_prediction": -1.007249116897583,
+      "initial_mc_return": -1.0362666354048997,
+      "mse": 0.0005251537948731013,
+      "by_act": {
+        "1": {
+          "samples": 144,
+          "mse": 0.0005251537948731013
+        }
+      }
+    },
+    {
+      "trajectory": "parent90-8000013003896",
+      "model": "parent90",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 271,
+      "initial_prediction": 0.45778888463974,
+      "initial_mc_return": -1.0362667039735243,
+      "mse": 2.9020922857250593,
+      "by_act": {
+        "1": {
+          "samples": 179,
+          "mse": 2.6024934308104926
+        },
+        "2": {
+          "samples": 92,
+          "mse": 3.485007449091445
+        }
+      }
+    },
+    {
+      "trajectory": "criticbest-8000013003896",
+      "model": "criticbest",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 143,
+      "initial_prediction": -1.0063410997390747,
+      "initial_mc_return": -1.036266724433517,
+      "mse": 0.001013680058989793,
+      "by_act": {
+        "1": {
+          "samples": 143,
+          "mse": 0.001013680058989793
+        }
+      }
+    },
+    {
+      "trajectory": "critic94-8000013003896",
+      "model": "critic94",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 137,
+      "initial_prediction": -1.0129727125167847,
+      "initial_mc_return": -1.0362666080181953,
+      "mse": 0.0009902714801217148,
+      "by_act": {
+        "1": {
+          "samples": 137,
+          "mse": 0.0009902714801217148
+        }
+      }
+    },
+    {
+      "trajectory": "criticlatest-8000013003896",
+      "model": "criticlatest",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 127,
+      "initial_prediction": -1.0192773342132568,
+      "initial_mc_return": -1.0362667159060948,
+      "mse": 0.000614918914253817,
+      "by_act": {
+        "1": {
+          "samples": 127,
+          "mse": 0.000614918914253817
+        }
+      }
+    },
+    {
+      "trajectory": "parent90-8000013004047",
+      "model": "parent90",
+      "complete": true,
+      "reason": "cycle_limit",
+      "samples": 215,
+      "initial_prediction": 0.45977669954299927,
+      "initial_mc_return": -1.036266663693823,
+      "mse": 3.271152080735411,
+      "by_act": {
+        "1": {
+          "samples": 215,
+          "mse": 3.271152080735411
+        }
+      }
+    },
+    {
+      "trajectory": "criticbest-8000013004047",
+      "model": "criticbest",
+      "complete": true,
+      "reason": "cycle_limit",
+      "samples": 223,
+      "initial_prediction": -1.0667489767074585,
+      "initial_mc_return": -1.0362666711444035,
+      "mse": 0.002252858577296915,
+      "by_act": {
+        "1": {
+          "samples": 223,
+          "mse": 0.002252858577296915
+        }
+      }
+    },
+    {
+      "trajectory": "critic94-8000013004047",
+      "model": "critic94",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 418,
+      "initial_prediction": -1.042927861213684,
+      "initial_mc_return": -1.0362666768487543,
+      "mse": 0.003653596185914989,
+      "by_act": {
+        "1": {
+          "samples": 217,
+          "mse": 0.001616522860022197
+        },
+        "2": {
+          "samples": 201,
+          "mse": 0.005852824602426113
+        }
+      }
+    },
+    {
+      "trajectory": "criticlatest-8000013004047",
+      "model": "criticlatest",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 329,
+      "initial_prediction": -1.0457699298858643,
+      "initial_mc_return": -1.0362666443106718,
+      "mse": 0.001645346238496668,
+      "by_act": {
+        "1": {
+          "samples": 229,
+          "mse": 0.001975975270388958
+        },
+        "2": {
+          "samples": 100,
+          "mse": 0.0008882057554633238
+        }
+      }
+    },
+    {
+      "trajectory": "parent90-8000013001510",
+      "model": "parent90",
+      "complete": true,
+      "reason": "cycle_limit",
+      "samples": 195,
+      "initial_prediction": 0.5709952712059021,
+      "initial_mc_return": -1.0362666825240012,
+      "mse": 3.1500176270134013,
+      "by_act": {
+        "1": {
+          "samples": 195,
+          "mse": 3.1500176270134013
+        }
+      }
+    },
+    {
+      "trajectory": "criticbest-8000013001510",
+      "model": "criticbest",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 335,
+      "initial_prediction": -1.0224418640136719,
+      "initial_mc_return": -1.0362666485307273,
+      "mse": 0.004584540631089917,
+      "by_act": {
+        "1": {
+          "samples": 187,
+          "mse": 0.0025924694893968083
+        },
+        "2": {
+          "samples": 148,
+          "mse": 0.007101549438499453
+        }
+      }
+    },
+    {
+      "trajectory": "critic94-8000013001510",
+      "model": "critic94",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 301,
+      "initial_prediction": -1.0216935873031616,
+      "initial_mc_return": -1.0362666494620498,
+      "mse": 0.0017677661455968293,
+      "by_act": {
+        "1": {
+          "samples": 184,
+          "mse": 0.0005317262827508237
+        },
+        "2": {
+          "samples": 117,
+          "mse": 0.0037116237076794366
+        }
+      }
+    },
+    {
+      "trajectory": "criticlatest-8000013001510",
+      "model": "criticlatest",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 314,
+      "initial_prediction": -1.0261623859405518,
+      "initial_mc_return": -1.0362666536530014,
+      "mse": 0.0004889810433100549,
+      "by_act": {
+        "1": {
+          "samples": 207,
+          "mse": 0.00040143771232100403
+        },
+        "2": {
+          "samples": 107,
+          "mse": 0.0006583405714851344
+        }
+      }
+    },
+    {
+      "trajectory": "parent90-8000013000210",
+      "model": "parent90",
+      "complete": true,
+      "reason": "cycle_limit",
+      "samples": 191,
+      "initial_prediction": 0.4475039839744568,
+      "initial_mc_return": -1.0362666699511465,
+      "mse": 3.02039559371273,
+      "by_act": {
+        "1": {
+          "samples": 191,
+          "mse": 3.02039559371273
+        }
+      }
+    },
+    {
+      "trajectory": "criticbest-8000013000210",
+      "model": "criticbest",
+      "complete": true,
+      "reason": "cycle_limit",
+      "samples": 202,
+      "initial_prediction": -1.0768122673034668,
+      "initial_mc_return": -1.0362666848523077,
+      "mse": 0.0020080510177862844,
+      "by_act": {
+        "1": {
+          "samples": 202,
+          "mse": 0.0020080510177862844
+        }
+      }
+    },
+    {
+      "trajectory": "critic94-8000013000210",
+      "model": "critic94",
+      "complete": true,
+      "reason": "cycle_limit",
+      "samples": 229,
+      "initial_prediction": -1.0500906705856323,
+      "initial_mc_return": -1.036266688577598,
+      "mse": 0.0023800644986838107,
+      "by_act": {
+        "1": {
+          "samples": 229,
+          "mse": 0.0023800644986838107
+        }
+      }
+    },
+    {
+      "trajectory": "criticlatest-8000013000210",
+      "model": "criticlatest",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 308,
+      "initial_prediction": -1.038547396659851,
+      "initial_mc_return": -1.0362666872970294,
+      "mse": 0.0023810406158030783,
+      "by_act": {
+        "1": {
+          "samples": 195,
+          "mse": 0.001744354356920043
+        },
+        "2": {
+          "samples": 113,
+          "mse": 0.003479746991751679
+        }
+      }
+    },
+    {
+      "trajectory": "parent90-8000013003061",
+      "model": "parent90",
+      "complete": true,
+      "reason": "cycle_limit",
+      "samples": 207,
+      "initial_prediction": 0.5633019208908081,
+      "initial_mc_return": -1.0362666838336736,
+      "mse": 2.7574200894723013,
+      "by_act": {
+        "1": {
+          "samples": 207,
+          "mse": 2.7574200894723013
+        }
+      }
+    },
+    {
+      "trajectory": "criticbest-8000013003061",
+      "model": "criticbest",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 145,
+      "initial_prediction": -1.030987024307251,
+      "initial_mc_return": -1.0362667188746855,
+      "mse": 0.0012202045382649028,
+      "by_act": {
+        "1": {
+          "samples": 145,
+          "mse": 0.0012202045382649028
+        }
+      }
+    },
+    {
+      "trajectory": "critic94-8000013003061",
+      "model": "critic94",
+      "complete": true,
+      "reason": "cycle_limit",
+      "samples": 221,
+      "initial_prediction": -1.0445713996887207,
+      "initial_mc_return": -1.036266682029236,
+      "mse": 0.0009025479854201993,
+      "by_act": {
+        "1": {
+          "samples": 221,
+          "mse": 0.0009025479854201993
+        }
+      }
+    },
+    {
+      "trajectory": "criticlatest-8000013003061",
+      "model": "criticlatest",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 258,
+      "initial_prediction": -1.032599687576294,
+      "initial_mc_return": -1.036266686685849,
+      "mse": 0.0006388457941181047,
+      "by_act": {
+        "1": {
+          "samples": 219,
+          "mse": 0.0006017775247118595
+        },
+        "2": {
+          "samples": 39,
+          "mse": 0.0008469983838608664
+        }
+      }
+    },
+    {
+      "trajectory": "parent90-8000013002280",
+      "model": "parent90",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 238,
+      "initial_prediction": 0.6237472295761108,
+      "initial_mc_return": -1.036266615945351,
+      "mse": 2.890387865411634,
+      "by_act": {
+        "1": {
+          "samples": 179,
+          "mse": 3.0022836703033295
+        },
+        "2": {
+          "samples": 59,
+          "mse": 2.550907372604625
+        }
+      }
+    },
+    {
+      "trajectory": "criticbest-8000013002280",
+      "model": "criticbest",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 369,
+      "initial_prediction": -1.0124565362930298,
+      "initial_mc_return": -1.0362666501896456,
+      "mse": 0.008970066252905437,
+      "by_act": {
+        "1": {
+          "samples": 127,
+          "mse": 0.0014243207488458727
+        },
+        "2": {
+          "samples": 242,
+          "mse": 0.012930023604209423
+        }
+      }
+    },
+    {
+      "trajectory": "critic94-8000013002280",
+      "model": "critic94",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 218,
+      "initial_prediction": -1.0291444063186646,
+      "initial_mc_return": -1.0362666497239843,
+      "mse": 0.0008219972783074964,
+      "by_act": {
+        "1": {
+          "samples": 153,
+          "mse": 0.0009630029814471005
+        },
+        "2": {
+          "samples": 65,
+          "mse": 0.0004900915463019669
+        }
+      }
+    },
+    {
+      "trajectory": "criticlatest-8000013002280",
+      "model": "criticlatest",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 341,
+      "initial_prediction": -1.028685450553894,
+      "initial_mc_return": -1.0362666954752058,
+      "mse": 0.0017721534580267709,
+      "by_act": {
+        "1": {
+          "samples": 138,
+          "mse": 0.0009742543739311624
+        },
+        "2": {
+          "samples": 203,
+          "mse": 0.0023145676137173816
+        }
+      }
+    },
+    {
+      "trajectory": "parent90-8000013002201",
+      "model": "parent90",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 276,
+      "initial_prediction": 0.43013858795166016,
+      "initial_mc_return": -1.0362666895380244,
+      "mse": 2.9051649612719848,
+      "by_act": {
+        "1": {
+          "samples": 219,
+          "mse": 2.80773185113758
+        },
+        "2": {
+          "samples": 57,
+          "mse": 3.279513226525224
+        }
+      }
+    },
+    {
+      "trajectory": "criticbest-8000013002201",
+      "model": "criticbest",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 334,
+      "initial_prediction": -1.004281759262085,
+      "initial_mc_return": -1.0362666618893854,
+      "mse": 0.0025205405392103863,
+      "by_act": {
+        "1": {
+          "samples": 226,
+          "mse": 0.0027023426690556684
+        },
+        "2": {
+          "samples": 108,
+          "mse": 0.0021401027489785923
+        }
+      }
+    },
+    {
+      "trajectory": "critic94-8000013002201",
+      "model": "critic94",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 353,
+      "initial_prediction": -1.0098042488098145,
+      "initial_mc_return": -1.0362666615983471,
+      "mse": 0.0015779601838067647,
+      "by_act": {
+        "1": {
+          "samples": 262,
+          "mse": 0.000996767607287664
+        },
+        "2": {
+          "samples": 91,
+          "mse": 0.003251283865652967
+        }
+      }
+    },
+    {
+      "trajectory": "criticlatest-8000013002201",
+      "model": "criticlatest",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 349,
+      "initial_prediction": -1.0178380012512207,
+      "initial_mc_return": -1.0362666675937362,
+      "mse": 0.0012436965523681537,
+      "by_act": {
+        "1": {
+          "samples": 229,
+          "mse": 0.0004880233480387952
+        },
+        "2": {
+          "samples": 120,
+          "mse": 0.00268577291729668
+        }
+      }
+    },
+    {
+      "trajectory": "parent90-8000013000765",
+      "model": "parent90",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 221,
+      "initial_prediction": 0.5576116442680359,
+      "initial_mc_return": -1.0362666306536994,
+      "mse": 1.7267055984449058,
+      "by_act": {
+        "1": {
+          "samples": 172,
+          "mse": 2.0636979629207874
+        },
+        "2": {
+          "samples": 49,
+          "mse": 0.5437936251826282
+        }
+      }
+    },
+    {
+      "trajectory": "criticbest-8000013000765",
+      "model": "criticbest",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 176,
+      "initial_prediction": -1.0098069906234741,
+      "initial_mc_return": -1.0362667159934063,
+      "mse": 0.0049665269945984546,
+      "by_act": {
+        "1": {
+          "samples": 176,
+          "mse": 0.0049665269945984546
+        }
+      }
+    },
+    {
+      "trajectory": "critic94-8000013000765",
+      "model": "critic94",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 189,
+      "initial_prediction": -1.0334819555282593,
+      "initial_mc_return": -1.0362666953587905,
+      "mse": 0.000810554061816924,
+      "by_act": {
+        "1": {
+          "samples": 189,
+          "mse": 0.000810554061816924
+        }
+      }
+    },
+    {
+      "trajectory": "criticlatest-8000013000765",
+      "model": "criticlatest",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 153,
+      "initial_prediction": -1.021462321281433,
+      "initial_mc_return": -1.036266637063818,
+      "mse": 0.00042757292772645174,
+      "by_act": {
+        "1": {
+          "samples": 153,
+          "mse": 0.00042757292772645174
+        }
+      }
+    },
+    {
+      "trajectory": "parent90-8000013001516",
+      "model": "parent90",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 257,
+      "initial_prediction": 0.574187159538269,
+      "initial_mc_return": -1.0362667088920716,
+      "mse": 3.090923622143439,
+      "by_act": {
+        "1": {
+          "samples": 163,
+          "mse": 3.1147560597731365
+        },
+        "2": {
+          "samples": 94,
+          "mse": 3.049597161147261
+        }
+      }
+    },
+    {
+      "trajectory": "criticbest-8000013001516",
+      "model": "criticbest",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 273,
+      "initial_prediction": -1.0122129917144775,
+      "initial_mc_return": -1.0362667096196674,
+      "mse": 0.005838807910848162,
+      "by_act": {
+        "1": {
+          "samples": 169,
+          "mse": 0.0046729651188848935
+        },
+        "2": {
+          "samples": 104,
+          "mse": 0.007733302447788474
+        }
+      }
+    },
+    {
+      "trajectory": "critic94-8000013001516",
+      "model": "critic94",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 235,
+      "initial_prediction": -1.0368133783340454,
+      "initial_mc_return": -1.0362666093569715,
+      "mse": 0.001886170722783846,
+      "by_act": {
+        "1": {
+          "samples": 180,
+          "mse": 0.0017882545406138562
+        },
+        "2": {
+          "samples": 55,
+          "mse": 0.0022066236826129037
+        }
+      }
+    },
+    {
+      "trajectory": "criticlatest-8000013001516",
+      "model": "criticlatest",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 114,
+      "initial_prediction": -1.0256186723709106,
+      "initial_mc_return": -1.0362666175351478,
+      "mse": 0.001589536950300131,
+      "by_act": {
+        "1": {
+          "samples": 114,
+          "mse": 0.001589536950300131
+        }
+      }
+    },
+    {
+      "trajectory": "parent90-8000013000969",
+      "model": "parent90",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 231,
+      "initial_prediction": 0.5117186307907104,
+      "initial_mc_return": -1.0362666665459983,
+      "mse": 2.020638959397017,
+      "by_act": {
+        "1": {
+          "samples": 191,
+          "mse": 1.9005083109959036
+        },
+        "2": {
+          "samples": 40,
+          "mse": 2.5942628055123333
+        }
+      }
+    },
+    {
+      "trajectory": "criticbest-8000013000969",
+      "model": "criticbest",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 347,
+      "initial_prediction": -1.051079273223877,
+      "initial_mc_return": -1.0362666373257525,
+      "mse": 0.004558809073900852,
+      "by_act": {
+        "1": {
+          "samples": 179,
+          "mse": 0.003676483781182237
+        },
+        "2": {
+          "samples": 168,
+          "mse": 0.005498905665547471
+        }
+      }
+    },
+    {
+      "trajectory": "critic94-8000013000969",
+      "model": "critic94",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 272,
+      "initial_prediction": -1.0393550395965576,
+      "initial_mc_return": -1.036266682029236,
+      "mse": 0.0013322345070892045,
+      "by_act": {
+        "1": {
+          "samples": 201,
+          "mse": 0.0011810418709414933
+        },
+        "2": {
+          "samples": 71,
+          "mse": 0.001760258730549626
+        }
+      }
+    },
+    {
+      "trajectory": "criticlatest-8000013000969",
+      "model": "criticlatest",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 344,
+      "initial_prediction": -1.0339806079864502,
+      "initial_mc_return": -1.0362666099099442,
+      "mse": 0.0018962932950225078,
+      "by_act": {
+        "1": {
+          "samples": 190,
+          "mse": 0.0008347929396016038
+        },
+        "2": {
+          "samples": 154,
+          "mse": 0.003205936590671675
+        }
+      }
+    },
+    {
+      "trajectory": "parent90-8000013000469",
+      "model": "parent90",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 364,
+      "initial_prediction": 0.591621994972229,
+      "initial_mc_return": -1.0362666962755611,
+      "mse": 3.0949285871354872,
+      "by_act": {
+        "1": {
+          "samples": 151,
+          "mse": 3.44120871850494
+        },
+        "2": {
+          "samples": 213,
+          "mse": 2.849443611375922
+        }
+      }
+    },
+    {
+      "trajectory": "criticbest-8000013000469",
+      "model": "criticbest",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 234,
+      "initial_prediction": -1.0147689580917358,
+      "initial_mc_return": -1.0362667069130111,
+      "mse": 0.003583938252909948,
+      "by_act": {
+        "1": {
+          "samples": 166,
+          "mse": 0.002748720716312785
+        },
+        "2": {
+          "samples": 68,
+          "mse": 0.00562285165107361
+        }
+      }
+    },
+    {
+      "trajectory": "critic94-8000013000469",
+      "model": "critic94",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 255,
+      "initial_prediction": -1.0155279636383057,
+      "initial_mc_return": -1.0362666179717053,
+      "mse": 0.0012237073495455684,
+      "by_act": {
+        "1": {
+          "samples": 162,
+          "mse": 0.0012575183530253954
+        },
+        "2": {
+          "samples": 93,
+          "mse": 0.0011648107628387727
+        }
+      }
+    },
+    {
+      "trajectory": "criticlatest-8000013000469",
+      "model": "criticlatest",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 253,
+      "initial_prediction": -1.0235295295715332,
+      "initial_mc_return": -1.0362666903529316,
+      "mse": 0.0014141296614264547,
+      "by_act": {
+        "1": {
+          "samples": 157,
+          "mse": 0.0011888431883717962
+        },
+        "2": {
+          "samples": 96,
+          "mse": 0.001782566914234594
+        }
+      }
+    },
+    {
+      "trajectory": "parent90-8000013002245",
+      "model": "parent90",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 259,
+      "initial_prediction": 0.6455622315406799,
+      "initial_mc_return": -1.0362667130539194,
+      "mse": 1.7820382449800303,
+      "by_act": {
+        "1": {
+          "samples": 181,
+          "mse": 2.303868934180296
+        },
+        "2": {
+          "samples": 78,
+          "mse": 0.5711234405537732
+        }
+      }
+    },
+    {
+      "trajectory": "criticbest-8000013002245",
+      "model": "criticbest",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 324,
+      "initial_prediction": -1.0112764835357666,
+      "initial_mc_return": -1.036266696290113,
+      "mse": 0.003127965166454799,
+      "by_act": {
+        "1": {
+          "samples": 165,
+          "mse": 0.0012150380048979973
+        },
+        "2": {
+          "samples": 159,
+          "mse": 0.005113078258636386
+        }
+      }
+    },
+    {
+      "trajectory": "critic94-8000013002245",
+      "model": "critic94",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 277,
+      "initial_prediction": -1.024376630783081,
+      "initial_mc_return": -1.0362666490837,
+      "mse": 0.0014483901018956249,
+      "by_act": {
+        "1": {
+          "samples": 194,
+          "mse": 0.0012180159832167073
+        },
+        "2": {
+          "samples": 83,
+          "mse": 0.001986854909410203
+        }
+      }
+    },
+    {
+      "trajectory": "criticlatest-8000013002245",
+      "model": "criticlatest",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 198,
+      "initial_prediction": -1.0266834497451782,
+      "initial_mc_return": -1.0362666880828328,
+      "mse": 0.00020238710762080636,
+      "by_act": {
+        "1": {
+          "samples": 198,
+          "mse": 0.00020238710762080636
+        }
+      }
+    },
+    {
+      "trajectory": "parent90-8000013003081",
+      "model": "parent90",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 208,
+      "initial_prediction": 0.6571536064147949,
+      "initial_mc_return": -1.0362666630826425,
+      "mse": 2.6295004570246543,
+      "by_act": {
+        "1": {
+          "samples": 129,
+          "mse": 3.1163607979081775
+        },
+        "2": {
+          "samples": 79,
+          "mse": 1.8345006598857363
+        }
+      }
+    },
+    {
+      "trajectory": "criticbest-8000013003081",
+      "model": "criticbest",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 323,
+      "initial_prediction": -0.9905569553375244,
+      "initial_mc_return": -1.0362667152076028,
+      "mse": 0.007263460877258426,
+      "by_act": {
+        "1": {
+          "samples": 140,
+          "mse": 0.0020694509671128126
+        },
+        "2": {
+          "samples": 183,
+          "mse": 0.011237020371358895
+        }
+      }
+    },
+    {
+      "trajectory": "critic94-8000013003081",
+      "model": "critic94",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 327,
+      "initial_prediction": -1.0122119188308716,
+      "initial_mc_return": -1.0362666685250588,
+      "mse": 0.002431811060875042,
+      "by_act": {
+        "1": {
+          "samples": 140,
+          "mse": 0.0008996362692848056
+        },
+        "2": {
+          "samples": 187,
+          "mse": 0.0035788937925468767
+        }
+      }
+    },
+    {
+      "trajectory": "criticlatest-8000013003081",
+      "model": "criticlatest",
+      "complete": true,
+      "reason": "DEATH",
+      "samples": 246,
+      "initial_prediction": -1.0123714208602905,
+      "initial_mc_return": -1.0362666111323051,
+      "mse": 0.0009961831164836718,
+      "by_act": {
+        "1": {
+          "samples": 188,
+          "mse": 0.0009147454637180279
+        },
+        "2": {
+          "samples": 58,
+          "mse": 0.0012601534392412766
+        }
+      }
+    }
+  ],
+  "recorded_training_implementation_digests": [
+    "081a513f9f2ece9185c31076aaf590b53fea044f1ceafe1f9ef86ae12509e489",
+    "174e21caa9ab1fffb6764cbcb2b0d44a44d6e49a921ec107ff149a272c1c1b50",
+    "35706a08ecbabd649605d2b14bec2e3b25935ce905e0d8c56835608fb3213202",
+    "3cc660ab06d68bd23e3205e36cfdf3fab626620f7a92e566cda3c2b4eb6b030e",
+    "40ae2b81b499c947e8d011386f7a9e0fba3bc6d7939ad2c4538824d2a4378829",
+    "cf16f1e9b03aaee17359c0501d812a2c49db1876fe3d3c6f26fe873a9b87cad0",
+    "ea4d084812288bb8cee34a8a5b0af065e19d12948f133e4097c4e66585ee16ad"
+  ],
+  "claim": "Failure-selected CPU diagnostics; not formal win rates or causal attribution",
+  "provenance_note": "Captured while unrelated research training modules were developed. Read-only inference, model, encoder, reward, limiter and native sources stayed fixed; each corpus preserves its contemporaneous implementation digest."
+}
