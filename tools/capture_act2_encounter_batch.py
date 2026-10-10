@@ -149,6 +149,14 @@ def main() -> int:
                     session.execute('choose 0')
                 from sls.audit.boss_flow import collect_act4_map_entry
                 row['act4_entry'] = collect_act4_map_entry(lambda: session.execute('state'))
+            if scene and scene.get('collect_key_gate_outcome'):
+                if scene.get('collect_act4_entry') or not scene.get('collect_victory_room_entry'):
+                    raise ValueError('key gate needs exclusive witnessed VictoryRoom flow')
+                from sls.audit.boss_flow import collect_key_gate_outcome
+                row['key_gate_outcome'] = collect_key_gate_outcome(
+                    lambda: session.execute('state'), session.execute, scene['initial']['keys'])
+                if row['key_gate_outcome']['status'] == 'ACT4_MAP_ENTRY':
+                    row['act4_entry'] = row['key_gate_outcome']['boundary']
             # Flush raw evidence after each completed run; append only in this
             # exclusively-created result, never replace evidence from prior runs.
             args.output.parent.mkdir(parents=True, exist_ok=True)

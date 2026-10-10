@@ -8,6 +8,50 @@ BOSSES = {'TIME_EATER': 'Time Eater', 'AWAKENED_ONE': 'Awakened One',
           'DONU_AND_DECA': 'Donu and Deca'}
 
 
+def collect_key_gate_outcome(get_state, send_command, keys, *, timeout=30,
+                             clock=time.monotonic, sleep=time.sleep):
+    """Advance real SpireHeart dialogue to Act4 or stock Act3 ending.
+
+    Initial keys are controlled; never set flags or bypass stock event choices.
+    Return raw history and commands, not a win-rate classification.
+    """
+    if not 0 < timeout <= 30 or len(set(keys)) != len(keys) or not set(keys) <= {'RUBY', 'EMERALD', 'SAPPHIRE'}:
+        raise ValueError('invalid key gate request')
+    deadline = clock() + timeout
+    history, commands = [], []
+    for _ in range(800):
+        if clock() >= deadline:
+            break
+        payload = get_state()
+        history.append(payload)
+        direct = payload.get('_stock_direct', {})
+        game = payload.get('game_state', {})
+        flags = payload.get('_parity_run', {})
+        if (payload.get('_oracle_mode') != 'validation' or direct.get('ascension') != 20
+                or any(flags.get(field) is not (key in keys) for key, field in
+                       [('RUBY', 'ruby_key'), ('EMERALD', 'emerald_key'), ('SAPPHIRE', 'sapphire_key')])):
+            raise ValueError('stock key gate context changed')
+        if direct.get('act') == 4 and game.get('screen_type') == 'MAP':
+            if set(keys) != {'RUBY', 'EMERALD', 'SAPPHIRE'} or direct.get('dungeon_id') != 'TheEnding':
+                raise ValueError('Act4 entered without declared three-key witness')
+            return dict(status='ACT4_MAP_ENTRY', boundary=payload, history=history, commands=commands)
+        terminal = str(game.get('screen_type', '')).upper() in {'GAME_OVER', 'DEATH', 'VICTORY'}
+        if terminal:
+            if direct.get('act') != 3 or len(keys) == 3:
+                raise ValueError('unexpected stock key gate terminal')
+            return dict(status='ACT3_STOCK_ENDING', boundary=payload, history=history, commands=commands)
+        if direct.get('act') not in (3, 4):
+            raise ValueError('unexpected Act during key gate')
+        if game.get('screen_type') == 'EVENT' and 'choose' in payload.get('available_commands', []):
+            if len(commands) >= 8:
+                raise ValueError('stock dialogue budget exhausted; outcome unfinished')
+            commands.append('choose 0')
+            send_command('choose 0')
+        else:
+            sleep(0.05)
+    raise TimeoutError('stock key gate outcome unfinished')
+
+
 def validate_boss_order(scene):
     initial = scene.get('initial', {})
     if 'boss_order' not in initial:
