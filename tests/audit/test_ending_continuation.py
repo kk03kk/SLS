@@ -6,7 +6,7 @@ from sls.audit.ending_continuation import (
     choose_probe_action,
     collect_ending_continuation,
 )
-from sls.contracts import Action, ActionKind, Card
+from sls.contracts import Action, ActionKind, Card, Enemy
 
 
 def test_probe_selects_actual_public_card_id_and_first_duplicate_instance():
@@ -28,3 +28,18 @@ def test_probe_unsupported_public_choice_fails_instead_of_injecting_action():
 def test_probe_invalid_budget_is_rejected_before_session_access():
     with pytest.raises(ValueError, match='budget'):
         collect_ending_continuation(None, {}, lambda:None, max_decisions=0)
+
+
+def test_heart_end_turn_probe_uses_public_enemy_identity():
+    enemy = Enemy('MONSTER:0','CORRUPT_HEART',800,800,0,'STRONG_DEBUFF',0,0)
+    card = Card('HAND:0','SEARING_BLOW','HAND',30,2,2,True)
+    attack = Action(ActionKind.PLAY_CARD,subject_id=card.instance_id,target_id=enemy.instance_id)
+    end = Action(ActionKind.END_TURN)
+    decision = SimpleNamespace(observation=SimpleNamespace(hand=(card,),enemies=(enemy,)),actions=(attack,end))
+    assert choose_probe_action(decision,policy='HEART_END_TURN') == end
+    assert choose_probe_action(decision) == attack
+
+
+def test_unreviewed_probe_policy_is_rejected_before_session_access():
+    with pytest.raises(ValueError,match='policy'):
+        collect_ending_continuation(None, {}, lambda:None,policy='FORCE_DEATH')

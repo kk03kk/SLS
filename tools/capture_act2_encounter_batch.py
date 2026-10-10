@@ -165,7 +165,8 @@ def main() -> int:
                 def flush_continuation():
                     args.output.parent.mkdir(parents=True, exist_ok=True)
                     args.output.write_text(json.dumps(result, indent=2) + '\n', encoding='utf-8')
-                collect_ending_continuation(session, row['ending_continuation'], flush_continuation)
+                collect_ending_continuation(session, row['ending_continuation'], flush_continuation,
+                                            policy=scene.get('ending_probe_policy', 'ATTACK'))
             # Flush raw evidence after each completed run; append only in this
             # exclusively-created result, never replace evidence from prior runs.
             args.output.parent.mkdir(parents=True, exist_ok=True)

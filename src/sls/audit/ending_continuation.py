@@ -4,8 +4,12 @@ from dataclasses import asdict
 from sls.contracts import ActionKind
 
 
-def choose_probe_action(decision):
+def choose_probe_action(decision, *, policy='ATTACK'):
     """Use only the public decision, with a fixed reproducible action ordering."""
+    if policy not in {'ATTACK', 'HEART_END_TURN'}:
+        raise ValueError('unreviewed public probe policy')
+    if policy == 'HEART_END_TURN' and any(e.monster_id == 'CORRUPT_HEART' for e in decision.observation.enemies):
+        return next(a for a in decision.actions if a.kind == ActionKind.END_TURN)
     cards = {card.instance_id:card.card_id for card in decision.observation.hand}
     plays = [a for a in decision.actions if a.kind == ActionKind.PLAY_CARD
              and cards.get(a.subject_id) == 'SEARING_BLOW']
@@ -21,24 +25,26 @@ def choose_probe_action(decision):
     raise ValueError('public decision has no reviewed probe action')
 
 
-def collect_ending_continuation(session, record, flush, *, max_decisions=128):
+def collect_ending_continuation(session, record, flush, *, max_decisions=128, policy='ATTACK'):
     from sls.backends.original.environment import OriginalBackend
     from sls.curriculum import IRONCLAD_A20_HEART
     if type(max_decisions) is not int or not 1 <= max_decisions <= 256:
         raise ValueError('invalid diagnostic decision budget')
+    if policy not in {'ATTACK', 'HEART_END_TURN'}:
+        raise ValueError('unreviewed public probe policy')
     backend = OriginalBackend(session=session, profile=IRONCLAD_A20_HEART)
     backend._adapted = backend._adapt(session.payload)
     initial = backend._adapted.decision
     if initial.observation.run.act != 4:
         raise ValueError('continuous probe requires witnessed actual Act4 entry')
-    record.update(status='IN_PROGRESS', max_decisions=max_decisions,
+    record.update(status='IN_PROGRESS', max_decisions=max_decisions, policy=policy,
                   initial_raw=session.payload, history=[], training_eligible=False, natural_trajectory=False)
     flush()
     for _ in range(max_decisions):
         decision = backend._adapted.decision
         if decision.terminal:
             raise ValueError('terminal before a recorded transition')
-        action = choose_probe_action(decision)
+        action = choose_probe_action(decision, policy=policy)
         step = dict(observation=decision.observation.to_dict(), legal_actions=[asdict(a) for a in decision.actions],
                     selected_action=asdict(action), before_raw=backend.raw_payload)
         record['history'].append(step)
