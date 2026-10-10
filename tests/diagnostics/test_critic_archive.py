@@ -1,7 +1,10 @@
 """Evidence failure modes must fail closed; partial budget stays partial."""
 import io
+import subprocess
+import sys
 import tarfile
 from dataclasses import replace
+from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
@@ -156,3 +159,41 @@ def test_submission_command_only_runs_separate_qualification(tmp_path):
     assert "--execute-in-allocation" in wrap and "--source-root" in wrap
     assert "--job-name=sls-critic-stopped-eval" in cmd
     assert "train_full_run.py" not in wrap and "--time=12:00:00" in cmd
+
+
+def test_login_submission_entrypoint_never_imports_model_runtime():
+    root = Path(__file__).resolve().parents[2]
+    script = '''
+import importlib.abc
+import runpy
+import sys
+
+class BlockModelRuntime(importlib.abc.MetaPathFinder):
+    def find_spec(self, fullname, path=None, target=None):
+        if fullname.split(".")[0] in {"torch", "numpy"}:
+            raise AssertionError("login node imported model runtime: " + fullname)
+
+sys.meta_path.insert(0, BlockModelRuntime())
+sys.argv = ["tools/submit_stopped_critic_qualification.py", "--help"]
+try:
+    runpy.run_path(sys.argv[0], run_name="__main__")
+except SystemExit as error:
+    assert error.code == 0
+else:
+    raise AssertionError("CLI did not parse --help")
+assert "torch" not in sys.modules and "numpy" not in sys.modules
+'''
+    result = subprocess.run([sys.executable, "-c", script], cwd=root,
+        capture_output=True, text=True, check=False)
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert "--execute-in-allocation" in result.stdout
+
+
+def test_diagnostics_lazy_exports_preserve_public_api():
+    import sls.diagnostics as diagnostics
+    from sls.diagnostics import canary
+
+    for name in diagnostics.__all__:
+        assert getattr(diagnostics, name) is getattr(canary, name)
+    with pytest.raises(AttributeError):
+        getattr(diagnostics, "unknown_export")
