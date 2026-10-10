@@ -1,0 +1,202 @@
+{
+  "schema": "sls-natural-emerald-flow-evidence-v1",
+  "code_commit": "582ca7f4ff501a727ede73bdd0dbf37453591a46",
+  "native_source_sha256": "e4f8452ff3cea688e49a362488814d4c2e29d9b721bcc6cd71c8d9f1d9fa733a",
+  "native_binary_sha256": "6ee14bf97312bab04b66fcb0a6767f52c4a688eeb0c1fcf5953b5ab8764f570b",
+  "stock_game_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "oracle_sha256": "0710d21de30dc28dc7c137d63c587eec0e0d16a4b0e96d6708bde89699044f44",
+  "seed_namespace": [
+    131200490,
+    131200506
+  ],
+  "native_only_selection_runs": 16,
+  "actual_stock_seed": 131200503,
+  "burning_entry_boundary": 47,
+  "actual_burning_encounter": "GREMLIN_NOB",
+  "observed_burning_buff": "REGEN_3",
+  "actual_emerald_acquisition_boundary": 65,
+  "actual_stock_actions": 72,
+  "actual_stock_boundaries": 73,
+  "status": "DIAGNOSTIC_LIMIT_UNFINISHED",
+  "game_failure": false,
+  "full_native_suffix_matches": 73,
+  "recorded_discovery_clock_actions": [
+    22,
+    23
+  ],
+  "recorded_discovery_clock_updates": [
+    14,
+    14
+  ],
+  "independent_default_clock_public_matches": 73,
+  "independent_default_clock_full_suffix_matches": 73,
+  "independent_default_clock_injected_validation_evidence": false,
+  "raw_combat_pairs": 47,
+  "raw_combat_exact": 47,
+  "raw_combat_differences": 0,
+  "raw_combat_unavailable": 26,
+  "same_run_three_keys_and_act4": "NOT_COVERED",
+  "other_burning_buffs": "NOT_COVERED",
+  "production_environment_changed": false,
+  "training_gate": "NOT_QUALIFIED",
+  "training_eligible": false,
+  "verification": {
+    "cpu_passed": 1739,
+    "skipped": 2,
+    "warnings": 4,
+    "ruff": "PASS",
+    "vocabulary": "PASS",
+    "configurations": "31/33; two preexisting identity mismatches"
+  },
+  "files": [
+    {
+      "path": "docs/results/a20h-requalification-20261010/NATURAL-EMERALD-FLOW.md",
+      "bytes": 4231,
+      "sha256": "f5b73d62e51307a9a31275935e1100b5983196c06fcc37a5245c955e170ee662"
+    },
+    {
+      "path": "docs/results/a20h-requalification-20261010/WAITING-SERVER-PLAN.md",
+      "bytes": 4248,
+      "sha256": "938037ff730450afdba36ee385f369b9dd0e6b5b5b4842ef583ffa325af66d99"
+    },
+    {
+      "path": "local/build/oracle/ending-continuous-shop-r1.build.json",
+      "bytes": 21411,
+      "sha256": "05f5408237dbdce37520f0be4cbc4fba5d9fcef3d28da0ecad4cd2e46315f9b1"
+    },
+    {
+      "path": "local/build/oracle/ending-continuous-shop-r1.jar",
+      "bytes": 204466,
+      "sha256": "0710d21de30dc28dc7c137d63c587eec0e0d16a4b0e96d6708bde89699044f44"
+    },
+    {
+      "path": "local/compare_natural_emerald_raw.py",
+      "bytes": 1872,
+      "sha256": "43415945d94ca5100cb6b4b63b40b2a5c8f723fe08beca1a9575a67024b1ce0e"
+    },
+    {
+      "path": "local/freeze_natural_emerald_flow.py",
+      "bytes": 1550,
+      "sha256": "555066f26161af93a7ad68949ed93d8345b7d437189d4c7ade7a9024b6c52f06"
+    },
+    {
+      "path": "local/package_natural_emerald_flow.py",
+      "bytes": 6824,
+      "sha256": "aad5ac3174ecdf58503f733f09cbe38ed63e87ad33b72f41d4f440fbff7b0bb8"
+    },
+    {
+      "path": "local/probe_natural_emerald_without_clocks.py",
+      "bytes": 4033,
+      "sha256": "665c853317073b88a823306ddc5907366159369a3b9f7dac6b32ff7ddb383f09"
+    },
+    {
+      "path": "local/reports/natural-emerald-flow-20261010/config-check-r1.txt",
+      "bytes": 1916,
+      "sha256": "956a0c983a0ec59ccd1967850ef195574b4bf14fedfd78ae46507d0e339333f7"
+    },
+    {
+      "path": "local/reports/natural-emerald-flow-20261010/cpu-tests-r1.txt",
+      "bytes": 4195,
+      "sha256": "59e01c94d0141dbd71d8774d5d6d758234d15df3ab01698b3ffc4fcfab278cd3"
+    },
+    {
+      "path": "local/reports/natural-emerald-flow-20261010/default-clock-replay-r1.json",
+      "bytes": 4015416,
+      "sha256": "66679bf1db34ca6c837b47d912d093545ba061577964f64430ae2efa4c889e4a"
+    },
+    {
+      "path": "local/reports/natural-emerald-flow-20261010/native-seed-selection-r1.json",
+      "bytes": 600161,
+      "sha256": "ec1d7519b5ac170d8e9d20023490e0eed497590a53e629d35936b178d6b422a5"
+    },
+    {
+      "path": "local/reports/natural-emerald-flow-20261010/protection-r1.json",
+      "bytes": 12240,
+      "sha256": "f0f5b32d4daf86344913f733bf7f77f1f4a88e37aa22d9bc4594058affc6877f"
+    },
+    {
+      "path": "local/reports/natural-emerald-flow-20261010/raw-combat-r1.json",
+      "bytes": 375518,
+      "sha256": "1913d3ad0aec880ea9f3985c59995a73fbc65c5af81abd3f4a9dc0ffcc481807"
+    },
+    {
+      "path": "local/reports/natural-emerald-flow-20261010/replay-selected-r1.json",
+      "bytes": 8413,
+      "sha256": "3ca82cb8499c10eb976807963d74beed5c2ad9c6b2012f9e7d6070b2f156eedd"
+    },
+    {
+      "path": "local/reports/natural-emerald-flow-20261010/stock-selected-r1.json",
+      "bytes": 16368746,
+      "sha256": "5486652e5aab11bb627f23eed12ef9e83ccb3f18aeae39eda9c9fc69fa115701"
+    },
+    {
+      "path": "local/reports/natural-emerald-flow-20261010/stock-selected-r1.launch.json",
+      "bytes": 430,
+      "sha256": "57b1e3cdd8e6c3e84d81f3c4d1f7485cd41a1d934868f2f3f3a036489608aa88"
+    },
+    {
+      "path": "local/run_selected_natural_emerald_flow.py",
+      "bytes": 869,
+      "sha256": "c5c43ba29d4b15c37cfaa1197dda811eef4b315d702feb19d12144144680d4c2"
+    },
+    {
+      "path": "local/runs/oracle-qualification/runtime-backups/20261010T114627.263203Z/journal.json",
+      "bytes": 28205,
+      "sha256": "18ed6bcae830f2108047bbdb064401a5b091c6fe1c67ef1606be90460f72f2ba"
+    },
+    {
+      "path": "local/select_natural_emerald_seed.py",
+      "bytes": 2378,
+      "sha256": "631bef01ecba3642278fb6685477e2f653e37e5037c29442e05a236000f3bf45"
+    },
+    {
+      "path": "local/verify_key_protection.py",
+      "bytes": 2110,
+      "sha256": "b5d28d3867bdcef259ff833d21f881725dd295dc2415a80d840c4428ff167a2a"
+    },
+    {
+      "path": "src/sls/audit/natural_emerald_policy.py",
+      "bytes": 1206,
+      "sha256": "0d49e07befe597b06e76310eef3d0f3ca3fae5372b086f6dbbd79d23470e6f38"
+    },
+    {
+      "path": "src/sls/audit/natural_key_policy.py",
+      "bytes": 2306,
+      "sha256": "c86bdfced52e0cb0014d80fffe62cc3ad99a2d21566d3355abca5621c8ecadf1"
+    },
+    {
+      "path": "tests/audit/test_natural_emerald_policy.py",
+      "bytes": 1514,
+      "sha256": "84ca0e7b9defd5d34138825f6c0516e1edb1ce24629cf69de6210329d9b9753a"
+    },
+    {
+      "path": "tests/fixtures/regressions/natural-emerald-flow-stock-r1.json",
+      "bytes": 2107146,
+      "sha256": "fd38c57dd791544dded11fc45a2cfba16f861dc4b9d5e2fa79eeb91bf5294269"
+    },
+    {
+      "path": "tests/fixtures/regressions/natural-key-flow-stock-r1.json",
+      "bytes": 4770736,
+      "sha256": "62eea553280249858a1dea57d2dccf7f27221a7c29a6c04d5911f1d9007cb071"
+    },
+    {
+      "path": "tests/simulator/test_natural_key_flow_stock.py",
+      "bytes": 2473,
+      "sha256": "ca79de184b0a7541f5b9322ae705e01bc0a50fa614a12c6fb7633310f7eb01cd"
+    },
+    {
+      "path": "tools/capture_natural_key_flow.py",
+      "bytes": 6850,
+      "sha256": "5a93b5062dd0d953a978fb6a8a8704ef59a489700d9f2e410761c5416d9c7036"
+    },
+    {
+      "path": "tools/replay_natural_key_flow.py",
+      "bytes": 9469,
+      "sha256": "a101b833f5c4e5313db4a0eb607c8c440374fb04a22660b246da3925119ad321"
+    }
+  ],
+  "bundle": {
+    "path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\natural-emerald-flow-20261010-delivery-r1.zip",
+    "sha256": "16c14716fc490584e5f5e373d735488e2096397d4ee684a91a218ac6bedd0737"
+  }
+}
