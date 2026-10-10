@@ -23,6 +23,7 @@ from sls.diagnostics.cpu import (
     policy_memory_for_prefix,
     read_history,
     safe_path,
+    score,
     select_states,
 )
 from sls.model import ModelConfig, Policy
@@ -188,6 +189,18 @@ def test_natural_state_alignment_and_truncated_continuations(tmp_path, monkeypat
         assert matched[0]["actions"] == matched[1]["actions"]
         assert all(not r["continuation"]["complete"] and
                    r["continuation"]["shaped_return"] is None for r in matched)
+        trajectory = next(t for t in manifest["trajectories"] if t["id"] == state["trajectory"])
+        history, _ = read_history(corpus / trajectory["public_path"])
+        for row in matched:
+            model = models[row["model"]]["model"]
+            memory, pa, pr = model.initial_memory(1, "cpu"), 0, 0.0
+            for prefix in history[:state["step"]]:
+                memory, pa, pr = policy_memory_for_prefix(model, decision_from_record(prefix),
+                    memory, pa, pr, prefix["chosen_action"], prefix["raw_reward"], prefix["step"] == 0)
+            predicted = score(model, decision_from_record(history[state["step"]]),
+                              memory, pa, pr, state["step"] == 0)
+            assert row["value_shaped"] == float(predicted.value[0])
+            assert row["probabilities"] == predicted.logits.softmax(1)[0].tolist()
     path = corpus / "manifest.json"
     manifest["native_source_sha256"] = "0" * 64
     path.write_text(json.dumps(manifest), encoding="utf-8")
