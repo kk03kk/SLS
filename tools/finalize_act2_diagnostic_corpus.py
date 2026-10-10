@@ -32,7 +32,6 @@ def main():
         load_models,
         read_history,
         selection_sources,
-        stratum,
         validated_corpus,
         write_json,
     )
@@ -66,9 +65,13 @@ def main():
             trajectories.append(trajectory)
             rows, _ = read_history(target)
             for row in rows:
-                base = stratum(row)
+                observation = row["observation"]
+                enemies = "+".join(sorted(e["monster_id"] for e in observation["enemies"]))
+                base = f"act{observation['run']['act']}:{observation['screen']}:{enemies or '-'}"
                 branch = sorted(selection_sources(row))
                 key = base + (":" + "+".join(branch) + f":selected{len(row['observation']['selected_cards'])}" if branch else "")
+                if branch and observation["run"]["floor"] == 17:
+                    key += ":cross_act"
                 state_id = hashlib.sha256(f"{trajectory['model']}:{trajectory['seed']}:{row['step']}".encode()).hexdigest()
                 groups[key].append({"id": state_id, "trajectory": trajectory["id"], "step": row["step"],
                     "stratum": key, "public_sha256": digest({k: row[k] for k in ("observation", "actions")})})
@@ -80,9 +83,21 @@ def main():
     for values in groups.values():
         values.sort(key=lambda state: state["id"])
     keys = sorted(groups, key=lambda key: hashlib.sha256(key.encode()).hexdigest())
-    selected, depth = [], 0
+    # Reserve task-relevant public strata first, then fill by the same fixed hash.
+    # There are no outcome/value filters: these are actual Boss and selection states.
+    selected = [groups[key][0] for key in keys if ":MASTER_DECK:" in key]
+    bosses = {"THE_GUARDIAN", "HEXAGHOST", "SLIME_BOSS", "THE_CHAMP", "THE_COLLECTOR", "BRONZE_AUTOMATON"}
+    for boss in sorted(bosses):
+        candidates = [state for key in keys if boss in key for state in groups[key]]
+        if candidates:
+            chosen = min(candidates, key=lambda state: state["id"])
+            if chosen not in selected:
+                selected.append(chosen)
+    if len(selected) > 64:
+        raise ValueError("priority strata exceed the fixed diagnostic state budget")
+    depth = 0
     while len(selected) < 64:
-        extra = [groups[key][depth] for key in keys if len(groups[key]) > depth]
+        extra = [groups[key][depth] for key in keys if len(groups[key]) > depth and groups[key][depth] not in selected]
         if not extra:
             break
         selected.extend(extra[:64 - len(selected)])
@@ -115,14 +130,13 @@ def main():
             decision = transition.decision
             if not transition.terminated and not transition.truncated:
                 limits.observe(decision, max_steps=4096, max_boundary_visits=4)
-    bosses = {"THE_GUARDIAN", "HEXAGHOST", "SLIME_BOSS", "THE_CHAMP", "THE_COLLECTOR", "BRONZE_AUTOMATON"}
     manifest = {"schema": "sls-cpu-natural-corpus-v1", **identity(runtime), "seed_range": None,
         "seed_ids": [s["seed"] for s in report["diagnostic_seeds"]], "seed_scan_files": [],
         "models": {k: v["identity"] for k, v in models.items()}, "trajectories": trajectories,
         "states": sorted(selected, key=lambda s: s["id"]), "natural_strata": dict(natural),
         "selection_branch_coverage": dict(choices), "missing_known_choice_sources": sorted({"HAND", "MASTER_DECK", "GENERATED", "DISCARD", "EXHAUST", "DRAW"} - sources),
         "missing_boss_contexts": sorted(bosses - encountered), "missing_selected_boss_contexts": sorted(bosses - selected_enemies),
-        "selection": "global SHA256 round-robin act/screen/enemies plus public selection source/count; no future labels",
+        "selection": "public MASTER_DECK selection/count/cross-act and six Boss strata reserved by SHA256, then global SHA256 round-robin act/screen/sorted-enemies; no future labels",
         "input_corpora": source_identities, "training_eligible": False}
     write_json(args.output / "manifest.json", manifest)
     analyze_returns(args.output, args.output / "returns.json")
