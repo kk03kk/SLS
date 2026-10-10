@@ -1,0 +1,247 @@
+{
+  "schema": "sls-continuous-ending-evidence-v1",
+  "code_commit": "9a35d666e936ebc553550954bbceb7069b3d118c",
+  "native_source_sha256": "6805e8c991ff6e3ca1b57248678babbbc1ea904b6a1a35e17d631c426765dcc0",
+  "native_binary_sha256": "ce8f500b5116980f2bca854488da334cac58a679a1c1c59e3a8f70410890f3e8",
+  "oracle_sha256": "10df4da648b89fc1d914fb823e2194228b59da94ae98ed4d2952bd25d6cc30e0",
+  "capture_sha256": "f692cbfe31df39f39c84e8349b8cbb605ba7dba4d11cb4676ab85e0347f97675",
+  "actual_original_decisions": 19,
+  "actual_original_success": true,
+  "controlled_initial": true,
+  "first_public_difference": 0,
+  "diagnostic_actions_executed": 11,
+  "full_native_prefix_suffix_matches": 12,
+  "transfer_stop": "RECORDED_PUBLIC_ACTION_UNAVAILABLE_AT_HEART_MAP_CHOICE",
+  "full_public_trajectory_equal": false,
+  "production_modified": false,
+  "training_gate": "NOT_QUALIFIED",
+  "training_eligible": false,
+  "natural_trajectory": false,
+  "verification": {
+    "cpu_passed": 1710,
+    "skipped": 2,
+    "warnings": 4,
+    "ruff": "PASS"
+  },
+  "files": [
+    {
+      "path": "docs/results/a20h-requalification-20261010/ENDING-CONTINUOUS.md",
+      "bytes": 4779,
+      "sha256": "6dc2351b07973229e717195ba4f6dae882bdb9702fe608ba501e713d2f62937c"
+    },
+    {
+      "path": "local/build/oracle/ending-continuous-r1.build.json",
+      "bytes": 20861,
+      "sha256": "cb38cc3499a19d2602f956bafaefb790272eb571dbbac8575a6ac3a5ef72377b"
+    },
+    {
+      "path": "local/build/oracle/ending-continuous-r1.jar",
+      "bytes": 198824,
+      "sha256": "10df4da648b89fc1d914fb823e2194228b59da94ae98ed4d2952bd25d6cc30e0"
+    },
+    {
+      "path": "local/freeze_ending_continuation.py",
+      "bytes": 1605,
+      "sha256": "0cd7f9cc871d62af4032d06cfe8f5e83943d23db4dc4233bcea021f39c370dd7"
+    },
+    {
+      "path": "local/package_ending_continuous.py",
+      "bytes": 5181,
+      "sha256": "78e9a804a9223f7b964521aa3e9f9faabf757d784d04df3bc84e230502a4e5e8"
+    },
+    {
+      "path": "local/reports/ending-continuous-20261010/cpu-tests-r1.txt",
+      "bytes": 4113,
+      "sha256": "39d5504367fc13073684135b77720ce4642b5a5e1a3fac7b36714b77f5b67009"
+    },
+    {
+      "path": "local/reports/ending-continuous-20261010/diagnostic-transfer-r1.json",
+      "bytes": 861942,
+      "sha256": "1e7d6d5287fe33301bf7bd2b309af9ff30e637c6aac82ed4b5a5b686c381b593"
+    },
+    {
+      "path": "local/reports/ending-continuous-20261010/diagnostic-transfer-r2.json",
+      "bytes": 852812,
+      "sha256": "563105d8b449a7ade61e29a12cc3b5647803415213bc42aa6e04356d1c99dc04"
+    },
+    {
+      "path": "local/reports/ending-continuous-20261010/diff-check-r1.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "local/reports/ending-continuous-20261010/native-boss-flow-r1.json",
+      "bytes": 500041,
+      "sha256": "ad171addaddf71d7fd1da2df60dbea14f7ce5c4338213286d9e8a52623773061"
+    },
+    {
+      "path": "local/reports/ending-continuous-20261010/native-boss-suffix-r1.json",
+      "bytes": 12366,
+      "sha256": "cccc9f2b391a6a1291cfaceb42cf19f9f80ec9da951b6de171f7709b18bc81c1"
+    },
+    {
+      "path": "local/reports/ending-continuous-20261010/native-entry-r1.json",
+      "bytes": 289832,
+      "sha256": "3127cc26e06b805640f5dcd4a4d8ee0689e7dd9760ebfb23141026230d821d02"
+    },
+    {
+      "path": "local/reports/ending-continuous-20261010/production-r50.json",
+      "bytes": 56605,
+      "sha256": "9459b9f1d14b9a695b929927dfa6f3d2c4ea09821d0d2e44b27ed264cc1e95a7"
+    },
+    {
+      "path": "local/reports/ending-continuous-20261010/production-r50.launch.json",
+      "bytes": 433,
+      "sha256": "35f3d0c5eeb3f77f18b03cf7e0f7327cb7d60709892fafd97059b5921b314b4b"
+    },
+    {
+      "path": "local/reports/ending-continuous-20261010/protection-check-r1.txt",
+      "bytes": 7797,
+      "sha256": "8f7d1a139a6fa2d2cdba0b4257606287f40c12025743fc314be3ea78cb9cacb0"
+    },
+    {
+      "path": "local/reports/ending-continuous-20261010/protection-r1.json",
+      "bytes": 8946,
+      "sha256": "b25bb817cd2efd7332627e58e46624f557d104c685b55f9e4313699fe4c6a5a2"
+    },
+    {
+      "path": "local/reports/ending-continuous-20261010/public-replay-r1.json",
+      "bytes": 47361,
+      "sha256": "83e8ec6e821631307a14bf61819b0f3a34e2c6f51becaeeb1115109e04817586"
+    },
+    {
+      "path": "local/reports/ending-continuous-20261010/public-replay-r2.json",
+      "bytes": 47519,
+      "sha256": "2509fa6887b07622fdfd73e9121e4ade8b5eb116a9a617b40538cabf071d8765"
+    },
+    {
+      "path": "local/reports/ending-continuous-20261010/staged-diff-check-r1.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "local/reports/ending-continuous-20261010/stock-r1.json",
+      "bytes": 1390499,
+      "sha256": "450a6a8a1d840e5bb627dadb165b08bcc479a46c997b15dc52bcd2d9f7f98db7"
+    },
+    {
+      "path": "local/reports/ending-continuous-20261010/stock-r1.launch.json",
+      "bytes": 487,
+      "sha256": "04d10c0b4f162bfd879447cfa82dc6ae894d7e354d7a8f04172537d6be497736"
+    },
+    {
+      "path": "local/reports/ending-continuous-20261010/stock-r2.json",
+      "bytes": 3235014,
+      "sha256": "f692cbfe31df39f39c84e8349b8cbb605ba7dba4d11cb4676ab85e0347f97675"
+    },
+    {
+      "path": "local/reports/ending-continuous-20261010/stock-r2.launch.json",
+      "bytes": 430,
+      "sha256": "286e6147b92a16a50ec0cb03e78f2fdf6b9995a6160bca2af2cb10b33f7ccb1f"
+    },
+    {
+      "path": "local/run_ending_continuous.py",
+      "bytes": 729,
+      "sha256": "080afef47e249fbde8cc311d7badb2e3fad4c07b959ec1740f495291484e5629"
+    },
+    {
+      "path": "local/run_ending_continuous_r2.py",
+      "bytes": 656,
+      "sha256": "3526b69d397de918e9dac54a88aca2cdf01e24427623e8fa4b88e0448f4d507c"
+    },
+    {
+      "path": "local/runs/oracle-qualification/runtime-backups/20261010T102655.896033Z/journal.json",
+      "bytes": 28205,
+      "sha256": "50310be240b20ad0a8e0bbb792b5ada00519dbf61b99d713d6dd2b55a90ad589"
+    },
+    {
+      "path": "local/runs/oracle-qualification/runtime-backups/20261010T102718.975160Z/journal.json",
+      "bytes": 28205,
+      "sha256": "49736205c942547757c139d54095b34ee33af3e21899ec082eb6bd669ed3ba89"
+    },
+    {
+      "path": "local/runs/oracle-qualification/runtime-backups/20261010T102851.359175Z/journal.json",
+      "bytes": 28205,
+      "sha256": "1fa3a13ac1d8ca96df4e39ebf414def4f77ee03bfc7a46af6a63c6664ecc3ec3"
+    },
+    {
+      "path": "local/verify_key_protection.py",
+      "bytes": 2110,
+      "sha256": "b5d28d3867bdcef259ff833d21f881725dd295dc2415a80d840c4428ff167a2a"
+    },
+    {
+      "path": "native/oracle/ModTheSpire.json",
+      "bytes": 381,
+      "sha256": "9cc0355b854bb7959c9984a2bce9b18c2afa899ab37b3b6e2139e13c9dcb8523"
+    },
+    {
+      "path": "native/oracle/resources/spirecomm/parity/fullrun-ending-continuous-r1.json",
+      "bytes": 8002,
+      "sha256": "1ba8bb66eac0a77a95712de2bb29d551ff1fd6dbcb67860d05cf8bda19f2f22d"
+    },
+    {
+      "path": "src/sls/audit/ending_continuation.py",
+      "bytes": 3087,
+      "sha256": "933adec5b0d8819fb91cc5d0e8730b3bcf161ec5a31d5f4a05dc13ab7c201fb1"
+    },
+    {
+      "path": "src/sls/backends/original/adapter.py",
+      "bytes": 45339,
+      "sha256": "c85cd716b0ad5a4a0673c6268fba1cb2d5abf11ed0afc030f3aea5d2f8697b2a"
+    },
+    {
+      "path": "src/sls/backends/original/environment.py",
+      "bytes": 45850,
+      "sha256": "faacc2c0f00074426a028da42d10227c7dd5039419a7c5c8a1e36a67fc425087"
+    },
+    {
+      "path": "src/sls/backends/simulator/environment.py",
+      "bytes": 54937,
+      "sha256": "47ed116c57d93133f46976daf92968a1f36eafe12c322e3f4afed24e543ddfb5"
+    },
+    {
+      "path": "tests/audit/test_ending_continuation.py",
+      "bytes": 1341,
+      "sha256": "cb4e3cb2de5f7da4dc809de6bb105bd2a67311312126da0d2a2aaed094baa22e"
+    },
+    {
+      "path": "tests/fixtures/regressions/ending-continuous-stock-r1.json",
+      "bytes": 601850,
+      "sha256": "45bc7fb9f286614bc58d7c623d6098e2211a7ab9d3eaa66222502bee5e80c9b1"
+    },
+    {
+      "path": "tests/test_build_oracle.py",
+      "bytes": 6521,
+      "sha256": "825832d4333ae085b1e5d3cb369bef7a9f2af67c214cb2f2372c623f00ffea0f"
+    },
+    {
+      "path": "tools/capture_act2_encounter_batch.py",
+      "bytes": 10868,
+      "sha256": "109d305980d63fc8daaea6955094b68427b173deb506b9b96ac7f221e6050524"
+    },
+    {
+      "path": "tools/replay_ending_continuation.py",
+      "bytes": 7169,
+      "sha256": "95d0105093e4509985c0c8cbef6a9f90f3b090c88004716dc351c0781bc9ea25"
+    },
+    {
+      "path": "tools/reproduce_double_boss_entry.py",
+      "bytes": 14721,
+      "sha256": "a577276906ef0c62fec01c4debe84c7cd9f6fd88ea48cb98b2cd241586cd42c9"
+    },
+    {
+      "path": "tools/reproduce_double_boss_flow.py",
+      "bytes": 7935,
+      "sha256": "17141de5fd07e6a1614ae864a95015b716d66fcc0260bae3c19de9373e2d9ccb"
+    },
+    {
+      "path": "tools/verify_boss_flow_suffix.py",
+      "bytes": 10206,
+      "sha256": "220798b32d58b7fca51e3cd9446e5af1e8f9b16b43592cf3cb036da8184a857f"
+    }
+  ],
+  "bundle": {
+    "path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\ending-continuous-20261010-delivery-r1.zip",
+    "sha256": "97a7f8458c98e1e302c0ae485eb4e7b04ae9a3de8919f396fc4622be3aeb49bd"
+  }
+}
