@@ -1,0 +1,26 @@
+[
+  {
+    "path": "local/audits/stock-decompilation-tree/desktop-1.0/source/com/megacrit/cardcrawl/dungeons/Exordium.java",
+    "sha256": "93808b9da69b76da6b8f0471cc3533fa113fa28298939bbc48eb55566a976c08",
+    "source": "D:\\SLS\\local\\audits\\stock-decompilation-tree\\desktop-1.0\\source\\com\\megacrit\\cardcrawl\\dungeons\\Exordium.java",
+    "mode": "READ_ONLY_COPY"
+  },
+  {
+    "path": "local/audits/stock-decompilation-tree/desktop-1.0/source/com/megacrit/cardcrawl/dungeons/AbstractDungeon.java",
+    "sha256": "8fa0712818487a360c72950d053fe77e1a35efa967080723d15c69037092fd26",
+    "source": "D:\\SLS\\local\\audits\\stock-decompilation-tree\\desktop-1.0\\source\\com\\megacrit\\cardcrawl\\dungeons\\AbstractDungeon.java",
+    "mode": "READ_ONLY_COPY"
+  },
+  {
+    "path": "local/audits/stock-decompilation-tree/desktop-1.0/source/com/megacrit/cardcrawl/helpers/PotionHelper.java",
+    "sha256": "159ffee06ab09c24063b992f5babe57907916a99a23f4a3ad721b8c922be2a2f",
+    "source": "D:\\SLS\\local\\audits\\stock-decompilation-tree\\desktop-1.0\\source\\com\\megacrit\\cardcrawl\\helpers\\PotionHelper.java",
+    "mode": "READ_ONLY_COPY"
+  },
+  {
+    "path": "runs/archives/policies/ironclad-a0-act1-5m.pt",
+    "sha256": "5f0bbe78fb7cef01d032efcd24a8726513d557e1bba8f3d1448912782fa16d0f",
+    "source": "D:\\SLS\\runs\\archives\\policies\\ironclad-a0-act1-5m.pt",
+    "mode": "READ_ONLY_COPY"
+  }
+]

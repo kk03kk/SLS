@@ -1,0 +1,5841 @@
+{
+  "schema": "sls-cpu-diagnostic-summary-v2",
+  "corpus_sha256": "3f13f8e4687d80ebe649ac56a6770b504a176d8fa0d4c706b0e41374adf49317",
+  "comparison_sha256": "a29da391701c35a31ea299f61b806150d4e5892171731a9c9f48cb9190b1432e",
+  "returns_sha256": "7eb2631040b3e7cc92c7e009cf6c445c797b9553a748e2d6ca6aecc8a91fde23",
+  "native_source_sha256": "6efbb772958c06d1b9133f374d046d8838eaa256da1a146eaf7e1ee530eefd3d",
+  "models": {
+    "parent90": {
+      "checkpoint": "D:\\SLS\\local\\runs\\ironclad-a20-act1-win-90m-continuation\\final.pt",
+      "sha256": "274963f4fe32b75003c5a1b4ccd394b5185304156e6ea22a76aee2764d54f1e0",
+      "steps": 90013696,
+      "trained_profile": "IRONCLAD_A20_ACT1",
+      "native_source_sha256": "1e30bb6cfa32f600cd63c59983c14ab8928fac4452c1586d630295d2c6ff9453",
+      "diagnostic_environment_migration": true,
+      "horizon_transfer": true,
+      "transfer": "READ_ONLY_WEIGHTS_NOT_TRAINING_RESUME",
+      "diagnostic_target": {
+        "profile": "IRONCLAD_A20_ACT2",
+        "gamma": 1.0,
+        "potential_shaping": true,
+        "potential_scale": 0.2,
+        "failure_progress_scale": 0.0,
+        "limit_failure_reward": -1.0,
+        "max_episode_steps": 4096,
+        "max_boundary_visits": 4,
+        "policy": "GREEDY_NOT_STOCHASTIC_TRAINING"
+      }
+    },
+    "lambda098": {
+      "checkpoint": "D:\\SLS\\local\\runs\\ironclad-a20-act12-lambda098-r1\\final.pt",
+      "sha256": "4eab4cb154f17b9f48e81e160b799bd99ed1d58fcae9938f735b29aa26418098",
+      "steps": 94027776,
+      "trained_profile": "IRONCLAD_A20_ACT2",
+      "native_source_sha256": "b100427d1e3ae6eee05818b6904047049609b1aa70807872c1f5f5e0edd6d62f",
+      "diagnostic_environment_migration": true,
+      "horizon_transfer": false,
+      "transfer": "READ_ONLY_WEIGHTS_NOT_TRAINING_RESUME",
+      "diagnostic_target": {
+        "profile": "IRONCLAD_A20_ACT2",
+        "gamma": 1.0,
+        "potential_shaping": true,
+        "potential_scale": 0.2,
+        "failure_progress_scale": 0.0,
+        "limit_failure_reward": -1.0,
+        "max_episode_steps": 4096,
+        "max_boundary_visits": 4,
+        "policy": "GREEDY_NOT_STOCHASTIC_TRAINING"
+      }
+    },
+    "lambda100": {
+      "checkpoint": "D:\\SLS\\local\\runs\\ironclad-a20-act12-lambda100-r1\\final.pt",
+      "sha256": "0aebb484bbb8d75fdf78fdf6b0871f86938887bc00e0281bfbcc67133d56c1e3",
+      "steps": 94027776,
+      "trained_profile": "IRONCLAD_A20_ACT2",
+      "native_source_sha256": "b100427d1e3ae6eee05818b6904047049609b1aa70807872c1f5f5e0edd6d62f",
+      "diagnostic_environment_migration": true,
+      "horizon_transfer": false,
+      "transfer": "READ_ONLY_WEIGHTS_NOT_TRAINING_RESUME",
+      "diagnostic_target": {
+        "profile": "IRONCLAD_A20_ACT2",
+        "gamma": 1.0,
+        "potential_shaping": true,
+        "potential_scale": 0.2,
+        "failure_progress_scale": 0.0,
+        "limit_failure_reward": -1.0,
+        "max_episode_steps": 4096,
+        "max_boundary_visits": 4,
+        "policy": "GREEDY_NOT_STOCHASTIC_TRAINING"
+      }
+    }
+  },
+  "natural_trajectories": {
+    "parent90": {
+      "trajectories": 32,
+      "reached_act2": 20,
+      "successes": 1,
+      "reasons": {
+        "DEATH": 26,
+        "ACT_2_CLEARED": 1,
+        "cycle_limit": 5
+      },
+      "decision_screens": {
+        "act1:NEOW": 32,
+        "act1:COMBAT_REWARD": 948,
+        "act1:MAP": 508,
+        "act1:COMBAT": 3798,
+        "act1:EVENT": 66,
+        "act1:SHOP": 137,
+        "act1:REST": 100,
+        "act1:TREASURE": 39,
+        "act1:CARD_REWARD": 98,
+        "act1:BOSS_REWARD": 25,
+        "act2:MAP": 164,
+        "act2:COMBAT": 1575,
+        "act2:COMBAT_REWARD": 258,
+        "act2:EVENT": 40,
+        "act2:SHOP": 44,
+        "act2:REST": 22,
+        "act2:TREASURE": 8,
+        "act2:CARD_REWARD": 7
+      },
+      "act2_entry_deck_sizes": [
+        21,
+        21,
+        17,
+        21,
+        20,
+        21,
+        23,
+        23,
+        16,
+        18,
+        19,
+        23,
+        22,
+        21,
+        22,
+        21,
+        24,
+        21,
+        22,
+        20
+      ],
+      "act2_entry_cards": {
+        "ASCENDERS_BANE": 20,
+        "STRIKE_RED": 100,
+        "DEFEND_RED": 80,
+        "BASH": 20,
+        "SHOCKWAVE": 2,
+        "PERFECTED_STRIKE": 16,
+        "INFERNAL_BLADE": 3,
+        "TWIN_STRIKE": 13,
+        "METALLICIZE": 7,
+        "ANGER": 18,
+        "CLOTHESLINE": 8,
+        "IMMOLATE": 6,
+        "IRON_WAVE": 3,
+        "INFLAME": 12,
+        "HEMOKINESIS": 5,
+        "CLASH": 12,
+        "PARASITE": 1,
+        "HEADBUTT": 8,
+        "BLUDGEON": 4,
+        "POMMEL_STRIKE": 12,
+        "WILD_STRIKE": 9,
+        "FIEND_FIRE": 4,
+        "BLOOD_FOR_BLOOD": 4,
+        "CARNAGE": 3,
+        "UPPERCUT": 5,
+        "GHOSTLY_ARMOR": 1,
+        "SHRUG_IT_OFF": 7,
+        "RECKLESS_CHARGE": 6,
+        "PAIN": 1,
+        "DEMON_FORM": 2,
+        "COMBUST": 3,
+        "DISARM": 1,
+        "RAMPAGE": 2,
+        "THUNDERCLAP": 3,
+        "FIRE_BREATHING": 4,
+        "BERSERK": 1,
+        "FEED": 1,
+        "FLAME_BARRIER": 2,
+        "SEEING_RED": 1,
+        "CURSE_OF_THE_BELL": 2,
+        "IMPERVIOUS": 1,
+        "CLEAVE": 1,
+        "EXHUME": 2
+      },
+      "act2_entry_relics": {
+        "BURNING_BLOOD": 16,
+        "PRESERVED_INSECT": 2,
+        "BRONZE_SCALES": 1,
+        "AKABEKO": 2,
+        "SINGING_BOWL": 1,
+        "MARK_OF_PAIN": 2,
+        "FROZEN_EGG": 1,
+        "MEAT_ON_THE_BONE": 1,
+        "RUNIC_PYRAMID": 2,
+        "CERAMIC_FISH": 2,
+        "NUNCHAKU": 2,
+        "GREMLIN_HORN": 1,
+        "FUSION_HAMMER": 2,
+        "MOLTEN_EGG": 1,
+        "HAPPY_FLOWER": 1,
+        "RED_SKULL": 3,
+        "SOZU": 5,
+        "WARPED_TONGS": 1,
+        "ANCHOR": 1,
+        "VAJRA": 3,
+        "NEOWS_LAMENT": 5,
+        "SUNDIAL": 2,
+        "HORN_CLEAT": 1,
+        "COFFEE_DRIPPER": 1,
+        "PEN_NIB": 1,
+        "THE_BOOT": 2,
+        "BLACK_STAR": 1,
+        "MAW_BANK": 1,
+        "PEACE_PIPE": 1,
+        "BLACK_BLOOD": 4,
+        "DREAM_CATCHER": 2,
+        "DARKSTONE_PERIAPT": 1,
+        "TOXIC_EGG": 1,
+        "ORNAMENTAL_FAN": 1,
+        "REGAL_PILLOW": 2,
+        "DU_VU_DOLL": 1,
+        "CALLING_BELL": 2,
+        "INCENSE_BURNER": 1,
+        "PAPER_PHROG": 2,
+        "ICE_CREAM": 1,
+        "MERCURY_HOURGLASS": 1,
+        "INK_BOTTLE": 1,
+        "STRAWBERRY": 1,
+        "MUMMIFIED_HAND": 3,
+        "OMAMORI": 1,
+        "PRAYER_WHEEL": 1,
+        "BRIMSTONE": 1,
+        "THREAD_AND_NEEDLE": 1,
+        "STRIKE_DUMMY": 1,
+        "QUESTION_CARD": 1,
+        "DEAD_BRANCH": 1,
+        "ETERNAL_FEATHER": 1,
+        "GIRYA": 1,
+        "ECTOPLASM": 1,
+        "ORICHALCUM": 1
+      },
+      "cycles": [
+        {
+          "trajectory": "parent90-132100008",
+          "tail": [
+            {
+              "step": 193,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:3",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 194,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:3",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 195,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:0",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 196,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "END_TURN",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 197,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:1",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 198,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:0",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 199,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "END_TURN",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 200,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:1",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 201,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:3",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 202,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:2",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 203,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "END_TURN",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 204,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:2",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 205,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:2",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 206,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "END_TURN",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 207,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:4",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 208,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:0",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 209,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:1",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 210,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "END_TURN",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 211,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:4",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 212,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:3",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 213,
+              "screen": "COMBAT_REWARD",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "CHOOSE_CARD_REWARD",
+                "subject_id": "reward-card:0:2",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 214,
+              "screen": "COMBAT_REWARD",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "TAKE_REWARD",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": "reward-gold:0",
+                "metadata": {}
+              }
+            },
+            {
+              "step": 215,
+              "screen": "COMBAT_REWARD",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "SKIP_REWARD",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 216,
+              "screen": "BOSS_REWARD",
+              "floor": 17,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "CHOOSE_BOSS_RELIC",
+                "subject_id": "boss-relic:0",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 217,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:12",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 218,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": [
+                {
+                  "instance_id": "SELECTED:0",
+                  "content_id": "PERFECTED_STRIKE",
+                  "properties": {
+                    "base_cost": 2,
+                    "bottled_flame": false,
+                    "bottled_lightning": false,
+                    "bottled_tornado": false,
+                    "current_cost": 2,
+                    "deck_index": 13,
+                    "free_to_play_once": false,
+                    "retain": false,
+                    "selected": true,
+                    "selected_order": 0,
+                    "self_retain": false,
+                    "source": "MASTER_DECK",
+                    "upgrades": 1
+                  },
+                  "owner_id": null
+                }
+              ],
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:12",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 219,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:12",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 220,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": [
+                {
+                  "instance_id": "SELECTED:0",
+                  "content_id": "PERFECTED_STRIKE",
+                  "properties": {
+                    "base_cost": 2,
+                    "bottled_flame": false,
+                    "bottled_lightning": false,
+                    "bottled_tornado": false,
+                    "current_cost": 2,
+                    "deck_index": 13,
+                    "free_to_play_once": false,
+                    "retain": false,
+                    "selected": true,
+                    "selected_order": 0,
+                    "self_retain": false,
+                    "source": "MASTER_DECK",
+                    "upgrades": 1
+                  },
+                  "owner_id": null
+                }
+              ],
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:12",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 221,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:12",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 222,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": [
+                {
+                  "instance_id": "SELECTED:0",
+                  "content_id": "PERFECTED_STRIKE",
+                  "properties": {
+                    "base_cost": 2,
+                    "bottled_flame": false,
+                    "bottled_lightning": false,
+                    "bottled_tornado": false,
+                    "current_cost": 2,
+                    "deck_index": 13,
+                    "free_to_play_once": false,
+                    "retain": false,
+                    "selected": true,
+                    "selected_order": 0,
+                    "self_retain": false,
+                    "source": "MASTER_DECK",
+                    "upgrades": 1
+                  },
+                  "owner_id": null
+                }
+              ],
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:12",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 223,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:12",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 224,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": [
+                {
+                  "instance_id": "SELECTED:0",
+                  "content_id": "PERFECTED_STRIKE",
+                  "properties": {
+                    "base_cost": 2,
+                    "bottled_flame": false,
+                    "bottled_lightning": false,
+                    "bottled_tornado": false,
+                    "current_cost": 2,
+                    "deck_index": 13,
+                    "free_to_play_once": false,
+                    "retain": false,
+                    "selected": true,
+                    "selected_order": 0,
+                    "self_retain": false,
+                    "source": "MASTER_DECK",
+                    "upgrades": 1
+                  },
+                  "owner_id": null
+                }
+              ],
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:12",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            }
+          ]
+        },
+        {
+          "trajectory": "parent90-132100023",
+          "tail": [
+            {
+              "step": 174,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:5",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 175,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "SELECT_CARD",
+                "subject_id": "CHOICE:8",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 176,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "END_TURN",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 177,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:2",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 178,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:0",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 179,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "END_TURN",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 180,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:5",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 181,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:0",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 182,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "SELECT_CARD",
+                "subject_id": "CHOICE:1",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 183,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:5",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 184,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "SELECT_CARD",
+                "subject_id": "CHOICE:3",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 185,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "END_TURN",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 186,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:7",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 187,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:5",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 188,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "END_TURN",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 189,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:1",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 190,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:1",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 191,
+              "screen": "COMBAT_REWARD",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "CHOOSE_CARD_REWARD",
+                "subject_id": "reward-card:0:0",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 192,
+              "screen": "COMBAT_REWARD",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "TAKE_REWARD",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": "reward-potion:0",
+                "metadata": {}
+              }
+            },
+            {
+              "step": 193,
+              "screen": "COMBAT_REWARD",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "TAKE_REWARD",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": "reward-gold:0",
+                "metadata": {}
+              }
+            },
+            {
+              "step": 194,
+              "screen": "COMBAT_REWARD",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "USE_POTION",
+                "subject_id": "POTION:0",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 195,
+              "screen": "COMBAT_REWARD",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "SKIP_REWARD",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 196,
+              "screen": "BOSS_REWARD",
+              "floor": 17,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "CHOOSE_BOSS_RELIC",
+                "subject_id": "boss-relic:2",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 197,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "SELECT_CARD",
+                "subject_id": "select-card:19",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 198,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": [
+                {
+                  "instance_id": "SELECTED:0",
+                  "content_id": "DEMON_FORM",
+                  "properties": {
+                    "base_cost": 3,
+                    "bottled_flame": false,
+                    "bottled_lightning": false,
+                    "bottled_tornado": false,
+                    "current_cost": 3,
+                    "deck_index": 20,
+                    "free_to_play_once": false,
+                    "retain": false,
+                    "selected": true,
+                    "selected_order": 0,
+                    "self_retain": false,
+                    "source": "MASTER_DECK",
+                    "upgrades": 0
+                  },
+                  "owner_id": null
+                }
+              ],
+              "action": {
+                "schema_version": 1,
+                "kind": "SELECT_CARD",
+                "subject_id": "select-card:13",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 199,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": [
+                {
+                  "instance_id": "SELECTED:0",
+                  "content_id": "DEMON_FORM",
+                  "properties": {
+                    "base_cost": 3,
+                    "bottled_flame": false,
+                    "bottled_lightning": false,
+                    "bottled_tornado": false,
+                    "current_cost": 3,
+                    "deck_index": 20,
+                    "free_to_play_once": false,
+                    "retain": false,
+                    "selected": true,
+                    "selected_order": 0,
+                    "self_retain": false,
+                    "source": "MASTER_DECK",
+                    "upgrades": 0
+                  },
+                  "owner_id": null
+                },
+                {
+                  "instance_id": "SELECTED:1",
+                  "content_id": "CLOTHESLINE",
+                  "properties": {
+                    "base_cost": 2,
+                    "bottled_flame": false,
+                    "bottled_lightning": false,
+                    "bottled_tornado": false,
+                    "current_cost": 2,
+                    "deck_index": 14,
+                    "free_to_play_once": false,
+                    "retain": false,
+                    "selected": true,
+                    "selected_order": 1,
+                    "self_retain": false,
+                    "source": "MASTER_DECK",
+                    "upgrades": 1
+                  },
+                  "owner_id": null
+                }
+              ],
+              "action": {
+                "schema_version": 1,
+                "kind": "SELECT_CARD",
+                "subject_id": "select-card:13",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 200,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": [
+                {
+                  "instance_id": "SELECTED:0",
+                  "content_id": "DEMON_FORM",
+                  "properties": {
+                    "base_cost": 3,
+                    "bottled_flame": false,
+                    "bottled_lightning": false,
+                    "bottled_tornado": false,
+                    "current_cost": 3,
+                    "deck_index": 20,
+                    "free_to_play_once": false,
+                    "retain": false,
+                    "selected": true,
+                    "selected_order": 0,
+                    "self_retain": false,
+                    "source": "MASTER_DECK",
+                    "upgrades": 0
+                  },
+                  "owner_id": null
+                }
+              ],
+              "action": {
+                "schema_version": 1,
+                "kind": "SELECT_CARD",
+                "subject_id": "select-card:13",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 201,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": [
+                {
+                  "instance_id": "SELECTED:0",
+                  "content_id": "DEMON_FORM",
+                  "properties": {
+                    "base_cost": 3,
+                    "bottled_flame": false,
+                    "bottled_lightning": false,
+                    "bottled_tornado": false,
+                    "current_cost": 3,
+                    "deck_index": 20,
+                    "free_to_play_once": false,
+                    "retain": false,
+                    "selected": true,
+                    "selected_order": 0,
+                    "self_retain": false,
+                    "source": "MASTER_DECK",
+                    "upgrades": 0
+                  },
+                  "owner_id": null
+                },
+                {
+                  "instance_id": "SELECTED:1",
+                  "content_id": "CLOTHESLINE",
+                  "properties": {
+                    "base_cost": 2,
+                    "bottled_flame": false,
+                    "bottled_lightning": false,
+                    "bottled_tornado": false,
+                    "current_cost": 2,
+                    "deck_index": 14,
+                    "free_to_play_once": false,
+                    "retain": false,
+                    "selected": true,
+                    "selected_order": 1,
+                    "self_retain": false,
+                    "source": "MASTER_DECK",
+                    "upgrades": 1
+                  },
+                  "owner_id": null
+                }
+              ],
+              "action": {
+                "schema_version": 1,
+                "kind": "SELECT_CARD",
+                "subject_id": "select-card:13",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 202,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": [
+                {
+                  "instance_id": "SELECTED:0",
+                  "content_id": "DEMON_FORM",
+                  "properties": {
+                    "base_cost": 3,
+                    "bottled_flame": false,
+                    "bottled_lightning": false,
+                    "bottled_tornado": false,
+                    "current_cost": 3,
+                    "deck_index": 20,
+                    "free_to_play_once": false,
+                    "retain": false,
+                    "selected": true,
+                    "selected_order": 0,
+                    "self_retain": false,
+                    "source": "MASTER_DECK",
+                    "upgrades": 0
+                  },
+                  "owner_id": null
+                }
+              ],
+              "action": {
+                "schema_version": 1,
+                "kind": "SELECT_CARD",
+                "subject_id": "select-card:13",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 203,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": [
+                {
+                  "instance_id": "SELECTED:0",
+                  "content_id": "DEMON_FORM",
+                  "properties": {
+                    "base_cost": 3,
+                    "bottled_flame": false,
+                    "bottled_lightning": false,
+                    "bottled_tornado": false,
+                    "current_cost": 3,
+                    "deck_index": 20,
+                    "free_to_play_once": false,
+                    "retain": false,
+                    "selected": true,
+                    "selected_order": 0,
+                    "self_retain": false,
+                    "source": "MASTER_DECK",
+                    "upgrades": 0
+                  },
+                  "owner_id": null
+                },
+                {
+                  "instance_id": "SELECTED:1",
+                  "content_id": "CLOTHESLINE",
+                  "properties": {
+                    "base_cost": 2,
+                    "bottled_flame": false,
+                    "bottled_lightning": false,
+                    "bottled_tornado": false,
+                    "current_cost": 2,
+                    "deck_index": 14,
+                    "free_to_play_once": false,
+                    "retain": false,
+                    "selected": true,
+                    "selected_order": 1,
+                    "self_retain": false,
+                    "source": "MASTER_DECK",
+                    "upgrades": 1
+                  },
+                  "owner_id": null
+                }
+              ],
+              "action": {
+                "schema_version": 1,
+                "kind": "SELECT_CARD",
+                "subject_id": "select-card:13",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 204,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": [
+                {
+                  "instance_id": "SELECTED:0",
+                  "content_id": "DEMON_FORM",
+                  "properties": {
+                    "base_cost": 3,
+                    "bottled_flame": false,
+                    "bottled_lightning": false,
+                    "bottled_tornado": false,
+                    "current_cost": 3,
+                    "deck_index": 20,
+                    "free_to_play_once": false,
+                    "retain": false,
+                    "selected": true,
+                    "selected_order": 0,
+                    "self_retain": false,
+                    "source": "MASTER_DECK",
+                    "upgrades": 0
+                  },
+                  "owner_id": null
+                }
+              ],
+              "action": {
+                "schema_version": 1,
+                "kind": "SELECT_CARD",
+                "subject_id": "select-card:13",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 205,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": [
+                {
+                  "instance_id": "SELECTED:0",
+                  "content_id": "DEMON_FORM",
+                  "properties": {
+                    "base_cost": 3,
+                    "bottled_flame": false,
+                    "bottled_lightning": false,
+                    "bottled_tornado": false,
+                    "current_cost": 3,
+                    "deck_index": 20,
+                    "free_to_play_once": false,
+                    "retain": false,
+                    "selected": true,
+                    "selected_order": 0,
+                    "self_retain": false,
+                    "source": "MASTER_DECK",
+                    "upgrades": 0
+                  },
+                  "owner_id": null
+                },
+                {
+                  "instance_id": "SELECTED:1",
+                  "content_id": "CLOTHESLINE",
+                  "properties": {
+                    "base_cost": 2,
+                    "bottled_flame": false,
+                    "bottled_lightning": false,
+                    "bottled_tornado": false,
+                    "current_cost": 2,
+                    "deck_index": 14,
+                    "free_to_play_once": false,
+                    "retain": false,
+                    "selected": true,
+                    "selected_order": 1,
+                    "self_retain": false,
+                    "source": "MASTER_DECK",
+                    "upgrades": 1
+                  },
+                  "owner_id": null
+                }
+              ],
+              "action": {
+                "schema_version": 1,
+                "kind": "SELECT_CARD",
+                "subject_id": "select-card:13",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            }
+          ]
+        },
+        {
+          "trajectory": "parent90-132100024",
+          "tail": [
+            {
+              "step": 143,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "END_TURN",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 144,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:1",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 145,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:1",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 146,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:2",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 147,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:1",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 148,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:0",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 149,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "END_TURN",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 150,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:4",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 151,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:2",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 152,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "END_TURN",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 153,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:0",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 154,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:3",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 155,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "END_TURN",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 156,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:2",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 157,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:2",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 158,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:2",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 159,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:0",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 160,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "END_TURN",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 161,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:2",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 162,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:0",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 163,
+              "screen": "COMBAT_REWARD",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "CHOOSE_CARD_REWARD",
+                "subject_id": "reward-card:0:0",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 164,
+              "screen": "COMBAT_REWARD",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "TAKE_REWARD",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": "reward-gold:0",
+                "metadata": {}
+              }
+            },
+            {
+              "step": 165,
+              "screen": "COMBAT_REWARD",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "SKIP_REWARD",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 166,
+              "screen": "BOSS_REWARD",
+              "floor": 17,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "CHOOSE_BOSS_RELIC",
+                "subject_id": "boss-relic:2",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 167,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:11",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 168,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": [
+                {
+                  "instance_id": "SELECTED:0",
+                  "content_id": "CARNAGE",
+                  "properties": {
+                    "base_cost": 2,
+                    "bottled_flame": false,
+                    "bottled_lightning": false,
+                    "bottled_tornado": false,
+                    "current_cost": 2,
+                    "deck_index": 12,
+                    "free_to_play_once": false,
+                    "retain": false,
+                    "selected": true,
+                    "selected_order": 0,
+                    "self_retain": false,
+                    "source": "MASTER_DECK",
+                    "upgrades": 1
+                  },
+                  "owner_id": null
+                }
+              ],
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:11",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 169,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:11",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 170,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": [
+                {
+                  "instance_id": "SELECTED:0",
+                  "content_id": "CARNAGE",
+                  "properties": {
+                    "base_cost": 2,
+                    "bottled_flame": false,
+                    "bottled_lightning": false,
+                    "bottled_tornado": false,
+                    "current_cost": 2,
+                    "deck_index": 12,
+                    "free_to_play_once": false,
+                    "retain": false,
+                    "selected": true,
+                    "selected_order": 0,
+                    "self_retain": false,
+                    "source": "MASTER_DECK",
+                    "upgrades": 1
+                  },
+                  "owner_id": null
+                }
+              ],
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:11",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 171,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:11",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 172,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": [
+                {
+                  "instance_id": "SELECTED:0",
+                  "content_id": "CARNAGE",
+                  "properties": {
+                    "base_cost": 2,
+                    "bottled_flame": false,
+                    "bottled_lightning": false,
+                    "bottled_tornado": false,
+                    "current_cost": 2,
+                    "deck_index": 12,
+                    "free_to_play_once": false,
+                    "retain": false,
+                    "selected": true,
+                    "selected_order": 0,
+                    "self_retain": false,
+                    "source": "MASTER_DECK",
+                    "upgrades": 1
+                  },
+                  "owner_id": null
+                }
+              ],
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:11",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 173,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:11",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 174,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": [
+                {
+                  "instance_id": "SELECTED:0",
+                  "content_id": "CARNAGE",
+                  "properties": {
+                    "base_cost": 2,
+                    "bottled_flame": false,
+                    "bottled_lightning": false,
+                    "bottled_tornado": false,
+                    "current_cost": 2,
+                    "deck_index": 12,
+                    "free_to_play_once": false,
+                    "retain": false,
+                    "selected": true,
+                    "selected_order": 0,
+                    "self_retain": false,
+                    "source": "MASTER_DECK",
+                    "upgrades": 1
+                  },
+                  "owner_id": null
+                }
+              ],
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:11",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            }
+          ]
+        },
+        {
+          "trajectory": "parent90-132100029",
+          "tail": [
+            {
+              "step": 74,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "END_TURN",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 75,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:0",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 76,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:0",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 77,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:0",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 78,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "END_TURN",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 79,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:1",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 80,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:1",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 81,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "USE_POTION",
+                "subject_id": "POTION:0",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 82,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "END_TURN",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 83,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:0",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 84,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:1",
+                "target_id": "MONSTER:2",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 85,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "END_TURN",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 86,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:4",
+                "target_id": "MONSTER:2",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 87,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:1",
+                "target_id": "MONSTER:2",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 88,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:1",
+                "target_id": "MONSTER:2",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 89,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "END_TURN",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 90,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:1",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 91,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:1",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 92,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:1",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 93,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "END_TURN",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 94,
+              "screen": "COMBAT_REWARD",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "CHOOSE_CARD_REWARD",
+                "subject_id": "reward-card:0:2",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 95,
+              "screen": "COMBAT_REWARD",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "TAKE_REWARD",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": "reward-gold:0",
+                "metadata": {}
+              }
+            },
+            {
+              "step": 96,
+              "screen": "COMBAT_REWARD",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "SKIP_REWARD",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 97,
+              "screen": "BOSS_REWARD",
+              "floor": 17,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "CHOOSE_BOSS_RELIC",
+                "subject_id": "boss-relic:1",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 98,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:11",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 99,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": [
+                {
+                  "instance_id": "SELECTED:0",
+                  "content_id": "COMBUST",
+                  "properties": {
+                    "base_cost": 1,
+                    "bottled_flame": false,
+                    "bottled_lightning": false,
+                    "bottled_tornado": false,
+                    "current_cost": 1,
+                    "deck_index": 12,
+                    "free_to_play_once": false,
+                    "retain": false,
+                    "selected": true,
+                    "selected_order": 0,
+                    "self_retain": false,
+                    "source": "MASTER_DECK",
+                    "upgrades": 1
+                  },
+                  "owner_id": null
+                }
+              ],
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:11",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 100,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:11",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 101,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": [
+                {
+                  "instance_id": "SELECTED:0",
+                  "content_id": "COMBUST",
+                  "properties": {
+                    "base_cost": 1,
+                    "bottled_flame": false,
+                    "bottled_lightning": false,
+                    "bottled_tornado": false,
+                    "current_cost": 1,
+                    "deck_index": 12,
+                    "free_to_play_once": false,
+                    "retain": false,
+                    "selected": true,
+                    "selected_order": 0,
+                    "self_retain": false,
+                    "source": "MASTER_DECK",
+                    "upgrades": 1
+                  },
+                  "owner_id": null
+                }
+              ],
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:11",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 102,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:11",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 103,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": [
+                {
+                  "instance_id": "SELECTED:0",
+                  "content_id": "COMBUST",
+                  "properties": {
+                    "base_cost": 1,
+                    "bottled_flame": false,
+                    "bottled_lightning": false,
+                    "bottled_tornado": false,
+                    "current_cost": 1,
+                    "deck_index": 12,
+                    "free_to_play_once": false,
+                    "retain": false,
+                    "selected": true,
+                    "selected_order": 0,
+                    "self_retain": false,
+                    "source": "MASTER_DECK",
+                    "upgrades": 1
+                  },
+                  "owner_id": null
+                }
+              ],
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:11",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 104,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:11",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 105,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": [
+                {
+                  "instance_id": "SELECTED:0",
+                  "content_id": "COMBUST",
+                  "properties": {
+                    "base_cost": 1,
+                    "bottled_flame": false,
+                    "bottled_lightning": false,
+                    "bottled_tornado": false,
+                    "current_cost": 1,
+                    "deck_index": 12,
+                    "free_to_play_once": false,
+                    "retain": false,
+                    "selected": true,
+                    "selected_order": 0,
+                    "self_retain": false,
+                    "source": "MASTER_DECK",
+                    "upgrades": 1
+                  },
+                  "owner_id": null
+                }
+              ],
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:11",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            }
+          ]
+        },
+        {
+          "trajectory": "parent90-132100030",
+          "tail": [
+            {
+              "step": 130,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "END_TURN",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 131,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:3",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 132,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:3",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 133,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "END_TURN",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 134,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:4",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 135,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:3",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 136,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:1",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 137,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "END_TURN",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 138,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:3",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 139,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:0",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 140,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "END_TURN",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 141,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:1",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 142,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:2",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 143,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "END_TURN",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 144,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:4",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 145,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:2",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 146,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "END_TURN",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 147,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:2",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 148,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:3",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 149,
+              "screen": "COMBAT_REWARD",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "CHOOSE_CARD_REWARD",
+                "subject_id": "reward-card:0:1",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 150,
+              "screen": "COMBAT_REWARD",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "TAKE_REWARD",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": "reward-potion:0",
+                "metadata": {}
+              }
+            },
+            {
+              "step": 151,
+              "screen": "COMBAT_REWARD",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "TAKE_REWARD",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": "reward-gold:0",
+                "metadata": {}
+              }
+            },
+            {
+              "step": 152,
+              "screen": "COMBAT_REWARD",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "SKIP_REWARD",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 153,
+              "screen": "BOSS_REWARD",
+              "floor": 17,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "CHOOSE_BOSS_RELIC",
+                "subject_id": "boss-relic:0",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 154,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:9",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 155,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": [
+                {
+                  "instance_id": "SELECTED:0",
+                  "content_id": "PERFECTED_STRIKE",
+                  "properties": {
+                    "base_cost": 2,
+                    "bottled_flame": false,
+                    "bottled_lightning": false,
+                    "bottled_tornado": false,
+                    "current_cost": 2,
+                    "deck_index": 10,
+                    "free_to_play_once": false,
+                    "retain": false,
+                    "selected": true,
+                    "selected_order": 0,
+                    "self_retain": false,
+                    "source": "MASTER_DECK",
+                    "upgrades": 1
+                  },
+                  "owner_id": null
+                }
+              ],
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:9",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 156,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:9",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 157,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": [
+                {
+                  "instance_id": "SELECTED:0",
+                  "content_id": "PERFECTED_STRIKE",
+                  "properties": {
+                    "base_cost": 2,
+                    "bottled_flame": false,
+                    "bottled_lightning": false,
+                    "bottled_tornado": false,
+                    "current_cost": 2,
+                    "deck_index": 10,
+                    "free_to_play_once": false,
+                    "retain": false,
+                    "selected": true,
+                    "selected_order": 0,
+                    "self_retain": false,
+                    "source": "MASTER_DECK",
+                    "upgrades": 1
+                  },
+                  "owner_id": null
+                }
+              ],
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:9",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 158,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:9",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 159,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": [
+                {
+                  "instance_id": "SELECTED:0",
+                  "content_id": "PERFECTED_STRIKE",
+                  "properties": {
+                    "base_cost": 2,
+                    "bottled_flame": false,
+                    "bottled_lightning": false,
+                    "bottled_tornado": false,
+                    "current_cost": 2,
+                    "deck_index": 10,
+                    "free_to_play_once": false,
+                    "retain": false,
+                    "selected": true,
+                    "selected_order": 0,
+                    "self_retain": false,
+                    "source": "MASTER_DECK",
+                    "upgrades": 1
+                  },
+                  "owner_id": null
+                }
+              ],
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:9",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 160,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:9",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 161,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": [
+                {
+                  "instance_id": "SELECTED:0",
+                  "content_id": "PERFECTED_STRIKE",
+                  "properties": {
+                    "base_cost": 2,
+                    "bottled_flame": false,
+                    "bottled_lightning": false,
+                    "bottled_tornado": false,
+                    "current_cost": 2,
+                    "deck_index": 10,
+                    "free_to_play_once": false,
+                    "retain": false,
+                    "selected": true,
+                    "selected_order": 0,
+                    "self_retain": false,
+                    "source": "MASTER_DECK",
+                    "upgrades": 1
+                  },
+                  "owner_id": null
+                }
+              ],
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:9",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            }
+          ]
+        }
+      ],
+      "value_by_act": {
+        "1": {
+          "samples": 5751,
+          "mse": 2.5167416762000507
+        },
+        "2": {
+          "samples": 2118,
+          "mse": 2.6241141295437114
+        }
+      },
+      "act2_entry_deck_size_mean": 20.8,
+      "initial_value_mean": 0.5245385505259037,
+      "initial_mc_mean": -0.9737666695707503
+    },
+    "lambda098": {
+      "trajectories": 32,
+      "reached_act2": 14,
+      "successes": 1,
+      "reasons": {
+        "DEATH": 30,
+        "ACT_2_CLEARED": 1,
+        "cycle_limit": 1
+      },
+      "decision_screens": {
+        "act1:NEOW": 32,
+        "act1:COMBAT_REWARD": 904,
+        "act1:MAP": 469,
+        "act1:COMBAT": 3495,
+        "act1:EVENT": 78,
+        "act1:TREASURE": 35,
+        "act1:REST": 87,
+        "act1:CARD_REWARD": 109,
+        "act1:SHOP": 114,
+        "act1:BOSS_REWARD": 15,
+        "act2:MAP": 122,
+        "act2:COMBAT": 1310,
+        "act2:COMBAT_REWARD": 218,
+        "act2:EVENT": 24,
+        "act2:SHOP": 29,
+        "act2:REST": 17,
+        "act2:TREASURE": 6,
+        "act2:CARD_REWARD": 7
+      },
+      "act2_entry_deck_sizes": [
+        21,
+        22,
+        22,
+        21,
+        23,
+        21,
+        22,
+        23,
+        20,
+        21,
+        25,
+        22,
+        23,
+        15
+      ],
+      "act2_entry_cards": {
+        "ASCENDERS_BANE": 14,
+        "STRIKE_RED": 70,
+        "DEFEND_RED": 54,
+        "BASH": 14,
+        "SHOCKWAVE": 2,
+        "PERFECTED_STRIKE": 12,
+        "INFERNAL_BLADE": 2,
+        "TWIN_STRIKE": 4,
+        "ANGER": 13,
+        "CLOTHESLINE": 3,
+        "SEARING_BLOW": 1,
+        "IMMOLATE": 2,
+        "IRON_WAVE": 6,
+        "INFLAME": 4,
+        "HEMOKINESIS": 3,
+        "CLASH": 6,
+        "SECOND_WIND": 2,
+        "PARASITE": 1,
+        "METALLICIZE": 4,
+        "HEADBUTT": 8,
+        "BLUDGEON": 2,
+        "BLOOD_FOR_BLOOD": 3,
+        "SWORD_BOOMERANG": 1,
+        "CARNAGE": 2,
+        "POMMEL_STRIKE": 13,
+        "UPPERCUT": 4,
+        "GHOSTLY_ARMOR": 2,
+        "IMPERVIOUS": 1,
+        "COMBUST": 5,
+        "HAVOC": 3,
+        "SHRUG_IT_OFF": 4,
+        "REAPER": 2,
+        "WILD_STRIKE": 2,
+        "BATTLE_TRANCE": 2,
+        "FIRE_BREATHING": 5,
+        "BERSERK": 1,
+        "CLEAVE": 4,
+        "DISARM": 1,
+        "DOUBLE_TAP": 3,
+        "DEMON_FORM": 3,
+        "RAMPAGE": 1,
+        "TRUE_GRIT": 1,
+        "THUNDERCLAP": 1,
+        "OFFERING": 1,
+        "FIEND_FIRE": 1,
+        "FLAME_BARRIER": 1,
+        "RECKLESS_CHARGE": 2,
+        "CURSE_OF_THE_BELL": 1,
+        "CORRUPTION": 1,
+        "RUPTURE": 1,
+        "SEVER_SOUL": 1,
+        "PAIN": 1
+      },
+      "act2_entry_relics": {
+        "BURNING_BLOOD": 12,
+        "PRESERVED_INSECT": 2,
+        "BOTTLED_LIGHTNING": 1,
+        "BRONZE_SCALES": 1,
+        "AKABEKO": 2,
+        "SINGING_BOWL": 1,
+        "ECTOPLASM": 2,
+        "FROZEN_EGG": 1,
+        "MEAT_ON_THE_BONE": 2,
+        "FUSION_HAMMER": 2,
+        "MOLTEN_EGG": 1,
+        "HAPPY_FLOWER": 2,
+        "RED_SKULL": 2,
+        "SOZU": 3,
+        "NEOWS_LAMENT": 6,
+        "SUNDIAL": 1,
+        "HORN_CLEAT": 1,
+        "COFFEE_DRIPPER": 1,
+        "CERAMIC_FISH": 2,
+        "THE_BOOT": 2,
+        "ANCIENT_TEA_SET": 1,
+        "BLACK_BLOOD": 2,
+        "CENTENNIAL_PUZZLE": 2,
+        "REGAL_PILLOW": 1,
+        "LANTERN": 1,
+        "RUNIC_PYRAMID": 1,
+        "STRAWBERRY": 1,
+        "MUMMIFIED_HAND": 2,
+        "OMAMORI": 1,
+        "PRAYER_WHEEL": 1,
+        "THREAD_AND_NEEDLE": 1,
+        "STRIKE_DUMMY": 1,
+        "CALLING_BELL": 1,
+        "VAJRA": 1,
+        "QUESTION_CARD": 1,
+        "ETERNAL_FEATHER": 1,
+        "GIRYA": 1,
+        "TINY_HOUSE": 1,
+        "BAG_OF_PREPARATION": 1,
+        "TOY_ORNITHOPTER": 1,
+        "WARPED_TONGS": 1,
+        "EMPTY_CAGE": 1
+      },
+      "cycles": [
+        {
+          "trajectory": "lambda098-132100029",
+          "tail": [
+            {
+              "step": 76,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:3",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 77,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "END_TURN",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 78,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:0",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 79,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:0",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 80,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:0",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 81,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "END_TURN",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 82,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:2",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 83,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:1",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 84,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "END_TURN",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 85,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:0",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 86,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:0",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 87,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:0",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 88,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "END_TURN",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 89,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:3",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 90,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:3",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 91,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:0",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 92,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "END_TURN",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 93,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:1",
+                "target_id": "MONSTER:4",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 94,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:0",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 95,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "END_TURN",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 96,
+              "screen": "COMBAT_REWARD",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "CHOOSE_CARD_REWARD",
+                "subject_id": "reward-card:0:1",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 97,
+              "screen": "COMBAT_REWARD",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "TAKE_REWARD",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": "reward-gold:0",
+                "metadata": {}
+              }
+            },
+            {
+              "step": 98,
+              "screen": "COMBAT_REWARD",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "SKIP_REWARD",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 99,
+              "screen": "BOSS_REWARD",
+              "floor": 17,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "CHOOSE_BOSS_RELIC",
+                "subject_id": "boss-relic:1",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 100,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:14",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 101,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": [
+                {
+                  "instance_id": "SELECTED:0",
+                  "content_id": "FIRE_BREATHING",
+                  "properties": {
+                    "base_cost": 1,
+                    "bottled_flame": false,
+                    "bottled_lightning": false,
+                    "bottled_tornado": false,
+                    "current_cost": 1,
+                    "deck_index": 15,
+                    "free_to_play_once": false,
+                    "retain": false,
+                    "selected": true,
+                    "selected_order": 0,
+                    "self_retain": false,
+                    "source": "MASTER_DECK",
+                    "upgrades": 1
+                  },
+                  "owner_id": null
+                }
+              ],
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:14",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 102,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:14",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 103,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": [
+                {
+                  "instance_id": "SELECTED:0",
+                  "content_id": "FIRE_BREATHING",
+                  "properties": {
+                    "base_cost": 1,
+                    "bottled_flame": false,
+                    "bottled_lightning": false,
+                    "bottled_tornado": false,
+                    "current_cost": 1,
+                    "deck_index": 15,
+                    "free_to_play_once": false,
+                    "retain": false,
+                    "selected": true,
+                    "selected_order": 0,
+                    "self_retain": false,
+                    "source": "MASTER_DECK",
+                    "upgrades": 1
+                  },
+                  "owner_id": null
+                }
+              ],
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:14",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 104,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:14",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 105,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": [
+                {
+                  "instance_id": "SELECTED:0",
+                  "content_id": "FIRE_BREATHING",
+                  "properties": {
+                    "base_cost": 1,
+                    "bottled_flame": false,
+                    "bottled_lightning": false,
+                    "bottled_tornado": false,
+                    "current_cost": 1,
+                    "deck_index": 15,
+                    "free_to_play_once": false,
+                    "retain": false,
+                    "selected": true,
+                    "selected_order": 0,
+                    "self_retain": false,
+                    "source": "MASTER_DECK",
+                    "upgrades": 1
+                  },
+                  "owner_id": null
+                }
+              ],
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:14",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 106,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:14",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 107,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": [
+                {
+                  "instance_id": "SELECTED:0",
+                  "content_id": "FIRE_BREATHING",
+                  "properties": {
+                    "base_cost": 1,
+                    "bottled_flame": false,
+                    "bottled_lightning": false,
+                    "bottled_tornado": false,
+                    "current_cost": 1,
+                    "deck_index": 15,
+                    "free_to_play_once": false,
+                    "retain": false,
+                    "selected": true,
+                    "selected_order": 0,
+                    "self_retain": false,
+                    "source": "MASTER_DECK",
+                    "upgrades": 1
+                  },
+                  "owner_id": null
+                }
+              ],
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:14",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            }
+          ]
+        }
+      ],
+      "value_by_act": {
+        "1": {
+          "samples": 5338,
+          "mse": 0.12831613598177455
+        },
+        "2": {
+          "samples": 1733,
+          "mse": 0.4567853472813661
+        }
+      },
+      "act2_entry_deck_size_mean": 21.5,
+      "initial_value_mean": -1.0319730639457703,
+      "initial_mc_mean": -0.9737666612118119
+    },
+    "lambda100": {
+      "trajectories": 32,
+      "reached_act2": 13,
+      "successes": 0,
+      "reasons": {
+        "DEATH": 30,
+        "cycle_limit": 2
+      },
+      "decision_screens": {
+        "act1:NEOW": 32,
+        "act1:COMBAT_REWARD": 881,
+        "act1:MAP": 457,
+        "act1:COMBAT": 3404,
+        "act1:EVENT": 77,
+        "act1:SHOP": 142,
+        "act1:REST": 81,
+        "act1:CARD_REWARD": 96,
+        "act1:TREASURE": 33,
+        "act1:BOSS_REWARD": 15,
+        "act2:MAP": 96,
+        "act2:COMBAT": 1019,
+        "act2:COMBAT_REWARD": 175,
+        "act2:EVENT": 18,
+        "act2:CARD_REWARD": 6,
+        "act2:SHOP": 25,
+        "act2:REST": 9,
+        "act2:TREASURE": 3
+      },
+      "act2_entry_deck_sizes": [
+        20,
+        20,
+        21,
+        21,
+        20,
+        20,
+        22,
+        16,
+        21,
+        19,
+        22,
+        23,
+        20
+      ],
+      "act2_entry_cards": {
+        "ASCENDERS_BANE": 13,
+        "STRIKE_RED": 65,
+        "DEFEND_RED": 52,
+        "BASH": 13,
+        "CLASH": 9,
+        "ANGER": 16,
+        "EVOLVE": 1,
+        "UPPERCUT": 4,
+        "HEADBUTT": 7,
+        "WILD_STRIKE": 5,
+        "CLEAVE": 3,
+        "FIEND_FIRE": 4,
+        "SHOCKWAVE": 2,
+        "PERFECTED_STRIKE": 9,
+        "INFERNAL_BLADE": 2,
+        "TWIN_STRIKE": 8,
+        "METALLICIZE": 4,
+        "CLOTHESLINE": 4,
+        "IMMOLATE": 2,
+        "IRON_WAVE": 2,
+        "INFLAME": 3,
+        "HEMOKINESIS": 4,
+        "PARASITE": 1,
+        "BLUDGEON": 3,
+        "BLOOD_FOR_BLOOD": 2,
+        "CARNAGE": 1,
+        "POMMEL_STRIKE": 2,
+        "DISARM": 3,
+        "COMBUST": 1,
+        "SHRUG_IT_OFF": 1,
+        "OFFERING": 1,
+        "FEED": 1,
+        "DEMON_FORM": 2,
+        "FIRE_BREATHING": 2,
+        "RAMPAGE": 1,
+        "TRUE_GRIT": 1,
+        "SPOT_WEAKNESS": 1,
+        "RAGE": 1,
+        "RECKLESS_CHARGE": 3,
+        "FLAME_BARRIER": 1,
+        "JUGGERNAUT": 1,
+        "THUNDERCLAP": 2,
+        "WARCRY": 1,
+        "CURSE_OF_THE_BELL": 1
+      },
+      "act2_entry_relics": {
+        "BURNING_BLOOD": 11,
+        "ORNAMENTAL_FAN": 1,
+        "AKABEKO": 3,
+        "SELF_FORMING_CLAY": 1,
+        "ECTOPLASM": 3,
+        "PRESERVED_INSECT": 1,
+        "BOTTLED_LIGHTNING": 1,
+        "BRONZE_SCALES": 1,
+        "SINGING_BOWL": 1,
+        "FROZEN_EGG": 1,
+        "MEAT_ON_THE_BONE": 2,
+        "RUNIC_PYRAMID": 2,
+        "MOLTEN_EGG": 1,
+        "HAPPY_FLOWER": 1,
+        "RED_SKULL": 1,
+        "SOZU": 2,
+        "NEOWS_LAMENT": 5,
+        "SUNDIAL": 1,
+        "HORN_CLEAT": 1,
+        "COFFEE_DRIPPER": 1,
+        "CERAMIC_FISH": 1,
+        "ANCIENT_TEA_SET": 1,
+        "FUSION_HAMMER": 1,
+        "BLACK_BLOOD": 2,
+        "CENTENNIAL_PUZZLE": 2,
+        "REGAL_PILLOW": 1,
+        "STRAWBERRY": 1,
+        "MUMMIFIED_HAND": 2,
+        "ODDLY_SMOOTH_STONE": 1,
+        "TINY_HOUSE": 1,
+        "OMAMORI": 1,
+        "THREAD_AND_NEEDLE": 1,
+        "STRIKE_DUMMY": 1,
+        "CALLING_BELL": 1,
+        "VAJRA": 1,
+        "QUESTION_CARD": 1,
+        "DEAD_BRANCH": 1,
+        "ETERNAL_FEATHER": 1,
+        "GIRYA": 1,
+        "ORICHALCUM": 1,
+        "TOY_ORNITHOPTER": 1
+      },
+      "cycles": [
+        {
+          "trajectory": "lambda100-132100008",
+          "tail": [
+            {
+              "step": 222,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:0",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 223,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:2",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 224,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "END_TURN",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 225,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:4",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 226,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:3",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 227,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "END_TURN",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 228,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:0",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 229,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:3",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 230,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:0",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 231,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "END_TURN",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 232,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:4",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 233,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:1",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 234,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:1",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 235,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "SELECT_CARD",
+                "subject_id": "CHOICE:1",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 236,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "END_TURN",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 237,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:0",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 238,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:0",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 239,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:2",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 240,
+              "screen": "COMBAT_REWARD",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "CHOOSE_CARD_REWARD",
+                "subject_id": "reward-card:0:2",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 241,
+              "screen": "COMBAT_REWARD",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "TAKE_REWARD",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": "reward-potion:0",
+                "metadata": {}
+              }
+            },
+            {
+              "step": 242,
+              "screen": "COMBAT_REWARD",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "TAKE_REWARD",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": "reward-gold:0",
+                "metadata": {}
+              }
+            },
+            {
+              "step": 243,
+              "screen": "COMBAT_REWARD",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "DISCARD_POTION",
+                "subject_id": "POTION:0",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 244,
+              "screen": "COMBAT_REWARD",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "SKIP_REWARD",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 245,
+              "screen": "BOSS_REWARD",
+              "floor": 17,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "CHOOSE_BOSS_RELIC",
+                "subject_id": "boss-relic:0",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 246,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:17",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 247,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": [
+                {
+                  "instance_id": "SELECTED:0",
+                  "content_id": "DEMON_FORM",
+                  "properties": {
+                    "base_cost": 3,
+                    "bottled_flame": false,
+                    "bottled_lightning": false,
+                    "bottled_tornado": false,
+                    "current_cost": 3,
+                    "deck_index": 18,
+                    "free_to_play_once": false,
+                    "retain": false,
+                    "selected": true,
+                    "selected_order": 0,
+                    "self_retain": false,
+                    "source": "MASTER_DECK",
+                    "upgrades": 0
+                  },
+                  "owner_id": null
+                }
+              ],
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:17",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 248,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:17",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 249,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": [
+                {
+                  "instance_id": "SELECTED:0",
+                  "content_id": "DEMON_FORM",
+                  "properties": {
+                    "base_cost": 3,
+                    "bottled_flame": false,
+                    "bottled_lightning": false,
+                    "bottled_tornado": false,
+                    "current_cost": 3,
+                    "deck_index": 18,
+                    "free_to_play_once": false,
+                    "retain": false,
+                    "selected": true,
+                    "selected_order": 0,
+                    "self_retain": false,
+                    "source": "MASTER_DECK",
+                    "upgrades": 0
+                  },
+                  "owner_id": null
+                }
+              ],
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:17",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 250,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:17",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 251,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": [
+                {
+                  "instance_id": "SELECTED:0",
+                  "content_id": "DEMON_FORM",
+                  "properties": {
+                    "base_cost": 3,
+                    "bottled_flame": false,
+                    "bottled_lightning": false,
+                    "bottled_tornado": false,
+                    "current_cost": 3,
+                    "deck_index": 18,
+                    "free_to_play_once": false,
+                    "retain": false,
+                    "selected": true,
+                    "selected_order": 0,
+                    "self_retain": false,
+                    "source": "MASTER_DECK",
+                    "upgrades": 0
+                  },
+                  "owner_id": null
+                }
+              ],
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:17",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 252,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:17",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 253,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": [
+                {
+                  "instance_id": "SELECTED:0",
+                  "content_id": "DEMON_FORM",
+                  "properties": {
+                    "base_cost": 3,
+                    "bottled_flame": false,
+                    "bottled_lightning": false,
+                    "bottled_tornado": false,
+                    "current_cost": 3,
+                    "deck_index": 18,
+                    "free_to_play_once": false,
+                    "retain": false,
+                    "selected": true,
+                    "selected_order": 0,
+                    "self_retain": false,
+                    "source": "MASTER_DECK",
+                    "upgrades": 0
+                  },
+                  "owner_id": null
+                }
+              ],
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:17",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            }
+          ]
+        },
+        {
+          "trajectory": "lambda100-132100029",
+          "tail": [
+            {
+              "step": 81,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "END_TURN",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 82,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:0",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 83,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:0",
+                "target_id": "MONSTER:2",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 84,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:2",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 85,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "END_TURN",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 86,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:2",
+                "target_id": "MONSTER:2",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 87,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:0",
+                "target_id": "MONSTER:2",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 88,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "END_TURN",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 89,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:0",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 90,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:3",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 91,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:2",
+                "target_id": "MONSTER:4",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 92,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "END_TURN",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 93,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:0",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 94,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:1",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 95,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:1",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 96,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "END_TURN",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 97,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:0",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 98,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:0",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 99,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "PLAY_CARD",
+                "subject_id": "HAND:0",
+                "target_id": "MONSTER:0",
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 100,
+              "screen": "COMBAT",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "END_TURN",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 101,
+              "screen": "COMBAT_REWARD",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "CHOOSE_CARD_REWARD",
+                "subject_id": "reward-card:0:2",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 102,
+              "screen": "COMBAT_REWARD",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "TAKE_REWARD",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": "reward-gold:0",
+                "metadata": {}
+              }
+            },
+            {
+              "step": 103,
+              "screen": "COMBAT_REWARD",
+              "floor": 16,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "SKIP_REWARD",
+                "subject_id": null,
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 104,
+              "screen": "BOSS_REWARD",
+              "floor": 17,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "CHOOSE_BOSS_RELIC",
+                "subject_id": "boss-relic:1",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 105,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:10",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 106,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": [
+                {
+                  "instance_id": "SELECTED:0",
+                  "content_id": "COMBUST",
+                  "properties": {
+                    "base_cost": 1,
+                    "bottled_flame": false,
+                    "bottled_lightning": false,
+                    "bottled_tornado": false,
+                    "current_cost": 1,
+                    "deck_index": 11,
+                    "free_to_play_once": false,
+                    "retain": false,
+                    "selected": true,
+                    "selected_order": 0,
+                    "self_retain": false,
+                    "source": "MASTER_DECK",
+                    "upgrades": 1
+                  },
+                  "owner_id": null
+                }
+              ],
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:10",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 107,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:10",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 108,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": [
+                {
+                  "instance_id": "SELECTED:0",
+                  "content_id": "COMBUST",
+                  "properties": {
+                    "base_cost": 1,
+                    "bottled_flame": false,
+                    "bottled_lightning": false,
+                    "bottled_tornado": false,
+                    "current_cost": 1,
+                    "deck_index": 11,
+                    "free_to_play_once": false,
+                    "retain": false,
+                    "selected": true,
+                    "selected_order": 0,
+                    "self_retain": false,
+                    "source": "MASTER_DECK",
+                    "upgrades": 1
+                  },
+                  "owner_id": null
+                }
+              ],
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:10",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 109,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:10",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 110,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": [
+                {
+                  "instance_id": "SELECTED:0",
+                  "content_id": "COMBUST",
+                  "properties": {
+                    "base_cost": 1,
+                    "bottled_flame": false,
+                    "bottled_lightning": false,
+                    "bottled_tornado": false,
+                    "current_cost": 1,
+                    "deck_index": 11,
+                    "free_to_play_once": false,
+                    "retain": false,
+                    "selected": true,
+                    "selected_order": 0,
+                    "self_retain": false,
+                    "source": "MASTER_DECK",
+                    "upgrades": 1
+                  },
+                  "owner_id": null
+                }
+              ],
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:10",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 111,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": {},
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:10",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            },
+            {
+              "step": 112,
+              "screen": "CARD_REWARD",
+              "floor": 17,
+              "selected_cards": [
+                {
+                  "instance_id": "SELECTED:0",
+                  "content_id": "COMBUST",
+                  "properties": {
+                    "base_cost": 1,
+                    "bottled_flame": false,
+                    "bottled_lightning": false,
+                    "bottled_tornado": false,
+                    "current_cost": 1,
+                    "deck_index": 11,
+                    "free_to_play_once": false,
+                    "retain": false,
+                    "selected": true,
+                    "selected_order": 0,
+                    "self_retain": false,
+                    "source": "MASTER_DECK",
+                    "upgrades": 1
+                  },
+                  "owner_id": null
+                }
+              ],
+              "action": {
+                "schema_version": 1,
+                "kind": "REMOVE_CARD",
+                "subject_id": "select-card:10",
+                "target_id": null,
+                "option_id": null,
+                "node_id": null,
+                "reward_id": null,
+                "metadata": {}
+              }
+            }
+          ]
+        }
+      ],
+      "value_by_act": {
+        "1": {
+          "samples": 5218,
+          "mse": 0.0008174796595191787
+        },
+        "2": {
+          "samples": 1351,
+          "mse": 0.0018135920565072196
+        }
+      },
+      "act2_entry_deck_size_mean": 20.384615384615383,
+      "initial_value_mean": -1.012543210759759,
+      "initial_mc_mean": -1.0362666804310265
+    }
+  },
+  "natural_choice_branch_coverage": {
+    "SHOP:unspecified": 491,
+    "COMBAT:GENERATED": 57,
+    "COMBAT:DISCARD": 224,
+    "CARD_REWARD:MASTER_DECK": 323,
+    "COMBAT:HAND": 20,
+    "COMBAT:DRAW": 2,
+    "COMBAT:EXHAUST": 1
+  },
+  "selected_encounters": [
+    "ACID_SLIME_L",
+    "ACID_SLIME_M",
+    "ACID_SLIME_S",
+    "BLUE_SLAVER",
+    "BOOK_OF_STABBING",
+    "BRONZE_AUTOMATON",
+    "BRONZE_ORB",
+    "BYRD",
+    "CENTURION",
+    "CHOSEN",
+    "CULTIST",
+    "FAT_GREMLIN",
+    "FUNGI_BEAST",
+    "GREEN_LOUSE",
+    "GREMLIN_LEADER",
+    "GREMLIN_WIZARD",
+    "HEXAGHOST",
+    "JAW_WORM",
+    "LAGAVULIN",
+    "LOOTER",
+    "MAD_GREMLIN",
+    "MUGGER",
+    "MYSTIC",
+    "RED_LOUSE",
+    "RED_SLAVER",
+    "SENTRY",
+    "SHELLED_PARASITE",
+    "SHIELD_GREMLIN",
+    "SLIME_BOSS",
+    "SNEAKY_GREMLIN",
+    "SNECKO",
+    "SPHERIC_GUARDIAN",
+    "SPIKE_SLIME_L",
+    "SPIKE_SLIME_M",
+    "SPIKE_SLIME_S",
+    "THE_COLLECTOR",
+    "TORCH_HEAD"
+  ],
+  "states_by_stratum": {
+    "act2:MAP:-": 1,
+    "act1:COMBAT:SNEAKY_GREMLIN+FAT_GREMLIN+SHIELD_GREMLIN+MAD_GREMLIN": 1,
+    "act2:SHOP:-": 1,
+    "act1:REST:-": 1,
+    "act1:COMBAT:SPIKE_SLIME_S+ACID_SLIME_M": 1,
+    "act2:COMBAT:LOOTER+MUGGER": 1,
+    "act1:COMBAT_REWARD:-": 1,
+    "act1:TREASURE:-": 1,
+    "act1:COMBAT:JAW_WORM+ACID_SLIME_M": 1,
+    "act1:COMBAT:SENTRY+SENTRY+SENTRY": 1,
+    "act2:COMBAT:SNECKO": 1,
+    "act1:COMBAT:GREEN_LOUSE+GREEN_LOUSE+RED_LOUSE": 1,
+    "act2:EVENT:-": 1,
+    "act1:COMBAT:CULTIST": 1,
+    "act1:COMBAT:SPIKE_SLIME_L+ACID_SLIME_M+SLIME_BOSS+ACID_SLIME_L+ACID_SLIME_M": 1,
+    "act1:COMBAT:LAGAVULIN": 1,
+    "act1:COMBAT:RED_LOUSE+GREEN_LOUSE": 1,
+    "act2:COMBAT:CENTURION+MYSTIC": 1,
+    "act1:COMBAT:GREEN_LOUSE+GREEN_LOUSE": 1,
+    "act1:COMBAT:HEXAGHOST": 1,
+    "act2:COMBAT:BOOK_OF_STABBING": 1,
+    "act2:COMBAT:BRONZE_ORB+BRONZE_AUTOMATON+BRONZE_ORB": 1,
+    "act1:COMBAT:JAW_WORM+RED_LOUSE": 1,
+    "act2:COMBAT:SENTRY+SPHERIC_GUARDIAN": 1,
+    "act1:COMBAT:ACID_SLIME_S+SPIKE_SLIME_M": 1,
+    "act1:COMBAT:FUNGI_BEAST+FUNGI_BEAST": 1,
+    "act1:COMBAT:SNEAKY_GREMLIN+SNEAKY_GREMLIN+FAT_GREMLIN+FAT_GREMLIN": 1,
+    "act1:COMBAT:RED_LOUSE+GREEN_LOUSE+GREEN_LOUSE": 1,
+    "act2:COMBAT:SHELLED_PARASITE": 1,
+    "act2:COMBAT:SPHERIC_GUARDIAN": 1,
+    "act1:COMBAT:RED_SLAVER": 1,
+    "act1:COMBAT:ACID_SLIME_S+SPIKE_SLIME_S+SPIKE_SLIME_S+SPIKE_SLIME_S+ACID_SLIME_S": 1,
+    "act1:COMBAT:SPIKE_SLIME_S+SPIKE_SLIME_S+ACID_SLIME_S+SPIKE_SLIME_S+ACID_SLIME_S": 1,
+    "act1:COMBAT:RED_LOUSE+RED_LOUSE": 1,
+    "act1:COMBAT:SNEAKY_GREMLIN+FAT_GREMLIN+SNEAKY_GREMLIN+SHIELD_GREMLIN": 1,
+    "act1:COMBAT:RED_LOUSE+RED_LOUSE+GREEN_LOUSE": 1,
+    "act1:COMBAT:SPIKE_SLIME_L": 1,
+    "act2:COMBAT:THE_COLLECTOR": 1,
+    "act1:COMBAT:SNEAKY_GREMLIN+MAD_GREMLIN+FAT_GREMLIN+FAT_GREMLIN": 1,
+    "act1:COMBAT:SNEAKY_GREMLIN+GREMLIN_WIZARD+FAT_GREMLIN+MAD_GREMLIN": 1,
+    "act2:COMBAT:BYRD+CHOSEN": 1,
+    "act1:COMBAT:RED_LOUSE+RED_LOUSE+RED_LOUSE": 1,
+    "act1:COMBAT:SPIKE_SLIME_S+SPIKE_SLIME_S+SPIKE_SLIME_S+ACID_SLIME_S+ACID_SLIME_S": 1,
+    "act1:COMBAT:RED_LOUSE+LOOTER": 1,
+    "act2:COMBAT:MAD_GREMLIN+SNEAKY_GREMLIN+GREMLIN_LEADER": 1,
+    "act2:COMBAT:CULTIST+CULTIST+CULTIST": 1,
+    "act1:COMBAT:ACID_SLIME_L": 1,
+    "act1:COMBAT:FUNGI_BEAST+ACID_SLIME_M": 1,
+    "act1:COMBAT:SPIKE_SLIME_M+SPIKE_SLIME_L+SPIKE_SLIME_M+SLIME_BOSS+ACID_SLIME_L": 1,
+    "act1:COMBAT:MAD_GREMLIN+SHIELD_GREMLIN+MAD_GREMLIN+GREMLIN_WIZARD": 1,
+    "act1:COMBAT:MAD_GREMLIN+FAT_GREMLIN+SNEAKY_GREMLIN+FAT_GREMLIN": 1,
+    "act2:COMBAT:SHIELD_GREMLIN+MAD_GREMLIN+SNEAKY_GREMLIN+SNEAKY_GREMLIN+GREMLIN_LEADER": 1,
+    "act1:COMBAT:GREEN_LOUSE+GREEN_LOUSE+GREEN_LOUSE": 1,
+    "act2:COMBAT:MAD_GREMLIN+SHIELD_GREMLIN+GREMLIN_LEADER": 1,
+    "act2:COMBAT:TORCH_HEAD+TORCH_HEAD+TORCH_HEAD+TORCH_HEAD+THE_COLLECTOR": 1,
+    "act1:COMBAT:SPIKE_SLIME_S+ACID_SLIME_S+SPIKE_SLIME_S+SPIKE_SLIME_S+ACID_SLIME_S": 1,
+    "act2:COMBAT:BLUE_SLAVER+RED_SLAVER": 1,
+    "act1:COMBAT:RED_LOUSE+GREEN_LOUSE+RED_LOUSE": 1,
+    "act1:COMBAT:GREEN_LOUSE+CULTIST": 1,
+    "act1:COMBAT:MAD_GREMLIN+FAT_GREMLIN+FAT_GREMLIN+SNEAKY_GREMLIN": 1,
+    "act2:COMBAT:SNEAKY_GREMLIN+MAD_GREMLIN+SNEAKY_GREMLIN+SHIELD_GREMLIN+GREMLIN_LEADER": 1,
+    "act1:COMBAT:GREEN_LOUSE+RED_LOUSE+RED_LOUSE": 1,
+    "act1:COMBAT:JAW_WORM+SPIKE_SLIME_M": 1,
+    "act2:COMBAT:MAD_GREMLIN+SHIELD_GREMLIN+MAD_GREMLIN+SNEAKY_GREMLIN+SNEAKY_GREMLIN+SNEAKY_GREMLIN+GREMLIN_LEADER": 1
+  },
+  "pairwise_by_screen": {
+    "lambda098:lambda100": {
+      "COMBAT": {
+        "states": 58,
+        "action_disagreements": 16,
+        "mean_js_nats": 0.13777617386624177,
+        "mean_shaped_value_difference": -0.006052704720661558
+      },
+      "REST": {
+        "states": 1,
+        "action_disagreements": 0,
+        "mean_js_nats": 5.374118592407479e-07,
+        "mean_shaped_value_difference": -0.05160248279571533
+      },
+      "TREASURE": {
+        "states": 1,
+        "action_disagreements": 0,
+        "mean_js_nats": 1.3710018016553211e-05,
+        "mean_shaped_value_difference": -0.02405714988708496
+      },
+      "EVENT": {
+        "states": 1,
+        "action_disagreements": 0,
+        "mean_js_nats": 0.11486244635626772,
+        "mean_shaped_value_difference": 0.07650649547576904
+      },
+      "MAP": {
+        "states": 1,
+        "action_disagreements": 0,
+        "mean_js_nats": 0.00045535762400635975,
+        "mean_shaped_value_difference": 0.019384384155273438
+      },
+      "SHOP": {
+        "states": 1,
+        "action_disagreements": 0,
+        "mean_js_nats": 0.0,
+        "mean_shaped_value_difference": -0.0495753288269043
+      },
+      "COMBAT_REWARD": {
+        "states": 1,
+        "action_disagreements": 0,
+        "mean_js_nats": 1.7691129951249402e-07,
+        "mean_shaped_value_difference": -0.0403672456741333
+      }
+    },
+    "lambda098:parent90": {
+      "COMBAT": {
+        "states": 58,
+        "action_disagreements": 11,
+        "mean_js_nats": 0.07644958682036042,
+        "mean_shaped_value_difference": -1.401265025074626
+      },
+      "REST": {
+        "states": 1,
+        "action_disagreements": 0,
+        "mean_js_nats": 3.23748968691982e-05,
+        "mean_shaped_value_difference": -1.7364251613616943
+      },
+      "TREASURE": {
+        "states": 1,
+        "action_disagreements": 0,
+        "mean_js_nats": 2.660466800700326e-05,
+        "mean_shaped_value_difference": -1.4786767363548279
+      },
+      "EVENT": {
+        "states": 1,
+        "action_disagreements": 0,
+        "mean_js_nats": 0.1757535661763374,
+        "mean_shaped_value_difference": -1.4796383380889893
+      },
+      "MAP": {
+        "states": 1,
+        "action_disagreements": 0,
+        "mean_js_nats": 0.002460654099275962,
+        "mean_shaped_value_difference": -1.808622419834137
+      },
+      "SHOP": {
+        "states": 1,
+        "action_disagreements": 0,
+        "mean_js_nats": 0.0,
+        "mean_shaped_value_difference": -1.3603295981884003
+      },
+      "COMBAT_REWARD": {
+        "states": 1,
+        "action_disagreements": 0,
+        "mean_js_nats": 8.315178586856623e-05,
+        "mean_shaped_value_difference": -1.6110746264457703
+      }
+    },
+    "lambda100:parent90": {
+      "COMBAT": {
+        "states": 58,
+        "action_disagreements": 10,
+        "mean_js_nats": 0.09172650166741246,
+        "mean_shaped_value_difference": -1.3952123203539644
+      },
+      "REST": {
+        "states": 1,
+        "action_disagreements": 0,
+        "mean_js_nats": 3.609748969838802e-05,
+        "mean_shaped_value_difference": -1.684822678565979
+      },
+      "TREASURE": {
+        "states": 1,
+        "action_disagreements": 0,
+        "mean_js_nats": 2.473286236734757e-06,
+        "mean_shaped_value_difference": -1.454619586467743
+      },
+      "EVENT": {
+        "states": 1,
+        "action_disagreements": 0,
+        "mean_js_nats": 0.011239198959292806,
+        "mean_shaped_value_difference": -1.5561448335647583
+      },
+      "MAP": {
+        "states": 1,
+        "action_disagreements": 0,
+        "mean_js_nats": 0.0042006846563111076,
+        "mean_shaped_value_difference": -1.8280068039894104
+      },
+      "SHOP": {
+        "states": 1,
+        "action_disagreements": 0,
+        "mean_js_nats": 0.0,
+        "mean_shaped_value_difference": -1.310754269361496
+      },
+      "COMBAT_REWARD": {
+        "states": 1,
+        "action_disagreements": 0,
+        "mean_js_nats": 8.146780000277656e-05,
+        "mean_shaped_value_difference": -1.570707380771637
+      }
+    }
+  },
+  "matched_continuations": {
+    "lambda098": {
+      "states": 64,
+      "complete": 58,
+      "successes": 0,
+      "unfinished": 6,
+      "reasons": {
+        "DEATH": 58,
+        "diagnostic_step_limit": 6
+      },
+      "complete_return_mean": -1.0998087758584758
+    },
+    "lambda100": {
+      "states": 64,
+      "complete": 62,
+      "successes": 0,
+      "unfinished": 2,
+      "reasons": {
+        "DEATH": 61,
+        "diagnostic_step_limit": 2,
+        "cycle_limit": 1
+      },
+      "complete_return_mean": -1.0972431162319423
+    },
+    "parent90": {
+      "states": 64,
+      "complete": 60,
+      "successes": 2,
+      "unfinished": 4,
+      "reasons": {
+        "DEATH": 56,
+        "ACT_2_CLEARED": 2,
+        "diagnostic_step_limit": 4,
+        "cycle_limit": 2
+      },
+      "complete_return_mean": -1.03101184507359
+    }
+  },
+  "act2_boss_combat_controls": {
+    "states": 3,
+    "scope": "SAME_STARTING_DECK_RESOURCES_HISTORY_AND_NATIVE_STATE; ACT2_HORIZON_ENDS_AT_BOSS_CLEAR",
+    "models": {
+      "lambda098": {
+        "successes": 0,
+        "unfinished": 0
+      },
+      "lambda100": {
+        "successes": 0,
+        "unfinished": 0
+      },
+      "parent90": {
+        "successes": 0,
+        "unfinished": 0
+      }
+    },
+    "state_ids": [
+      "00ab99814f70f348fb37f7cdc85af480d5412a3b3dce323361120e3112c616e7",
+      "037a41669815ed3995c7549426a6e54219e220476b5b3c6972fa8eaa1c0a61b0",
+      "0d762f9ae735b85e3fdde04344d726b6924759bc05c6ce9bd4136740ba3dc842"
+    ]
+  },
+  "jointly_completed_states": 54,
+  "conditional_success_states": {
+    "091e61e9ec0a0ea69ff702c022056f1f5ba75725e1f3bfb66b4715636bb78e4e": [
+      "parent90"
+    ],
+    "01a26b9d7dbd351e1f1bbefe8f7ada0e7c59534637880cc915a4fa56982c2dcf": [
+      "parent90"
+    ]
+  },
+  "scope": "DESCRIPTIVE_MIGRATION_DIAGNOSTICS_NOT_FORMAL_WIN_RATES_OR_STOCHASTIC_CRITIC_CALIBRATION"
+}

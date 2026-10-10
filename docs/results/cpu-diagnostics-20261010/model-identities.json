@@ -1,0 +1,137 @@
+{
+  "parent90": {
+    "checkpoint": "D:\\SLS\\local\\runs\\ironclad-a20-act1-win-90m-continuation\\final.pt",
+    "sha256": "274963f4fe32b75003c5a1b4ccd394b5185304156e6ea22a76aee2764d54f1e0",
+    "trained_git_commit": "5435d4a2f423a1e3b445977a48fae41ac90b5837",
+    "encoding_schema": "sls-policy-input-v5",
+    "vocabulary_sha256": "04df4dc504ccf10d389b7b0e798ebc7a1ea2036edfc273a5cf5b11071b3b8ed0",
+    "model_config": {
+      "embedding_dim": 128,
+      "transformer_layers": 4,
+      "attention_heads": 4,
+      "feedforward_dim": 256,
+      "recurrent_hidden_dim": 256,
+      "recurrent_layers": 1,
+      "dropout": 0.0,
+      "architecture": "sls-recurrent-relational-policy-v5",
+      "encoding_schema": "sls-policy-input-v5",
+      "vocabulary_hash": "04df4dc504ccf10d389b7b0e798ebc7a1ea2036edfc273a5cf5b11071b3b8ed0"
+    },
+    "parameter_count": 1283076,
+    "steps": 90013696,
+    "trained_profile": "IRONCLAD_A20_ACT1",
+    "native_source_sha256": "1e30bb6cfa32f600cd63c59983c14ab8928fac4452c1586d630295d2c6ff9453",
+    "diagnostic_environment_migration": true,
+    "horizon_transfer": true,
+    "transfer": "READ_ONLY_WEIGHTS_NOT_TRAINING_RESUME",
+    "diagnostic_target": {
+      "profile": "IRONCLAD_A20_ACT2",
+      "gamma": 1.0,
+      "potential_shaping": true,
+      "potential_scale": 0.2,
+      "failure_progress_scale": 0.0,
+      "limit_failure_reward": -1.0,
+      "max_episode_steps": 4096,
+      "max_boundary_visits": 4,
+      "policy": "GREEDY_NOT_STOCHASTIC_TRAINING"
+    },
+    "training_value_target": {
+      "formula": "VALUE_PLUS_GAE_WITH_ROLLOUT_BOUNDARY_BOOTSTRAP",
+      "policy": "STOCHASTIC_TRAINING_POLICY",
+      "gamma": 1.0,
+      "gae_lambda": 0.98,
+      "rollout_steps": 256,
+      "trained_profile": "IRONCLAD_A20_ACT1"
+    }
+  },
+  "lambda098": {
+    "checkpoint": "D:\\SLS\\local\\runs\\ironclad-a20-act12-lambda098-r1\\final.pt",
+    "sha256": "4eab4cb154f17b9f48e81e160b799bd99ed1d58fcae9938f735b29aa26418098",
+    "trained_git_commit": "6e54adbc0aa6fca81b994490837db382b245e42b",
+    "encoding_schema": "sls-policy-input-v5",
+    "vocabulary_sha256": "04df4dc504ccf10d389b7b0e798ebc7a1ea2036edfc273a5cf5b11071b3b8ed0",
+    "model_config": {
+      "embedding_dim": 128,
+      "transformer_layers": 4,
+      "attention_heads": 4,
+      "feedforward_dim": 256,
+      "recurrent_hidden_dim": 256,
+      "recurrent_layers": 1,
+      "dropout": 0.0,
+      "architecture": "sls-recurrent-relational-policy-v5",
+      "encoding_schema": "sls-policy-input-v5",
+      "vocabulary_hash": "04df4dc504ccf10d389b7b0e798ebc7a1ea2036edfc273a5cf5b11071b3b8ed0"
+    },
+    "parameter_count": 1283076,
+    "steps": 94027776,
+    "trained_profile": "IRONCLAD_A20_ACT2",
+    "native_source_sha256": "b100427d1e3ae6eee05818b6904047049609b1aa70807872c1f5f5e0edd6d62f",
+    "diagnostic_environment_migration": true,
+    "horizon_transfer": false,
+    "transfer": "READ_ONLY_WEIGHTS_NOT_TRAINING_RESUME",
+    "diagnostic_target": {
+      "profile": "IRONCLAD_A20_ACT2",
+      "gamma": 1.0,
+      "potential_shaping": true,
+      "potential_scale": 0.2,
+      "failure_progress_scale": 0.0,
+      "limit_failure_reward": -1.0,
+      "max_episode_steps": 4096,
+      "max_boundary_visits": 4,
+      "policy": "GREEDY_NOT_STOCHASTIC_TRAINING"
+    },
+    "training_value_target": {
+      "formula": "VALUE_PLUS_GAE_WITH_ROLLOUT_BOUNDARY_BOOTSTRAP",
+      "policy": "STOCHASTIC_TRAINING_POLICY",
+      "gamma": 1.0,
+      "gae_lambda": 0.98,
+      "rollout_steps": 256,
+      "trained_profile": "IRONCLAD_A20_ACT2"
+    }
+  },
+  "lambda100": {
+    "checkpoint": "D:\\SLS\\local\\runs\\ironclad-a20-act12-lambda100-r1\\final.pt",
+    "sha256": "0aebb484bbb8d75fdf78fdf6b0871f86938887bc00e0281bfbcc67133d56c1e3",
+    "trained_git_commit": "6e54adbc0aa6fca81b994490837db382b245e42b",
+    "encoding_schema": "sls-policy-input-v5",
+    "vocabulary_sha256": "04df4dc504ccf10d389b7b0e798ebc7a1ea2036edfc273a5cf5b11071b3b8ed0",
+    "model_config": {
+      "embedding_dim": 128,
+      "transformer_layers": 4,
+      "attention_heads": 4,
+      "feedforward_dim": 256,
+      "recurrent_hidden_dim": 256,
+      "recurrent_layers": 1,
+      "dropout": 0.0,
+      "architecture": "sls-recurrent-relational-policy-v5",
+      "encoding_schema": "sls-policy-input-v5",
+      "vocabulary_hash": "04df4dc504ccf10d389b7b0e798ebc7a1ea2036edfc273a5cf5b11071b3b8ed0"
+    },
+    "parameter_count": 1283076,
+    "steps": 94027776,
+    "trained_profile": "IRONCLAD_A20_ACT2",
+    "native_source_sha256": "b100427d1e3ae6eee05818b6904047049609b1aa70807872c1f5f5e0edd6d62f",
+    "diagnostic_environment_migration": true,
+    "horizon_transfer": false,
+    "transfer": "READ_ONLY_WEIGHTS_NOT_TRAINING_RESUME",
+    "diagnostic_target": {
+      "profile": "IRONCLAD_A20_ACT2",
+      "gamma": 1.0,
+      "potential_shaping": true,
+      "potential_scale": 0.2,
+      "failure_progress_scale": 0.0,
+      "limit_failure_reward": -1.0,
+      "max_episode_steps": 4096,
+      "max_boundary_visits": 4,
+      "policy": "GREEDY_NOT_STOCHASTIC_TRAINING"
+    },
+    "training_value_target": {
+      "formula": "VALUE_PLUS_GAE_WITH_ROLLOUT_BOUNDARY_BOOTSTRAP",
+      "policy": "STOCHASTIC_TRAINING_POLICY",
+      "gamma": 1.0,
+      "gae_lambda": 1.0,
+      "rollout_steps": 256,
+      "trained_profile": "IRONCLAD_A20_ACT2"
+    }
+  }
+}

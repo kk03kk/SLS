@@ -13,6 +13,7 @@ $env:PYTHONPATH = "$PWD/src;$PWD"
 python tools/diagnose_cpu.py capture --artifact-root D:/SLS --output local/reports/cpu-diagnostics-20261010/corpus
 python tools/diagnose_cpu.py compare --artifact-root D:/SLS --corpus local/reports/cpu-diagnostics-20261010/corpus --output local/reports/cpu-diagnostics-20261010/comparison.json
 python tools/diagnose_cpu.py returns --corpus local/reports/cpu-diagnostics-20261010/corpus --output local/reports/cpu-diagnostics-20261010/returns.json
+python tools/diagnose_cpu.py verify --artifact-root D:/SLS --corpus local/reports/cpu-diagnostics-20261010/corpus --output local/reports/cpu-diagnostics-20261010/greedy-equivalence.json
 python tools/summarize_cpu_diagnostics.py --corpus local/reports/cpu-diagnostics-20261010/corpus --comparison local/reports/cpu-diagnostics-20261010/comparison.json --returns local/reports/cpu-diagnostics-20261010/returns.json --output local/reports/cpu-diagnostics-20261010/summary.json
 ```
 

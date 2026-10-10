@@ -1,0 +1,98 @@
+{
+  "schema": "sls-cpu-local-acceptance-v1",
+  "runtime": {
+    "device": "cpu",
+    "torch": "2.10.0+cu130",
+    "python": "3.12.12",
+    "threads": 1,
+    "cuda_visible_devices": "-1",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "git": {
+    "commit": "187b17f6696bad57da8d1c10bed0a0bd9517fdf4",
+    "branch": "codex/cpu-diagnostics-performance",
+    "dirty": true
+  },
+  "native": {
+    "path": "C:\\Users\\黄\\.codex\\worktrees\\cpu-diagnostics-performance\\SLS\\local\\build\\native\\cpython-312\\_lightspeed.cp312-win_amd64.pyd",
+    "sha256": "60a37a2dfe46d7bdbc478493b3235c220c91db193dc0a77edc724928f04aec72",
+    "source_sha256": "6efbb772958c06d1b9133f374d046d8838eaa256da1a146eaf7e1ee530eefd3d",
+    "git_commit": "80bfb37a806c18154ab38f6a845160fbf59634ce"
+  },
+  "native_source_sha256": "6efbb772958c06d1b9133f374d046d8838eaa256da1a146eaf7e1ee530eefd3d",
+  "implementation_sha256": "8f04388a202fe099f41c8ab94415f36d241df677f04ab7f636dd037a9627d0e6",
+  "profile": "IRONCLAD_A20_ACT2",
+  "claim": "DIAGNOSTIC_NOT_FORMAL_WIN_RATE",
+  "tested_code_commit": "187b17f6696bad57da8d1c10bed0a0bd9517fdf4",
+  "base_commit": "80bfb37a806c18154ab38f6a845160fbf59634ce",
+  "capture_executor_commit": "3e1018dec76c5cc9bd98b90d0e1443ca8ca0a317",
+  "comparison_executor_commit": "173141f",
+  "native_build": "PASS_IN_ISOLATED_WORKTREE",
+  "pytest": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "2",
+    "tests": "1363",
+    "time": "135.625",
+    "timestamp": "2026-10-10T12:35:18.603393+08:00",
+    "hostname": "FZYSSY"
+  },
+  "pytest_passed": 1361,
+  "skips": [
+    "historical policy rejected by current encoding",
+    "CUDA unavailable by CPU-only constraint"
+  ],
+  "ruff": "PASS",
+  "vocabulary": "PASS",
+  "configuration_check": {
+    "release80b": "35/35 PASS",
+    "optimized_branch": "34/35; expected critic20m bound source rejection",
+    "only_rejected_recipe": "configs/experiments/act12-critic20m-r1.json",
+    "reason": "bound training/native source changed",
+    "registered_operators_unchanged": true,
+    "configurations_unchanged": true,
+    "new_compatibility_allowlists": false
+  },
+  "optimization_acceptance": {
+    "metadata": {
+      "target_stage": "observation",
+      "target_improvement_percent": 15.911224319917105,
+      "full_replay_improvement_percent": 10.002833616297934,
+      "production_commit": "0cbc64d"
+    },
+    "fingerprint": {
+      "target_stage": "fingerprint",
+      "target_improvement_percent": 18.0476018199484,
+      "full_replay_improvement_percent": 3.5442374905776064,
+      "production_commit": "8fbd418"
+    }
+  },
+  "rejected_prototype": {
+    "fingerprint_improvement_percent": -18.16220050681252,
+    "in_production": false
+  },
+  "greedy_equivalence_decisions": 824,
+  "greedy_max_value_delta": 0,
+  "artifact_sha256": {
+    "corpus/manifest.json": "3f13f8e4687d80ebe649ac56a6770b504a176d8fa0d4c706b0e41374adf49317",
+    "comparison.json": "a29da391701c35a31ea299f61b806150d4e5892171731a9c9f48cb9190b1432e",
+    "returns.json": "7eb2631040b3e7cc92c7e009cf6c445c797b9553a748e2d6ca6aecc8a91fde23",
+    "summary-v2.json": "c22d55ba108fbc2b58b22c87a96616c01527160ae3b9797441e186dc63ad1b83",
+    "model-identities.json": "0026fcdcb82eb73b6762af6745723fae4f3cc8e9742984d33d84964db794aadd",
+    "trained-ppo-targets.json": "c787f01623a8ec314204a497cff23bd56eed5bb9d94836f1df7bf784a7e9667b",
+    "performance-metadata.json": "7b3ce123cd375a3140cf1742967fcf813640eb10231cba51bec6eaa516c03a2d",
+    "performance-fingerprint.json": "cdf51cc51a7a75c3162e315cb7f15071e19a4c308130473277be53b3bcfa189b",
+    "performance-rejected-json.json": "2c411fae22fb257db18372dd23e9cc4ae0e19aa8633eed7318976661d3982a00",
+    "greedy-equivalence.json": "01e36dca74a396eee892505190b571c5f5e18c99e43cb4051cd5b609f191f67f",
+    "prior-report-seed-scan-v2.json": "7a5f0c5e2a1e3ecb0fc9ffe083de73f3cd5758a83cf09eb574b361507a05e9a5",
+    "local-evidence-inputs.json": "ed83f489d7aa3c2131339a342b1db1fc5807e381066e6df565b4310d33566fd7",
+    "pytest-release.xml": "9ed0ee7784f66f6e10e18162875af99fb080883ee817fd343d7d5c2ba4becbb3",
+    "pytest-release.log": "25099c8643b4710146123f1d22c99ca46427f2ef33e9280c9c1ce336604e5835",
+    "configs-final.log": "3ced71bc7d85d91ee1d1264c4a10fe57801dd73665d1ddac82f586677efb1f3b",
+    "configs-release80b.log": "25b14621593d3f8bea204c2f6c248993faf2825c24f57c865d47d9bf5feeb595",
+    "ruff-final.log": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0",
+    "vocabulary-final.log": "253dc6855d58deb0497e2af67b1a8eee1c686e15b91f229bfd776126ea051933"
+  },
+  "scope": "LOCAL_CPU_DIAGNOSTICS_NOT_NUS_SPEEDUP_OR_FORMAL_WIN_RATE"
+}

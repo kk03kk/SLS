@@ -1,0 +1,22 @@
+{
+  "schema": "sls-cpu-delivery-v1",
+  "path": "C:\\Users\\黄\\.codex\\worktrees\\cpu-diagnostics-performance\\SLS\\local\\reports\\cpu-diagnostics-20261010-delivery.zip",
+  "bytes": 5234898,
+  "sha256": "0b5cc3f209576094093a33736b7d73b3faa7a7ca6f8cb0ea6acfef82c863bb9f",
+  "files": 205,
+  "tested_code_commit": "187b17f6696bad57da8d1c10bed0a0bd9517fdf4",
+  "scope": "LOCAL_CPU_DIAGNOSTICS_NOT_FORMAL_WIN_RATE",
+  "includes": [
+    "public histories",
+    "separate private checkpoints",
+    "raw comparisons and shaped returns",
+    "benchmark groups and prototype source",
+    "test and verification logs",
+    "report and tool usage"
+  ],
+  "excludes": [
+    "model weights",
+    "stock Java sources",
+    "native binaries"
+  ]
+}
