@@ -1,0 +1,160 @@
+package spirecomm.parity;
+
+import com.evacipated.cardcrawl.modthespire.lib.SpirePatch;
+import com.evacipated.cardcrawl.modthespire.lib.SpirePrefixPatch;
+import com.evacipated.cardcrawl.modthespire.lib.SpirePostfixPatch;
+import com.evacipated.cardcrawl.modthespire.lib.SpireReturn;
+import com.google.gson.Gson;
+import com.megacrit.cardcrawl.core.CardCrawlGame;
+import com.megacrit.cardcrawl.core.Settings;
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
+import com.megacrit.cardcrawl.dungeons.TheCity;
+import com.megacrit.cardcrawl.helpers.CardLibrary;
+import com.megacrit.cardcrawl.helpers.RelicLibrary;
+import com.megacrit.cardcrawl.map.MapRoomNode;
+import com.megacrit.cardcrawl.potions.PotionSlot;
+import com.megacrit.cardcrawl.rooms.RestRoom;
+import com.megacrit.cardcrawl.rooms.TreasureRoom;
+import communicationmod.CommandExecutor;
+import communicationmod.CommunicationMod;
+import communicationmod.GameStateListener;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.LinkedHashMap;
+
+/** Controlled initial room only; all subsequent options/effects are stock. */
+public final class OracleKeyRoom {
+    public static final String COMMAND = "parity_key_room";
+
+    @SuppressWarnings("unchecked")
+    private static void prepare(String identifier) {
+        InputStream resource = OracleKeyRoom.class.getResourceAsStream(
+            "/spirecomm/parity/fullrun-key-acquisition-r1.json");
+        if (resource == null) throw new IllegalStateException("missing key room resource");
+        Map<String, Object> manifest;
+        try (InputStreamReader reader = new InputStreamReader(resource, "UTF-8")) {
+            manifest = new Gson().fromJson(reader, Map.class);
+        } catch (Exception error) {
+            throw new IllegalStateException("cannot read frozen key room resource", error);
+        }
+        Map<String, Object> scene = null;
+        if (!"sls-key-room-scenes-v1".equals(manifest.get("schema"))) {
+            throw new IllegalArgumentException("unsupported key room schema");
+        }
+        for (Object value : (List<?>) manifest.get("scenes")) {
+            Map<String, Object> candidate = (Map<String, Object>) value;
+            if (identifier.equals(candidate.get("id"))) scene = candidate;
+        }
+        if (scene == null || AbstractDungeon.player == null
+                || ((Number) scene.get("act")).intValue() != 2) {
+            throw new IllegalArgumentException("unknown or unsupported controlled key room");
+        }
+        boolean seedAllowed = false;
+        for (Object value : (List<?>) scene.get("seeds")) {
+            if (((Number) value).longValue() == Settings.seed.longValue()) seedAllowed = true;
+        }
+        if (!seedAllowed) throw new IllegalArgumentException("undeclared key room seed");
+        String kind = (String) scene.get("room");
+        if (!("REST".equals(kind) || "TREASURE".equals(kind))) {
+            throw new IllegalArgumentException("unsupported controlled key room type");
+        }
+        Map<String, Object> initial = (Map<String, Object>) scene.get("initial");
+        int hp = ((Number) initial.get("hp")).intValue();
+        int maxHp = ((Number) initial.get("max_hp")).intValue();
+        if (hp <= 0 || hp > maxHp || maxHp > 1000) throw new IllegalArgumentException("invalid HP");
+        for (Object card : (List<?>) initial.get("deck")) {
+            if (CardLibrary.getCard((String) card) == null) {
+                throw new IllegalArgumentException("unknown initial card: " + card);
+            }
+        }
+        for (Object relic : (List<?>) initial.get("relics")) {
+            if (RelicLibrary.getRelic((String) relic) == null) {
+                throw new IllegalArgumentException("unknown initial relic: " + relic);
+            }
+        }
+
+        AbstractDungeon.effectList.clear();
+        AbstractDungeon.effectsQueue.clear();
+        AbstractDungeon.topLevelEffects.clear();
+        AbstractDungeon.topLevelEffectsQueue.clear();
+        if (AbstractDungeon.isScreenUp) AbstractDungeon.closeCurrentScreen();
+        Settings.isFinalActAvailable = Boolean.TRUE.equals(initial.get("final_act_available"));
+        Settings.hasRubyKey = Boolean.TRUE.equals(initial.get("ruby_key"));
+        Settings.hasEmeraldKey = false;
+        Settings.hasSapphireKey = Boolean.TRUE.equals(initial.get("sapphire_key"));
+        AbstractDungeon.actNum = 1;
+        new TheCity(AbstractDungeon.player, new ArrayList<String>());
+        if (AbstractDungeon.actNum != 2 || !"TheCity".equals(AbstractDungeon.id)
+                || !CardCrawlGame.dungeon.getClass().getSimpleName().equals("TheCity")) {
+            throw new IllegalStateException("actual stock TheCity not established");
+        }
+        MapRoomNode selected = null;
+        for (ArrayList<MapRoomNode> row : AbstractDungeon.map) {
+            for (MapRoomNode node : row) {
+                if (selected == null && ("REST".equals(kind) ? node.room instanceof RestRoom
+                        : node.room instanceof TreasureRoom)) selected = node;
+            }
+        }
+        if (selected == null) throw new IllegalStateException("stock map lacks requested room");
+        AbstractDungeon.currMapNode = selected;
+        AbstractDungeon.floorNum = ((Number) scene.get("floor")).intValue();
+        AbstractDungeon.firstRoomChosen = true;
+        AbstractDungeon.isScreenUp = false;
+        AbstractDungeon.screen = AbstractDungeon.CurrentScreen.NONE;
+        AbstractDungeon.player.currentHealth = hp;
+        AbstractDungeon.player.maxHealth = maxHp;
+        AbstractDungeon.player.gold = ((Number) initial.get("gold")).intValue();
+        AbstractDungeon.player.hand.clear();
+        AbstractDungeon.player.drawPile.clear();
+        AbstractDungeon.player.discardPile.clear();
+        AbstractDungeon.player.exhaustPile.clear();
+        AbstractDungeon.player.masterDeck.clear();
+        for (Object card : (List<?>) initial.get("deck")) {
+            AbstractDungeon.player.masterDeck.addToBottom(CardLibrary.getCard((String) card).makeCopy());
+        }
+        AbstractDungeon.player.relics.clear();
+        for (Object relic : (List<?>) initial.get("relics")) {
+            AbstractDungeon.player.relics.add(RelicLibrary.getRelic((String) relic).makeCopy());
+        }
+        AbstractDungeon.player.potions.clear();
+        AbstractDungeon.player.potions.add(new PotionSlot(0));
+        AbstractDungeon.player.potions.add(new PotionSlot(1));
+        Map<String, Object> evidence = new LinkedHashMap<String, Object>();
+        evidence.put("scenario_id", "key-room:" + identifier);
+        evidence.put("source", "controlled-stock-room-entry");
+        evidence.put("manifest_schema", manifest.get("schema"));
+        OracleScenarioPatch.activeScenario = evidence;
+        // This is the actual stock entry method, including campfire options,
+        // onEnterRestRoom callbacks or stock getRandomChest generation.
+        AbstractDungeon.getCurrRoom().onPlayerEntry();
+        CommunicationMod.mustSendGameState = true;
+        GameStateListener.registerStateChange();
+    }
+
+    @SpirePatch(clz = CommandExecutor.class, method = "getAvailableCommands")
+    public static class Advertise {
+        @SpirePostfixPatch
+        public static ArrayList<String> Postfix(ArrayList<String> commands) {
+            if (OracleMode.validation() && CommandExecutor.isEndCommandAvailable()
+                    && !commands.contains(COMMAND)) commands.add(COMMAND);
+            return commands;
+        }
+    }
+
+    @SpirePatch(clz = CommandExecutor.class, method = "executeCommand")
+    public static class Execute {
+        @SpirePrefixPatch
+        public static SpireReturn<Boolean> Prefix(String command) {
+            if (!OracleMode.validation() || !command.trim().startsWith(COMMAND + " ")) {
+                return SpireReturn.Continue();
+            }
+            String[] words = command.trim().split("\\s+");
+            if (words.length != 2) throw new IllegalArgumentException("parity_key_room SCENE");
+            prepare(words[1]);
+            return SpireReturn.Return(Boolean.TRUE);
+        }
+    }
+}

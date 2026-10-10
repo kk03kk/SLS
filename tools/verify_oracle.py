@@ -104,10 +104,19 @@ def install(oracle: Path, game_root: Path | None) -> dict:
     return result
 
 
+def properties_command(command: str) -> str:
+    """Properties.load(InputStream) requires escaped Unicode, even on UTF-8 JVMs."""
+    units = command.encode("utf-16-be")
+    return "".join(chr(value) if value < 128 else f"\\u{value:04x}"
+                   for offset in range(0, len(units), 2)
+                   for value in [int.from_bytes(units[offset:offset + 2], "big")])
+
+
 def runtime_smoke(oracle: Path, output: Path, mode: str, game_root: Path | None, timeout: float,
                   *, capture_command: list[str] | None = None) -> dict:
     if output.exists() or output.with_suffix(".launch.json").exists():
         raise FileExistsError("runtime output exists; choose a new evidence path")
+    output.parent.mkdir(parents=True, exist_ok=True)
     local, game = original_runtime_paths(game_root)
     mts = game.parents[1] / "workshop/content/646570/1605060445/ModTheSpire.jar"
     require_no_running_game(game, mts)
@@ -143,7 +152,8 @@ def runtime_smoke(oracle: Path, output: Path, mode: str, game_root: Path | None,
                             "--mode", mode, "--output", _command_path(output)])
         if capture_command is not None:
             command = subprocess.list2cmdline(capture_command).replace(":", "\\:")
-        config.write_text(f"command={command}\nrunAtGameStart=true\nverbose=true\n", encoding="utf-8")
+        config.write_text(f"command={properties_command(command)}\nrunAtGameStart=true\nverbose=true\n",
+                          encoding="ascii")
         mod_list.write_text(json.dumps({"defaultList": "<Default>", "lists": {"<Default>": [
             "BaseMod.jar", "CommunicationMod.jar", "SpirecommParity.jar"]}}), encoding="utf-8")
         lines = display.read_text(encoding="utf-8").splitlines()
@@ -164,6 +174,8 @@ def runtime_smoke(oracle: Path, output: Path, mode: str, game_root: Path | None,
                     break
                 if b"Game crashed." in (run / "stderr.log").read_bytes():
                     raise RuntimeError(f"stock game reported a crash; logs: {run}")
+                if b"Cannot run program" in (run / "stderr.log").read_bytes():
+                    raise RuntimeError(f"CommunicationMod could not launch child; logs: {run}")
                 stdout_tail = (run / "stdout.log").read_bytes()[-65536:]
                 if b"Timed out while waiting for signal from external process." in stdout_tail:
                     raise RuntimeError(f"CommunicationMod child handshake failed; logs: {run}")

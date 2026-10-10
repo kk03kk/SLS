@@ -44,7 +44,7 @@ def main() -> int:
                            "_stock_direct", "_stock_reward_state", "_parity_scenario"}
         if args.mode == "production":
             assert not diagnostic_keys.intersection(payload)
-            assert "parity_card" not in commands and "parity_scenario" not in commands
+            assert not any(command.startswith("parity_") for command in commands)
         else:
             required = {"_rng", "_continuation", "_timing_evidence", "math_seed"}
             if payload.get("_parity_schema") in {"spirecomm-parity-v12", "spirecomm-parity-v13"}:
