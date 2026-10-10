@@ -1,0 +1,253 @@
+{
+  "schema": "sls-continuous-ending-shop-evidence-v1",
+  "code_commit": "d52022b2915eda0b26db199d661790849eac9e84",
+  "native_source_sha256": "e4f8452ff3cea688e49a362488814d4c2e29d9b721bcc6cd71c8d9f1d9fa733a",
+  "native_binary_sha256": "6ee14bf97312bab04b66fcb0a6767f52c4a688eeb0c1fcf5953b5ab8764f570b",
+  "oracle_sha256": "0710d21de30dc28dc7c137d63c587eec0e0d16a4b0e96d6708bde89699044f44",
+  "capture_sha256": "50d707f7b37011fc4244d528584fa0c78cfaf70d4788b0488db12e1ff4bd8292",
+  "seed_namespace": [
+    131200460,
+    131200461
+  ],
+  "actual_public_decisions": 25,
+  "actual_terminal": {
+    "reason": "GAME_VICTORY",
+    "success": true
+  },
+  "full_public_trajectory_equal": true,
+  "fullrun_checkpoint_full_suffix_matches": 24,
+  "rejected_conditioned_origin_restores": [
+    7,
+    17
+  ],
+  "natural_native_purge_restore_seed": 131200471,
+  "natural_native_purge_restore_pass": true,
+  "natural_native_heart_pending_restore": "NOT_COVERED",
+  "raw_combat_pairs": 11,
+  "raw_combat_exact": 9,
+  "raw_combat_differences": 2,
+  "raw_combat_unavailable": 15,
+  "production_environment_changed": false,
+  "training_gate": "NOT_QUALIFIED",
+  "training_eligible": false,
+  "natural_trajectory": false,
+  "verification": {
+    "cpu_passed": 1725,
+    "skipped": 2,
+    "warnings": 4,
+    "ruff": "PASS",
+    "vocabulary": "PASS",
+    "configurations": "31/33; two preexisting identity mismatches"
+  },
+  "files": [
+    {
+      "path": "docs/results/a20h-requalification-20261010/ENDING-CONTINUOUS-SHOP.md",
+      "bytes": 3765,
+      "sha256": "a28dde6009adec9b79c3079517f5ff41c8ad515b1af27704d7e94daeecd8038c"
+    },
+    {
+      "path": "docs/results/a20h-requalification-20261010/WAITING-SERVER-PLAN.md",
+      "bytes": 3636,
+      "sha256": "c97579b92ef65bc38aae6a7424f95c0568c33616c65058c203a48d8fe9acc161"
+    },
+    {
+      "path": "local/build/oracle/ending-continuous-shop-r1.build.json",
+      "bytes": 21411,
+      "sha256": "05f5408237dbdce37520f0be4cbc4fba5d9fcef3d28da0ecad4cd2e46315f9b1"
+    },
+    {
+      "path": "local/build/oracle/ending-continuous-shop-r1.jar",
+      "bytes": 204466,
+      "sha256": "0710d21de30dc28dc7c137d63c587eec0e0d16a4b0e96d6708bde89699044f44"
+    },
+    {
+      "path": "local/check_natural_shop_restore.py",
+      "bytes": 3869,
+      "sha256": "b4e4ca8d8bd7f861c8f63a137623e3fd8633f570af7393fb95cc07b602f16d0e"
+    },
+    {
+      "path": "local/compare_continuous_shop_raw.py",
+      "bytes": 2200,
+      "sha256": "cfd5f64acc39dafa648f0e0e143e8d7cb5edd4cac47a0632e4abaadbb08aa87e"
+    },
+    {
+      "path": "local/freeze_ending_shop.py",
+      "bytes": 1955,
+      "sha256": "8aee603fbc49f984497d46d3fd3a7ad37e90e0b34513691ecc04cd91ada62bad"
+    },
+    {
+      "path": "local/package_ending_shop.py",
+      "bytes": 5470,
+      "sha256": "bce9ba6d41991e60e0cdab9a6f4b37c3afacc172ddba93412a2ce9202432f191"
+    },
+    {
+      "path": "local/prepare_ending_shop.py",
+      "bytes": 1239,
+      "sha256": "599fbd3c7ddb574fec491dec39caae0baa1ba8f6c8884023e2fc933024183f04"
+    },
+    {
+      "path": "local/reports/ending-shop-continuous-20261010/cpu-tests-r1.txt",
+      "bytes": 4114,
+      "sha256": "4ce4359f83fc7e089c670c840aae4fe5aa0d0383481e25d1354472286fc96115"
+    },
+    {
+      "path": "local/reports/ending-shop-continuous-20261010/native-boss-flow-r2.json",
+      "bytes": 501868,
+      "sha256": "da8894ef1aad3bd104205753331aa0161bf06ca5b010e1ea42852b3f37f6e7e4"
+    },
+    {
+      "path": "local/reports/ending-shop-continuous-20261010/native-entry-r1.json",
+      "bytes": 290576,
+      "sha256": "792841983b645daf675c766a5d10a9f2f025760395d7dccf8145c6330a3f853a"
+    },
+    {
+      "path": "local/reports/ending-shop-continuous-20261010/native-entry-r2.json",
+      "bytes": 290811,
+      "sha256": "9bdce39e8b4bc518a79969c61605367c2fb1f8688bef27c37d1ca69a24efd734"
+    },
+    {
+      "path": "local/reports/ending-shop-continuous-20261010/natural-shop-restore-r1.json",
+      "bytes": 4639251,
+      "sha256": "47b25a82ec7f43e78e55a53844f490c1b7704a8f61fc40c2e339002fc8382517"
+    },
+    {
+      "path": "local/reports/ending-shop-continuous-20261010/production-r52.json",
+      "bytes": 56605,
+      "sha256": "20b3430bac1c3510ff4f377a9df83e6496d639bf36aa4d76ec3551cdb0c311d9"
+    },
+    {
+      "path": "local/reports/ending-shop-continuous-20261010/production-r52.launch.json",
+      "bytes": 433,
+      "sha256": "958df0fc01fd77b4493074875c82b733f9449822c502b34706292b9316f79206"
+    },
+    {
+      "path": "local/reports/ending-shop-continuous-20261010/protection-r1.json",
+      "bytes": 10410,
+      "sha256": "21b10afa1fdfeabf373165296fac4cefab4e3da406fbb7d47c7245339d3e69c1"
+    },
+    {
+      "path": "local/reports/ending-shop-continuous-20261010/public-replay-r2.json",
+      "bytes": 2188791,
+      "sha256": "8e6d7d17c464bdc942e4239d9f327dc2d01f259ba6390d10e14ce58043e5e657"
+    },
+    {
+      "path": "local/reports/ending-shop-continuous-20261010/raw-combat-r1.json",
+      "bytes": 102407,
+      "sha256": "e0098d95898296cc19bd75b7003f020e5f86d6234e20686061cb337ecb221f1b"
+    },
+    {
+      "path": "local/reports/ending-shop-continuous-20261010/stock-r1.json",
+      "bytes": 4009012,
+      "sha256": "50d707f7b37011fc4244d528584fa0c78cfaf70d4788b0488db12e1ff4bd8292"
+    },
+    {
+      "path": "local/reports/ending-shop-continuous-20261010/stock-r1.launch.json",
+      "bytes": 430,
+      "sha256": "04584068cc23ecf3d01e233817faaaaed3999df95285a73301537b1ae95c8494"
+    },
+    {
+      "path": "local/run_ending_shop.py",
+      "bytes": 732,
+      "sha256": "72dab09185ebdbeb37bb3acb2bb32d90cdb7eb3d54b986f434eb0827df7c3e24"
+    },
+    {
+      "path": "local/runs/oracle-qualification/runtime-backups/20261010T110520.091791Z/journal.json",
+      "bytes": 28204,
+      "sha256": "26d7cae1eab67c6cbe7c4f176b9a1f1479f3d079e1f6bcbe4c746325fc5ce6cd"
+    },
+    {
+      "path": "local/runs/oracle-qualification/runtime-backups/20261010T110554.121699Z/journal.json",
+      "bytes": 28205,
+      "sha256": "2ad5caf63cab269f43e310ae02a531ecbd93949c8d89a2b3ee40ec3c4e43f249"
+    },
+    {
+      "path": "local/verify_key_protection.py",
+      "bytes": 2110,
+      "sha256": "b5d28d3867bdcef259ff833d21f881725dd295dc2415a80d840c4428ff167a2a"
+    },
+    {
+      "path": "native/oracle/ModTheSpire.json",
+      "bytes": 381,
+      "sha256": "2844e7a249234597b4727a9c07f8b8160bb684f68ebce8efcface0767aad8279"
+    },
+    {
+      "path": "native/oracle/resources/spirecomm/parity/fullrun-ending-continuous-shop-r1.json",
+      "bytes": 8152,
+      "sha256": "5bf46acd50d3730704d02a7809861c819d7efb1b8aea8e4af8c4e9afe209ffb4"
+    },
+    {
+      "path": "native/oracle/src/spirecomm/parity/OracleScenarioPatch.java",
+      "bytes": 134176,
+      "sha256": "d2891b07f5779cbdab3dbb032ed720219ebe808a43c5cc4a9bcbd51f69c4b5bf"
+    },
+    {
+      "path": "src/sls/audit/boss_flow.py",
+      "bytes": 12913,
+      "sha256": "a1ff7590ee817a34c41125e92d72b43e6c6e10dde335a038a7c8ba9cebb5f781"
+    },
+    {
+      "path": "src/sls/audit/ending_continuation.py",
+      "bytes": 5109,
+      "sha256": "6f65e0ff2e2eb9e4dec139c964a660f569bff11c106610cd927ba4860b86c146"
+    },
+    {
+      "path": "tests/audit/test_boss_flow.py",
+      "bytes": 11807,
+      "sha256": "6e773f2019661ebb7425d791ba3a4bab3b126d739f3efdf140ffa56428f52610"
+    },
+    {
+      "path": "tests/audit/test_ending_continuation.py",
+      "bytes": 3413,
+      "sha256": "e1c8e15914394515c64b44e56b05d3a1a5b17bae7ba9145b9184348d80c62d3a"
+    },
+    {
+      "path": "tests/fixtures/regressions/ending-continuous-shop-stock-r1.json",
+      "bytes": 833972,
+      "sha256": "1d2198242913227f8c209b15446255d200f0daa0b687f3fd0fbd5c63bfa64419"
+    },
+    {
+      "path": "tests/fixtures/regressions/natural-shop-purge-native-r1.json",
+      "bytes": 2131552,
+      "sha256": "15f64b05a98ebff33d0f22be7bcbd5d59e7e4fd9e6e7c540ad4411afc9bef629"
+    },
+    {
+      "path": "tests/simulator/test_continuous_ending_shop_stock.py",
+      "bytes": 4015,
+      "sha256": "3f403b4956734ec9e4c299f6f75fd77b0cbaaad7c4851b771cd8475a93716fdc"
+    },
+    {
+      "path": "tests/test_build_oracle.py",
+      "bytes": 6521,
+      "sha256": "108e0188e3eb05e7068ddf13f118fe3aab5269a3cb200e0c30758c9807ba9cb3"
+    },
+    {
+      "path": "tools/capture_act2_encounter_batch.py",
+      "bytes": 11052,
+      "sha256": "9f22bfb1144ddd6c670745b710fad1b44f2bc8b15110b4bf7dbb7bc85c5b7e6c"
+    },
+    {
+      "path": "tools/replay_ending_continuation.py",
+      "bytes": 7793,
+      "sha256": "0a64446830cdedb124111eb1d26f8ecd1f5362d204a0f561562e9343e4181c6c"
+    },
+    {
+      "path": "tools/reproduce_double_boss_entry.py",
+      "bytes": 15088,
+      "sha256": "1df85a110543527187456105a448a5076a7fec1101140d6e7df328c6c33db9c7"
+    },
+    {
+      "path": "tools/reproduce_double_boss_flow.py",
+      "bytes": 7935,
+      "sha256": "17141de5fd07e6a1614ae864a95015b716d66fcc0260bae3c19de9373e2d9ccb"
+    },
+    {
+      "path": "tools/verify_boss_flow_suffix.py",
+      "bytes": 10206,
+      "sha256": "220798b32d58b7fca51e3cd9446e5af1e8f9b16b43592cf3cb036da8184a857f"
+    }
+  ],
+  "bundle": {
+    "path": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\ending-continuous-shop-20261010-delivery-r1.zip",
+    "sha256": "65188a2dad57ab40ae8760ba4875e2c239f71e2d0e11c5667274affdf5d8ea6c"
+  }
+}
