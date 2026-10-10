@@ -1,0 +1,11 @@
+{
+  "schema": "sls-a20h-requalification-delivery-v1",
+  "code_commit": "51973d7c692ff0a3a30e985f12e98dd9ae87bf50",
+  "zip": "C:\\Users\\\u9ec4\\.codex\\worktrees\\a20h-parity-qualification\\SLS\\local\\reports\\a20h-requalification-20261010-delivery.zip",
+  "sha256": "af9bc0332c3036dcbaf2520f943a28a01a2f478a9e449e7e3ed70ee2f717b485",
+  "bytes": 987614,
+  "files": 35,
+  "contains_model_weights": false,
+  "contains_stock_jar_or_bytecode": false,
+  "full_a20h_qualification": false
+}
