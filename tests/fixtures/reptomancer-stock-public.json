@@ -1,0 +1,624 @@
+{
+  "schema": "sls-reptomancer-stock-public-v1",
+  "cases": [
+    {
+      "seed": 131200066,
+      "initial_rng": {
+        "ai": {
+          "counter": 1,
+          "seed0": 829592307060306568,
+          "seed1": 7993576722499508840
+        },
+        "card_random": {
+          "counter": 0,
+          "seed0": 15805780350307358689,
+          "seed1": 829592307060306568
+        },
+        "card": {
+          "counter": 250,
+          "seed0": 1090165622883633460,
+          "seed1": 11318200548427815690
+        },
+        "event": {
+          "counter": 0,
+          "seed0": 6950841473659656342,
+          "seed1": 17293836132914475524
+        },
+        "math_util": {
+          "counter": 0,
+          "seed0": 9224062920627380375,
+          "seed1": 11366816690821715364
+        },
+        "merchant": {
+          "counter": 0,
+          "seed0": 6950841473659656342,
+          "seed1": 17293836132914475524
+        },
+        "misc": {
+          "counter": 1,
+          "seed0": 8310519232510384302,
+          "seed1": 4696694974793012227
+        },
+        "monster_hp": {
+          "counter": 1,
+          "seed0": 829592307060306568,
+          "seed1": 7993576722499508840
+        },
+        "monster": {
+          "counter": 76,
+          "seed0": 5926320597303925185,
+          "seed1": 2942875057447522717
+        },
+        "neow": {
+          "counter": 8,
+          "seed0": 10414063988998475335,
+          "seed1": 13082666947111738726
+        },
+        "potion": {
+          "counter": 0,
+          "seed0": 6950841473659656342,
+          "seed1": 17293836132914475524
+        },
+        "relic": {
+          "counter": 5,
+          "seed0": 8019319733462547332,
+          "seed1": 15175445401986873004
+        },
+        "shuffle": {
+          "counter": 0,
+          "seed0": 15805780350307358689,
+          "seed1": 829592307060306568
+        },
+        "treasure": {
+          "counter": 0,
+          "seed0": 6950841473659656342,
+          "seed1": 17293836132914475524
+        }
+      },
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R"
+        ]
+      },
+      "expected": [
+        {
+          "current_hp": 0,
+          "max_hp": 22,
+          "block": 0,
+          "powers": [],
+          "id": "Dagger",
+          "next_move": 2,
+          "dying": true,
+          "escaped": false
+        },
+        {
+          "current_hp": 21,
+          "max_hp": 21,
+          "block": 0,
+          "powers": [
+            {
+              "id": "Minion",
+              "amount": -1
+            }
+          ],
+          "id": "Dagger",
+          "next_move": 1,
+          "dying": false,
+          "escaped": false
+        },
+        {
+          "current_hp": 0,
+          "max_hp": 24,
+          "block": 0,
+          "powers": [],
+          "id": "Dagger",
+          "next_move": 2,
+          "dying": true,
+          "escaped": false
+        },
+        {
+          "current_hp": 198,
+          "max_hp": 198,
+          "block": 0,
+          "powers": [],
+          "id": "Reptomancer",
+          "next_move": 3,
+          "dying": false,
+          "escaped": false
+        },
+        {
+          "current_hp": 0,
+          "max_hp": 22,
+          "block": 0,
+          "powers": [],
+          "id": "Dagger",
+          "next_move": 2,
+          "dying": true,
+          "escaped": false
+        },
+        {
+          "current_hp": 23,
+          "max_hp": 23,
+          "block": 0,
+          "powers": [
+            {
+              "id": "Minion",
+              "amount": -1
+            }
+          ],
+          "id": "Dagger",
+          "next_move": 1,
+          "dying": false,
+          "escaped": false
+        },
+        {
+          "current_hp": 0,
+          "max_hp": 24,
+          "block": 0,
+          "powers": [],
+          "id": "Dagger",
+          "next_move": 2,
+          "dying": true,
+          "escaped": false
+        }
+      ]
+    },
+    {
+      "seed": 131200067,
+      "initial_rng": {
+        "ai": {
+          "counter": 1,
+          "seed0": 11533406145716603476,
+          "seed1": 9117769668070811057
+        },
+        "card_random": {
+          "counter": 0,
+          "seed0": 3028145084080913792,
+          "seed1": 11533406145716603476
+        },
+        "card": {
+          "counter": 0,
+          "seed0": 9616578758586177377,
+          "seed1": 8310519232510384302
+        },
+        "event": {
+          "counter": 0,
+          "seed0": 9616578758586177377,
+          "seed1": 8310519232510384302
+        },
+        "math_util": {
+          "counter": 0,
+          "seed0": 6505059886341934415,
+          "seed1": 304652165932251110
+        },
+        "merchant": {
+          "counter": 0,
+          "seed0": 9616578758586177377,
+          "seed1": 8310519232510384302
+        },
+        "misc": {
+          "counter": 3,
+          "seed0": 5011782802155395837,
+          "seed1": 14589504121894142697
+        },
+        "monster_hp": {
+          "counter": 1,
+          "seed0": 11533406145716603476,
+          "seed1": 9117769668070811057
+        },
+        "monster": {
+          "counter": 74,
+          "seed0": 6921052029171814736,
+          "seed1": 17450282463733954813
+        },
+        "neow": {
+          "counter": 11,
+          "seed0": 12575613302062651237,
+          "seed1": 5830771800116287179
+        },
+        "potion": {
+          "counter": 0,
+          "seed0": 9616578758586177377,
+          "seed1": 8310519232510384302
+        },
+        "relic": {
+          "counter": 5,
+          "seed0": 10449428001725514167,
+          "seed1": 13477716489045649054
+        },
+        "shuffle": {
+          "counter": 0,
+          "seed0": 3028145084080913792,
+          "seed1": 11533406145716603476
+        },
+        "treasure": {
+          "counter": 0,
+          "seed0": 9616578758586177377,
+          "seed1": 8310519232510384302
+        }
+      },
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R"
+        ]
+      },
+      "expected": [
+        {
+          "current_hp": 0,
+          "max_hp": 20,
+          "block": 0,
+          "powers": [],
+          "id": "Dagger",
+          "next_move": 2,
+          "dying": true,
+          "escaped": false
+        },
+        {
+          "current_hp": 21,
+          "max_hp": 21,
+          "block": 0,
+          "powers": [
+            {
+              "id": "Minion",
+              "amount": -1
+            }
+          ],
+          "id": "Dagger",
+          "next_move": 2,
+          "dying": false,
+          "escaped": false
+        },
+        {
+          "current_hp": 0,
+          "max_hp": 25,
+          "block": 0,
+          "powers": [],
+          "id": "Dagger",
+          "next_move": 2,
+          "dying": true,
+          "escaped": false
+        },
+        {
+          "current_hp": 192,
+          "max_hp": 192,
+          "block": 0,
+          "powers": [],
+          "id": "Reptomancer",
+          "next_move": 2,
+          "dying": false,
+          "escaped": false
+        },
+        {
+          "current_hp": 0,
+          "max_hp": 22,
+          "block": 0,
+          "powers": [],
+          "id": "Dagger",
+          "next_move": 2,
+          "dying": true,
+          "escaped": false
+        },
+        {
+          "current_hp": 21,
+          "max_hp": 21,
+          "block": 0,
+          "powers": [
+            {
+              "id": "Minion",
+              "amount": -1
+            }
+          ],
+          "id": "Dagger",
+          "next_move": 2,
+          "dying": false,
+          "escaped": false
+        },
+        {
+          "current_hp": 0,
+          "max_hp": 21,
+          "block": 0,
+          "powers": [],
+          "id": "Dagger",
+          "next_move": 2,
+          "dying": true,
+          "escaped": false
+        }
+      ]
+    },
+    {
+      "seed": 131200068,
+      "initial_rng": {
+        "ai": {
+          "counter": 1,
+          "seed0": 4286874125100712359,
+          "seed1": 6487605833579774496
+        },
+        "card_random": {
+          "counter": 0,
+          "seed0": 31752530226065560,
+          "seed1": 4286874125100712359
+        },
+        "card": {
+          "counter": 0,
+          "seed0": 13604774374097715732,
+          "seed1": 10993844987989618385
+        },
+        "event": {
+          "counter": 0,
+          "seed0": 13604774374097715732,
+          "seed1": 10993844987989618385
+        },
+        "math_util": {
+          "counter": 0,
+          "seed0": 11847887299075069144,
+          "seed1": 11211156675164245636
+        },
+        "merchant": {
+          "counter": 0,
+          "seed0": 13604774374097715732,
+          "seed1": 10993844987989618385
+        },
+        "misc": {
+          "counter": 2,
+          "seed0": 11681831403518968786,
+          "seed1": 14496695310002430937
+        },
+        "monster_hp": {
+          "counter": 1,
+          "seed0": 4286874125100712359,
+          "seed1": 6487605833579774496
+        },
+        "monster": {
+          "counter": 68,
+          "seed0": 16167932661115947799,
+          "seed1": 3859006060497565093
+        },
+        "neow": {
+          "counter": 5,
+          "seed0": 8945155354565221751,
+          "seed1": 17293473635011385632
+        },
+        "potion": {
+          "counter": 0,
+          "seed0": 13604774374097715732,
+          "seed1": 10993844987989618385
+        },
+        "relic": {
+          "counter": 5,
+          "seed0": 8945155354565221751,
+          "seed1": 17293473635011385632
+        },
+        "shuffle": {
+          "counter": 0,
+          "seed0": 31752530226065560,
+          "seed1": 4286874125100712359
+        },
+        "treasure": {
+          "counter": 0,
+          "seed0": 13604774374097715732,
+          "seed1": 10993844987989618385
+        }
+      },
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R"
+        ]
+      },
+      "expected": [
+        {
+          "current_hp": 0,
+          "max_hp": 20,
+          "block": 0,
+          "powers": [],
+          "id": "Dagger",
+          "next_move": 2,
+          "dying": true,
+          "escaped": false
+        },
+        {
+          "current_hp": 21,
+          "max_hp": 21,
+          "block": 0,
+          "powers": [
+            {
+              "id": "Minion",
+              "amount": -1
+            }
+          ],
+          "id": "Dagger",
+          "next_move": 1,
+          "dying": false,
+          "escaped": false
+        },
+        {
+          "current_hp": 0,
+          "max_hp": 25,
+          "block": 0,
+          "powers": [],
+          "id": "Dagger",
+          "next_move": 2,
+          "dying": true,
+          "escaped": false
+        },
+        {
+          "current_hp": 196,
+          "max_hp": 196,
+          "block": 0,
+          "powers": [],
+          "id": "Reptomancer",
+          "next_move": 3,
+          "dying": false,
+          "escaped": false
+        },
+        {
+          "current_hp": 0,
+          "max_hp": 22,
+          "block": 0,
+          "powers": [],
+          "id": "Dagger",
+          "next_move": 2,
+          "dying": true,
+          "escaped": false
+        },
+        {
+          "current_hp": 21,
+          "max_hp": 21,
+          "block": 0,
+          "powers": [
+            {
+              "id": "Minion",
+              "amount": -1
+            }
+          ],
+          "id": "Dagger",
+          "next_move": 1,
+          "dying": false,
+          "escaped": false
+        },
+        {
+          "current_hp": 0,
+          "max_hp": 21,
+          "block": 0,
+          "powers": [],
+          "id": "Dagger",
+          "next_move": 2,
+          "dying": true,
+          "escaped": false
+        }
+      ]
+    }
+  ],
+  "stock_capture_sha256": "d3c8dccbe38d9b6b08b632552706df0fe885234b2c26b044e241ce2bbb0513d0",
+  "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "stock_sources": {
+    "com.megacrit.cardcrawl.monsters.beyond.Reptomancer": {
+      "class_sha256": "972f9bb9c71256597beb725fa4feaad812e1d5bfe97df0f44141f66788715d52",
+      "bytecode_sha256": "62dcacf98ca8bea17bc4d1a699fa0e8f35a15ecf2d58c70824115ddecc58ee7b",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.monsters.beyond.Reptomancer"
+      ]
+    },
+    "com.megacrit.cardcrawl.monsters.beyond.SnakeDagger": {
+      "class_sha256": "d7a00e8ffefea878dfc2793f6fa3d2ffa51f8ba2590d56c3e29ae86cc8aee562",
+      "bytecode_sha256": "a27d09693237e1ce26c9ae1c521be3dbdb9017b842fc6efb8684316b8aeec7a2",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.monsters.beyond.SnakeDagger"
+      ]
+    },
+    "com.megacrit.cardcrawl.actions.common.SpawnMonsterAction": {
+      "class_sha256": "a61a4c7f57066fedab535803a162701124353b60562a4d25957df0da774f2b93",
+      "bytecode_sha256": "c0992463af0ca059df7249490905bf7be067a5657b61702d1c5f64f6d82c097c",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.actions.common.SpawnMonsterAction"
+      ]
+    }
+  }
+}

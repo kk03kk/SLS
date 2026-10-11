@@ -16,6 +16,29 @@ from sls.curriculum import IRONCLAD_A20_ACT2
 from sls.rl.training_contract import native_source_digest
 
 
+def stock_terminal_outcome(raw: dict) -> dict | None:
+    """Recognize legacy terminal evidence from independent stock engine objects."""
+    game = raw['game_state']
+    direct = raw.get('_stock_direct', {})
+    player_hp = direct.get('player', {}).get('current_hp')
+    if (game.get('screen_type') == 'GAME_OVER'
+            and game.get('screen_state', {}).get('victory') is False
+            and game.get('current_hp') == 0 and player_hp == 0
+            and raw.get('_continuation', {}).get('continuation_kind') == 'DEATH'):
+        return {'terminal_reason': 'DEATH', 'success': False}
+    monsters = direct.get('monsters', ())
+    bosses = {'Champ', 'TheChamp', 'Collector', 'TheCollector', 'BronzeAutomaton'}
+    if (game.get('act') == 2 and game.get('screen_type') == 'COMBAT_REWARD'
+            and str(direct.get('room_class', '')).endswith('MonsterRoomBoss')
+            and raw.get('_stock_reward_state', {}).get('room_phase') == 'COMPLETE'
+            and type(player_hp) is int and player_hp > 0
+            and game.get('current_hp') == player_hp
+            and monsters and any(m.get('id') in bosses for m in monsters)
+            and all(m.get('current_hp') == 0 and m.get('dying') is True for m in monsters)):
+        return {'terminal_reason': 'ACT_2_CLEARED', 'success': True}
+    return None
+
+
 def stock_runtime_inputs(before: dict, after: dict) -> dict:
     """Derive animation input from stock counters, never from native results."""
     start = before['stock_raw'].get('_timing_evidence', {})
@@ -42,7 +65,7 @@ def stock_runtime_inputs(before: dict, after: dict) -> dict:
     return measured
 
 
-def replay(row: dict) -> dict:
+def replay(row: dict, *, measured_runtime: bool = False) -> dict:
     path = Path(row["stock_capture"])
     if hashlib.sha256(path.read_bytes()).hexdigest() != row["sha256"]:
         raise ValueError("stock raw system capture hash mismatch")
@@ -67,16 +90,9 @@ def replay(row: dict) -> dict:
             raise ValueError('stock actor completion is missing')
         actor_terminal = actor_records[-1]
     elif row.get('terminal'):
-        # Legacy v7 captures have no actor sidecar. Certify death only from
-        # independent stock engine truth; do not infer success from the adapter.
-        raw = records[-1]['stock_raw']
-        game = raw['game_state']
-        if (game.get('screen_type') == 'GAME_OVER'
-                and game.get('screen_state', {}).get('victory') is False
-                and game.get('current_hp') == 0
-                and raw.get('_stock_direct', {}).get('player', {}).get('current_hp') == 0
-                and raw.get('_continuation', {}).get('continuation_kind') == 'DEATH'):
-            actor_terminal = {'terminal_reason': 'DEATH', 'success': False}
+        # Legacy captures lack an actor sidecar. Require independent room,
+        # death and player objects rather than trusting the adapter's terminal.
+        actor_terminal = stock_terminal_outcome(records[-1]['stock_raw'])
     native_terminal_info = {}
     timing_conditions = []
     for index, stock in enumerate(records):
@@ -93,7 +109,9 @@ def replay(row: dict) -> dict:
             if "_stock_direct" not in stock["stock_raw"]:
                 raise ValueError("stock combat lacks independent object evidence")
             original["stock_objects"] = direct_projection(stock["stock_raw"], stock=True)
-            actual["stock_objects"] = direct_projection({"game_state": snapshot.public_state}, stock=False)
+            actual["stock_objects"] = direct_projection(
+                {"game_state": snapshot.public_state}, stock=False,
+                extended=stock["stock_raw"]["_stock_direct"]["schema"] == "sls-stock-direct-v2")
         differences = structured_differences(original, actual)
         if differences:
             first = {"boundary": index, "differences": differences,
@@ -117,7 +135,8 @@ def replay(row: dict) -> dict:
             break
         current_action = next(a for a in decision.actions if a.to_dict() == action)
         restored_action = next(a for a in restored_decision.actions if a.to_dict() == action)
-        evidence = stock_runtime_inputs(stock, records[index + 1]) if index + 1 < len(records) else {}
+        evidence = (stock_runtime_inputs(stock, records[index + 1])
+                    if measured_runtime and index + 1 < len(records) else {})
         if evidence:
             timing_conditions.append({"boundary": index, "stock_measured_inputs": evidence})
         transition = backend.step(current_action, validation_evidence=evidence)
@@ -130,6 +149,8 @@ def replay(row: dict) -> dict:
         restore_checks += 1
     complete = bool(row.get("terminal")) and row["script_action_unavailable"] is None
     terminal_reason_verified = False
+    if first is None and complete and actor_terminal is None:
+        first = {'boundary': index, 'classification': 'TERMINAL_EVIDENCE_MISSING'}
     if first is None and complete and actor_terminal is not None:
         stock_outcome = {'reason': actor_terminal['terminal_reason'], 'success': actor_terminal['success']}
         native_outcome = {'reason': native_terminal_info.get('reason'),
@@ -144,16 +165,20 @@ def replay(row: dict) -> dict:
             "checkpoint_replays": restore_checks, "stock_action_unavailable": row["script_action_unavailable"],
             "terminal_reason_verified": terminal_reason_verified,
             "controlled_runtime_inputs": timing_conditions,
-            "qualification_scope": "STOCK_MEASURED_TIMING_CONDITIONAL; NOT_PRODUCTION_RNG_CERTIFICATION",
+            "qualification_scope": ("STOCK_MEASURED_TIMING_CONDITIONAL; NOT_PRODUCTION_RNG_CERTIFICATION"
+                                    if measured_runtime else "UNCONDITIONAL_STOCK_SYSTEM_REPLAY"),
             "status": ("UNSTABLE_STOCK_BOUNDARY" if first.get('classification') == 'UNSTABLE_STOCK_BOUNDARY'
                        else "SEMANTIC_DIFFERENCE") if first else (
-                "SYSTEM_BRANCH_MATCH" if complete else "INCOMPLETE_PREFIX_MATCH")}
+                ("CONDITIONAL_SYSTEM_BRANCH_MATCH" if measured_runtime else "SYSTEM_BRANCH_MATCH")
+                if complete else "INCOMPLETE_PREFIX_MATCH")}
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("capture", type=Path)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--measured-runtime", action="store_true",
+                        help="separate conditional diagnostic; cannot certify unconditional parity")
     args = parser.parse_args()
     if args.output.exists():
         raise FileExistsError("refuse to overwrite system differential evidence")
@@ -165,11 +190,12 @@ def main() -> int:
     if capture.get('original_execution_contract') != ORIGINAL_EXECUTION_CONTRACT:
         raise ValueError('stale original execution contract; recapture stable boundaries')
     launch_path = args.capture.with_suffix(".launch.json")
-    launch = json.loads(launch_path.read_text(encoding="utf-8"))
+    from tools.verify_oracle import read_verified_launch
+    launch = read_verified_launch(launch_path)
     if (launch["mode"] != "validation" or launch["recovery_status"] != "RECOVERED"
             or launch["completion"]["exit_code"] != 0):
         raise ValueError("stock system launch/recovery did not complete")
-    rows = [replay(row) for row in capture["runs"]]
+    rows = [replay(row, measured_runtime=args.measured_runtime) for row in capture["runs"]]
     args.output.write_text(json.dumps({"schema": "sls-act2-system-differential-v1",
         "native_source_sha256": native_source_digest(), "runs": rows,
         "stock_capture_sha256": hashlib.sha256(args.capture.read_bytes()).hexdigest(),

@@ -26,6 +26,8 @@ def _absolute_without_symlink_resolution(path: Path) -> str:
 
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser()
+    parser.add_argument("--stop-signal-seconds", type=int, default=300,
+                        help="Seconds reserved before Slurm timeout for a safe checkpoint")
     parser.add_argument(
         "task", choices=(
             "preflight", "benchmark", "warm-start", "evaluate", "compare", "corpus",
@@ -74,6 +76,8 @@ def build_sbatch_command(args: argparse.Namespace, *, root: Path = ROOT) -> list
 
     if args.cpus <= 0:
         raise ValueError("--cpus must be positive")
+    if not 60 <= args.stop_signal_seconds <= 3600:
+        raise ValueError("--stop-signal-seconds must be between 60 and 3600")
     if args.dependency is not None and re.fullmatch(r"afterok:[1-9][0-9]*(?::[1-9][0-9]*)*", args.dependency) is None:
         raise ValueError("--dependency must be afterok:<job-id>[:<job-id>...]")
     if args.task in {"preflight", "benchmark", "evaluate", "compare", "corpus", "plateau"}:
@@ -204,7 +208,7 @@ def build_sbatch_command(args: argparse.Namespace, *, root: Path = ROOT) -> list
         "sbatch", "--parsable", f"--account={args.account}", f"--qos={args.qos}",
         "--export=ALL,CUBLAS_WORKSPACE_CONFIG=:4096:8",
         f"--partition={partition}", f"--gres=gpu:{args.gpu}:1", f"--cpus-per-task={args.cpus}",
-        f"--mem={args.memory}", f"--time={walltime}", "--signal=B:TERM@300",
+        f"--mem={args.memory}", f"--time={walltime}", f"--signal=B:TERM@{args.stop_signal_seconds}",
         f"--job-name=sls-{args.task}", f"--chdir={root}",
         f"--output={logs / '%x-%j.out'}", f"--error={logs / '%x-%j.err'}",
         # Replace the batch shell with Python so Slurm's B:TERM signal reaches

@@ -26,6 +26,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from sls.curriculum import CURRICULUM_PROFILES_BY_ID  # noqa: E402
+from sls.evidence_paths import repository_evidence_path  # noqa: E402
 from sls.model import ModelConfig  # noqa: E402
 from sls.rl.ppo import PPOConfig  # noqa: E402
 
@@ -73,7 +74,7 @@ def validate_json(path: Path, payload: object) -> list[str]:
                 problems.append("compatibility record has no reason")
             if "from_git_commit" in record and not _digest(record["from_git_commit"], 40):
                 problems.append("invalid from_git_commit")
-            if "review" in record and not (ROOT / record["review"]).is_file():
+            if "review" in record and not repository_evidence_path(ROOT, record["review"]).is_file():
                 problems.append("compatibility review does not exist")
         return problems
     if not isinstance(payload, dict):
@@ -83,8 +84,8 @@ def validate_json(path: Path, payload: object) -> list[str]:
         historical = payload.get('status') == 'COMPLETED_HISTORICAL'
         if historical:
             evidence = payload.get('historical_evidence', {})
-            original_path = ROOT / evidence['original_plan']
-            manifest_path = ROOT / evidence['completed_manifest']
+            original_path = repository_evidence_path(ROOT, evidence['original_plan'])
+            manifest_path = repository_evidence_path(ROOT, evidence['completed_manifest'])
             for evidence_path, key in ((original_path, 'original_plan_sha256'),
                                        (manifest_path, 'completed_manifest_sha256')):
                 actual = hashlib.sha256(evidence_path.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
@@ -154,7 +155,7 @@ def validate_json(path: Path, payload: object) -> list[str]:
             ranges.append((name, start, stop))
         if payload["training_seed"] != run["seed"]:
             problems.append("training_seed disagrees with training config")
-        if payload.get("evidence") and not (ROOT / payload["evidence"]).is_file():
+        if payload.get("evidence") and not repository_evidence_path(ROOT, payload["evidence"]).is_file():
             problems.append("experiment evidence does not exist")
     else:
         for key in ("source_profile", "target_profile"):
@@ -163,7 +164,7 @@ def validate_json(path: Path, payload: object) -> list[str]:
         for prefix in ("periodic", "confirmation"):
             start = payload[f"{prefix}_seed_start"]
             ranges.append((prefix, start, start + payload[f"{prefix}_seed_count"]))
-        if not (ROOT / payload["simulator_transition_evidence"]).is_file():
+        if not repository_evidence_path(ROOT, payload["simulator_transition_evidence"]).is_file():
             problems.append("simulator transition evidence does not exist")
     ranges.append(("reserved_final_seeds", *payload["reserved_final_seeds"]))
     problems.extend(_check_ranges(ranges, limit))
@@ -218,6 +219,33 @@ def validate(path: Path, payload: dict) -> list[str]:
         return validate_auxiliary(path, payload)
     problems: list[str] = []
     stages = payload.get("stages") or {}
+    if "selection_objective" in run and (
+        run["selection_objective"] != "ACT2_CLEAR_COUNT" or run.get("profile") != "IRONCLAD_A20_ACT2"
+        or run.get("workflow") != "single-stage" or run.get("selection_progress_guard", False)
+    ):
+        problems.append("invalid Act2 clear-count objective or conflicting progress guard")
+    if "start_curriculum" in payload:
+        spec = payload["start_curriculum"]
+        if (not isinstance(spec, dict)
+                or set(spec) != {"bank", "bank_sha256", "normal_fraction"}
+                or spec.get("normal_fraction") != 0.5
+                or not _digest(spec.get("bank_sha256"))
+                or not isinstance(spec.get("bank"), str)
+                or run.get("profile") != "IRONCLAD_A20_ACT2"):
+            problems.append("invalid real Act2 start curriculum contract")
+        if "foundation_evidence" not in run:
+            problems.append("mixed Act2 training requires foundation qualification evidence")
+    if "foundation_evidence" in run:
+        spec = run["foundation_evidence"]
+        if (not isinstance(spec, dict) or set(spec) != {"path", "sha256"}
+                or not isinstance(spec.get("path"), str) or not _digest(spec.get("sha256"))):
+            problems.append("invalid foundation qualification evidence contract")
+    if "max_job_wall_seconds" in run:
+        value = run["max_job_wall_seconds"]
+        if type(value) not in {int, float} or not 0 < value <= 71 * 3600:
+            problems.append("max_job_wall_seconds must be positive and <=71 hours")
+    if run.get("allow_partial_wall_jobs") and "max_job_wall_seconds" not in run:
+        problems.append("partial wall jobs require an explicit safe wall budget")
 
     if "ppo" not in payload:
         problems.append("missing [ppo] section")

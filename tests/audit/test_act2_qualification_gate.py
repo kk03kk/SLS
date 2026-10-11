@@ -21,6 +21,19 @@ def test_partial_or_divergent_evidence_never_qualifies():
     assert len(result["production_missing_or_failed"]) == 8
 
 
+@pytest.mark.parametrize("conditions", [
+    {"controlled_runtime_inputs": [{"boundary": 1}]},
+    {"qualification_scope": "STOCK_MEASURED_TIMING_CONDITIONAL"},
+    {"status": "CONDITIONAL_SYSTEM_BRANCH_MATCH"},
+])
+def test_measured_system_match_cannot_certify_unconditional_parity(conditions):
+    row = {"seed": 131100000, "status": "SYSTEM_BRANCH_MATCH", "first_divergence": None}
+    row.update(conditions)
+    result = rollup([{"native_source_sha256": "source", "runs": [row]}], [], [], selection(), "source")
+    assert result["controlled_matched"] == 0
+    assert result["training_gate"] == "NOT_QUALIFIED"
+
+
 def test_stale_source_or_duplicate_seed_is_rejected():
     report = {"native_source_sha256": "stale", "runs": []}
     with pytest.raises(ValueError, match="stale"):
@@ -29,6 +42,13 @@ def test_stale_source_or_duplicate_seed_is_rejected():
         {"seed": 131100000, "status": "HARNESS_MATCH", "first_divergence": None}]}
     with pytest.raises(ValueError, match="duplicate"):
         rollup([report, report], [], [], selection(), "source")
+
+
+def test_explicit_unconditional_scope_is_not_mistaken_for_conditional_substring():
+    report = {"native_source_sha256": "source", "runs": [
+        {"seed": 131100065, "status": "SYSTEM_BRANCH_MATCH", "first_divergence": None,
+         "qualification_scope": "UNCONDITIONAL_STOCK_SYSTEM_REPLAY"}]}
+    assert rollup([], [report], [], selection(), "source")["controlled_matched"] == 1
 
 
 def test_even_complete_counts_require_independent_recovery_and_local_checks():

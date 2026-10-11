@@ -74,7 +74,7 @@ def test_90m_plan_preserves_recipe_and_rotates_development_only():
     assert new["run"]["training_seed_limit"] == old["run"]["training_seed_limit"]
     assert new["run"]["continuation_from"] == old["run"]["output"]
     assert new["run"]["continuation_selection_evidence"] == "completed-endpoint"
-    evidence = json.loads((root / "docs/results/win70m-20261001/summary.json").read_text())
+    evidence = json.loads((root / "tests/fixtures/evidence/results/win70m-20261001/summary.json").read_text())
     # The submitted experiment is frozen. Future implementation changes must
     # not rewrite its source/target pins to the current checkout.
     submitted_implementation = evidence["run"]["training_implementation_sha256"]

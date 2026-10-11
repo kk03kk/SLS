@@ -245,6 +245,7 @@ class PPOTrainer:
         git_commit: str = "TEST_OR_UNSPECIFIED",
         training_config_digest: str = "TEST_OR_UNSPECIFIED",
         training_seed_limit: int | None = None,
+        start_curriculum=None,
     ) -> None:
         self.model = model.to(device)
         self.workers = workers
@@ -260,7 +261,13 @@ class PPOTrainer:
         self.git_commit = str(git_commit)
         self.training_config_digest = str(training_config_digest)
         self.training_seed_limit = training_seed_limit
-        self.decisions = workers.reset(self._take_seeds(workers.size))
+        self.start_curriculum = start_curriculum
+        initial_seeds = self._take_seeds(workers.size)
+        self.decisions = workers.reset(initial_seeds)
+        if start_curriculum is not None:
+            self.decisions = start_curriculum.apply(
+                workers, range(workers.size), initial_seeds, self.decisions,
+            )
         self.memory = self.model.initial_memory(workers.size, self.device)
         self.episode_starts = torch.ones(workers.size, dtype=torch.bool, device=self.device)
         self.previous_action_types = torch.zeros(workers.size, dtype=torch.long, device=self.device)
@@ -408,6 +415,8 @@ class PPOTrainer:
                 terminals.append(terminal)
                 if reason is not None:
                     collect_terminations[reason] += 1
+                    if self.start_curriculum is not None:
+                        self.start_curriculum.note_terminal(index, reason)
                     self.termination_counts[reason] += 1
                     reset_indices.append(index)
             reward_steps.append(torch.tensor(rewards, dtype=torch.float32))
@@ -424,9 +433,12 @@ class PPOTrainer:
                 dtype=torch.float32, device=self.device,
             )
             reset_started = time.perf_counter()
-            reset_decisions = self.workers.reset_many(
-                reset_indices, self._take_seeds(len(reset_indices)),
-            ) if reset_indices else []
+            reset_seeds = self._take_seeds(len(reset_indices))
+            reset_decisions = self.workers.reset_many(reset_indices, reset_seeds) if reset_indices else []
+            if reset_indices and self.start_curriculum is not None:
+                reset_decisions = self.start_curriculum.apply(
+                    self.workers, reset_indices, reset_seeds, reset_decisions,
+                )
             reset_seconds = time.perf_counter() - reset_started
             profile["reset"] += reset_seconds
             for index, decision in zip(reset_indices, reset_decisions):
@@ -559,6 +571,7 @@ class PPOTrainer:
                 loss.backward()
                 gradient_norm = torch.nn.utils.clip_grad_norm_(
                     self.model.parameters(), self.config.max_gradient_norm,
+                    error_if_nonfinite=True,
                 )
                 self.optimizer.step()
                 approximate_kl, _ = policy_distance_metrics(
@@ -622,6 +635,15 @@ class PPOTrainer:
         result.update(advantage_domain_diagnostics(
             rollout.advantages, normalized_advantages, domains,
         ))
+        tensors = [p.detach() for p in self.model.parameters()]
+        tensors.extend(value for state in self.optimizer.state.values() for value in state.values()
+                       if isinstance(value, torch.Tensor))
+        # Fail before this update can be published as a healthy checkpoint.
+        finite = [torch.isfinite(value).all().to(self.device) for value in tensors]
+        if not bool(torch.stack(finite).all()) or any(
+            not math.isfinite(value) for value in {**result, **epoch_diagnostics}.values()
+        ):
+            raise FloatingPointError("non-finite PPO model, Adam state or metrics")
         return {**result, **epoch_diagnostics}
 
     def _sequence_chunks(self, rollout: RolloutBatch) -> list[tuple[int, int]]:

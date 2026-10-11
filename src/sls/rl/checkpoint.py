@@ -111,6 +111,8 @@ def checkpoint_contract(trainer: PPOTrainer) -> dict[str, Any]:
         "git_commit": trainer.git_commit,
         "training_config_sha256": trainer.training_config_digest,
         "training_seed_limit": trainer.training_seed_limit,
+        **({"start_curriculum": trainer.start_curriculum.contract}
+           if trainer.start_curriculum is not None else {}),
     }
 
 
@@ -196,6 +198,8 @@ def save_checkpoint(path: str | Path, trainer: PPOTrainer) -> Path:
             "episode_starts": trainer.episode_starts.detach().cpu(),
             "previous_action_types": trainer.previous_action_types.detach().cpu(),
             "previous_rewards": trainer.previous_rewards.detach().cpu(),
+            **({"start_curriculum": trainer.start_curriculum.state_dict()}
+               if trainer.start_curriculum is not None else {}),
         },
         "python_rng": random.getstate(),
         "torch_rng": torch.get_rng_state(),
@@ -237,6 +241,8 @@ def _load_checkpoint_exact(
     trainer.episodes = int(state["episodes"])
     trainer.environment_steps = int(state["environment_steps"])
     trainer.next_seed = int(state["next_seed"])
+    if trainer.start_curriculum is not None:
+        trainer.start_curriculum.load_state_dict(state["start_curriculum"])
     trainer.random.setstate(state["random"])
     from sls.rl.episode_limit import TERMINATION_REASONS, EpisodeLimitState
     limits = state.get("episode_limits")

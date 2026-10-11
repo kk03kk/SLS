@@ -105,6 +105,14 @@ def main() -> int:
     torch.set_float32_matmul_precision("high")
     if not torch.cuda.is_available():
         raise RuntimeError("CUDA is unavailable on allocated compute node")
+    if "start_curriculum" in config:
+        from sls.rl.start_curriculum import from_config
+
+        # Validate bytes/source first, then replay every captured normal-start
+        # prefix on this Linux native build before accepting Windows-made states.
+        from_config(config, ROOT)
+        run_tool("build_act2_entry_bank.py", "--verify-only", "--output",
+                 ROOT / config["start_curriculum"]["bank"])
     if args.bound_plan is not None:
         run_tool("check_training_configs.py")
         sys.path.insert(0, str(ROOT))
@@ -170,8 +178,12 @@ def main() -> int:
             json.dumps(estimate, indent=2) + "\n", encoding="utf-8",
         )
         print(json.dumps({"budget_estimate": estimate}), flush=True)
-        if not estimate["fits"]:
+        if not estimate["fits"] and not config["run"].get("allow_partial_wall_jobs", False):
             raise ValueError("measured budget does not fit allocated pilot wall time; inspect, do not silently change recipe")
+        if not estimate["fits"]:
+            print(json.dumps({"wall_budget": "PARTIAL_JOB_ALLOWED",
+                              "remaining_target": estimate["remaining_decisions"],
+                              "resume_required": True}), flush=True)
     command = [sys.executable, str(ROOT / "tools/train_full_run.py"),
                "--stage", "train", "--config", str(args.config.resolve())]
     print(json.dumps({"preparation": "PASS", "training_command": command}), flush=True)

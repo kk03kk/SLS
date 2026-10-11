@@ -22,7 +22,7 @@ NATIVE_SOURCE_PATHS = (
 )
 TRAINING_IMPLEMENTATION_PATHS = (
     "src/sls/__init__.py", "src/sls/rl", "src/sls/model",
-    "src/sls/contracts", "src/sls/curriculum.py",
+    "src/sls/contracts", "src/sls/curriculum.py", "src/sls/evidence_paths.py",
     "src/sls/backends/__init__.py", "src/sls/backends/protocol.py",
     "src/sls/runtime/__init__.py", "src/sls/runtime/artifact.py",
     "tools/train_full_run.py", "tools/evaluate_checkpoint.py",

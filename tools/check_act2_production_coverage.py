@@ -17,21 +17,30 @@ ELITES = {'BOOK_OF_STABBING', 'GREMLIN_LEADER', 'TASKMASTER'}
 
 def witnessed_roles(rows: list[dict]) -> dict:
     selected_room = None
+    awaiting_room = False
+    direct_combat = False
     elites, bosses = set(), set()
     last_combat = None
     for row in rows:
         obs = row['observation']
         action = row['chosen_action']
+        if awaiting_room:
+            direct_combat = row['act'] == 2 and row['screen'] == 'COMBAT'
+            awaiting_room = False
         if action and action['kind'] == 'CHOOSE_MAP_NODE':
             node = next((n for n in obs['map_nodes'] if n['node_id'] == action['node_id']), None)
             if node is None:
                 raise ValueError('chosen public map node absent')
             selected_room = (row['act'], node['visible_room_type'])
+            awaiting_room = True
+            direct_combat = False
         if row['act'] == 2 and row['screen'] == 'COMBAT' and obs['enemies']:
             enemies = {e['monster_id'] for e in obs['enemies']}
             last_combat = {'boundary': row['step_index'], 'floor': row['floor'],
-                           'enemies': sorted(enemies), 'selected_room': selected_room}
-            if selected_room == (2, 'ELITE'):
+                           'enemies': sorted(enemies), 'selected_room': selected_room,
+                           'direct_combat_after_map': direct_combat}
+            if (selected_room in {(2, 'ELITE'), (2, 'BURNING_ELITE')}
+                    and enemies & ELITES):
                 elites.add(row['floor'])
             for boss, ids in BOSSES.items():
                 if enemies & ids:
@@ -41,7 +50,9 @@ def witnessed_roles(rows: list[dict]) -> dict:
     ordinary_failure = bool(last_combat and terminal['act'] == 2
         and terminal['terminal'] and terminal['terminal_reason'] == 'DEATH'
         and not set(last_combat['enemies']) & excluded
-        and last_combat['selected_room'] == (2, 'MONSTER'))
+        and (last_combat['selected_room'] == (2, 'MONSTER')
+             or (last_combat['selected_room'] == (2, 'EVENT')
+                 and last_combat['direct_combat_after_map'])))
     return {'ordinary_failure': ordinary_failure, 'elite_floors': sorted(elites),
             'boss_entries': sorted(bosses), 'last_act2_combat': last_combat}
 

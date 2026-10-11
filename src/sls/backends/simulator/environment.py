@@ -750,8 +750,10 @@ def _semantic_actions(
                 )
             elif action_type == 3:
                 action = Action(ActionKind.CONFIRM, option_id="combat-selection")
-            else:
+            elif action_type == 4:
                 action = Action(ActionKind.END_TURN)
+            else:
+                raise ValueError(f"unsupported native combat action type: {action_type}")
         else:
             action = _run_action(raw, native, ordinal, screen, progress)
         if action.candidate_id in mapping:

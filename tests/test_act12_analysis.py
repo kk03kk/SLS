@@ -63,7 +63,7 @@ def test_no_boss_entries_reports_undefined_conditional_rate():
 
 def test_real_frozen70_artifact_separates_act1_clears_from_two_act_wins():
     from tools.analyze_reward_screen import outcomes
-    path = Path(__file__).resolve().parents[1] / "docs/results/act12-readiness-20261004/zero-shot-act12.json"
+    path = Path(__file__).resolve().parents[1] / "tests/fixtures/evidence/results/act12-readiness-20261004/zero-shot-act12.json"
     raw = json.loads(path.read_text())
     result = outcomes(raw["result"], tuple(raw["seeds"]), horizon=2)
     assert result["wins"] == 0 and result["episodes"] == 32

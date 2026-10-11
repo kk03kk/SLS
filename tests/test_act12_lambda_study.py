@@ -15,7 +15,7 @@ from tools.submit_act12_lambda_study import validate_study
 
 def registered_configuration(overrides):
     original = tomllib.loads(Path('configs/train/ironclad_a20_act12_win_pilot.toml').read_text(encoding='utf-8'))
-    plan = json.loads(Path('docs/results/act12-pilot-20261006/original-bound-plan.json').read_text(encoding='utf-8'))
+    plan = json.loads(Path('tests/fixtures/evidence/results/act12-pilot-20261006/original-bound-plan.json').read_text(encoding='utf-8'))
     recipe = {**plan['recipe'], 'ppo_overrides': overrides,
               'periodic_seed_start': 8000009000000, 'confirmation_seed_start': 8000010000000}
     return build_configuration(original, plan['parent'], recipe, run_name='test-lambda')

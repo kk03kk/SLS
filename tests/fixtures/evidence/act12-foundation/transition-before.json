@@ -1,0 +1,9 @@
+{
+  "schema": "sls-curriculum-parent-source-evidence-v1",
+  "checkpoint_sha256": "274963f4fe32b75003c5a1b4ccd394b5185304156e6ea22a76aee2764d54f1e0",
+  "native_source_sha256": "1e30bb6cfa32f600cd63c59983c14ab8928fac4452c1586d630295d2c6ff9453",
+  "profile": "IRONCLAD_A20_ACT1",
+  "environment_steps": 90013696,
+  "exact_resume_into_current_simulator_permitted": false,
+  "historical_result_is_not_current_native_win_rate": true
+}

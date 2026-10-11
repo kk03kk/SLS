@@ -2936,8 +2936,13 @@ public:
         const py::dict &rng,
         int ascension = 0, int act = 1, int floor = 1,
         const std::string &scenario_id = "") {
-        if (ascension < 0 || ascension > 20 || act < 1 || act > 3 || floor < 1) {
+        if (ascension < 0 || ascension > 20 || act < 1 || act > 4 || floor < 1) {
             throw std::invalid_argument("invalid encounter probe context");
+        }
+        const auto encounter = parse_encounter(encounter_id);
+        if (act == 4 && encounter != MonsterEncounter::SHIELD_AND_SPEAR &&
+                encounter != MonsterEncounter::THE_HEART) {
+            throw std::invalid_argument("Act4 probe requires Shield/Spear or Heart");
         }
         // Build once to establish the canonical Ironclad run container, then
         // rewind every stock-compatible stream to the Original pre-constructor
@@ -2945,6 +2950,18 @@ public:
         reset(seed, "CULTIST", ascension, {}, {}, false);
         gc_->act = act;
         gc_->floorNum = floor;
+        if (act == 3 && (encounter == MonsterEncounter::REPTOMANCER ||
+                encounter == MonsterEncounter::GIANT_HEAD || encounter == MonsterEncounter::NEMESIS)) {
+            gc_->curRoom = Room::ELITE;
+        }
+        if (act == 4) {
+            gc_->curRoom = encounter == MonsterEncounter::SHIELD_AND_SPEAR
+                ? Room::ELITE : Room::BOSS;
+            if (encounter == MonsterEncounter::THE_HEART) {
+                gc_->info.encounter = encounter;
+                gc_->regainControlAction = [](GameContext &gc) { gc.afterBattle(); };
+            }
+        }
         restore_full_run_rng(*gc_, rng);
         bc_ = std::make_unique<BattleContext>();
         bc_->init(*gc_, MonsterEncounter::CULTIST);
@@ -2956,7 +2973,6 @@ public:
         bc_->actionQueue.clear();
         bc_->cardQueue.clear();
         bc_->monsters = MonsterGroup();
-        const auto encounter = parse_encounter(encounter_id);
         bc_->encounter = encounter;
         bc_->monsters.init(*bc_, encounter);
         set_card_piles(
@@ -3116,6 +3132,22 @@ public:
         gc_->act = game["act"].cast<int>();
         gc_->floorNum = game["floor"].cast<int>();
         bc_->floorNum = game["floor"].cast<int>();
+        // reset() builds an isolated MONSTER room. Restore the explicitly
+        // supported Act4 probe room as well, otherwise a restored Heart win
+        // incorrectly creates hallway rewards and consumes their RNG streams.
+        // Full-run restoration carries its own complete GameContext separately.
+        if (gc_->act == 4 && bc_->encounter == MonsterEncounter::THE_HEART) {
+            gc_->curRoom = Room::BOSS;
+            gc_->info.encounter = MonsterEncounter::THE_HEART;
+            gc_->regainControlAction = [](GameContext &gc) { gc.afterBattle(); };
+        } else if (gc_->act == 4 && bc_->encounter == MonsterEncounter::SHIELD_AND_SPEAR) {
+            gc_->curRoom = Room::ELITE;
+        } else if (gc_->act == 3 && (bc_->encounter == MonsterEncounter::REPTOMANCER ||
+                bc_->encounter == MonsterEncounter::GIANT_HEAD || bc_->encounter == MonsterEncounter::NEMESIS)) {
+            // Controlled Act3 elite endings must retain elite reward RNG after
+            // restoring player/piles through this isolated checkpoint API.
+            gc_->curRoom = Room::ELITE;
+        }
 
         restore_relics(game);
 
@@ -3315,7 +3347,9 @@ public:
         if (kind == "end_turn") {
             for (int index = 0; index < bc_->monsters.monsterCount; ++index) {
                 auto &monster = bc_->monsters.arr[index];
-                if (monster.isDeadOrEscaped()) monster.resetAllStatusEffects();
+                if (monster.isDeadOrEscaped() && !monster.isHalfDead()) {
+                    monster.resetAllStatusEffects();
+                }
             }
         }
         search::Action action;
@@ -3422,6 +3456,13 @@ public:
             bc_->exitBattle(*gc_);
             finalized_ = true;
         }
+    }
+
+    // Read the same presentation used by normal full-run observations without
+    // replacing the lossless combat/checkpoint serializer used by snapshot().
+    py::dict public_combat_probe_snapshot() const {
+        require_reset();
+        return public_combat_state(*bc_);
     }
 
     py::dict snapshot() const {
@@ -4740,7 +4781,8 @@ public:
         if (state.contains("screen_info")) {
             restore_screen_info(*gc_, state["screen_info"].cast<py::dict>());
         }
-        if (gc_->screenState == ScreenState::BATTLE ||
+        if ((gc_->screenState == ScreenState::BATTLE &&
+                gc_->outcome == GameOutcome::UNDECIDED) ||
                 (state.contains("combat_checkpoint") &&
                  gc_->outcome == GameOutcome::PLAYER_LOSS)) {
             if (state.contains("combat_checkpoint")) {
@@ -4828,6 +4870,7 @@ public:
             // Stock RitualDaggerAction updates masterDeck during combat,
             // before the next player boundary, rather than only on exit.
             battle_->updateCardsOnExit(gc_->deck);
+            battle_->syncImplantObtain(*gc_);
             action_history_.push_back(bits);
             ++battle_action_count_;
             if (battle_->outcome != Outcome::UNDECIDED) {
@@ -4839,6 +4882,13 @@ public:
                 } else {
                     battle_.reset();
                     has_terminal_display_moves_ = false;
+                    // Act3 A20 victory can directly enter the second boss.
+                    // Initialize that new combat before exposing the next
+                    // decision, just as the out-of-combat transition path does.
+                    if (gc_->screenState == ScreenState::BATTLE &&
+                            gc_->outcome == GameOutcome::UNDECIDED) {
+                        start_battle();
+                    }
                 }
             }
             return snapshot();
@@ -6531,7 +6581,8 @@ PYBIND11_MODULE(_lightspeed, module) {
              py::arg("kind"), py::arg("card_index") = -1,
              py::arg("potion_index") = -1, py::arg("target_index") = -1,
              py::arg("choice_index") = -1)
-        .def("snapshot", &LightspeedBattle::snapshot);
+        .def("snapshot", &LightspeedBattle::snapshot)
+        .def("public_combat_probe_snapshot", &LightspeedBattle::public_combat_probe_snapshot);
     py::class_<LightspeedRunState>(module, "LightspeedRunState")
         .def(py::init<>())
         .def("reset", &LightspeedRunState::reset,

@@ -1,0 +1,204 @@
+{
+  "schema": "sls-server-archive-import-v1",
+  "archive_sha256": "cf6e67ee78fac7d0de280dc105efbea9599a5ea9de4efc74592348379d1991ff",
+  "original_archive_name": "sls-act12-lambda-lite-20261008.tar.gz",
+  "members": [
+    {
+      "path": "local/runs/act12-lambda-study-r1/status.json",
+      "size": 102,
+      "sha256": "b88f196fc1a27d6131c4edd47a2a954b1add09fcfe9e21098f8ddfbaf41d4ffc"
+    },
+    {
+      "path": "local/runs/ironclad-a20-act12-lambda098-r1/endpoint-evaluation.json",
+      "size": 5670238,
+      "sha256": "e6aaf5a1eba0525a5b18acd30ab34b41ebc2cabd3458e0828787e2172b914f4e"
+    },
+    {
+      "path": "local/runs/ironclad-a20-act12-lambda098-r1/final-evaluation.json",
+      "size": 6666616,
+      "sha256": "b16083ddb41c9668587f3fa903d237f1b1bbd31a3559aa66a4b02b1a25e323e5"
+    },
+    {
+      "path": "local/runs/ironclad-a20-act12-lambda098-r1/final.pt",
+      "size": 19204456,
+      "sha256": "4eab4cb154f17b9f48e81e160b799bd99ed1d58fcae9938f735b29aa26418098"
+    },
+    {
+      "path": "local/runs/ironclad-a20-act12-lambda098-r1/latest.pt",
+      "size": 19204794,
+      "sha256": "28de523882fd8e0be0605a818889c294d1acc8225eaa251795e821a8a7e73e47"
+    },
+    {
+      "path": "local/runs/ironclad-a20-act12-lambda098-r1/reference-evaluation.json",
+      "size": 6666902,
+      "sha256": "7b616b2f2baca2dcbb02ca874c17e216e1469a9bef62277471ec9367d3f501d5"
+    },
+    {
+      "path": "local/runs/ironclad-a20-act12-lambda098-r1/run-manifest.json",
+      "size": 6461,
+      "sha256": "e8e6f751ed6315bcc3ae90fefb8b5c37ddb1ac3a6911856613c6bd20ef6a4e19"
+    },
+    {
+      "path": "local/runs/ironclad-a20-act12-lambda098-r1/stages/train/metrics.jsonl",
+      "size": 5269029,
+      "sha256": "2c89b2c8c345871a40e605e1d69a2ffc804e2bfaf38c539059d22eb210f3ae65"
+    },
+    {
+      "path": "local/runs/ironclad-a20-act12-lambda098-r1/stages/train/selection/best_progress.json",
+      "size": 4186,
+      "sha256": "5852ef919d2c31783825cc66100dd8f7f2eccec8c683c0e1851dc4b6f4e315f4"
+    },
+    {
+      "path": "local/runs/ironclad-a20-act12-lambda098-r1/stages/train/selection/best_progress.pt",
+      "size": 6768782,
+      "sha256": "c5a265e5556ed0bd50177632590506a41f5213aef7fd5161dfd107c3a0fe68ca"
+    },
+    {
+      "path": "local/runs/ironclad-a20-act12-lambda098-r1/training-bundle.json",
+      "size": 1134,
+      "sha256": "eef6c110f3bffe57a42dc94d5d188c534eb151a47a76798d1543d6a3b544a6fd"
+    },
+    {
+      "path": "local/runs/ironclad-a20-act12-lambda098-r1/training-config.toml",
+      "size": 2615,
+      "sha256": "ddba30911f89e7da05c32bbb35916c2743fcaf313234939d4f87c27c87d34404"
+    },
+    {
+      "path": "local/runs/ironclad-a20-act12-lambda100-r1/endpoint-evaluation.json",
+      "size": 5648443,
+      "sha256": "e93f02e895fb0e8bca42c1b0cb79b81186dcbb07acfa194dfcc226a517aa7315"
+    },
+    {
+      "path": "local/runs/ironclad-a20-act12-lambda100-r1/final-evaluation.json",
+      "size": 6666616,
+      "sha256": "5bf31fbbbb642d6d300dcfda93feb4dbce091895a3c0110fdf55398cfc2c50e7"
+    },
+    {
+      "path": "local/runs/ironclad-a20-act12-lambda100-r1/final.pt",
+      "size": 18896680,
+      "sha256": "0aebb484bbb8d75fdf78fdf6b0871f86938887bc00e0281bfbcc67133d56c1e3"
+    },
+    {
+      "path": "local/runs/ironclad-a20-act12-lambda100-r1/latest.pt",
+      "size": 18897018,
+      "sha256": "0a2bea28edc0fbc5fa6184bcc57a2b9a2e715108b1858ead61fc0e3a755cf91b"
+    },
+    {
+      "path": "local/runs/ironclad-a20-act12-lambda100-r1/reference-evaluation.json",
+      "size": 6666902,
+      "sha256": "7b616b2f2baca2dcbb02ca874c17e216e1469a9bef62277471ec9367d3f501d5"
+    },
+    {
+      "path": "local/runs/ironclad-a20-act12-lambda100-r1/run-manifest.json",
+      "size": 6462,
+      "sha256": "e70ca62e1ea3f3ddeb5cc020378bb6011a8d8cbac541b0021eea119ea4ce5401"
+    },
+    {
+      "path": "local/runs/ironclad-a20-act12-lambda100-r1/stages/train/metrics.jsonl",
+      "size": 5379780,
+      "sha256": "343eebd5737b929643dea25121117643dba759ef059a20dce0b97574258b103f"
+    },
+    {
+      "path": "local/runs/ironclad-a20-act12-lambda100-r1/stages/train/selection/best_progress.json",
+      "size": 4186,
+      "sha256": "9861b5c9328aec0d9d30d904a208957217d1d2b813c0139909b764b21cbe9593"
+    },
+    {
+      "path": "local/runs/ironclad-a20-act12-lambda100-r1/stages/train/selection/best_progress.pt",
+      "size": 6768782,
+      "sha256": "e3967bb03514058b4ee60451a1445a1619a11aa96299375d14b0b9a8f994ee47"
+    },
+    {
+      "path": "local/runs/ironclad-a20-act12-lambda100-r1/training-bundle.json",
+      "size": 1134,
+      "sha256": "08e0734ed1bd9762ef8bddbccbec78115a00b52a7998d5a48c62a43cee0dc0f4"
+    },
+    {
+      "path": "local/runs/ironclad-a20-act12-lambda100-r1/training-config.toml",
+      "size": 2614,
+      "sha256": "f9e243cde5349e4e787f12f85f784b32bcad538cdcb4663c8526cd80665a0381"
+    },
+    {
+      "path": "local/runs/preparation/ironclad-a20-act12-lambda098-r1/benchmark.json",
+      "size": 4057,
+      "sha256": "e801f70dac2e142a2149024fbcd7deac1d5abe82b2d9992f3f40dac7f05ef2a1"
+    },
+    {
+      "path": "local/runs/preparation/ironclad-a20-act12-lambda098-r1/budget-estimate.json",
+      "size": 330,
+      "sha256": "359007a3f5f1d5be1dfe91c1581efe3f0e1f4b0906eb7ce6d8b86deb91d35ec6"
+    },
+    {
+      "path": "local/runs/preparation/ironclad-a20-act12-lambda098-r1/preflight.json",
+      "size": 3600,
+      "sha256": "453a456fc3345da4b2a849193f5c55791346f6ddfa381565d20cd840947f74d2"
+    },
+    {
+      "path": "local/runs/preparation/ironclad-a20-act12-lambda098-r1/ready.json",
+      "size": 167,
+      "sha256": "26b84c545fc14cbee47e4ddf7c3afc1553430f8c936ec544aa768ec3d667ff67"
+    },
+    {
+      "path": "local/runs/preparation/ironclad-a20-act12-lambda098-r1/run.lock",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "local/runs/preparation/ironclad-a20-act12-lambda098-r1/worker-resume.json",
+      "size": 3600,
+      "sha256": "453a456fc3345da4b2a849193f5c55791346f6ddfa381565d20cd840947f74d2"
+    },
+    {
+      "path": "local/runs/preparation/ironclad-a20-act12-lambda100-r1/benchmark.json",
+      "size": 4060,
+      "sha256": "35f881841a39df2d18f84ca5f613e4747fe9eb0b319f337beb7a2680c4f66ec4"
+    },
+    {
+      "path": "local/runs/preparation/ironclad-a20-act12-lambda100-r1/budget-estimate.json",
+      "size": 329,
+      "sha256": "c9f033edf90a93223f22c77d56bdfb84603fed3aeaf002a43a030a8c74a7f26b"
+    },
+    {
+      "path": "local/runs/preparation/ironclad-a20-act12-lambda100-r1/preflight.json",
+      "size": 3600,
+      "sha256": "4b6f1da2b65cb1e2a12908cbbbe58b56fcceccbca9f4cee6c6a4e7cb210b60eb"
+    },
+    {
+      "path": "local/runs/preparation/ironclad-a20-act12-lambda100-r1/ready.json",
+      "size": 167,
+      "sha256": "4740a8f267e7f98b7a8d30b19bb4c3b5526c2ad0c23747337a29b3e6e9460222"
+    },
+    {
+      "path": "local/runs/preparation/ironclad-a20-act12-lambda100-r1/run.lock",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "local/runs/preparation/ironclad-a20-act12-lambda100-r1/worker-resume.json",
+      "size": 3600,
+      "sha256": "4b6f1da2b65cb1e2a12908cbbbe58b56fcceccbca9f4cee6c6a4e7cb210b60eb"
+    },
+    {
+      "path": "local/runs/slurm-logs/sls-act12-lambda-r1-916291.err",
+      "size": 2471,
+      "sha256": "61e7e387280246afaef2e58d300494c5b715a0dbc4d4bce75318863670aee86e"
+    },
+    {
+      "path": "local/runs/slurm-logs/sls-act12-lambda-r1-916291.out",
+      "size": 1682870,
+      "sha256": "239d6fcace901c5ad97a7b7f5e7bedd2c9a3f137ae9a35ff0b46d46cdaa78c8c"
+    }
+  ],
+  "imported_runs": [
+    "ironclad-a20-act12-lambda098-r1",
+    "ironclad-a20-act12-lambda100-r1"
+  ],
+  "original_server_status_preserved": true,
+  "preparation_and_logs": "payload/local/runs: archived evidence only; not active ready records",
+  "missing": [
+    "deployment policy exports",
+    "intermediate checkpoint files",
+    "server study analysis"
+  ],
+  "checkpoint_tensor_validation": "not run; no torch or GPU used"
+}

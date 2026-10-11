@@ -1,0 +1,102 @@
+{
+  "schema": "sls-native-implant-source-transition-v1",
+  "native_before": "c07116cc51b0a720978e0f5bf7d591fbdaf976cffc32a6b7edf33ac8dc70276a",
+  "native_after": "32cbf55731f5b48d798799d9d77d874f26ce45f06aa133d1b1f5aabeab766e2e",
+  "environment_semantics_changed": true,
+  "state_preserving_transition": false,
+  "automatic_resume_permission": false,
+  "checkpoint_layout_changed": false,
+  "checkpoint_semantics_change": "Existing serialized miscBits bit1 now records Implant obtain synchronization; source mismatch must remain rejected. No legacy exact-resume migration.",
+  "observation_action_layout_changed": false,
+  "training_algorithm_changed": false,
+  "controlled_comparisons": [
+    {
+      "seed": 131200198,
+      "boundaries": 3,
+      "status": "ENUMERATED_FIELDS_MATCH"
+    },
+    {
+      "seed": 131200199,
+      "boundaries": 3,
+      "status": "ENUMERATED_FIELDS_MATCH"
+    },
+    {
+      "seed": 131200200,
+      "boundaries": 3,
+      "status": "ENUMERATED_FIELDS_MATCH"
+    },
+    {
+      "seed": 131200201,
+      "boundaries": 3,
+      "status": "ENUMERATED_FIELDS_MATCH"
+    },
+    {
+      "seed": 131200202,
+      "boundaries": 3,
+      "status": "ENUMERATED_FIELDS_MATCH"
+    },
+    {
+      "seed": 131200203,
+      "boundaries": 3,
+      "status": "ENUMERATED_FIELDS_MATCH"
+    },
+    {
+      "seed": 131200204,
+      "boundaries": 3,
+      "status": "ENUMERATED_FIELDS_MATCH"
+    },
+    {
+      "seed": 131200205,
+      "boundaries": 3,
+      "status": "ENUMERATED_FIELDS_MATCH"
+    },
+    {
+      "seed": 131200206,
+      "boundaries": 3,
+      "status": "ENUMERATED_FIELDS_MATCH"
+    },
+    {
+      "seed": 131200207,
+      "boundaries": 3,
+      "status": "ENUMERATED_FIELDS_MATCH"
+    },
+    {
+      "seed": 131200208,
+      "boundaries": 3,
+      "status": "ENUMERATED_FIELDS_MATCH"
+    },
+    {
+      "seed": 131200209,
+      "boundaries": 3,
+      "status": "ENUMERATED_FIELDS_MATCH"
+    }
+  ],
+  "old_binary_regressions_failed": 12,
+  "new_regressions_passed": 24,
+  "focused_and_adjacent_tests_passed": 89,
+  "strict_act12_regression_boundaries": 1990,
+  "oracle_production_smoke": "PASS",
+  "restoration_entries_per_run": 63,
+  "restoration_mismatches": 0,
+  "full_computational_suite_rerun": false,
+  "server_changed": false,
+  "input_sha256": {
+    "implant-timing-native-before-r1.json": "1480ada494c2a4b9c3996b534cacc9c3ca2c6e43e6daa1f51a25f4cbaeeca609",
+    "implant-timing-resources-after-r2.json": "6954ceab3efa3a08f26071d8615b931760102fbf529a60bca73152cecc63a251",
+    "implant-relics-stock-r1.json": "9f156f4086a4dca0569d923a05ae8a922c4a8cdd032acb0e903405bcd246b28e",
+    "implant-relics-stock-r1.launch.json": "d42eb2b450d7297a2d9b45d288a6382e3120d5de4bfc760e309e649f0ec6464f",
+    "implant-relics-native-after-r1.json": "1be2e92bc9259a657bede06d068cda70899217c1ed4150efadd3b45cf0f176a2",
+    "implant-relics-native-after-r3.json": "010636570386a9fc2df9727f152a9c7a1f907d91e0a1745f3138283f9b745929",
+    "implant-regression-before-r1.log": "3959e29d42564463a29aca519154c0a5dba7173b75691d0f9632b8d08ad8dbe7",
+    "implant-relics-restoration-r1.json": "fa8328ee54af5fa4f1d42ef330372c0bd8ebb726483e85507287900ed2fa884f",
+    "implant-relics-production-r1.json": "31fba4332c8e34df528def585e991777c3d2aebe0c933b34231cf425e98d1af0",
+    "implant-relics-production-r1.launch.json": "ca5def77e88dee0261f244c295d7632d9820667b1f41c58faab29c20d4f231fe",
+    "implant-relics-production-restoration-r1.json": "49cac3c00981eaf321f38c0b7ea622f7bd25818c2a6d4a075afc2d8c5daaada2"
+  },
+  "limits": [
+    "Controlled deck/resource/RNG comparisons, not complete combat or stock victory certificate",
+    "Native-only synthetic finish verifies exit guard without qualifying original-game victory",
+    "Other relic callback combinations remain unverified",
+    "Full-game audit ongoing; ordered double Boss/key/route/content/natural-late-flow obligations remain"
+  ]
+}

@@ -35,17 +35,24 @@ def main() -> int:
         _enter_combat(backend)
         payload = session.payload
         assert payload is not None
-        assert payload.get("_parity_schema") == "spirecomm-parity-v11"
+        assert payload.get("_parity_schema") in {"spirecomm-parity-v11", "spirecomm-parity-v12", "spirecomm-parity-v13"}
         assert payload.get("_oracle_contract") == "sls-oracle-mode-v1"
         assert payload.get("_oracle_mode") == args.mode
         result["combat"] = payload
         commands = set(payload.get("available_commands", []))
-        diagnostic_keys = {"_rng", "_continuation", "_timing_evidence", "math_seed"}
+        diagnostic_keys = {"_rng", "_continuation", "_timing_evidence", "math_seed",
+                           "_stock_direct", "_stock_reward_state", "_parity_scenario"}
         if args.mode == "production":
             assert not diagnostic_keys.intersection(payload)
             assert "parity_card" not in commands and "parity_scenario" not in commands
         else:
-            assert diagnostic_keys.issubset(payload)
+            required = {"_rng", "_continuation", "_timing_evidence", "math_seed"}
+            if payload.get("_parity_schema") in {"spirecomm-parity-v12", "spirecomm-parity-v13"}:
+                required |= {"_stock_direct", "_stock_reward_state"}
+            if payload.get("_parity_schema") == "spirecomm-parity-v13":
+                assert payload["_stock_direct"].get("boss_flow_evidence_schema") == "sls-stock-boss-flow-v1"
+                assert isinstance(payload["_stock_direct"].get("remaining_bosses"), list)
+            assert required.issubset(payload)
             assert "parity_card" in commands
             result["card_probe"] = session.execute("parity_card STRIKE_RED 0")
             assert result["card_probe"].get("_parity_scenario")

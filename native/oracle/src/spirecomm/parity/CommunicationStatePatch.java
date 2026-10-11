@@ -36,7 +36,55 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Field;
 
 public final class CommunicationStatePatch {
-    public static final String INSTRUMENTATION_SCHEMA = "spirecomm-parity-v11";
+    public static final String INSTRUMENTATION_SCHEMA = "spirecomm-parity-v13";
+
+    /** Validation-only evidence for post-combat rewards, outside policy inputs. */
+    private static Map<String, Object> directRewardState() {
+        AbstractRoom room = AbstractDungeon.getCurrRoom();
+        Map<String, Object> result = new LinkedHashMap<String, Object>();
+        result.put("schema", "sls-stock-reward-state-v1");
+        result.put("room_class", room.getClass().getName());
+        result.put("room_phase", room.phase.name());
+        result.put("smoked", room.smoked);
+        result.put("potion_modifier", AbstractRoom.blizzardPotionMod);
+        result.put("card_rarity_factor", AbstractDungeon.cardBlizzRandomizer);
+        result.put("all_monsters_escaped", room.monsters == null ? null
+            : room.monsters.haveMonstersEscaped());
+        ArrayList<Map<String, Object>> roomRewards = new ArrayList<Map<String, Object>>();
+        ArrayList<Map<String, Object>> screenRewards = new ArrayList<Map<String, Object>>();
+        for (RewardItem reward : room.rewards) roomRewards.add(directRewardItem(reward));
+        if (AbstractDungeon.combatRewardScreen != null) {
+            for (RewardItem reward : AbstractDungeon.combatRewardScreen.rewards) {
+                screenRewards.add(directRewardItem(reward));
+            }
+        }
+        result.put("room_rewards", roomRewards);
+        result.put("screen_rewards", screenRewards);
+        return result;
+    }
+
+    private static Map<String, Object> directRewardItem(RewardItem reward) {
+        Map<String, Object> result = new LinkedHashMap<String, Object>();
+        result.put("type", reward.type.name());
+        result.put("gold", reward.goldAmt);
+        result.put("bonus_gold", reward.bonusGold);
+        result.put("done", reward.isDone);
+        result.put("ignored", reward.ignoreReward);
+        result.put("potion", reward.potion == null ? null : reward.potion.ID);
+        result.put("relic", reward.relic == null ? null : reward.relic.relicId);
+        ArrayList<Map<String, Object>> cards = new ArrayList<Map<String, Object>>();
+        if (reward.cards != null) {
+            for (AbstractCard card : reward.cards) {
+                Map<String, Object> row = new LinkedHashMap<String, Object>();
+                row.put("id", card.cardID);
+                row.put("upgrades", card.timesUpgraded);
+                row.put("misc", card.misc);
+                cards.add(row);
+            }
+        }
+        result.put("cards", cards);
+        return result;
+    }
 
     // Validation-only independent projection: read stock objects directly,
     // without GameStateConverter or either Python observation adapter.
@@ -59,14 +107,44 @@ public final class CommunicationStatePatch {
 
     private static Map<String, Object> directStockState() {
         Map<String, Object> result = new LinkedHashMap<String, Object>();
-        result.put("schema", "sls-stock-direct-v1");
+        result.put("schema", "sls-stock-direct-v2");
         result.put("ascension", AbstractDungeon.ascensionLevel);
         result.put("act", AbstractDungeon.actNum);
+        result.put("dungeon_id", AbstractDungeon.id);
+        result.put("dungeon_class", com.megacrit.cardcrawl.core.CardCrawlGame.dungeon.getClass().getName());
+        result.put("room_class", AbstractDungeon.getCurrRoom().getClass().getName());
+        result.put("scene_class", AbstractDungeon.scene.getClass().getName());
         result.put("floor", AbstractDungeon.floorNum);
+        result.put("boss_flow_evidence_schema", "sls-stock-boss-flow-v1");
+        result.put("boss_key", AbstractDungeon.bossKey);
+        result.put("remaining_bosses", new ArrayList<String>(AbstractDungeon.bossList));
         result.put("turn", com.megacrit.cardcrawl.actions.GameActionManager.turn);
         result.put("phase", AbstractDungeon.actionManager.phase.toString());
         result.put("player", directCreature(AbstractDungeon.player));
         result.put("energy", com.megacrit.cardcrawl.ui.panels.EnergyPanel.totalCount);
+        result.put("hand", directCards(AbstractDungeon.player.hand));
+        result.put("draw_pile", directCards(AbstractDungeon.player.drawPile));
+        result.put("discard_pile", directCards(AbstractDungeon.player.discardPile));
+        result.put("exhaust_pile", directCards(AbstractDungeon.player.exhaustPile));
+        result.put("master_deck_evidence_schema", "sls-stock-master-deck-v1");
+        result.put("master_deck", directCards(AbstractDungeon.player.masterDeck));
+        ArrayList<Map<String, Object>> relics = new ArrayList<Map<String, Object>>();
+        for (AbstractRelic relic : AbstractDungeon.player.relics) {
+            Map<String, Object> row = new LinkedHashMap<String, Object>();
+            row.put("id", relic.relicId);
+            row.put("counter", relic.counter);
+            relics.add(row);
+        }
+        result.put("relics", relics);
+        ArrayList<Map<String, Object>> potions = new ArrayList<Map<String, Object>>();
+        for (com.megacrit.cardcrawl.potions.AbstractPotion potion : AbstractDungeon.player.potions) {
+            Map<String, Object> row = new LinkedHashMap<String, Object>();
+            row.put("id", potion.ID);
+            row.put("slot", potion.slot);
+            row.put("requires_target", potion.targetRequired);
+            potions.add(row);
+        }
+        result.put("potions", potions);
         ArrayList<Map<String, Object>> monsters = new ArrayList<Map<String, Object>>();
         if (AbstractDungeon.getMonsters() != null) {
             for (AbstractMonster monster : AbstractDungeon.getMonsters().monsters) {
@@ -80,6 +158,22 @@ public final class CommunicationStatePatch {
         }
         result.put("monsters", monsters);
         return result;
+    }
+
+    private static ArrayList<Map<String, Object>> directCards(CardGroup group) {
+        ArrayList<Map<String, Object>> rows = new ArrayList<Map<String, Object>>();
+        for (AbstractCard card : group.group) {
+            Map<String, Object> row = new LinkedHashMap<String, Object>();
+            row.put("id", card.cardID);
+            row.put("base_cost", card.cost);
+            row.put("cost", card.costForTurn);
+            row.put("upgrades", card.timesUpgraded);
+            row.put("free_to_play_once", card.freeToPlayOnce);
+            row.put("retain", card.retain);
+            row.put("self_retain", card.selfRetain);
+            rows.add(row);
+        }
+        return rows;
     }
     private static final Method CALCULATE_DAMAGE = privateCalculateDamage();
     private static AbstractEvent matchEvent;
@@ -493,6 +587,7 @@ public final class CommunicationStatePatch {
         String validationFields = validationMode
             ? ",\"_rng\":" + gson.toJson(rng)
                 + ",\"_stock_direct\":" + gson.toJson(directStockState())
+                + ",\"_stock_reward_state\":" + gson.toJson(directRewardState())
                 + ",\"_continuation\":" + gson.toJson(continuation)
                 + ",\"_timing_evidence\":" + gson.toJson(timingEvidence)
                 + ",\"math_seed\":" + Long.toUnsignedString(ParityRng.mathSeed)

@@ -86,7 +86,7 @@ def main() -> None:
     output = ROOT / config['run']['output']
     if output.exists():
         raise FileExistsError('long-run output exists; inspect before submission')
-    reject_used_seeds([ROOT / 'local/runs', ROOT / 'docs/results'])
+    reject_used_seeds([ROOT / 'local/runs', ROOT / 'tests/fixtures/evidence/results'])
     receipt = args.plan.with_name('submission.json')
     with receipt.open('x', encoding='utf-8') as stream:
         json.dump({'status': 'SUBMITTING', 'plan_sha256': sha256_file(args.plan)}, stream)

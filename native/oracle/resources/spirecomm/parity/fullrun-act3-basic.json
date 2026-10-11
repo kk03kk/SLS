@@ -1,0 +1,1358 @@
+{
+  "schema": "sls-fullrun-scenes-v1",
+  "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "scenes": [
+    {
+      "id": "act3-awakened-one-basic",
+      "encounter": "AWAKENED_ONE",
+      "ascension": 20,
+      "act": 3,
+      "floor": 40,
+      "room": "BOSS",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R"
+        ]
+      },
+      "stock_classes": [
+        "dungeons.TheBeyond",
+        "monsters.beyond.AwakenedOne",
+        "monsters.exordium.Cultist"
+      ],
+      "stock_methods": {
+        "dungeons.TheBeyond": [
+          "TheBeyond"
+        ],
+        "monsters.beyond.AwakenedOne": [
+          "getMove",
+          "takeTurn"
+        ],
+        "monsters.exordium.Cultist": [
+          "getMove",
+          "takeTurn"
+        ]
+      },
+      "actions": [
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "obligation": "Actual dungeon and four basic stock enemy turns; damage/death/revive/card-count interactions remain untested",
+      "qualification_scope": "CONTROLLED_ACTUAL_DUNGEON_BASIC_COMBAT_NOT_NATURAL_FLOW",
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "seeds": [
+        131200045,
+        131200046,
+        131200047
+      ],
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheBeyond": {
+          "class_sha256": "e8e7819f75bc2ee347c9dbfa5316b42160c2c50ef4f3bae3b4115e2c4a9a6502",
+          "bytecode_sha256": "c2584927eb19266caf64d97926c9144a0d9a988d30b66099eb5a0e126234c35b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.AwakenedOne": {
+          "class_sha256": "05ab6213f690b760bdca9e41ec045b7351964914f9ee3ae8884453f26a42b317",
+          "bytecode_sha256": "c057c099b99b95108b14aec0cc8125980367200f96ec3143442f82e818e1a6db"
+        },
+        "com.megacrit.cardcrawl.monsters.exordium.Cultist": {
+          "class_sha256": "63ab34b02704dfb3d7c7f315807d4743f8be25699379607193a9c9a592c39169",
+          "bytecode_sha256": "d714bca762d1eb381245e3e42ba38c8eaf80f4ac6b363cb0cbd55b5323209c9f"
+        }
+      }
+    },
+    {
+      "id": "act3-donu-and-deca-basic",
+      "encounter": "DONU_AND_DECA",
+      "ascension": 20,
+      "act": 3,
+      "floor": 40,
+      "room": "BOSS",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R"
+        ]
+      },
+      "stock_classes": [
+        "dungeons.TheBeyond",
+        "monsters.beyond.Donu",
+        "monsters.beyond.Deca"
+      ],
+      "stock_methods": {
+        "dungeons.TheBeyond": [
+          "TheBeyond"
+        ],
+        "monsters.beyond.Donu": [
+          "getMove",
+          "takeTurn"
+        ],
+        "monsters.beyond.Deca": [
+          "getMove",
+          "takeTurn"
+        ]
+      },
+      "actions": [
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "obligation": "Actual dungeon and four basic stock enemy turns; damage/death/revive/card-count interactions remain untested",
+      "qualification_scope": "CONTROLLED_ACTUAL_DUNGEON_BASIC_COMBAT_NOT_NATURAL_FLOW",
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "seeds": [
+        131200048,
+        131200049,
+        131200050
+      ],
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheBeyond": {
+          "class_sha256": "e8e7819f75bc2ee347c9dbfa5316b42160c2c50ef4f3bae3b4115e2c4a9a6502",
+          "bytecode_sha256": "c2584927eb19266caf64d97926c9144a0d9a988d30b66099eb5a0e126234c35b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.Donu": {
+          "class_sha256": "e7992a037cf0b971bfe03d99a1ec4b16709dbeaea545df588091869ff50bb7b4",
+          "bytecode_sha256": "bae6c788f54ee02ac4905d8b414d54c7aac1c09d07dd5a43125514dbc383f888"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.Deca": {
+          "class_sha256": "0f290c6b5815b831c9a11e7dbc8b99e1d19d42ef8664a9c49563a33bcbca8c4d",
+          "bytecode_sha256": "afaf90604e3948d554815084b5ba96a060ee21b0e17548b00331fc4e8df34a9a"
+        }
+      }
+    },
+    {
+      "id": "act3-four-shapes-basic",
+      "encounter": "FOUR_SHAPES",
+      "ascension": 20,
+      "act": 3,
+      "floor": 40,
+      "room": "MONSTER",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R"
+        ]
+      },
+      "stock_classes": [
+        "dungeons.TheBeyond",
+        "monsters.beyond.Repulsor",
+        "monsters.beyond.Spiker",
+        "monsters.beyond.Exploder"
+      ],
+      "stock_methods": {
+        "dungeons.TheBeyond": [
+          "TheBeyond"
+        ],
+        "monsters.beyond.Repulsor": [
+          "getMove",
+          "takeTurn"
+        ],
+        "monsters.beyond.Spiker": [
+          "getMove",
+          "takeTurn"
+        ],
+        "monsters.beyond.Exploder": [
+          "getMove",
+          "takeTurn"
+        ]
+      },
+      "actions": [
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "obligation": "Actual dungeon and four basic stock enemy turns; damage/death/revive/card-count interactions remain untested",
+      "qualification_scope": "CONTROLLED_ACTUAL_DUNGEON_BASIC_COMBAT_NOT_NATURAL_FLOW",
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "seeds": [
+        131200051,
+        131200052,
+        131200053
+      ],
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheBeyond": {
+          "class_sha256": "e8e7819f75bc2ee347c9dbfa5316b42160c2c50ef4f3bae3b4115e2c4a9a6502",
+          "bytecode_sha256": "c2584927eb19266caf64d97926c9144a0d9a988d30b66099eb5a0e126234c35b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.Repulsor": {
+          "class_sha256": "66568e85ada476d3e98a4c703b28ed71b3cf32446d7cb4c0dffedf9a73d12690",
+          "bytecode_sha256": "57af25bc27c973390ce4cd5604d59afb6fd015842fa7adee63cc353f7ad70a3a"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.Spiker": {
+          "class_sha256": "b510e4659ede1805cc4fce7d9e85c388d4f29269622f27c6553435a936f67bd4",
+          "bytecode_sha256": "a938a70f10c11b05a29b01be4c17bef17e4eb364e3471ccf7e75bc4e17d10108"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.Exploder": {
+          "class_sha256": "49b21bce2c17b3e4803855736e74df16a951036c5c1189377b4c4232c5183008",
+          "bytecode_sha256": "9736afeae180498d3301c7ccb1beaa93a5babdaa928a7c584940ef240f764d8b"
+        }
+      }
+    },
+    {
+      "id": "act3-giant-head-basic",
+      "encounter": "GIANT_HEAD",
+      "ascension": 20,
+      "act": 3,
+      "floor": 40,
+      "room": "ELITE",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R"
+        ]
+      },
+      "stock_classes": [
+        "dungeons.TheBeyond",
+        "monsters.beyond.GiantHead"
+      ],
+      "stock_methods": {
+        "dungeons.TheBeyond": [
+          "TheBeyond"
+        ],
+        "monsters.beyond.GiantHead": [
+          "getMove",
+          "takeTurn"
+        ]
+      },
+      "actions": [
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "obligation": "Actual dungeon and four basic stock enemy turns; damage/death/revive/card-count interactions remain untested",
+      "qualification_scope": "CONTROLLED_ACTUAL_DUNGEON_BASIC_COMBAT_NOT_NATURAL_FLOW",
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "seeds": [
+        131200054,
+        131200055,
+        131200056
+      ],
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheBeyond": {
+          "class_sha256": "e8e7819f75bc2ee347c9dbfa5316b42160c2c50ef4f3bae3b4115e2c4a9a6502",
+          "bytecode_sha256": "c2584927eb19266caf64d97926c9144a0d9a988d30b66099eb5a0e126234c35b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.GiantHead": {
+          "class_sha256": "4a5349ca0db689cafb622753e52046f5073eb573439ec22d38fd45ccd711104e",
+          "bytecode_sha256": "ad95d4b1aa5e876dca6159bc8a23343e619b6e6154f34cfe4ecc6e243291f54c"
+        }
+      }
+    },
+    {
+      "id": "act3-jaw-worm-horde-basic",
+      "encounter": "JAW_WORM_HORDE",
+      "ascension": 20,
+      "act": 3,
+      "floor": 40,
+      "room": "MONSTER",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R"
+        ]
+      },
+      "stock_classes": [
+        "dungeons.TheBeyond",
+        "monsters.exordium.JawWorm"
+      ],
+      "stock_methods": {
+        "dungeons.TheBeyond": [
+          "TheBeyond"
+        ],
+        "monsters.exordium.JawWorm": [
+          "getMove",
+          "takeTurn"
+        ]
+      },
+      "actions": [
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "obligation": "Actual dungeon and four basic stock enemy turns; damage/death/revive/card-count interactions remain untested",
+      "qualification_scope": "CONTROLLED_ACTUAL_DUNGEON_BASIC_COMBAT_NOT_NATURAL_FLOW",
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "seeds": [
+        131200057,
+        131200058,
+        131200059
+      ],
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheBeyond": {
+          "class_sha256": "e8e7819f75bc2ee347c9dbfa5316b42160c2c50ef4f3bae3b4115e2c4a9a6502",
+          "bytecode_sha256": "c2584927eb19266caf64d97926c9144a0d9a988d30b66099eb5a0e126234c35b"
+        },
+        "com.megacrit.cardcrawl.monsters.exordium.JawWorm": {
+          "class_sha256": "852e41899ff8b44f0eb8dcd0fa61a39a2b812cbc06d712dc448d373f02f448a0",
+          "bytecode_sha256": "762b1fabfd54457b1448c407d624c33184f9fa454b7f03010fccfdba6c54ea0b"
+        }
+      }
+    },
+    {
+      "id": "act3-maw-basic",
+      "encounter": "MAW",
+      "ascension": 20,
+      "act": 3,
+      "floor": 40,
+      "room": "MONSTER",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R"
+        ]
+      },
+      "stock_classes": [
+        "dungeons.TheBeyond",
+        "monsters.beyond.Maw"
+      ],
+      "stock_methods": {
+        "dungeons.TheBeyond": [
+          "TheBeyond"
+        ],
+        "monsters.beyond.Maw": [
+          "getMove",
+          "takeTurn"
+        ]
+      },
+      "actions": [
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "obligation": "Actual dungeon and four basic stock enemy turns; damage/death/revive/card-count interactions remain untested",
+      "qualification_scope": "CONTROLLED_ACTUAL_DUNGEON_BASIC_COMBAT_NOT_NATURAL_FLOW",
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "seeds": [
+        131200060,
+        131200061,
+        131200062
+      ],
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheBeyond": {
+          "class_sha256": "e8e7819f75bc2ee347c9dbfa5316b42160c2c50ef4f3bae3b4115e2c4a9a6502",
+          "bytecode_sha256": "c2584927eb19266caf64d97926c9144a0d9a988d30b66099eb5a0e126234c35b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.Maw": {
+          "class_sha256": "1cfd22a9bc9e3b0cb5d6ec5795a34e7f1b761fa195a63d4fc523954556a1ff8d",
+          "bytecode_sha256": "7e04532672e91ea9602a737c0e6fc324fe046a1861c726e77a65d44355d847d5"
+        }
+      }
+    },
+    {
+      "id": "act3-orb-walker-basic",
+      "encounter": "ORB_WALKER",
+      "ascension": 20,
+      "act": 3,
+      "floor": 40,
+      "room": "MONSTER",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R"
+        ]
+      },
+      "stock_classes": [
+        "dungeons.TheBeyond",
+        "monsters.beyond.OrbWalker"
+      ],
+      "stock_methods": {
+        "dungeons.TheBeyond": [
+          "TheBeyond"
+        ],
+        "monsters.beyond.OrbWalker": [
+          "getMove",
+          "takeTurn"
+        ]
+      },
+      "actions": [
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "obligation": "Actual dungeon and four basic stock enemy turns; damage/death/revive/card-count interactions remain untested",
+      "qualification_scope": "CONTROLLED_ACTUAL_DUNGEON_BASIC_COMBAT_NOT_NATURAL_FLOW",
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "seeds": [
+        131200063,
+        131200064,
+        131200065
+      ],
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheBeyond": {
+          "class_sha256": "e8e7819f75bc2ee347c9dbfa5316b42160c2c50ef4f3bae3b4115e2c4a9a6502",
+          "bytecode_sha256": "c2584927eb19266caf64d97926c9144a0d9a988d30b66099eb5a0e126234c35b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.OrbWalker": {
+          "class_sha256": "ffa401f378f882170726efccacae7d0e3fc04e96fbcc8ecdbedf3e5623bfe6f0",
+          "bytecode_sha256": "1c6c80c064a547160c00432e46fc14ab11e16020d1eaf6773eb90f42585b10a9"
+        }
+      }
+    },
+    {
+      "id": "act3-reptomancer-basic",
+      "encounter": "REPTOMANCER",
+      "ascension": 20,
+      "act": 3,
+      "floor": 40,
+      "room": "ELITE",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R"
+        ]
+      },
+      "stock_classes": [
+        "dungeons.TheBeyond",
+        "monsters.beyond.Reptomancer",
+        "monsters.beyond.SnakeDagger"
+      ],
+      "stock_methods": {
+        "dungeons.TheBeyond": [
+          "TheBeyond"
+        ],
+        "monsters.beyond.Reptomancer": [
+          "getMove",
+          "takeTurn"
+        ],
+        "monsters.beyond.SnakeDagger": [
+          "getMove",
+          "takeTurn"
+        ]
+      },
+      "actions": [
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "obligation": "Actual dungeon and four basic stock enemy turns; damage/death/revive/card-count interactions remain untested",
+      "qualification_scope": "CONTROLLED_ACTUAL_DUNGEON_BASIC_COMBAT_NOT_NATURAL_FLOW",
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "seeds": [
+        131200066,
+        131200067,
+        131200068
+      ],
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheBeyond": {
+          "class_sha256": "e8e7819f75bc2ee347c9dbfa5316b42160c2c50ef4f3bae3b4115e2c4a9a6502",
+          "bytecode_sha256": "c2584927eb19266caf64d97926c9144a0d9a988d30b66099eb5a0e126234c35b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.Reptomancer": {
+          "class_sha256": "972f9bb9c71256597beb725fa4feaad812e1d5bfe97df0f44141f66788715d52",
+          "bytecode_sha256": "62dcacf98ca8bea17bc4d1a699fa0e8f35a15ecf2d58c70824115ddecc58ee7b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.SnakeDagger": {
+          "class_sha256": "d7a00e8ffefea878dfc2793f6fa3d2ffa51f8ba2590d56c3e29ae86cc8aee562",
+          "bytecode_sha256": "a27d09693237e1ce26c9ae1c521be3dbdb9017b842fc6efb8684316b8aeec7a2"
+        }
+      }
+    },
+    {
+      "id": "act3-sphere-and-two-shapes-basic",
+      "encounter": "SPHERE_AND_TWO_SHAPES",
+      "ascension": 20,
+      "act": 3,
+      "floor": 40,
+      "room": "MONSTER",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R"
+        ]
+      },
+      "stock_classes": [
+        "dungeons.TheBeyond",
+        "monsters.city.SphericGuardian",
+        "monsters.beyond.Repulsor",
+        "monsters.beyond.Spiker",
+        "monsters.beyond.Exploder"
+      ],
+      "stock_methods": {
+        "dungeons.TheBeyond": [
+          "TheBeyond"
+        ],
+        "monsters.city.SphericGuardian": [
+          "getMove",
+          "takeTurn"
+        ],
+        "monsters.beyond.Repulsor": [
+          "getMove",
+          "takeTurn"
+        ],
+        "monsters.beyond.Spiker": [
+          "getMove",
+          "takeTurn"
+        ],
+        "monsters.beyond.Exploder": [
+          "getMove",
+          "takeTurn"
+        ]
+      },
+      "actions": [
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "obligation": "Actual dungeon and four basic stock enemy turns; damage/death/revive/card-count interactions remain untested",
+      "qualification_scope": "CONTROLLED_ACTUAL_DUNGEON_BASIC_COMBAT_NOT_NATURAL_FLOW",
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "seeds": [
+        131200069,
+        131200070,
+        131200071
+      ],
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheBeyond": {
+          "class_sha256": "e8e7819f75bc2ee347c9dbfa5316b42160c2c50ef4f3bae3b4115e2c4a9a6502",
+          "bytecode_sha256": "c2584927eb19266caf64d97926c9144a0d9a988d30b66099eb5a0e126234c35b"
+        },
+        "com.megacrit.cardcrawl.monsters.city.SphericGuardian": {
+          "class_sha256": "ad4cc5b611d9da67eaeec0949b4d77e216325fa906a6b90640ddfb2798ea02c4",
+          "bytecode_sha256": "faf259781dcb4c2fd4239bc58edaa928496b6384605a27bc36337424ac052654"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.Repulsor": {
+          "class_sha256": "66568e85ada476d3e98a4c703b28ed71b3cf32446d7cb4c0dffedf9a73d12690",
+          "bytecode_sha256": "57af25bc27c973390ce4cd5604d59afb6fd015842fa7adee63cc353f7ad70a3a"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.Spiker": {
+          "class_sha256": "b510e4659ede1805cc4fce7d9e85c388d4f29269622f27c6553435a936f67bd4",
+          "bytecode_sha256": "a938a70f10c11b05a29b01be4c17bef17e4eb364e3471ccf7e75bc4e17d10108"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.Exploder": {
+          "class_sha256": "49b21bce2c17b3e4803855736e74df16a951036c5c1189377b4c4232c5183008",
+          "bytecode_sha256": "9736afeae180498d3301c7ccb1beaa93a5babdaa928a7c584940ef240f764d8b"
+        }
+      }
+    },
+    {
+      "id": "act3-spire-growth-basic",
+      "encounter": "SPIRE_GROWTH",
+      "ascension": 20,
+      "act": 3,
+      "floor": 40,
+      "room": "MONSTER",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R"
+        ]
+      },
+      "stock_classes": [
+        "dungeons.TheBeyond",
+        "monsters.beyond.SpireGrowth"
+      ],
+      "stock_methods": {
+        "dungeons.TheBeyond": [
+          "TheBeyond"
+        ],
+        "monsters.beyond.SpireGrowth": [
+          "getMove",
+          "takeTurn"
+        ]
+      },
+      "actions": [
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "obligation": "Actual dungeon and four basic stock enemy turns; damage/death/revive/card-count interactions remain untested",
+      "qualification_scope": "CONTROLLED_ACTUAL_DUNGEON_BASIC_COMBAT_NOT_NATURAL_FLOW",
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "seeds": [
+        131200072,
+        131200073,
+        131200074
+      ],
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheBeyond": {
+          "class_sha256": "e8e7819f75bc2ee347c9dbfa5316b42160c2c50ef4f3bae3b4115e2c4a9a6502",
+          "bytecode_sha256": "c2584927eb19266caf64d97926c9144a0d9a988d30b66099eb5a0e126234c35b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.SpireGrowth": {
+          "class_sha256": "13577b012c4dca9e3aa3d07006e85df1a00c09624ed02da7ff755681fc3797e1",
+          "bytecode_sha256": "ab8dd6785e5c7fdd62c8deb7561be35e62558791ecaedacb38aac01780132fa7"
+        }
+      }
+    },
+    {
+      "id": "act3-three-shapes-basic",
+      "encounter": "THREE_SHAPES",
+      "ascension": 20,
+      "act": 3,
+      "floor": 40,
+      "room": "MONSTER",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R"
+        ]
+      },
+      "stock_classes": [
+        "dungeons.TheBeyond",
+        "monsters.beyond.Repulsor",
+        "monsters.beyond.Spiker",
+        "monsters.beyond.Exploder"
+      ],
+      "stock_methods": {
+        "dungeons.TheBeyond": [
+          "TheBeyond"
+        ],
+        "monsters.beyond.Repulsor": [
+          "getMove",
+          "takeTurn"
+        ],
+        "monsters.beyond.Spiker": [
+          "getMove",
+          "takeTurn"
+        ],
+        "monsters.beyond.Exploder": [
+          "getMove",
+          "takeTurn"
+        ]
+      },
+      "actions": [
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "obligation": "Actual dungeon and four basic stock enemy turns; damage/death/revive/card-count interactions remain untested",
+      "qualification_scope": "CONTROLLED_ACTUAL_DUNGEON_BASIC_COMBAT_NOT_NATURAL_FLOW",
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "seeds": [
+        131200075,
+        131200076,
+        131200077
+      ],
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheBeyond": {
+          "class_sha256": "e8e7819f75bc2ee347c9dbfa5316b42160c2c50ef4f3bae3b4115e2c4a9a6502",
+          "bytecode_sha256": "c2584927eb19266caf64d97926c9144a0d9a988d30b66099eb5a0e126234c35b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.Repulsor": {
+          "class_sha256": "66568e85ada476d3e98a4c703b28ed71b3cf32446d7cb4c0dffedf9a73d12690",
+          "bytecode_sha256": "57af25bc27c973390ce4cd5604d59afb6fd015842fa7adee63cc353f7ad70a3a"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.Spiker": {
+          "class_sha256": "b510e4659ede1805cc4fce7d9e85c388d4f29269622f27c6553435a936f67bd4",
+          "bytecode_sha256": "a938a70f10c11b05a29b01be4c17bef17e4eb364e3471ccf7e75bc4e17d10108"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.Exploder": {
+          "class_sha256": "49b21bce2c17b3e4803855736e74df16a951036c5c1189377b4c4232c5183008",
+          "bytecode_sha256": "9736afeae180498d3301c7ccb1beaa93a5babdaa928a7c584940ef240f764d8b"
+        }
+      }
+    },
+    {
+      "id": "act3-time-eater-basic",
+      "encounter": "TIME_EATER",
+      "ascension": 20,
+      "act": 3,
+      "floor": 40,
+      "room": "BOSS",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R"
+        ]
+      },
+      "stock_classes": [
+        "dungeons.TheBeyond",
+        "monsters.beyond.TimeEater"
+      ],
+      "stock_methods": {
+        "dungeons.TheBeyond": [
+          "TheBeyond"
+        ],
+        "monsters.beyond.TimeEater": [
+          "getMove",
+          "takeTurn"
+        ]
+      },
+      "actions": [
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "obligation": "Actual dungeon and four basic stock enemy turns; damage/death/revive/card-count interactions remain untested",
+      "qualification_scope": "CONTROLLED_ACTUAL_DUNGEON_BASIC_COMBAT_NOT_NATURAL_FLOW",
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "seeds": [
+        131200078,
+        131200079,
+        131200080
+      ],
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheBeyond": {
+          "class_sha256": "e8e7819f75bc2ee347c9dbfa5316b42160c2c50ef4f3bae3b4115e2c4a9a6502",
+          "bytecode_sha256": "c2584927eb19266caf64d97926c9144a0d9a988d30b66099eb5a0e126234c35b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.TimeEater": {
+          "class_sha256": "9cb8975671f6aa31ce9ad1a24b6116276d716275a9ca3063d4c18b61f9e576ce",
+          "bytecode_sha256": "5682a97260a05d8c90e57b238df346c38682c0d17561f25da72b2fcf7baa86d8"
+        }
+      }
+    },
+    {
+      "id": "act3-transient-basic",
+      "encounter": "TRANSIENT",
+      "ascension": 20,
+      "act": 3,
+      "floor": 40,
+      "room": "MONSTER",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R"
+        ]
+      },
+      "stock_classes": [
+        "dungeons.TheBeyond",
+        "monsters.beyond.Transient"
+      ],
+      "stock_methods": {
+        "dungeons.TheBeyond": [
+          "TheBeyond"
+        ],
+        "monsters.beyond.Transient": [
+          "getMove",
+          "takeTurn"
+        ]
+      },
+      "actions": [
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "obligation": "Actual dungeon and four basic stock enemy turns; damage/death/revive/card-count interactions remain untested",
+      "qualification_scope": "CONTROLLED_ACTUAL_DUNGEON_BASIC_COMBAT_NOT_NATURAL_FLOW",
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "seeds": [
+        131200081,
+        131200082,
+        131200083
+      ],
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheBeyond": {
+          "class_sha256": "e8e7819f75bc2ee347c9dbfa5316b42160c2c50ef4f3bae3b4115e2c4a9a6502",
+          "bytecode_sha256": "c2584927eb19266caf64d97926c9144a0d9a988d30b66099eb5a0e126234c35b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.Transient": {
+          "class_sha256": "134e378db51135045754323e00d4b5840aa1a84d38569106d8b2f75e9f3d78c5",
+          "bytecode_sha256": "362382892bdd0e96a1c8811874d8f3ef16a6cdfe35472aaf3615ec22e97c8ada"
+        }
+      }
+    },
+    {
+      "id": "act3-writhing-mass-basic",
+      "encounter": "WRITHING_MASS",
+      "ascension": 20,
+      "act": 3,
+      "floor": 40,
+      "room": "MONSTER",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R"
+        ]
+      },
+      "stock_classes": [
+        "dungeons.TheBeyond",
+        "monsters.beyond.WrithingMass"
+      ],
+      "stock_methods": {
+        "dungeons.TheBeyond": [
+          "TheBeyond"
+        ],
+        "monsters.beyond.WrithingMass": [
+          "getMove",
+          "takeTurn"
+        ]
+      },
+      "actions": [
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "obligation": "Actual dungeon and four basic stock enemy turns; damage/death/revive/card-count interactions remain untested",
+      "qualification_scope": "CONTROLLED_ACTUAL_DUNGEON_BASIC_COMBAT_NOT_NATURAL_FLOW",
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "seeds": [
+        131200084,
+        131200085,
+        131200086
+      ],
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheBeyond": {
+          "class_sha256": "e8e7819f75bc2ee347c9dbfa5316b42160c2c50ef4f3bae3b4115e2c4a9a6502",
+          "bytecode_sha256": "c2584927eb19266caf64d97926c9144a0d9a988d30b66099eb5a0e126234c35b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.WrithingMass": {
+          "class_sha256": "8cd629117c79acf26547550ae4535654bc383ea2e39ec19daf4e8e989e8fc9ce",
+          "bytecode_sha256": "3f43dbab2d2af8eae20b7ed8be69822f84870dd2890c38339f6d90e716268a07"
+        }
+      }
+    }
+  ],
+  "qualification": false,
+  "final_holdout_used": false
+}

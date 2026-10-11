@@ -1,0 +1,58 @@
+{
+  "schema": "sls-double-boss-extended-boundary-evidence-v1",
+  "native_source_sha256": "81e83de9b8870847e5dccc74e7631004d21f9343b7f2a8c27d7646f6eaf2d42b",
+  "capture_sha256": "7099315604c2c7050fe9dc3430a9a8c4ec42cd3106670fc5e490f2c19052e6fc",
+  "report_sha256": "37dd08476dab22d64f6b4dd9572e558a78022e957852d700045391e45ae7c311",
+  "oracle_sha256": "201f10de724c42f77faff2631570ee02ef62679efd7f0cfc0a8a47bc75681b3c",
+  "status": "TWO_STABLE_DECISION_BOUNDARIES_MATCH_NOT_COMPLETE_DOUBLE_BOSS",
+  "runs": [
+    {
+      "seed": 131200219,
+      "initial_match": true,
+      "second_entry_match": true
+    },
+    {
+      "seed": 131200220,
+      "initial_match": true,
+      "second_entry_match": true
+    },
+    {
+      "seed": 131200221,
+      "initial_match": true,
+      "second_entry_match": true
+    }
+  ],
+  "tests_passed": 120,
+  "production_smoke": "PASS",
+  "recovery": [
+    {
+      "launch": "double-boss-entry-stock-r3",
+      "entries": 63,
+      "mismatches": [],
+      "completion": {
+        "exit_code": 0,
+        "error": null
+      }
+    },
+    {
+      "launch": "double-boss-entry-production-smoke-r1",
+      "entries": 63,
+      "mismatches": [],
+      "completion": {
+        "exit_code": 0,
+        "status": "PASS"
+      }
+    }
+  ],
+  "tool_findings": [
+    "Oldr2 stock boundary had pending DEBUG intent; retained but rejected for full decision qualification",
+    "Isolated set_potions initial capacity3 must be explicitly paired to stockA20 capacity2",
+    "Use extended_direct on both sides to compare the same declared projection"
+  ],
+  "limits": [
+    "Only Time Eater -> Donu/Deca, two stable combat boundaries at three seeds",
+    "Second victory and other five ordered pairs remain unverified",
+    "Permanent deck comparison still composition-focused; other growth/keys/route branches require separate evidence",
+    "No natural win-rate or model evaluation"
+  ]
+}

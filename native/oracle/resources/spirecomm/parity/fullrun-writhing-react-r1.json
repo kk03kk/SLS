@@ -1,0 +1,290 @@
+{
+  "schema": "sls-fullrun-scenes-v1",
+  "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "scenes": [
+    {
+      "id": "act3-writhing-react-blocked-hit",
+      "encounter": "WRITHING_MASS",
+      "ascension": 20,
+      "act": 3,
+      "floor": 40,
+      "room": "MONSTER",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger"
+        ],
+        "draw": [
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger"
+        ]
+      },
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        },
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        },
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        },
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        }
+      ],
+      "stock_classes": [
+        "dungeons.TheBeyond",
+        "monsters.beyond.WrithingMass",
+        "powers.ReactivePower",
+        "powers.MalleablePower",
+        "cards.red.Anger",
+        "potions.FirePotion"
+      ],
+      "stock_methods": {
+        "powers.ReactivePower": [
+          "onAttacked"
+        ],
+        "powers.MalleablePower": [
+          "onAttacked",
+          "atEndOfTurn"
+        ],
+        "monsters.beyond.WrithingMass": [
+          "getMove",
+          "takeTurn"
+        ]
+      },
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheBeyond": {
+          "class_sha256": "e8e7819f75bc2ee347c9dbfa5316b42160c2c50ef4f3bae3b4115e2c4a9a6502",
+          "bytecode_sha256": "c2584927eb19266caf64d97926c9144a0d9a988d30b66099eb5a0e126234c35b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.WrithingMass": {
+          "class_sha256": "8cd629117c79acf26547550ae4535654bc383ea2e39ec19daf4e8e989e8fc9ce",
+          "bytecode_sha256": "3f43dbab2d2af8eae20b7ed8be69822f84870dd2890c38339f6d90e716268a07"
+        },
+        "com.megacrit.cardcrawl.powers.ReactivePower": {
+          "class_sha256": "ccbe0e69ece4233ce68f9de3bdf6a67334a6075936a111db213ea1a41f3b3391",
+          "bytecode_sha256": "377eb0026c7dcf329d8ad3007e9e0942eda10950d037b071ba45bb479feefc48"
+        },
+        "com.megacrit.cardcrawl.powers.MalleablePower": {
+          "class_sha256": "50f1332c948908dc6f862f7ddeae876e4698e2980a6cdd492dc5ba75333a2bf1",
+          "bytecode_sha256": "3cc5bf126ffbacb32faad0b97ac3402eeb737d334745d7d258f15ab287fc5901"
+        },
+        "com.megacrit.cardcrawl.cards.red.Anger": {
+          "class_sha256": "cf446c5b763c790ec924fbbd010a6be8f1175f4e2d818805b5b599d78a04cb27",
+          "bytecode_sha256": "0ce0b704dea97674876fe6b2df815fadc463607d7442e29881f43ebbcde17dae"
+        },
+        "com.megacrit.cardcrawl.potions.FirePotion": {
+          "class_sha256": "0391a17323526250a23da24553b135b2f9a785feaa0ce168b9155c33f2bbd0f6",
+          "bytecode_sha256": "351ef53fe1c75fdb83c84c97b772c43d0c39740188641f7951a3257276123155"
+        }
+      },
+      "seeds": [
+        131200162,
+        131200163,
+        131200164
+      ],
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "obligation": "Reactive rerolls only positive nonlethal non-THORNS/HP_LOSS damage; Malleable block growth/reset; blocked hits and potion exclusion, AI RNG.",
+      "qualification_scope": "CONTROLLED_REACTIVE_NOT_IMPLANT_OR_ALL_MOVES"
+    },
+    {
+      "id": "act3-writhing-react-potion-exclusion",
+      "encounter": "WRITHING_MASS",
+      "ascension": 20,
+      "act": 3,
+      "floor": 40,
+      "room": "MONSTER",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger"
+        ],
+        "draw": [
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger"
+        ],
+        "potion": "Fire Potion"
+      },
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        },
+        {
+          "kind": "potion",
+          "potion_index": 0,
+          "target_index": 0
+        },
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        },
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        },
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        }
+      ],
+      "stock_classes": [
+        "dungeons.TheBeyond",
+        "monsters.beyond.WrithingMass",
+        "powers.ReactivePower",
+        "powers.MalleablePower",
+        "cards.red.Anger",
+        "potions.FirePotion"
+      ],
+      "stock_methods": {
+        "powers.ReactivePower": [
+          "onAttacked"
+        ],
+        "powers.MalleablePower": [
+          "onAttacked",
+          "atEndOfTurn"
+        ],
+        "monsters.beyond.WrithingMass": [
+          "getMove",
+          "takeTurn"
+        ]
+      },
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheBeyond": {
+          "class_sha256": "e8e7819f75bc2ee347c9dbfa5316b42160c2c50ef4f3bae3b4115e2c4a9a6502",
+          "bytecode_sha256": "c2584927eb19266caf64d97926c9144a0d9a988d30b66099eb5a0e126234c35b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.WrithingMass": {
+          "class_sha256": "8cd629117c79acf26547550ae4535654bc383ea2e39ec19daf4e8e989e8fc9ce",
+          "bytecode_sha256": "3f43dbab2d2af8eae20b7ed8be69822f84870dd2890c38339f6d90e716268a07"
+        },
+        "com.megacrit.cardcrawl.powers.ReactivePower": {
+          "class_sha256": "ccbe0e69ece4233ce68f9de3bdf6a67334a6075936a111db213ea1a41f3b3391",
+          "bytecode_sha256": "377eb0026c7dcf329d8ad3007e9e0942eda10950d037b071ba45bb479feefc48"
+        },
+        "com.megacrit.cardcrawl.powers.MalleablePower": {
+          "class_sha256": "50f1332c948908dc6f862f7ddeae876e4698e2980a6cdd492dc5ba75333a2bf1",
+          "bytecode_sha256": "3cc5bf126ffbacb32faad0b97ac3402eeb737d334745d7d258f15ab287fc5901"
+        },
+        "com.megacrit.cardcrawl.cards.red.Anger": {
+          "class_sha256": "cf446c5b763c790ec924fbbd010a6be8f1175f4e2d818805b5b599d78a04cb27",
+          "bytecode_sha256": "0ce0b704dea97674876fe6b2df815fadc463607d7442e29881f43ebbcde17dae"
+        },
+        "com.megacrit.cardcrawl.potions.FirePotion": {
+          "class_sha256": "0391a17323526250a23da24553b135b2f9a785feaa0ce168b9155c33f2bbd0f6",
+          "bytecode_sha256": "351ef53fe1c75fdb83c84c97b772c43d0c39740188641f7951a3257276123155"
+        }
+      },
+      "seeds": [
+        131200165,
+        131200166,
+        131200167
+      ],
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "obligation": "Reactive rerolls only positive nonlethal non-THORNS/HP_LOSS damage; Malleable block growth/reset; blocked hits and potion exclusion, AI RNG.",
+      "qualification_scope": "CONTROLLED_REACTIVE_NOT_IMPLANT_OR_ALL_MOVES"
+    }
+  ],
+  "qualification": false,
+  "final_holdout_used": false
+}

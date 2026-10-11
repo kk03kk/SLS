@@ -1,0 +1,135 @@
+{
+  "schema": "sls-key-flow-source-inventory-v1",
+  "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "sources": [
+    {
+      "class": "com.megacrit.cardcrawl.ui.campfire.RecallOption",
+      "class_sha256": "84d16da9cd1dde531d34bf71aa82bf98af43cf1763c867bd48bc2be414473512",
+      "bytecode_sha256": "5165a930a4c5ad102da68d485ef721ca52275a85c3152f8e2b0017f3c3493e88",
+      "local_bytecode_path": "local\\audits\\fullrun-parity-20261007\\stock-key-flow-r1\\ui.campfire.RecallOption.txt",
+      "status": "EXPORTED_NOT_YET_REVIEWED_OR_RUNTIME_VERIFIED"
+    },
+    {
+      "class": "com.megacrit.cardcrawl.vfx.campfire.CampfireRecallEffect",
+      "class_sha256": "621b116ea23d4139b3e487e109bed1d4870f446717eeb8d9620dbbd9075e783d",
+      "bytecode_sha256": "715e4076355f3bd1187ebecadbe1011a5fe02a558fc5e1def1a59909f570936c",
+      "local_bytecode_path": "local\\audits\\fullrun-parity-20261007\\stock-key-flow-r1\\vfx.campfire.CampfireRecallEffect.txt",
+      "status": "EXPORTED_NOT_YET_REVIEWED_OR_RUNTIME_VERIFIED"
+    },
+    {
+      "class": "com.megacrit.cardcrawl.vfx.ObtainKeyEffect",
+      "class_sha256": "80f1b69ac0405fe96c6ac6fb6bada786062a139405dd7b3568964d7e4e80ea9e",
+      "bytecode_sha256": "7791163bd1b0aa80bf8f50fcd62d7b829c1021cb6ddf382d3fb0d780a9fe5158",
+      "local_bytecode_path": "local\\audits\\fullrun-parity-20261007\\stock-key-flow-r1\\vfx.ObtainKeyEffect.txt",
+      "status": "EXPORTED_NOT_YET_REVIEWED_OR_RUNTIME_VERIFIED"
+    },
+    {
+      "class": "com.megacrit.cardcrawl.rewards.RewardItem",
+      "class_sha256": "7f5abc79015ab6a6cb6781776fc1752a5e5143f47be61b4ee8bcf9cb057daf55",
+      "bytecode_sha256": "46e0773520dcb47a5776f8fce04334a87ef7fbe5fe6fc58b76825459e6de3428",
+      "local_bytecode_path": "local\\audits\\fullrun-parity-20261007\\stock-key-flow-r1\\rewards.RewardItem.txt",
+      "status": "EXPORTED_NOT_YET_REVIEWED_OR_RUNTIME_VERIFIED"
+    },
+    {
+      "class": "com.megacrit.cardcrawl.rooms.AbstractRoom",
+      "class_sha256": "22214900fc051a2e8e73b72532ee561abc95a77f7172b105b68d3afeca0a74f6",
+      "bytecode_sha256": "62453410540607634c82dc0b5e1a84c504e606dbbd17e3ef1ca4848ee857d8bd",
+      "local_bytecode_path": "local\\audits\\fullrun-parity-20261007\\stock-key-flow-r1\\rooms.AbstractRoom.txt",
+      "status": "EXPORTED_NOT_YET_REVIEWED_OR_RUNTIME_VERIFIED"
+    },
+    {
+      "class": "com.megacrit.cardcrawl.rooms.MonsterRoomElite",
+      "class_sha256": "3c25131c9038ed639eabb818adcec4552de8de378a997b8ab4192087cc0fa90c",
+      "bytecode_sha256": "0c5f44def0c7762bd9e8a23e7d889b0dac15db116edb6c88df1534a9963adf40",
+      "local_bytecode_path": "local\\audits\\fullrun-parity-20261007\\stock-key-flow-r1\\rooms.MonsterRoomElite.txt",
+      "status": "EXPORTED_NOT_YET_REVIEWED_OR_RUNTIME_VERIFIED"
+    },
+    {
+      "class": "com.megacrit.cardcrawl.rooms.TreasureRoom",
+      "class_sha256": "7259e29a635bbc6625ab039ec2c6c099b8f59098dc6812f0ef6ae32ea71b3c0e",
+      "bytecode_sha256": "815579b4a71c2b98c10d050e0460ac157346a07e74a88029adcf01b77e0cc0dd",
+      "local_bytecode_path": "local\\audits\\fullrun-parity-20261007\\stock-key-flow-r1\\rooms.TreasureRoom.txt",
+      "status": "EXPORTED_NOT_YET_REVIEWED_OR_RUNTIME_VERIFIED"
+    },
+    {
+      "class": "com.megacrit.cardcrawl.rooms.RestRoom",
+      "class_sha256": "4aab27dcd7b5f7bcd9d9baa953fd2b92db4d001004dfea3ebac5f376ff589957",
+      "bytecode_sha256": "a65972a0b854d523270c00a843475e42fe2d4cca134f7ff59913d1798751e43d",
+      "local_bytecode_path": "local\\audits\\fullrun-parity-20261007\\stock-key-flow-r1\\rooms.RestRoom.txt",
+      "status": "EXPORTED_NOT_YET_REVIEWED_OR_RUNTIME_VERIFIED"
+    },
+    {
+      "class": "com.megacrit.cardcrawl.map.MapRoomNode",
+      "class_sha256": "f54cf19e2206bc20db7f77de724e3c54c6853ce0c878f3ba24cf3fb2036e2efd",
+      "bytecode_sha256": "c61dd5d59d3884e482a581419a13dfd75200c637dfd7a519df4dafa41d542747",
+      "local_bytecode_path": "local\\audits\\fullrun-parity-20261007\\stock-key-flow-r1\\map.MapRoomNode.txt",
+      "status": "EXPORTED_NOT_YET_REVIEWED_OR_RUNTIME_VERIFIED"
+    },
+    {
+      "class": "com.megacrit.cardcrawl.dungeons.TheEnding",
+      "class_sha256": "0d1b79587089b6604d6e485a13349d5e575f159eb7b70a749575933f464b512a",
+      "bytecode_sha256": "49d91abe96193ef6fd6ea8371593395c555cdc5995f61506159c35a6481ad0ed",
+      "local_bytecode_path": "local\\audits\\fullrun-parity-20261007\\stock-key-flow-r1\\dungeons.TheEnding.txt",
+      "status": "EXPORTED_NOT_YET_REVIEWED_OR_RUNTIME_VERIFIED"
+    },
+    {
+      "class": "com.megacrit.cardcrawl.events.beyond.SpireHeart",
+      "class_sha256": "406c380de01d98c78ff3df8b7683df50ff8b97f9256e2969db148d3d0b2b394c",
+      "bytecode_sha256": "8d3a57263aadc0b5605c478dfb5d2d956ee4c7397c62f2ae9e15eabd12dc79fd",
+      "local_bytecode_path": "local\\audits\\fullrun-parity-20261007\\stock-key-flow-r1\\events.beyond.SpireHeart.txt",
+      "status": "EXPORTED_NOT_YET_REVIEWED_OR_RUNTIME_VERIFIED"
+    },
+    {
+      "class": "com.megacrit.cardcrawl.ui.buttons.ProceedButton",
+      "class_sha256": "e3be20a12a9f9466a81d44c2dcc895a5b6018709aa82d0da8a093b4ce0e8b8fd",
+      "bytecode_sha256": "fffc3e3e08dd4fa53a9d65181433e24cdbd527beda9ccaadce28f7e8657e1c3f",
+      "local_bytecode_path": "local\\audits\\fullrun-parity-20261007\\stock-key-flow-r1\\ui.buttons.ProceedButton.txt",
+      "status": "EXPORTED_NOT_YET_REVIEWED_OR_RUNTIME_VERIFIED"
+    },
+    {
+      "class": "com.megacrit.cardcrawl.rooms.CampfireUI",
+      "class_sha256": "271dd19302e1e485332c7c28ea4eb5197c12e44f8317405075651aa4dba7306e",
+      "bytecode_sha256": "9f8d90e4aae4740d373c536893ea69f6f391e303ca3115d335d74966f5a7b9f9",
+      "local_bytecode_path": "local\\audits\\fullrun-parity-20261007\\stock-key-flow-r1\\rooms.CampfireUI.txt",
+      "status": "EXPORTED_NOT_YET_REVIEWED_OR_RUNTIME_VERIFIED"
+    },
+    {
+      "class": "com.megacrit.cardcrawl.rewards.chests.AbstractChest",
+      "class_sha256": "1b243cc4d396792be200cef41578247903dd7a417a32aaed6cdac99afd6b23d8",
+      "bytecode_sha256": "58e479527dbf18e94843b43e351d3d857d81cf2e32ad12fdd619e02149073c26",
+      "local_bytecode_path": "local\\audits\\fullrun-parity-20261007\\stock-key-flow-r1\\rewards.chests.AbstractChest.txt",
+      "status": "EXPORTED_NOT_YET_REVIEWED_OR_RUNTIME_VERIFIED"
+    },
+    {
+      "class": "com.megacrit.cardcrawl.rewards.chests.SmallChest",
+      "class_sha256": "2bf1b0b0146932d17c8541413b596c6f5fde636bdd6775f516b9f46ba41f99f1",
+      "bytecode_sha256": "0ab065db0c78bb60dc0f886125457ac64141b73cb958fb2c4ce1e483087f2df8",
+      "local_bytecode_path": "local\\audits\\fullrun-parity-20261007\\stock-key-flow-r1\\rewards.chests.SmallChest.txt",
+      "status": "EXPORTED_NOT_YET_REVIEWED_OR_RUNTIME_VERIFIED"
+    },
+    {
+      "class": "com.megacrit.cardcrawl.rewards.chests.MediumChest",
+      "class_sha256": "3d76c8b16aec872f0e9da956c235860db32abfa5a6bd9b7e760aa3a82a5bef2f",
+      "bytecode_sha256": "ee649c5b71d48ac6eebbed883546a00da317bc20585613bd10249d3a3b68e5f5",
+      "local_bytecode_path": "local\\audits\\fullrun-parity-20261007\\stock-key-flow-r1\\rewards.chests.MediumChest.txt",
+      "status": "EXPORTED_NOT_YET_REVIEWED_OR_RUNTIME_VERIFIED"
+    },
+    {
+      "class": "com.megacrit.cardcrawl.rewards.chests.LargeChest",
+      "class_sha256": "f9cc567cc73d47309ca8bad75a75069f2ea1b79b1c191fb6c4bd2cbf6471183a",
+      "bytecode_sha256": "7595037801627d4289ef5cde9162b7dd4828ad6222552669352098d672777f82",
+      "local_bytecode_path": "local\\audits\\fullrun-parity-20261007\\stock-key-flow-r1\\rewards.chests.LargeChest.txt",
+      "status": "EXPORTED_NOT_YET_REVIEWED_OR_RUNTIME_VERIFIED"
+    }
+  ],
+  "obligations": [
+    "Ruby recall availability, loss of rest/smith opportunity and no repeated key",
+    "Sapphire choice paired chest relic forfeiture and reward ordering",
+    "Emerald burning elite buffs, death/reward and duplicate exclusion",
+    "Three-key vs missing-key Act3 victory fork",
+    "A20 double-boss keys/state/RNG carryover",
+    "Act4 entry floor/context, fixed map, rest/shop, Shield-Spear and Heart"
+  ],
+  "runtime_verified": false,
+  "native_semantics_modified": false
+}

@@ -1,0 +1,366 @@
+{
+  "schema": "sls-fullrun-scenes-v1",
+  "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "scenes": [
+    {
+      "id": "act3-transient-full-fade",
+      "encounter": "TRANSIENT",
+      "ascension": 20,
+      "act": 3,
+      "floor": 40,
+      "room": "MONSTER",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Anger",
+          "Anger",
+          "Anger"
+        ],
+        "draw": [
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger"
+        ],
+        "monster_hp": {}
+      },
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "stock_classes": [
+        "dungeons.TheBeyond",
+        "monsters.beyond.Transient",
+        "powers.ShiftingPower",
+        "powers.FadingPower",
+        "actions.common.SuicideAction",
+        "cards.red.Anger"
+      ],
+      "stock_methods": {
+        "monsters.beyond.Transient": [
+          "takeTurn",
+          "damage"
+        ],
+        "powers.FadingPower": [
+          "duringTurn"
+        ],
+        "powers.ShiftingPower": [
+          "onAttacked"
+        ]
+      },
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheBeyond": {
+          "class_sha256": "e8e7819f75bc2ee347c9dbfa5316b42160c2c50ef4f3bae3b4115e2c4a9a6502",
+          "bytecode_sha256": "c2584927eb19266caf64d97926c9144a0d9a988d30b66099eb5a0e126234c35b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.Transient": {
+          "class_sha256": "134e378db51135045754323e00d4b5840aa1a84d38569106d8b2f75e9f3d78c5",
+          "bytecode_sha256": "362382892bdd0e96a1c8811874d8f3ef16a6cdfe35472aaf3615ec22e97c8ada"
+        },
+        "com.megacrit.cardcrawl.powers.ShiftingPower": {
+          "class_sha256": "7347342315f7a7f49ecfc3ab694e9afc7805a2965f76547870fa1d58c950493b",
+          "bytecode_sha256": "8e41d7d8282b315867c1399b3dd38443b81d1d92242431ad701afabcc046d2d7"
+        },
+        "com.megacrit.cardcrawl.powers.FadingPower": {
+          "class_sha256": "d7c84fe3ca1976b91e5ada20c0138f9c3554890e8c85c06089e97601b98fc7ee",
+          "bytecode_sha256": "6e54ee697f81544f2a3403bf927eb130d721dbf763d317b11d60a24c573dfec8"
+        },
+        "com.megacrit.cardcrawl.actions.common.SuicideAction": {
+          "class_sha256": "62aafcf6ef5d631bf01afee2b708841423d1e9448b46bc3eb81216ac37a31a42",
+          "bytecode_sha256": "bd921f98d103c02843af6027b66e64934e12df368f38fcb9f1ac9a66471b2e69"
+        },
+        "com.megacrit.cardcrawl.cards.red.Anger": {
+          "class_sha256": "cf446c5b763c790ec924fbbd010a6be8f1175f4e2d818805b5b599d78a04cb27",
+          "bytecode_sha256": "0ce0b704dea97674876fe6b2df815fadc463607d7442e29881f43ebbcde17dae"
+        }
+      },
+      "seeds": [
+        131200171,
+        131200172,
+        131200173
+      ],
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "obligation": "Six A20 attack turns, damage-derived Strength and restoration, Fading death/reward boundary and RNG.",
+      "qualification_scope": "CONTROLLED_ENDING_CAPTURE_PENDING_EXPLICIT_TERMINAL_COMPARISON"
+    },
+    {
+      "id": "act3-reptomancer-leader-death",
+      "encounter": "REPTOMANCER",
+      "ascension": 20,
+      "act": 3,
+      "floor": 40,
+      "room": "ELITE",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Anger",
+          "Anger",
+          "Anger"
+        ],
+        "draw": [
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger"
+        ],
+        "monster_hp": {
+          "REPTOMANCER": 1
+        }
+      },
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target": {
+            "monster_id": "REPTOMANCER",
+            "alive_ordinal": 0
+          }
+        }
+      ],
+      "stock_classes": [
+        "dungeons.TheBeyond",
+        "monsters.beyond.Reptomancer",
+        "monsters.beyond.SnakeDagger",
+        "powers.MinionPower",
+        "actions.common.SuicideAction",
+        "cards.red.Anger"
+      ],
+      "stock_methods": {
+        "monsters.beyond.Reptomancer": [
+          "die"
+        ],
+        "actions.common.SuicideAction": [
+          "update"
+        ]
+      },
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheBeyond": {
+          "class_sha256": "e8e7819f75bc2ee347c9dbfa5316b42160c2c50ef4f3bae3b4115e2c4a9a6502",
+          "bytecode_sha256": "c2584927eb19266caf64d97926c9144a0d9a988d30b66099eb5a0e126234c35b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.Reptomancer": {
+          "class_sha256": "972f9bb9c71256597beb725fa4feaad812e1d5bfe97df0f44141f66788715d52",
+          "bytecode_sha256": "62dcacf98ca8bea17bc4d1a699fa0e8f35a15ecf2d58c70824115ddecc58ee7b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.SnakeDagger": {
+          "class_sha256": "d7a00e8ffefea878dfc2793f6fa3d2ffa51f8ba2590d56c3e29ae86cc8aee562",
+          "bytecode_sha256": "a27d09693237e1ce26c9ae1c521be3dbdb9017b842fc6efb8684316b8aeec7a2"
+        },
+        "com.megacrit.cardcrawl.powers.MinionPower": {
+          "class_sha256": "bc9e917194f62f06032a7ca0d947ac9115566e0b7b0fc824247d1031c429d743",
+          "bytecode_sha256": "cb2d4c0a984fdc397516e99f4c87377f9075b155552139dd690bb3b652e05138"
+        },
+        "com.megacrit.cardcrawl.actions.common.SuicideAction": {
+          "class_sha256": "62aafcf6ef5d631bf01afee2b708841423d1e9448b46bc3eb81216ac37a31a42",
+          "bytecode_sha256": "bd921f98d103c02843af6027b66e64934e12df368f38fcb9f1ac9a66471b2e69"
+        },
+        "com.megacrit.cardcrawl.cards.red.Anger": {
+          "class_sha256": "cf446c5b763c790ec924fbbd010a6be8f1175f4e2d818805b5b599d78a04cb27",
+          "bytecode_sha256": "0ce0b704dea97674876fe6b2df815fadc463607d7442e29881f43ebbcde17dae"
+        }
+      },
+      "seeds": [
+        131200174,
+        131200175,
+        131200176
+      ],
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "obligation": "Leader lethal damage queues living Dagger suicides; terminal direct objects, resources and reward RNG.",
+      "qualification_scope": "CONTROLLED_ENDING_CAPTURE_PENDING_EXPLICIT_TERMINAL_COMPARISON"
+    },
+    {
+      "id": "act3-darkling-all-down",
+      "encounter": "THREE_DARKLINGS",
+      "ascension": 20,
+      "act": 3,
+      "floor": 40,
+      "room": "MONSTER",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Anger",
+          "Anger",
+          "Anger"
+        ],
+        "draw": [
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger"
+        ],
+        "monster_hp": {
+          "DARKLING": 1
+        }
+      },
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        },
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 1
+        },
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 2
+        }
+      ],
+      "stock_classes": [
+        "dungeons.TheBeyond",
+        "monsters.beyond.Darkling",
+        "powers.RegrowPower",
+        "cards.red.Anger"
+      ],
+      "stock_methods": {
+        "monsters.beyond.Darkling": [
+          "damage",
+          "die",
+          "takeTurn"
+        ]
+      },
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheBeyond": {
+          "class_sha256": "e8e7819f75bc2ee347c9dbfa5316b42160c2c50ef4f3bae3b4115e2c4a9a6502",
+          "bytecode_sha256": "c2584927eb19266caf64d97926c9144a0d9a988d30b66099eb5a0e126234c35b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.Darkling": {
+          "class_sha256": "dd71f024e39417e7733083d0bad5f10fff47694918ac86beae46e2c8dcec7a46",
+          "bytecode_sha256": "b7fb498c5893c1bb24eedc53dfa3525998c4b0e3430768b13f1a3e257c9dc386"
+        },
+        "com.megacrit.cardcrawl.powers.RegrowPower": {
+          "class_sha256": "ea6306e256afed5eff71b40a218e5030bd417845dffacabb26dbcdbc220a64f2",
+          "bytecode_sha256": "f77770ed2574fa175ec9331946f5d497822ae2e425f077561b1cbfe671afe89c"
+        },
+        "com.megacrit.cardcrawl.cards.red.Anger": {
+          "class_sha256": "cf446c5b763c790ec924fbbd010a6be8f1175f4e2d818805b5b599d78a04cb27",
+          "bytecode_sha256": "0ce0b704dea97674876fe6b2df815fadc463607d7442e29881f43ebbcde17dae"
+        }
+      },
+      "seeds": [
+        131200177,
+        131200178,
+        131200179
+      ],
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "obligation": "All three half-dead together terminate encounter, no revival; terminal resources/reward RNG.",
+      "qualification_scope": "CONTROLLED_ENDING_CAPTURE_PENDING_EXPLICIT_TERMINAL_COMPARISON"
+    }
+  ],
+  "qualification": false,
+  "final_holdout_used": false
+}

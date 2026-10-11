@@ -6,6 +6,7 @@ import argparse
 import json
 import os
 import sys
+import tomllib
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -25,6 +26,11 @@ def _next_update(
     contract = payload["contract"]
     model = Policy(ModelConfig.from_dict(contract["model"]))
     ppo = PPOConfig(**contract["ppo"])
+    from sls.rl.start_curriculum import from_config
+    curriculum = None
+    if "start_curriculum" in contract:
+        config = tomllib.loads((checkpoint.parent / "training-config.toml").read_text(encoding="utf-8"))
+        curriculum = from_config(config, ROOT)
     with ShardedWorkerPool(
         contract["profile"], int(contract["workers"]),
         shard_count=int(contract["worker_shards"]),
@@ -35,6 +41,7 @@ def _next_update(
             git_commit=str(contract["git_commit"]),
             training_config_digest=str(contract["training_config_sha256"]),
             training_seed_limit=contract["training_seed_limit"],
+            start_curriculum=curriculum,
         )
         load_checkpoint(checkpoint, trainer)
         metrics = trainer.train_update()

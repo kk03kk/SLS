@@ -1,0 +1,537 @@
+{
+  "schema": "sls-fullrun-scenes-v1",
+  "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "scenes": [
+    {
+      "id": "act3-nemesis-intangible-card-potion",
+      "encounter": "NEMESIS",
+      "ascension": 20,
+      "act": 3,
+      "floor": 40,
+      "room": "ELITE",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Strike_R"
+        ],
+        "draw": [
+          "Strike_R",
+          "Strike_R",
+          "Strike_R",
+          "Strike_R",
+          "Strike_R",
+          "Strike_R",
+          "Strike_R",
+          "Strike_R",
+          "Strike_R",
+          "Strike_R",
+          "Strike_R",
+          "Strike_R",
+          "Strike_R",
+          "Strike_R",
+          "Strike_R",
+          "Strike_R",
+          "Strike_R",
+          "Strike_R",
+          "Strike_R",
+          "Strike_R",
+          "Strike_R",
+          "Strike_R",
+          "Strike_R",
+          "Strike_R",
+          "Strike_R"
+        ],
+        "potion": "Fire Potion"
+      },
+      "actions": [
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        },
+        {
+          "kind": "potion",
+          "potion_index": 0,
+          "target_index": 0
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        }
+      ],
+      "seeds": [
+        131200087,
+        131200088,
+        131200089
+      ],
+      "stock_classes": [
+        "dungeons.TheBeyond",
+        "monsters.beyond.Nemesis",
+        "powers.IntangiblePower"
+      ],
+      "stock_methods": {
+        "dungeons.TheBeyond": [
+          "TheBeyond"
+        ],
+        "monsters.beyond.Nemesis": [
+          "damage",
+          "takeTurn"
+        ],
+        "powers.IntangiblePower": [
+          "atEndOfTurn"
+        ]
+      },
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheBeyond": {
+          "class_sha256": "e8e7819f75bc2ee347c9dbfa5316b42160c2c50ef4f3bae3b4115e2c4a9a6502",
+          "bytecode_sha256": "c2584927eb19266caf64d97926c9144a0d9a988d30b66099eb5a0e126234c35b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.Nemesis": {
+          "class_sha256": "e35247b30376aeba76d7b0e8ea1bfa5217ab0336333ce000d5e5a64cefa41c42",
+          "bytecode_sha256": "fce1f7dcc1ff1b0afd44661668da212f76dd5cbaa497022e3589a7bd68bbf45c"
+        },
+        "com.megacrit.cardcrawl.powers.IntangiblePower": {
+          "class_sha256": "930d8f1d144651094177bad4a29c4d206e9808de12dca556aaec2cce09a3c796",
+          "bytecode_sha256": "b939ea4ff885e299dbb774e2c8f82d9758f0a9c48170d0e1291fac8cd8e3d0e5"
+        }
+      },
+      "obligation": "Nemesis clamps positive card and potion damage to 1 while Intangible; next non-intangible turn restores damage",
+      "qualification_scope": "CONTROLLED_ACTUAL_DUNGEON_NOT_NATURAL_FLOW",
+      "status": "READY_FOR_CONTROLLED_EXECUTION"
+    },
+    {
+      "id": "act3-time-eater-twelfth-card",
+      "encounter": "TIME_EATER",
+      "ascension": 20,
+      "act": 3,
+      "floor": 40,
+      "room": "BOSS",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Battle Trance",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger"
+        ],
+        "draw": [
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger"
+        ]
+      },
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 2,
+          "target_index": 0
+        },
+        {
+          "kind": "play",
+          "card_index": 2,
+          "target_index": 0
+        },
+        {
+          "kind": "play",
+          "card_index": 2,
+          "target_index": 0
+        },
+        {
+          "kind": "play",
+          "card_index": 2,
+          "target_index": 0
+        },
+        {
+          "kind": "play",
+          "card_index": 2,
+          "target_index": 0
+        },
+        {
+          "kind": "play",
+          "card_index": 2,
+          "target_index": 0
+        },
+        {
+          "kind": "play",
+          "card_index": 2,
+          "target_index": 0
+        },
+        {
+          "kind": "play",
+          "card_index": 2,
+          "target_index": 0
+        },
+        {
+          "kind": "play",
+          "card_index": 2,
+          "target_index": 0
+        },
+        {
+          "kind": "play",
+          "card_index": 1
+        },
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        },
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        }
+      ],
+      "seeds": [
+        131200090,
+        131200091,
+        131200092
+      ],
+      "stock_classes": [
+        "dungeons.TheBeyond",
+        "monsters.beyond.TimeEater",
+        "powers.TimeWarpPower",
+        "cards.red.BattleTrance",
+        "cards.red.Anger",
+        "powers.NoDrawPower"
+      ],
+      "stock_methods": {
+        "dungeons.TheBeyond": [
+          "TheBeyond"
+        ],
+        "monsters.beyond.TimeEater": [
+          "takeTurn"
+        ],
+        "powers.TimeWarpPower": [
+          "onAfterUseCard"
+        ],
+        "cards.red.BattleTrance": [
+          "use"
+        ],
+        "cards.red.Anger": [
+          "use"
+        ],
+        "powers.NoDrawPower": [
+          "atEndOfTurn"
+        ]
+      },
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheBeyond": {
+          "class_sha256": "e8e7819f75bc2ee347c9dbfa5316b42160c2c50ef4f3bae3b4115e2c4a9a6502",
+          "bytecode_sha256": "c2584927eb19266caf64d97926c9144a0d9a988d30b66099eb5a0e126234c35b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.TimeEater": {
+          "class_sha256": "9cb8975671f6aa31ce9ad1a24b6116276d716275a9ca3063d4c18b61f9e576ce",
+          "bytecode_sha256": "5682a97260a05d8c90e57b238df346c38682c0d17561f25da72b2fcf7baa86d8"
+        },
+        "com.megacrit.cardcrawl.powers.TimeWarpPower": {
+          "class_sha256": "490195832b74038f3843ce6288850a4e1a295c63efd6c19a1f1d3d8ad9497c3d",
+          "bytecode_sha256": "687e1174f7111fb8cb9a8db199126c5d798e6c64cc172fa5505da6ff7a9ba748"
+        },
+        "com.megacrit.cardcrawl.cards.red.BattleTrance": {
+          "class_sha256": "83d37b5d84043e463a07c64c28a13999e9db4a6e09de3c7ece5782afd38c6bf6",
+          "bytecode_sha256": "333299f789484f8b74bd6328d27ebb35754a3c283e4550d9472e281d951bd3e3"
+        },
+        "com.megacrit.cardcrawl.cards.red.Anger": {
+          "class_sha256": "cf446c5b763c790ec924fbbd010a6be8f1175f4e2d818805b5b599d78a04cb27",
+          "bytecode_sha256": "0ce0b704dea97674876fe6b2df815fadc463607d7442e29881f43ebbcde17dae"
+        },
+        "com.megacrit.cardcrawl.powers.NoDrawPower": {
+          "class_sha256": "b6c3a262af69fdc80edc4ad2948486f9c407107b70c864aae6a34bd788a4444b",
+          "bytecode_sha256": "f0457ee3cce013c9ad044a9e06067b3a8a88b78206decf9b961f127d4222b4bf"
+        }
+      },
+      "obligation": "The twelfth played card resets Time Warp, forces turn end and queues Strength2; not half-HP conversion",
+      "qualification_scope": "CONTROLLED_ACTUAL_DUNGEON_NOT_NATURAL_FLOW",
+      "status": "READY_FOR_CONTROLLED_EXECUTION"
+    },
+    {
+      "id": "act4-shield-spear-basic-cycle",
+      "encounter": "SHIELD_AND_SPEAR",
+      "ascension": 20,
+      "act": 4,
+      "floor": 54,
+      "room": "ELITE",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R"
+        ]
+      },
+      "actions": [
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "seeds": [
+        131200093,
+        131200094,
+        131200095
+      ],
+      "stock_classes": [
+        "dungeons.TheEnding",
+        "monsters.ending.SpireShield",
+        "monsters.ending.SpireSpear",
+        "powers.SurroundedPower"
+      ],
+      "stock_methods": {
+        "dungeons.TheEnding": [
+          "TheEnding"
+        ],
+        "monsters.ending.SpireShield": [
+          "takeTurn",
+          "getMove"
+        ],
+        "monsters.ending.SpireSpear": [
+          "takeTurn",
+          "getMove"
+        ],
+        "powers.SurroundedPower": [
+          "SurroundedPower"
+        ]
+      },
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheEnding": {
+          "class_sha256": "0d1b79587089b6604d6e485a13349d5e575f159eb7b70a749575933f464b512a",
+          "bytecode_sha256": "49d91abe96193ef6fd6ea8371593395c555cdc5995f61506159c35a6481ad0ed"
+        },
+        "com.megacrit.cardcrawl.monsters.ending.SpireShield": {
+          "class_sha256": "f4055a62edacb9cd3cab8baead34c32aeb3f2df6cb1a772321d900ea74569a5e",
+          "bytecode_sha256": "fac402da617be078acfb8ef7f6c15e6fc6e2a632d2b79b4a03e995b24de962cc"
+        },
+        "com.megacrit.cardcrawl.monsters.ending.SpireSpear": {
+          "class_sha256": "99b2c952947fe6cd985091782a6df2a29b88e5b49b5022f06686dc56189c35fb",
+          "bytecode_sha256": "1f5a6b654b57dbf8a23b9853af1381d148d0b5805238bd2e1551811512ac70df"
+        },
+        "com.megacrit.cardcrawl.powers.SurroundedPower": {
+          "class_sha256": "76071a3971476b8d8d0fed13a22a10287dc215b57d5f1eb47834e8873c3b6428",
+          "bytecode_sha256": "e6ce9eaa954439e07d2a033d9421f3c93093e26de9ff09de21e0929550e02d30"
+        }
+      },
+      "obligation": "Actual TheEnding elite and basic multi-turn sequence; player turning and multi-target deaths remain untested",
+      "qualification_scope": "CONTROLLED_ACTUAL_DUNGEON_NOT_NATURAL_FLOW",
+      "status": "READY_FOR_CONTROLLED_EXECUTION"
+    },
+    {
+      "id": "act4-heart-basic-cycle",
+      "encounter": "THE_HEART",
+      "ascension": 20,
+      "act": 4,
+      "floor": 55,
+      "room": "BOSS",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R"
+        ]
+      },
+      "actions": [
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "seeds": [
+        131200096,
+        131200097,
+        131200098
+      ],
+      "stock_classes": [
+        "dungeons.TheEnding",
+        "monsters.ending.CorruptHeart",
+        "powers.BeatOfDeathPower",
+        "powers.InvinciblePower"
+      ],
+      "stock_methods": {
+        "dungeons.TheEnding": [
+          "TheEnding"
+        ],
+        "monsters.ending.CorruptHeart": [
+          "takeTurn",
+          "getMove"
+        ],
+        "powers.BeatOfDeathPower": [
+          "onAfterUseCard"
+        ],
+        "powers.InvinciblePower": [
+          "atStartOfTurn"
+        ]
+      },
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheEnding": {
+          "class_sha256": "0d1b79587089b6604d6e485a13349d5e575f159eb7b70a749575933f464b512a",
+          "bytecode_sha256": "49d91abe96193ef6fd6ea8371593395c555cdc5995f61506159c35a6481ad0ed"
+        },
+        "com.megacrit.cardcrawl.monsters.ending.CorruptHeart": {
+          "class_sha256": "569fac46a969acf9de6b12839484d62eed6e65fa272dff06ea21ffbb57169e78",
+          "bytecode_sha256": "32611aae75ef4b9434405e0c0a52c91068ec399abe917eda69f127f52e6ace72"
+        },
+        "com.megacrit.cardcrawl.powers.BeatOfDeathPower": {
+          "class_sha256": "da1c4e3475282bda0c3b4b7f569573b5aa643b81b2e39829e70457f12392de59",
+          "bytecode_sha256": "f5a5763c0b35152df23c28d9a6bb496e888da6c0a786f0152eb3c2cd6005ea52"
+        },
+        "com.megacrit.cardcrawl.powers.InvinciblePower": {
+          "class_sha256": "10636e1ef6979db37b79101121caac2ef6aaf698ef0f679a449fd7ee7468d9bd",
+          "bytecode_sha256": "a911ddf4c57dd515dd39f42e679ced3048b326d1e1550a1578b71f1730086515"
+        }
+      },
+      "obligation": "Actual TheEnding boss and first full attack/buff cycle; card damage order, cap and death remain untested",
+      "qualification_scope": "CONTROLLED_ACTUAL_DUNGEON_NOT_NATURAL_FLOW",
+      "status": "READY_FOR_CONTROLLED_EXECUTION"
+    }
+  ],
+  "qualification": false,
+  "final_holdout_used": false
+}

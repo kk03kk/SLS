@@ -7,6 +7,8 @@ import hashlib
 import json
 from pathlib import Path
 
+from sls.audit.reward_boundary import collect_reward_boundary, reward_boundary_ready
+from sls.audit.semantic_actions import resolve_target
 from sls.backends.original.environment import OriginalBackend
 from sls.backends.original.session import OriginalSession
 from sls.contracts import ActionKind
@@ -19,6 +21,8 @@ def main() -> int:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--encounters", nargs="+", default=["BOOK_OF_STABBING"])
     parser.add_argument("--turns", type=int, default=3)
+    parser.add_argument("--seed-start", type=int, default=131100000,
+                        help="independent seed space for supplemental bounded encounters")
     parser.add_argument("--manifest", type=Path)
     parser.add_argument("--scenes", nargs="*")
     args = parser.parse_args()
@@ -36,7 +40,7 @@ def main() -> int:
         if args.scenes and set(args.scenes) - {s["id"] for s, _ in cases}:
             raise ValueError("unknown or unprepared scenes")
     else:
-        cases = [(None, 131100000 + i) for i in range(len(args.encounters))]
+        cases = [(None, args.seed_start + i) for i in range(len(args.encounters))]
     if args.output.exists():
         raise FileExistsError("refuse to overwrite stock evidence")
     result = {"schema": "sls-act2-encounter-capture-v1", "purpose": "HARNESS_DIAGNOSTIC", "runs": []}
@@ -62,33 +66,94 @@ def main() -> int:
             before = backend.raw_payload
             if before.get("_oracle_mode") != "validation":
                 raise ValueError("controlled probes require validation mode")
+            context_start = None
+            if scene and scene.get('actual_dungeon_required'):
+                context_start = before
+                before = session.execute(f"parity_dungeon {scene['act']} {scene['floor']} {scene['room']}")
             scene_command = ("parity_scene" if manifest and manifest.get("schema") == "sls-fullrun-scenes-v1"
                              else "parity_act2")
             corpus = f" {args.manifest.stem}" if scene_command == "parity_scene" else ""
             initial = session.execute(f"{scene_command} {scene['id']}{corpus}" if scene else
                                       f"parity_encounter {encounter} 20 2 20 harness-{index}")
+            if scene and 'boss_order' in scene.get('initial', {}):
+                from sls.audit.boss_flow import require_initial_boss_witness
+                require_initial_boss_witness(initial, scene)
             row = {"seed": seed, "encounter": encounter, "ascension": 20, "act": 2,
                    "floor": 20, "before": before, "boundaries": [initial], "actions": []}
             if scene:
                 row.update(act=scene["act"], floor=scene["floor"])
+                if context_start is not None:
+                    row['context_start'] = context_start
             result["runs"].append(row)
             if scene:
                 row["scene"] = scene
             scripts = scene["actions"] if scene else [{"kind": "end_turn"}] * args.turns
             for action in scripts:
-                kind = action["kind"]
+                if (not scene and str(row["boundaries"][-1]["game_state"].get("screen_type", ""))
+                        in {"DEATH", "GAME_OVER", "VICTORY"}):
+                    break
+                if action['kind'] == 'proceed_to_second_boss':
+                    from sls.audit.boss_flow import (
+                        collect_first_boss_victory,
+                        collect_second_boss_boundary,
+                    )
+                    order = scene['initial']['boss_order']
+                    reward = collect_first_boss_victory(lambda: session.execute('state'), scene)
+                    if 'proceed' not in reward.get('available_commands', []):
+                        raise ValueError('stock boss victory does not offer proceed')
+                    require_initial_boss_witness(reward, scene)
+                    row.setdefault('boss_victory_boundaries', []).append(reward)
+                    session.execute('proceed')
+                    boundary = collect_second_boss_boundary(
+                        lambda: session.execute('state'), first_floor=scene['floor'],
+                        second=order[1], third=order[2])
+                    row['actions'].append(action)
+                    row.setdefault('resolved_actions', []).append(action)
+                    row['boundaries'].append(boundary)
+                    continue
+                if (scene and scene.get('stop_at_reward_boundary')
+                        and reward_boundary_ready(row['boundaries'][-1])):
+                    break
+                resolved = resolve_target(action, row['boundaries'][-1]['game_state']['combat_state']['monsters'])
+                kind = resolved["kind"]
                 if kind == "end_turn":
                     command = "end"
                 elif kind == "play":
-                    command = f"play {action['card_index']}"
-                    if "target_index" in action:
-                        command += f" {action['target_index']}"
+                    command = f"play {resolved['card_index']}"
+                    if "target_index" in resolved:
+                        command += f" {resolved['target_index']}"
                 elif kind == "potion":
-                    command = f"potion use {action['potion_index']} {action['target_index']}"
+                    command = f"potion use {resolved['potion_index']} {resolved['target_index']}"
                 else:
                     raise ValueError("unsupported semantic action")
                 row["actions"].append(action)
+                row.setdefault('resolved_actions', []).append(resolved)
                 row["boundaries"].append(session.execute(command))
+            if scene and scene.get('collect_reward_boundary'):
+                row['reward_boundary'] = collect_reward_boundary(lambda: session.execute('state'))
+            if scene and scene.get('collect_second_boss_victory'):
+                from sls.audit.boss_flow import collect_second_boss_victory
+                row['second_boss_victory'] = collect_second_boss_victory(
+                    lambda: session.execute('state'), scene)
+            if scene and scene.get('collect_victory_room_entry'):
+                from sls.audit.boss_flow import collect_victory_room_entry
+                if not scene.get('collect_second_boss_victory'):
+                    raise ValueError('victory room requires witnessed second boss victory')
+                session.execute('proceed')
+                row['victory_room_entry'] = collect_victory_room_entry(
+                    lambda: session.execute('state'), scene)
+            if scene and scene.get('collect_act4_entry'):
+                if not scene.get('collect_victory_room_entry'):
+                    raise ValueError('Act4 entry requires witnessed VictoryRoom')
+                row['victory_dialogue'] = []
+                for _ in range(4):
+                    before_dialogue = session.execute('state')
+                    if 'choose' not in before_dialogue.get('available_commands', []):
+                        raise ValueError('stock SpireHeart dialogue action unavailable')
+                    row['victory_dialogue'].append(before_dialogue)
+                    session.execute('choose 0')
+                from sls.audit.boss_flow import collect_act4_map_entry
+                row['act4_entry'] = collect_act4_map_entry(lambda: session.execute('state'))
             # Flush raw evidence after each completed run; append only in this
             # exclusively-created result, never replace evidence from prior runs.
             args.output.parent.mkdir(parents=True, exist_ok=True)

@@ -320,6 +320,21 @@ void Monster::die(BattleContext &bc) {
     }
     --bc.monsters.monstersAlive;
 
+    // Stock Reptomancer.die queues SuicideAction for each living Dagger at
+    // the top, so iteration order produces last-to-first resolution. Drain
+    // those deaths even though the leader also marks the encounter won.
+    if (id == MonsterId::REPTOMANCER) {
+        for (int target = 0; target < bc.monsters.monsterCount; ++target) {
+            if (target != idx && bc.monsters.arr[target].isAlive()) {
+                auto death = Actions::SuicideAction(target, true);
+                // GameActionManager.clearPostCombatActions keeps DAMAGE
+                // actions, including SuicideAction, after the leader dies.
+                death.clearOnCombatVictory = false;
+                bc.addToTop(death);
+            }
+        }
+    }
+
     // SpireShield/SpireSpear.die() turns the player toward the survivor and
     // queues removal of Surrounded.  The simulator does not model the visual
     // BackAttack power, but it must remove the player power before the next

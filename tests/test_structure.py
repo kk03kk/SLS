@@ -24,6 +24,6 @@ def test_canonical_assets_are_present() -> None:
         "tools/train_full_run.py",
         "tools/play_live.py",
         "configs/train/ironclad_a0_fullrun.toml",
-        "docs/history/nus-training-zh.md",
+        "docs/development.md",
     ):
         assert (ROOT / relative).is_file(), relative

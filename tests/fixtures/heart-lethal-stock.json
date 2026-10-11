@@ -1,0 +1,1273 @@
+{
+  "schema": "sls-heart-lethal-stock-v1",
+  "scope": "original terminal HP/outcome/potions/RNG only; not all victory cleanup or natural run",
+  "capture_sha256": "a54be40958e50dc1837b09c5573470c1e81abccea500030b14be1d9df3112891",
+  "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "oracle_sha256": "28e46d47bc21721e54a4e6eb4ba5e55799cbe4cd53a296377d99cfe2ce1dad9f",
+  "manifest_sha256": "1f08870e00d7e07cb023c8bd6ddc810cf986788577fc3deaec11d45cf86c1b27",
+  "cases": [
+    {
+      "seed": 131200126,
+      "scene_id": "act4-heart-lethal-card",
+      "floor": 55,
+      "encounter": "THE_HEART",
+      "initial": {
+        "hp": 1,
+        "max_hp": 80,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Anger"
+        ],
+        "draw": [
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger"
+        ],
+        "monster_hp": {
+          "CORRUPT_HEART": 1
+        }
+      },
+      "initial_rng": {
+        "ai": {
+          "counter": 1,
+          "seed0": 17920732519136343096,
+          "seed1": 1935747343163172021
+        },
+        "card_random": {
+          "counter": 0,
+          "seed0": 3580787935237911720,
+          "seed1": 17920732519136343096
+        },
+        "card": {
+          "counter": 0,
+          "seed0": 18054164860469766260,
+          "seed1": 3234030697654974996
+        },
+        "event": {
+          "counter": 0,
+          "seed0": 18054164860469766260,
+          "seed1": 3234030697654974996
+        },
+        "math_util": {
+          "counter": 0,
+          "seed0": 3996375531018264647,
+          "seed1": 14827519667814477633
+        },
+        "merchant": {
+          "counter": 0,
+          "seed0": 18054164860469766260,
+          "seed1": 3234030697654974996
+        },
+        "misc": {
+          "counter": 2,
+          "seed0": 12265773034524826219,
+          "seed1": 4695765288766342079
+        },
+        "monster_hp": {
+          "counter": 1,
+          "seed0": 17920732519136343096,
+          "seed1": 1935747343163172021
+        },
+        "monster": {
+          "counter": 36,
+          "seed0": 587536136777230373,
+          "seed1": 17437350056255465896
+        },
+        "neow": {
+          "counter": 5,
+          "seed0": 281051866372925814,
+          "seed1": 6453739803100432082
+        },
+        "potion": {
+          "counter": 0,
+          "seed0": 18054164860469766260,
+          "seed1": 3234030697654974996
+        },
+        "relic": {
+          "counter": 5,
+          "seed0": 281051866372925814,
+          "seed1": 6453739803100432082
+        },
+        "shuffle": {
+          "counter": 0,
+          "seed0": 3580787935237911720,
+          "seed1": 17920732519136343096
+        },
+        "treasure": {
+          "counter": 0,
+          "seed0": 18054164860469766260,
+          "seed1": 3234030697654974996
+        }
+      },
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        }
+      ],
+      "expected_terminal_resources": {
+        "outcome": "PLAYER_LOSS",
+        "hp": 0,
+        "max_hp": 80,
+        "potions": [
+          "EMPTY_POTION_SLOT",
+          "EMPTY_POTION_SLOT"
+        ],
+        "rng": {
+          "ai": {
+            "counter": 2,
+            "seed0": 1935747343163172021,
+            "seed1": 4753767087397893262
+          },
+          "card_random": {
+            "counter": 0,
+            "seed0": 3580787935237911720,
+            "seed1": 17920732519136343096
+          },
+          "card": {
+            "counter": 0,
+            "seed0": 18054164860469766260,
+            "seed1": 3234030697654974996
+          },
+          "event": {
+            "counter": 0,
+            "seed0": 18054164860469766260,
+            "seed1": 3234030697654974996
+          },
+          "math_util": {
+            "counter": 0,
+            "seed0": 3996375531018264647,
+            "seed1": 14827519667814477633
+          },
+          "merchant": {
+            "counter": 0,
+            "seed0": 18054164860469766260,
+            "seed1": 3234030697654974996
+          },
+          "misc": {
+            "counter": 2,
+            "seed0": 12265773034524826219,
+            "seed1": 4695765288766342079
+          },
+          "monster_hp": {
+            "counter": 2,
+            "seed0": 1935747343163172021,
+            "seed1": 4753767087397893262
+          },
+          "monster": {
+            "counter": 36,
+            "seed0": 587536136777230373,
+            "seed1": 17437350056255465896
+          },
+          "neow": {
+            "counter": 5,
+            "seed0": 281051866372925814,
+            "seed1": 6453739803100432082
+          },
+          "potion": {
+            "counter": 0,
+            "seed0": 18054164860469766260,
+            "seed1": 3234030697654974996
+          },
+          "relic": {
+            "counter": 5,
+            "seed0": 281051866372925814,
+            "seed1": 6453739803100432082
+          },
+          "shuffle": {
+            "counter": 0,
+            "seed0": 3580787935237911720,
+            "seed1": 17920732519136343096
+          },
+          "treasure": {
+            "counter": 0,
+            "seed0": 18054164860469766260,
+            "seed1": 3234030697654974996
+          }
+        }
+      }
+    },
+    {
+      "seed": 131200127,
+      "scene_id": "act4-heart-lethal-card",
+      "floor": 55,
+      "encounter": "THE_HEART",
+      "initial": {
+        "hp": 1,
+        "max_hp": 80,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Anger"
+        ],
+        "draw": [
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger"
+        ],
+        "monster_hp": {
+          "CORRUPT_HEART": 1
+        }
+      },
+      "initial_rng": {
+        "ai": {
+          "counter": 1,
+          "seed0": 6202946414980299748,
+          "seed1": 11631315316240995236
+        },
+        "card_random": {
+          "counter": 0,
+          "seed0": 6204556497009201823,
+          "seed1": 6202946414980299748
+        },
+        "card": {
+          "counter": 0,
+          "seed0": 11703747822104324658,
+          "seed1": 6421584842228887420
+        },
+        "event": {
+          "counter": 0,
+          "seed0": 11703747822104324658,
+          "seed1": 6421584842228887420
+        },
+        "math_util": {
+          "counter": 0,
+          "seed0": 2951388295619797267,
+          "seed1": 6194614354727525797
+        },
+        "merchant": {
+          "counter": 0,
+          "seed0": 11703747822104324658,
+          "seed1": 6421584842228887420
+        },
+        "misc": {
+          "counter": 0,
+          "seed0": 14602561267496564903,
+          "seed1": 5974914741009851022
+        },
+        "monster_hp": {
+          "counter": 1,
+          "seed0": 6202946414980299748,
+          "seed1": 11631315316240995236
+        },
+        "monster": {
+          "counter": 33,
+          "seed0": 9477404613959124185,
+          "seed1": 14337338299028670058
+        },
+        "neow": {
+          "counter": 5,
+          "seed0": 12838998248160243678,
+          "seed1": 7758731606142569654
+        },
+        "potion": {
+          "counter": 0,
+          "seed0": 11703747822104324658,
+          "seed1": 6421584842228887420
+        },
+        "relic": {
+          "counter": 5,
+          "seed0": 12838998248160243678,
+          "seed1": 7758731606142569654
+        },
+        "shuffle": {
+          "counter": 0,
+          "seed0": 6204556497009201823,
+          "seed1": 6202946414980299748
+        },
+        "treasure": {
+          "counter": 0,
+          "seed0": 11703747822104324658,
+          "seed1": 6421584842228887420
+        }
+      },
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        }
+      ],
+      "expected_terminal_resources": {
+        "outcome": "PLAYER_LOSS",
+        "hp": 0,
+        "max_hp": 80,
+        "potions": [
+          "EMPTY_POTION_SLOT",
+          "EMPTY_POTION_SLOT"
+        ],
+        "rng": {
+          "ai": {
+            "counter": 2,
+            "seed0": 11631315316240995236,
+            "seed1": 9535022597492118640
+          },
+          "card_random": {
+            "counter": 0,
+            "seed0": 6204556497009201823,
+            "seed1": 6202946414980299748
+          },
+          "card": {
+            "counter": 0,
+            "seed0": 11703747822104324658,
+            "seed1": 6421584842228887420
+          },
+          "event": {
+            "counter": 0,
+            "seed0": 11703747822104324658,
+            "seed1": 6421584842228887420
+          },
+          "math_util": {
+            "counter": 0,
+            "seed0": 2951388295619797267,
+            "seed1": 6194614354727525797
+          },
+          "merchant": {
+            "counter": 0,
+            "seed0": 11703747822104324658,
+            "seed1": 6421584842228887420
+          },
+          "misc": {
+            "counter": 0,
+            "seed0": 14602561267496564903,
+            "seed1": 5974914741009851022
+          },
+          "monster_hp": {
+            "counter": 2,
+            "seed0": 11631315316240995236,
+            "seed1": 9535022597492118640
+          },
+          "monster": {
+            "counter": 33,
+            "seed0": 9477404613959124185,
+            "seed1": 14337338299028670058
+          },
+          "neow": {
+            "counter": 5,
+            "seed0": 12838998248160243678,
+            "seed1": 7758731606142569654
+          },
+          "potion": {
+            "counter": 0,
+            "seed0": 11703747822104324658,
+            "seed1": 6421584842228887420
+          },
+          "relic": {
+            "counter": 5,
+            "seed0": 12838998248160243678,
+            "seed1": 7758731606142569654
+          },
+          "shuffle": {
+            "counter": 0,
+            "seed0": 6204556497009201823,
+            "seed1": 6202946414980299748
+          },
+          "treasure": {
+            "counter": 0,
+            "seed0": 11703747822104324658,
+            "seed1": 6421584842228887420
+          }
+        }
+      }
+    },
+    {
+      "seed": 131200128,
+      "scene_id": "act4-heart-lethal-card",
+      "floor": 55,
+      "encounter": "THE_HEART",
+      "initial": {
+        "hp": 1,
+        "max_hp": 80,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Anger"
+        ],
+        "draw": [
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger"
+        ],
+        "monster_hp": {
+          "CORRUPT_HEART": 1
+        }
+      },
+      "initial_rng": {
+        "ai": {
+          "counter": 1,
+          "seed0": 10730282376259388185,
+          "seed1": 5872313360666328394
+        },
+        "card_random": {
+          "counter": 0,
+          "seed0": 6189136800410610529,
+          "seed1": 10730282376259388185
+        },
+        "card": {
+          "counter": 0,
+          "seed0": 14602561267496564903,
+          "seed1": 5974914741009851022
+        },
+        "event": {
+          "counter": 0,
+          "seed0": 14602561267496564903,
+          "seed1": 5974914741009851022
+        },
+        "math_util": {
+          "counter": 0,
+          "seed0": 13500075866206399202,
+          "seed1": 10378075348036887389
+        },
+        "merchant": {
+          "counter": 0,
+          "seed0": 14602561267496564903,
+          "seed1": 5974914741009851022
+        },
+        "misc": {
+          "counter": 1,
+          "seed0": 7656127316411809106,
+          "seed1": 13755412860178404683
+        },
+        "monster_hp": {
+          "counter": 1,
+          "seed0": 10730282376259388185,
+          "seed1": 5872313360666328394
+        },
+        "monster": {
+          "counter": 42,
+          "seed0": 14607005232822589064,
+          "seed1": 9819450030947426723
+        },
+        "neow": {
+          "counter": 6,
+          "seed0": 799950010879994214,
+          "seed1": 10507481863877583252
+        },
+        "potion": {
+          "counter": 0,
+          "seed0": 14602561267496564903,
+          "seed1": 5974914741009851022
+        },
+        "relic": {
+          "counter": 5,
+          "seed0": 14854486383681675605,
+          "seed1": 799950010879994214
+        },
+        "shuffle": {
+          "counter": 0,
+          "seed0": 6189136800410610529,
+          "seed1": 10730282376259388185
+        },
+        "treasure": {
+          "counter": 0,
+          "seed0": 14602561267496564903,
+          "seed1": 5974914741009851022
+        }
+      },
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        }
+      ],
+      "expected_terminal_resources": {
+        "outcome": "PLAYER_LOSS",
+        "hp": 0,
+        "max_hp": 80,
+        "potions": [
+          "EMPTY_POTION_SLOT",
+          "EMPTY_POTION_SLOT"
+        ],
+        "rng": {
+          "ai": {
+            "counter": 2,
+            "seed0": 5872313360666328394,
+            "seed1": 13382172286574731450
+          },
+          "card_random": {
+            "counter": 0,
+            "seed0": 6189136800410610529,
+            "seed1": 10730282376259388185
+          },
+          "card": {
+            "counter": 0,
+            "seed0": 14602561267496564903,
+            "seed1": 5974914741009851022
+          },
+          "event": {
+            "counter": 0,
+            "seed0": 14602561267496564903,
+            "seed1": 5974914741009851022
+          },
+          "math_util": {
+            "counter": 0,
+            "seed0": 13500075866206399202,
+            "seed1": 10378075348036887389
+          },
+          "merchant": {
+            "counter": 0,
+            "seed0": 14602561267496564903,
+            "seed1": 5974914741009851022
+          },
+          "misc": {
+            "counter": 1,
+            "seed0": 7656127316411809106,
+            "seed1": 13755412860178404683
+          },
+          "monster_hp": {
+            "counter": 2,
+            "seed0": 5872313360666328394,
+            "seed1": 13382172286574731450
+          },
+          "monster": {
+            "counter": 42,
+            "seed0": 14607005232822589064,
+            "seed1": 9819450030947426723
+          },
+          "neow": {
+            "counter": 6,
+            "seed0": 799950010879994214,
+            "seed1": 10507481863877583252
+          },
+          "potion": {
+            "counter": 0,
+            "seed0": 14602561267496564903,
+            "seed1": 5974914741009851022
+          },
+          "relic": {
+            "counter": 5,
+            "seed0": 14854486383681675605,
+            "seed1": 799950010879994214
+          },
+          "shuffle": {
+            "counter": 0,
+            "seed0": 6189136800410610529,
+            "seed1": 10730282376259388185
+          },
+          "treasure": {
+            "counter": 0,
+            "seed0": 14602561267496564903,
+            "seed1": 5974914741009851022
+          }
+        }
+      }
+    },
+    {
+      "seed": 131200129,
+      "scene_id": "act4-heart-lethal-potion",
+      "floor": 55,
+      "encounter": "THE_HEART",
+      "initial": {
+        "hp": 1,
+        "max_hp": 80,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Anger"
+        ],
+        "draw": [
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger"
+        ],
+        "monster_hp": {
+          "CORRUPT_HEART": 1
+        },
+        "potion": "Fire Potion"
+      },
+      "initial_rng": {
+        "ai": {
+          "counter": 1,
+          "seed0": 17087409532799617202,
+          "seed1": 13689541467908680242
+        },
+        "card_random": {
+          "counter": 0,
+          "seed0": 15080168126211991613,
+          "seed1": 17087409532799617202
+        },
+        "card": {
+          "counter": 0,
+          "seed0": 1115045217608905006,
+          "seed1": 7656127316411809106
+        },
+        "event": {
+          "counter": 0,
+          "seed0": 1115045217608905006,
+          "seed1": 7656127316411809106
+        },
+        "math_util": {
+          "counter": 0,
+          "seed0": 11963826633138208376,
+          "seed1": 12549744599231544654
+        },
+        "merchant": {
+          "counter": 0,
+          "seed0": 1115045217608905006,
+          "seed1": 7656127316411809106
+        },
+        "misc": {
+          "counter": 0,
+          "seed0": 863646731257101124,
+          "seed1": 14342971274482157816
+        },
+        "monster_hp": {
+          "counter": 1,
+          "seed0": 17087409532799617202,
+          "seed1": 13689541467908680242
+        },
+        "monster": {
+          "counter": 42,
+          "seed0": 617831521229485348,
+          "seed1": 7653845892822978392
+        },
+        "neow": {
+          "counter": 6,
+          "seed0": 5526069436756734564,
+          "seed1": 8757669586192735917
+        },
+        "potion": {
+          "counter": 0,
+          "seed0": 1115045217608905006,
+          "seed1": 7656127316411809106
+        },
+        "relic": {
+          "counter": 5,
+          "seed0": 300699259643382046,
+          "seed1": 5526069436756734564
+        },
+        "shuffle": {
+          "counter": 0,
+          "seed0": 15080168126211991613,
+          "seed1": 17087409532799617202
+        },
+        "treasure": {
+          "counter": 0,
+          "seed0": 1115045217608905006,
+          "seed1": 7656127316411809106
+        }
+      },
+      "actions": [
+        {
+          "kind": "potion",
+          "potion_index": 0,
+          "target_index": 0
+        }
+      ],
+      "expected_terminal_resources": {
+        "outcome": "PLAYER_VICTORY",
+        "hp": 7,
+        "max_hp": 80,
+        "potions": [
+          "EMPTY_POTION_SLOT",
+          "EMPTY_POTION_SLOT"
+        ],
+        "rng": {
+          "ai": {
+            "counter": 2,
+            "seed0": 13689541467908680242,
+            "seed1": 7433990269315098305
+          },
+          "card_random": {
+            "counter": 0,
+            "seed0": 15080168126211991613,
+            "seed1": 17087409532799617202
+          },
+          "card": {
+            "counter": 0,
+            "seed0": 1115045217608905006,
+            "seed1": 7656127316411809106
+          },
+          "event": {
+            "counter": 0,
+            "seed0": 1115045217608905006,
+            "seed1": 7656127316411809106
+          },
+          "math_util": {
+            "counter": 0,
+            "seed0": 11963826633138208376,
+            "seed1": 12549744599231544654
+          },
+          "merchant": {
+            "counter": 0,
+            "seed0": 1115045217608905006,
+            "seed1": 7656127316411809106
+          },
+          "misc": {
+            "counter": 1,
+            "seed0": 14342971274482157816,
+            "seed1": 15914101806087885011
+          },
+          "monster_hp": {
+            "counter": 2,
+            "seed0": 13689541467908680242,
+            "seed1": 7433990269315098305
+          },
+          "monster": {
+            "counter": 42,
+            "seed0": 617831521229485348,
+            "seed1": 7653845892822978392
+          },
+          "neow": {
+            "counter": 6,
+            "seed0": 5526069436756734564,
+            "seed1": 8757669586192735917
+          },
+          "potion": {
+            "counter": 0,
+            "seed0": 1115045217608905006,
+            "seed1": 7656127316411809106
+          },
+          "relic": {
+            "counter": 5,
+            "seed0": 300699259643382046,
+            "seed1": 5526069436756734564
+          },
+          "shuffle": {
+            "counter": 0,
+            "seed0": 15080168126211991613,
+            "seed1": 17087409532799617202
+          },
+          "treasure": {
+            "counter": 0,
+            "seed0": 1115045217608905006,
+            "seed1": 7656127316411809106
+          }
+        }
+      }
+    },
+    {
+      "seed": 131200130,
+      "scene_id": "act4-heart-lethal-potion",
+      "floor": 55,
+      "encounter": "THE_HEART",
+      "initial": {
+        "hp": 1,
+        "max_hp": 80,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Anger"
+        ],
+        "draw": [
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger"
+        ],
+        "monster_hp": {
+          "CORRUPT_HEART": 1
+        },
+        "potion": "Fire Potion"
+      },
+      "initial_rng": {
+        "ai": {
+          "counter": 1,
+          "seed0": 13279945181343629630,
+          "seed1": 13407957044978249860
+        },
+        "card_random": {
+          "counter": 0,
+          "seed0": 11773494929359689862,
+          "seed1": 13279945181343629630
+        },
+        "card": {
+          "counter": 0,
+          "seed0": 863646731257101124,
+          "seed1": 14342971274482157816
+        },
+        "event": {
+          "counter": 0,
+          "seed0": 863646731257101124,
+          "seed1": 14342971274482157816
+        },
+        "math_util": {
+          "counter": 0,
+          "seed0": 16757697250772044090,
+          "seed1": 7684203520741120149
+        },
+        "merchant": {
+          "counter": 0,
+          "seed0": 863646731257101124,
+          "seed1": 14342971274482157816
+        },
+        "misc": {
+          "counter": 2,
+          "seed0": 1375910482513830403,
+          "seed1": 13302173664389014775
+        },
+        "monster_hp": {
+          "counter": 1,
+          "seed0": 13279945181343629630,
+          "seed1": 13407957044978249860
+        },
+        "monster": {
+          "counter": 36,
+          "seed0": 6369193570640055626,
+          "seed1": 11361316646271871024
+        },
+        "neow": {
+          "counter": 6,
+          "seed0": 4209939153899796311,
+          "seed1": 5573194716839408601
+        },
+        "potion": {
+          "counter": 0,
+          "seed0": 863646731257101124,
+          "seed1": 14342971274482157816
+        },
+        "relic": {
+          "counter": 5,
+          "seed0": 97503508999071853,
+          "seed1": 4209939153899796311
+        },
+        "shuffle": {
+          "counter": 0,
+          "seed0": 11773494929359689862,
+          "seed1": 13279945181343629630
+        },
+        "treasure": {
+          "counter": 0,
+          "seed0": 863646731257101124,
+          "seed1": 14342971274482157816
+        }
+      },
+      "actions": [
+        {
+          "kind": "potion",
+          "potion_index": 0,
+          "target_index": 0
+        }
+      ],
+      "expected_terminal_resources": {
+        "outcome": "PLAYER_VICTORY",
+        "hp": 7,
+        "max_hp": 80,
+        "potions": [
+          "EMPTY_POTION_SLOT",
+          "EMPTY_POTION_SLOT"
+        ],
+        "rng": {
+          "ai": {
+            "counter": 2,
+            "seed0": 13407957044978249860,
+            "seed1": 16607035547785242207
+          },
+          "card_random": {
+            "counter": 0,
+            "seed0": 11773494929359689862,
+            "seed1": 13279945181343629630
+          },
+          "card": {
+            "counter": 0,
+            "seed0": 863646731257101124,
+            "seed1": 14342971274482157816
+          },
+          "event": {
+            "counter": 0,
+            "seed0": 863646731257101124,
+            "seed1": 14342971274482157816
+          },
+          "math_util": {
+            "counter": 0,
+            "seed0": 16757697250772044090,
+            "seed1": 7684203520741120149
+          },
+          "merchant": {
+            "counter": 0,
+            "seed0": 863646731257101124,
+            "seed1": 14342971274482157816
+          },
+          "misc": {
+            "counter": 3,
+            "seed0": 13302173664389014775,
+            "seed1": 1018588465397676121
+          },
+          "monster_hp": {
+            "counter": 2,
+            "seed0": 13407957044978249860,
+            "seed1": 16607035547785242207
+          },
+          "monster": {
+            "counter": 36,
+            "seed0": 6369193570640055626,
+            "seed1": 11361316646271871024
+          },
+          "neow": {
+            "counter": 6,
+            "seed0": 4209939153899796311,
+            "seed1": 5573194716839408601
+          },
+          "potion": {
+            "counter": 0,
+            "seed0": 863646731257101124,
+            "seed1": 14342971274482157816
+          },
+          "relic": {
+            "counter": 5,
+            "seed0": 97503508999071853,
+            "seed1": 4209939153899796311
+          },
+          "shuffle": {
+            "counter": 0,
+            "seed0": 11773494929359689862,
+            "seed1": 13279945181343629630
+          },
+          "treasure": {
+            "counter": 0,
+            "seed0": 863646731257101124,
+            "seed1": 14342971274482157816
+          }
+        }
+      }
+    },
+    {
+      "seed": 131200131,
+      "scene_id": "act4-heart-lethal-potion",
+      "floor": 55,
+      "encounter": "THE_HEART",
+      "initial": {
+        "hp": 1,
+        "max_hp": 80,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Anger"
+        ],
+        "draw": [
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger"
+        ],
+        "monster_hp": {
+          "CORRUPT_HEART": 1
+        },
+        "potion": "Fire Potion"
+      },
+      "initial_rng": {
+        "ai": {
+          "counter": 1,
+          "seed0": 5087763958547825761,
+          "seed1": 6042065713524760721
+        },
+        "card_random": {
+          "counter": 0,
+          "seed0": 14998384834554055783,
+          "seed1": 5087763958547825761
+        },
+        "card": {
+          "counter": 0,
+          "seed0": 2030783904543256342,
+          "seed1": 10878531189933152472
+        },
+        "event": {
+          "counter": 0,
+          "seed0": 2030783904543256342,
+          "seed1": 10878531189933152472
+        },
+        "math_util": {
+          "counter": 0,
+          "seed0": 14767410426576484272,
+          "seed1": 7390853568873181070
+        },
+        "merchant": {
+          "counter": 0,
+          "seed0": 2030783904543256342,
+          "seed1": 10878531189933152472
+        },
+        "misc": {
+          "counter": 2,
+          "seed0": 4007364477735999047,
+          "seed1": 2352620898319212270
+        },
+        "monster_hp": {
+          "counter": 1,
+          "seed0": 5087763958547825761,
+          "seed1": 6042065713524760721
+        },
+        "monster": {
+          "counter": 34,
+          "seed0": 6902800083869955658,
+          "seed1": 9329683551297278524
+        },
+        "neow": {
+          "counter": 5,
+          "seed0": 9987692757164308052,
+          "seed1": 17058422746327806775
+        },
+        "potion": {
+          "counter": 0,
+          "seed0": 2030783904543256342,
+          "seed1": 10878531189933152472
+        },
+        "relic": {
+          "counter": 5,
+          "seed0": 9987692757164308052,
+          "seed1": 17058422746327806775
+        },
+        "shuffle": {
+          "counter": 0,
+          "seed0": 14998384834554055783,
+          "seed1": 5087763958547825761
+        },
+        "treasure": {
+          "counter": 0,
+          "seed0": 2030783904543256342,
+          "seed1": 10878531189933152472
+        }
+      },
+      "actions": [
+        {
+          "kind": "potion",
+          "potion_index": 0,
+          "target_index": 0
+        }
+      ],
+      "expected_terminal_resources": {
+        "outcome": "PLAYER_VICTORY",
+        "hp": 7,
+        "max_hp": 80,
+        "potions": [
+          "EMPTY_POTION_SLOT",
+          "EMPTY_POTION_SLOT"
+        ],
+        "rng": {
+          "ai": {
+            "counter": 2,
+            "seed0": 6042065713524760721,
+            "seed1": 4314434329060282838
+          },
+          "card_random": {
+            "counter": 0,
+            "seed0": 14998384834554055783,
+            "seed1": 5087763958547825761
+          },
+          "card": {
+            "counter": 0,
+            "seed0": 2030783904543256342,
+            "seed1": 10878531189933152472
+          },
+          "event": {
+            "counter": 0,
+            "seed0": 2030783904543256342,
+            "seed1": 10878531189933152472
+          },
+          "math_util": {
+            "counter": 0,
+            "seed0": 14767410426576484272,
+            "seed1": 7390853568873181070
+          },
+          "merchant": {
+            "counter": 0,
+            "seed0": 2030783904543256342,
+            "seed1": 10878531189933152472
+          },
+          "misc": {
+            "counter": 3,
+            "seed0": 2352620898319212270,
+            "seed1": 8530208141221809300
+          },
+          "monster_hp": {
+            "counter": 2,
+            "seed0": 6042065713524760721,
+            "seed1": 4314434329060282838
+          },
+          "monster": {
+            "counter": 34,
+            "seed0": 6902800083869955658,
+            "seed1": 9329683551297278524
+          },
+          "neow": {
+            "counter": 5,
+            "seed0": 9987692757164308052,
+            "seed1": 17058422746327806775
+          },
+          "potion": {
+            "counter": 0,
+            "seed0": 2030783904543256342,
+            "seed1": 10878531189933152472
+          },
+          "relic": {
+            "counter": 5,
+            "seed0": 9987692757164308052,
+            "seed1": 17058422746327806775
+          },
+          "shuffle": {
+            "counter": 0,
+            "seed0": 14998384834554055783,
+            "seed1": 5087763958547825761
+          },
+          "treasure": {
+            "counter": 0,
+            "seed0": 2030783904543256342,
+            "seed1": 10878531189933152472
+          }
+        }
+      }
+    }
+  ]
+}

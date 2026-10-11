@@ -20,10 +20,13 @@ from sls.contracts import ActionKind
 def _write_completion(exit_code: int, error: str | None = None) -> None:
     path = os.environ.get("SLS_RUN_COMPLETION")
     if path:
-        Path(path).write_text(
+        target = Path(path)
+        temporary = target.with_suffix(".tmp")
+        temporary.write_text(
             json.dumps({"exit_code": exit_code, "error": error}, indent=2) + "\n",
             encoding="utf-8",
         )
+        temporary.replace(target)
 
 
 def _enter_combat(backend: OriginalBackend) -> None:

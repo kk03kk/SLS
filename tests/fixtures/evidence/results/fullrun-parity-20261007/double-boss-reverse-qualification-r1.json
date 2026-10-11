@@ -1,0 +1,71 @@
+{
+  "schema": "sls-double-boss-reverse-qualification-v1",
+  "native_source_sha256": "9bbf5664d5efa1eb65fdbfde8ebdf5f16b6a0d3507f2231aad2da001d35ae606",
+  "oracle_version": "1.3.36",
+  "oracle_sha256": "cb16b5baeef1b2ec2d86b5ab6a26e39c92b2d94c96029614aa307b0b50a872e4",
+  "scope": "Controlled Donu/Deca -> Time Eater -> VictoryRoom; not natural-start or all Boss branches",
+  "seeds": [
+    131200228,
+    131200229,
+    131200230
+  ],
+  "evidence": [
+    {
+      "path": "local\\audits\\fullrun-parity-20261007\\double-boss-reverse-stock-r1.json",
+      "sha256": "a4e58984c84a8b9413097c27b504f54f674619ca5e7c8a4b4224344e54257930"
+    },
+    {
+      "path": "local\\audits\\fullrun-parity-20261007\\double-boss-reverse-stock-r1.launch.json",
+      "sha256": "733481d3efce9e3129bc11a18e52cef23239f040a21f15299630bdc524f7b58e"
+    },
+    {
+      "path": "local\\audits\\fullrun-parity-20261007\\double-boss-reverse-native-entry-r1.json",
+      "sha256": "98ab776167d6904fc740c1ee04c26c142d8a453622f3f1e64f5a4d73f59dbe53"
+    },
+    {
+      "path": "local\\audits\\fullrun-parity-20261007\\double-boss-reverse-native-flow-r1.json",
+      "sha256": "060c5b43ed1327a6906168c6af9d9b20c7bd5d568fe68cd71411f7f5c1a15c48"
+    },
+    {
+      "path": "local\\audits\\fullrun-parity-20261007\\double-boss-reverse-stock-r1.independent-recovery-r1.json",
+      "sha256": "3ca989dcd360ee630d85db39b2723030f7bbf2d74e56ddaa706abc71fbf173e9"
+    },
+    {
+      "path": "local\\audits\\fullrun-parity-20261007\\double-boss-reverse-production-smoke-r1.json",
+      "sha256": "56a7367384c77940431e14cae6998c5db3fe4a2fb1c64c7cae871a04bddab414"
+    },
+    {
+      "path": "local\\audits\\fullrun-parity-20261007\\double-boss-reverse-production-smoke-r1.independent-recovery-r1.json",
+      "sha256": "3d29fac5548bebcec075a32eacd9d8ca0b20534186d5f2d4d3cceaa9661da32e"
+    },
+    {
+      "path": "local\\audits\\fullrun-parity-20261007\\double-boss-terminal-entry-generalized-r1.json",
+      "sha256": "3fa41ba442d4ab3b72ea3bae268c7d34578afecdca4b9a9f64541d843d492735"
+    }
+  ],
+  "all_endpoint_fields_match": true,
+  "all_restores_match": true,
+  "accepted_difference": "Previously source-reviewed dead Deca Artifact animation cleanup; raw equal:false retained",
+  "checks": {
+    "focused_tests": 63,
+    "ruff": "PASS",
+    "production_smoke": "PASS",
+    "recovery_checked_each": 63,
+    "recovery_mismatches": 0,
+    "full_computational_suite": "NOT_RUN"
+  },
+  "remaining_pairs": [
+    "TIME_EATER -> AWAKENED_ONE",
+    "DONU_AND_DECA -> AWAKENED_ONE",
+    "AWAKENED_ONE -> TIME_EATER",
+    "AWAKENED_ONE -> DONU_AND_DECA"
+  ],
+  "other_open": [
+    "Keys, burning elite and complete Act4 route",
+    "Normal-start late-act trajectories",
+    "Remaining shared mechanics and reachable content"
+  ],
+  "native_semantics_modified_this_batch": false,
+  "resume_waiver": false,
+  "server_checkout_modified": false
+}

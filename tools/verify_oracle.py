@@ -17,6 +17,80 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
+
+def read_log_tail(path: Path, limit: int = 65536) -> bytes:
+    """Bound polling memory independently of total stock log size."""
+    if limit <= 0:
+        raise ValueError("tail limit must be positive")
+    with path.open("rb") as stream:
+        stream.seek(0, os.SEEK_END)
+        stream.seek(max(0, stream.tell() - limit))
+        return stream.read(limit)
+
+
+def capture_command_property(arguments: list[str]) -> str:
+    # Java Properties.load consumes backslashes before ProcessBuilder sees
+    # the command. Preserve Windows separators and CLI quote escapes.
+    return subprocess.list2cmdline(arguments).replace("\\", "\\\\").replace(":", "\\:")
+
+
+def review_completed_capture(capture_path: Path) -> Path:
+    """Reconcile only an independently complete capture hit by the exit race."""
+    launch_path = capture_path.with_suffix(".launch.json")
+    launch = json.loads(launch_path.read_text(encoding="utf-8"))
+    journal_path = Path(launch["recovery_journal"])
+    journal = json.loads(journal_path.read_text(encoding="utf-8"))
+    completion_path = journal_path.with_name("completion.json")
+    completion = json.loads(completion_path.read_text(encoding="utf-8"))
+    capture = json.loads(capture_path.read_text(encoding="utf-8"))
+    stdout_path, stderr_path = journal_path.with_name("stdout.log"), journal_path.with_name("stderr.log")
+    stdout, stderr = stdout_path.read_bytes(), stderr_path.read_bytes()
+    if (launch.get("completion") is not None
+            or not (launch.get("execution_error") or "").startswith("CommunicationMod child exited without completion;")
+            or launch.get("recovery_status") != "RECOVERED" or journal["status"] != "RECOVERED"
+            or journal.get("recovery_failures") or completion != {"exit_code": 0, "error": None}
+            or not capture.get("execution_complete") or capture.get("execution_error") or not capture.get("runs")
+            or stdout.count(b"Child process has died...") != 1 or b"Game crashed." in stderr
+            or b"Timed out while waiting for signal from external process." in stdout):
+        raise ValueError("capture does not satisfy the narrowly defined completion race review")
+    evidence_paths = [capture_path, launch_path, journal_path, completion_path, stdout_path, stderr_path]
+    for row in capture["runs"]:
+        path = Path(row["stock_capture"])
+        records = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
+        if (sha256(path) != row["sha256"] or not row.get("terminal")
+                or row.get("script_action_unavailable") is not None
+                or len(records) != row["boundaries"] or not records[-1]["terminal"]
+                or records[-1].get("requested_action") is not None):
+            raise ValueError("completion race capture has incomplete or altered raw trajectories")
+        evidence_paths.append(path)
+    result = {"schema": "sls-oracle-completion-race-review-v1", "status": "VERIFIED_COMPLETE_CAPTURE",
+              "original_launch_sha256": sha256(launch_path), "completion": completion,
+              "evidence_sha256": {str(path.resolve()): sha256(path) for path in evidence_paths},
+              "limits": "Original monitor failure retained; actual zero completion and full terminal raw records verified"}
+    target = capture_path.with_suffix(".launch.review.json")
+    if target.exists():
+        raise FileExistsError("immutable completion review exists")
+    target.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
+    return target
+
+
+def read_verified_launch(path: Path) -> dict:
+    launch = json.loads(path.read_text(encoding="utf-8"))
+    if not launch.get("execution_error"):
+        return launch
+    review_path = path.with_name(path.name.removesuffix(".launch.json") + ".launch.review.json")
+    review = json.loads(review_path.read_text(encoding="utf-8"))
+    if (review.get("schema") != "sls-oracle-completion-race-review-v1"
+            or review.get("status") != "VERIFIED_COMPLETE_CAPTURE"
+            or review.get("original_launch_sha256") != sha256(path)
+            or review.get("completion") != {"exit_code": 0, "error": None}
+            or not review.get("evidence_sha256")
+            or any(sha256(Path(name)) != digest for name, digest in review["evidence_sha256"].items())):
+        raise ValueError("completion review missing, changed or invalid")
+    return {**launch, "original_execution_error": launch["execution_error"],
+            "execution_error": None, "completion": review["completion"],
+            "completion_review_sha256": sha256(review_path)}
+
 from tools.build_oracle import ORACLE, resource_payloads, sha256, source_files
 from tools.configure_live_inspector import _command_path
 from tools.run_original_canary import (
@@ -142,7 +216,7 @@ def runtime_smoke(oracle: Path, output: Path, mode: str, game_root: Path | None,
                             _command_path(ROOT / "tools/capture_oracle_smoke.py"),
                             "--mode", mode, "--output", _command_path(output)])
         if capture_command is not None:
-            command = subprocess.list2cmdline(capture_command).replace(":", "\\:")
+            command = capture_command_property(capture_command)
         config.write_text(f"command={command}\nrunAtGameStart=true\nverbose=true\n", encoding="utf-8")
         mod_list.write_text(json.dumps({"defaultList": "<Default>", "lists": {"<Default>": [
             "BaseMod.jar", "CommunicationMod.jar", "SpirecommParity.jar"]}}), encoding="utf-8")
@@ -162,14 +236,25 @@ def runtime_smoke(oracle: Path, output: Path, mode: str, game_root: Path | None,
                 if completion.is_file():
                     marker = json.loads(completion.read_text(encoding="utf-8"))
                     break
-                if b"Game crashed." in (run / "stderr.log").read_bytes():
+                stderr_tail = read_log_tail(run / "stderr.log")
+                if b"java.io.IOException: Cannot run program" in stderr_tail:
+                    raise RuntimeError(f"CommunicationMod could not start capture command; logs: {run}")
+                if b"Game crashed." in stderr_tail:
                     raise RuntimeError(f"stock game reported a crash; logs: {run}")
-                stdout_tail = (run / "stdout.log").read_bytes()[-65536:]
+                stdout_tail = read_log_tail(run / "stdout.log")
                 if b"Timed out while waiting for signal from external process." in stdout_tail:
                     raise RuntimeError(f"CommunicationMod child handshake failed; logs: {run}")
                 if b"Child process has died..." in stdout_tail:
+                    # The child can publish completion after the first check
+                    # and exit before we finish reading the log.
+                    if completion.is_file():
+                        marker = json.loads(completion.read_text(encoding="utf-8"))
+                        break
                     raise RuntimeError(f"CommunicationMod child exited without completion; logs: {run}")
                 if process.poll() is not None:
+                    if completion.is_file():
+                        marker = json.loads(completion.read_text(encoding="utf-8"))
+                        break
                     raise RuntimeError(f"game exited before smoke: {process.returncode}; logs: {run}")
                 time.sleep(.25)
             if marker is None:
@@ -180,7 +265,7 @@ def runtime_smoke(oracle: Path, output: Path, mode: str, game_root: Path | None,
         stop_owned_and_restore(journal, process)
     result = {"oracle_sha256": sha256(oracle), "mode": mode, "completion": marker,
               "recovery_journal": str(journal.path), "recovery_status": journal.data["status"],
-              "execution_error": str(failure) if failure else None}
+              "execution_error": (str(failure) or type(failure).__name__) if failure is not None else None}
     output.with_suffix(".launch.json").write_text(json.dumps(result, indent=2), encoding="utf-8")
     if failure is not None:
         raise RuntimeError(f"Oracle execution failed with recovery evidence: {output}; {failure}") from failure

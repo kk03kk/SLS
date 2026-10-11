@@ -11,11 +11,30 @@ from tools.verify_oracle import install, require_no_running_game
 
 def test_committed_oracle_resources_are_complete_and_unique():
     payloads = resource_payloads()
-    assert len(payloads) == 9
-    assert json.loads(payloads['ModTheSpire.json'])['version'] == '1.3.1'
+    assert len(payloads) == 42
+    assert json.loads(payloads['ModTheSpire.json'])['version'] == '1.3.41'
+    assert len(json.loads(payloads['spirecomm/parity/fullrun-act3-basic.json'])['scenes']) == 14
     assert len(json.loads(payloads['spirecomm/parity/act2-scenes.json'])['scenes']) == 24
     assert len(json.loads(payloads['spirecomm/parity/fullrun-scenes.json'])['scenes']) == 12
     assert len(json.loads(payloads['spirecomm/parity/fullrun-regressions.json'])['scenes']) == 1
+    new_seeds = []
+    for name in ('fullrun-time-eater-haste-r2.json', 'fullrun-donu-deca-deaths-r1.json',
+                 'fullrun-giant-head-slow-r2.json', 'fullrun-writhing-react-r1.json'):
+        scenes = json.loads(payloads['spirecomm/parity/' + name])['scenes']
+        assert len(scenes) == 2
+        for scene in scenes:
+            assert scene['ascension'] == 20 and scene['act'] == 3
+            assert scene['actual_dungeon_required']
+            assert set(scene['source_evidence']) == {
+                'com.megacrit.cardcrawl.' + name for name in scene['stock_classes']}
+            assert len(scene['seeds']) == 3
+            new_seeds.extend(scene['seeds'])
+    assert sorted(new_seeds) == list(range(131200144, 131200168))
+    blocked = json.loads(payloads['spirecomm/parity/fullrun-writhing-blocked-r1.json'])['scenes']
+    terminal = json.loads(payloads['spirecomm/parity/fullrun-late-terminal-r2.json'])['scenes']
+    assert len(blocked) == 1 and len(terminal) == 3
+    assert sorted(seed for scene in blocked + terminal for seed in scene['seeds']) == list(
+        range(131200168, 131200180))
 
 
 def test_jar_is_deterministic_across_member_insertion_orders(tmp_path):

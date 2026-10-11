@@ -50,7 +50,7 @@ def main() -> int:
         raise RuntimeError("current native source has no matching built artifact")
     stock_sha256 = _sha256(args.stock_jar)
     decompilation = json.loads(
-        (ROOT / "docs/audits/stock-decompilation/manifest.json").read_text(
+        (ROOT / "tests/fixtures/evidence/audits/stock-decompilation/manifest.json").read_text(
             encoding="utf-8",
         ),
     )

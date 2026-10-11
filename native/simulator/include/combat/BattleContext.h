@@ -108,7 +108,7 @@ namespace sts {
 
         CardQueueItem curCardQueueItem;
 
-        std::bitset<32> miscBits; // 0 stolen gold check,
+        std::bitset<32> miscBits; // 0 stolen gold check; 1 Implant permanent obtain synchronized
 
         BattleContext() = default;
         BattleContext(const BattleContext &rhs) = default;
@@ -124,6 +124,7 @@ namespace sts {
         void exitBattle(GameContext &g) const;
         void updateRelicsOnExit(GameContext &g) const;
         void updateCardsOnExit(Deck &d) const; // for cards like ritual dagger, and eventually lesson learned results
+        void syncImplantObtain(GameContext &g);
 
 // ****************************************
 

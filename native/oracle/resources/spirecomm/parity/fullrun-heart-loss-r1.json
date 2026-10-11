@@ -1,0 +1,264 @@
+{
+  "schema": "sls-fullrun-scenes-v1",
+  "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "scenes": [
+    {
+      "id": "act4-heart-fatal-beat-hp1",
+      "encounter": "THE_HEART",
+      "ascension": 20,
+      "act": 4,
+      "floor": 55,
+      "room": "BOSS",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 1,
+        "max_hp": 80,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Anger"
+        ],
+        "draw": [
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger"
+        ]
+      },
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        }
+      ],
+      "stock_classes": [
+        "dungeons.TheEnding",
+        "monsters.ending.CorruptHeart",
+        "powers.InvinciblePower",
+        "powers.BeatOfDeathPower",
+        "cards.red.Defend_Red",
+        "cards.red.Anger",
+        "potions.FirePotion"
+      ],
+      "stock_methods": {
+        "dungeons.TheEnding": [
+          "TheEnding"
+        ],
+        "monsters.ending.CorruptHeart": [
+          "takeTurn"
+        ],
+        "powers.InvinciblePower": [
+          "onAttackedToChangeDamage",
+          "atStartOfTurn"
+        ],
+        "powers.BeatOfDeathPower": [
+          "onAfterUseCard"
+        ],
+        "cards.red.Defend_Red": [
+          "use"
+        ],
+        "cards.red.Anger": [
+          "use"
+        ],
+        "potions.FirePotion": [
+          "use"
+        ]
+      },
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheEnding": {
+          "class_sha256": "0d1b79587089b6604d6e485a13349d5e575f159eb7b70a749575933f464b512a",
+          "bytecode_sha256": "49d91abe96193ef6fd6ea8371593395c555cdc5995f61506159c35a6481ad0ed"
+        },
+        "com.megacrit.cardcrawl.monsters.ending.CorruptHeart": {
+          "class_sha256": "569fac46a969acf9de6b12839484d62eed6e65fa272dff06ea21ffbb57169e78",
+          "bytecode_sha256": "32611aae75ef4b9434405e0c0a52c91068ec399abe917eda69f127f52e6ace72"
+        },
+        "com.megacrit.cardcrawl.powers.InvinciblePower": {
+          "class_sha256": "10636e1ef6979db37b79101121caac2ef6aaf698ef0f679a449fd7ee7468d9bd",
+          "bytecode_sha256": "a911ddf4c57dd515dd39f42e679ced3048b326d1e1550a1578b71f1730086515"
+        },
+        "com.megacrit.cardcrawl.powers.BeatOfDeathPower": {
+          "class_sha256": "da1c4e3475282bda0c3b4b7f569573b5aa643b81b2e39829e70457f12392de59",
+          "bytecode_sha256": "f5a5763c0b35152df23c28d9a6bb496e888da6c0a786f0152eb3c2cd6005ea52"
+        },
+        "com.megacrit.cardcrawl.cards.red.Defend_Red": {
+          "class_sha256": "6ab4a01175dd549360e1bb426bdf107c62f6328e05c61b5947e07d1fef72a65b",
+          "bytecode_sha256": "8780093bccb5e8b608d7a0582399e1c5ecf1acf9a00a51261702213fabfc40bb"
+        },
+        "com.megacrit.cardcrawl.cards.red.Anger": {
+          "class_sha256": "cf446c5b763c790ec924fbbd010a6be8f1175f4e2d818805b5b599d78a04cb27",
+          "bytecode_sha256": "0ce0b704dea97674876fe6b2df815fadc463607d7442e29881f43ebbcde17dae"
+        },
+        "com.megacrit.cardcrawl.potions.FirePotion": {
+          "class_sha256": "0391a17323526250a23da24553b135b2f9a785feaa0ce168b9155c33f2bbd0f6",
+          "bytecode_sha256": "351ef53fe1c75fdb83c84c97b772c43d0c39740188641f7951a3257276123155"
+        }
+      },
+      "seeds": [
+        131200120,
+        131200121,
+        131200122
+      ],
+      "obligation": "Anger against living Heart, then fatal Beat of Death: raw HP, piles, powers, terminal action mask and RNG. No final victory claim.",
+      "qualification_scope": "CONTROLLED_COMBAT_LOSS_NOT_FINAL_VICTORY",
+      "status": "READY_FOR_CONTROLLED_EXECUTION"
+    },
+    {
+      "id": "act4-heart-fatal-beat-hp2",
+      "encounter": "THE_HEART",
+      "ascension": 20,
+      "act": 4,
+      "floor": 55,
+      "room": "BOSS",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 2,
+        "max_hp": 80,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Anger"
+        ],
+        "draw": [
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger"
+        ]
+      },
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        }
+      ],
+      "stock_classes": [
+        "dungeons.TheEnding",
+        "monsters.ending.CorruptHeart",
+        "powers.InvinciblePower",
+        "powers.BeatOfDeathPower",
+        "cards.red.Defend_Red",
+        "cards.red.Anger",
+        "potions.FirePotion"
+      ],
+      "stock_methods": {
+        "dungeons.TheEnding": [
+          "TheEnding"
+        ],
+        "monsters.ending.CorruptHeart": [
+          "takeTurn"
+        ],
+        "powers.InvinciblePower": [
+          "onAttackedToChangeDamage",
+          "atStartOfTurn"
+        ],
+        "powers.BeatOfDeathPower": [
+          "onAfterUseCard"
+        ],
+        "cards.red.Defend_Red": [
+          "use"
+        ],
+        "cards.red.Anger": [
+          "use"
+        ],
+        "potions.FirePotion": [
+          "use"
+        ]
+      },
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheEnding": {
+          "class_sha256": "0d1b79587089b6604d6e485a13349d5e575f159eb7b70a749575933f464b512a",
+          "bytecode_sha256": "49d91abe96193ef6fd6ea8371593395c555cdc5995f61506159c35a6481ad0ed"
+        },
+        "com.megacrit.cardcrawl.monsters.ending.CorruptHeart": {
+          "class_sha256": "569fac46a969acf9de6b12839484d62eed6e65fa272dff06ea21ffbb57169e78",
+          "bytecode_sha256": "32611aae75ef4b9434405e0c0a52c91068ec399abe917eda69f127f52e6ace72"
+        },
+        "com.megacrit.cardcrawl.powers.InvinciblePower": {
+          "class_sha256": "10636e1ef6979db37b79101121caac2ef6aaf698ef0f679a449fd7ee7468d9bd",
+          "bytecode_sha256": "a911ddf4c57dd515dd39f42e679ced3048b326d1e1550a1578b71f1730086515"
+        },
+        "com.megacrit.cardcrawl.powers.BeatOfDeathPower": {
+          "class_sha256": "da1c4e3475282bda0c3b4b7f569573b5aa643b81b2e39829e70457f12392de59",
+          "bytecode_sha256": "f5a5763c0b35152df23c28d9a6bb496e888da6c0a786f0152eb3c2cd6005ea52"
+        },
+        "com.megacrit.cardcrawl.cards.red.Defend_Red": {
+          "class_sha256": "6ab4a01175dd549360e1bb426bdf107c62f6328e05c61b5947e07d1fef72a65b",
+          "bytecode_sha256": "8780093bccb5e8b608d7a0582399e1c5ecf1acf9a00a51261702213fabfc40bb"
+        },
+        "com.megacrit.cardcrawl.cards.red.Anger": {
+          "class_sha256": "cf446c5b763c790ec924fbbd010a6be8f1175f4e2d818805b5b599d78a04cb27",
+          "bytecode_sha256": "0ce0b704dea97674876fe6b2df815fadc463607d7442e29881f43ebbcde17dae"
+        },
+        "com.megacrit.cardcrawl.potions.FirePotion": {
+          "class_sha256": "0391a17323526250a23da24553b135b2f9a785feaa0ce168b9155c33f2bbd0f6",
+          "bytecode_sha256": "351ef53fe1c75fdb83c84c97b772c43d0c39740188641f7951a3257276123155"
+        }
+      },
+      "seeds": [
+        131200123,
+        131200124,
+        131200125
+      ],
+      "obligation": "Anger against living Heart, then fatal Beat of Death: raw HP, piles, powers, terminal action mask and RNG. No final victory claim.",
+      "qualification_scope": "CONTROLLED_COMBAT_LOSS_NOT_FINAL_VICTORY",
+      "status": "READY_FOR_CONTROLLED_EXECUTION"
+    }
+  ],
+  "qualification": false,
+  "final_holdout_used": false
+}

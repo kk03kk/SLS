@@ -69,7 +69,7 @@ def main() -> int:
     args = parser.parse_args()
     if not 1 <= args.seed_count <= 256:
         raise ValueError("seed count must be between 1 and 256")
-    manifest = json.loads((ROOT / "docs/audits/stock-decompilation/manifest.json").read_text(encoding="utf-8"))
+    manifest = json.loads((ROOT / "tests/fixtures/evidence/audits/stock-decompilation/manifest.json").read_text(encoding="utf-8"))
     stock_hash = _sha256(args.stock_jar)
     if stock_hash != manifest["authority"]["sha256"]:
         raise ValueError("stock JAR hash differs from pinned audit source")

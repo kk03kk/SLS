@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
-from dataclasses import fields
+from dataclasses import fields, replace
 from pathlib import Path
 from typing import Any, Mapping
 
@@ -38,6 +38,48 @@ def migrate_v3_policy(payload: Mapping[str, Any]) -> tuple[Policy, dict[str, Any
 def migrate_v4_policy(payload: Mapping[str, Any]) -> tuple[Policy, dict[str, Any]]:
     """Preserve the 13M actor/critic/memory weights; zero Neow feature columns."""
     return _migrate_policy(payload, version=4)
+
+
+def migrate_v5_role_policy(payload: Mapping[str, Any]) -> tuple[Policy, dict[str, Any]]:
+    """Explicit v5 -> v6 weights-only transfer, preserving initial predictions.
+
+    Independent option rows start from the vectors v5 accidentally used from
+    the content table. Zero residual gates preserve the old sum initially,
+    but subsequent learning can distinguish fields and reference roles.
+    This is not an optimizer/environment/resume migration or training approval.
+    """
+    from sls.rl.checkpoint import policy_from_training_checkpoint
+
+    source = policy_from_training_checkpoint(payload)
+    if source.config.architecture != "sls-recurrent-relational-policy-v5":
+        raise ValueError("role migration requires a v5 architecture")
+    if not all(torch.isfinite(value).all() for value in source.state_dict().values()):
+        raise ValueError("role migration source contains non-finite weights")
+    target = Policy(replace(source.config, architecture="sls-recurrent-relational-policy-v6"))
+    state = target.state_dict()
+    for name, value in source.state_dict().items():
+        state[name].copy_(value)
+    state["category_field_scale"].zero_()
+    state["reference_role_scale"].zero_()
+    variants = state["option_variant.weight"]
+    variants.zero_()
+    vocabulary = policy_vocabulary()
+    for index, token in enumerate(vocabulary["categorical"]):
+        if token.startswith("OPTION:"):
+            if index >= source.content.num_embeddings:
+                raise ValueError("legacy option index exceeds content embedding")
+            variants[index].copy_(source.content.weight[index].detach())
+    target.load_state_dict(state, strict=True)
+    return target, {
+        "schema": "sls-role-model-migration-v1", "exact_resume": False,
+        "source_architecture": source.config.architecture,
+        "target_architecture": target.config.architecture,
+        "encoding_schema": vocabulary["schema"], "vocabulary_sha256": vocabulary["sha256"],
+        "initialization": "zero residual gates; independent option rows copy legacy vectors",
+        "initial_prediction_equivalence": "verify on representative decisions; floating-point tolerance",
+        "reset": ["optimizer", "workers", "recurrent_memory", "rng_streams", "episode_limits"],
+        "training_approved": False,
+    }
 
 
 def _migrate_policy(payload: Mapping[str, Any], *, version: int) -> tuple[Policy, dict[str, Any]]:

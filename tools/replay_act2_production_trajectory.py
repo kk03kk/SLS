@@ -10,10 +10,10 @@ from pathlib import Path
 from sls.audit.act2_differential import pending_stock_intents
 from sls.audit.card_parity import structured_differences
 from sls.audit.decision_identity import canonical_projection, mapped_action
+from sls.audit.trajectory_reader import read_trajectory
 from sls.backends.original import ORIGINAL_EXECUTION_CONTRACT
 from sls.backends.simulator import SimulatorBackend, native
 from sls.curriculum import IRONCLAD_A20_ACT2
-from sls.diagnostics.canary import read_trajectory
 from sls.rl.training_contract import native_source_digest
 from tools.capture_act2_production_batch import ProductionBackend
 
@@ -126,6 +126,7 @@ def main() -> int:
             or launch["completion"]["exit_code"] != 0):
         raise ValueError("production batch execution/recovery identity failure")
     result["batch_sha256"] = hashlib.sha256(batch_path.read_bytes()).hexdigest()
+    result["capture_basename"] = batch_path.stem
     result["launch_evidence_sha256"] = hashlib.sha256(launch_path.read_bytes()).hexdigest()
     result["oracle_build_sha256"] = launch["oracle_sha256"]
     args.output.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")

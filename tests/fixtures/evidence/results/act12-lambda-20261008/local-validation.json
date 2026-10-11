@@ -1,0 +1,20 @@
+{
+  "tests": "8 passed (pure Python; including isolated no-Torch import check)",
+  "ruff": "passed",
+  "diff": "CRLF-aware check",
+  "no_torch_import": true,
+  "report_exact_recomputation": true,
+  "raw_archive_members_reverified": 37,
+  "bundle_members_verified": 20,
+  "AGENTS_sha256": "90132f3c84221605cf5c5ffc917255e84aa4dd82e60cae9d79c120a5e307d7e7",
+  "analysis_tool_sha256": "c41ac7bc9466d32f3076129a2bdec45e7eb88c298add040ff44e1dc26254ce11",
+  "not_run": [
+    "GPU",
+    "rollout",
+    "PPO update",
+    "checkpoint tensor validation",
+    "full Python suite",
+    "server training",
+    "performance benchmark"
+  ]
+}

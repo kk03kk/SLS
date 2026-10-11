@@ -1,0 +1,74 @@
+{
+  "schema": "sls-double-boss-source-transition-v1",
+  "native_before": "32cbf55731f5b48d798799d9d77d874f26ce45f06aa133d1b1f5aabeab766e2e",
+  "native_after": "81e83de9b8870847e5dccc74e7631004d21f9343b7f2a8c27d7646f6eaf2d42b",
+  "environment_semantics_changed": true,
+  "observation_action_layout_changed": false,
+  "checkpoint_layout_changed": false,
+  "state_preserving_transition": false,
+  "automatic_resume_permission": false,
+  "change": "FullRun combat-victory path now initializes a directly entered subsequent combat before exposing a decision.",
+  "before_evidence": "double-boss-entry-native-before-r1.json: three seeds zero legal actions; restoring creates8/9/8 actions",
+  "regression_before": {
+    "passed": 0,
+    "failed": 3
+  },
+  "regression_after_and_adjacent": {
+    "passed": 64,
+    "failed": 0
+  },
+  "capture_sha256": "3d532f556e6991e04b672cbf77925072da3084403fede148f6f38876e486f2fa",
+  "after_report_sha256": "74cf4d068055f0632269f2c80bca061e735462b2c357dc3d68ab6a826dc209a1",
+  "runs": [
+    {
+      "seed": 131200219,
+      "initial_fields_match": true,
+      "second_entry_fields_match": true,
+      "fields": [
+        "floor",
+        "hp",
+        "max_hp",
+        "gold",
+        "deck",
+        "rng",
+        "monsters"
+      ]
+    },
+    {
+      "seed": 131200220,
+      "initial_fields_match": true,
+      "second_entry_fields_match": true,
+      "fields": [
+        "floor",
+        "hp",
+        "max_hp",
+        "gold",
+        "deck",
+        "rng",
+        "monsters"
+      ]
+    },
+    {
+      "seed": 131200221,
+      "initial_fields_match": true,
+      "second_entry_fields_match": true,
+      "fields": [
+        "floor",
+        "hp",
+        "max_hp",
+        "gold",
+        "deck",
+        "rng",
+        "monsters"
+      ]
+    }
+  ],
+  "limits": [
+    "Only Time Eater -> Donu/Deca entry branch compared",
+    "Initial equivalence checks coverHP/maxHP/enemyHP/RNG; not full combat projection",
+    "Second entry comparesfloor/HP/maxHP/gold/deck composition/monster identity/RNG; not all powers/cards/counters/masks",
+    "Second victory and five other ordered pairs remain unverified",
+    "Complete computational Python suite deferred under local compute restrictions",
+    "Current server checkout unchanged; no cross-source exact resume approval"
+  ]
+}

@@ -43,7 +43,10 @@ def rollup(controlled: list[dict], systems: list[dict], production: list[dict],
         raise ValueError("controlled seeds outside the frozen mechanism space")
     passed = {seed for seed, row in rows.items()
               if row["status"] in {"HARNESS_MATCH", "SYSTEM_BRANCH_MATCH"}
-              and row.get("first_divergence") is None}
+              and row.get("first_divergence") is None
+              and not row.get("controlled_runtime_inputs")
+              and row.get("qualification_scope", "UNCONDITIONAL_STOCK_SYSTEM_REPLAY")
+                  == "UNCONDITIONAL_STOCK_SYSTEM_REPLAY"}
     missing = sorted(expected - passed)
     if missing:
         blockers.append("controlled obligations missing, incomplete or divergent")
@@ -68,7 +71,8 @@ def rollup(controlled: list[dict], systems: list[dict], production: list[dict],
     if set(natural) - selected:
         raise ValueError("unselected production trajectory")
     natural_missing = sorted(selected - {s for s, r in natural.items()
-        if r["status"] == "TRAJECTORY_MATCH" and r["first_divergence"] is None})
+        if r["status"] == "TRAJECTORY_MATCH" and r["first_divergence"] is None
+        and not r.get("clock_inputs") and "clock-conditioned" not in r.get("schema", "")})
     if natural_missing:
         blockers.append("production canaries missing or divergent")
     return {"schema": "sls-act2-qualification-rollup-v1", "native_source_sha256": source,
@@ -76,7 +80,7 @@ def rollup(controlled: list[dict], systems: list[dict], production: list[dict],
             "controlled_missing_or_failed": missing, "production_expected": 8,
             "production_missing_or_failed": natural_missing, "blockers": blockers,
             "training_gate": "NOT_QUALIFIED" if blockers else "EVIDENCE_COMPLETE_PENDING_RECOVERY_AND_LOCAL_CHECKS",
-            "scope": "24 bounded obligations only; no complete Act2 certification or win-rate estimate"}
+            "scope": "72 bounded obligations only; no exhaustive game-combination proof or win-rate estimate"}
 
 
 def main() -> int:

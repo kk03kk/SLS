@@ -30,3 +30,21 @@ def test_act1_death_and_boss_death_do_not_count_as_act2_ordinary_failure():
     assert satisfies('ACT2_BOSS_ENTRY:CHAMP', evidence)
     assert not satisfies('ACT2_BOSS_ENTRY:COLLECTOR', evidence)
     assert not satisfies('ACT2_ORDINARY_FAILURE', evidence)
+
+
+def test_burning_elite_counts_only_with_actual_elite_monsters():
+    rows = [boundary(0, room='BURNING_ELITE'), boundary(1, enemies=['GREMLIN_LEADER']),
+            boundary(2, terminal=True)]
+    assert satisfies('ACT2_ELITE_ENTRY', witnessed_roles(rows))
+    rows[1] = boundary(1, enemies=['SNECKO'])
+    assert not satisfies('ACT2_ELITE_ENTRY', witnessed_roles(rows))
+
+
+def test_question_node_resolving_directly_to_combat_is_ordinary_but_event_fight_is_not():
+    rows = [boundary(0, room='EVENT'), boundary(1, enemies=['CHOSEN']),
+            boundary(2, terminal=True)]
+    assert satisfies('ACT2_ORDINARY_FAILURE', witnessed_roles(rows))
+    event = boundary(1)
+    event['screen'] = 'EVENT'
+    rows.insert(1, event)
+    assert not satisfies('ACT2_ORDINARY_FAILURE', witnessed_roles(rows))

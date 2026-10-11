@@ -121,13 +121,14 @@ class LiveGameBackend(OriginalBackend):
     @staticmethod
     def _require_production_oracle(payload: dict) -> None:
         if payload.get("in_game") and (
-            payload.get("_parity_schema") != "spirecomm-parity-v11"
+            payload.get("_parity_schema") not in {"spirecomm-parity-v11", "spirecomm-parity-v12", "spirecomm-parity-v13"}
             or payload.get("_oracle_contract") != "sls-oracle-mode-v1"
             or payload.get("_oracle_mode") != "production"
-            or {"_rng", "_continuation", "_timing_evidence", "math_seed"}.intersection(payload)
+            or {"_rng", "_continuation", "_timing_evidence", "math_seed",
+                "_stock_direct", "_stock_reward_state", "_parity_scenario"}.intersection(payload)
         ):
             raise ValueError(
-                "live play requires source-built Oracle v11 in production mode; "
+                "live play requires source-built Oracle v11/v12/v13 in production mode; "
                 "rebuild/install the Oracle and remove validation JVM flags"
             )
 

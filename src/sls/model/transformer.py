@@ -10,6 +10,7 @@ from torch import nn
 
 from sls.model.encoding import (
     ACTION_TYPE_IDS,
+    CATEGORICAL_FIELDS,
     ENCODING_SCHEMA,
     ENTITY_TYPES,
     NUMERIC_FIELDS,
@@ -34,7 +35,9 @@ class ModelConfig:
         values = asdict(self)
         if any(value <= 0 for value in values.values() if isinstance(value, int)):
             raise ValueError("model dimensions must be positive")
-        if self.architecture != "sls-recurrent-relational-policy-v5":
+        if self.architecture not in {
+            "sls-recurrent-relational-policy-v5", "sls-recurrent-relational-policy-v6",
+        }:
             raise ValueError(f"unsupported policy architecture: {self.architecture}")
         if self.recurrent_layers != 1:
             raise ValueError("the v5 policy supports exactly one recurrent layer")
@@ -112,6 +115,15 @@ class Policy(nn.Module):
         self.action_keys = nn.ModuleList(nn.Linear(d, d, bias=False) for _ in SCREEN_GROUPS)
         self.action_biases = nn.ModuleList(nn.Linear(d, 1) for _ in SCREEN_GROUPS)
         self.value_head = nn.Sequential(nn.LayerNorm(h), nn.Linear(h, 1))
+        if config.architecture == "sls-recurrent-relational-policy-v6":
+            # Tensor vocabulary stays v5; architecture identity changes. Field
+            # and role gates bind values to their slots instead of adding a
+            # slot constant which disappears under a commutative sum.
+            self.category_field_scale = nn.Parameter(torch.empty(len(CATEGORICAL_FIELDS), d))
+            self.reference_role_scale = nn.Parameter(torch.empty(5, d))
+            nn.init.normal_(self.category_field_scale, std=0.02)
+            nn.init.normal_(self.reference_role_scale, std=0.02)
+            self.option_variant = nn.Embedding(len(vocabulary["categorical"]), d, padding_idx=0)
 
     def initial_memory(
         self,
@@ -171,8 +183,15 @@ class Policy(nn.Module):
         batch, entity_count, _ = entity_numeric.shape
         numeric = torch.cat((entity_numeric, entity_numeric_present.to(entity_numeric.dtype)), dim=-1)
         entities = self.entity_numeric(numeric) + self.entity_type(entity_types)
-        entities = entities + self.content(entity_content).sum(dim=-2)
-        entities = entities + self.category(entity_categories).sum(dim=-2)
+        if self.config.architecture == "sls-recurrent-relational-policy-v6":
+            entities = entities + (
+                self.content(entity_content[..., 0]) + self.option_variant(entity_content[..., 1])
+            )
+            categories = self.category(entity_categories) * (1 + self.category_field_scale)
+            entities = entities + categories.sum(dim=-2)
+        else:
+            entities = entities + self.content(entity_content).sum(dim=-2)
+            entities = entities + self.category(entity_categories).sum(dim=-2)
         adjacency = entity_adjacency.to(entities.dtype)
         out_degree = adjacency.sum(dim=-1, keepdim=True).clamp_min(1.0)
         incoming = adjacency.transpose(1, 2)
@@ -196,6 +215,8 @@ class Policy(nn.Module):
             safe_refs.unsqueeze(-1).expand(-1, -1, -1, self.config.embedding_dim),
         )
         roles = self.reference_role(torch.arange(5, device=entities.device)).view(1, 1, 5, -1)
+        if self.config.architecture == "sls-recurrent-relational-policy-v6":
+            gathered = gathered * (1 + self.reference_role_scale.view(1, 1, 5, -1))
         candidates = candidates + (
             (gathered + roles) * action_reference_mask.unsqueeze(-1)
         ).sum(dim=2)

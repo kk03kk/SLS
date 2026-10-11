@@ -1,0 +1,281 @@
+{
+  "schema": "sls-fullrun-scenes-v1",
+  "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "scenes": [
+    {
+      "id": "act3-awakened-rebirth-basic",
+      "encounter": "AWAKENED_ONE",
+      "ascension": 20,
+      "act": 3,
+      "floor": 50,
+      "room": "BOSS",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Anger"
+        ],
+        "draw": [
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger"
+        ],
+        "monster_hp": {
+          "AWAKENED_ONE": 1
+        }
+      },
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 2
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "stock_classes": [
+        "dungeons.TheBeyond",
+        "monsters.beyond.AwakenedOne",
+        "monsters.exordium.Cultist",
+        "powers.CuriosityPower",
+        "cards.red.Inflame",
+        "cards.red.Anger"
+      ],
+      "stock_methods": {
+        "dungeons.TheBeyond": [
+          "TheBeyond"
+        ],
+        "monsters.beyond.AwakenedOne": [
+          "damage",
+          "takeTurn",
+          "getMove",
+          "die",
+          "changeState"
+        ],
+        "monsters.exordium.Cultist": [
+          "takeTurn"
+        ],
+        "powers.CuriosityPower": [
+          "onUseCard"
+        ],
+        "cards.red.Inflame": [
+          "use"
+        ],
+        "cards.red.Anger": [
+          "use"
+        ]
+      },
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheBeyond": {
+          "class_sha256": "e8e7819f75bc2ee347c9dbfa5316b42160c2c50ef4f3bae3b4115e2c4a9a6502",
+          "bytecode_sha256": "c2584927eb19266caf64d97926c9144a0d9a988d30b66099eb5a0e126234c35b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.AwakenedOne": {
+          "class_sha256": "05ab6213f690b760bdca9e41ec045b7351964914f9ee3ae8884453f26a42b317",
+          "bytecode_sha256": "c057c099b99b95108b14aec0cc8125980367200f96ec3143442f82e818e1a6db"
+        },
+        "com.megacrit.cardcrawl.monsters.exordium.Cultist": {
+          "class_sha256": "63ab34b02704dfb3d7c7f315807d4743f8be25699379607193a9c9a592c39169",
+          "bytecode_sha256": "d714bca762d1eb381245e3e42ba38c8eaf80f4ac6b363cb0cbd55b5323209c9f"
+        },
+        "com.megacrit.cardcrawl.powers.CuriosityPower": {
+          "class_sha256": "09c36d2e5229a5fa9e2fc7d1ef62c2af8f852d97c5add69d90d3aeb6477ca906",
+          "bytecode_sha256": "e016d27974be2dc4e5225bb7d22a473e556797c118221c6a0e0a01986c6097dd"
+        },
+        "com.megacrit.cardcrawl.cards.red.Inflame": {
+          "class_sha256": "0a33acc11875ad3f993349bc7414d95954e6ee836ab3c8c5ba2f38ae9ef24f9a",
+          "bytecode_sha256": "4827e52e3a58f4dc6f953a78ca9d3990292c2485126628494f39241e2c4436f3"
+        },
+        "com.megacrit.cardcrawl.cards.red.Anger": {
+          "class_sha256": "cf446c5b763c790ec924fbbd010a6be8f1175f4e2d818805b5b599d78a04cb27",
+          "bytecode_sha256": "0ce0b704dea97674876fe6b2df815fadc463607d7442e29881f43ebbcde17dae"
+        }
+      },
+      "seeds": [
+        131200138,
+        131200139,
+        131200140
+      ],
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "obligation": "Lethal first phase, Curiosity/Unawakened/debuff removal, retained Strength, rebirth maxHP and Dark Echo; power cards before/after phase change.",
+      "qualification_scope": "CONTROLLED_FIRST_PHASE_REBIRTH_NOT_FINAL_BOSS_FLOW"
+    },
+    {
+      "id": "act3-awakened-rebirth-powers",
+      "encounter": "AWAKENED_ONE",
+      "ascension": 20,
+      "act": 3,
+      "floor": 50,
+      "room": "BOSS",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Inflame",
+          "Anger"
+        ],
+        "draw": [
+          "Inflame",
+          "Inflame",
+          "Inflame",
+          "Inflame",
+          "Inflame",
+          "Inflame",
+          "Inflame",
+          "Inflame",
+          "Inflame",
+          "Inflame",
+          "Inflame",
+          "Inflame",
+          "Inflame",
+          "Inflame",
+          "Inflame",
+          "Inflame",
+          "Inflame",
+          "Inflame",
+          "Inflame",
+          "Inflame",
+          "Inflame",
+          "Inflame",
+          "Inflame",
+          "Inflame",
+          "Inflame",
+          "Inflame",
+          "Inflame",
+          "Inflame",
+          "Inflame",
+          "Inflame"
+        ],
+        "monster_hp": {
+          "AWAKENED_ONE": 1
+        }
+      },
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1
+        },
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 2
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "play",
+          "card_index": 1
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "stock_classes": [
+        "dungeons.TheBeyond",
+        "monsters.beyond.AwakenedOne",
+        "monsters.exordium.Cultist",
+        "powers.CuriosityPower",
+        "cards.red.Inflame",
+        "cards.red.Anger"
+      ],
+      "stock_methods": {
+        "dungeons.TheBeyond": [
+          "TheBeyond"
+        ],
+        "monsters.beyond.AwakenedOne": [
+          "damage",
+          "takeTurn",
+          "getMove",
+          "die",
+          "changeState"
+        ],
+        "monsters.exordium.Cultist": [
+          "takeTurn"
+        ],
+        "powers.CuriosityPower": [
+          "onUseCard"
+        ],
+        "cards.red.Inflame": [
+          "use"
+        ],
+        "cards.red.Anger": [
+          "use"
+        ]
+      },
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheBeyond": {
+          "class_sha256": "e8e7819f75bc2ee347c9dbfa5316b42160c2c50ef4f3bae3b4115e2c4a9a6502",
+          "bytecode_sha256": "c2584927eb19266caf64d97926c9144a0d9a988d30b66099eb5a0e126234c35b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.AwakenedOne": {
+          "class_sha256": "05ab6213f690b760bdca9e41ec045b7351964914f9ee3ae8884453f26a42b317",
+          "bytecode_sha256": "c057c099b99b95108b14aec0cc8125980367200f96ec3143442f82e818e1a6db"
+        },
+        "com.megacrit.cardcrawl.monsters.exordium.Cultist": {
+          "class_sha256": "63ab34b02704dfb3d7c7f315807d4743f8be25699379607193a9c9a592c39169",
+          "bytecode_sha256": "d714bca762d1eb381245e3e42ba38c8eaf80f4ac6b363cb0cbd55b5323209c9f"
+        },
+        "com.megacrit.cardcrawl.powers.CuriosityPower": {
+          "class_sha256": "09c36d2e5229a5fa9e2fc7d1ef62c2af8f852d97c5add69d90d3aeb6477ca906",
+          "bytecode_sha256": "e016d27974be2dc4e5225bb7d22a473e556797c118221c6a0e0a01986c6097dd"
+        },
+        "com.megacrit.cardcrawl.cards.red.Inflame": {
+          "class_sha256": "0a33acc11875ad3f993349bc7414d95954e6ee836ab3c8c5ba2f38ae9ef24f9a",
+          "bytecode_sha256": "4827e52e3a58f4dc6f953a78ca9d3990292c2485126628494f39241e2c4436f3"
+        },
+        "com.megacrit.cardcrawl.cards.red.Anger": {
+          "class_sha256": "cf446c5b763c790ec924fbbd010a6be8f1175f4e2d818805b5b599d78a04cb27",
+          "bytecode_sha256": "0ce0b704dea97674876fe6b2df815fadc463607d7442e29881f43ebbcde17dae"
+        }
+      },
+      "seeds": [
+        131200141,
+        131200142,
+        131200143
+      ],
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "obligation": "Lethal first phase, Curiosity/Unawakened/debuff removal, retained Strength, rebirth maxHP and Dark Echo; power cards before/after phase change.",
+      "qualification_scope": "CONTROLLED_FIRST_PHASE_REBIRTH_NOT_FINAL_BOSS_FLOW"
+    }
+  ],
+  "qualification": false,
+  "final_holdout_used": false
+}

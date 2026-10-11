@@ -38,6 +38,7 @@ def workload_contract(config: dict) -> str:
         "profile": asdict(CURRICULUM_PROFILES_BY_ID[config["run"]["profile"]]),
         "model": config["model"], "ppo": config["ppo"],
         "deterministic": config["run"].get("deterministic", True),
+        **({"start_curriculum": config["start_curriculum"]} if "start_curriculum" in config else {}),
     })
 
 
@@ -103,6 +104,23 @@ def preparation_contract(config: dict, torch_module: object) -> str:
 
 
 def require_preparation(config: dict, torch_module: object) -> dict:
+    if "start_curriculum" in config and "foundation_evidence" not in config["run"]:
+        raise ValueError("mixed Act2 training requires foundation qualification evidence")
+    if "foundation_evidence" in config["run"]:
+        import hashlib
+
+        spec = config["run"]["foundation_evidence"]
+        path = (ROOT / spec["path"]).resolve()
+        if not path.is_relative_to(ROOT.resolve()):
+            raise ValueError("foundation evidence must be inside the project")
+        raw = path.read_bytes()
+        evidence = json.loads(raw)
+        if (hashlib.sha256(raw).hexdigest() != spec["sha256"]
+                or evidence.get("qualification") not in {"PASS_BOUNDED_ACT12", "PASS_CONTRACT_BOUNDED_ACT12"}
+                or evidence.get("blockers")
+                or evidence.get("native_source_sha256") != native_source_digest()
+                or evidence.get("training_validation_sha256") != training_validation_digest()):
+            raise ValueError("foundation qualification missing, blocked or stale")
     benchmark = ROOT / config["run"]["benchmark"]
     report = json.loads(benchmark.with_name("ready.json").read_text(encoding="utf-8"))
     layout = json.loads(benchmark.read_text(encoding="utf-8"))

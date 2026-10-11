@@ -1,0 +1,36 @@
+{
+  "schema": "sls-controlled-boss-flow-card-source-v1",
+  "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "stock_class_sha256": "b445e4403fa4ac6435a6a5988f12244216c534c00fdc4f1f5f83151df1afbf54",
+  "stock_methods": [
+    "<init>",
+    "upgrade",
+    "canUpgrade"
+  ],
+  "independent_formula": "base12; each upgrade adds4+previous count; at30:12+sum(4+i for i in range(30))=567",
+  "native_source_sha256": "81e83de9b8870847e5dccc74e7631004d21f9343b7f2a8c27d7646f6eaf2d42b",
+  "native_probe_card": {
+    "id": "SEARING_BLOW",
+    "name": "Searing Blow",
+    "uuid": "0",
+    "cost": 2,
+    "base_cost": 2,
+    "upgrades": 30,
+    "special_data": 30,
+    "free_to_play_once": false,
+    "retain": false,
+    "self_retain": false,
+    "bottled_flame": false,
+    "bottled_lightning": false,
+    "bottled_tornado": false,
+    "ethereal": false,
+    "has_target": true,
+    "exhausts": false,
+    "is_playable": true,
+    "playable_targets": [
+      0
+    ]
+  },
+  "runtime_stock_status": "NOT_YET_RUN",
+  "restriction": "Initial upgraded-card setup for bounded flow probes; not natural trajectory or full card certification"
+}

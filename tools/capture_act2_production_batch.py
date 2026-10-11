@@ -20,7 +20,7 @@ class ProductionBackend(OriginalBackend):
     @staticmethod
     def require_isolation(raw):
         if raw.get('_oracle_mode') != 'production' or any(
-            name in raw for name in ('_rng', '_stock_direct', '_parity_scenario',
+            name in raw for name in ('_rng', '_stock_direct', '_stock_reward_state', '_parity_scenario',
                                      '_timing_evidence', '_continuation')
         ) or any(str(command).startswith('parity_') for command in raw['available_commands']):
             raise ValueError('production isolation failure at decision boundary')

@@ -6,6 +6,7 @@ from pathlib import Path
 import torch
 
 from sls.curriculum import IRONCLAD_A0_ACT1, IRONCLAD_A20_ACT1, IRONCLAD_A20_CURRICULUM
+from sls.evidence_paths import repository_evidence_path
 from sls.rl.checkpoint import policy_from_training_checkpoint
 from sls.rl.training_contract import native_source_digest, sha256_file
 
@@ -20,7 +21,7 @@ def validate_curriculum_simulator_transition(spec: dict, source: str, target: st
     binding = spec.get("simulator_transition")
     if spec.get("transfer_kind") != "curriculum-stage" or not isinstance(binding, dict):
         raise ValueError("changed simulator requires an explicit curriculum weights-only transition")
-    path = (root / binding["evidence"]).resolve()
+    path = repository_evidence_path(root, binding["evidence"])
     if not path.is_relative_to(root.resolve()) or sha256_file(path) != binding["evidence_sha256"]:
         raise ValueError("simulator transition evidence hash/path mismatch")
     evidence = json.loads(path.read_text(encoding="utf-8"))

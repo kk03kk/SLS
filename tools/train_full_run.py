@@ -232,6 +232,8 @@ def _training_identity(
         "diagnostic_evaluation": diagnostic,
         **({"selection_progress_guard": bool(run["selection_progress_guard"])}
            if "selection_progress_guard" in run else {}),
+        **({"selection_objective": run["selection_objective"]}
+           if "selection_objective" in run else {}),
         **({"workflow": run["workflow"]} if "workflow" in run else {}),
         **({key: run[key] for key in ("final_evaluation_role", "evaluate_fixed_endpoint",
                                      "development_reference_checkpoint", "development_reference_sha256",
@@ -239,6 +241,7 @@ def _training_identity(
             if key in run}),
         "model": payload["model"],
         **({"warm_start": payload["warm_start"]} if "warm_start" in payload else {}),
+        **({"start_curriculum": payload["start_curriculum"]} if "start_curriculum" in payload else {}),
         "ppo": payload["ppo"],
         "stages": stages,
     })
@@ -246,8 +249,26 @@ def _training_identity(
 
 class StopController:
     def __init__(self) -> None:
-        self.requested = False
+        self._requested = False
+        self.deadline: float | None = None
         self.signal_name: str | None = None
+
+    @property
+    def requested(self) -> bool:
+        if self.deadline is not None and time.monotonic() >= self.deadline:
+            self._requested = True
+            if self.signal_name is None:
+                self.signal_name = "WALL_TIME_BUDGET"
+        return self._requested
+
+    @requested.setter
+    def requested(self, value: bool) -> None:
+        self._requested = value
+
+    def set_wall_budget(self, seconds: float) -> None:
+        if not math.isfinite(seconds) or seconds <= 0:
+            raise ValueError("wall budget must be positive and finite")
+        self.deadline = time.monotonic() + seconds
 
     def handler(self, number: int, _frame: object) -> None:
         self.requested = True
@@ -387,11 +408,13 @@ def _promotion_passes(evaluation: dict[str, object], stage: dict[str, object]) -
     )
 
 
-def _single_stage_final_passes(evaluation: dict[str, object], minimum_episodes: int) -> bool:
+def _single_stage_final_passes(evaluation: dict[str, object], minimum_episodes: int,
+                               *, policy_limits_as_failures: bool = False) -> bool:
     """Require complete, healthy evaluation before exporting a single-stage policy."""
     return int(evaluation["episodes"]) >= minimum_episodes and not any(
         int(evaluation.get(field, 0)) for field in (
-            "backend_errors", "backend_truncations", "step_limits", "cycle_limits", "timeouts",
+            ("backend_errors", "backend_truncations", "timeouts") if policy_limits_as_failures else
+            ("backend_errors", "backend_truncations", "step_limits", "cycle_limits", "timeouts")
         )
     )
 
@@ -704,6 +727,11 @@ def main() -> int:
     payload = tomllib.loads(config_bytes.decode("utf-8"))
     run = dict(payload["run"])
     single_stage = run.get("workflow") == "single-stage"
+    if "selection_objective" in run and (
+        run["selection_objective"] != "ACT2_CLEAR_COUNT" or not single_stage
+        or run["profile"] != "IRONCLAD_A20_ACT2"
+    ):
+        raise ValueError("ACT2_CLEAR_COUNT selection requires the single-stage A20 Act2 task")
     if single_stage and (args.stage != "train" or set(payload["stages"]) != {"train"}
                          or run["profile"] not in {"IRONCLAD_A0_ACT1", *(p.profile_id for p in IRONCLAD_A20_CURRICULUM)} or args.resume != "auto"):
         raise ValueError("single-stage requires fresh/exact A0 Act1 or A20 curriculum train workflow")
@@ -890,6 +918,8 @@ def main() -> int:
     if device.startswith("cuda"):
         torch.cuda.reset_peak_memory_stats(device)
     controller = StopController()
+    if "max_job_wall_seconds" in run:
+        controller.set_wall_budget(float(run["max_job_wall_seconds"]))
     controller.install()
     trainer: PPOTrainer | None = None
     try:
@@ -898,12 +928,15 @@ def main() -> int:
             crash_dump_dir=output / "crashes",
         ) as workers:
             from sls.rl.preparation import training_seed_limit
+            from sls.rl.start_curriculum import from_config
+            start_curriculum = from_config(payload, ROOT)
             trainer = PPOTrainer(
                 model, workers, ppo, device=device, seed=seed,
                 native_contract_digest=source_digest,
                 git_commit=str(repository["commit"]),
                 training_config_digest=identity,
                 training_seed_limit=training_seed_limit(run),
+                start_curriculum=start_curriculum,
             )
             if "warm_start" in payload and not latest.exists():
                 from sls.rl.act1_transfer import initialize_act1_weights
@@ -1052,6 +1085,7 @@ def main() -> int:
                 result["environment_steps"] = trainer.environment_steps
                 if single_stage:
                     result["selection_objective"] = (
+                        run["selection_objective"] if "selection_objective" in run else
                         "ACT1_CLEAR_COUNT" if profile.horizon is EpisodeHorizon.ACT_1
                         else "HORIZON_CLEAR_COUNT"
                     )
@@ -1141,6 +1175,8 @@ def main() -> int:
                     "update_seconds": elapsed,
                     "decisions_per_second": workers_count * ppo.rollout_steps / elapsed,
                     **metrics,
+                    **({"curriculum_episode_starts": trainer.start_curriculum.state_dict()}
+                       if getattr(trainer, "start_curriculum", None) is not None else {}),
                 }
                 if hasattr(trainer, "last_collect_seconds"):
                     record["collect_seconds"] = trainer.last_collect_seconds
@@ -1167,6 +1203,7 @@ def main() -> int:
                     while next_diagnose <= trainer.environment_steps:
                         next_diagnose += diagnose_every
                 if trainer.environment_steps >= next_eval and not controller.requested:
+                    save_checkpoint(latest, trainer)
                     try:
                         evaluation = asdict(run_evaluation(
                             tuple(periodic_seeds),
@@ -1283,6 +1320,8 @@ def main() -> int:
                 )
                 final_promoted = _single_stage_final_passes(
                     final_result, int(final_stage["minimum_evaluation_episodes"]),
+                    **({"policy_limits_as_failures": True}
+                       if run.get("selection_objective") == "ACT2_CLEAR_COUNT" else {}),
                 ) if single_stage else _promotion_passes(final_result, final_stage)
                 _atomic_json(output / "final-evaluation.json", {
                     "schema": "sls-final-evaluation-v3",

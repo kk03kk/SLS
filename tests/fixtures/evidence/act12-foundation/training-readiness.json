@@ -1,0 +1,83 @@
+{
+  "schema": "sls-act12-local-training-readiness-v1",
+  "status": "LOCAL_DIAGNOSTICS_PASS_SERVER_PREPARATION_REQUIRED",
+  "native_source_sha256": "27eba74232319e8138b300f042c3373ec7cec0d030ba8d40a2689cf171f67e44",
+  "training_validation_sha256": "ce61ba4381631bcc80b3f80540fa4d5ed6a86b0c1db500a24b691e1208c20107",
+  "official_config_sha256": "bbcfa6c15a111fd2994ca80ae56fa21f804652bff9e242b160ea63dc609466d3",
+  "bank_sha256": "71a972903827712ff808440bac7a7e8bc8de1f3dc8980e5bd1330666b42d1745",
+  "bank_entries": 1493,
+  "mixed_ppo": {
+    "new_decisions": 18432,
+    "layout": [
+      8,
+      2
+    ],
+    "sequence_length": 64,
+    "minibatch_sequences": 4,
+    "exact_resume_checks": {
+      "schema": true,
+      "contract": true,
+      "model": true,
+      "optimizer": true,
+      "trainer": true,
+      "python_rng": true,
+      "torch_rng": true,
+      "cuda_rng": true,
+      "environments": true,
+      "metrics": true
+    },
+    "cuda_peak_memory_bytes": 3292220928
+  },
+  "real_cli": {
+    "scope": "LOCAL_WINDOWS_DIAGNOSTIC_NOT_SERVER_READINESS",
+    "weight_transfer": {
+      "entropy_clock": "cumulative environment steps",
+      "exact_resume_of_parent_experiment": false,
+      "parent_checkpoint": "D:\\SLS\\local\\runs\\ironclad-a20-act1-win-90m-continuation\\final.pt",
+      "parent_checkpoint_sha256": "274963f4fe32b75003c5a1b4ccd394b5185304156e6ea22a76aee2764d54f1e0",
+      "parent_environment_steps": 90013696,
+      "preserved": "all model weights, including value head",
+      "reset": "Adam, RNG, workers, recurrent state, update count and best selection",
+      "schema": "sls-curriculum-weight-transfer-v2",
+      "simulator_transition": {
+        "evidence": {
+          "qualification.json": "936b429e49e4d6fe53cbafccc94eeac9a87cd9871bf8072d38b9b35a12bf4f4e",
+          "transition-after.json": "998458f41095e8ab530f6956520f1f81c61f42b6e8cd4a82d8e0725448f6113f",
+          "transition-before.json": "52feffe583741081900a43d3d3b271cd48a80fa50ed931fbbae437290db73656"
+        },
+        "exact_resume_allowed": false,
+        "reason": "Initialize a new Act2 curriculum with all frozen 90M model weights; reset Adam, environments and memory under the qualified current rules.",
+        "schema": "sls-curriculum-simulator-transition-v1",
+        "semantics_revision": "sls-act12-foundation-taskmaster-death-queue-v1",
+        "source_native_source_sha256": "1e30bb6cfa32f600cd63c59983c14ab8928fac4452c1586d630295d2c6ff9453",
+        "source_profile": "IRONCLAD_A20_ACT1",
+        "status": "VERIFIED_RULE_CORRECTION",
+        "target_native_source_sha256": "27eba74232319e8138b300f042c3373ec7cec0d030ba8d40a2689cf171f67e44",
+        "target_profile": "IRONCLAD_A20_ACT2",
+        "transfer_mode": "weights-only"
+      },
+      "source_profile": "IRONCLAD_A20_ACT1",
+      "step_accounting": "parent steps + new A20 environment steps",
+      "target_profile": "IRONCLAD_A20_ACT2"
+    },
+    "wall_stop": "WALL_TIME_BUDGET",
+    "interrupted_steps": 90015232,
+    "resumed_steps": 90015488,
+    "updates_before": 24,
+    "updates_after": 28,
+    "target_preserved": true
+  },
+  "input_sha256": {
+    "mixed-soak-release.json": "91b0cab2c2b16706125a6c4c2ddd070542f66479fd8586d9f7e56e2ba71791d4",
+    "qualification-final.json": "e4410661a67d49ad2764827a9771e10ead4f19b4fefa924769ed1c6e71b9ef17",
+    "cli-interrupted-manifest.json": "f1e9f08d73e3ca37c28c832ba9f1c9c5efad803cec7e0314ad5de7812a46c7cf",
+    "cli-wall-stop-runtime-matched.log": "15f1b40d1fd98cd65a27612d0d7ac7e8d637e070d566546de6aeffe054e73785",
+    "cli-resume.log": "54905620158bd35704c453f990aad72974ab3fca72f654263ab9d4e096e4c390"
+  },
+  "limits": [
+    "Local formal layout 64:16/minibatch16 exceeded 8GB GPU memory; negative attempt preserved",
+    "Linux A100 full-layout bank replay, benchmark and exact-resume preflight must pass before production training",
+    "No diagnostic policy exported or adopted",
+    "No server job submitted"
+  ]
+}

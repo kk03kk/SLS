@@ -132,6 +132,11 @@ def evaluation_rank(record: Mapping[str, Any]) -> tuple[float, ...]:
     """Rank progress while penalizing non-progress before reward magnitude."""
 
     failure_floor = record.get("median_failure_floor")
+    if record.get("selection_objective") == "ACT2_CLEAR_COUNT":
+        # Policy limits are failed episodes, not execution errors.
+        return (-float(any(int(record.get(field, 0)) for field in
+                           ("backend_errors", "backend_truncations", "timeouts"))),
+                float(record["successes"]))
     if record.get("selection_objective") in CLEAR_COUNT_OBJECTIVES:
         # Keep the earliest checkpoint on equal clear counts. Depth, speed and
         # boss subgroups are diagnostics, not additional selection objectives.

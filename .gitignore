@@ -8,10 +8,7 @@ wheelhouse/
 .env.*
 !.env.example
 /sendToDevs/
-# Workstation-specific notes were formerly excluded only by .git/info/exclude.
-/docs/operator-environments.md
-model/*
-!model/README.md
+/model/
 .build/
 external/
 artifacts/

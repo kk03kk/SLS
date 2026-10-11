@@ -1,0 +1,457 @@
+{
+  "schema": "sls-act12-reward-closeout-v1",
+  "scope": "BOUNDED_ACT1_ACT2_TRAINING_PREPARATION",
+  "status": "THIEF_REWARD_OBLIGATION_CLOSED",
+  "native_source_before": "0fd7d4c6d4a78d6078cb9169cb679212b1734ce5a47f575e523787551bc42812",
+  "native_source_after": "c07116cc51b0a720978e0f5bf7d591fbdaf976cffc32a6b7edf33ac8dc70276a",
+  "environment_semantics_changed": true,
+  "state_preserving_transition": false,
+  "exact_resume_whitelist_added": false,
+  "checkpoint_schema_changed": false,
+  "observation_action_schema_changed": false,
+  "training_algorithm_changed": false,
+  "published_checkout_modified": false,
+  "published_training_commit": "aa63a540a75f06d68c3314209400971ac6f03441",
+  "oracle_version": "1.3.26",
+  "oracle_sha256": "a11433d04f284576b1f3dde9552812a577586090986b2039d58096f70864e276",
+  "controlled_runs": [
+    {
+      "seed": 131200180,
+      "compared_fields": [
+        "potion_modifier",
+        "potion_rng",
+        "potions",
+        "all_rng",
+        "player_hp",
+        "player_gold",
+        "reward_gold",
+        "reward_relics",
+        "reward_cards"
+      ],
+      "all_equal": true
+    },
+    {
+      "seed": 131200181,
+      "compared_fields": [
+        "potion_modifier",
+        "potion_rng",
+        "potions",
+        "all_rng",
+        "player_hp",
+        "player_gold",
+        "reward_gold",
+        "reward_relics",
+        "reward_cards"
+      ],
+      "all_equal": true
+    },
+    {
+      "seed": 131200182,
+      "compared_fields": [
+        "potion_modifier",
+        "potion_rng",
+        "potions",
+        "all_rng",
+        "player_hp",
+        "player_gold",
+        "reward_gold",
+        "reward_relics",
+        "reward_cards"
+      ],
+      "all_equal": true
+    },
+    {
+      "seed": 131200183,
+      "compared_fields": [
+        "potion_modifier",
+        "potion_rng",
+        "potions",
+        "all_rng",
+        "player_hp",
+        "player_gold",
+        "reward_gold",
+        "reward_relics",
+        "reward_cards"
+      ],
+      "all_equal": true
+    },
+    {
+      "seed": 131200184,
+      "compared_fields": [
+        "potion_modifier",
+        "potion_rng",
+        "potions",
+        "all_rng",
+        "player_hp",
+        "player_gold",
+        "reward_gold",
+        "reward_relics",
+        "reward_cards"
+      ],
+      "all_equal": true
+    },
+    {
+      "seed": 131200185,
+      "compared_fields": [
+        "potion_modifier",
+        "potion_rng",
+        "potions",
+        "all_rng",
+        "player_hp",
+        "player_gold",
+        "reward_gold",
+        "reward_relics",
+        "reward_cards"
+      ],
+      "all_equal": true
+    },
+    {
+      "seed": 131200186,
+      "compared_fields": [
+        "potion_modifier",
+        "potion_rng",
+        "potions",
+        "all_rng",
+        "player_hp",
+        "player_gold",
+        "reward_gold",
+        "reward_relics",
+        "reward_cards"
+      ],
+      "all_equal": true
+    },
+    {
+      "seed": 131200187,
+      "compared_fields": [
+        "potion_modifier",
+        "potion_rng",
+        "potions",
+        "all_rng",
+        "player_hp",
+        "player_gold",
+        "reward_gold",
+        "reward_relics",
+        "reward_cards"
+      ],
+      "all_equal": true
+    },
+    {
+      "seed": 131200188,
+      "compared_fields": [
+        "potion_modifier",
+        "potion_rng",
+        "potions",
+        "all_rng",
+        "player_hp",
+        "player_gold",
+        "reward_gold",
+        "reward_relics",
+        "reward_cards"
+      ],
+      "all_equal": true
+    },
+    {
+      "seed": 131200189,
+      "compared_fields": [
+        "potion_modifier",
+        "potion_rng",
+        "potions",
+        "all_rng",
+        "player_hp",
+        "player_gold",
+        "reward_gold",
+        "reward_relics",
+        "reward_cards"
+      ],
+      "all_equal": true
+    },
+    {
+      "seed": 131200190,
+      "compared_fields": [
+        "potion_modifier",
+        "potion_rng",
+        "potions",
+        "all_rng",
+        "player_hp",
+        "player_gold",
+        "reward_gold",
+        "reward_relics",
+        "reward_cards"
+      ],
+      "all_equal": true
+    },
+    {
+      "seed": 131200191,
+      "compared_fields": [
+        "potion_modifier",
+        "potion_rng",
+        "potions",
+        "all_rng",
+        "player_hp",
+        "player_gold",
+        "reward_gold",
+        "reward_relics",
+        "reward_cards"
+      ],
+      "all_equal": true
+    },
+    {
+      "seed": 131200192,
+      "compared_fields": [
+        "potion_modifier",
+        "potion_rng",
+        "potions",
+        "all_rng",
+        "player_hp",
+        "player_gold",
+        "reward_gold",
+        "reward_relics",
+        "reward_cards"
+      ],
+      "all_equal": true
+    },
+    {
+      "seed": 131200193,
+      "compared_fields": [
+        "potion_modifier",
+        "potion_rng",
+        "potions",
+        "all_rng",
+        "player_hp",
+        "player_gold",
+        "reward_gold",
+        "reward_relics",
+        "reward_cards"
+      ],
+      "all_equal": true
+    },
+    {
+      "seed": 131200194,
+      "compared_fields": [
+        "potion_modifier",
+        "potion_rng",
+        "potions",
+        "all_rng",
+        "player_hp",
+        "player_gold",
+        "reward_gold",
+        "reward_relics",
+        "reward_cards"
+      ],
+      "all_equal": true
+    }
+  ],
+  "pre_fix_failed_runs": 3,
+  "strict_normal_trajectories": [
+    {
+      "seed": 8000011000001,
+      "status": "TRAJECTORY_MATCH",
+      "boundaries_checked": 200,
+      "native_source_sha256": "c07116cc51b0a720978e0f5bf7d591fbdaf976cffc32a6b7edf33ac8dc70276a"
+    },
+    {
+      "seed": 8000011000002,
+      "status": "TRAJECTORY_MATCH",
+      "boundaries_checked": 450,
+      "native_source_sha256": "c07116cc51b0a720978e0f5bf7d591fbdaf976cffc32a6b7edf33ac8dc70276a"
+    },
+    {
+      "seed": 8000011000004,
+      "status": "TRAJECTORY_MATCH",
+      "boundaries_checked": 216,
+      "native_source_sha256": "c07116cc51b0a720978e0f5bf7d591fbdaf976cffc32a6b7edf33ac8dc70276a"
+    },
+    {
+      "seed": 8000011000005,
+      "status": "TRAJECTORY_MATCH",
+      "boundaries_checked": 378,
+      "native_source_sha256": "c07116cc51b0a720978e0f5bf7d591fbdaf976cffc32a6b7edf33ac8dc70276a"
+    },
+    {
+      "seed": 8000011000007,
+      "status": "TRAJECTORY_MATCH",
+      "boundaries_checked": 397,
+      "native_source_sha256": "c07116cc51b0a720978e0f5bf7d591fbdaf976cffc32a6b7edf33ac8dc70276a"
+    },
+    {
+      "seed": 8000011000069,
+      "status": "TRAJECTORY_MATCH",
+      "boundaries_checked": 349,
+      "native_source_sha256": "c07116cc51b0a720978e0f5bf7d591fbdaf976cffc32a6b7edf33ac8dc70276a"
+    }
+  ],
+  "strict_normal_boundaries": 1990,
+  "shared_runs_matched": 36,
+  "automaton": {
+    "strict_first_difference_boundary": 122,
+    "independently_witnessed_updates": 15,
+    "conditional_boundaries": 334,
+    "unconditional_pass": false
+  },
+  "restoration_checks": [
+    {
+      "launch": "local/audits/act12-thief-rewards-20261008/production-city-isolation-r1.launch.json",
+      "journal": "D:\\SLS\\local\\runs\\oracle-qualification\\runtime-backups\\20261008T110452.743828Z\\journal.json",
+      "checked_entries": 63,
+      "mismatches": [],
+      "execution_error": null,
+      "completion": {
+        "exit_code": 0,
+        "status": "PASS"
+      }
+    },
+    {
+      "launch": "local/audits/act12-thief-rewards-20261008/production-isolation-r1.launch.json",
+      "journal": "D:\\SLS\\local\\runs\\oracle-qualification\\runtime-backups\\20261008T105511.024475Z\\journal.json",
+      "checked_entries": 63,
+      "mismatches": [],
+      "execution_error": null,
+      "completion": {
+        "exit_code": 0,
+        "status": "PASS"
+      }
+    },
+    {
+      "launch": "local/audits/act12-thief-rewards-20261008/stock-city-a-r1.launch.json",
+      "journal": "D:\\SLS\\local\\runs\\oracle-qualification\\runtime-backups\\20261008T105708.409502Z\\journal.json",
+      "checked_entries": 63,
+      "mismatches": [],
+      "execution_error": null,
+      "completion": {
+        "exit_code": 0,
+        "error": null
+      }
+    },
+    {
+      "launch": "local/audits/act12-thief-rewards-20261008/stock-city-b-r1.launch.json",
+      "journal": "D:\\SLS\\local\\runs\\oracle-qualification\\runtime-backups\\20261008T110252.247062Z\\journal.json",
+      "checked_entries": 63,
+      "mismatches": [],
+      "execution_error": null,
+      "completion": {
+        "exit_code": 0,
+        "error": null
+      }
+    },
+    {
+      "launch": "local/audits/act12-thief-rewards-20261008/stock-neighbors-a-r1.launch.json",
+      "journal": "D:\\SLS\\local\\runs\\oracle-qualification\\runtime-backups\\20261008T104325.519697Z\\journal.json",
+      "checked_entries": 63,
+      "mismatches": [],
+      "execution_error": null,
+      "completion": {
+        "exit_code": 2,
+        "error": "KeyError: 'combat_state'"
+      }
+    },
+    {
+      "launch": "local/audits/act12-thief-rewards-20261008/stock-neighbors-a-r2.launch.json",
+      "journal": "D:\\SLS\\local\\runs\\oracle-qualification\\runtime-backups\\20261008T104600.933287Z\\journal.json",
+      "checked_entries": 63,
+      "mismatches": [],
+      "execution_error": null,
+      "completion": {
+        "exit_code": 0,
+        "error": null
+      }
+    },
+    {
+      "launch": "local/audits/act12-thief-rewards-20261008/stock-neighbors-b-r1.launch.json",
+      "journal": "D:\\SLS\\local\\runs\\oracle-qualification\\runtime-backups\\20261008T104936.116350Z\\journal.json",
+      "checked_entries": 63,
+      "mismatches": [],
+      "execution_error": null,
+      "completion": {
+        "exit_code": 0,
+        "error": null
+      }
+    },
+    {
+      "launch": "local/audits/act12-thief-rewards-20261008/stock-thief-r1.launch.json",
+      "journal": "D:\\SLS\\local\\runs\\oracle-qualification\\runtime-backups\\20261008T102858.812166Z\\journal.json",
+      "checked_entries": 63,
+      "mismatches": [],
+      "execution_error": "game exited before smoke: 4294967295; logs: D:\\SLS\\local\\runs\\oracle-qualification\\runtime-backups\\20261008T102858.812166Z",
+      "completion": null
+    },
+    {
+      "launch": "local/audits/act12-thief-rewards-20261008/stock-thief-r2.launch.json",
+      "journal": "D:\\SLS\\local\\runs\\oracle-qualification\\runtime-backups\\20261008T103158.908889Z\\journal.json",
+      "checked_entries": 63,
+      "mismatches": [],
+      "execution_error": null,
+      "completion": {
+        "exit_code": 0,
+        "error": null
+      }
+    }
+  ],
+  "local_validation": {
+    "focused_tests_passed": 130,
+    "ruff": "PASS",
+    "scoped_diff_check": "PASS",
+    "full_computational_suite_rerun": false,
+    "model_rollout_gpu_benchmark_executed": false
+  },
+  "inputs_sha256": {
+    "local/audits/act12-thief-rewards-20261008/city-a-r1-recovery-check.json": "cba0223b16eee77152056a03f4b6eab91191ade5464f5713e1cd3ed354fbdc8c",
+    "local/audits/act12-thief-rewards-20261008/city-b-r1-recovery-check.json": "c430cccfb828d780e364dd980dc8b782eb09de11fc886543957a644dba1f9734",
+    "local/audits/act12-thief-rewards-20261008/failed-launch-r1-recovery-check.json": "4d07a91e9a07d1fed0dcdc844fc753db818df2331050062296a8c568b3e0653b",
+    "local/audits/act12-thief-rewards-20261008/native-before-131200180-r1.json": "beec567b83730eebc848b462dfa082132fe06e84bed790ac0c66ad1f63d50677",
+    "local/audits/act12-thief-rewards-20261008/native-city-a-after-r1.json": "71252da185395c77046cebc6692de176142fb31708a70edaf114116e37f39a22",
+    "local/audits/act12-thief-rewards-20261008/native-city-a-after-r2.json": "a782209f0c30144d107111fd49d2068148cffb86645278e3d7287f24be535f32",
+    "local/audits/act12-thief-rewards-20261008/native-city-b-after-r1.json": "cca266400e3959b49c7f9b450e800d0045c0a25e0aad5084e8187125851e838f",
+    "local/audits/act12-thief-rewards-20261008/native-neighbors-a-after-r1.json": "46d6f1fc17ac5d3e24a8b75b094c1eaedb26709518fdef90634daee14bfe977f",
+    "local/audits/act12-thief-rewards-20261008/native-neighbors-b-after-r1.json": "574144254c369188ab776a30778c939a9abd9ff19addd53a4e3e40b9415e489b",
+    "local/audits/act12-thief-rewards-20261008/native-paired-after-r1.json": "f72b93524b0d9b76da0636bb813bb89704d59d8f1b0055f9f6dfbc9acfd83610",
+    "local/audits/act12-thief-rewards-20261008/native-paired-before-r1.json": "5ba6dbe3bbeeb6621f9933c6d022c7c0aea703275b8b8c72431060784d40881e",
+    "local/audits/act12-thief-rewards-20261008/neighbors-a-failure-recovery-r1.json": "d7608b774fbfa16217f7e5a00f3ff1a16f385626ebf7ab35817f8a856375da3f",
+    "local/audits/act12-thief-rewards-20261008/neighbors-a-r2-recovery-check.json": "d7a7d0eb7170bd402191b7ee315c598b8868f2ba4b641c0973749aade95604aa",
+    "local/audits/act12-thief-rewards-20261008/neighbors-b-r1-recovery-check.json": "3010eec3f950fba9b71779da7947efa2fc4cbaca6d0010cd35b15c1ec978166d",
+    "local/audits/act12-thief-rewards-20261008/production-city-isolation-r1.json": "42d19d6e0f36a1bb976f417fc726f7c5f66893427d37ec2776a37bd3a44f5dbe",
+    "local/audits/act12-thief-rewards-20261008/production-city-isolation-r1.launch.json": "416a8fe48f87fdddb122ffd1619fad52672eb7078ae29d7987d486ede282c0b1",
+    "local/audits/act12-thief-rewards-20261008/production-city-r1-recovery-check.json": "643fbdaf6c41cea5eae46ee2d4a98fbb265f042dc0c1e836f6418346d273490b",
+    "local/audits/act12-thief-rewards-20261008/production-isolation-r1.json": "2c1b083d888b601cc380857f4bfcc31d86b523b55ca471a46c71a7d4bf0f4d1a",
+    "local/audits/act12-thief-rewards-20261008/production-isolation-r1.launch.json": "6051ffc208187b09ce62cec4777fe2705127fe96dc66082318af459184a75086",
+    "local/audits/act12-thief-rewards-20261008/production-r1-recovery-check.json": "0cc62cf911d26f185b9d71806be95e1e9aa1b2c053c66fe919a0263b2a3925ef",
+    "local/audits/act12-thief-rewards-20261008/shared-replay-after-r1.json": "c3c787ef5854d96c9501dcedd219af169e6926f95278443efbf7da1a1056bc90",
+    "local/audits/act12-thief-rewards-20261008/static-evidence-r1.json": "faffed5c4e549ba0c6496ba53f6159ab985727cad4edd806fdb23f4332b9bc41",
+    "local/audits/act12-thief-rewards-20261008/stock-city-a-r1.json": "600d5089b0169186080b10072888481835c512e75778870788e642f26ef7d699",
+    "local/audits/act12-thief-rewards-20261008/stock-city-a-r1.launch.json": "5b1755c5c25ca1d4f73d296d3b7873ae6f810fe2f17f79d8b2e8c67bb53007e3",
+    "local/audits/act12-thief-rewards-20261008/stock-city-b-r1.json": "9f82e755b19951275bc6dc03e3b0ee60055d6dd6eecbf31f0fd6b0809479b3b9",
+    "local/audits/act12-thief-rewards-20261008/stock-city-b-r1.launch.json": "c25de3b69a9b96ddd197e963e3b4a2d8c1b040694b5c5ee510e653d11f936ffb",
+    "local/audits/act12-thief-rewards-20261008/stock-neighbors-a-r1.json": "c8fe79ad93e90959998e623500e0a4a0fd5650cb99d5d55af5db8838ec60c843",
+    "local/audits/act12-thief-rewards-20261008/stock-neighbors-a-r1.launch.json": "2c296ee6864b12ebddbc03e628d27af968f1126c34f9350c53f65d316ac5c9ee",
+    "local/audits/act12-thief-rewards-20261008/stock-neighbors-a-r2.json": "b90875d2cd358e7c0233748fdd03bd3d7c5b1391f26fd512f107aeaca3bae155",
+    "local/audits/act12-thief-rewards-20261008/stock-neighbors-a-r2.launch.json": "1ec02b15fc49bdaceedf5a9e02c63c57cdcdb8a53d62fcb2dc84c9284a9c2f12",
+    "local/audits/act12-thief-rewards-20261008/stock-neighbors-b-r1.json": "012cc6364330980441b8ff6f933221f4511a9ed07ebed487c86ee006506a6e6e",
+    "local/audits/act12-thief-rewards-20261008/stock-neighbors-b-r1.launch.json": "2753761fbe3e7a6501ad0c160a481d1f7ed9779d6fe98c63290b845522b87cb8",
+    "local/audits/act12-thief-rewards-20261008/stock-probability-prefix-r1.json": "a14f20a1671b5433d8c124b9e37e82d467bedd2705eb5dfa035095de6e2b2e6c",
+    "local/audits/act12-thief-rewards-20261008/stock-r2-recovery-check.json": "5df8b9143c1af8c9e9170cd5dc5cab63756a32b5bff06e6d07a9d04ae4a8aa30",
+    "local/audits/act12-thief-rewards-20261008/stock-thief-r1.launch.json": "88138bb31f344e6ad8168331b7a731892df42edd548f93a5780534c881b2e166",
+    "local/audits/act12-thief-rewards-20261008/stock-thief-r2.json": "a39e087bb08d8af9463fb76ae9aa5266e92e46812da5d310c7a0a18fe6e4f633",
+    "local/audits/act12-thief-rewards-20261008/stock-thief-r2.launch.json": "8b4d253a4dbd75a0245c6b94d43fe3c15c1439f9a5b3758aa6ddca6db375ca04",
+    "local/audits/act12-thief-rewards-20261008/tool-preparation-r1.json": "aab29eba8af2654188b25ab02f1c5ecc885350a2fd840dfe672a7d2ec083d63f",
+    "local/audits/act12-thief-rewards-20261008/natural-replays-r1/8000011000001.json": "2278ab428e87c01be6b5ff98fefb287d24fddf85b17092449f8824697bb2514a",
+    "local/audits/act12-thief-rewards-20261008/natural-replays-r1/8000011000002.json": "5627b1664aa21b08c70145d6a8eda4621147b24981c3295e867baf9827f64127",
+    "local/audits/act12-thief-rewards-20261008/natural-replays-r1/8000011000004.json": "34cc08dd38b5de9b4a86ff8e90d4f2f067c0b7cb8d9ace609a2ebd3407a5a52c",
+    "local/audits/act12-thief-rewards-20261008/natural-replays-r1/8000011000005.json": "7200b8ea54ae75a1fa1f94c9d147c97c496ed16646821dafa0cee131e1aa1ac6",
+    "local/audits/act12-thief-rewards-20261008/natural-replays-r1/8000011000007.json": "6293df3e0bb4734986ab7f914785c0232cc657216d1fcf7853a4dee95bddaa98",
+    "local/audits/act12-thief-rewards-20261008/natural-replays-r1/8000011000069.json": "e8639b1c240ad0cd474e51fb50eb71ce7ac80ec8fb76729908d25515fa327ae6",
+    "local/audits/act12-thief-rewards-20261008/natural-replays-r1/automaton-conditional.json": "d7eb9491011475a74d635cf09fcc6fb66cd4c8e921c15b01b7f1ccdb7a49b4c1",
+    "local/audits/act12-thief-rewards-20261008/natural-replays-r1/automaton-strict.json": "ef32feb94ffca2ef32c83fadd410c35344dbe940b0c297540679786c01ee5409",
+    "local/audits/act12-thief-rewards-20261008/natural-replays-r1/summary.json": "c5265a7b7e6378b90af67dcaa38234e9bd20279f7412fded9bc14016e6a17c16",
+    "local/build/oracle/act12-thief-city-r1.build.json": "5713306d5a08eafbdd74e3f90d016955952bd2accace1e441a6a0dba25725695",
+    "native/oracle/resources/spirecomm/parity/fullrun-thief-city-r1.json": "7c83ec12b986ed510a32d0f75520514d100b02c64cb0f735586b207d4de953b0",
+    "tests/fixtures/regressions/act12-thief-city-rewards-131200180.json": "7042a6d1407ee54fed32d75bb5bf2f1a20850cc69dc96b2b5922ced22e3376cc",
+    "AGENTS.md": "90132f3c84221605cf5c5ffc917255e84aa4dd82e60cae9d79c120a5e307d7e7",
+    "local/audits/act12-thief-rewards-20261008/all-launches-restoration-final-r1.json": "783e2bcc9f58f65cb97998f804a711fead1e1b5b9303c1cc8afdc99abc942f79"
+  },
+  "limits": [
+    "controlled initial fixtures are not natural win-rate evidence",
+    "unconditional Discovery timing parity unresolved",
+    "uncovered Act1/Act2 content and interactions remain unverified",
+    "Act3/Heart work deferred by human scope"
+  ],
+  "next_training_gate": "Extract only this Act1/Act2 repair into a separate training release; bind new environment and reevaluate frozen parent, without exact-resume waiver."
+}

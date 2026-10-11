@@ -1,0 +1,223 @@
+{
+  "schema": "sls-stock-double-boss-source-v1",
+  "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "status": "STATIC_CALL_CHAIN_REVIEWED_RUNTIME_UNVERIFIED",
+  "classes": {
+    "com.megacrit.cardcrawl.ui.buttons.ProceedButton": {
+      "class_sha256": "e3be20a12a9f9466a81d44c2dcc895a5b6018709aa82d0da8a093b4ce0e8b8fd",
+      "bytecode_sha256": "fffc3e3e08dd4fa53a9d65181433e24cdbd527beda9ccaadce28f7e8657e1c3f",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.ui.buttons.ProceedButton"
+      ]
+    },
+    "com.megacrit.cardcrawl.rooms.MonsterRoomBoss": {
+      "class_sha256": "c1673b950a48f5ee08088395867e299226b0845f637044c7a49259c79d756a9f",
+      "bytecode_sha256": "7f74f073cf8638463d68beef49bdd213c853e199051ff226d010b169ba775d95",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.rooms.MonsterRoomBoss"
+      ]
+    },
+    "com.megacrit.cardcrawl.dungeons.AbstractDungeon": {
+      "class_sha256": "5452fdd7b33fa47dcea5c2e58d5d521dfde3acefba006c095ad5b01c60eda369",
+      "bytecode_sha256": "be440b70a41da50c747d240101168e6e0aad5a6eec66906f38ecb82f47c238dc",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.dungeons.AbstractDungeon"
+      ]
+    },
+    "com.megacrit.cardcrawl.dungeons.TheBeyond": {
+      "class_sha256": "e8e7819f75bc2ee347c9dbfa5316b42160c2c50ef4f3bae3b4115e2c4a9a6502",
+      "bytecode_sha256": "c2584927eb19266caf64d97926c9144a0d9a988d30b66099eb5a0e126234c35b",
+      "command": [
+        "D:\\java\\bin\\javap.exe",
+        "-classpath",
+        "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+        "-c",
+        "-p",
+        "com.megacrit.cardcrawl.dungeons.TheBeyond"
+      ]
+    }
+  },
+  "obligations": [
+    {
+      "first": "TIME_EATER",
+      "second": "AWAKENED_ONE",
+      "status": "RUNTIME_UNVERIFIED",
+      "boundaries": [
+        "first boss initial",
+        "first victory",
+        "second boss initial",
+        "second victory"
+      ],
+      "compare": [
+        "boss identity and remaining boss list",
+        "floor and room",
+        "HP/maxHP/gold",
+        "permanent deck and potions",
+        "relic counters and victory/entry callbacks",
+        "reward construction versus rewards actually granted",
+        "all auditable RNG streams",
+        "legal semantic actions",
+        "checkpoint restore and next action"
+      ]
+    },
+    {
+      "first": "TIME_EATER",
+      "second": "DONU_AND_DECA",
+      "status": "RUNTIME_UNVERIFIED",
+      "boundaries": [
+        "first boss initial",
+        "first victory",
+        "second boss initial",
+        "second victory"
+      ],
+      "compare": [
+        "boss identity and remaining boss list",
+        "floor and room",
+        "HP/maxHP/gold",
+        "permanent deck and potions",
+        "relic counters and victory/entry callbacks",
+        "reward construction versus rewards actually granted",
+        "all auditable RNG streams",
+        "legal semantic actions",
+        "checkpoint restore and next action"
+      ]
+    },
+    {
+      "first": "AWAKENED_ONE",
+      "second": "TIME_EATER",
+      "status": "RUNTIME_UNVERIFIED",
+      "boundaries": [
+        "first boss initial",
+        "first victory",
+        "second boss initial",
+        "second victory"
+      ],
+      "compare": [
+        "boss identity and remaining boss list",
+        "floor and room",
+        "HP/maxHP/gold",
+        "permanent deck and potions",
+        "relic counters and victory/entry callbacks",
+        "reward construction versus rewards actually granted",
+        "all auditable RNG streams",
+        "legal semantic actions",
+        "checkpoint restore and next action"
+      ]
+    },
+    {
+      "first": "AWAKENED_ONE",
+      "second": "DONU_AND_DECA",
+      "status": "RUNTIME_UNVERIFIED",
+      "boundaries": [
+        "first boss initial",
+        "first victory",
+        "second boss initial",
+        "second victory"
+      ],
+      "compare": [
+        "boss identity and remaining boss list",
+        "floor and room",
+        "HP/maxHP/gold",
+        "permanent deck and potions",
+        "relic counters and victory/entry callbacks",
+        "reward construction versus rewards actually granted",
+        "all auditable RNG streams",
+        "legal semantic actions",
+        "checkpoint restore and next action"
+      ]
+    },
+    {
+      "first": "DONU_AND_DECA",
+      "second": "TIME_EATER",
+      "status": "RUNTIME_UNVERIFIED",
+      "boundaries": [
+        "first boss initial",
+        "first victory",
+        "second boss initial",
+        "second victory"
+      ],
+      "compare": [
+        "boss identity and remaining boss list",
+        "floor and room",
+        "HP/maxHP/gold",
+        "permanent deck and potions",
+        "relic counters and victory/entry callbacks",
+        "reward construction versus rewards actually granted",
+        "all auditable RNG streams",
+        "legal semantic actions",
+        "checkpoint restore and next action"
+      ]
+    },
+    {
+      "first": "DONU_AND_DECA",
+      "second": "AWAKENED_ONE",
+      "status": "RUNTIME_UNVERIFIED",
+      "boundaries": [
+        "first boss initial",
+        "first victory",
+        "second boss initial",
+        "second victory"
+      ],
+      "compare": [
+        "boss identity and remaining boss list",
+        "floor and room",
+        "HP/maxHP/gold",
+        "permanent deck and potions",
+        "relic counters and victory/entry callbacks",
+        "reward construction versus rewards actually granted",
+        "all auditable RNG streams",
+        "legal semantic actions",
+        "checkpoint restore and next action"
+      ]
+    }
+  ],
+  "restriction": "No controlled setup or skip-battle result is a natural trajectory.",
+  "static_findings": [
+    {
+      "method": "ProceedButton.update",
+      "finding": "TheBeyond, ascension >=20 and remaining bossList size ==2 selects goToDoubleBoss; other non-endless Beyond boss victories select victory/door.",
+      "runtime_status": "UNVERIFIED"
+    },
+    {
+      "method": "MonsterRoomBoss.onPlayerEntry",
+      "finding": "Removes index0 from bossList on entry; controlled first-combat setup must preserve this consumed-list state.",
+      "runtime_status": "UNVERIFIED"
+    },
+    {
+      "method": "ProceedButton.goToDoubleBoss",
+      "finding": "Sets bossKey from remaining bossList index0, creates a fresh MonsterRoomBoss node and calls nextRoomTransitionStart.",
+      "runtime_status": "UNVERIFIED"
+    },
+    {
+      "method": "AbstractDungeon.nextRoomTransition",
+      "finding": "Increments floor when not loading; rebuilds monsterHp/ai/shuffle/cardRandom/misc RNG from seed+floor; invokes relic onEnterRoom before room entry.",
+      "runtime_status": "UNVERIFIED"
+    }
+  ],
+  "native_review": {
+    "path": "native/simulator/src/game/GameContext.cpp",
+    "sha256": "5cf67b94f919449bb134efa592c3e703c28add69fa2a545092f69cf3be5b5f50",
+    "finding": "afterBattle Act3 A20 first boss directly increments floor, resets five streams, invokes relicsOnEnterRoom then enters secondBoss. Static structure is consistent with selected stock calls; runtime equivalence not demonstrated."
+  },
+  "tool_gaps": [
+    "Controlled encounter replaces monsters but does not establish first-boss consumed bossList or bossKey.",
+    "Stock direct diagnostic has no remaining bossList or bossKey witness.",
+    "Encounter capture supports play/end/potion but not a verified stable victory-proceed-second-combat sequence.",
+    "Need phase-aware Awakened One lethal and Donu/Deca two-target scripts; must not mutate after initial setup."
+  ]
+}

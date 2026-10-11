@@ -1,0 +1,179 @@
+{
+  "schema": "sls-fullrun-scenes-v1",
+  "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "scenes": [
+    {
+      "id": "act3-giant-head-late-escalation",
+      "encounter": "GIANT_HEAD",
+      "ascension": 20,
+      "act": 3,
+      "floor": 40,
+      "room": "ELITE",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 1000,
+        "max_hp": 1000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R"
+        ]
+      },
+      "actions": [
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "stock_classes": [
+        "dungeons.TheBeyond",
+        "monsters.beyond.GiantHead",
+        "powers.SlowPower",
+        "cards.red.Anger",
+        "cards.red.Defend_Red",
+        "potions.FirePotion"
+      ],
+      "stock_methods": {
+        "powers.SlowPower": [
+          "onAfterUseCard",
+          "atDamageReceive",
+          "atEndOfRound"
+        ],
+        "monsters.beyond.GiantHead": [
+          "takeTurn",
+          "getMove"
+        ]
+      },
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheBeyond": {
+          "class_sha256": "e8e7819f75bc2ee347c9dbfa5316b42160c2c50ef4f3bae3b4115e2c4a9a6502",
+          "bytecode_sha256": "c2584927eb19266caf64d97926c9144a0d9a988d30b66099eb5a0e126234c35b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.GiantHead": {
+          "class_sha256": "4a5349ca0db689cafb622753e52046f5073eb573439ec22d38fd45ccd711104e",
+          "bytecode_sha256": "ad95d4b1aa5e876dca6159bc8a23343e619b6e6154f34cfe4ecc6e243291f54c"
+        },
+        "com.megacrit.cardcrawl.powers.SlowPower": {
+          "class_sha256": "f4f3f30d2cfcbadaa677c3fc54fc0184ecb1cc200b7845ea6857f663e1af2696",
+          "bytecode_sha256": "8d8bea2e8c8e3f2b5090a3fe3e879ab36cb574cf4e8b37c1da0bf9cce69fe52f"
+        },
+        "com.megacrit.cardcrawl.cards.red.Anger": {
+          "class_sha256": "cf446c5b763c790ec924fbbd010a6be8f1175f4e2d818805b5b599d78a04cb27",
+          "bytecode_sha256": "0ce0b704dea97674876fe6b2df815fadc463607d7442e29881f43ebbcde17dae"
+        },
+        "com.megacrit.cardcrawl.cards.red.Defend_Red": {
+          "class_sha256": "6ab4a01175dd549360e1bb426bdf107c62f6328e05c61b5947e07d1fef72a65b",
+          "bytecode_sha256": "8780093bccb5e8b608d7a0582399e1c5ecf1acf9a00a51261702213fabfc40bb"
+        },
+        "com.megacrit.cardcrawl.potions.FirePotion": {
+          "class_sha256": "0391a17323526250a23da24553b135b2f9a785feaa0ce168b9155c33f2bbd0f6",
+          "bytecode_sha256": "351ef53fe1c75fdb83c84c97b772c43d0c39740188641f7951a3257276123155"
+        }
+      },
+      "seeds": [
+        131200195,
+        131200196,
+        131200197
+      ],
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "obligation": "A20 naturally reaches It Is Time, damage increases in five-point steps and reaches the stock cap; compare every stable boundary and all RNG.",
+      "qualification_scope": "CONTROLLED_LATE_ATTACK_NOT_COMPLETE_ELITE_VICTORY"
+    }
+  ],
+  "qualification": false,
+  "final_holdout_used": false
+}

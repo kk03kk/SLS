@@ -57,10 +57,13 @@ def test_compatibility_check_rejects_nonhex_and_duplicate_transitions(tmp_path):
     assert 'invalid SHA256' in ' '.join(check_training_configs.validate_json(path, [record]))
 
 
-def test_completed_plan_preserves_bindings_but_cannot_be_resubmitted():
+@pytest.mark.parametrize('name', [
+    'act12-win-pilot', 'act12-lambda-control-r1', 'act12-lambda-experimental-r1',
+])
+def test_completed_plan_preserves_bindings_but_cannot_be_resubmitted(name):
     from tools.submit_act12_pilot import validate_plan
 
-    path = check_training_configs.ROOT / 'configs/experiments/act12-win-pilot.json'
+    path = check_training_configs.ROOT / f'configs/experiments/{name}.json'
     plan = json.loads(path.read_text(encoding='utf-8'))
     assert not check_training_configs.validate_json(path, plan)
     with pytest.raises(ValueError, match='bound'):
@@ -73,5 +76,5 @@ def test_completed_plan_preserves_bindings_but_cannot_be_resubmitted():
 def test_active_plan_still_rejects_stale_implementation():
     path = check_training_configs.ROOT / 'configs/experiments/act12-win-pilot.json'
     plan = json.loads((check_training_configs.ROOT /
-        'docs/results/act12-pilot-20261006/original-bound-plan.json').read_text(encoding='utf-8'))
+        'tests/fixtures/evidence/results/act12-pilot-20261006/original-bound-plan.json').read_text(encoding='utf-8'))
     assert 'bound implementation changed' in check_training_configs.validate_json(path, plan)

@@ -1,0 +1,363 @@
+{
+  "schema": "sls-writhing-flail-stock-regression-v1",
+  "stock_capture_sha256": "d3c8dccbe38d9b6b08b632552706df0fe885234b2c26b044e241ce2bbb0513d0",
+  "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "stock_source": {
+    "class_sha256": "8cd629117c79acf26547550ae4535654bc383ea2e39ec19daf4e8e989e8fc9ce",
+    "bytecode_sha256": "3f43dbab2d2af8eae20b7ed8be69822f84870dd2890c38339f6d90e716268a07",
+    "command": [
+      "D:\\java\\bin\\javap.exe",
+      "-classpath",
+      "D:\\Steam\\steamapps\\common\\SlayTheSpire\\desktop-1.0.jar",
+      "-c",
+      "-p",
+      "com.megacrit.cardcrawl.monsters.beyond.WrithingMass"
+    ]
+  },
+  "methods": [
+    "WrithingMass",
+    "takeTurn"
+  ],
+  "scope": "Flail block only. The independent getMove/RNG discrepancy remains open.",
+  "cases": [
+    {
+      "seed": 131200084,
+      "initial_rng": {
+        "ai": {
+          "counter": 1,
+          "seed0": 5736076559516827748,
+          "seed1": 7893183520901650563
+        },
+        "card_random": {
+          "counter": 0,
+          "seed0": 3690537314276943448,
+          "seed1": 5736076559516827748
+        },
+        "card": {
+          "counter": 0,
+          "seed0": 7893879693017887052,
+          "seed1": 2199719390270585372
+        },
+        "event": {
+          "counter": 0,
+          "seed0": 7893879693017887052,
+          "seed1": 2199719390270585372
+        },
+        "math_util": {
+          "counter": 0,
+          "seed0": 13262808170207981510,
+          "seed1": 13052857084835658326
+        },
+        "merchant": {
+          "counter": 0,
+          "seed0": 7893879693017887052,
+          "seed1": 2199719390270585372
+        },
+        "misc": {
+          "counter": 3,
+          "seed0": 1108962619072070321,
+          "seed1": 2812438168553237865
+        },
+        "monster_hp": {
+          "counter": 1,
+          "seed0": 5736076559516827748,
+          "seed1": 7893183520901650563
+        },
+        "monster": {
+          "counter": 69,
+          "seed0": 6538554911877388942,
+          "seed1": 12412440464855043362
+        },
+        "neow": {
+          "counter": 6,
+          "seed0": 16150284706175364869,
+          "seed1": 2346547726978819322
+        },
+        "potion": {
+          "counter": 0,
+          "seed0": 7893879693017887052,
+          "seed1": 2199719390270585372
+        },
+        "relic": {
+          "counter": 5,
+          "seed0": 16270986771947686312,
+          "seed1": 16150284706175364869
+        },
+        "shuffle": {
+          "counter": 0,
+          "seed0": 3690537314276943448,
+          "seed1": 5736076559516827748
+        },
+        "treasure": {
+          "counter": 0,
+          "seed0": 7893879693017887052,
+          "seed1": 2199719390270585372
+        }
+      },
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R"
+        ]
+      },
+      "flail_boundary": 3,
+      "expected_block": 16
+    },
+    {
+      "seed": 131200085,
+      "initial_rng": {
+        "ai": {
+          "counter": 1,
+          "seed0": 18081631496673375074,
+          "seed1": 3728643759678257588
+        },
+        "card_random": {
+          "counter": 0,
+          "seed0": 9208374067789602111,
+          "seed1": 18081631496673375074
+        },
+        "card": {
+          "counter": 0,
+          "seed0": 35586962433677876,
+          "seed1": 7715787910060043704
+        },
+        "event": {
+          "counter": 0,
+          "seed0": 35586962433677876,
+          "seed1": 7715787910060043704
+        },
+        "math_util": {
+          "counter": 0,
+          "seed0": 14605631175629906835,
+          "seed1": 10422747464192528099
+        },
+        "merchant": {
+          "counter": 0,
+          "seed0": 35586962433677876,
+          "seed1": 7715787910060043704
+        },
+        "misc": {
+          "counter": 2,
+          "seed0": 4869438653147146966,
+          "seed1": 11538531264315226838
+        },
+        "monster_hp": {
+          "counter": 1,
+          "seed0": 18081631496673375074,
+          "seed1": 3728643759678257588
+        },
+        "monster": {
+          "counter": 72,
+          "seed0": 16372156007955602213,
+          "seed1": 14263862690023970767
+        },
+        "neow": {
+          "counter": 6,
+          "seed0": 1283555631058341641,
+          "seed1": 13245519957835883912
+        },
+        "potion": {
+          "counter": 0,
+          "seed0": 35586962433677876,
+          "seed1": 7715787910060043704
+        },
+        "relic": {
+          "counter": 5,
+          "seed0": 17894218300818527652,
+          "seed1": 1283555631058341641
+        },
+        "shuffle": {
+          "counter": 0,
+          "seed0": 9208374067789602111,
+          "seed1": 18081631496673375074
+        },
+        "treasure": {
+          "counter": 0,
+          "seed0": 35586962433677876,
+          "seed1": 7715787910060043704
+        }
+      },
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R"
+        ]
+      },
+      "flail_boundary": 1,
+      "expected_block": 16
+    },
+    {
+      "seed": 131200086,
+      "initial_rng": {
+        "ai": {
+          "counter": 1,
+          "seed0": 3234030697654974996,
+          "seed1": 8277805774419718410
+        },
+        "card_random": {
+          "counter": 0,
+          "seed0": 18054164860469766260,
+          "seed1": 3234030697654974996
+        },
+        "card": {
+          "counter": 0,
+          "seed0": 9197511043740190298,
+          "seed1": 17590517189130360884
+        },
+        "event": {
+          "counter": 0,
+          "seed0": 9197511043740190298,
+          "seed1": 17590517189130360884
+        },
+        "math_util": {
+          "counter": 0,
+          "seed0": 6144880771760799289,
+          "seed1": 12908775205099779730
+        },
+        "merchant": {
+          "counter": 0,
+          "seed0": 9197511043740190298,
+          "seed1": 17590517189130360884
+        },
+        "misc": {
+          "counter": 1,
+          "seed0": 12692794679434564957,
+          "seed1": 9570225698112538151
+        },
+        "monster_hp": {
+          "counter": 1,
+          "seed0": 3234030697654974996,
+          "seed1": 8277805774419718410
+        },
+        "monster": {
+          "counter": 66,
+          "seed0": 873891730516060607,
+          "seed1": 3562198419743168615
+        },
+        "neow": {
+          "counter": 6,
+          "seed0": 16329495745478836201,
+          "seed1": 6109865553149283642
+        },
+        "potion": {
+          "counter": 0,
+          "seed0": 9197511043740190298,
+          "seed1": 17590517189130360884
+        },
+        "relic": {
+          "counter": 5,
+          "seed0": 10877334673442581540,
+          "seed1": 16329495745478836201
+        },
+        "shuffle": {
+          "counter": 0,
+          "seed0": 18054164860469766260,
+          "seed1": 3234030697654974996
+        },
+        "treasure": {
+          "counter": 0,
+          "seed0": 9197511043740190298,
+          "seed1": 17590517189130360884
+        }
+      },
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R"
+        ]
+      },
+      "flail_boundary": 1,
+      "expected_block": 16
+    }
+  ]
+}

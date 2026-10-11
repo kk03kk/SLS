@@ -1,0 +1,290 @@
+{
+  "schema": "sls-fullrun-scenes-v1",
+  "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "scenes": [
+    {
+      "id": "act3-time-eater-haste-cross-half",
+      "encounter": "TIME_EATER",
+      "ascension": 20,
+      "act": 3,
+      "floor": 50,
+      "room": "BOSS",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Bash"
+        ],
+        "draw": [
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger"
+        ],
+        "monster_hp": {
+          "TIME_EATER": 241
+        }
+      },
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        }
+      ],
+      "stock_classes": [
+        "dungeons.TheBeyond",
+        "monsters.beyond.TimeEater",
+        "cards.red.Bash",
+        "cards.red.Disarm",
+        "actions.unique.RemoveDebuffsAction",
+        "actions.common.HealAction",
+        "actions.common.RemoveSpecificPowerAction",
+        "powers.StrengthPower"
+      ],
+      "stock_methods": {
+        "monsters.beyond.TimeEater": [
+          "getMove",
+          "takeTurn"
+        ],
+        "cards.red.Bash": [
+          "use"
+        ],
+        "cards.red.Disarm": [
+          "use"
+        ],
+        "actions.unique.RemoveDebuffsAction": [
+          "update"
+        ],
+        "actions.common.HealAction": [
+          "update"
+        ]
+      },
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheBeyond": {
+          "class_sha256": "e8e7819f75bc2ee347c9dbfa5316b42160c2c50ef4f3bae3b4115e2c4a9a6502",
+          "bytecode_sha256": "c2584927eb19266caf64d97926c9144a0d9a988d30b66099eb5a0e126234c35b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.TimeEater": {
+          "class_sha256": "9cb8975671f6aa31ce9ad1a24b6116276d716275a9ca3063d4c18b61f9e576ce",
+          "bytecode_sha256": "5682a97260a05d8c90e57b238df346c38682c0d17561f25da72b2fcf7baa86d8"
+        },
+        "com.megacrit.cardcrawl.cards.red.Bash": {
+          "class_sha256": "1cb0b2abd0fe4060e3ef5b6182bb48c42aa4d28375939d0feec2f0348e3696ce",
+          "bytecode_sha256": "7dc3e018e5133456a2642d9fa8cbc37941c778c2b0e375b1d1cf290ccab1427d"
+        },
+        "com.megacrit.cardcrawl.cards.red.Disarm": {
+          "class_sha256": "c125b5b5d6c8985cc0a73e1228569268b68ed000a1140345e928cc7f94cae275",
+          "bytecode_sha256": "53d435b9fa638e931e3843e5b9844f8d5d82aa033d4f80d289ee65fc1b37c3bc"
+        },
+        "com.megacrit.cardcrawl.actions.unique.RemoveDebuffsAction": {
+          "class_sha256": "5e09babf8a1797266ec6f02af9a4889c827946ba8c1ba167a7fa30a19dc87394",
+          "bytecode_sha256": "ccc032c64d477ba5c3561c7b81e3c53ea8bac782bdafe11df88d5d5557ca74b6"
+        },
+        "com.megacrit.cardcrawl.actions.common.HealAction": {
+          "class_sha256": "a24ff45b9753a558c817d40cdb98527cd07cfabba0789a26127a12da3d04e1fd",
+          "bytecode_sha256": "a289ebaccb173bfc5dd3319911779de96ef3b54d716b7bd05ecc228b8749e821"
+        },
+        "com.megacrit.cardcrawl.actions.common.RemoveSpecificPowerAction": {
+          "class_sha256": "581049c6ea46f8c41bb56db7b76094227ac0d3fdc2ca2a33bddbeb4ed560480b",
+          "bytecode_sha256": "dc0c82f18c7983a0ea69fec73a6ea12de487bf63704780569c73cc160977f15e"
+        },
+        "com.megacrit.cardcrawl.powers.StrengthPower": {
+          "class_sha256": "d65bc71fdfd7ef22d87a029c388781729f9a5de1ef2e6b019ca2f31a8b8a9b07",
+          "bytecode_sha256": "41f2118d4ec6038d3328e6ec3ee4ef378bcd71f9497fc7805e10cf50c24a627c"
+        }
+      },
+      "seeds": [
+        131200144,
+        131200145,
+        131200146
+      ],
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "obligation": "Below-half getMove selects one-use Haste; remove debuffs/negative Strength, heal to half, A19+ block, subsequent legal actions and RNG.",
+      "qualification_scope": "CONTROLLED_HASTE_NOT_FINAL_BOSS_FLOW"
+    },
+    {
+      "id": "act3-time-eater-haste-negative-strength",
+      "encounter": "TIME_EATER",
+      "ascension": 20,
+      "act": 3,
+      "floor": 50,
+      "room": "BOSS",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Disarm"
+        ],
+        "draw": [
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger"
+        ],
+        "monster_hp": {
+          "TIME_EATER": 235
+        }
+      },
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        }
+      ],
+      "stock_classes": [
+        "dungeons.TheBeyond",
+        "monsters.beyond.TimeEater",
+        "cards.red.Bash",
+        "cards.red.Disarm",
+        "actions.unique.RemoveDebuffsAction",
+        "actions.common.HealAction",
+        "actions.common.RemoveSpecificPowerAction",
+        "powers.StrengthPower"
+      ],
+      "stock_methods": {
+        "monsters.beyond.TimeEater": [
+          "getMove",
+          "takeTurn"
+        ],
+        "cards.red.Bash": [
+          "use"
+        ],
+        "cards.red.Disarm": [
+          "use"
+        ],
+        "actions.unique.RemoveDebuffsAction": [
+          "update"
+        ],
+        "actions.common.HealAction": [
+          "update"
+        ]
+      },
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheBeyond": {
+          "class_sha256": "e8e7819f75bc2ee347c9dbfa5316b42160c2c50ef4f3bae3b4115e2c4a9a6502",
+          "bytecode_sha256": "c2584927eb19266caf64d97926c9144a0d9a988d30b66099eb5a0e126234c35b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.TimeEater": {
+          "class_sha256": "9cb8975671f6aa31ce9ad1a24b6116276d716275a9ca3063d4c18b61f9e576ce",
+          "bytecode_sha256": "5682a97260a05d8c90e57b238df346c38682c0d17561f25da72b2fcf7baa86d8"
+        },
+        "com.megacrit.cardcrawl.cards.red.Bash": {
+          "class_sha256": "1cb0b2abd0fe4060e3ef5b6182bb48c42aa4d28375939d0feec2f0348e3696ce",
+          "bytecode_sha256": "7dc3e018e5133456a2642d9fa8cbc37941c778c2b0e375b1d1cf290ccab1427d"
+        },
+        "com.megacrit.cardcrawl.cards.red.Disarm": {
+          "class_sha256": "c125b5b5d6c8985cc0a73e1228569268b68ed000a1140345e928cc7f94cae275",
+          "bytecode_sha256": "53d435b9fa638e931e3843e5b9844f8d5d82aa033d4f80d289ee65fc1b37c3bc"
+        },
+        "com.megacrit.cardcrawl.actions.unique.RemoveDebuffsAction": {
+          "class_sha256": "5e09babf8a1797266ec6f02af9a4889c827946ba8c1ba167a7fa30a19dc87394",
+          "bytecode_sha256": "ccc032c64d477ba5c3561c7b81e3c53ea8bac782bdafe11df88d5d5557ca74b6"
+        },
+        "com.megacrit.cardcrawl.actions.common.HealAction": {
+          "class_sha256": "a24ff45b9753a558c817d40cdb98527cd07cfabba0789a26127a12da3d04e1fd",
+          "bytecode_sha256": "a289ebaccb173bfc5dd3319911779de96ef3b54d716b7bd05ecc228b8749e821"
+        },
+        "com.megacrit.cardcrawl.actions.common.RemoveSpecificPowerAction": {
+          "class_sha256": "581049c6ea46f8c41bb56db7b76094227ac0d3fdc2ca2a33bddbeb4ed560480b",
+          "bytecode_sha256": "dc0c82f18c7983a0ea69fec73a6ea12de487bf63704780569c73cc160977f15e"
+        },
+        "com.megacrit.cardcrawl.powers.StrengthPower": {
+          "class_sha256": "d65bc71fdfd7ef22d87a029c388781729f9a5de1ef2e6b019ca2f31a8b8a9b07",
+          "bytecode_sha256": "41f2118d4ec6038d3328e6ec3ee4ef378bcd71f9497fc7805e10cf50c24a627c"
+        }
+      },
+      "seeds": [
+        131200147,
+        131200148,
+        131200149
+      ],
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "obligation": "Below-half getMove selects one-use Haste; remove debuffs/negative Strength, heal to half, A19+ block, subsequent legal actions and RNG.",
+      "qualification_scope": "CONTROLLED_HASTE_NOT_FINAL_BOSS_FLOW"
+    }
+  ],
+  "qualification": false,
+  "final_holdout_used": false
+}

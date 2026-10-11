@@ -1,0 +1,280 @@
+{
+  "schema": "sls-fullrun-scenes-v1",
+  "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "scenes": [
+    {
+      "id": "act3-darkling-revive-slot0",
+      "encounter": "THREE_DARKLINGS",
+      "ascension": 20,
+      "act": 3,
+      "floor": 40,
+      "room": "MONSTER",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Anger"
+        ],
+        "draw": [
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger"
+        ],
+        "monster_hp": {
+          "DARKLING": 1
+        }
+      },
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        }
+      ],
+      "stock_classes": [
+        "dungeons.TheBeyond",
+        "monsters.beyond.Darkling",
+        "powers.RegrowPower",
+        "actions.common.HealAction",
+        "actions.common.SetMoveAction",
+        "cards.red.Anger"
+      ],
+      "stock_methods": {
+        "dungeons.TheBeyond": [
+          "TheBeyond"
+        ],
+        "monsters.beyond.Darkling": [
+          "damage",
+          "takeTurn",
+          "getMove",
+          "die"
+        ],
+        "powers.RegrowPower": [
+          "RegrowPower"
+        ],
+        "actions.common.HealAction": [
+          "update"
+        ],
+        "actions.common.SetMoveAction": [
+          "update"
+        ],
+        "cards.red.Anger": [
+          "use"
+        ]
+      },
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheBeyond": {
+          "class_sha256": "e8e7819f75bc2ee347c9dbfa5316b42160c2c50ef4f3bae3b4115e2c4a9a6502",
+          "bytecode_sha256": "c2584927eb19266caf64d97926c9144a0d9a988d30b66099eb5a0e126234c35b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.Darkling": {
+          "class_sha256": "dd71f024e39417e7733083d0bad5f10fff47694918ac86beae46e2c8dcec7a46",
+          "bytecode_sha256": "b7fb498c5893c1bb24eedc53dfa3525998c4b0e3430768b13f1a3e257c9dc386"
+        },
+        "com.megacrit.cardcrawl.powers.RegrowPower": {
+          "class_sha256": "ea6306e256afed5eff71b40a218e5030bd417845dffacabb26dbcdbc220a64f2",
+          "bytecode_sha256": "f77770ed2574fa175ec9331946f5d497822ae2e425f077561b1cbfe671afe89c"
+        },
+        "com.megacrit.cardcrawl.actions.common.HealAction": {
+          "class_sha256": "a24ff45b9753a558c817d40cdb98527cd07cfabba0789a26127a12da3d04e1fd",
+          "bytecode_sha256": "a289ebaccb173bfc5dd3319911779de96ef3b54d716b7bd05ecc228b8749e821"
+        },
+        "com.megacrit.cardcrawl.actions.common.SetMoveAction": {
+          "class_sha256": "4ff1498c2496ec26266149478a1d85a65503cad3353b17a30baa15d3465fb12a",
+          "bytecode_sha256": "3c8d38e5d0889c9d1c661a2eb18fff1544645dc72f65b182a18f314d8eb28cab"
+        },
+        "com.megacrit.cardcrawl.cards.red.Anger": {
+          "class_sha256": "cf446c5b763c790ec924fbbd010a6be8f1175f4e2d818805b5b599d78a04cb27",
+          "bytecode_sha256": "0ce0b704dea97674876fe6b2df815fadc463607d7442e29881f43ebbcde17dae"
+        }
+      },
+      "seeds": [
+        131200132,
+        131200133,
+        131200134
+      ],
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "obligation": "Original Anger triggers halfDead; two enemy turns trigger Regrow/Reincarnate; target revived edge or center enemy, compare mask/HP/powers/AI/RNG.",
+      "qualification_scope": "CONTROLLED_SINGLE_DARKLING_REVIVAL_NOT_ALL_DEAD_OR_NATURAL_FLOW"
+    },
+    {
+      "id": "act3-darkling-revive-slot1",
+      "encounter": "THREE_DARKLINGS",
+      "ascension": 20,
+      "act": 3,
+      "floor": 40,
+      "room": "MONSTER",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 5000,
+        "max_hp": 5000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Anger"
+        ],
+        "draw": [
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger"
+        ],
+        "monster_hp": {
+          "DARKLING": 1
+        }
+      },
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 1
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 1
+        }
+      ],
+      "stock_classes": [
+        "dungeons.TheBeyond",
+        "monsters.beyond.Darkling",
+        "powers.RegrowPower",
+        "actions.common.HealAction",
+        "actions.common.SetMoveAction",
+        "cards.red.Anger"
+      ],
+      "stock_methods": {
+        "dungeons.TheBeyond": [
+          "TheBeyond"
+        ],
+        "monsters.beyond.Darkling": [
+          "damage",
+          "takeTurn",
+          "getMove",
+          "die"
+        ],
+        "powers.RegrowPower": [
+          "RegrowPower"
+        ],
+        "actions.common.HealAction": [
+          "update"
+        ],
+        "actions.common.SetMoveAction": [
+          "update"
+        ],
+        "cards.red.Anger": [
+          "use"
+        ]
+      },
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheBeyond": {
+          "class_sha256": "e8e7819f75bc2ee347c9dbfa5316b42160c2c50ef4f3bae3b4115e2c4a9a6502",
+          "bytecode_sha256": "c2584927eb19266caf64d97926c9144a0d9a988d30b66099eb5a0e126234c35b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.Darkling": {
+          "class_sha256": "dd71f024e39417e7733083d0bad5f10fff47694918ac86beae46e2c8dcec7a46",
+          "bytecode_sha256": "b7fb498c5893c1bb24eedc53dfa3525998c4b0e3430768b13f1a3e257c9dc386"
+        },
+        "com.megacrit.cardcrawl.powers.RegrowPower": {
+          "class_sha256": "ea6306e256afed5eff71b40a218e5030bd417845dffacabb26dbcdbc220a64f2",
+          "bytecode_sha256": "f77770ed2574fa175ec9331946f5d497822ae2e425f077561b1cbfe671afe89c"
+        },
+        "com.megacrit.cardcrawl.actions.common.HealAction": {
+          "class_sha256": "a24ff45b9753a558c817d40cdb98527cd07cfabba0789a26127a12da3d04e1fd",
+          "bytecode_sha256": "a289ebaccb173bfc5dd3319911779de96ef3b54d716b7bd05ecc228b8749e821"
+        },
+        "com.megacrit.cardcrawl.actions.common.SetMoveAction": {
+          "class_sha256": "4ff1498c2496ec26266149478a1d85a65503cad3353b17a30baa15d3465fb12a",
+          "bytecode_sha256": "3c8d38e5d0889c9d1c661a2eb18fff1544645dc72f65b182a18f314d8eb28cab"
+        },
+        "com.megacrit.cardcrawl.cards.red.Anger": {
+          "class_sha256": "cf446c5b763c790ec924fbbd010a6be8f1175f4e2d818805b5b599d78a04cb27",
+          "bytecode_sha256": "0ce0b704dea97674876fe6b2df815fadc463607d7442e29881f43ebbcde17dae"
+        }
+      },
+      "seeds": [
+        131200135,
+        131200136,
+        131200137
+      ],
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "obligation": "Original Anger triggers halfDead; two enemy turns trigger Regrow/Reincarnate; target revived edge or center enemy, compare mask/HP/powers/AI/RNG.",
+      "qualification_scope": "CONTROLLED_SINGLE_DARKLING_REVIVAL_NOT_ALL_DEAD_OR_NATURAL_FLOW"
+    }
+  ],
+  "qualification": false,
+  "final_holdout_used": false
+}

@@ -61,7 +61,7 @@ def test_unreviewed_changes_rejected(reviewed, tmp_path, change):
 
 def test_real_snecko_transition_evidence_is_self_consistent():
     root = Path(__file__).resolve().parents[2]
-    path = root / "docs/results/act12-qualification-20261004/simulator-transition.json"
+    path = root / "tests/fixtures/evidence/results/act12-qualification-20261004/simulator-transition.json"
     evidence = json.loads(path.read_text())
     spec = {"transfer_kind": "curriculum-stage", "simulator_transition": {
         "evidence": path.relative_to(root).as_posix(), "evidence_sha256": sha256_file(path),

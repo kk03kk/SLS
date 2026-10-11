@@ -102,7 +102,7 @@ def prepare(study: Path, output: Path) -> dict:
                 'secondary_test_limit': 'Control test is secondary, unadjusted p<=.05; not the preregistered lambda superiority claim.'}
     if arm is None:
         raise ValueError('no qualifying joint gain: do not bind or submit a 20M extension')
-    reject_used_seeds([ROOT / 'local/runs', ROOT / 'docs/results'])
+    reject_used_seeds([ROOT / 'local/runs', ROOT / 'tests/fixtures/evidence/results'])
     index = int(arm == 'experimental')
     parent = runs[index]
     config = copy.deepcopy(configs[index])

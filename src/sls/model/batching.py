@@ -3,13 +3,14 @@
 from __future__ import annotations
 
 import math
+import re
 from dataclasses import dataclass
 from typing import Iterable, Mapping
 
 import numpy as np
 import torch
 
-from sls.contracts import Decision, Observation
+from sls.contracts import ActionKind, Decision, Observation
 from sls.model.encoding import (
     ACTION_TYPE_IDS,
     CATEGORICAL_FIELD_IDS,
@@ -161,6 +162,8 @@ def _number(value: object, *, path: str) -> float:
     if not isinstance(value, (int, float)):
         raise ValueError(f"policy numeric field at {path} is not numeric: {value!r}")
     raw = float(value)
+    if not math.isfinite(raw):
+        raise ValueError(f"policy numeric field at {path} must be finite")
     return math.copysign(math.log1p(abs(raw)), raw)
 
 
@@ -244,10 +247,28 @@ def encode_decision(decision: Decision, config: object | None = None) -> Encoded
         })
 
     existing_references = {reference for _, reference, _, _ in rows}
-    for option_id in sorted({
-        action.option_id for action in decision.actions
-        if action.option_id is not None and action.option_id not in existing_references
-    }):
+    implicit_options = set()
+    for action in decision.actions:
+        option_id = action.option_id
+        if option_id is None or option_id in existing_references:
+            continue
+        # Some commands have a protocol identity rather than a visible entity.
+        # Only these declared namespaces may synthesize a command token.
+        allowed = (
+            (action.kind is ActionKind.CONFIRM and option_id in {"combat-selection", "shop-remove"})
+            or (action.kind is ActionKind.CHOOSE_NEOW_OPTION and re.fullmatch(r"neow:\d+", option_id))
+            or (action.kind in {ActionKind.SKIP_CARD_REWARD, ActionKind.TAKE_SINGING_BOWL}
+                and re.fullmatch(r"reward-card:\d+", option_id))
+            or (action.kind in {ActionKind.REST, ActionKind.LIFT, ActionKind.DIG, ActionKind.RECALL,
+                                ActionKind.PROCEED} and re.fullmatch(r"rest-option:\d+", option_id))
+            or (action.kind is ActionKind.PROCEED and re.fullmatch(r"native-option:\d+", option_id))
+            or (action.kind is ActionKind.CHOOSE_EVENT_OPTION
+                and re.fullmatch(r"match-pair:\d+:\d+", option_id))
+        )
+        if not allowed:
+            raise ValueError(f"unresolved action option_id: {option_id}")
+        implicit_options.add(option_id)
+    for option_id in sorted(implicit_options):
         tail = option_id.rsplit(":", 1)[-1]
         ordinal = int(tail) if tail.lstrip("-").isdigit() else 0
         add("CHOICE", option_id, "OPTION", {"option_ordinal": ordinal})
@@ -277,6 +298,8 @@ def encode_decision(decision: Decision, config: object | None = None) -> Encoded
     action_numeric, action_present, action_types = [], [], []
     action_references, action_masks = [], []
     for action in decision.actions:
+        if any(key in CATEGORICAL_FIELD_IDS for key, _ in action.metadata):
+            raise ValueError("categorical action metadata is not supported by the policy input contract")
         numeric, present, _ = _features(dict(action.metadata), path=f"action[{action.kind.value}]")
         refs, masks = [], []
         for field in REFERENCE_FIELDS:

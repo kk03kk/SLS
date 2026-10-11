@@ -476,10 +476,28 @@ void BattleContext::initRelics(const GameContext &gc) {
     triggerStartOfTurnOrbs();
 }
 
+void BattleContext::syncImplantObtain(GameContext &g) {
+    const auto &m = monsters.arr[0];
+    if (m.id != MonsterId::WRITHING_MASS || !m.miscInfo || miscBits.test(1)) {
+        return;
+    }
+    // Combat resource hooks execute in takeTurn. Apply the permanent obtain
+    // before the next policy boundary, retaining Omamori and deck bookkeeping.
+    // Do not apply those resource hooks a second time through GameContext.
+    g.deck.obtain(g, CardId::PARASITE);
+    g.curHp = player.curHp;
+    g.maxHp = player.maxHp;
+    g.gold = player.gold;
+    if (g.hasRelic(RelicId::OMAMORI)) {
+        player.setHasRelic<R::OMAMORI>(g.relics.getRelicValueRef(RelicId::OMAMORI) > 0);
+    }
+    miscBits.set(1);
+}
+
 void BattleContext::exitBattle(GameContext &g) const {
     // do this first so that darkstone periapt is overridden by curHp and maxHp are set afterwards
     const auto &m = monsters.arr[0];
-    if (m.id == MonsterId::WRITHING_MASS && m.miscInfo) {
+    if (m.id == MonsterId::WRITHING_MASS && m.miscInfo && !miscBits.test(1)) {
         if (player.hasRelic<R::OMAMORI>()) {
             --g.relics.getRelicValueRef(RelicId::OMAMORI);
         } else {
@@ -2001,10 +2019,15 @@ void BattleContext::onUsePowerCard() {
         mummifiedHandOnUsePower();
     }
 
-//    auto &m = monsters.optionMap[2];
-//    if (m.hasStatusInternal<MS::CURIOSITY>()) {
-//        m.buff<MS::STRENGTH>(m.getStatus<MS::CURIOSITY>());
-//    }
+    // CuriosityPower.onUseCard queues its owner's Strength after each power
+    // card, including duplicated uses. Use the actual owner rather than a
+    // fixed slot; the queued action retains stock dead-target checks.
+    for (int index = 0; index < monsters.monsterCount; ++index) {
+        const auto &monster = monsters.arr[index];
+        if (monster.hasStatus<MS::CURIOSITY>()) {
+            addToBot(Actions::BuffEnemy<MS::STRENGTH>(index, monster.getStatus<MS::CURIOSITY>()));
+        }
+    }
 }
 
 void BattleContext::onUseStatusOrCurseCard() {

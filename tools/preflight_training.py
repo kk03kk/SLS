@@ -155,6 +155,7 @@ def main() -> int:
         transfer = None
         with ShardedWorkerPool(profile, int(layout.get("selected_workers", 1)),
                                shard_count=int(layout.get("selected_shards", 1))) as workers:
+            from sls.rl.start_curriculum import from_config
             trainer = PPOTrainer(
                 model, workers, ppo,
                 device=device, seed=918273,
@@ -162,6 +163,7 @@ def main() -> int:
                 native_contract_digest=native_source_digest(),
                 git_commit=str(repository["commit"]),
                 training_config_digest="PREFLIGHT_MICRO_RESUME",
+                start_curriculum=from_config(payload or {}, ROOT),
             )
             if args.checkpoint:
                 from sls.rl.checkpoint import load_checkpoint_runtime_rebind

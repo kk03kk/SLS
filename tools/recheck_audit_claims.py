@@ -30,7 +30,7 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
-    audit = ROOT / "local/audit-2026-09-29"
+    audit = ROOT / "local/audits/legacy-20260929"
     dev = rows(audit / "eval-dev-8e12.json")
     current = rows(audit / "eval-final-7e12-current-env.json")
     original = rows(ROOT / "local/runs/ironclad-a20-act1-v4-60m-stable/final-evaluation.json")

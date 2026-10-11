@@ -52,6 +52,7 @@ import com.megacrit.cardcrawl.potions.SmokeBomb;
 import com.megacrit.cardcrawl.rewards.RewardItem;
 import com.megacrit.cardcrawl.core.AbstractCreature;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
+import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.random.Random;
 import communicationmod.CommandExecutor;
 import communicationmod.CommunicationMod;
@@ -252,6 +253,19 @@ public final class OracleScenarioPatch {
             throw new IllegalStateException("Unknown oracle scenario card: " + id);
         }
         return prototype.makeCopy();
+    }
+
+    /** Initial scene specification only; upgrades execute stock card code. */
+    private static AbstractCard sceneCard(String spec) {
+        int plus = spec.lastIndexOf('+');
+        String id = plus < 0 ? spec : spec.substring(0, plus);
+        int upgrades = plus < 0 ? 0 : Integer.parseInt(spec.substring(plus + 1));
+        if (upgrades < 0 || upgrades > ("Searing Blow".equals(id) ? 30 : 1)) {
+            throw new IllegalArgumentException("controlled card upgrade count out of bounds");
+        }
+        AbstractCard result = card(id);
+        for (int i = 0; i < upgrades; ++i) result.upgrade();
+        return result;
     }
 
     private static void clearCombatState(AbstractPlayer player) {
@@ -1630,13 +1644,18 @@ public final class OracleScenarioPatch {
 
     private static void applyEncounterProbe(String encounterId, int ascension,
             int act, int floor, String scenarioId) {
-        if (ascension < 0 || ascension > 20 || act < 1 || act > 3 || floor < 1
+        if (ascension < 0 || ascension > 20 || act < 1 || act > 4 || floor < 1
                 || !scenarioId.matches("[A-Za-z0-9_-]+")) {
             throw new IllegalArgumentException("invalid encounter probe context");
         }
         String gameId = ENCOUNTER_ALLOWLIST.get(encounterId.toUpperCase(Locale.ROOT));
         if (gameId == null) {
             throw new IllegalArgumentException("parity_encounter is not in the encounter allowlist");
+        }
+        if (act == 4 && (!"TheEnding".equals(AbstractDungeon.id)
+                || !(CardCrawlGame.dungeon instanceof com.megacrit.cardcrawl.dungeons.TheEnding)
+                || !("SHIELD_AND_SPEAR".equals(encounterId) || "THE_HEART".equals(encounterId)))) {
+            throw new IllegalArgumentException("Act4 encounter requires actual TheEnding context");
         }
         AbstractDungeon.ascensionLevel = ascension;
         AbstractDungeon.actNum = act;
@@ -1665,17 +1684,39 @@ public final class OracleScenarioPatch {
         GameStateListener.registerStateChange();
     }
 
+    private static int lastDrainUpdateCount;
+    private static float lastDrainDelta;
+    private static long lastDrainElapsedNanos;
+
     private static void drainActions() {
         // Commands may arrive inside an unusually short render frame. Stock
         // actions decrement duration by that frame's delta, so retain a hard
         // failure bound but allow enough updates for the smallest observed
         // delta instead of making the semantic probe timing-flaky.
-        for (int update = 0; update < 4096; ++update) {
+        final long started = System.nanoTime();
+        lastDrainDelta = com.badlogic.gdx.Gdx.graphics.getDeltaTime();
+        lastDrainUpdateCount = 0;
+        for (int update = 0; update < 1000000 && System.nanoTime() - started < 2000000000L; ++update) {
             AbstractDungeon.actionManager.update();
+            lastDrainUpdateCount = update + 1;
             if (AbstractDungeon.actionManager.actions.isEmpty()
-                    && AbstractDungeon.actionManager.currentAction == null) return;
+                    && AbstractDungeon.actionManager.currentAction == null) {
+                lastDrainElapsedNanos = System.nanoTime() - started;
+                return;
+            }
         }
-        throw new IllegalStateException("engine probe actions did not drain");
+        Object current = AbstractDungeon.actionManager.currentAction;
+        String duration = "none";
+        if (current != null) {
+            try {
+                java.lang.reflect.Field field = com.megacrit.cardcrawl.actions.AbstractGameAction.class.getDeclaredField("duration");
+                field.setAccessible(true);
+                duration = String.valueOf(field.get(current));
+            } catch (ReflectiveOperationException error) { duration = "unavailable"; }
+        }
+        throw new IllegalStateException("engine probe actions did not drain: updates=" + lastDrainUpdateCount
+            + " delta=" + lastDrainDelta + " current=" + (current == null ? "none" : current.getClass().getName())
+            + " duration=" + duration + " queued=" + AbstractDungeon.actionManager.actions.size());
     }
 
     @SuppressWarnings("unchecked")
@@ -1704,20 +1745,137 @@ public final class OracleScenarioPatch {
         }
         int act = legacy ? 2 : ((Number) scene.get("act")).intValue();
         int floor = legacy ? 20 : ((Number) scene.get("floor")).intValue();
-        if (!legacy && (act != 2 || ((Number) scene.get("ascension")).intValue() != 20)) {
+        if (!legacy && ((act < 2 || act > 4) || ((Number) scene.get("ascension")).intValue() != 20)) {
             // Late-act support requires a separately verified dungeon/room
             // setup. Do not fake it by changing AbstractDungeon.actNum.
             throw new IllegalArgumentException("late-act scene context is not yet qualified");
         }
+        if (!legacy && Boolean.TRUE.equals(scene.get("actual_dungeon_required")) && act == 2
+                && (AbstractDungeon.actNum != 2 || !"TheCity".equals(AbstractDungeon.id)
+                || !(CardCrawlGame.dungeon instanceof com.megacrit.cardcrawl.dungeons.TheCity))) {
+            throw new IllegalArgumentException("Act2 requires the actual stock TheCity context");
+        }
+        if (!legacy && act == 3 && (AbstractDungeon.actNum != 3
+                || !"TheBeyond".equals(AbstractDungeon.id)
+                || !(CardCrawlGame.dungeon instanceof com.megacrit.cardcrawl.dungeons.TheBeyond))) {
+            throw new IllegalArgumentException("Act3 requires the actual stock TheBeyond context");
+        }
+        if (!legacy && act == 4 && (AbstractDungeon.actNum != 4
+                || !"TheEnding".equals(AbstractDungeon.id)
+                || !(CardCrawlGame.dungeon instanceof com.megacrit.cardcrawl.dungeons.TheEnding))) {
+            throw new IllegalArgumentException("Act4 requires the actual stock TheEnding context");
+        }
+        if (!legacy && act >= 3) {
+            String kind = String.valueOf(scene.get("room"));
+            String expectedRoom = "MONSTER".equals(kind) ? "MonsterRoom"
+                : "ELITE".equals(kind) ? "MonsterRoomElite"
+                : "BOSS".equals(kind) ? "MonsterRoomBoss" : "UNSUPPORTED";
+            if (!AbstractDungeon.getCurrRoom().getClass().getSimpleName().equals(expectedRoom)) {
+                throw new IllegalArgumentException("actual stock room differs from scene context");
+            }
+        }
+        Map<String, Object> initial = (Map<String, Object>) scene.get("initial");
+        java.util.List<?> bossOrder = null;
+        if (initial.containsKey("boss_order")) {
+            if (act != 3 || !"BOSS".equals(scene.get("room"))
+                    || !(initial.get("boss_order") instanceof java.util.List)) {
+                throw new IllegalArgumentException("boss_order requires actual Act3 Boss context");
+            }
+            bossOrder = (java.util.List<?>) initial.get("boss_order");
+            java.util.HashSet<String> expected = new java.util.HashSet<String>();
+            expected.add("TIME_EATER"); expected.add("AWAKENED_ONE"); expected.add("DONU_AND_DECA");
+            if (bossOrder.size() != 3 || !expected.equals(new java.util.HashSet<Object>(bossOrder))
+                    || !scene.get("encounter").equals(bossOrder.get(0))) {
+                throw new IllegalArgumentException("boss_order must contain all three distinct bosses, first is encounter");
+            }
+        }
         applyEncounterProbe((String) scene.get("encounter"), 20, act, floor, id);
         drainActions();
-        Map<String, Object> initial = (Map<String, Object>) scene.get("initial");
+        if (bossOrder != null) {
+            // Initial fixture only: stock MonsterRoomBoss.onPlayerEntry has
+            // already consumed index0 when its first combat becomes playable.
+            // All subsequent victories/transitions use unmodified stock code.
+            AbstractDungeon.bossKey = ENCOUNTER_ALLOWLIST.get((String) bossOrder.get(0));
+            AbstractDungeon.bossList.clear();
+            AbstractDungeon.bossList.add(ENCOUNTER_ALLOWLIST.get((String) bossOrder.get(1)));
+            AbstractDungeon.bossList.add(ENCOUNTER_ALLOWLIST.get((String) bossOrder.get(2)));
+        }
+        if (initial.containsKey("card_rng_counter")) {
+            Object value = initial.get("card_rng_counter");
+            if (bossOrder == null || !(value instanceof Number)) {
+                throw new IllegalArgumentException("counter requires reviewed boss-flow fixture");
+            }
+            int counter = ((Number) value).intValue();
+            if (((Number) value).doubleValue() != counter
+                    || !(counter == 0 || counter == 250 || counter == 500 || counter == 750)) {
+                throw new IllegalArgumentException("unreviewed boundary counter");
+            }
+            // setCounter advances only; reset this controlled initial RNG first.
+            AbstractDungeon.cardRng = new com.megacrit.cardcrawl.random.Random(Settings.seed);
+            AbstractDungeon.cardRng.setCounter(counter);
+        }
+        if (initial.containsKey("keys")) {
+            if (bossOrder == null || !(initial.get("keys") instanceof java.util.List)
+                    || !Boolean.TRUE.equals(initial.get("final_act_available"))) {
+                throw new IllegalArgumentException("keys require reviewed boss flow and final-act eligibility");
+            }
+            java.util.List<?> keys = (java.util.List<?>) initial.get("keys");
+            java.util.Set<Object> unique = new java.util.HashSet<Object>(keys);
+            if (keys.size() != unique.size() || !java.util.Arrays.asList("RUBY", "EMERALD", "SAPPHIRE").containsAll(keys)) {
+                throw new IllegalArgumentException("invalid initial key identity");
+            }
+            Settings.hasRubyKey = keys.contains("RUBY");
+            Settings.hasEmeraldKey = keys.contains("EMERALD");
+            Settings.hasSapphireKey = keys.contains("SAPPHIRE");
+            Settings.isFinalActAvailable = true;
+        }
         AbstractPlayer player = AbstractDungeon.player;
         player.currentHealth = ((Number) initial.get("hp")).intValue();
         player.maxHealth = initial.containsKey("max_hp")
             ? ((Number) initial.get("max_hp")).intValue() : player.currentHealth;
         player.currentBlock = ((Number) initial.get("block")).intValue();
         player.gold = 99;
+        if (initial.containsKey("flow_master_deck")) {
+            if (bossOrder == null || !(initial.get("flow_master_deck") instanceof java.util.List)) {
+                throw new IllegalArgumentException("flow_master_deck requires reviewed boss_order fixture");
+            }
+            java.util.List<?> deck = (java.util.List<?>) initial.get("flow_master_deck");
+            if (deck.size() < 5 || deck.size() > 30) {
+                throw new IllegalArgumentException("controlled flow deck size out of bounds");
+            }
+            ArrayList<AbstractCard> prepared = new ArrayList<AbstractCard>();
+            for (Object spec : deck) {
+                if (!"Searing Blow+30".equals(spec)) {
+                    throw new IllegalArgumentException("unreviewed controlled flow deck card");
+                }
+                prepared.add(sceneCard((String) spec));
+            }
+            player.masterDeck.clear();
+            for (AbstractCard value : prepared) player.masterDeck.addToBottom(value);
+        }
+        if (initial.containsKey("relics")) {
+            player.relics.clear();
+            for (Object value : (java.util.List<?>) initial.get("relics")) {
+                AbstractRelic relic = RelicLibrary.getRelic((String) value);
+                if (relic == null) throw new IllegalArgumentException("unknown controlled relic");
+                player.relics.add(relic.makeCopy());
+            }
+        }
+        if (initial.containsKey("relic_counters")) {
+            Map<String, Object> counters = (Map<String, Object>) initial.get("relic_counters");
+            for (Map.Entry<String, Object> entry : counters.entrySet()) {
+                AbstractRelic relic = player.getRelic(entry.getKey());
+                if (relic == null) throw new IllegalArgumentException("counter for absent controlled relic");
+                int counter = ((Number) entry.getValue()).intValue();
+                if ("Omamori".equals(entry.getKey()) && (counter < 0 || counter > 2)) {
+                    throw new IllegalArgumentException("invalid controlled Omamori counter");
+                }
+                relic.counter = counter;
+            }
+        }
+        if (initial.containsKey("potion_modifier")) {
+            AbstractRoom.blizzardPotionMod = ((Number) initial.get("potion_modifier")).intValue();
+        }
         // EnergyManager.energy is the per-turn recharge amount; the current
         // spendable pool lives in EnergyPanel. Changing both would silently
         // give the probe ten energy on every future turn.
@@ -1725,10 +1883,10 @@ public final class OracleScenarioPatch {
         EnergyPanel.setEnergy(((Number) initial.get("energy")).intValue());
         player.hand.clear(); player.drawPile.clear();
         for (Object value : (java.util.List<?>) initial.get("hand")) {
-            player.hand.addToTop(card((String) value));
+            player.hand.addToTop(sceneCard((String) value));
         }
         for (Object value : (java.util.List<?>) initial.get("draw")) {
-            player.drawPile.addToTop(card((String) value));
+            player.drawPile.addToTop(sceneCard((String) value));
         }
         player.potions.clear();
         for (int slot = 0; slot < player.potionSlots; ++slot) player.potions.add(new PotionSlot(slot));
@@ -1745,9 +1903,21 @@ public final class OracleScenarioPatch {
             // values change only initial conditions, never stock callbacks.
             String canonical = monster.id;
             if ("BookOfStabbing".equals(monster.id)) canonical = "BOOK_OF_STABBING";
+            if ("Looter".equals(monster.id)) canonical = "LOOTER";
+            if ("Mugger".equals(monster.id)) canonical = "MUGGER";
             if ("SlaverRed".equals(monster.id)) canonical = "RED_SLAVER";
             if ("FungiBeast".equals(monster.id)) canonical = "FUNGI_BEAST";
             if ("Champ".equals(monster.id)) canonical = "THE_CHAMP";
+            if ("SpireShield".equals(monster.id)) canonical = "SPIRE_SHIELD";
+            if ("SpireSpear".equals(monster.id)) canonical = "SPIRE_SPEAR";
+            if ("CorruptHeart".equals(monster.id)) canonical = "CORRUPT_HEART";
+            if ("Darkling".equals(monster.id)) canonical = "DARKLING";
+            if ("AwakenedOne".equals(monster.id)) canonical = "AWAKENED_ONE";
+            if ("TimeEater".equals(monster.id)) canonical = "TIME_EATER";
+            if ("Donu".equals(monster.id)) canonical = "DONU";
+            if ("Deca".equals(monster.id)) canonical = "DECA";
+            if ("Reptomancer".equals(monster.id)) canonical = "REPTOMANCER";
+            if ("WrithingMass".equals(monster.id)) canonical = "WRITHING_MASS";
             if (hp != null && hp.containsKey(canonical)) {
                 monster.currentHealth = ((Number) hp.get(canonical)).intValue();
             }
@@ -1757,7 +1927,8 @@ public final class OracleScenarioPatch {
                 int hits = ((Number) move.get("hits")).intValue();
                 monster.setMove(((Number) move.get("stock")).byteValue(),
                     damage > 0 ? AbstractMonster.Intent.ATTACK
-                        : "RED_SLAVER_ENTANGLE".equals(move.get("native"))
+                        : ("RED_SLAVER_ENTANGLE".equals(move.get("native"))
+                            || "WRITHING_MASS_IMPLANT".equals(move.get("native")))
                             ? AbstractMonster.Intent.STRONG_DEBUFF : AbstractMonster.Intent.DEBUFF,
                     damage, Math.max(hits, 1), hits > 1);
                 monster.createIntent();
@@ -1769,6 +1940,9 @@ public final class OracleScenarioPatch {
         activeScenario.put("act", act);
         activeScenario.put("floor", floor);
         if (!legacy) {
+            activeScenario.put("setup_drain_updates", lastDrainUpdateCount);
+            activeScenario.put("setup_drain_frame_delta", lastDrainDelta);
+            activeScenario.put("setup_drain_elapsed_nanos", lastDrainElapsedNanos);
             activeScenario.put("actual_dungeon", AbstractDungeon.id);
             activeScenario.put("actual_room", AbstractDungeon.getCurrRoom().getClass().getName());
             activeScenario.put("scope", "ISOLATED_MECHANISM_NOT_DUNGEON_FLOW");

@@ -15,7 +15,7 @@ from tools.audit_policy_seed import audit_policy_seed
 
 @pytest.mark.local_evidence
 def test_seed_audit_reproduces_signed_run_and_records_counterfactual() -> None:
-    artifact = Path(__file__).resolve().parents[2] / "runs/archives/policies/ironclad-a0-act1-5m.pt"
+    artifact = Path(__file__).resolve().parents[2] / "local/archives/legacy/policies/ironclad-a0-act1-5m.pt"
     if not artifact.exists():
         pytest.skip("local exported Act1 policy is unavailable")
 

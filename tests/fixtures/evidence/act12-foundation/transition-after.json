@@ -1,0 +1,20 @@
+{
+  "schema": "sls-curriculum-current-source-evidence-v1",
+  "native_source_sha256": "27eba74232319e8138b300f042c3373ec7cec0d030ba8d40a2689cf171f67e44",
+  "training_validation_sha256": "ce61ba4381631bcc80b3f80540fa4d5ed6a86b0c1db500a24b691e1208c20107",
+  "qualification_evidence": "qualification.json",
+  "qualification_sha256": "936b429e49e4d6fe53cbafccc94eeac9a87cd9871bf8072d38b9b35a12bf4f4e",
+  "taskmaster_death_regression": "../../regressions/act12-taskmaster-lethal-131100063.json",
+  "taskmaster_death_regression_sha256": "61182cb01837e77e9ee4eef0543baca1fdc71724014bef500a231b40ec6f9dc3",
+  "semantic_changes": [
+    "Stock A17+ Snecko debuff queue order (earlier reviewed correction)",
+    "Taskmaster move RNG queued after lethal attack, preserving stock death boundary",
+    "Strict public observation/action validation; default v5 input schema preserved"
+  ],
+  "limits": [
+    "Finite evidence, not exhaustive game-combination proof",
+    "Conditional Discovery replay is not an unconditional match",
+    "Default v5 capacity limitations retained; v6 efficacy untrained",
+    "No production training or automatic server submission"
+  ]
+}

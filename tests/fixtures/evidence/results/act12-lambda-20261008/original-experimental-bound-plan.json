@@ -1,0 +1,87 @@
+{
+  "schema": "sls-act12-bound-plan-v1",
+  "status": "READY_FOR_LOCAL_VALIDATION",
+  "config": "configs/train/ironclad_a20_act12_lambda100_r1.toml",
+  "config_sha256": "f9e243cde5349e4e787f12f85f784b32bcad538cdcb4663c8526cd80665a0381",
+  "target_training_implementation_sha256": "9dca86829696613903d07b7fcbc6d4928f1c957c98fd6eaad534d6e76519ba94",
+  "parent": {
+    "run": "local/runs/ironclad-a20-act1-win-90m-continuation",
+    "role": "endpoint",
+    "checkpoint": "local/runs/ironclad-a20-act1-win-90m-continuation/final.pt",
+    "sha256": "274963f4fe32b75003c5a1b4ccd394b5185304156e6ea22a76aee2764d54f1e0",
+    "environment_steps": 90013696,
+    "native_source_sha256": "1e30bb6cfa32f600cd63c59983c14ab8928fac4452c1586d630295d2c6ff9453",
+    "target_native_source_sha256": "b100427d1e3ae6eee05818b6904047049609b1aa70807872c1f5f5e0edd6d62f",
+    "training_implementation_sha256": "9da7e28c7a2fc83fcbc1e289dade65dddb60d03fdf6a1670c9ad2fb011bc3bbf",
+    "evidence": {
+      "run-manifest.json": "382e128483b64fd55f1b87df0b589329fb791292791fbcc28a44ce567db09018",
+      "training-config.toml": "fb9ddaafa797697c7d4a50e0988ef5056c62a49af966d12b35c3c9c5a4fa365c",
+      "final.pt": "274963f4fe32b75003c5a1b4ccd394b5185304156e6ea22a76aee2764d54f1e0",
+      "endpoint-evaluation.json": "3ec90b3269c22198f9f05b3356051ad06e3b23ac3ee7a1aadbacadb46bccef0c"
+    },
+    "simulator_transition": {
+      "evidence": "docs/results/act2-qualification-20261006/simulator-transition-r33.json",
+      "evidence_sha256": "7832a690df7621c20d69fb0639adf9708b5e090eadca61d3d941e46a9a34f803"
+    }
+  },
+  "recipe": {
+    "schema": "sls-act12-pilot-recipe-v1",
+    "status": "PREREGISTERED_CORRECTED_ENVIRONMENT_MATCHED_LAMBDA_PILOT",
+    "source_profile": "IRONCLAD_A20_ACT1",
+    "target_profile": "IRONCLAD_A20_ACT2",
+    "minimum_parent_run_target": 90000000,
+    "additional_decisions": 4000000,
+    "training_seed": 130000000,
+    "training_seed_limit": 2000000000000,
+    "worker_layout": [
+      64,
+      16
+    ],
+    "periodic_seed_start": 8000009000000,
+    "periodic_seed_count": 256,
+    "confirmation_seed_start": 8000010000000,
+    "confirmation_seed_count": 2048,
+    "reserved_final_seeds": [
+      9000000000000,
+      9000000004096
+    ],
+    "evaluate_every_steps": 500000,
+    "checkpoint_every_steps": 500000,
+    "wall_limit_hours": 24,
+    "simulator_transition_evidence": "docs/results/act2-qualification-20261006/simulator-transition-r33.json",
+    "hypothesis": "In the same corrected simulator, lambda=1 reduces within-rollout advantage decay compared with lambda=.98; both still bootstrap from critic at rollout boundaries.",
+    "control": "Fresh corrected-environment lambda=.98, same frozen90 weights, first training seed and 4M budget. Historical old-environment pilot is excluded as a training control.",
+    "training_changes": "Weights-only adjacent-stage transfer with reset optimizer/RNG/workers/memory; lambda is the sole differing training scalar between matched arms; deterministic CPU encoder optimization verified bitwise on local diagnostics.",
+    "success_rule": "Study-level fixed experimental endpoint joint gain >=.01 over matched control and current-environment frozen90; two exact McNemar comparisons with Holm alpha .05; genuine joint successes in both late windows; all health checks pass.",
+    "failure_rule": "Incomplete execution is INCOMPLETE, positive uncertain effects INCONCLUSIVE; no joint gain stops recipe extension; Act1 reach is diagnostic only.",
+    "final_policy": "2048 fresh DEVELOPMENT confirmation seeds; fixed endpoints primary, periodic peaks diagnostic. Final [9000000000000,9000000004096) remains sealed.",
+    "throughput_safety_factor": 1.5,
+    "evaluation_reserve_hours": 4,
+    "selection_candidates": "Only checkpoints actually evaluated on the periodic development block; fixed endpoint is primary and is not implicitly included in periodic selection.",
+    "diagnostics": "Existing termination_success metrics binned into disjoint late windows; evaluation records first decision per act, HP/deck/relic/potions, shaped critic value and potential. No policy-input, action or reward change.",
+    "evidence": "docs/results/act2-qualification-20261006/TRAINING_READINESS_REVIEW.md",
+    "ppo_overrides": {
+      "gae_lambda": 1.0
+    }
+  },
+  "recipe_sha256": "688420d6e25881dc3af12eec692364c50ff17b040ebc8097009cff7f9cd7d85e",
+  "recipe_path": "configs/experiments/act12-lambda-experimental-r1-recipe.json",
+  "decision_note": "Matched corrected-environment lambda=1 pilot tests within-rollout credit attenuation; terminal joint success is primary and critic bootstrap remains at rollout boundaries.",
+  "wall_limit_hours": 24,
+  "operator_sources": {
+    "tools/prepare_act12_pilot.py": "517551a7e474416812ae1bbe1ba942f5f705543af522f8a80c893efb58f4f0a0",
+    "tools/submit_act12_pilot.py": "e5c308ea7958a8b63f970ff6b31b7a23c7fa997108ff1ffbde4f244bda7ccc6c",
+    "tools/prepare_and_train.py": "a5a93d4c2676d426b53e318329cd51af0d5d0887d78793b005088d2c53d32dc2",
+    "tools/submit_slurm.py": "b4a191c398c298c630180e782290be239139d0c238c44b1d861f2fc267232c56",
+    "tools/import_act12_parent.py": "6ec9de43778bf726dab91b91673b66dcbfa739c9b4642e237d41b73127228e8f",
+    "tools/analyze_act12_pilot.py": "fc36d61cb5c555fa926928971d9500fe843679993b10b3b02de1613b4d2aa3be",
+    "tools/operator_paths.py": "89d5fb7ab01731a57d93e56f1df976b4ecbcf030efd92eba0452bde20e3e2354",
+    "tools/preflight_training.py": "35aaecc12982b434eb887880c20acb95ca6d4f471aec65a5a468a22e6848dfb7",
+    "tools/benchmark_workers.py": "c50f7c8e536df1edc25a1fe9b718c1dd8edafc9aa39d95a0e7c00c3a6f2652ef",
+    "tools/submit_act12_lambda_study.py": "0d141a8d8e74cdbba7359c42ab8f36f69eeb5e54361eb44ca3b6d5459effd916",
+    "tools/analyze_act12_lambda_study.py": "0f93f3f4b64602ef071b8d7ef19972af0ea5ce744031b0900d057750b01ef95e",
+    "requirements/model.lock": "8df4e9eacfa0018bf545c4ca447222cd8ecf7c597de7a221f430a865ca05c7d6",
+    "pyproject.toml": "734934484da30313a9e21f652409828593075f3d71f50f198848f80566b94955",
+    "tools/run_act12_lambda_study.py": "276aeb278d1c4025671c6269bba0aa44071997e319192261615775abb2a56f19"
+  }
+}

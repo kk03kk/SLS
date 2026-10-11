@@ -1,0 +1,76 @@
+{
+  "schema": "sls-implant-victory-evidence-v1",
+  "native_source_sha256": "32cbf55731f5b48d798799d9d77d874f26ce45f06aa133d1b1f5aabeab766e2e",
+  "oracle_sha256": "0ccafd03c95e988d8ea1de9ca68479b54dac95975686fc446c4c3f07f9609cb4",
+  "capture_sha256": "2d12c419a07b17dd3bdaeee7d559a03e9ce4a23b094037c8527316f73e14c500",
+  "scope": "CONTROLLED_DECK_AND_ENUMERATED_RESOURCE_FIELDS_NOT_FULL_COMBAT_CERTIFICATE",
+  "runs": [
+    {
+      "seed": 131200210,
+      "boundaries": 3,
+      "first_difference": null
+    },
+    {
+      "seed": 131200211,
+      "boundaries": 3,
+      "first_difference": null
+    },
+    {
+      "seed": 131200212,
+      "boundaries": 3,
+      "first_difference": null
+    },
+    {
+      "seed": 131200213,
+      "boundaries": 3,
+      "first_difference": null
+    },
+    {
+      "seed": 131200214,
+      "boundaries": 3,
+      "first_difference": null
+    },
+    {
+      "seed": 131200215,
+      "boundaries": 3,
+      "first_difference": null
+    },
+    {
+      "seed": 131200216,
+      "boundaries": 3,
+      "first_difference": null
+    },
+    {
+      "seed": 131200217,
+      "boundaries": 3,
+      "first_difference": null
+    },
+    {
+      "seed": 131200218,
+      "boundaries": 3,
+      "first_difference": null
+    }
+  ],
+  "regression_tests": 40,
+  "production_smoke": "PASS",
+  "independent_recovery": [
+    {
+      "launch": "implant-victory-stock-r1.launch.json",
+      "entries": 63,
+      "mismatches": [],
+      "recovery_status": "RECOVERED"
+    },
+    {
+      "launch": "implant-victory-production-smoke-r1.launch.json",
+      "entries": 63,
+      "mismatches": [],
+      "recovery_status": "RECOVERED"
+    }
+  ],
+  "remaining": [
+    "Other obtain/healing relic combinations",
+    "Reward collection and following room continuation",
+    "Natural late-act trajectories",
+    "Full enemy/combat certification"
+  ]
+}

@@ -1,0 +1,5692 @@
+{
+  "schema": "sls-heart-loss-stock-v1",
+  "stock_capture_sha256": "dd8a107e9bd949cd3d29b2b7827d6a6252139e0b3ef5e922b181f8e13809c9ba",
+  "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "oracle_sha256": "99597568625a16b4c5b17492503ecf0f77d612fa3bdb8df912843e0848d5a4d5",
+  "scene_manifest_sha256": "2ca745c1a54e50e430e9b12a9b6d951d78d67d9b4e7f6614fe5336aa6ec5fcfb",
+  "purpose": "CONTROLLED_FATAL_BEAT_OF_DEATH_NOT_FINAL_VICTORY",
+  "cases": [
+    {
+      "seed": 131200120,
+      "scene_id": "act4-heart-fatal-beat-hp1",
+      "encounter": "THE_HEART",
+      "floor": 55,
+      "initial": {
+        "hp": 1,
+        "max_hp": 80,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Anger"
+        ],
+        "draw": [
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger"
+        ]
+      },
+      "initial_rng": {
+        "ai": {
+          "counter": 1,
+          "seed0": 7522221743094465309,
+          "seed1": 8359813200808632926
+        },
+        "card_random": {
+          "counter": 0,
+          "seed0": 6152693973347169423,
+          "seed1": 7522221743094465309
+        },
+        "card": {
+          "counter": 0,
+          "seed0": 3610996655238858204,
+          "seed1": 1461311869797878448
+        },
+        "event": {
+          "counter": 0,
+          "seed0": 3610996655238858204,
+          "seed1": 1461311869797878448
+        },
+        "math_util": {
+          "counter": 0,
+          "seed0": 1705000748027067668,
+          "seed1": 5888905759214339539
+        },
+        "merchant": {
+          "counter": 0,
+          "seed0": 3610996655238858204,
+          "seed1": 1461311869797878448
+        },
+        "misc": {
+          "counter": 0,
+          "seed0": 1333019008414170086,
+          "seed1": 9212771246870711195
+        },
+        "monster_hp": {
+          "counter": 1,
+          "seed0": 7522221743094465309,
+          "seed1": 8359813200808632926
+        },
+        "monster": {
+          "counter": 34,
+          "seed0": 10084722263974157847,
+          "seed1": 10156765798452336292
+        },
+        "neow": {
+          "counter": 6,
+          "seed0": 15982386391574925761,
+          "seed1": 3204804594263305923
+        },
+        "potion": {
+          "counter": 0,
+          "seed0": 3610996655238858204,
+          "seed1": 1461311869797878448
+        },
+        "relic": {
+          "counter": 5,
+          "seed0": 1866585711490932599,
+          "seed1": 15982386391574925761
+        },
+        "shuffle": {
+          "counter": 0,
+          "seed0": 6152693973347169423,
+          "seed1": 7522221743094465309
+        },
+        "treasure": {
+          "counter": 0,
+          "seed0": 3610996655238858204,
+          "seed1": 1461311869797878448
+        }
+      },
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        }
+      ],
+      "expected": [
+        {
+          "direct": {
+            "player": {
+              "current_hp": 1,
+              "max_hp": 80,
+              "block": 0,
+              "powers": []
+            },
+            "energy": 3,
+            "monsters": [
+              {
+                "current_hp": 800,
+                "max_hp": 800,
+                "block": 0,
+                "powers": [
+                  {
+                    "id": "BEAT_OF_DEATH",
+                    "amount": 2
+                  },
+                  {
+                    "id": "INVINCIBLE",
+                    "amount": 200
+                  }
+                ],
+                "id": "CORRUPT_HEART"
+              }
+            ],
+            "hand": [
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              }
+            ],
+            "draw_pile": [
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              }
+            ],
+            "discard_pile": [],
+            "exhaust_pile": [],
+            "relics": [
+              {
+                "id": "BURNING_BLOOD",
+                "counter": 0
+              }
+            ],
+            "potions": [
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 0,
+                "requires_target": false
+              },
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 1,
+                "requires_target": false
+              }
+            ]
+          },
+          "rng": {
+            "ai": {
+              "counter": 2,
+              "seed0": 8359813200808632926,
+              "seed1": 8463151441224450426
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 6152693973347169423,
+              "seed1": 7522221743094465309
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 3610996655238858204,
+              "seed1": 1461311869797878448
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 3610996655238858204,
+              "seed1": 1461311869797878448
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 1705000748027067668,
+              "seed1": 5888905759214339539
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 3610996655238858204,
+              "seed1": 1461311869797878448
+            },
+            "misc": {
+              "counter": 0,
+              "seed0": 1333019008414170086,
+              "seed1": 9212771246870711195
+            },
+            "monster_hp": {
+              "counter": 2,
+              "seed0": 8359813200808632926,
+              "seed1": 8463151441224450426
+            },
+            "monster": {
+              "counter": 34,
+              "seed0": 10084722263974157847,
+              "seed1": 10156765798452336292
+            },
+            "neow": {
+              "counter": 6,
+              "seed0": 15982386391574925761,
+              "seed1": 3204804594263305923
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 3610996655238858204,
+              "seed1": 1461311869797878448
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 1866585711490932599,
+              "seed1": 15982386391574925761
+            },
+            "shuffle": {
+              "counter": 0,
+              "seed0": 6152693973347169423,
+              "seed1": 7522221743094465309
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 3610996655238858204,
+              "seed1": 1461311869797878448
+            }
+          },
+          "terminal_loss": false
+        },
+        {
+          "direct": {
+            "player": {
+              "current_hp": 0,
+              "max_hp": 80,
+              "block": 0,
+              "powers": []
+            },
+            "energy": 3,
+            "monsters": [
+              {
+                "current_hp": 794,
+                "max_hp": 800,
+                "block": 0,
+                "powers": [
+                  {
+                    "id": "BEAT_OF_DEATH",
+                    "amount": 2
+                  },
+                  {
+                    "id": "INVINCIBLE",
+                    "amount": 194
+                  }
+                ],
+                "id": "CORRUPT_HEART"
+              }
+            ],
+            "hand": [],
+            "draw_pile": [
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              }
+            ],
+            "discard_pile": [
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              }
+            ],
+            "exhaust_pile": [],
+            "relics": [
+              {
+                "id": "BURNING_BLOOD",
+                "counter": 0
+              }
+            ],
+            "potions": [
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 0,
+                "requires_target": false
+              },
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 1,
+                "requires_target": false
+              }
+            ]
+          },
+          "rng": {
+            "ai": {
+              "counter": 2,
+              "seed0": 8359813200808632926,
+              "seed1": 8463151441224450426
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 6152693973347169423,
+              "seed1": 7522221743094465309
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 3610996655238858204,
+              "seed1": 1461311869797878448
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 3610996655238858204,
+              "seed1": 1461311869797878448
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 1705000748027067668,
+              "seed1": 5888905759214339539
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 3610996655238858204,
+              "seed1": 1461311869797878448
+            },
+            "misc": {
+              "counter": 0,
+              "seed0": 1333019008414170086,
+              "seed1": 9212771246870711195
+            },
+            "monster_hp": {
+              "counter": 2,
+              "seed0": 8359813200808632926,
+              "seed1": 8463151441224450426
+            },
+            "monster": {
+              "counter": 34,
+              "seed0": 10084722263974157847,
+              "seed1": 10156765798452336292
+            },
+            "neow": {
+              "counter": 6,
+              "seed0": 15982386391574925761,
+              "seed1": 3204804594263305923
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 3610996655238858204,
+              "seed1": 1461311869797878448
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 1866585711490932599,
+              "seed1": 15982386391574925761
+            },
+            "shuffle": {
+              "counter": 0,
+              "seed0": 6152693973347169423,
+              "seed1": 7522221743094465309
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 3610996655238858204,
+              "seed1": 1461311869797878448
+            }
+          },
+          "terminal_loss": true
+        }
+      ]
+    },
+    {
+      "seed": 131200121,
+      "scene_id": "act4-heart-fatal-beat-hp1",
+      "encounter": "THE_HEART",
+      "floor": 55,
+      "initial": {
+        "hp": 1,
+        "max_hp": 80,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Anger"
+        ],
+        "draw": [
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger"
+        ]
+      },
+      "initial_rng": {
+        "ai": {
+          "counter": 1,
+          "seed0": 15511171832539569807,
+          "seed1": 15951061413230971496
+        },
+        "card_random": {
+          "counter": 0,
+          "seed0": 2949589775210275717,
+          "seed1": 15511171832539569807
+        },
+        "card": {
+          "counter": 0,
+          "seed0": 1333019008414170086,
+          "seed1": 9212771246870711195
+        },
+        "event": {
+          "counter": 0,
+          "seed0": 1333019008414170086,
+          "seed1": 9212771246870711195
+        },
+        "math_util": {
+          "counter": 0,
+          "seed0": 1864992254189194094,
+          "seed1": 8912283180591541038
+        },
+        "merchant": {
+          "counter": 0,
+          "seed0": 1333019008414170086,
+          "seed1": 9212771246870711195
+        },
+        "misc": {
+          "counter": 0,
+          "seed0": 15802561317933824746,
+          "seed1": 12460173380443604166
+        },
+        "monster_hp": {
+          "counter": 1,
+          "seed0": 15511171832539569807,
+          "seed1": 15951061413230971496
+        },
+        "monster": {
+          "counter": 34,
+          "seed0": 1907357413758045559,
+          "seed1": 938451321723439238
+        },
+        "neow": {
+          "counter": 5,
+          "seed0": 3850017297156407894,
+          "seed1": 9120803136060591096
+        },
+        "potion": {
+          "counter": 0,
+          "seed0": 1333019008414170086,
+          "seed1": 9212771246870711195
+        },
+        "relic": {
+          "counter": 5,
+          "seed0": 3850017297156407894,
+          "seed1": 9120803136060591096
+        },
+        "shuffle": {
+          "counter": 0,
+          "seed0": 2949589775210275717,
+          "seed1": 15511171832539569807
+        },
+        "treasure": {
+          "counter": 0,
+          "seed0": 1333019008414170086,
+          "seed1": 9212771246870711195
+        }
+      },
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        }
+      ],
+      "expected": [
+        {
+          "direct": {
+            "player": {
+              "current_hp": 1,
+              "max_hp": 80,
+              "block": 0,
+              "powers": []
+            },
+            "energy": 3,
+            "monsters": [
+              {
+                "current_hp": 800,
+                "max_hp": 800,
+                "block": 0,
+                "powers": [
+                  {
+                    "id": "BEAT_OF_DEATH",
+                    "amount": 2
+                  },
+                  {
+                    "id": "INVINCIBLE",
+                    "amount": 200
+                  }
+                ],
+                "id": "CORRUPT_HEART"
+              }
+            ],
+            "hand": [
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              }
+            ],
+            "draw_pile": [
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              }
+            ],
+            "discard_pile": [],
+            "exhaust_pile": [],
+            "relics": [
+              {
+                "id": "BURNING_BLOOD",
+                "counter": 0
+              }
+            ],
+            "potions": [
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 0,
+                "requires_target": false
+              },
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 1,
+                "requires_target": false
+              }
+            ]
+          },
+          "rng": {
+            "ai": {
+              "counter": 2,
+              "seed0": 15951061413230971496,
+              "seed1": 5103502865261547164
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 2949589775210275717,
+              "seed1": 15511171832539569807
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 1333019008414170086,
+              "seed1": 9212771246870711195
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 1333019008414170086,
+              "seed1": 9212771246870711195
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 1864992254189194094,
+              "seed1": 8912283180591541038
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 1333019008414170086,
+              "seed1": 9212771246870711195
+            },
+            "misc": {
+              "counter": 0,
+              "seed0": 15802561317933824746,
+              "seed1": 12460173380443604166
+            },
+            "monster_hp": {
+              "counter": 2,
+              "seed0": 15951061413230971496,
+              "seed1": 5103502865261547164
+            },
+            "monster": {
+              "counter": 34,
+              "seed0": 1907357413758045559,
+              "seed1": 938451321723439238
+            },
+            "neow": {
+              "counter": 5,
+              "seed0": 3850017297156407894,
+              "seed1": 9120803136060591096
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 1333019008414170086,
+              "seed1": 9212771246870711195
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 3850017297156407894,
+              "seed1": 9120803136060591096
+            },
+            "shuffle": {
+              "counter": 0,
+              "seed0": 2949589775210275717,
+              "seed1": 15511171832539569807
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 1333019008414170086,
+              "seed1": 9212771246870711195
+            }
+          },
+          "terminal_loss": false
+        },
+        {
+          "direct": {
+            "player": {
+              "current_hp": 0,
+              "max_hp": 80,
+              "block": 0,
+              "powers": []
+            },
+            "energy": 3,
+            "monsters": [
+              {
+                "current_hp": 794,
+                "max_hp": 800,
+                "block": 0,
+                "powers": [
+                  {
+                    "id": "BEAT_OF_DEATH",
+                    "amount": 2
+                  },
+                  {
+                    "id": "INVINCIBLE",
+                    "amount": 194
+                  }
+                ],
+                "id": "CORRUPT_HEART"
+              }
+            ],
+            "hand": [],
+            "draw_pile": [
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              }
+            ],
+            "discard_pile": [
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              }
+            ],
+            "exhaust_pile": [],
+            "relics": [
+              {
+                "id": "BURNING_BLOOD",
+                "counter": 0
+              }
+            ],
+            "potions": [
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 0,
+                "requires_target": false
+              },
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 1,
+                "requires_target": false
+              }
+            ]
+          },
+          "rng": {
+            "ai": {
+              "counter": 2,
+              "seed0": 15951061413230971496,
+              "seed1": 5103502865261547164
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 2949589775210275717,
+              "seed1": 15511171832539569807
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 1333019008414170086,
+              "seed1": 9212771246870711195
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 1333019008414170086,
+              "seed1": 9212771246870711195
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 1864992254189194094,
+              "seed1": 8912283180591541038
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 1333019008414170086,
+              "seed1": 9212771246870711195
+            },
+            "misc": {
+              "counter": 0,
+              "seed0": 15802561317933824746,
+              "seed1": 12460173380443604166
+            },
+            "monster_hp": {
+              "counter": 2,
+              "seed0": 15951061413230971496,
+              "seed1": 5103502865261547164
+            },
+            "monster": {
+              "counter": 34,
+              "seed0": 1907357413758045559,
+              "seed1": 938451321723439238
+            },
+            "neow": {
+              "counter": 5,
+              "seed0": 3850017297156407894,
+              "seed1": 9120803136060591096
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 1333019008414170086,
+              "seed1": 9212771246870711195
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 3850017297156407894,
+              "seed1": 9120803136060591096
+            },
+            "shuffle": {
+              "counter": 0,
+              "seed0": 2949589775210275717,
+              "seed1": 15511171832539569807
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 1333019008414170086,
+              "seed1": 9212771246870711195
+            }
+          },
+          "terminal_loss": true
+        }
+      ]
+    },
+    {
+      "seed": 131200122,
+      "scene_id": "act4-heart-fatal-beat-hp1",
+      "encounter": "THE_HEART",
+      "floor": 55,
+      "initial": {
+        "hp": 1,
+        "max_hp": 80,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Anger"
+        ],
+        "draw": [
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger"
+        ]
+      },
+      "initial_rng": {
+        "ai": {
+          "counter": 1,
+          "seed0": 9544316021608026739,
+          "seed1": 18132392477295529757
+        },
+        "card_random": {
+          "counter": 0,
+          "seed0": 17493697402603426465,
+          "seed1": 9544316021608026739
+        },
+        "card": {
+          "counter": 0,
+          "seed0": 15802561317933824746,
+          "seed1": 12460173380443604166
+        },
+        "event": {
+          "counter": 0,
+          "seed0": 15802561317933824746,
+          "seed1": 12460173380443604166
+        },
+        "math_util": {
+          "counter": 0,
+          "seed0": 9319354170865231475,
+          "seed1": 17896354429474328890
+        },
+        "merchant": {
+          "counter": 0,
+          "seed0": 15802561317933824746,
+          "seed1": 12460173380443604166
+        },
+        "misc": {
+          "counter": 0,
+          "seed0": 5232060839300352,
+          "seed1": 14955981811423695088
+        },
+        "monster_hp": {
+          "counter": 1,
+          "seed0": 9544316021608026739,
+          "seed1": 18132392477295529757
+        },
+        "monster": {
+          "counter": 39,
+          "seed0": 16619969982530746482,
+          "seed1": 5199912106867135397
+        },
+        "neow": {
+          "counter": 11,
+          "seed0": 6821535513790076241,
+          "seed1": 8821143993769591459
+        },
+        "potion": {
+          "counter": 0,
+          "seed0": 15802561317933824746,
+          "seed1": 12460173380443604166
+        },
+        "relic": {
+          "counter": 5,
+          "seed0": 5419325918531245210,
+          "seed1": 16911351197824156161
+        },
+        "shuffle": {
+          "counter": 0,
+          "seed0": 17493697402603426465,
+          "seed1": 9544316021608026739
+        },
+        "treasure": {
+          "counter": 0,
+          "seed0": 15802561317933824746,
+          "seed1": 12460173380443604166
+        }
+      },
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        }
+      ],
+      "expected": [
+        {
+          "direct": {
+            "player": {
+              "current_hp": 1,
+              "max_hp": 80,
+              "block": 0,
+              "powers": []
+            },
+            "energy": 3,
+            "monsters": [
+              {
+                "current_hp": 800,
+                "max_hp": 800,
+                "block": 0,
+                "powers": [
+                  {
+                    "id": "BEAT_OF_DEATH",
+                    "amount": 2
+                  },
+                  {
+                    "id": "INVINCIBLE",
+                    "amount": 200
+                  }
+                ],
+                "id": "CORRUPT_HEART"
+              }
+            ],
+            "hand": [
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              }
+            ],
+            "draw_pile": [
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              }
+            ],
+            "discard_pile": [],
+            "exhaust_pile": [],
+            "relics": [
+              {
+                "id": "BURNING_BLOOD",
+                "counter": 0
+              }
+            ],
+            "potions": [
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 0,
+                "requires_target": false
+              },
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 1,
+                "requires_target": false
+              }
+            ]
+          },
+          "rng": {
+            "ai": {
+              "counter": 2,
+              "seed0": 18132392477295529757,
+              "seed1": 1337987553244692338
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 17493697402603426465,
+              "seed1": 9544316021608026739
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 15802561317933824746,
+              "seed1": 12460173380443604166
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 15802561317933824746,
+              "seed1": 12460173380443604166
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 9319354170865231475,
+              "seed1": 17896354429474328890
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 15802561317933824746,
+              "seed1": 12460173380443604166
+            },
+            "misc": {
+              "counter": 0,
+              "seed0": 5232060839300352,
+              "seed1": 14955981811423695088
+            },
+            "monster_hp": {
+              "counter": 2,
+              "seed0": 18132392477295529757,
+              "seed1": 1337987553244692338
+            },
+            "monster": {
+              "counter": 39,
+              "seed0": 16619969982530746482,
+              "seed1": 5199912106867135397
+            },
+            "neow": {
+              "counter": 11,
+              "seed0": 6821535513790076241,
+              "seed1": 8821143993769591459
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 15802561317933824746,
+              "seed1": 12460173380443604166
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 5419325918531245210,
+              "seed1": 16911351197824156161
+            },
+            "shuffle": {
+              "counter": 0,
+              "seed0": 17493697402603426465,
+              "seed1": 9544316021608026739
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 15802561317933824746,
+              "seed1": 12460173380443604166
+            }
+          },
+          "terminal_loss": false
+        },
+        {
+          "direct": {
+            "player": {
+              "current_hp": 0,
+              "max_hp": 80,
+              "block": 0,
+              "powers": []
+            },
+            "energy": 3,
+            "monsters": [
+              {
+                "current_hp": 794,
+                "max_hp": 800,
+                "block": 0,
+                "powers": [
+                  {
+                    "id": "BEAT_OF_DEATH",
+                    "amount": 2
+                  },
+                  {
+                    "id": "INVINCIBLE",
+                    "amount": 194
+                  }
+                ],
+                "id": "CORRUPT_HEART"
+              }
+            ],
+            "hand": [],
+            "draw_pile": [
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              }
+            ],
+            "discard_pile": [
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              }
+            ],
+            "exhaust_pile": [],
+            "relics": [
+              {
+                "id": "BURNING_BLOOD",
+                "counter": 0
+              }
+            ],
+            "potions": [
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 0,
+                "requires_target": false
+              },
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 1,
+                "requires_target": false
+              }
+            ]
+          },
+          "rng": {
+            "ai": {
+              "counter": 2,
+              "seed0": 18132392477295529757,
+              "seed1": 1337987553244692338
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 17493697402603426465,
+              "seed1": 9544316021608026739
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 15802561317933824746,
+              "seed1": 12460173380443604166
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 15802561317933824746,
+              "seed1": 12460173380443604166
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 9319354170865231475,
+              "seed1": 17896354429474328890
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 15802561317933824746,
+              "seed1": 12460173380443604166
+            },
+            "misc": {
+              "counter": 0,
+              "seed0": 5232060839300352,
+              "seed1": 14955981811423695088
+            },
+            "monster_hp": {
+              "counter": 2,
+              "seed0": 18132392477295529757,
+              "seed1": 1337987553244692338
+            },
+            "monster": {
+              "counter": 39,
+              "seed0": 16619969982530746482,
+              "seed1": 5199912106867135397
+            },
+            "neow": {
+              "counter": 11,
+              "seed0": 6821535513790076241,
+              "seed1": 8821143993769591459
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 15802561317933824746,
+              "seed1": 12460173380443604166
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 5419325918531245210,
+              "seed1": 16911351197824156161
+            },
+            "shuffle": {
+              "counter": 0,
+              "seed0": 17493697402603426465,
+              "seed1": 9544316021608026739
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 15802561317933824746,
+              "seed1": 12460173380443604166
+            }
+          },
+          "terminal_loss": true
+        }
+      ]
+    },
+    {
+      "seed": 131200123,
+      "scene_id": "act4-heart-fatal-beat-hp2",
+      "encounter": "THE_HEART",
+      "floor": 55,
+      "initial": {
+        "hp": 2,
+        "max_hp": 80,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Anger"
+        ],
+        "draw": [
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger"
+        ]
+      },
+      "initial_rng": {
+        "ai": {
+          "counter": 1,
+          "seed0": 12135847763776254335,
+          "seed1": 2768280456726033019
+        },
+        "card_random": {
+          "counter": 0,
+          "seed0": 5483780726541775007,
+          "seed1": 12135847763776254335
+        },
+        "card": {
+          "counter": 0,
+          "seed0": 5232060839300352,
+          "seed1": 14955981811423695088
+        },
+        "event": {
+          "counter": 0,
+          "seed0": 5232060839300352,
+          "seed1": 14955981811423695088
+        },
+        "math_util": {
+          "counter": 0,
+          "seed0": 12023003458841807653,
+          "seed1": 16687425806715541215
+        },
+        "merchant": {
+          "counter": 0,
+          "seed0": 5232060839300352,
+          "seed1": 14955981811423695088
+        },
+        "misc": {
+          "counter": 0,
+          "seed0": 3690537314276943448,
+          "seed1": 5736076559516827748
+        },
+        "monster_hp": {
+          "counter": 1,
+          "seed0": 12135847763776254335,
+          "seed1": 2768280456726033019
+        },
+        "monster": {
+          "counter": 33,
+          "seed0": 17721028367225959285,
+          "seed1": 9416856255658917434
+        },
+        "neow": {
+          "counter": 5,
+          "seed0": 11726814333686323407,
+          "seed1": 18001438252293876761
+        },
+        "potion": {
+          "counter": 0,
+          "seed0": 5232060839300352,
+          "seed1": 14955981811423695088
+        },
+        "relic": {
+          "counter": 5,
+          "seed0": 11726814333686323407,
+          "seed1": 18001438252293876761
+        },
+        "shuffle": {
+          "counter": 0,
+          "seed0": 5483780726541775007,
+          "seed1": 12135847763776254335
+        },
+        "treasure": {
+          "counter": 0,
+          "seed0": 5232060839300352,
+          "seed1": 14955981811423695088
+        }
+      },
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        }
+      ],
+      "expected": [
+        {
+          "direct": {
+            "player": {
+              "current_hp": 2,
+              "max_hp": 80,
+              "block": 0,
+              "powers": []
+            },
+            "energy": 3,
+            "monsters": [
+              {
+                "current_hp": 800,
+                "max_hp": 800,
+                "block": 0,
+                "powers": [
+                  {
+                    "id": "BEAT_OF_DEATH",
+                    "amount": 2
+                  },
+                  {
+                    "id": "INVINCIBLE",
+                    "amount": 200
+                  }
+                ],
+                "id": "CORRUPT_HEART"
+              }
+            ],
+            "hand": [
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              }
+            ],
+            "draw_pile": [
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              }
+            ],
+            "discard_pile": [],
+            "exhaust_pile": [],
+            "relics": [
+              {
+                "id": "BURNING_BLOOD",
+                "counter": 0
+              }
+            ],
+            "potions": [
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 0,
+                "requires_target": false
+              },
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 1,
+                "requires_target": false
+              }
+            ]
+          },
+          "rng": {
+            "ai": {
+              "counter": 2,
+              "seed0": 2768280456726033019,
+              "seed1": 1229992846283298538
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 5483780726541775007,
+              "seed1": 12135847763776254335
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 5232060839300352,
+              "seed1": 14955981811423695088
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 5232060839300352,
+              "seed1": 14955981811423695088
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 12023003458841807653,
+              "seed1": 16687425806715541215
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 5232060839300352,
+              "seed1": 14955981811423695088
+            },
+            "misc": {
+              "counter": 0,
+              "seed0": 3690537314276943448,
+              "seed1": 5736076559516827748
+            },
+            "monster_hp": {
+              "counter": 2,
+              "seed0": 2768280456726033019,
+              "seed1": 1229992846283298538
+            },
+            "monster": {
+              "counter": 33,
+              "seed0": 17721028367225959285,
+              "seed1": 9416856255658917434
+            },
+            "neow": {
+              "counter": 5,
+              "seed0": 11726814333686323407,
+              "seed1": 18001438252293876761
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 5232060839300352,
+              "seed1": 14955981811423695088
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 11726814333686323407,
+              "seed1": 18001438252293876761
+            },
+            "shuffle": {
+              "counter": 0,
+              "seed0": 5483780726541775007,
+              "seed1": 12135847763776254335
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 5232060839300352,
+              "seed1": 14955981811423695088
+            }
+          },
+          "terminal_loss": false
+        },
+        {
+          "direct": {
+            "player": {
+              "current_hp": 0,
+              "max_hp": 80,
+              "block": 0,
+              "powers": []
+            },
+            "energy": 3,
+            "monsters": [
+              {
+                "current_hp": 794,
+                "max_hp": 800,
+                "block": 0,
+                "powers": [
+                  {
+                    "id": "BEAT_OF_DEATH",
+                    "amount": 2
+                  },
+                  {
+                    "id": "INVINCIBLE",
+                    "amount": 194
+                  }
+                ],
+                "id": "CORRUPT_HEART"
+              }
+            ],
+            "hand": [],
+            "draw_pile": [
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              }
+            ],
+            "discard_pile": [
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              }
+            ],
+            "exhaust_pile": [],
+            "relics": [
+              {
+                "id": "BURNING_BLOOD",
+                "counter": 0
+              }
+            ],
+            "potions": [
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 0,
+                "requires_target": false
+              },
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 1,
+                "requires_target": false
+              }
+            ]
+          },
+          "rng": {
+            "ai": {
+              "counter": 2,
+              "seed0": 2768280456726033019,
+              "seed1": 1229992846283298538
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 5483780726541775007,
+              "seed1": 12135847763776254335
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 5232060839300352,
+              "seed1": 14955981811423695088
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 5232060839300352,
+              "seed1": 14955981811423695088
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 12023003458841807653,
+              "seed1": 16687425806715541215
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 5232060839300352,
+              "seed1": 14955981811423695088
+            },
+            "misc": {
+              "counter": 0,
+              "seed0": 3690537314276943448,
+              "seed1": 5736076559516827748
+            },
+            "monster_hp": {
+              "counter": 2,
+              "seed0": 2768280456726033019,
+              "seed1": 1229992846283298538
+            },
+            "monster": {
+              "counter": 33,
+              "seed0": 17721028367225959285,
+              "seed1": 9416856255658917434
+            },
+            "neow": {
+              "counter": 5,
+              "seed0": 11726814333686323407,
+              "seed1": 18001438252293876761
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 5232060839300352,
+              "seed1": 14955981811423695088
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 11726814333686323407,
+              "seed1": 18001438252293876761
+            },
+            "shuffle": {
+              "counter": 0,
+              "seed0": 5483780726541775007,
+              "seed1": 12135847763776254335
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 5232060839300352,
+              "seed1": 14955981811423695088
+            }
+          },
+          "terminal_loss": true
+        }
+      ]
+    },
+    {
+      "seed": 131200124,
+      "scene_id": "act4-heart-fatal-beat-hp2",
+      "encounter": "THE_HEART",
+      "floor": 55,
+      "initial": {
+        "hp": 2,
+        "max_hp": 80,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Anger"
+        ],
+        "draw": [
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger"
+        ]
+      },
+      "initial_rng": {
+        "ai": {
+          "counter": 1,
+          "seed0": 13954430084922510164,
+          "seed1": 13072322550180016865
+        },
+        "card_random": {
+          "counter": 0,
+          "seed0": 2167507771986366392,
+          "seed1": 13954430084922510164
+        },
+        "card": {
+          "counter": 250,
+          "seed0": 15414749786579381947,
+          "seed1": 17022663957195981727
+        },
+        "event": {
+          "counter": 0,
+          "seed0": 3690537314276943448,
+          "seed1": 5736076559516827748
+        },
+        "math_util": {
+          "counter": 0,
+          "seed0": 15474521253581205145,
+          "seed1": 15194024927221798793
+        },
+        "merchant": {
+          "counter": 0,
+          "seed0": 3690537314276943448,
+          "seed1": 5736076559516827748
+        },
+        "misc": {
+          "counter": 2,
+          "seed0": 3728643759678257588,
+          "seed1": 14737805191182559914
+        },
+        "monster_hp": {
+          "counter": 1,
+          "seed0": 13954430084922510164,
+          "seed1": 13072322550180016865
+        },
+        "monster": {
+          "counter": 39,
+          "seed0": 11058671191431516602,
+          "seed1": 4375360278635464436
+        },
+        "neow": {
+          "counter": 8,
+          "seed0": 6680735425533515612,
+          "seed1": 13574764549909055634
+        },
+        "potion": {
+          "counter": 0,
+          "seed0": 3690537314276943448,
+          "seed1": 5736076559516827748
+        },
+        "relic": {
+          "counter": 5,
+          "seed0": 3816675287995172450,
+          "seed1": 11566236854179823642
+        },
+        "shuffle": {
+          "counter": 0,
+          "seed0": 2167507771986366392,
+          "seed1": 13954430084922510164
+        },
+        "treasure": {
+          "counter": 0,
+          "seed0": 3690537314276943448,
+          "seed1": 5736076559516827748
+        }
+      },
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        }
+      ],
+      "expected": [
+        {
+          "direct": {
+            "player": {
+              "current_hp": 2,
+              "max_hp": 80,
+              "block": 0,
+              "powers": []
+            },
+            "energy": 3,
+            "monsters": [
+              {
+                "current_hp": 800,
+                "max_hp": 800,
+                "block": 0,
+                "powers": [
+                  {
+                    "id": "BEAT_OF_DEATH",
+                    "amount": 2
+                  },
+                  {
+                    "id": "INVINCIBLE",
+                    "amount": 200
+                  }
+                ],
+                "id": "CORRUPT_HEART"
+              }
+            ],
+            "hand": [
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              }
+            ],
+            "draw_pile": [
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              }
+            ],
+            "discard_pile": [],
+            "exhaust_pile": [],
+            "relics": [
+              {
+                "id": "BURNING_BLOOD",
+                "counter": 0
+              }
+            ],
+            "potions": [
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 0,
+                "requires_target": false
+              },
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 1,
+                "requires_target": false
+              }
+            ]
+          },
+          "rng": {
+            "ai": {
+              "counter": 2,
+              "seed0": 13072322550180016865,
+              "seed1": 7637300127113909637
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 2167507771986366392,
+              "seed1": 13954430084922510164
+            },
+            "card": {
+              "counter": 250,
+              "seed0": 15414749786579381947,
+              "seed1": 17022663957195981727
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 3690537314276943448,
+              "seed1": 5736076559516827748
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 15474521253581205145,
+              "seed1": 15194024927221798793
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 3690537314276943448,
+              "seed1": 5736076559516827748
+            },
+            "misc": {
+              "counter": 2,
+              "seed0": 3728643759678257588,
+              "seed1": 14737805191182559914
+            },
+            "monster_hp": {
+              "counter": 2,
+              "seed0": 13072322550180016865,
+              "seed1": 7637300127113909637
+            },
+            "monster": {
+              "counter": 39,
+              "seed0": 11058671191431516602,
+              "seed1": 4375360278635464436
+            },
+            "neow": {
+              "counter": 8,
+              "seed0": 6680735425533515612,
+              "seed1": 13574764549909055634
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 3690537314276943448,
+              "seed1": 5736076559516827748
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 3816675287995172450,
+              "seed1": 11566236854179823642
+            },
+            "shuffle": {
+              "counter": 0,
+              "seed0": 2167507771986366392,
+              "seed1": 13954430084922510164
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 3690537314276943448,
+              "seed1": 5736076559516827748
+            }
+          },
+          "terminal_loss": false
+        },
+        {
+          "direct": {
+            "player": {
+              "current_hp": 0,
+              "max_hp": 80,
+              "block": 0,
+              "powers": []
+            },
+            "energy": 3,
+            "monsters": [
+              {
+                "current_hp": 794,
+                "max_hp": 800,
+                "block": 0,
+                "powers": [
+                  {
+                    "id": "BEAT_OF_DEATH",
+                    "amount": 2
+                  },
+                  {
+                    "id": "INVINCIBLE",
+                    "amount": 194
+                  }
+                ],
+                "id": "CORRUPT_HEART"
+              }
+            ],
+            "hand": [],
+            "draw_pile": [
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              }
+            ],
+            "discard_pile": [
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              }
+            ],
+            "exhaust_pile": [],
+            "relics": [
+              {
+                "id": "BURNING_BLOOD",
+                "counter": 0
+              }
+            ],
+            "potions": [
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 0,
+                "requires_target": false
+              },
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 1,
+                "requires_target": false
+              }
+            ]
+          },
+          "rng": {
+            "ai": {
+              "counter": 2,
+              "seed0": 13072322550180016865,
+              "seed1": 7637300127113909637
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 2167507771986366392,
+              "seed1": 13954430084922510164
+            },
+            "card": {
+              "counter": 250,
+              "seed0": 15414749786579381947,
+              "seed1": 17022663957195981727
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 3690537314276943448,
+              "seed1": 5736076559516827748
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 15474521253581205145,
+              "seed1": 15194024927221798793
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 3690537314276943448,
+              "seed1": 5736076559516827748
+            },
+            "misc": {
+              "counter": 2,
+              "seed0": 3728643759678257588,
+              "seed1": 14737805191182559914
+            },
+            "monster_hp": {
+              "counter": 2,
+              "seed0": 13072322550180016865,
+              "seed1": 7637300127113909637
+            },
+            "monster": {
+              "counter": 39,
+              "seed0": 11058671191431516602,
+              "seed1": 4375360278635464436
+            },
+            "neow": {
+              "counter": 8,
+              "seed0": 6680735425533515612,
+              "seed1": 13574764549909055634
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 3690537314276943448,
+              "seed1": 5736076559516827748
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 3816675287995172450,
+              "seed1": 11566236854179823642
+            },
+            "shuffle": {
+              "counter": 0,
+              "seed0": 2167507771986366392,
+              "seed1": 13954430084922510164
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 3690537314276943448,
+              "seed1": 5736076559516827748
+            }
+          },
+          "terminal_loss": true
+        }
+      ]
+    },
+    {
+      "seed": 131200125,
+      "scene_id": "act4-heart-fatal-beat-hp2",
+      "encounter": "THE_HEART",
+      "floor": 55,
+      "initial": {
+        "hp": 2,
+        "max_hp": 80,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Anger"
+        ],
+        "draw": [
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger",
+          "Anger"
+        ]
+      },
+      "initial_rng": {
+        "ai": {
+          "counter": 1,
+          "seed0": 8177942720261972472,
+          "seed1": 2541279113381027031
+        },
+        "card_random": {
+          "counter": 0,
+          "seed0": 7067843676189630552,
+          "seed1": 8177942720261972472
+        },
+        "card": {
+          "counter": 0,
+          "seed0": 9208374067789602111,
+          "seed1": 18081631496673375074
+        },
+        "event": {
+          "counter": 0,
+          "seed0": 9208374067789602111,
+          "seed1": 18081631496673375074
+        },
+        "math_util": {
+          "counter": 0,
+          "seed0": 6256254360115347555,
+          "seed1": 14221771527611508304
+        },
+        "merchant": {
+          "counter": 0,
+          "seed0": 9208374067789602111,
+          "seed1": 18081631496673375074
+        },
+        "misc": {
+          "counter": 0,
+          "seed0": 18054164860469766260,
+          "seed1": 3234030697654974996
+        },
+        "monster_hp": {
+          "counter": 1,
+          "seed0": 8177942720261972472,
+          "seed1": 2541279113381027031
+        },
+        "monster": {
+          "counter": 36,
+          "seed0": 9562958112047514395,
+          "seed1": 16720191126728636089
+        },
+        "neow": {
+          "counter": 5,
+          "seed0": 3649835707378267531,
+          "seed1": 7726061797189645132
+        },
+        "potion": {
+          "counter": 0,
+          "seed0": 9208374067789602111,
+          "seed1": 18081631496673375074
+        },
+        "relic": {
+          "counter": 5,
+          "seed0": 3649835707378267531,
+          "seed1": 7726061797189645132
+        },
+        "shuffle": {
+          "counter": 0,
+          "seed0": 7067843676189630552,
+          "seed1": 8177942720261972472
+        },
+        "treasure": {
+          "counter": 0,
+          "seed0": 9208374067789602111,
+          "seed1": 18081631496673375074
+        }
+      },
+      "actions": [
+        {
+          "kind": "play",
+          "card_index": 1,
+          "target_index": 0
+        }
+      ],
+      "expected": [
+        {
+          "direct": {
+            "player": {
+              "current_hp": 2,
+              "max_hp": 80,
+              "block": 0,
+              "powers": []
+            },
+            "energy": 3,
+            "monsters": [
+              {
+                "current_hp": 800,
+                "max_hp": 800,
+                "block": 0,
+                "powers": [
+                  {
+                    "id": "BEAT_OF_DEATH",
+                    "amount": 2
+                  },
+                  {
+                    "id": "INVINCIBLE",
+                    "amount": 200
+                  }
+                ],
+                "id": "CORRUPT_HEART"
+              }
+            ],
+            "hand": [
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              }
+            ],
+            "draw_pile": [
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              }
+            ],
+            "discard_pile": [],
+            "exhaust_pile": [],
+            "relics": [
+              {
+                "id": "BURNING_BLOOD",
+                "counter": 0
+              }
+            ],
+            "potions": [
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 0,
+                "requires_target": false
+              },
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 1,
+                "requires_target": false
+              }
+            ]
+          },
+          "rng": {
+            "ai": {
+              "counter": 2,
+              "seed0": 2541279113381027031,
+              "seed1": 11209611628442866334
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 7067843676189630552,
+              "seed1": 8177942720261972472
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 9208374067789602111,
+              "seed1": 18081631496673375074
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 9208374067789602111,
+              "seed1": 18081631496673375074
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 6256254360115347555,
+              "seed1": 14221771527611508304
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 9208374067789602111,
+              "seed1": 18081631496673375074
+            },
+            "misc": {
+              "counter": 0,
+              "seed0": 18054164860469766260,
+              "seed1": 3234030697654974996
+            },
+            "monster_hp": {
+              "counter": 2,
+              "seed0": 2541279113381027031,
+              "seed1": 11209611628442866334
+            },
+            "monster": {
+              "counter": 36,
+              "seed0": 9562958112047514395,
+              "seed1": 16720191126728636089
+            },
+            "neow": {
+              "counter": 5,
+              "seed0": 3649835707378267531,
+              "seed1": 7726061797189645132
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 9208374067789602111,
+              "seed1": 18081631496673375074
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 3649835707378267531,
+              "seed1": 7726061797189645132
+            },
+            "shuffle": {
+              "counter": 0,
+              "seed0": 7067843676189630552,
+              "seed1": 8177942720261972472
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 9208374067789602111,
+              "seed1": 18081631496673375074
+            }
+          },
+          "terminal_loss": false
+        },
+        {
+          "direct": {
+            "player": {
+              "current_hp": 0,
+              "max_hp": 80,
+              "block": 0,
+              "powers": []
+            },
+            "energy": 3,
+            "monsters": [
+              {
+                "current_hp": 794,
+                "max_hp": 800,
+                "block": 0,
+                "powers": [
+                  {
+                    "id": "BEAT_OF_DEATH",
+                    "amount": 2
+                  },
+                  {
+                    "id": "INVINCIBLE",
+                    "amount": 194
+                  }
+                ],
+                "id": "CORRUPT_HEART"
+              }
+            ],
+            "hand": [],
+            "draw_pile": [
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              }
+            ],
+            "discard_pile": [
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              },
+              {
+                "id": "ANGER",
+                "base_cost": 0,
+                "cost": 0,
+                "upgrades": 0,
+                "free_to_play_once": false,
+                "retain": false,
+                "self_retain": false
+              }
+            ],
+            "exhaust_pile": [],
+            "relics": [
+              {
+                "id": "BURNING_BLOOD",
+                "counter": 0
+              }
+            ],
+            "potions": [
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 0,
+                "requires_target": false
+              },
+              {
+                "id": "EMPTY_POTION_SLOT",
+                "slot": 1,
+                "requires_target": false
+              }
+            ]
+          },
+          "rng": {
+            "ai": {
+              "counter": 2,
+              "seed0": 2541279113381027031,
+              "seed1": 11209611628442866334
+            },
+            "card_random": {
+              "counter": 0,
+              "seed0": 7067843676189630552,
+              "seed1": 8177942720261972472
+            },
+            "card": {
+              "counter": 0,
+              "seed0": 9208374067789602111,
+              "seed1": 18081631496673375074
+            },
+            "event": {
+              "counter": 0,
+              "seed0": 9208374067789602111,
+              "seed1": 18081631496673375074
+            },
+            "math_util": {
+              "counter": 0,
+              "seed0": 6256254360115347555,
+              "seed1": 14221771527611508304
+            },
+            "merchant": {
+              "counter": 0,
+              "seed0": 9208374067789602111,
+              "seed1": 18081631496673375074
+            },
+            "misc": {
+              "counter": 0,
+              "seed0": 18054164860469766260,
+              "seed1": 3234030697654974996
+            },
+            "monster_hp": {
+              "counter": 2,
+              "seed0": 2541279113381027031,
+              "seed1": 11209611628442866334
+            },
+            "monster": {
+              "counter": 36,
+              "seed0": 9562958112047514395,
+              "seed1": 16720191126728636089
+            },
+            "neow": {
+              "counter": 5,
+              "seed0": 3649835707378267531,
+              "seed1": 7726061797189645132
+            },
+            "potion": {
+              "counter": 0,
+              "seed0": 9208374067789602111,
+              "seed1": 18081631496673375074
+            },
+            "relic": {
+              "counter": 5,
+              "seed0": 3649835707378267531,
+              "seed1": 7726061797189645132
+            },
+            "shuffle": {
+              "counter": 0,
+              "seed0": 7067843676189630552,
+              "seed1": 8177942720261972472
+            },
+            "treasure": {
+              "counter": 0,
+              "seed0": 9208374067789602111,
+              "seed1": 18081631496673375074
+            }
+          },
+          "terminal_loss": true
+        }
+      ]
+    }
+  ]
+}

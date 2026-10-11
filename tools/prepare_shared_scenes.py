@@ -93,7 +93,7 @@ def main() -> int:
                 raise ValueError("stock class sources disagree")
             classes[name] = compact
     rows = scenes()
-    paths = list((ROOT / "docs/results").rglob("*.json")) + list((ROOT / "local/audits").rglob("*.json"))
+    paths = list((ROOT / "tests/fixtures/evidence/results").rglob("*.json")) + list((ROOT / "local/audits").rglob("*.json"))
     seeds = allocate_seeds(len(rows), recorded_seeds(paths))
     for row, allocation in zip(rows, seeds, strict=True):
         row["seeds"] = allocation

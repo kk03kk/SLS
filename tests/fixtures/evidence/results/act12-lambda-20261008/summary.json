@@ -1,0 +1,2289 @@
+{
+  "schema": "sls-downloaded-act12-evidence-v1",
+  "study_sha256": "d1c2e24d89fa58b14fd2c9f34077445099d79d0656aa8aa194748b81552b86b5",
+  "paired_comparisons": {
+    "lambda1_vs_control": {
+      "schema": "sls-arm-comparison-v1",
+      "arms": [
+        "control",
+        "lambda1"
+      ],
+      "sources": [
+        "Act1-2",
+        "Act1-2"
+      ],
+      "paired_seeds": 2048,
+      "seed_range": [
+        8000010000000,
+        8000010002048
+      ],
+      "results": {
+        "control": {
+          "wins": 7,
+          "successes": 7,
+          "success_rate": 0.00341796875,
+          "ci95": [
+            0.0016566486656557316,
+            0.007038691193081984
+          ]
+        },
+        "lambda1": {
+          "wins": 6,
+          "successes": 6,
+          "success_rate": 0.0029296875,
+          "ci95": [
+            0.0013433724883486994,
+            0.006377233191292398
+          ]
+        }
+      },
+      "discordant": {
+        "control_win": 6,
+        "lambda1_win": 5
+      },
+      "net": -1,
+      "exact_mcnemar_p": 1.0,
+      "verdict": "no significant difference (p=1.0000)",
+      "blocks": [
+        {
+          "start": 8000010000000,
+          "n": 256,
+          "left_wins": 0,
+          "right_wins": 2
+        },
+        {
+          "start": 8000010000256,
+          "n": 256,
+          "left_wins": 0,
+          "right_wins": 0
+        },
+        {
+          "start": 8000010000512,
+          "n": 256,
+          "left_wins": 1,
+          "right_wins": 2
+        },
+        {
+          "start": 8000010000768,
+          "n": 256,
+          "left_wins": 1,
+          "right_wins": 0
+        },
+        {
+          "start": 8000010001024,
+          "n": 256,
+          "left_wins": 1,
+          "right_wins": 0
+        },
+        {
+          "start": 8000010001280,
+          "n": 256,
+          "left_wins": 1,
+          "right_wins": 0
+        },
+        {
+          "start": 8000010001536,
+          "n": 256,
+          "left_wins": 1,
+          "right_wins": 1
+        },
+        {
+          "start": 8000010001792,
+          "n": 256,
+          "left_wins": 2,
+          "right_wins": 1
+        }
+      ],
+      "paired_difference_ci95_normal": [
+        -0.0036623243699247837,
+        0.0026857618699247837
+      ]
+    },
+    "lambda1_vs_parent": {
+      "schema": "sls-arm-comparison-v1",
+      "arms": [
+        "parent",
+        "lambda1"
+      ],
+      "sources": [
+        "Act1-2",
+        "Act1-2"
+      ],
+      "paired_seeds": 2048,
+      "seed_range": [
+        8000010000000,
+        8000010002048
+      ],
+      "results": {
+        "parent": {
+          "wins": 4,
+          "successes": 4,
+          "success_rate": 0.001953125,
+          "ci95": [
+            0.0007597861909834532,
+            0.005011351130464404
+          ]
+        },
+        "lambda1": {
+          "wins": 6,
+          "successes": 6,
+          "success_rate": 0.0029296875,
+          "ci95": [
+            0.0013433724883486994,
+            0.006377233191292398
+          ]
+        }
+      },
+      "discordant": {
+        "parent_win": 4,
+        "lambda1_win": 6
+      },
+      "net": 2,
+      "exact_mcnemar_p": 0.75390625,
+      "verdict": "no significant difference (p=0.7539)",
+      "blocks": [
+        {
+          "start": 8000010000000,
+          "n": 256,
+          "left_wins": 0,
+          "right_wins": 2
+        },
+        {
+          "start": 8000010000256,
+          "n": 256,
+          "left_wins": 2,
+          "right_wins": 0
+        },
+        {
+          "start": 8000010000512,
+          "n": 256,
+          "left_wins": 0,
+          "right_wins": 2
+        },
+        {
+          "start": 8000010000768,
+          "n": 256,
+          "left_wins": 0,
+          "right_wins": 0
+        },
+        {
+          "start": 8000010001024,
+          "n": 256,
+          "left_wins": 0,
+          "right_wins": 0
+        },
+        {
+          "start": 8000010001280,
+          "n": 256,
+          "left_wins": 0,
+          "right_wins": 0
+        },
+        {
+          "start": 8000010001536,
+          "n": 256,
+          "left_wins": 2,
+          "right_wins": 1
+        },
+        {
+          "start": 8000010001792,
+          "n": 256,
+          "left_wins": 0,
+          "right_wins": 1
+        }
+      ],
+      "paired_difference_ci95_normal": [
+        -0.002049540480793004,
+        0.004002665480793003
+      ]
+    },
+    "control_vs_parent_secondary": {
+      "schema": "sls-arm-comparison-v1",
+      "arms": [
+        "parent",
+        "control"
+      ],
+      "sources": [
+        "Act1-2",
+        "Act1-2"
+      ],
+      "paired_seeds": 2048,
+      "seed_range": [
+        8000010000000,
+        8000010002048
+      ],
+      "results": {
+        "parent": {
+          "wins": 4,
+          "successes": 4,
+          "success_rate": 0.001953125,
+          "ci95": [
+            0.0007597861909834532,
+            0.005011351130464404
+          ]
+        },
+        "control": {
+          "wins": 7,
+          "successes": 7,
+          "success_rate": 0.00341796875,
+          "ci95": [
+            0.0016566486656557316,
+            0.007038691193081984
+          ]
+        }
+      },
+      "discordant": {
+        "parent_win": 4,
+        "control_win": 7
+      },
+      "net": 3,
+      "exact_mcnemar_p": 0.548828125,
+      "verdict": "no significant difference (p=0.5488)",
+      "blocks": [
+        {
+          "start": 8000010000000,
+          "n": 256,
+          "left_wins": 0,
+          "right_wins": 0
+        },
+        {
+          "start": 8000010000256,
+          "n": 256,
+          "left_wins": 2,
+          "right_wins": 0
+        },
+        {
+          "start": 8000010000512,
+          "n": 256,
+          "left_wins": 0,
+          "right_wins": 1
+        },
+        {
+          "start": 8000010000768,
+          "n": 256,
+          "left_wins": 0,
+          "right_wins": 1
+        },
+        {
+          "start": 8000010001024,
+          "n": 256,
+          "left_wins": 0,
+          "right_wins": 1
+        },
+        {
+          "start": 8000010001280,
+          "n": 256,
+          "left_wins": 0,
+          "right_wins": 1
+        },
+        {
+          "start": 8000010001536,
+          "n": 256,
+          "left_wins": 2,
+          "right_wins": 1
+        },
+        {
+          "start": 8000010001792,
+          "n": 256,
+          "left_wins": 0,
+          "right_wins": 2
+        }
+      ],
+      "paired_difference_ci95_normal": [
+        -0.0017086357218635277,
+        0.004638323221863527
+      ]
+    }
+  },
+  "resource_pairs": {
+    "control": {
+      "reach_pairs": {
+        "both_reached": 660,
+        "lost_reach": 773,
+        "gained_reach": 122,
+        "exact_mcnemar_p": 2.117147885103802e-116
+      },
+      "parent_common_survivors": {
+        "samples": 660,
+        "hp": 70.43030303030304,
+        "hp_fraction": 0.8970521410481602,
+        "gold": 169.08030303030304,
+        "deck_size": 20.003030303030304,
+        "potions": 0.6803030303030303,
+        "relics": 4.836363636363636
+      },
+      "endpoint_common_survivors": {
+        "samples": 660,
+        "hp": 67.98333333333333,
+        "hp_fraction": 0.868169310271224,
+        "gold": 178.63939393939393,
+        "deck_size": 20.26060606060606,
+        "potions": 0.5575757575757576,
+        "relics": 4.946969696969697
+      }
+    },
+    "experimental": {
+      "reach_pairs": {
+        "both_reached": 699,
+        "lost_reach": 734,
+        "gained_reach": 103,
+        "exact_mcnemar_p": 4.027929951799548e-118
+      },
+      "parent_common_survivors": {
+        "samples": 699,
+        "hp": 70.5722460658083,
+        "hp_fraction": 0.8964739167669754,
+        "gold": 172.3233190271817,
+        "deck_size": 19.931330472103003,
+        "potions": 0.6895565092989986,
+        "relics": 4.758226037195994
+      },
+      "endpoint_common_survivors": {
+        "samples": 699,
+        "hp": 66.88698140200286,
+        "hp_fraction": 0.8478318725684748,
+        "gold": 166.3376251788269,
+        "deck_size": 19.626609442060087,
+        "potions": 0.5336194563662375,
+        "relics": 4.868383404864091
+      }
+    }
+  },
+  "automatic_20m_extension": false,
+  "eligible_parent_arm": null,
+  "primary_gain_passed": false,
+  "primary_holm_passed": false,
+  "registered_health_by_arm": {
+    "control": false,
+    "experimental": false
+  },
+  "secondary_analysis_identity": "historical control vs parent; not preregistered lambda superiority",
+  "limitations": [
+    "One training seed; development only; holdout sealed.",
+    "No checkpoint deserialization, local GPU, simulator, or performance benchmark.",
+    "Reached-act resources and boss populations depend on policy.",
+    "No claim about original-game win rate or causal catastrophic forgetting."
+  ],
+  "archive_sha256": "cf6e67ee78fac7d0de280dc105efbea9599a5ea9de4efc74592348379d1991ff",
+  "arms": {
+    "control": {
+      "run": "ironclad-a20-act12-lambda098-r1",
+      "verified_bundle_files": {
+        "endpoint-evaluation.json": "e6aaf5a1eba0525a5b18acd30ab34b41ebc2cabd3458e0828787e2172b914f4e",
+        "final-evaluation.json": "b16083ddb41c9668587f3fa903d237f1b1bbd31a3559aa66a4b02b1a25e323e5",
+        "final.pt": "4eab4cb154f17b9f48e81e160b799bd99ed1d58fcae9938f735b29aa26418098",
+        "latest.pt": "28de523882fd8e0be0605a818889c294d1acc8225eaa251795e821a8a7e73e47",
+        "reference-evaluation.json": "7b616b2f2baca2dcbb02ca874c17e216e1469a9bef62277471ec9367d3f501d5",
+        "run-manifest.json": "e8e6f751ed6315bcc3ae90fefb8b5c37ddb1ac3a6911856613c6bd20ef6a4e19",
+        "stages/train/metrics.jsonl": "2c89b2c8c345871a40e605e1d69a2ffc804e2bfaf38c539059d22eb210f3ae65",
+        "stages/train/selection/best_progress.json": "5852ef919d2c31783825cc66100dd8f7f2eccec8c683c0e1851dc4b6f4e315f4",
+        "stages/train/selection/best_progress.pt": "c5a265e5556ed0bd50177632590506a41f5213aef7fd5161dfd107c3a0fe68ca",
+        "training-config.toml": "ddba30911f89e7da05c32bbb35916c2743fcaf313234939d4f87c27c87d34404"
+      },
+      "checkpoint_payload_validation": "NOT_RUN: hashes/provenance verified; no torch loading, tensor or resume equality claim",
+      "missing_deployment_export": true,
+      "checkpoint_inventory": {
+        "available": [
+          "endpoint-evaluation.json",
+          "final-evaluation.json",
+          "final.pt",
+          "latest.pt",
+          "reference-evaluation.json",
+          "run-manifest.json",
+          "stages/train/metrics.jsonl",
+          "stages/train/selection/best_progress.json",
+          "stages/train/selection/best_progress.pt",
+          "training-config.toml"
+        ],
+        "periodic_checkpoint_files_in_download": []
+      },
+      "selected": {
+        "schema": "sls-best-progress-v5",
+        "update": 0,
+        "successes": 0,
+        "success_rate": 0.0,
+        "reached_act2": 190,
+        "reached_act3": 0,
+        "reached_act2_rate": 0.7421875,
+        "reached_act3_rate": 0.0,
+        "episodes": 256,
+        "mean_reward": -1.0,
+        "mean_steps": 236.3203125,
+        "median_failure_floor": 22.0,
+        "step_limits": 0,
+        "cycle_limits": 16,
+        "self_loops": 2,
+        "timeouts": 0,
+        "backend_truncations": 0,
+        "backend_errors": 0,
+        "boss_success_rate": {
+          "ACT_1:HEXAGHOST": 0.6777777777777778,
+          "ACT_1:SLIME_BOSS": 0.8617021276595744,
+          "ACT_1:THE_GUARDIAN": 0.6666666666666666,
+          "ACT_2:AUTOMATON": 0.0,
+          "ACT_2:CHAMP": 0.0,
+          "ACT_2:COLLECTOR": 0.0
+        },
+        "boss_successes": {
+          "ACT_1:HEXAGHOST": 61,
+          "ACT_1:SLIME_BOSS": 81,
+          "ACT_1:THE_GUARDIAN": 48,
+          "ACT_2:AUTOMATON": 0,
+          "ACT_2:CHAMP": 0,
+          "ACT_2:COLLECTOR": 0
+        },
+        "boss_attempts": {
+          "ACT_1:HEXAGHOST": 90,
+          "ACT_1:SLIME_BOSS": 94,
+          "ACT_1:THE_GUARDIAN": 72,
+          "ACT_2:AUTOMATON": 64,
+          "ACT_2:CHAMP": 58,
+          "ACT_2:COLLECTOR": 68
+        },
+        "minimum_boss_success_rate": 0.0,
+        "boss_action_metrics": {
+          "ACT_1:HEXAGHOST": {
+            "entries": 82,
+            "potions_at_entry": 142,
+            "decisions": 2699,
+            "play_card_actions": 1860,
+            "defend_red_actions": 284,
+            "use_potion_actions": 145,
+            "discard_potion_actions": 2,
+            "block_deficit_decisions": 1783,
+            "defend_red_on_block_deficit": 234,
+            "targeted_card_plays_while_sharp_hide": 0,
+            "mean_potions_at_entry": 1.7317073170731707,
+            "defend_red_on_block_deficit_rate": 0.13123948401570387
+          },
+          "ACT_1:SLIME_BOSS": {
+            "entries": 88,
+            "potions_at_entry": 138,
+            "decisions": 2463,
+            "play_card_actions": 1724,
+            "defend_red_actions": 114,
+            "use_potion_actions": 100,
+            "discard_potion_actions": 0,
+            "block_deficit_decisions": 1059,
+            "defend_red_on_block_deficit": 96,
+            "targeted_card_plays_while_sharp_hide": 0,
+            "mean_potions_at_entry": 1.5681818181818181,
+            "defend_red_on_block_deficit_rate": 0.0906515580736544
+          },
+          "ACT_1:THE_GUARDIAN": {
+            "entries": 66,
+            "potions_at_entry": 111,
+            "decisions": 2479,
+            "play_card_actions": 1701,
+            "defend_red_actions": 443,
+            "use_potion_actions": 114,
+            "discard_potion_actions": 1,
+            "block_deficit_decisions": 1458,
+            "defend_red_on_block_deficit": 365,
+            "targeted_card_plays_while_sharp_hide": 267,
+            "mean_potions_at_entry": 1.6818181818181819,
+            "defend_red_on_block_deficit_rate": 0.2503429355281207
+          },
+          "ACT_2:AUTOMATON": {
+            "entries": 8,
+            "potions_at_entry": 10,
+            "decisions": 230,
+            "play_card_actions": 162,
+            "defend_red_actions": 22,
+            "use_potion_actions": 8,
+            "discard_potion_actions": 0,
+            "block_deficit_decisions": 149,
+            "defend_red_on_block_deficit": 17,
+            "targeted_card_plays_while_sharp_hide": 0,
+            "mean_potions_at_entry": 1.25,
+            "defend_red_on_block_deficit_rate": 0.11409395973154363
+          },
+          "ACT_2:CHAMP": {
+            "entries": 4,
+            "potions_at_entry": 8,
+            "decisions": 150,
+            "play_card_actions": 105,
+            "defend_red_actions": 11,
+            "use_potion_actions": 8,
+            "discard_potion_actions": 0,
+            "block_deficit_decisions": 101,
+            "defend_red_on_block_deficit": 10,
+            "targeted_card_plays_while_sharp_hide": 0,
+            "mean_potions_at_entry": 2.0,
+            "defend_red_on_block_deficit_rate": 0.09900990099009901
+          },
+          "ACT_2:COLLECTOR": {
+            "entries": 6,
+            "potions_at_entry": 11,
+            "decisions": 160,
+            "play_card_actions": 113,
+            "defend_red_actions": 14,
+            "use_potion_actions": 10,
+            "discard_potion_actions": 0,
+            "block_deficit_decisions": 107,
+            "defend_red_on_block_deficit": 7,
+            "targeted_card_plays_while_sharp_hide": 0,
+            "mean_potions_at_entry": 1.8333333333333333,
+            "defend_red_on_block_deficit_rate": 0.06542056074766354
+          }
+        },
+        "selection_excludes_mean_reward": true,
+        "environment_steps": 90013696,
+        "selection_objective": "HORIZON_CLEAR_COUNT",
+        "checkpoint_sha256": "c5a265e5556ed0bd50177632590506a41f5213aef7fd5161dfd107c3a0fe68ca"
+      },
+      "confirmation": {
+        "parent": {
+          "wins": 4,
+          "episodes": 2048,
+          "rate": 0.001953125,
+          "ci95": [
+            0.0007597861909834532,
+            0.005011351130464404
+          ],
+          "bosses": {
+            "HEXAGHOST": {
+              "wins": 447,
+              "seeds": 691,
+              "entries": 639,
+              "clear_rate": 0.6468885672937771,
+              "entry_win_rate": 0.6995305164319249
+            },
+            "SLIME_BOSS": {
+              "wins": 538,
+              "seeds": 686,
+              "entries": 643,
+              "clear_rate": 0.7842565597667639,
+              "entry_win_rate": 0.8367029548989113
+            },
+            "THE_GUARDIAN": {
+              "wins": 448,
+              "seeds": 671,
+              "entries": 618,
+              "clear_rate": 0.6676602086438153,
+              "entry_win_rate": 0.7249190938511327
+            }
+          },
+          "failure_floor_mean": 21.337084148727985,
+          "failure_floor_median": 21.0,
+          "mean_steps": 234.9375,
+          "health": {
+            "backend_errors": 0,
+            "backend_truncations": 0,
+            "step_limits": 0,
+            "cycle_limits": 182,
+            "timeouts": 0
+          },
+          "evaluation_horizon": 2,
+          "acts": {
+            "1": {
+              "reached": 2048,
+              "reach_rate": 1.0,
+              "act_clears": 1433,
+              "bosses": {
+                "HEXAGHOST": {
+                  "assigned_episodes": 691,
+                  "boss_entries": 639,
+                  "act_clears": 447,
+                  "act_clear_rate": 0.6468885672937771,
+                  "boss_entry_clear_rate": 0.6995305164319249,
+                  "full_horizon_wins": 0
+                },
+                "SLIME_BOSS": {
+                  "assigned_episodes": 686,
+                  "boss_entries": 643,
+                  "act_clears": 538,
+                  "act_clear_rate": 0.7842565597667639,
+                  "boss_entry_clear_rate": 0.8367029548989113,
+                  "full_horizon_wins": 2
+                },
+                "THE_GUARDIAN": {
+                  "assigned_episodes": 671,
+                  "boss_entries": 618,
+                  "act_clears": 448,
+                  "act_clear_rate": 0.6676602086438153,
+                  "boss_entry_clear_rate": 0.7249190938511327,
+                  "full_horizon_wins": 2
+                }
+              },
+              "full_horizon_wins_given_reach": 0.001953125,
+              "failure_floor_counts": {
+                "5": 2,
+                "6": 20,
+                "7": 13,
+                "8": 22,
+                "10": 15,
+                "11": 17,
+                "12": 22,
+                "13": 12,
+                "14": 25,
+                "16": 292,
+                "17": 175
+              }
+            },
+            "2": {
+              "reached": 1433,
+              "reach_rate": 0.69970703125,
+              "act_clears": 4,
+              "bosses": {
+                "AUTOMATON": {
+                  "assigned_episodes": 482,
+                  "boss_entries": 36,
+                  "act_clears": 0,
+                  "act_clear_rate": 0.0,
+                  "boss_entry_clear_rate": 0.0,
+                  "full_horizon_wins": 0
+                },
+                "CHAMP": {
+                  "assigned_episodes": 475,
+                  "boss_entries": 66,
+                  "act_clears": 4,
+                  "act_clear_rate": 0.008421052631578947,
+                  "boss_entry_clear_rate": 0.06060606060606061,
+                  "full_horizon_wins": 4
+                },
+                "COLLECTOR": {
+                  "assigned_episodes": 476,
+                  "boss_entries": 49,
+                  "act_clears": 0,
+                  "act_clear_rate": 0.0,
+                  "boss_entry_clear_rate": 0.0,
+                  "full_horizon_wins": 0
+                }
+              },
+              "full_horizon_wins_given_reach": 0.0027913468248429866,
+              "failure_floor_counts": {
+                "18": 39,
+                "19": 86,
+                "20": 136,
+                "21": 171,
+                "22": 236,
+                "23": 147,
+                "24": 167,
+                "25": 68,
+                "27": 62,
+                "28": 46,
+                "29": 45,
+                "30": 33,
+                "31": 46,
+                "33": 147
+              }
+            }
+          },
+          "boss_metric_note": "Act clears are stage outcomes; full_horizon_wins is the terminal objective. Reach-conditioned groups depend on policy."
+        },
+        "endpoint": {
+          "wins": 7,
+          "episodes": 2048,
+          "rate": 0.00341796875,
+          "ci95": [
+            0.0016566486656557316,
+            0.007038691193081984
+          ],
+          "bosses": {
+            "HEXAGHOST": {
+              "wins": 214,
+              "seeds": 691,
+              "entries": 493,
+              "clear_rate": 0.3096960926193922,
+              "entry_win_rate": 0.4340770791075051
+            },
+            "SLIME_BOSS": {
+              "wins": 359,
+              "seeds": 686,
+              "entries": 550,
+              "clear_rate": 0.5233236151603499,
+              "entry_win_rate": 0.6527272727272727
+            },
+            "THE_GUARDIAN": {
+              "wins": 209,
+              "seeds": 671,
+              "entries": 465,
+              "clear_rate": 0.3114754098360656,
+              "entry_win_rate": 0.44946236559139785
+            }
+          },
+          "failure_floor_mean": 17.777560019598237,
+          "failure_floor_median": 16,
+          "mean_steps": 202.31884765625,
+          "health": {
+            "backend_errors": 0,
+            "backend_truncations": 0,
+            "step_limits": 0,
+            "cycle_limits": 69,
+            "timeouts": 0
+          },
+          "evaluation_horizon": 2,
+          "acts": {
+            "1": {
+              "reached": 2048,
+              "reach_rate": 1.0,
+              "act_clears": 782,
+              "bosses": {
+                "HEXAGHOST": {
+                  "assigned_episodes": 691,
+                  "boss_entries": 493,
+                  "act_clears": 214,
+                  "act_clear_rate": 0.3096960926193922,
+                  "boss_entry_clear_rate": 0.4340770791075051,
+                  "full_horizon_wins": 3
+                },
+                "SLIME_BOSS": {
+                  "assigned_episodes": 686,
+                  "boss_entries": 550,
+                  "act_clears": 359,
+                  "act_clear_rate": 0.5233236151603499,
+                  "boss_entry_clear_rate": 0.6527272727272727,
+                  "full_horizon_wins": 2
+                },
+                "THE_GUARDIAN": {
+                  "assigned_episodes": 671,
+                  "boss_entries": 465,
+                  "act_clears": 209,
+                  "act_clear_rate": 0.3114754098360656,
+                  "boss_entry_clear_rate": 0.44946236559139785,
+                  "full_horizon_wins": 2
+                }
+              },
+              "full_horizon_wins_given_reach": 0.00341796875,
+              "failure_floor_counts": {
+                "1": 1,
+                "5": 8,
+                "6": 74,
+                "7": 68,
+                "8": 76,
+                "10": 55,
+                "11": 68,
+                "12": 57,
+                "13": 60,
+                "14": 73,
+                "16": 657,
+                "17": 69
+              }
+            },
+            "2": {
+              "reached": 782,
+              "reach_rate": 0.3818359375,
+              "act_clears": 7,
+              "bosses": {
+                "AUTOMATON": {
+                  "assigned_episodes": 278,
+                  "boss_entries": 30,
+                  "act_clears": 1,
+                  "act_clear_rate": 0.0035971223021582736,
+                  "boss_entry_clear_rate": 0.03333333333333333,
+                  "full_horizon_wins": 1
+                },
+                "CHAMP": {
+                  "assigned_episodes": 265,
+                  "boss_entries": 41,
+                  "act_clears": 6,
+                  "act_clear_rate": 0.022641509433962263,
+                  "boss_entry_clear_rate": 0.14634146341463414,
+                  "full_horizon_wins": 6
+                },
+                "COLLECTOR": {
+                  "assigned_episodes": 239,
+                  "boss_entries": 33,
+                  "act_clears": 0,
+                  "act_clear_rate": 0.0,
+                  "boss_entry_clear_rate": 0.0,
+                  "full_horizon_wins": 0
+                }
+              },
+              "full_horizon_wins_given_reach": 0.008951406649616368,
+              "failure_floor_counts": {
+                "18": 28,
+                "19": 22,
+                "20": 52,
+                "21": 80,
+                "22": 103,
+                "23": 81,
+                "24": 108,
+                "25": 48,
+                "27": 46,
+                "28": 27,
+                "29": 33,
+                "30": 23,
+                "31": 27,
+                "33": 97
+              }
+            }
+          },
+          "boss_metric_note": "Act clears are stage outcomes; full_horizon_wins is the terminal objective. Reach-conditioned groups depend on policy."
+        },
+        "selected": {
+          "wins": 4,
+          "episodes": 2048,
+          "rate": 0.001953125,
+          "ci95": [
+            0.0007597861909834532,
+            0.005011351130464404
+          ],
+          "bosses": {
+            "HEXAGHOST": {
+              "wins": 447,
+              "seeds": 691,
+              "entries": 639,
+              "clear_rate": 0.6468885672937771,
+              "entry_win_rate": 0.6995305164319249
+            },
+            "SLIME_BOSS": {
+              "wins": 538,
+              "seeds": 686,
+              "entries": 643,
+              "clear_rate": 0.7842565597667639,
+              "entry_win_rate": 0.8367029548989113
+            },
+            "THE_GUARDIAN": {
+              "wins": 448,
+              "seeds": 671,
+              "entries": 618,
+              "clear_rate": 0.6676602086438153,
+              "entry_win_rate": 0.7249190938511327
+            }
+          },
+          "failure_floor_mean": 21.337084148727985,
+          "failure_floor_median": 21.0,
+          "mean_steps": 234.9375,
+          "health": {
+            "backend_errors": 0,
+            "backend_truncations": 0,
+            "step_limits": 0,
+            "cycle_limits": 182,
+            "timeouts": 0
+          },
+          "evaluation_horizon": 2,
+          "acts": {
+            "1": {
+              "reached": 2048,
+              "reach_rate": 1.0,
+              "act_clears": 1433,
+              "bosses": {
+                "HEXAGHOST": {
+                  "assigned_episodes": 691,
+                  "boss_entries": 639,
+                  "act_clears": 447,
+                  "act_clear_rate": 0.6468885672937771,
+                  "boss_entry_clear_rate": 0.6995305164319249,
+                  "full_horizon_wins": 0
+                },
+                "SLIME_BOSS": {
+                  "assigned_episodes": 686,
+                  "boss_entries": 643,
+                  "act_clears": 538,
+                  "act_clear_rate": 0.7842565597667639,
+                  "boss_entry_clear_rate": 0.8367029548989113,
+                  "full_horizon_wins": 2
+                },
+                "THE_GUARDIAN": {
+                  "assigned_episodes": 671,
+                  "boss_entries": 618,
+                  "act_clears": 448,
+                  "act_clear_rate": 0.6676602086438153,
+                  "boss_entry_clear_rate": 0.7249190938511327,
+                  "full_horizon_wins": 2
+                }
+              },
+              "full_horizon_wins_given_reach": 0.001953125,
+              "failure_floor_counts": {
+                "5": 2,
+                "6": 20,
+                "7": 13,
+                "8": 22,
+                "10": 15,
+                "11": 17,
+                "12": 22,
+                "13": 12,
+                "14": 25,
+                "16": 292,
+                "17": 175
+              }
+            },
+            "2": {
+              "reached": 1433,
+              "reach_rate": 0.69970703125,
+              "act_clears": 4,
+              "bosses": {
+                "AUTOMATON": {
+                  "assigned_episodes": 482,
+                  "boss_entries": 36,
+                  "act_clears": 0,
+                  "act_clear_rate": 0.0,
+                  "boss_entry_clear_rate": 0.0,
+                  "full_horizon_wins": 0
+                },
+                "CHAMP": {
+                  "assigned_episodes": 475,
+                  "boss_entries": 66,
+                  "act_clears": 4,
+                  "act_clear_rate": 0.008421052631578947,
+                  "boss_entry_clear_rate": 0.06060606060606061,
+                  "full_horizon_wins": 4
+                },
+                "COLLECTOR": {
+                  "assigned_episodes": 476,
+                  "boss_entries": 49,
+                  "act_clears": 0,
+                  "act_clear_rate": 0.0,
+                  "boss_entry_clear_rate": 0.0,
+                  "full_horizon_wins": 0
+                }
+              },
+              "full_horizon_wins_given_reach": 0.0027913468248429866,
+              "failure_floor_counts": {
+                "18": 39,
+                "19": 86,
+                "20": 136,
+                "21": 171,
+                "22": 236,
+                "23": 147,
+                "24": 167,
+                "25": 68,
+                "27": 62,
+                "28": 46,
+                "29": 45,
+                "30": 33,
+                "31": 46,
+                "33": 147
+              }
+            }
+          },
+          "boss_metric_note": "Act clears are stage outcomes; full_horizon_wins is the terminal objective. Reach-conditioned groups depend on policy."
+        }
+      },
+      "late_success_windows": [
+        {
+          "additional_step_range": [
+            2000000,
+            3000000
+          ],
+          "successes": 7
+        },
+        {
+          "additional_step_range": [
+            3000000,
+            null
+          ],
+          "successes": 16
+        }
+      ],
+      "strict_registered_health_gate_passed": false,
+      "training_limits": {
+        "terminations_backend_truncated": 0.0,
+        "terminations_step_limit": 0.0,
+        "terminations_cycle_limit": 202.0
+      },
+      "evaluation_limits": {
+        "parent": {
+          "backend_errors": 0,
+          "backend_truncations": 0,
+          "step_limits": 0,
+          "cycle_limits": 182,
+          "timeouts": 0
+        },
+        "endpoint": {
+          "backend_errors": 0,
+          "backend_truncations": 0,
+          "step_limits": 0,
+          "cycle_limits": 69,
+          "timeouts": 0
+        },
+        "selected": {
+          "backend_errors": 0,
+          "backend_truncations": 0,
+          "step_limits": 0,
+          "cycle_limits": 182,
+          "timeouts": 0
+        }
+      },
+      "new_decisions": 4014080,
+      "update_hours": 9.722385160539128,
+      "update_throughput": 114.686077933616,
+      "wall_hours": 12.942640605767568,
+      "timing_seconds": {
+        "collect_seconds": 25086.32812671922,
+        "optimize_seconds": 9861.542023069836,
+        "collect_encode_seconds": 7356.5893052217,
+        "collect_transition_seconds": 9505.734576368151,
+        "collect_policy_seconds": 2511.652199062941,
+        "collect_worker_step_seconds": 5560.292651954471
+      },
+      "metric_summary": {
+        "approx_kl_final": {
+          "mean": 0.004426447202080899,
+          "first10": 0.0032547492941375823,
+          "last10": 0.005267257522791624
+        },
+        "clip_fraction": {
+          "mean": 0.03756178252551021,
+          "first10": 0.037158203125,
+          "last10": 0.0389404296875
+        },
+        "gradient_norm": {
+          "mean": 0.6863390198775701,
+          "first10": 0.8283656954765319,
+          "last10": 0.6706131637096405
+        },
+        "gradient_clip_fraction": {
+          "mean": 0.7994897959183673,
+          "first10": 0.94375,
+          "last10": 0.76875
+        },
+        "value_explained_variance": {
+          "mean": -0.018985453430487183,
+          "first10": 0.39707639813423157,
+          "last10": 0.30685255527496336
+        },
+        "value": {
+          "mean": 0.0034154210432090475,
+          "first10": 0.03895509047433734,
+          "last10": 0.0009323168633272871
+        },
+        "entropy": {
+          "mean": 0.1513955361380869,
+          "first10": 0.16108153611421586,
+          "last10": 0.14995399564504625
+        },
+        "neow_mean_normalized_entropy": {
+          "mean": 0.11057599018299666,
+          "first10": 0.009668640707812873,
+          "last10": 0.06716045334930848
+        },
+        "advantage_std_combat": {
+          "mean": 0.06569877979250587,
+          "first10": 0.26752507835626604,
+          "last10": 0.04094995018094778
+        },
+        "advantage_std_run": {
+          "mean": 0.056951554005547446,
+          "first10": 0.22150411307811738,
+          "last10": 0.03158626109361649
+        },
+        "advantage_std_choice": {
+          "mean": 0.05971909300709257,
+          "first10": 0.24433770626783372,
+          "last10": 0.03227794989943504
+        },
+        "advantage_scale_combat": {
+          "mean": 21.223160790755497,
+          "first10": 4.0070133161364385,
+          "last10": 29.8695240406266
+        },
+        "advantage_scale_run": {
+          "mean": 22.608681934521357,
+          "first10": 4.973669299596554,
+          "last10": 32.811511137637
+        },
+        "advantage_scale_choice": {
+          "mean": 21.464651204705575,
+          "first10": 4.419995752821308,
+          "last10": 31.513283279292384
+        }
+      },
+      "neow_counts": {
+        "0": 4807.0,
+        "1": 12536.0,
+        "2": 1714.0,
+        "3": 9.0
+      },
+      "value_anchors": {
+        "schema": "sls-greedy-value-anchor-summary-v1",
+        "limitation": "Critic predicts stochastic training policy; outcomes use greedy evaluation. Reached-act populations are policy dependent. Parent critic was trained for Act1, not Act2.",
+        "acts": {
+          "1": {
+            "samples": 2048,
+            "mean_prediction_unclipped": 0.0021556949089591715,
+            "observed_full_horizon_rate": 0.00341796875,
+            "mean_squared_error_unclipped": 0.003485734783724122,
+            "out_of_range": 879
+          },
+          "2": {
+            "samples": 782,
+            "mean_prediction_unclipped": 0.0020282312510537487,
+            "observed_full_horizon_rate": 0.008951406649616368,
+            "mean_squared_error_unclipped": 0.009316006499834805,
+            "out_of_range": 357
+          }
+        }
+      },
+      "failures": {
+        "reasons": {
+          "DEATH": 1972,
+          "cycle_limit": 69
+        },
+        "cycle_limit_floor_counts": {
+          "17": 69
+        },
+        "act2_last_recorded_enemy_contexts": {
+          "BOOK_OF_STABBING": 74,
+          "BLUE_SLAVER+TASKMASTER+RED_SLAVER": 74,
+          "SNAKE_PLANT": 58,
+          "SHELLED_PARASITE+FUNGI_BEAST": 52,
+          "BYRD+BYRD+BYRD": 44,
+          "CULTIST+CHOSEN": 43,
+          "CULTIST+CULTIST+CULTIST": 38,
+          "THE_CHAMP": 35,
+          "SNECKO": 34,
+          "CENTURION+MYSTIC": 34,
+          "SHELLED_PARASITE": 30,
+          "BRONZE_ORB+BRONZE_AUTOMATON+BRONZE_ORB": 29,
+          "BYRD+CHOSEN": 27,
+          "NONCOMBAT_OR_UNRECORDED": 19,
+          "TORCH_HEAD+TORCH_HEAD+TORCH_HEAD+TORCH_HEAD+THE_COLLECTOR": 17,
+          "SPHERIC_GUARDIAN": 17,
+          "TORCH_HEAD+TORCH_HEAD+THE_COLLECTOR": 13,
+          "LOOTER+MUGGER": 13,
+          "SENTRY+SPHERIC_GUARDIAN": 13,
+          "CHOSEN": 13,
+          "MAD_GREMLIN+SNEAKY_GREMLIN+GREMLIN_LEADER": 5,
+          "FAT_GREMLIN+FAT_GREMLIN+GREMLIN_LEADER": 4,
+          "MAD_GREMLIN+FAT_GREMLIN+GREMLIN_LEADER": 4,
+          "SNEAKY_GREMLIN+MAD_GREMLIN+GREMLIN_LEADER": 4,
+          "SNEAKY_GREMLIN+FAT_GREMLIN+GREMLIN_LEADER": 3,
+          "SNEAKY_GREMLIN+MAD_GREMLIN+FAT_GREMLIN+FAT_GREMLIN+GREMLIN_LEADER": 2,
+          "SNEAKY_GREMLIN+FAT_GREMLIN+GREMLIN_WIZARD+SNEAKY_GREMLIN+GREMLIN_LEADER": 2,
+          "MAD_GREMLIN+MAD_GREMLIN+FAT_GREMLIN+MAD_GREMLIN+GREMLIN_LEADER": 2,
+          "MAD_GREMLIN+SHIELD_GREMLIN+GREMLIN_LEADER": 2,
+          "SHIELD_GREMLIN+MAD_GREMLIN+GREMLIN_LEADER": 2,
+          "BLUE_SLAVER+RED_SLAVER": 2,
+          "FAT_GREMLIN+SNEAKY_GREMLIN+GREMLIN_LEADER": 2,
+          "FAT_GREMLIN+GREMLIN_WIZARD+GREMLIN_LEADER": 2,
+          "SNEAKY_GREMLIN+MAD_GREMLIN+MAD_GREMLIN+FAT_GREMLIN+GREMLIN_LEADER": 2,
+          "SNEAKY_GREMLIN+FAT_GREMLIN+GREMLIN_WIZARD+FAT_GREMLIN+GREMLIN_LEADER": 2,
+          "FAT_GREMLIN+MAD_GREMLIN+GREMLIN_LEADER": 2,
+          "MAD_GREMLIN+FAT_GREMLIN+GREMLIN_WIZARD+SNEAKY_GREMLIN+GREMLIN_LEADER": 1,
+          "FAT_GREMLIN+SNEAKY_GREMLIN+GREMLIN_WIZARD+GREMLIN_WIZARD+GREMLIN_LEADER": 1,
+          "SHIELD_GREMLIN+SNEAKY_GREMLIN+SHIELD_GREMLIN+FAT_GREMLIN+GREMLIN_LEADER": 1,
+          "MAD_GREMLIN+FAT_GREMLIN+SNEAKY_GREMLIN+SHIELD_GREMLIN+GREMLIN_LEADER": 1,
+          "GREMLIN_WIZARD+MAD_GREMLIN+MAD_GREMLIN+FAT_GREMLIN+GREMLIN_LEADER": 1,
+          "SHIELD_GREMLIN+SHIELD_GREMLIN+MAD_GREMLIN+SNEAKY_GREMLIN+GREMLIN_LEADER": 1,
+          "GREMLIN_WIZARD+SHIELD_GREMLIN+MAD_GREMLIN+SNEAKY_GREMLIN+GREMLIN_LEADER": 1,
+          "GREMLIN_WIZARD+MAD_GREMLIN+GREMLIN_LEADER": 1,
+          "FAT_GREMLIN+SNEAKY_GREMLIN+SNEAKY_GREMLIN+MAD_GREMLIN+GREMLIN_LEADER": 1,
+          "FAT_GREMLIN+SHIELD_GREMLIN+FAT_GREMLIN+SHIELD_GREMLIN+SHIELD_GREMLIN+FAT_GREMLIN+GREMLIN_LEADER": 1,
+          "GREMLIN_WIZARD+FAT_GREMLIN+FAT_GREMLIN+FAT_GREMLIN+SNEAKY_GREMLIN+FAT_GREMLIN+GREMLIN_LEADER": 1,
+          "FAT_GREMLIN+FAT_GREMLIN+SHIELD_GREMLIN+SHIELD_GREMLIN+GREMLIN_LEADER": 1,
+          "MAD_GREMLIN+MAD_GREMLIN+GREMLIN_WIZARD+SNEAKY_GREMLIN+GREMLIN_LEADER": 1,
+          "MAD_GREMLIN+GREMLIN_WIZARD+SNEAKY_GREMLIN+MAD_GREMLIN+GREMLIN_LEADER": 1,
+          "MAD_GREMLIN+MAD_GREMLIN+SNEAKY_GREMLIN+FAT_GREMLIN+MAD_GREMLIN+FAT_GREMLIN+GREMLIN_LEADER": 1,
+          "FAT_GREMLIN+FAT_GREMLIN+SHIELD_GREMLIN+FAT_GREMLIN+GREMLIN_LEADER": 1,
+          "GREMLIN_WIZARD+FAT_GREMLIN+FAT_GREMLIN+SHIELD_GREMLIN+GREMLIN_LEADER": 1,
+          "SHIELD_GREMLIN+FAT_GREMLIN+SNEAKY_GREMLIN+MAD_GREMLIN+GREMLIN_LEADER": 1,
+          "SNEAKY_GREMLIN+SNEAKY_GREMLIN+SHIELD_GREMLIN+SNEAKY_GREMLIN+GREMLIN_LEADER": 1,
+          "MAD_GREMLIN+FAT_GREMLIN+SNEAKY_GREMLIN+FAT_GREMLIN+GREMLIN_LEADER": 1,
+          "SHIELD_GREMLIN+FAT_GREMLIN+FAT_GREMLIN+FAT_GREMLIN+GREMLIN_LEADER": 1,
+          "GREMLIN_WIZARD+MAD_GREMLIN+SNEAKY_GREMLIN+MAD_GREMLIN+GREMLIN_LEADER": 1,
+          "FAT_GREMLIN+SHIELD_GREMLIN+GREMLIN_WIZARD+SNEAKY_GREMLIN+GREMLIN_LEADER": 1,
+          "SNEAKY_GREMLIN+FAT_GREMLIN+SHIELD_GREMLIN+FAT_GREMLIN+GREMLIN_LEADER": 1,
+          "GREMLIN_WIZARD+SNEAKY_GREMLIN+SNEAKY_GREMLIN+FAT_GREMLIN+GREMLIN_LEADER": 1,
+          "SHIELD_GREMLIN+FAT_GREMLIN+GREMLIN_LEADER": 1,
+          "SNEAKY_GREMLIN+FAT_GREMLIN+FAT_GREMLIN+FAT_GREMLIN+GREMLIN_LEADER": 1,
+          "GREMLIN_WIZARD+FAT_GREMLIN+SHIELD_GREMLIN+MAD_GREMLIN+GREMLIN_LEADER": 1,
+          "FAT_GREMLIN+SHIELD_GREMLIN+MAD_GREMLIN+SHIELD_GREMLIN+GREMLIN_LEADER": 1,
+          "TORCH_HEAD+TORCH_HEAD+TORCH_HEAD+THE_COLLECTOR": 1,
+          "MAD_GREMLIN+GREMLIN_WIZARD+GREMLIN_LEADER": 1,
+          "MAD_GREMLIN+MAD_GREMLIN+GREMLIN_LEADER": 1,
+          "FAT_GREMLIN+MAD_GREMLIN+MAD_GREMLIN+SHIELD_GREMLIN+GREMLIN_LEADER": 1,
+          "MAD_GREMLIN+SNEAKY_GREMLIN+SNEAKY_GREMLIN+FAT_GREMLIN+GREMLIN_LEADER": 1,
+          "SNEAKY_GREMLIN+SNEAKY_GREMLIN+SNEAKY_GREMLIN+MAD_GREMLIN+GREMLIN_LEADER": 1,
+          "SHIELD_GREMLIN+MAD_GREMLIN+FAT_GREMLIN+FAT_GREMLIN+GREMLIN_LEADER": 1,
+          "MAD_GREMLIN+SNEAKY_GREMLIN+FAT_GREMLIN+SNEAKY_GREMLIN+FAT_GREMLIN+SHIELD_GREMLIN+GREMLIN_LEADER": 1,
+          "GREMLIN_WIZARD+GREMLIN_WIZARD+MAD_GREMLIN+FAT_GREMLIN+GREMLIN_LEADER": 1,
+          "MAD_GREMLIN+MAD_GREMLIN+FAT_GREMLIN+SNEAKY_GREMLIN+GREMLIN_LEADER": 1,
+          "SNEAKY_GREMLIN+FAT_GREMLIN+MAD_GREMLIN+MAD_GREMLIN+GREMLIN_LEADER": 1,
+          "MAD_GREMLIN+FAT_GREMLIN+SNEAKY_GREMLIN+SNEAKY_GREMLIN+GREMLIN_LEADER": 1,
+          "POINTY+ROMEO+BEAR": 1,
+          "GREMLIN_WIZARD+SNEAKY_GREMLIN+FAT_GREMLIN+SNEAKY_GREMLIN+SNEAKY_GREMLIN+SNEAKY_GREMLIN+GREMLIN_LEADER": 1,
+          "MAD_GREMLIN+MAD_GREMLIN+GREMLIN_WIZARD+MAD_GREMLIN+GREMLIN_LEADER": 1,
+          "SHIELD_GREMLIN+MAD_GREMLIN+MAD_GREMLIN+SNEAKY_GREMLIN+GREMLIN_LEADER": 1,
+          "SNEAKY_GREMLIN+SNEAKY_GREMLIN+SNEAKY_GREMLIN+SNEAKY_GREMLIN+GREMLIN_LEADER": 1,
+          "SNEAKY_GREMLIN+SHIELD_GREMLIN+MAD_GREMLIN+SNEAKY_GREMLIN+GREMLIN_LEADER": 1,
+          "MAD_GREMLIN+SHIELD_GREMLIN+SNEAKY_GREMLIN+SNEAKY_GREMLIN+GREMLIN_LEADER": 1,
+          "MAD_GREMLIN+SNEAKY_GREMLIN+SNEAKY_GREMLIN+MAD_GREMLIN+GREMLIN_LEADER": 1,
+          "TORCH_HEAD+TORCH_HEAD+TORCH_HEAD+TORCH_HEAD+TORCH_HEAD+THE_COLLECTOR": 1,
+          "MAD_GREMLIN+SHIELD_GREMLIN+SHIELD_GREMLIN+MAD_GREMLIN+GREMLIN_LEADER": 1,
+          "TORCH_HEAD+TORCH_HEAD+TORCH_HEAD+TORCH_HEAD+TORCH_HEAD+TORCH_HEAD+THE_COLLECTOR": 1,
+          "SHIELD_GREMLIN+SNEAKY_GREMLIN+SNEAKY_GREMLIN+SNEAKY_GREMLIN+GREMLIN_LEADER": 1,
+          "MAD_GREMLIN+MAD_GREMLIN+FAT_GREMLIN+FAT_GREMLIN+GREMLIN_LEADER": 1,
+          "FAT_GREMLIN+FAT_GREMLIN+SNEAKY_GREMLIN+SNEAKY_GREMLIN+FAT_GREMLIN+FAT_GREMLIN+GREMLIN_LEADER": 1,
+          "SHIELD_GREMLIN+MAD_GREMLIN+FAT_GREMLIN+MAD_GREMLIN+SHIELD_GREMLIN+FAT_GREMLIN+GREMLIN_LEADER": 1
+        },
+        "winning_seeds": [
+          8000010000532,
+          8000010000980,
+          8000010001148,
+          8000010001309,
+          8000010001583,
+          8000010001966,
+          8000010002010
+        ]
+      },
+      "entry_resources": {
+        "samples": 782,
+        "hp": 67.6611253196931,
+        "hp_fraction": 0.8654730649368638,
+        "gold": 176.8695652173913,
+        "deck_size": 20.21099744245524,
+        "potions": 0.5524296675191815,
+        "relics": 4.913043478260869
+      },
+      "identity": {
+        "git": {
+          "branch": "",
+          "commit": "6e54adbc0aa6fca81b994490837db382b245e42b",
+          "dirty": false
+        },
+        "native_source_sha256": "b100427d1e3ae6eee05818b6904047049609b1aa70807872c1f5f5e0edd6d62f",
+        "training_implementation_sha256": "9dca86829696613903d07b7fcbc6d4928f1c957c98fd6eaad534d6e76519ba94",
+        "training_identity_sha256": "dcd5fcf2941621a30c2942edb23637db905305769507a789c40ea20c99805482",
+        "config_sha256": "ddba30911f89e7da05c32bbb35916c2743fcaf313234939d4f87c27c87d34404",
+        "environment_steps": 94027776,
+        "updates": 245,
+        "termination_counts": {
+          "backend_truncated": 0,
+          "cycle_limit": 202,
+          "death": 18750,
+          "step_limit": 0,
+          "success": 51
+        },
+        "workers": 64,
+        "shards": 16
+      },
+      "periodic_curve": [
+        {
+          "steps": 90013696,
+          "wins": 0,
+          "episodes": 256,
+          "reached_act2": 190,
+          "cycle_limits": 16,
+          "best_checkpoint_updated": null
+        },
+        {
+          "steps": 90505216,
+          "wins": 2,
+          "episodes": 256,
+          "reached_act2": 185,
+          "cycle_limits": 14,
+          "best_checkpoint_updated": false
+        },
+        {
+          "steps": 91013120,
+          "wins": 2,
+          "episodes": 256,
+          "reached_act2": 153,
+          "cycle_limits": 17,
+          "best_checkpoint_updated": false
+        },
+        {
+          "steps": 91504640,
+          "wins": 0,
+          "episodes": 256,
+          "reached_act2": 137,
+          "cycle_limits": 12,
+          "best_checkpoint_updated": false
+        },
+        {
+          "steps": 92012544,
+          "wins": 1,
+          "episodes": 256,
+          "reached_act2": 135,
+          "cycle_limits": 20,
+          "best_checkpoint_updated": false
+        },
+        {
+          "steps": 92504064,
+          "wins": 1,
+          "episodes": 256,
+          "reached_act2": 106,
+          "cycle_limits": 9,
+          "best_checkpoint_updated": false
+        },
+        {
+          "steps": 93011968,
+          "wins": 0,
+          "episodes": 256,
+          "reached_act2": 83,
+          "cycle_limits": 18,
+          "best_checkpoint_updated": false
+        },
+        {
+          "steps": 93503488,
+          "wins": 2,
+          "episodes": 256,
+          "reached_act2": 93,
+          "cycle_limits": 15,
+          "best_checkpoint_updated": false
+        },
+        {
+          "steps": 94011392,
+          "wins": 0,
+          "episodes": 256,
+          "reached_act2": 97,
+          "cycle_limits": 6,
+          "best_checkpoint_updated": false
+        }
+      ]
+    },
+    "experimental": {
+      "run": "ironclad-a20-act12-lambda100-r1",
+      "verified_bundle_files": {
+        "endpoint-evaluation.json": "e93f02e895fb0e8bca42c1b0cb79b81186dcbb07acfa194dfcc226a517aa7315",
+        "final-evaluation.json": "5bf31fbbbb642d6d300dcfda93feb4dbce091895a3c0110fdf55398cfc2c50e7",
+        "final.pt": "0aebb484bbb8d75fdf78fdf6b0871f86938887bc00e0281bfbcc67133d56c1e3",
+        "latest.pt": "0a2bea28edc0fbc5fa6184bcc57a2b9a2e715108b1858ead61fc0e3a755cf91b",
+        "reference-evaluation.json": "7b616b2f2baca2dcbb02ca874c17e216e1469a9bef62277471ec9367d3f501d5",
+        "run-manifest.json": "e70ca62e1ea3f3ddeb5cc020378bb6011a8d8cbac541b0021eea119ea4ce5401",
+        "stages/train/metrics.jsonl": "343eebd5737b929643dea25121117643dba759ef059a20dce0b97574258b103f",
+        "stages/train/selection/best_progress.json": "9861b5c9328aec0d9d30d904a208957217d1d2b813c0139909b764b21cbe9593",
+        "stages/train/selection/best_progress.pt": "e3967bb03514058b4ee60451a1445a1619a11aa96299375d14b0b9a8f994ee47",
+        "training-config.toml": "f9e243cde5349e4e787f12f85f784b32bcad538cdcb4663c8526cd80665a0381"
+      },
+      "checkpoint_payload_validation": "NOT_RUN: hashes/provenance verified; no torch loading, tensor or resume equality claim",
+      "missing_deployment_export": true,
+      "checkpoint_inventory": {
+        "available": [
+          "endpoint-evaluation.json",
+          "final-evaluation.json",
+          "final.pt",
+          "latest.pt",
+          "reference-evaluation.json",
+          "run-manifest.json",
+          "stages/train/metrics.jsonl",
+          "stages/train/selection/best_progress.json",
+          "stages/train/selection/best_progress.pt",
+          "training-config.toml"
+        ],
+        "periodic_checkpoint_files_in_download": []
+      },
+      "selected": {
+        "schema": "sls-best-progress-v5",
+        "update": 0,
+        "successes": 0,
+        "success_rate": 0.0,
+        "reached_act2": 190,
+        "reached_act3": 0,
+        "reached_act2_rate": 0.7421875,
+        "reached_act3_rate": 0.0,
+        "episodes": 256,
+        "mean_reward": -1.0,
+        "mean_steps": 236.3203125,
+        "median_failure_floor": 22.0,
+        "step_limits": 0,
+        "cycle_limits": 16,
+        "self_loops": 2,
+        "timeouts": 0,
+        "backend_truncations": 0,
+        "backend_errors": 0,
+        "boss_success_rate": {
+          "ACT_1:HEXAGHOST": 0.6777777777777778,
+          "ACT_1:SLIME_BOSS": 0.8617021276595744,
+          "ACT_1:THE_GUARDIAN": 0.6666666666666666,
+          "ACT_2:AUTOMATON": 0.0,
+          "ACT_2:CHAMP": 0.0,
+          "ACT_2:COLLECTOR": 0.0
+        },
+        "boss_successes": {
+          "ACT_1:HEXAGHOST": 61,
+          "ACT_1:SLIME_BOSS": 81,
+          "ACT_1:THE_GUARDIAN": 48,
+          "ACT_2:AUTOMATON": 0,
+          "ACT_2:CHAMP": 0,
+          "ACT_2:COLLECTOR": 0
+        },
+        "boss_attempts": {
+          "ACT_1:HEXAGHOST": 90,
+          "ACT_1:SLIME_BOSS": 94,
+          "ACT_1:THE_GUARDIAN": 72,
+          "ACT_2:AUTOMATON": 64,
+          "ACT_2:CHAMP": 58,
+          "ACT_2:COLLECTOR": 68
+        },
+        "minimum_boss_success_rate": 0.0,
+        "boss_action_metrics": {
+          "ACT_1:HEXAGHOST": {
+            "entries": 82,
+            "potions_at_entry": 142,
+            "decisions": 2699,
+            "play_card_actions": 1860,
+            "defend_red_actions": 284,
+            "use_potion_actions": 145,
+            "discard_potion_actions": 2,
+            "block_deficit_decisions": 1783,
+            "defend_red_on_block_deficit": 234,
+            "targeted_card_plays_while_sharp_hide": 0,
+            "mean_potions_at_entry": 1.7317073170731707,
+            "defend_red_on_block_deficit_rate": 0.13123948401570387
+          },
+          "ACT_1:SLIME_BOSS": {
+            "entries": 88,
+            "potions_at_entry": 138,
+            "decisions": 2463,
+            "play_card_actions": 1724,
+            "defend_red_actions": 114,
+            "use_potion_actions": 100,
+            "discard_potion_actions": 0,
+            "block_deficit_decisions": 1059,
+            "defend_red_on_block_deficit": 96,
+            "targeted_card_plays_while_sharp_hide": 0,
+            "mean_potions_at_entry": 1.5681818181818181,
+            "defend_red_on_block_deficit_rate": 0.0906515580736544
+          },
+          "ACT_1:THE_GUARDIAN": {
+            "entries": 66,
+            "potions_at_entry": 111,
+            "decisions": 2479,
+            "play_card_actions": 1701,
+            "defend_red_actions": 443,
+            "use_potion_actions": 114,
+            "discard_potion_actions": 1,
+            "block_deficit_decisions": 1458,
+            "defend_red_on_block_deficit": 365,
+            "targeted_card_plays_while_sharp_hide": 267,
+            "mean_potions_at_entry": 1.6818181818181819,
+            "defend_red_on_block_deficit_rate": 0.2503429355281207
+          },
+          "ACT_2:AUTOMATON": {
+            "entries": 8,
+            "potions_at_entry": 10,
+            "decisions": 230,
+            "play_card_actions": 162,
+            "defend_red_actions": 22,
+            "use_potion_actions": 8,
+            "discard_potion_actions": 0,
+            "block_deficit_decisions": 149,
+            "defend_red_on_block_deficit": 17,
+            "targeted_card_plays_while_sharp_hide": 0,
+            "mean_potions_at_entry": 1.25,
+            "defend_red_on_block_deficit_rate": 0.11409395973154363
+          },
+          "ACT_2:CHAMP": {
+            "entries": 4,
+            "potions_at_entry": 8,
+            "decisions": 150,
+            "play_card_actions": 105,
+            "defend_red_actions": 11,
+            "use_potion_actions": 8,
+            "discard_potion_actions": 0,
+            "block_deficit_decisions": 101,
+            "defend_red_on_block_deficit": 10,
+            "targeted_card_plays_while_sharp_hide": 0,
+            "mean_potions_at_entry": 2.0,
+            "defend_red_on_block_deficit_rate": 0.09900990099009901
+          },
+          "ACT_2:COLLECTOR": {
+            "entries": 6,
+            "potions_at_entry": 11,
+            "decisions": 160,
+            "play_card_actions": 113,
+            "defend_red_actions": 14,
+            "use_potion_actions": 10,
+            "discard_potion_actions": 0,
+            "block_deficit_decisions": 107,
+            "defend_red_on_block_deficit": 7,
+            "targeted_card_plays_while_sharp_hide": 0,
+            "mean_potions_at_entry": 1.8333333333333333,
+            "defend_red_on_block_deficit_rate": 0.06542056074766354
+          }
+        },
+        "selection_excludes_mean_reward": true,
+        "environment_steps": 90013696,
+        "selection_objective": "HORIZON_CLEAR_COUNT",
+        "checkpoint_sha256": "e3967bb03514058b4ee60451a1445a1619a11aa96299375d14b0b9a8f994ee47"
+      },
+      "confirmation": {
+        "parent": {
+          "wins": 4,
+          "episodes": 2048,
+          "rate": 0.001953125,
+          "ci95": [
+            0.0007597861909834532,
+            0.005011351130464404
+          ],
+          "bosses": {
+            "HEXAGHOST": {
+              "wins": 447,
+              "seeds": 691,
+              "entries": 639,
+              "clear_rate": 0.6468885672937771,
+              "entry_win_rate": 0.6995305164319249
+            },
+            "SLIME_BOSS": {
+              "wins": 538,
+              "seeds": 686,
+              "entries": 643,
+              "clear_rate": 0.7842565597667639,
+              "entry_win_rate": 0.8367029548989113
+            },
+            "THE_GUARDIAN": {
+              "wins": 448,
+              "seeds": 671,
+              "entries": 618,
+              "clear_rate": 0.6676602086438153,
+              "entry_win_rate": 0.7249190938511327
+            }
+          },
+          "failure_floor_mean": 21.337084148727985,
+          "failure_floor_median": 21.0,
+          "mean_steps": 234.9375,
+          "health": {
+            "backend_errors": 0,
+            "backend_truncations": 0,
+            "step_limits": 0,
+            "cycle_limits": 182,
+            "timeouts": 0
+          },
+          "evaluation_horizon": 2,
+          "acts": {
+            "1": {
+              "reached": 2048,
+              "reach_rate": 1.0,
+              "act_clears": 1433,
+              "bosses": {
+                "HEXAGHOST": {
+                  "assigned_episodes": 691,
+                  "boss_entries": 639,
+                  "act_clears": 447,
+                  "act_clear_rate": 0.6468885672937771,
+                  "boss_entry_clear_rate": 0.6995305164319249,
+                  "full_horizon_wins": 0
+                },
+                "SLIME_BOSS": {
+                  "assigned_episodes": 686,
+                  "boss_entries": 643,
+                  "act_clears": 538,
+                  "act_clear_rate": 0.7842565597667639,
+                  "boss_entry_clear_rate": 0.8367029548989113,
+                  "full_horizon_wins": 2
+                },
+                "THE_GUARDIAN": {
+                  "assigned_episodes": 671,
+                  "boss_entries": 618,
+                  "act_clears": 448,
+                  "act_clear_rate": 0.6676602086438153,
+                  "boss_entry_clear_rate": 0.7249190938511327,
+                  "full_horizon_wins": 2
+                }
+              },
+              "full_horizon_wins_given_reach": 0.001953125,
+              "failure_floor_counts": {
+                "5": 2,
+                "6": 20,
+                "7": 13,
+                "8": 22,
+                "10": 15,
+                "11": 17,
+                "12": 22,
+                "13": 12,
+                "14": 25,
+                "16": 292,
+                "17": 175
+              }
+            },
+            "2": {
+              "reached": 1433,
+              "reach_rate": 0.69970703125,
+              "act_clears": 4,
+              "bosses": {
+                "AUTOMATON": {
+                  "assigned_episodes": 482,
+                  "boss_entries": 36,
+                  "act_clears": 0,
+                  "act_clear_rate": 0.0,
+                  "boss_entry_clear_rate": 0.0,
+                  "full_horizon_wins": 0
+                },
+                "CHAMP": {
+                  "assigned_episodes": 475,
+                  "boss_entries": 66,
+                  "act_clears": 4,
+                  "act_clear_rate": 0.008421052631578947,
+                  "boss_entry_clear_rate": 0.06060606060606061,
+                  "full_horizon_wins": 4
+                },
+                "COLLECTOR": {
+                  "assigned_episodes": 476,
+                  "boss_entries": 49,
+                  "act_clears": 0,
+                  "act_clear_rate": 0.0,
+                  "boss_entry_clear_rate": 0.0,
+                  "full_horizon_wins": 0
+                }
+              },
+              "full_horizon_wins_given_reach": 0.0027913468248429866,
+              "failure_floor_counts": {
+                "18": 39,
+                "19": 86,
+                "20": 136,
+                "21": 171,
+                "22": 236,
+                "23": 147,
+                "24": 167,
+                "25": 68,
+                "27": 62,
+                "28": 46,
+                "29": 45,
+                "30": 33,
+                "31": 46,
+                "33": 147
+              }
+            }
+          },
+          "boss_metric_note": "Act clears are stage outcomes; full_horizon_wins is the terminal objective. Reach-conditioned groups depend on policy."
+        },
+        "endpoint": {
+          "wins": 6,
+          "episodes": 2048,
+          "rate": 0.0029296875,
+          "ci95": [
+            0.0013433724883486994,
+            0.006377233191292398
+          ],
+          "bosses": {
+            "HEXAGHOST": {
+              "wins": 217,
+              "seeds": 691,
+              "entries": 507,
+              "clear_rate": 0.3140376266280753,
+              "entry_win_rate": 0.4280078895463511
+            },
+            "SLIME_BOSS": {
+              "wins": 415,
+              "seeds": 686,
+              "entries": 583,
+              "clear_rate": 0.6049562682215743,
+              "entry_win_rate": 0.7118353344768439
+            },
+            "THE_GUARDIAN": {
+              "wins": 170,
+              "seeds": 671,
+              "entries": 517,
+              "clear_rate": 0.2533532041728763,
+              "entry_win_rate": 0.3288201160541586
+            }
+          },
+          "failure_floor_mean": 17.832517140058766,
+          "failure_floor_median": 16.0,
+          "mean_steps": 199.3154296875,
+          "health": {
+            "backend_errors": 0,
+            "backend_truncations": 0,
+            "step_limits": 0,
+            "cycle_limits": 86,
+            "timeouts": 0
+          },
+          "evaluation_horizon": 2,
+          "acts": {
+            "1": {
+              "reached": 2048,
+              "reach_rate": 1.0,
+              "act_clears": 802,
+              "bosses": {
+                "HEXAGHOST": {
+                  "assigned_episodes": 691,
+                  "boss_entries": 507,
+                  "act_clears": 217,
+                  "act_clear_rate": 0.3140376266280753,
+                  "boss_entry_clear_rate": 0.4280078895463511,
+                  "full_horizon_wins": 3
+                },
+                "SLIME_BOSS": {
+                  "assigned_episodes": 686,
+                  "boss_entries": 583,
+                  "act_clears": 415,
+                  "act_clear_rate": 0.6049562682215743,
+                  "boss_entry_clear_rate": 0.7118353344768439,
+                  "full_horizon_wins": 0
+                },
+                "THE_GUARDIAN": {
+                  "assigned_episodes": 671,
+                  "boss_entries": 517,
+                  "act_clears": 170,
+                  "act_clear_rate": 0.2533532041728763,
+                  "boss_entry_clear_rate": 0.3288201160541586,
+                  "full_horizon_wins": 3
+                }
+              },
+              "full_horizon_wins_given_reach": 0.0029296875,
+              "failure_floor_counts": {
+                "4": 2,
+                "5": 1,
+                "6": 81,
+                "7": 63,
+                "8": 55,
+                "10": 57,
+                "11": 43,
+                "12": 48,
+                "13": 42,
+                "14": 49,
+                "16": 719,
+                "17": 86
+              }
+            },
+            "2": {
+              "reached": 802,
+              "reach_rate": 0.3916015625,
+              "act_clears": 6,
+              "bosses": {
+                "AUTOMATON": {
+                  "assigned_episodes": 278,
+                  "boss_entries": 16,
+                  "act_clears": 0,
+                  "act_clear_rate": 0.0,
+                  "boss_entry_clear_rate": 0.0,
+                  "full_horizon_wins": 0
+                },
+                "CHAMP": {
+                  "assigned_episodes": 259,
+                  "boss_entries": 35,
+                  "act_clears": 6,
+                  "act_clear_rate": 0.023166023166023165,
+                  "boss_entry_clear_rate": 0.17142857142857143,
+                  "full_horizon_wins": 6
+                },
+                "COLLECTOR": {
+                  "assigned_episodes": 265,
+                  "boss_entries": 28,
+                  "act_clears": 0,
+                  "act_clear_rate": 0.0,
+                  "boss_entry_clear_rate": 0.0,
+                  "full_horizon_wins": 0
+                }
+              },
+              "full_horizon_wins_given_reach": 0.007481296758104738,
+              "failure_floor_counts": {
+                "18": 24,
+                "19": 38,
+                "20": 59,
+                "21": 93,
+                "22": 133,
+                "23": 91,
+                "24": 116,
+                "25": 40,
+                "27": 30,
+                "28": 33,
+                "29": 22,
+                "30": 18,
+                "31": 26,
+                "33": 73
+              }
+            }
+          },
+          "boss_metric_note": "Act clears are stage outcomes; full_horizon_wins is the terminal objective. Reach-conditioned groups depend on policy."
+        },
+        "selected": {
+          "wins": 4,
+          "episodes": 2048,
+          "rate": 0.001953125,
+          "ci95": [
+            0.0007597861909834532,
+            0.005011351130464404
+          ],
+          "bosses": {
+            "HEXAGHOST": {
+              "wins": 447,
+              "seeds": 691,
+              "entries": 639,
+              "clear_rate": 0.6468885672937771,
+              "entry_win_rate": 0.6995305164319249
+            },
+            "SLIME_BOSS": {
+              "wins": 538,
+              "seeds": 686,
+              "entries": 643,
+              "clear_rate": 0.7842565597667639,
+              "entry_win_rate": 0.8367029548989113
+            },
+            "THE_GUARDIAN": {
+              "wins": 448,
+              "seeds": 671,
+              "entries": 618,
+              "clear_rate": 0.6676602086438153,
+              "entry_win_rate": 0.7249190938511327
+            }
+          },
+          "failure_floor_mean": 21.337084148727985,
+          "failure_floor_median": 21.0,
+          "mean_steps": 234.9375,
+          "health": {
+            "backend_errors": 0,
+            "backend_truncations": 0,
+            "step_limits": 0,
+            "cycle_limits": 182,
+            "timeouts": 0
+          },
+          "evaluation_horizon": 2,
+          "acts": {
+            "1": {
+              "reached": 2048,
+              "reach_rate": 1.0,
+              "act_clears": 1433,
+              "bosses": {
+                "HEXAGHOST": {
+                  "assigned_episodes": 691,
+                  "boss_entries": 639,
+                  "act_clears": 447,
+                  "act_clear_rate": 0.6468885672937771,
+                  "boss_entry_clear_rate": 0.6995305164319249,
+                  "full_horizon_wins": 0
+                },
+                "SLIME_BOSS": {
+                  "assigned_episodes": 686,
+                  "boss_entries": 643,
+                  "act_clears": 538,
+                  "act_clear_rate": 0.7842565597667639,
+                  "boss_entry_clear_rate": 0.8367029548989113,
+                  "full_horizon_wins": 2
+                },
+                "THE_GUARDIAN": {
+                  "assigned_episodes": 671,
+                  "boss_entries": 618,
+                  "act_clears": 448,
+                  "act_clear_rate": 0.6676602086438153,
+                  "boss_entry_clear_rate": 0.7249190938511327,
+                  "full_horizon_wins": 2
+                }
+              },
+              "full_horizon_wins_given_reach": 0.001953125,
+              "failure_floor_counts": {
+                "5": 2,
+                "6": 20,
+                "7": 13,
+                "8": 22,
+                "10": 15,
+                "11": 17,
+                "12": 22,
+                "13": 12,
+                "14": 25,
+                "16": 292,
+                "17": 175
+              }
+            },
+            "2": {
+              "reached": 1433,
+              "reach_rate": 0.69970703125,
+              "act_clears": 4,
+              "bosses": {
+                "AUTOMATON": {
+                  "assigned_episodes": 482,
+                  "boss_entries": 36,
+                  "act_clears": 0,
+                  "act_clear_rate": 0.0,
+                  "boss_entry_clear_rate": 0.0,
+                  "full_horizon_wins": 0
+                },
+                "CHAMP": {
+                  "assigned_episodes": 475,
+                  "boss_entries": 66,
+                  "act_clears": 4,
+                  "act_clear_rate": 0.008421052631578947,
+                  "boss_entry_clear_rate": 0.06060606060606061,
+                  "full_horizon_wins": 4
+                },
+                "COLLECTOR": {
+                  "assigned_episodes": 476,
+                  "boss_entries": 49,
+                  "act_clears": 0,
+                  "act_clear_rate": 0.0,
+                  "boss_entry_clear_rate": 0.0,
+                  "full_horizon_wins": 0
+                }
+              },
+              "full_horizon_wins_given_reach": 0.0027913468248429866,
+              "failure_floor_counts": {
+                "18": 39,
+                "19": 86,
+                "20": 136,
+                "21": 171,
+                "22": 236,
+                "23": 147,
+                "24": 167,
+                "25": 68,
+                "27": 62,
+                "28": 46,
+                "29": 45,
+                "30": 33,
+                "31": 46,
+                "33": 147
+              }
+            }
+          },
+          "boss_metric_note": "Act clears are stage outcomes; full_horizon_wins is the terminal objective. Reach-conditioned groups depend on policy."
+        }
+      },
+      "late_success_windows": [
+        {
+          "additional_step_range": [
+            2000000,
+            3000000
+          ],
+          "successes": 5
+        },
+        {
+          "additional_step_range": [
+            3000000,
+            null
+          ],
+          "successes": 10
+        }
+      ],
+      "strict_registered_health_gate_passed": false,
+      "training_limits": {
+        "terminations_backend_truncated": 0.0,
+        "terminations_step_limit": 0.0,
+        "terminations_cycle_limit": 270.0
+      },
+      "evaluation_limits": {
+        "parent": {
+          "backend_errors": 0,
+          "backend_truncations": 0,
+          "step_limits": 0,
+          "cycle_limits": 182,
+          "timeouts": 0
+        },
+        "endpoint": {
+          "backend_errors": 0,
+          "backend_truncations": 0,
+          "step_limits": 0,
+          "cycle_limits": 86,
+          "timeouts": 0
+        },
+        "selected": {
+          "backend_errors": 0,
+          "backend_truncations": 0,
+          "step_limits": 0,
+          "cycle_limits": 182,
+          "timeouts": 0
+        }
+      },
+      "new_decisions": 4014080,
+      "update_hours": 9.722465267306898,
+      "update_throughput": 114.68513299519155,
+      "wall_hours": 12.961216397550372,
+      "timing_seconds": {
+        "collect_seconds": 25144.521970774833,
+        "optimize_seconds": 9803.679651388811,
+        "collect_encode_seconds": 7330.034147667728,
+        "collect_transition_seconds": 9516.154462349426,
+        "collect_policy_seconds": 2571.306462769251,
+        "collect_worker_step_seconds": 5581.299688931991
+      },
+      "metric_summary": {
+        "approx_kl_final": {
+          "mean": 0.004237562023894386,
+          "first10": 0.00410503048915416,
+          "last10": 0.0047364064084831625
+        },
+        "clip_fraction": {
+          "mean": 0.036569276147959184,
+          "first10": 0.0399658203125,
+          "last10": 0.03701171875
+        },
+        "gradient_norm": {
+          "mean": 0.6696832611852762,
+          "first10": 1.1500646114349364,
+          "last10": 0.6408586919307708
+        },
+        "gradient_clip_fraction": {
+          "mean": 0.7860969387755102,
+          "first10": 0.95625,
+          "last10": 0.778125
+        },
+        "value_explained_variance": {
+          "mean": -0.2817073544677423,
+          "first10": -0.40376269817352295,
+          "last10": 0.02452181577682495
+        },
+        "value": {
+          "mean": 0.01169013894633485,
+          "first10": 0.17110188901424409,
+          "last10": 0.004788703488884494
+        },
+        "entropy": {
+          "mean": 0.15961136246214108,
+          "first10": 0.15516957491636277,
+          "last10": 0.1736571878194809
+        },
+        "neow_mean_normalized_entropy": {
+          "mean": 0.018602092544456553,
+          "first10": 0.01187582433964925,
+          "last10": 0.019237029422961564
+        },
+        "advantage_std_combat": {
+          "mean": 0.09619337758239435,
+          "first10": 0.46819460690021514,
+          "last10": 0.07138771079480648
+        },
+        "advantage_std_run": {
+          "mean": 0.09254435800320032,
+          "first10": 0.4403551325201988,
+          "last10": 0.068800438195467
+        },
+        "advantage_std_choice": {
+          "mean": 0.0922122268348324,
+          "first10": 0.4499128207564354,
+          "last10": 0.0701190683990717
+        },
+        "advantage_scale_combat": {
+          "mean": 16.964898376306213,
+          "first10": 2.568684297634448,
+          "last10": 22.453001431626422
+        },
+        "advantage_scale_run": {
+          "mean": 17.615525943644986,
+          "first10": 2.8456907434560748,
+          "last10": 22.9924223280637
+        },
+        "advantage_scale_choice": {
+          "mean": 16.97999828905431,
+          "first10": 2.699831147904658,
+          "last10": 22.130733906438454
+        }
+      },
+      "neow_counts": {
+        "0": 512.0,
+        "1": 17256.0,
+        "2": 61.0,
+        "3": 0.0
+      },
+      "value_anchors": {
+        "schema": "sls-greedy-value-anchor-summary-v1",
+        "limitation": "Critic predicts stochastic training policy; outcomes use greedy evaluation. Reached-act populations are policy dependent. Parent critic was trained for Act1, not Act2.",
+        "acts": {
+          "1": {
+            "samples": 2048,
+            "mean_prediction_unclipped": 0.00876070439911758,
+            "observed_full_horizon_rate": 0.0029296875,
+            "mean_squared_error_unclipped": 0.0030054597103068644,
+            "out_of_range": 420
+          },
+          "2": {
+            "samples": 802,
+            "mean_prediction_unclipped": 0.0021501303987063935,
+            "observed_full_horizon_rate": 0.007481296758104738,
+            "mean_squared_error_unclipped": 0.007618954165439806,
+            "out_of_range": 355
+          }
+        }
+      },
+      "failures": {
+        "reasons": {
+          "DEATH": 1956,
+          "cycle_limit": 86
+        },
+        "cycle_limit_floor_counts": {
+          "17": 86
+        },
+        "act2_last_recorded_enemy_contexts": {
+          "BOOK_OF_STABBING": 79,
+          "CENTURION+MYSTIC": 78,
+          "BLUE_SLAVER+TASKMASTER+RED_SLAVER": 64,
+          "SNAKE_PLANT": 50,
+          "SHELLED_PARASITE+FUNGI_BEAST": 46,
+          "BYRD+BYRD+BYRD": 43,
+          "CULTIST+CULTIST+CULTIST": 42,
+          "SNECKO": 36,
+          "CULTIST+CHOSEN": 36,
+          "POINTY+ROMEO+BEAR": 34,
+          "SHELLED_PARASITE": 31,
+          "THE_CHAMP": 29,
+          "BYRD+CHOSEN": 23,
+          "NONCOMBAT_OR_UNRECORDED": 17,
+          "LOOTER+MUGGER": 17,
+          "SENTRY+SPHERIC_GUARDIAN": 17,
+          "SPHERIC_GUARDIAN": 16,
+          "BRONZE_ORB+BRONZE_AUTOMATON+BRONZE_ORB": 16,
+          "TORCH_HEAD+TORCH_HEAD+TORCH_HEAD+TORCH_HEAD+THE_COLLECTOR": 14,
+          "TORCH_HEAD+TORCH_HEAD+THE_COLLECTOR": 11,
+          "CHOSEN": 10,
+          "MAD_GREMLIN+SNEAKY_GREMLIN+GREMLIN_LEADER": 3,
+          "SHIELD_GREMLIN+MAD_GREMLIN+GREMLIN_LEADER": 3,
+          "GREMLIN_WIZARD+MAD_GREMLIN+GREMLIN_LEADER": 2,
+          "FAT_GREMLIN+FAT_GREMLIN+GREMLIN_LEADER": 2,
+          "MAD_GREMLIN+MAD_GREMLIN+GREMLIN_WIZARD+FAT_GREMLIN+GREMLIN_LEADER": 2,
+          "FAT_GREMLIN+MAD_GREMLIN+GREMLIN_LEADER": 2,
+          "GREMLIN_WIZARD+GREMLIN_WIZARD+GREMLIN_LEADER": 2,
+          "TASKMASTER+GREMLIN_NOB": 2,
+          "MAD_GREMLIN+MAD_GREMLIN+FAT_GREMLIN+FAT_GREMLIN+GREMLIN_LEADER": 2,
+          "FAT_GREMLIN+SNEAKY_GREMLIN+GREMLIN_LEADER": 2,
+          "TORCH_HEAD+TORCH_HEAD+TORCH_HEAD+TORCH_HEAD+TORCH_HEAD+THE_COLLECTOR": 2,
+          "SNEAKY_GREMLIN+MAD_GREMLIN+FAT_GREMLIN+SNEAKY_GREMLIN+GREMLIN_LEADER": 2,
+          "MAD_GREMLIN+MAD_GREMLIN+GREMLIN_LEADER": 2,
+          "FAT_GREMLIN+FAT_GREMLIN+GREMLIN_WIZARD+SHIELD_GREMLIN+GREMLIN_LEADER": 1,
+          "GREMLIN_WIZARD+SNEAKY_GREMLIN+MAD_GREMLIN+SNEAKY_GREMLIN+GREMLIN_LEADER": 1,
+          "GREMLIN_WIZARD+FAT_GREMLIN+FAT_GREMLIN+FAT_GREMLIN+GREMLIN_LEADER": 1,
+          "SNEAKY_GREMLIN+GREMLIN_WIZARD+GREMLIN_LEADER": 1,
+          "MAD_GREMLIN+FAT_GREMLIN+SNEAKY_GREMLIN+SHIELD_GREMLIN+GREMLIN_LEADER": 1,
+          "SNEAKY_GREMLIN+FAT_GREMLIN+SHIELD_GREMLIN+MAD_GREMLIN+SNEAKY_GREMLIN+SNEAKY_GREMLIN+GREMLIN_LEADER": 1,
+          "GREMLIN_WIZARD+FAT_GREMLIN+MAD_GREMLIN+SNEAKY_GREMLIN+GREMLIN_LEADER": 1,
+          "MAD_GREMLIN+SHIELD_GREMLIN+GREMLIN_LEADER": 1,
+          "SHIELD_GREMLIN+MAD_GREMLIN+SHIELD_GREMLIN+FAT_GREMLIN+GREMLIN_LEADER": 1,
+          "TORCH_HEAD+TORCH_HEAD+TORCH_HEAD+TORCH_HEAD+TORCH_HEAD+TORCH_HEAD+THE_COLLECTOR": 1,
+          "SNEAKY_GREMLIN+FAT_GREMLIN+MAD_GREMLIN+SHIELD_GREMLIN+GREMLIN_LEADER": 1,
+          "SNEAKY_GREMLIN+MAD_GREMLIN+SNEAKY_GREMLIN+SHIELD_GREMLIN+GREMLIN_LEADER": 1,
+          "SNEAKY_GREMLIN+MAD_GREMLIN+FAT_GREMLIN+SHIELD_GREMLIN+GREMLIN_LEADER": 1,
+          "FAT_GREMLIN+FAT_GREMLIN+FAT_GREMLIN+SHIELD_GREMLIN+GREMLIN_LEADER": 1,
+          "GREMLIN_WIZARD+FAT_GREMLIN+SNEAKY_GREMLIN+SNEAKY_GREMLIN+GREMLIN_LEADER": 1,
+          "FAT_GREMLIN+SNEAKY_GREMLIN+FAT_GREMLIN+FAT_GREMLIN+GREMLIN_LEADER": 1,
+          "GREMLIN_WIZARD+MAD_GREMLIN+FAT_GREMLIN+MAD_GREMLIN+SNEAKY_GREMLIN+FAT_GREMLIN+GREMLIN_LEADER": 1,
+          "MAD_GREMLIN+FAT_GREMLIN+MAD_GREMLIN+SHIELD_GREMLIN+GREMLIN_LEADER": 1,
+          "MAD_GREMLIN+MAD_GREMLIN+SNEAKY_GREMLIN+MAD_GREMLIN+GREMLIN_LEADER": 1,
+          "SHIELD_GREMLIN+FAT_GREMLIN+SNEAKY_GREMLIN+MAD_GREMLIN+GREMLIN_LEADER": 1,
+          "SNEAKY_GREMLIN+SHIELD_GREMLIN+FAT_GREMLIN+SNEAKY_GREMLIN+GREMLIN_LEADER": 1,
+          "SNEAKY_GREMLIN+SNEAKY_GREMLIN+SHIELD_GREMLIN+SNEAKY_GREMLIN+GREMLIN_LEADER": 1,
+          "SHIELD_GREMLIN+FAT_GREMLIN+SNEAKY_GREMLIN+FAT_GREMLIN+SHIELD_GREMLIN+FAT_GREMLIN+GREMLIN_LEADER": 1,
+          "MAD_GREMLIN+FAT_GREMLIN+SNEAKY_GREMLIN+FAT_GREMLIN+GREMLIN_LEADER": 1,
+          "FAT_GREMLIN+FAT_GREMLIN+FAT_GREMLIN+FAT_GREMLIN+GREMLIN_LEADER": 1,
+          "FAT_GREMLIN+SNEAKY_GREMLIN+SNEAKY_GREMLIN+SNEAKY_GREMLIN+GREMLIN_LEADER": 1,
+          "GREMLIN_WIZARD+FAT_GREMLIN+SHIELD_GREMLIN+SHIELD_GREMLIN+GREMLIN_WIZARD+MAD_GREMLIN+FAT_GREMLIN+FAT_GREMLIN+GREMLIN_LEADER": 1,
+          "GREMLIN_WIZARD+FAT_GREMLIN+GREMLIN_WIZARD+MAD_GREMLIN+GREMLIN_LEADER": 1,
+          "GREMLIN_WIZARD+GREMLIN_WIZARD+SNEAKY_GREMLIN+FAT_GREMLIN+GREMLIN_WIZARD+GREMLIN_WIZARD+SHIELD_GREMLIN+SNEAKY_GREMLIN+GREMLIN_LEADER": 1,
+          "MAD_GREMLIN+GREMLIN_WIZARD+MAD_GREMLIN+MAD_GREMLIN+GREMLIN_LEADER": 1,
+          "MAD_GREMLIN+GREMLIN_WIZARD+GREMLIN_LEADER": 1,
+          "MAD_GREMLIN+MAD_GREMLIN+SNEAKY_GREMLIN+FAT_GREMLIN+GREMLIN_LEADER": 1,
+          "MAD_GREMLIN+FAT_GREMLIN+GREMLIN_LEADER": 1,
+          "FAT_GREMLIN+MAD_GREMLIN+MAD_GREMLIN+SHIELD_GREMLIN+GREMLIN_LEADER": 1,
+          "FAT_GREMLIN+SNEAKY_GREMLIN+SNEAKY_GREMLIN+GREMLIN_WIZARD+SNEAKY_GREMLIN+FAT_GREMLIN+GREMLIN_LEADER": 1,
+          "SNEAKY_GREMLIN+SNEAKY_GREMLIN+SNEAKY_GREMLIN+MAD_GREMLIN+GREMLIN_LEADER": 1,
+          "MAD_GREMLIN+SHIELD_GREMLIN+MAD_GREMLIN+SNEAKY_GREMLIN+GREMLIN_LEADER": 1,
+          "FAT_GREMLIN+MAD_GREMLIN+SNEAKY_GREMLIN+SNEAKY_GREMLIN+GREMLIN_LEADER": 1,
+          "FAT_GREMLIN+MAD_GREMLIN+SNEAKY_GREMLIN+FAT_GREMLIN+GREMLIN_LEADER": 1,
+          "SNEAKY_GREMLIN+FAT_GREMLIN+GREMLIN_WIZARD+SNEAKY_GREMLIN+GREMLIN_LEADER": 1,
+          "SNEAKY_GREMLIN+SHIELD_GREMLIN+GREMLIN_WIZARD+SNEAKY_GREMLIN+GREMLIN_LEADER": 1,
+          "GREMLIN_WIZARD+SHIELD_GREMLIN+GREMLIN_WIZARD+SNEAKY_GREMLIN+GREMLIN_LEADER": 1,
+          "MAD_GREMLIN+FAT_GREMLIN+GREMLIN_WIZARD+FAT_GREMLIN+GREMLIN_LEADER": 1,
+          "FAT_GREMLIN+GREMLIN_WIZARD+GREMLIN_LEADER": 1,
+          "SNEAKY_GREMLIN+MAD_GREMLIN+GREMLIN_LEADER": 1,
+          "MAD_GREMLIN+MAD_GREMLIN+SNEAKY_GREMLIN+SHIELD_GREMLIN+MAD_GREMLIN+SNEAKY_GREMLIN+GREMLIN_LEADER": 1,
+          "GREMLIN_WIZARD+FAT_GREMLIN+MAD_GREMLIN+SHIELD_GREMLIN+GREMLIN_LEADER": 1,
+          "MAD_GREMLIN+FAT_GREMLIN+SNEAKY_GREMLIN+GREMLIN_WIZARD+FAT_GREMLIN+SNEAKY_GREMLIN+GREMLIN_LEADER": 1,
+          "MAD_GREMLIN+MAD_GREMLIN+FAT_GREMLIN+SNEAKY_GREMLIN+GREMLIN_LEADER": 1,
+          "FAT_GREMLIN+MAD_GREMLIN+FAT_GREMLIN+GREMLIN_WIZARD+SNEAKY_GREMLIN+SHIELD_GREMLIN+GREMLIN_LEADER": 1,
+          "GREMLIN_WIZARD+MAD_GREMLIN+GREMLIN_WIZARD+FAT_GREMLIN+GREMLIN_LEADER": 1,
+          "SNEAKY_GREMLIN+SHIELD_GREMLIN+SNEAKY_GREMLIN+GREMLIN_WIZARD+SNEAKY_GREMLIN+SHIELD_GREMLIN+GREMLIN_LEADER": 1,
+          "MAD_GREMLIN+MAD_GREMLIN+MAD_GREMLIN+FAT_GREMLIN+GREMLIN_LEADER": 1,
+          "FAT_GREMLIN+FAT_GREMLIN+SNEAKY_GREMLIN+FAT_GREMLIN+GREMLIN_LEADER": 1,
+          "FAT_GREMLIN+FAT_GREMLIN+FAT_GREMLIN+FAT_GREMLIN+GREMLIN_WIZARD+GREMLIN_WIZARD+MAD_GREMLIN+SNEAKY_GREMLIN+GREMLIN_LEADER": 1,
+          "FAT_GREMLIN+GREMLIN_WIZARD+SNEAKY_GREMLIN+SNEAKY_GREMLIN+GREMLIN_WIZARD+FAT_GREMLIN+GREMLIN_LEADER": 1,
+          "FAT_GREMLIN+MAD_GREMLIN+GREMLIN_WIZARD+FAT_GREMLIN+GREMLIN_LEADER": 1,
+          "FAT_GREMLIN+MAD_GREMLIN+FAT_GREMLIN+MAD_GREMLIN+SHIELD_GREMLIN+FAT_GREMLIN+GREMLIN_LEADER": 1,
+          "SHIELD_GREMLIN+FAT_GREMLIN+MAD_GREMLIN+FAT_GREMLIN+GREMLIN_LEADER": 1
+        },
+        "winning_seeds": [
+          8000010000247,
+          8000010000255,
+          8000010000634,
+          8000010000712,
+          8000010001658,
+          8000010002010
+        ]
+      },
+      "entry_resources": {
+        "samples": 802,
+        "hp": 66.76558603491272,
+        "hp_fraction": 0.8467308611053989,
+        "gold": 165.9488778054863,
+        "deck_size": 19.54862842892768,
+        "potions": 0.5311720698254364,
+        "relics": 4.851620947630923
+      },
+      "identity": {
+        "git": {
+          "branch": "",
+          "commit": "6e54adbc0aa6fca81b994490837db382b245e42b",
+          "dirty": false
+        },
+        "native_source_sha256": "b100427d1e3ae6eee05818b6904047049609b1aa70807872c1f5f5e0edd6d62f",
+        "training_implementation_sha256": "9dca86829696613903d07b7fcbc6d4928f1c957c98fd6eaad534d6e76519ba94",
+        "training_identity_sha256": "fe6c4472b7751fecce4fad4ba29614195a9e300e7e79804d315273626c429fe3",
+        "config_sha256": "f9e243cde5349e4e787f12f85f784b32bcad538cdcb4663c8526cd80665a0381",
+        "environment_steps": 94027776,
+        "updates": 245,
+        "termination_counts": {
+          "backend_truncated": 0,
+          "cycle_limit": 270,
+          "death": 17452,
+          "step_limit": 0,
+          "success": 43
+        },
+        "workers": 64,
+        "shards": 16
+      },
+      "periodic_curve": [
+        {
+          "steps": 90013696,
+          "wins": 0,
+          "episodes": 256,
+          "reached_act2": 190,
+          "cycle_limits": 16,
+          "best_checkpoint_updated": null
+        },
+        {
+          "steps": 90505216,
+          "wins": 0,
+          "episodes": 256,
+          "reached_act2": 187,
+          "cycle_limits": 16,
+          "best_checkpoint_updated": false
+        },
+        {
+          "steps": 91013120,
+          "wins": 0,
+          "episodes": 256,
+          "reached_act2": 163,
+          "cycle_limits": 18,
+          "best_checkpoint_updated": false
+        },
+        {
+          "steps": 91504640,
+          "wins": 0,
+          "episodes": 256,
+          "reached_act2": 161,
+          "cycle_limits": 24,
+          "best_checkpoint_updated": false
+        },
+        {
+          "steps": 92012544,
+          "wins": 0,
+          "episodes": 256,
+          "reached_act2": 158,
+          "cycle_limits": 18,
+          "best_checkpoint_updated": false
+        },
+        {
+          "steps": 92504064,
+          "wins": 0,
+          "episodes": 256,
+          "reached_act2": 149,
+          "cycle_limits": 19,
+          "best_checkpoint_updated": false
+        },
+        {
+          "steps": 93011968,
+          "wins": 0,
+          "episodes": 256,
+          "reached_act2": 130,
+          "cycle_limits": 17,
+          "best_checkpoint_updated": false
+        },
+        {
+          "steps": 93503488,
+          "wins": 0,
+          "episodes": 256,
+          "reached_act2": 95,
+          "cycle_limits": 9,
+          "best_checkpoint_updated": false
+        },
+        {
+          "steps": 94011392,
+          "wins": 0,
+          "episodes": 256,
+          "reached_act2": 94,
+          "cycle_limits": 11,
+          "best_checkpoint_updated": false
+        }
+      ]
+    }
+  },
+  "raw_analysis_path": "local/archives/act12-lambda-20261008/analysis-v3.json",
+  "raw_analysis_sha256": "a569d35efa4cf35e807e7091c7db0fc1dca98000f33f2ba2aa01960998f38704"
+}

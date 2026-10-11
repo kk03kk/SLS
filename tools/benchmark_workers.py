@@ -131,12 +131,14 @@ def main() -> int:
         try:
             torch.cuda.reset_peak_memory_stats()
             with ShardedWorkerPool(profile, workers_count, shard_count=shards) as pool:
+                from sls.rl.start_curriculum import from_config
                 trainer = PPOTrainer(
                     model, pool, config, device="cuda", seed=918273,
                     native_contract_digest=source_digest,
                     git_commit=str(repository["commit"]),
                     training_config_digest=benchmark_digest,
                     training_seed_limit=1_000_000_000_000,
+                    start_curriculum=from_config(payload or {}, ROOT),
                 )
                 if payload and "warm_start" in payload:
                     from sls.rl.act1_transfer import initialize_act1_weights
