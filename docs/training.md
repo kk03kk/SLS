@@ -62,6 +62,8 @@ python tools/export_policy.py <checkpoint> --output model/<name>.pt --goal ACT1 
 
 本地已通过规则/接口验收、18,432 决策混合 PPO 精确恢复及真实训练 CLI 预检。正式64:16布局、序列64、minibatch16未在本地8GB显存上通过；A10040GB上的完整准备是启动条件，不能跳过。`--prepare` 在每个作业验证库SHA与所有合法动作前缀，检查GPU、正式配方benchmark及保存恢复，然后才执行训练；Windows诊断凭证不上传为Linux ready凭证。
 
+真实 CLI 的独立小批量诊断从90M权重初始化，45秒预算后24次更新保存为 INTERRUPTED；再次按同一配置启动，继续4次更新、256决策，累计目标未重置。该诊断共1792个新决策，没有导出或采用策略；来源与日志SHA记录在 `tests/fixtures/evidence/act12-foundation/training-readiness.json`。诊断 checkpoint 在任务收尾时归档，不是正式20M作业的起点。
+
 先将本地 `D:/SLS/local/runs/preparation/act12-mixed20m/entry-bank-release.json.gz` 上传到服务器同样的相对路径。文件SHA必须是 `71a972903827712ff808440bac7a7e8bc8de1f3dc8980e5bd1330666b42d1745`。90M父checkpoint沿用服务器现有文件；若缺失，也上传本地 `local/runs/ironclad-a20-act1-win-90m-continuation/final.pt`，SHA见下列命令。这两个私有文件不进入Git。
 
 在服务器执行：
