@@ -18,9 +18,18 @@ from sls.rl.training_contract import native_source_digest, training_validation_d
 from sls.runtime import load_policy_artifact
 
 
-def verify(artifact_path: Path, boundaries: int) -> dict:
-    artifact = load_policy_artifact(artifact_path, device="cpu")
-    model = artifact.model.eval()
+def verify(artifact_path: Path | None, boundaries: int, *, checkpoint: Path | None = None) -> dict:
+    migration = None
+    if checkpoint:
+        from sls.rl.model_migration import migrate_v5_role_policy
+        from sls.rl.training_contract import sha256_file
+
+        model, migration = migrate_v5_role_policy(torch.load(checkpoint, map_location="cpu", weights_only=False))
+        identity = {"source_checkpoint_sha256": sha256_file(checkpoint), "migration": migration}
+    else:
+        artifact = load_policy_artifact(artifact_path, device="cpu")
+        model, identity = artifact.model, {"model_sha256": artifact.metadata.model_sha256}
+    model.eval()
     counts, restore_counts = Counter(), Counter()
     decision_count = restore_count = 0
     seeds = []
@@ -95,7 +104,7 @@ def verify(artifact_path: Path, boundaries: int) -> dict:
             if decision_count >= boundaries and restore_count >= 100:
                 break
     return {"schema": "sls-act12-foundation-boundaries-v1", "native_source_sha256": native_source_digest(),
-            "model_sha256": artifact.metadata.model_sha256, "decisions": decision_count,
+            **identity, "policy_architecture": model.config.architecture, "decisions": decision_count,
             "continuous_restores": restore_count, "continuation_length": "4 actions or authoritative terminal",
             "screen_counts": dict(counts), "restore_screen_counts": dict(restore_counts),
             "seeds": seeds, "action_trace_sha256": traces.hexdigest(),
@@ -140,7 +149,9 @@ def verify_multi_selection() -> list[dict]:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--artifact", type=Path, required=True)
+    inputs = parser.add_mutually_exclusive_group(required=True)
+    inputs.add_argument("--artifact", type=Path)
+    inputs.add_argument("--checkpoint", type=Path, help="Validate the explicitly migrated v6 parent policy")
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--boundaries", type=int, default=10000)
     parser.add_argument("--scout", action="store_true")
@@ -152,6 +163,8 @@ def main() -> int:
     torch.set_num_threads(2)
     implementation = training_validation_digest()
     if args.scout:
+        if args.checkpoint:
+            raise ValueError("scout requires an inference artifact")
         artifact = load_policy_artifact(args.artifact, device="cpu")
         result = evaluate(artifact.model, IRONCLAD_A20_ACT2,
                           tuple(range(8000011000000, 8000011000128)), max_steps=4096,
@@ -162,7 +175,7 @@ def main() -> int:
     else:
         if args.boundaries < 10000:
             raise ValueError("qualification requires at least 10000 boundaries")
-        report = verify(args.artifact, args.boundaries)
+        report = verify(args.artifact, args.boundaries, checkpoint=args.checkpoint)
         report["controlled_multi_selection"] = verify_multi_selection()
     if training_validation_digest() != implementation:
         raise ValueError("implementation changed during validation; rerun final source")

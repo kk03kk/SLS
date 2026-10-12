@@ -17,7 +17,7 @@
 
 历史 `configs/`、manifest、checkpoint 和证据 JSON 保留原字节及哈希，不通过改 hash 把旧实验包装成当前实验。旧路径可由 `src/sls/evidence_paths.py` 定位到新目录，验证仍核对原始证据字节。
 
-v6角色/字段编码是可选研究架构，当前训练默认和历史配置仍使用v5。90M父权重可用 `migrate_v5_role_policy` 作显式weights-only迁移；部署导出和正式训练需另行登记新架构、来源、预算及配对验收，不能把局部迁移验证当成第二幕能力提升或服务器启动资格。新模型中的option variant和绑定参数需要后续学习，迁移初始化刻意保留旧预测。
+首段新20M配置使用v6角色/字段编码，历史配置及模型默认仍保留v5。90M父权重通过 `warm_start.model_migration = "v5-to-v6-role-bindings"` 显式weights-only迁移，保留actor/critic旧权重及初始预测；Adam、workers、RNG和循环状态重新初始化。新模型中的option variant和绑定参数需要后续学习，不宣称已提高第二幕胜率。服务器启动仍须通过实际Linux/CUDA准备及完整规模恢复检查。
 
 ## 本地产物位置
 
@@ -58,42 +58,34 @@ python tools/export_policy.py <checkpoint> --output model/<name>.pt --goal ACT1 
 
 ## 首段混合课程服务器启动
 
-当前冻结配置为 `configs/train/ironclad_a20_act12_real_entry_20m_r1.toml`。整段新增约20M、50%正常开局/50%真实第二幕入口，固定 v5、正常资源、正常开局第二幕通关选模。实际比例按新 episode 开始次数计算；入口清零策略记忆，不继承此前轨迹。正常开局评估始终不使用入口库。配置、资格和显式 weights-only 来源迁移均由 SHA 固定，旧90M checkpoint 不修改。
+当前冻结配置为 `configs/train/ironclad_a20_act12_real_entry_20m_v6_r1.toml`；旧v5配置原样保留。整段新增约20M、50%正常开局/50%真实第二幕入口，显式v5→v6权重迁移、正常资源、正常开局第二幕通关选模。实际比例按新 episode 开始次数计算；入口清零策略记忆，不继承此前轨迹。正常开局评估始终不使用入口库。配置、资格和显式 weights-only 来源迁移均由 SHA 固定，旧90M checkpoint 不修改。奖励、PPO、网络规模和正式并行布局不变。
 
 本地已通过规则/接口验收、18,432 决策混合 PPO 精确恢复及真实训练 CLI 预检。正式64:16布局、序列64、minibatch16未在本地8GB显存上通过；A10040GB上的完整准备是启动条件，不能跳过。`--prepare` 在每个作业验证库SHA与所有合法动作前缀，检查GPU、正式配方benchmark及保存恢复，然后才执行训练；Windows诊断凭证不上传为Linux ready凭证。
 
-真实 CLI 的独立小批量诊断从90M权重初始化，45秒预算后24次更新保存为 INTERRUPTED；再次按同一配置启动，继续4次更新、256决策，累计目标未重置。该诊断共1792个新决策，没有导出或采用策略；来源与日志SHA记录在 `tests/fixtures/evidence/act12-foundation/training-readiness.json`。诊断 checkpoint 在任务收尾时归档，不是正式20M作业的起点。
+v6当前源码的混合诊断继承实际90M父权重，使用8:2布局、rollout256、序列64、minibatch4完成8次更新并精确重放下一次更新，新增18,432决策，显存峰值3,457,521,152字节。三组新增绑定参数均发生有限学习变化。真实CLI另以2:1小布局在45秒后25次更新保存INTERRUPTED；检查实际checkpoint恢复，再继续4次更新、256决策，共1856个新决策。新迁移身份、累计目标和课程轮转计数保留。证据为 `tests/fixtures/evidence/act12-foundation/training-readiness-v6.json`，没有导出或采用诊断策略。
 
-先将本地 `D:/SLS/local/runs/preparation/act12-mixed20m/entry-bank-release.json.gz` 上传到服务器同样的相对路径。文件SHA必须是 `71a972903827712ff808440bac7a7e8bc8de1f3dc8980e5bd1330666b42d1745`。90M父checkpoint沿用服务器现有文件；若缺失，也上传本地 `local/runs/ironclad-a20-act1-win-90m-continuation/final.pt`，SHA见下列命令。这两个私有文件不进入Git。
+此前v5真实 CLI 的独立小批量诊断从90M权重初始化，45秒预算后24次更新保存为 INTERRUPTED；再次按同一配置启动，继续4次更新、256决策，累计目标未重置。该历史诊断共1792个新决策，没有导出或采用策略；来源与日志SHA记录在 `tests/fixtures/evidence/act12-foundation/training-readiness.json`，不能替代v6验收。诊断 checkpoint 在任务收尾时归档，不是正式20M作业的起点。
+
+服务器缺少入口库时，由705,927字节的可移植前缀证据自动重建1,493个原存档，逐项核对存档SHA，并保留原gzip文件头的平台标记；最终库SHA必须仍为 `71a972903827712ff808440bac7a7e8bc8de1f3dc8980e5bd1330666b42d1745`。这不是重新采样或筛选，不需要额外上传入口库。若跨平台重建不同，保留记录并停止，不自动更换课程。
+
+`launch_act12_v6.py` 在登录节点核对90M父checkpoint，规范路径缺文件时只查找当前local/runs中90M lineage下相同SHA文件，复制后再验证。已有错误SHA文件原样保留并拒绝提交；确实找不到时明确报错、不提交作业。父checkpoint SHA固定为 `274963f4fe32b75003c5a1b4ccd394b5185304156e6ea22a76aee2764d54f1e0`；文件不进入Git。
 
 在服务器执行：
 
 ```bash
-cd /home/h/hengzhi/SLS
-git switch main
-git pull --ff-only origin main
-mkdir -p local/runs/preparation/act12-mixed20m
-export SLS_PY=/home/h/hengzhi/venvs/sls/bin/python
-export PYTHONPATH="$PWD:$PWD/src"
-export PYTHONPYCACHEPREFIX="$PWD/local/build/python-cache"
-export CUBLAS_WORKSPACE_CONFIG=:4096:8
-printf '%s\n' \
-  '71a972903827712ff808440bac7a7e8bc8de1f3dc8980e5bd1330666b42d1745  local/runs/preparation/act12-mixed20m/entry-bank-release.json.gz' \
-  '274963f4fe32b75003c5a1b4ccd394b5185304156e6ea22a76aee2764d54f1e0  local/runs/ironclad-a20-act1-win-90m-continuation/final.pt' | sha256sum --check --strict
+(
+  set -euo pipefail
+  cd /home/h/hengzhi/SLS
+  git switch main
+  git pull --ff-only origin main
+  export PYTHONPATH="$PWD:$PWD/src"
+  export PYTHONPYCACHEPREFIX="$PWD/local/build/python-cache"
+  export CUBLAS_WORKSPACE_CONFIG=:4096:8
+  /home/h/hengzhi/venvs/sls/bin/python tools/launch_act12_v6.py
+)
 ```
 
-只有拉取及两个SHA检查均成功，才执行：
-
-```bash
-"$SLS_PY" tools/submit_slurm.py train \
-  --config configs/train/ironclad_a20_act12_real_entry_20m_r1.toml \
-  --prepare --python "$SLS_PY" \
-  --account allusers --qos normal --partition gpu-long \
-  --gpu a100-40 --cpus 16 --memory 64G --time 3-00:00:00 \
-  --stop-signal-seconds 900
-```
-
-把作业号和 `local/runs/slurm-logs/sls-train-<jobid>.out/.err` 的准备结果贴回检查。当前冻结run目录为 `local/runs/ironclad-a20-act12-real-entry-20m-r1`。训练从父累计90,013,696走到110,013,696，按完整16,384决策更新取整，预计新增20,004,864。作业内部66小时预算、Slurm三天上限及15分钟提前通知共同用于安全停止；不保证一个作业一定完成20M。
+上述命令一次提交准备与训练；准备记录单独放在 `local/runs/preparation/act12-mixed20m-v6/`，旧v5 ready不可复用。把作业号和 `local/runs/slurm-logs/sls-train-<jobid>.out/.err` 的准备结果贴回检查。当前冻结run目录为 `local/runs/ironclad-a20-act12-real-entry-20m-v6-r1`。训练从父累计90,013,696走到110,013,696，按完整16,384决策更新取整，预计新增20,004,864。作业内部66小时预算、Slurm三天上限及15分钟提前通知共同用于安全停止；不保证一个作业一定完成20M。
 
 状态为 `INTERRUPTED` 时，重新执行同一提交命令，继续原 `latest.pt`、Adam、worker、随机数、记忆、课程轮转计数和累计目标。不要改output、布局、比例、奖励、模型或目标。`FAILED` 时保留日志和crash，先检查原因；`COMPLETE` 时不再提交该run。运行中不拉取变更代码；续提也使用相同冻结源码，后续课程调整另作显式迁移。
 
@@ -101,7 +93,7 @@ printf '%s\n' \
 
 ```powershell
 python -m tools.verify_act12_foundation_checks --root local/reports/act12-foundation
-python -m tools.qualify_act12_foundation --root local/reports/act12-foundation --output local/reports/act12-foundation/qualification-recheck.json
+python -m tools.qualify_act12_foundation --root local/reports/act12-foundation --revision v6 --output local/reports/act12-foundation/qualification-v6-recheck.json
 python -m tools.build_act2_entry_bank --verify-only --output local/runs/preparation/act12-mixed20m/entry-bank-release.json.gz
 ```
 

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import gzip
 import importlib.util
 import json
 import os
@@ -110,6 +111,13 @@ def main() -> int:
 
         # Validate bytes/source first, then replay every captured normal-start
         # prefix on this Linux native build before accepting Windows-made states.
+        bank = ROOT / config["start_curriculum"]["bank"]
+        if not bank.exists():
+            fixture = ROOT / "tests/fixtures/evidence/act12-foundation/entry-prefixes.json.gz"
+            evidence = json.loads(gzip.decompress(fixture.read_bytes()))
+            if evidence["bank_sha256"] != config["start_curriculum"]["bank_sha256"]:
+                raise ValueError("missing bank has no matching portable prefix fixture")
+            run_tool("build_act2_entry_bank.py", "--from-prefix-fixture", fixture, "--output", bank)
         from_config(config, ROOT)
         run_tool("build_act2_entry_bank.py", "--verify-only", "--output",
                  ROOT / config["start_curriculum"]["bank"])

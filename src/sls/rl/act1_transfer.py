@@ -81,8 +81,16 @@ def initialize_act1_weights(trainer, config: dict, *, root: Path) -> dict:
         raise ValueError("cumulative target must exceed parent steps")
     # Policy construction initializes parameters. Do not perturb the new run's
     # RNG just to validate/load the parent's weights.
+    migration = None
     with torch.random.fork_rng(devices=[]):
-        policy = policy_from_training_checkpoint(payload)
+        if "model_migration" in spec:
+            if spec["model_migration"] != "v5-to-v6-role-bindings":
+                raise ValueError("unsupported warm-start model migration")
+            from sls.rl.model_migration import migrate_v5_role_policy
+
+            policy, migration = migrate_v5_role_policy(payload)
+        else:
+            policy = policy_from_training_checkpoint(payload)
     if policy.config != trainer.model.config:
         raise ValueError("warm-start model configuration mismatch")
     trainer.model.load_state_dict(policy.state_dict(), strict=True)
@@ -100,6 +108,7 @@ def initialize_act1_weights(trainer, config: dict, *, root: Path) -> dict:
         "step_accounting": "parent steps + new A20 environment steps",
         "entropy_clock": "cumulative environment steps",
         "exact_resume_of_parent_experiment": False,
+        **({"model_migration": migration} if migration else {}),
         **({"simulator_transition": simulator_transition} if simulator_transition else {}),
     }
 

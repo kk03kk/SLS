@@ -102,3 +102,49 @@ def test_adjacent_curriculum_weight_transfer_is_explicit_and_fresh(tmp_path, sou
         trainer.train_update()
         assert trainer.environment_steps == 2
     assert sha256_file(source) == digest
+
+
+def test_v6_curriculum_transfer_requires_explicit_migration_and_preserves_initial_policy(tmp_path):
+    from sls.model import PolicyBatch
+
+    source_profile, target_profile = IRONCLAD_A20_CURRICULUM[:2]
+    model = ModelConfig(embedding_dim=32, transformer_layers=1, attention_heads=4,
+                        feedforward_dim=64, recurrent_hidden_dim=32)
+    ppo = PPOConfig(rollout_steps=2, recurrent_sequence_length=2, minibatch_sequences=1, epochs=1)
+    source = tmp_path / "parent" / "best.pt"
+    with VectorWorkerPool(source_profile, 1) as workers:
+        parent = PPOTrainer(Policy(model), workers, ppo, seed=9)
+        parent.train_update()
+        save_checkpoint(source, parent)
+    digest = sha256_file(source)
+    config = {"run": {"output": "child"}, "stages": {"train": {"target_environment_steps": 10}},
+              "warm_start": {"checkpoint": "parent/best.pt", "checkpoint_sha256": digest,
+                             "parent_environment_steps": 2, "transfer_kind": "curriculum-stage"}}
+    with VectorWorkerPool(target_profile, 1) as workers:
+        trainer = PPOTrainer(Policy(replace(model, architecture="sls-recurrent-relational-policy-v6")),
+                             workers, ppo, seed=100)
+        with pytest.raises(ValueError, match="model configuration mismatch"):
+            initialize_act1_weights(trainer, config, root=tmp_path)
+        config["warm_start"]["model_migration"] = "unknown"
+        with pytest.raises(ValueError, match="unsupported"):
+            initialize_act1_weights(trainer, config, root=tmp_path)
+        config["warm_start"]["model_migration"] = "v5-to-v6-role-bindings"
+        before_rng = torch.get_rng_state().clone()
+        initial_environment = workers.checkpoints()
+        record = initialize_act1_weights(trainer, config, root=tmp_path)
+        assert torch.equal(torch.get_rng_state(), before_rng)
+        assert workers.checkpoints() == initial_environment
+        assert trainer.environment_steps == 2 and trainer.update == 0
+        assert not trainer.optimizer.state and not trainer.memory.any()
+        assert record["model_migration"]["target_architecture"].endswith("v6")
+        assert not record["model_migration"]["exact_resume"]
+        batch = PolicyBatch.from_decisions(trainer.decisions)
+        with torch.no_grad():
+            old, new = [policy(*batch.model_inputs()) for policy in (parent.model, trainer.model)]
+        for name in ("logits", "value", "state", "next_memory"):
+            torch.testing.assert_close(getattr(old, name), getattr(new, name), atol=1e-5, rtol=1e-5)
+        trainer.train_update()
+        assert trainer.environment_steps == 4 and trainer.optimizer.state
+        with pytest.raises(ValueError, match="fresh trainer"):
+            initialize_act1_weights(trainer, config, root=tmp_path)
+    assert sha256_file(source) == digest

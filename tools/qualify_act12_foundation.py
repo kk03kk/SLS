@@ -75,7 +75,7 @@ def timing_contract_row(unconditional: dict, conditional: dict, *, natural: bool
                     for row in inputs))
 
 
-def qualify(root: Path) -> dict:
+def qualify(root: Path, *, revision: str | None = None) -> dict:
     source, implementation = native_source_digest(), training_validation_digest()
     blockers, inputs = [], {}
 
@@ -91,14 +91,16 @@ def qualify(root: Path) -> dict:
     if checks and not validation_matches(root, checks):
         blockers.append("local regression/check evidence differs from final source or recorded outputs")
 
-    frozen = read("freeze-final.json" if (root / "freeze-final.json").is_file() else "freeze.json")
+    frozen = read(f"freeze-{revision}.json" if revision else
+                  "freeze-final.json" if (root / "freeze-final.json").is_file() else "freeze.json")
     selection = read("selection-final.json")
     if frozen and (frozen["native_source_sha256"] != source
                    or frozen.get("training_validation_sha256") != implementation):
         blockers.append("frozen source differs from current implementation")
     if native.NATIVE_SOURCE_SHA256 != source:
         blockers.append("native binary/source identity mismatch")
-    boundary = read("boundaries-release.json" if (root / "boundaries-release.json").is_file()
+    boundary = read(f"boundaries-{revision}.json" if revision else
+                    "boundaries-release.json" if (root / "boundaries-release.json").is_file()
                     else "boundaries-final.json")
     if boundary:
         if (boundary["native_source_sha256"] != source
@@ -114,6 +116,21 @@ def qualify(root: Path) -> dict:
     if migration and (not migration.get("passed") or not migration.get("source_file_unchanged")
                       or migration.get("diagnostic_native_sha256") != source):
         blockers.append("v5/v6 migration compatibility not verified on current native")
+    if revision == "v6":
+        soak = read("v6/mixed-soak.json")
+        if (not boundary or boundary.get("policy_architecture") != "sls-recurrent-relational-policy-v6"
+                or not soak or not soak.get("passed")
+                or soak.get("architecture") != "sls-recurrent-relational-policy-v6"
+                or soak.get("native_source_sha256") != source
+                or soak.get("training_validation_sha256") != implementation
+                or not soak.get("exact_resume_checks")
+                or not all(soak["exact_resume_checks"].values())
+                or soak.get("updates", 0) < 8
+                or soak.get("new_decisions", 0) < 16000
+                or not soak.get("binding_parameter_change_norms")
+                or not all(v > 0 for v in soak["binding_parameter_change_norms"].values())
+                or soak.get("source_checkpoint_sha256") != migration.get("source_checkpoint_sha256")):
+            blockers.append("v6 actual-parent mixed training, bindings or exact recovery not verified")
     controlled = read("controlled-final.json")
     systems = [read(f"systems-final-{i}.json") for i in range(3)]
     conditional_systems = [read(f"systems-conditional-{i}.json") for i in range(3)]
@@ -291,7 +308,8 @@ def qualify(root: Path) -> dict:
             "scope": "A20 normal start to Act2 boss clear; 72 controlled obligations and 8 natural coverage canaries",
             "limits": ["Finite evidence, not exhaustive game-combination proof",
                        "Conditional Discovery replay is not an unconditional match",
-                       "Default v5 capacity limitations retained; v6 efficacy untrained",
+                       "v6 efficacy untrained; finite representation checks are not an injectivity proof"
+                       if revision == "v6" else "Default v5 capacity limitations retained; v6 efficacy untrained",
                        "No production training or automatic server submission"]}
 
 
@@ -299,10 +317,11 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--revision", choices=("v6",))
     args = parser.parse_args()
     if args.output.exists():
         raise FileExistsError("immutable qualification receipt exists")
-    report = qualify(args.root)
+    report = qualify(args.root, revision=args.revision)
     args.output.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({k: report[k] for k in ("qualification", "blockers")}))
     return 0 if not report["blockers"] else 1

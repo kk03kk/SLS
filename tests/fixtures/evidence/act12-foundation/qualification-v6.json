@@ -1,0 +1,294 @@
+{
+  "schema": "sls-act12-foundation-qualification-v1",
+  "qualification": "PASS_CONTRACT_BOUNDED_ACT12",
+  "native_source_sha256": "27eba74232319e8138b300f042c3373ec7cec0d030ba8d40a2689cf171f67e44",
+  "training_validation_sha256": "245cfce26caddf961071441170ac8e2246e349c4a0b26b58ce2132483ef74c0a",
+  "original_source_sha256": "cdd1c9d84f40ae3b76b154b2bfa16fce89b9638f79c3f292b5b492b3be429a72",
+  "audit_source_sha256": "f9ee0cb2c41298de267c82e9bfe4fbdea8da44d97af57e578e4d50c2f2bb43e2",
+  "blockers": [],
+  "scope": "A20 normal start to Act2 boss clear; 72 controlled obligations and 8 natural coverage canaries",
+  "limits": [
+    "Finite evidence, not exhaustive game-combination proof",
+    "Conditional Discovery replay is not an unconditional match",
+    "v6 efficacy untrained; finite representation checks are not an injectivity proof",
+    "No production training or automatic server submission"
+  ],
+  "discovery_environment_contract": "DISCOVERY_FIXED_RETRIEVAL_UPDATES_14_V1",
+  "contract_explanations": [
+    {
+      "seed": 131100063,
+      "role": "controlled",
+      "unconditional_match": false,
+      "full_clock_conditioned_replay": true
+    },
+    {
+      "seed": 131100064,
+      "role": "controlled",
+      "unconditional_match": false,
+      "full_clock_conditioned_replay": true
+    },
+    {
+      "seed": 131100066,
+      "role": "controlled",
+      "unconditional_match": false,
+      "full_clock_conditioned_replay": true
+    },
+    {
+      "seed": 131100067,
+      "role": "controlled",
+      "unconditional_match": false,
+      "full_clock_conditioned_replay": true
+    },
+    {
+      "seed": 131100068,
+      "role": "controlled",
+      "unconditional_match": false,
+      "full_clock_conditioned_replay": true
+    },
+    {
+      "seed": 131100069,
+      "role": "controlled",
+      "unconditional_match": false,
+      "full_clock_conditioned_replay": true
+    },
+    {
+      "seed": 8000011000000,
+      "role": "natural",
+      "unconditional_match": false,
+      "full_clock_conditioned_replay": true
+    },
+    {
+      "seed": 8000011000005,
+      "role": "natural",
+      "unconditional_match": false,
+      "full_clock_conditioned_replay": true
+    }
+  ],
+  "input_sha256": {
+    "validation-final.json": "84f68da645f2685390b4ff7975279c4bc2b2dfafb787b62ec5d08dc096a20c69",
+    "freeze-v6.json": "548783d312725587d61216af50c1d492cf70f5c08a3baae4f40c0cfb87e6aacb",
+    "selection-final.json": "ddfa068c44027d14570f8040355b8201f1ad5430266e76f4d2891a0889d8c0d7",
+    "boundaries-v6.json": "8fd7cc8d5ae68ef37144f75a04c9adb5cb9d1436ec9a32293744296a9e35840c",
+    "migration-final.json": "d1c2e69cef151b95218fb7e0fff369e4f43e38e530531cecac659ca9a731317a",
+    "v6/mixed-soak.json": "e6a7d8b9ee0df3c5f1dbf6a7ae3987b422ceb98435dec64f5e9ef86afe5cceab",
+    "controlled-final.json": "45d8c5739716d3da5c3d9820f2c9f80e080a63497dbd138712f34287104b6425",
+    "systems-final-0.json": "17e78997670b70c28acd7063675e0b43af057ae6a33974e80337455338be6881",
+    "systems-final-1.json": "bac1d405a8ef91e7f6a2478559919ef422c14e1bf13ce5673038e6840dee1fde",
+    "systems-final-2.json": "b4b3cdc6e18b151a450c056f1a2a6d5f1a3daccfd2e259bff1b4d70824ff5fc3",
+    "systems-conditional-0.json": "08f5a2f855d2506b7a95f61cc59050441f73a6223335f5fc8836b8adf6f1e855",
+    "systems-conditional-1.json": "48504b2aaa33a45173b3a2d21619c9654c985edb9606a235b085ce4733b0d91f",
+    "systems-conditional-2.json": "98d64d0c396404fa0537ec7fae7a12a12613c091ea1371794ccaf0c64196de70",
+    "system-replacements.json": "a088968d28a654bff77229494b29acdd288d5d4432b7733551d66af8bf1358af",
+    "systems-policy-final-131100063.json": "25aa53244965d16376f2f1c1a0fa8bb16ac3195e5647acec4f1cbd58cbdcbb87",
+    "systems-policy-conditional-131100063.json": "dc6fdd4c1e8ee585681298b58e37cbf8c53d610306260b48096f593061b16740",
+    "natural-final-8000011000000.json": "32e13f5126f0407b850861587b3f9bbe02665cc7bf7ab634b441627a75739458",
+    "natural-final-8000011000001.json": "c23b660640a8fd5e141591b4415a977c54ecbd16067dc4a18189540bb2ba7399",
+    "natural-final-8000011000002.json": "e0c3bb595f570b4ae806bed2b6262322f02d39f5a00d5d9ebe00fa62f9939c70",
+    "natural-final-8000011000004.json": "7823577d02c8e22b6ca0baa83c7be566b4d00f80f6f9f27031c83576edb90bb7",
+    "natural-final-8000011000005.json": "2dc645456f7e9ecd50c9d1643aac986ffe1b73b6ece90af790d90d0074da8448",
+    "natural-final-8000011000006.json": "d03bcfd76f4be8a7e8413c68ae2b190c3ccffb03230bb28d68d703085f6bfac8",
+    "natural-final-8000011000009.json": "cdaa74aeea884f8ed06b084d61c23512ac47607f1d87a045729d2447ffc16a55",
+    "natural-final-8000011000069.json": "5b86b548aff34797c4c7d4d0a7b1d4cdf47ee85738b073e2dc32ed1366e53b71",
+    "natural-conditional-8000011000000.json": "4689c7dd9ebd1330f2eab2b20310db875e2955951f3698af151a224d3dbed9fe",
+    "natural-conditional-8000011000005.json": "37e7344165227b08901b8dc6691f1396b3eeda708649f40c1f6dbbdd778eb97d",
+    "gremlin-leader-final.json": "b62e09ba778f2c3451be482b6a72a9ade2214fa4bbcdd2fabeb73d03533f2fef",
+    "stock-coverage.json": "951d88135d9a7968dade262c54662db8daaa43022867880e89f80f360f87e892",
+    "controlled-stock.launch.json": "5c651c63957fa57810ed49a2173410ec1e91b9fb01ae1e781be22b4bc8a22a4f",
+    "systems-0.launch.json": "974486c780df85a357581cf22a21dd1681f798ecf1cecaed1812fddfc2111b73",
+    "systems-1.launch.json": "fbc2c0bac7cc3a298ecdb9f18e7aa8e0bd2f911408f3bd6bbcc5690e6bb388a9",
+    "systems-2.launch.json": "a191b5499971f9cff7fce59c0b9e0e58066d2f4ff2308c6400a73e20b8de3443",
+    "systems-2.launch.review.json": "edd0ec6ef55a32ed9c3314376e07a8782d3098080c83c43a3cfc655c78feff8b",
+    "natural-0.launch.json": "e64a49a2061b394437581da866012bb7bfef2fb59bd7e0ff582753fca3e81a9b",
+    "natural-1-retry.launch.json": "c0f615f888353785ee258aa141cf3a75bc968687712fe450920dfb029194de55",
+    "gremlin-leader-stock-retry.launch.json": "2cde5b198065308b264f4afcdc4ace2ca279599dfe26ebd25dcfb5b329424d72",
+    "systems-policy-131100063.launch.json": "9ecb89a62ba6525cf47581619338293f10c13189bce6a9b3c969ac4673e6f712",
+    "gremlin-leader-startup-failed.launch.json": "88e490ea73c1f7226c19d997cd65398eb4b121c8fa5db2a1e3c0f3dd1fcd3548",
+    "gremlin-leader-stock.launch.json": "88e490ea73c1f7226c19d997cd65398eb4b121c8fa5db2a1e3c0f3dd1fcd3548",
+    "natural-1.launch.json": "53a2f27c7004dd4e682420fe84540b4b0d9695625748360ddf6481064eefda35",
+    "pytest.xml": "5bf0edcb5dac55b197f276226a35334c03ea3878168cb9f21725f9dae18f0fb8",
+    "ruff.txt": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+    "content.txt": "c212512d58d4a9ac1950f247146bea7b84757bde6305b14002bcfcc4c9096bd7",
+    "vocabulary.txt": "253dc6855d58deb0497e2af67b1a8eee1c686e15b91f229bfd776126ea051933",
+    "configs.txt": "4fd1fcdff0c04cc73cc953a07f427e3dc58b296311b6a4c060b7e5829f709002"
+  },
+  "unconditional_controlled_matches": 66,
+  "controlled_obligations": 72,
+  "natural_canaries": 8,
+  "recovered_batches": 8,
+  "failed_attempts_preserved_and_recovered": 3,
+  "qualification_receipt_sha256": "4030d0cdc875f9f9d4d7f72d8606d90dd5f0a23237bb3d407db8c5b3ba8e4382",
+  "policy_architecture": "sls-recurrent-relational-policy-v6",
+  "entry_reconstruction": {
+    "schema": "sls-entry-bank-reconstruction-verification-v1",
+    "passed": true,
+    "entries": 1493,
+    "bank_sha256": "71a972903827712ff808440bac7a7e8bc8de1f3dc8980e5bd1330666b42d1745",
+    "prefix_fixture_sha256": "54af87d8a85c44efc5eceecc73591003630059255b703c2d3b48378b766439c6",
+    "native_source_sha256": "27eba74232319e8138b300f042c3373ec7cec0d030ba8d40a2689cf171f67e44",
+    "gzip_header_hex": "1f8b080000000000020a",
+    "current_header_encoder_matches_original": true,
+    "limits": "Full prefix reconstruction on Windows; Linux preparation must still verify it"
+  },
+  "mixed_training": {
+    "schema": "sls-mixed-curriculum-soak-v1",
+    "passed": true,
+    "native_source_sha256": "27eba74232319e8138b300f042c3373ec7cec0d030ba8d40a2689cf171f67e44",
+    "training_validation_sha256": "245cfce26caddf961071441170ac8e2246e349c4a0b26b58ce2132483ef74c0a",
+    "model_sha256": null,
+    "bank_sha256": "71a972903827712ff808440bac7a7e8bc8de1f3dc8980e5bd1330666b42d1745",
+    "architecture": "sls-recurrent-relational-policy-v6",
+    "weight_transfer": {
+      "schema": "sls-curriculum-weight-transfer-v2",
+      "parent_checkpoint_sha256": "274963f4fe32b75003c5a1b4ccd394b5185304156e6ea22a76aee2764d54f1e0",
+      "parent_environment_steps": 90013696,
+      "parent_checkpoint": "D:\\SLS\\local\\runs\\ironclad-a20-act1-win-90m-continuation\\final.pt",
+      "source_profile": "IRONCLAD_A20_ACT1",
+      "target_profile": "IRONCLAD_A20_ACT2",
+      "preserved": "all model weights, including value head",
+      "reset": "Adam, RNG, workers, recurrent state, update count and best selection",
+      "step_accounting": "parent steps + new A20 environment steps",
+      "entropy_clock": "cumulative environment steps",
+      "exact_resume_of_parent_experiment": false,
+      "model_migration": {
+        "schema": "sls-role-model-migration-v1",
+        "exact_resume": false,
+        "source_architecture": "sls-recurrent-relational-policy-v5",
+        "target_architecture": "sls-recurrent-relational-policy-v6",
+        "encoding_schema": "sls-policy-input-v5",
+        "vocabulary_sha256": "04df4dc504ccf10d389b7b0e798ebc7a1ea2036edfc273a5cf5b11071b3b8ed0",
+        "initialization": "zero residual gates; independent option rows copy legacy vectors",
+        "initial_prediction_equivalence": "verify on representative decisions; floating-point tolerance",
+        "reset": [
+          "optimizer",
+          "workers",
+          "recurrent_memory",
+          "rng_streams",
+          "episode_limits"
+        ],
+        "training_approved": false
+      },
+      "simulator_transition": {
+        "schema": "sls-curriculum-simulator-transition-v1",
+        "status": "VERIFIED_RULE_CORRECTION",
+        "semantics_revision": "sls-act12-foundation-taskmaster-death-queue-v1",
+        "source_native_source_sha256": "1e30bb6cfa32f600cd63c59983c14ab8928fac4452c1586d630295d2c6ff9453",
+        "target_native_source_sha256": "27eba74232319e8138b300f042c3373ec7cec0d030ba8d40a2689cf171f67e44",
+        "source_profile": "IRONCLAD_A20_ACT1",
+        "target_profile": "IRONCLAD_A20_ACT2",
+        "transfer_mode": "weights-only",
+        "exact_resume_allowed": false,
+        "reason": "Initialize a new Act2 curriculum with all frozen 90M model weights; reset Adam, environments and memory under the qualified current rules.",
+        "evidence": {
+          "transition-before.json": "52feffe583741081900a43d3d3b271cd48a80fa50ed931fbbae437290db73656",
+          "transition-after.json": "998458f41095e8ab530f6956520f1f81c61f42b6e8cd4a82d8e0725448f6113f",
+          "qualification.json": "936b429e49e4d6fe53cbafccc94eeac9a87cd9871bf8072d38b9b35a12bf4f4e"
+        }
+      }
+    },
+    "source_checkpoint_sha256": "274963f4fe32b75003c5a1b4ccd394b5185304156e6ea22a76aee2764d54f1e0",
+    "config_sha256": "f7793ae188ab90fd3f0f6ea2c014674cff0bec4b5060dda4af52a0597c166e42",
+    "binding_parameter_change_norms": {
+      "category_field_scale": 0.01667940802872181,
+      "reference_role_scale": 0.012384173460304737,
+      "option_variant.weight": 0.014993629418313503
+    },
+    "device": "cuda",
+    "updates": 8,
+    "layout": [
+      8,
+      2
+    ],
+    "ppo": {
+      "rollout_steps": 256,
+      "recurrent_sequence_length": 64,
+      "minibatch_sequences": 4,
+      "learning_rate": 3.125e-05,
+      "gamma": 1.0,
+      "gae_lambda": 0.98,
+      "clip_ratio": 0.2,
+      "value_coefficient": 0.5,
+      "entropy_coefficient": 0.002,
+      "entropy_final": 0.002,
+      "entropy_decay_steps": 20000000,
+      "entropy_schedule_start_steps": 90013696,
+      "target_kl": 0.02,
+      "final_kl_samples": 4096,
+      "value_clip_ratio": 0.2,
+      "max_gradient_norm": 0.5,
+      "epochs": 2,
+      "potential_shaping": true,
+      "potential_scale": 0.2,
+      "failure_progress_scale": 0.0,
+      "reward_schema": "sls-curriculum-win-v1",
+      "episode_limit_schema": "sls-fullrun-episode-limit-v2",
+      "max_episode_steps": 4096,
+      "max_boundary_visits": 4,
+      "limit_failure_reward": -1.0
+    },
+    "cuda_peak_memory_bytes": 3457521152,
+    "new_decisions": 18432,
+    "curriculum": {
+      "started": 120,
+      "normal_started": 60,
+      "entry_started": 60,
+      "active_origins": {
+        "0": {
+          "kind": "normal",
+          "source_seed": 133000110
+        },
+        "1": {
+          "kind": "normal",
+          "source_seed": 133000118
+        },
+        "2": {
+          "kind": "normal",
+          "source_seed": 133000112
+        },
+        "3": {
+          "kind": "normal",
+          "source_seed": 133000114
+        },
+        "4": {
+          "kind": "normal",
+          "source_seed": 133000116
+        },
+        "5": {
+          "kind": "entry",
+          "source_seed": 132500090
+        },
+        "6": {
+          "kind": "normal",
+          "source_seed": 133000106
+        },
+        "7": {
+          "kind": "entry",
+          "source_seed": 132500084
+        }
+      },
+      "outcomes": {
+        "normal": {
+          "death": 53,
+          "cycle_limit": 1
+        },
+        "entry": {
+          "death": 57,
+          "success": 1
+        }
+      }
+    },
+    "exact_resume_checks": {
+      "schema": true,
+      "contract": true,
+      "model": true,
+      "optimizer": true,
+      "trainer": true,
+      "python_rng": true,
+      "torch_rng": true,
+      "cuda_rng": true,
+      "environments": true,
+      "metrics": true
+    },
+    "policy_exported": false,
+    "limits": "Local same-runtime diagnostic; Linux server preparation remains mandatory"
+  }
+}

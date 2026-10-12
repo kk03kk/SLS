@@ -38,6 +38,10 @@ SLS 的公共边界是：
 
 通过 `migrate_v5_role_policy` 显式转移权重：共享参数原样复制，新缩放初始化为零，选项独立行复制旧模型实际使用的向量，因此初始预测保留；以后才能通过学习改变这些表示。新架构不可直接strict加载旧state_dict，迁移不携带Adam、环境、RNG或循环状态，不是精确续训。`tools/verify_role_model_migration.py` 验证当前模拟器合法决策上的预测与动作一致性，只生成诊断JSON，不导出权重或启动训练。
 
+首段20M的正式配置显式选择v6，库级默认v5及旧配置保持原样。`initialize_act1_weights` 仅在 `warm_start.model_migration = "v5-to-v6-role-bindings"` 时执行角色迁移，仍检查原90M文件SHA、相邻课程、累计步数及独立模拟器来源迁移证据。首次建立新run；后续恢复加载v6完整checkpoint，不重复迁移父模型。
+
+入口库的可移植证据 `tests/fixtures/evidence/act12-foundation/entry-prefixes.json.gz` 只保存原始合法动作前缀、每个原存档SHA及原库元数据。服务器缺库时逐项重放重建，最终压缩库必须匹配固定SHA；不是在服务器重新筛选训练状态。已有库仍按原流程核对SHA并重放全部前缀。
+
 公开观测和编码数值必须有限，NaN/Infinity在进入模型前拒绝。当前动作metadata只支持登记的数值字段，类别字段不能被静默丢弃；新增类别动作特征须显式扩展输入合同。native战斗动作只接受已登记的0–4类型，未知类型不能降级为END_TURN。这些是输入正确性防线，不替代原版规则对照。
 
 ## 兼容性与验证边界

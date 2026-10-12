@@ -5,6 +5,7 @@ import argparse
 import hashlib
 import json
 import math
+import tomllib
 from dataclasses import asdict
 from pathlib import Path
 
@@ -19,7 +20,11 @@ from sls.rl import (
     save_checkpoint,
 )
 from sls.rl.start_curriculum import StartCurriculum
-from sls.rl.training_contract import native_source_digest, training_validation_digest
+from sls.rl.training_contract import (
+    native_source_digest,
+    sha256_file,
+    training_validation_digest,
+)
 from sls.runtime import load_policy_artifact
 
 
@@ -36,7 +41,9 @@ def equal(left, right):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--bank", type=Path, required=True)
-    parser.add_argument("--artifact", type=Path, required=True)
+    source = parser.add_mutually_exclusive_group(required=True)
+    source.add_argument("--artifact", type=Path)
+    source.add_argument("--config", type=Path, help="Exercise the actual configured weights-only migration")
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--device", default="cuda")
     parser.add_argument("--updates", type=int, default=32)
@@ -52,11 +59,29 @@ def main():
     torch.manual_seed(133000000)
     torch.use_deterministic_algorithms(True)
     torch.backends.cudnn.benchmark = False
-    artifact = load_policy_artifact(args.artifact, device=args.device)
+    if args.device.startswith("cuda"):
+        torch.set_float32_matmul_precision("high")
+    root = Path(__file__).resolve().parents[1]
+    payload = tomllib.loads(args.config.read_text()) if args.config else None
+    if payload:
+        from sls.model import ModelConfig, Policy
+
+        model = Policy(ModelConfig(**payload["model"]))
+        parent_path = root / payload["warm_start"]["checkpoint"]
+        parent_sha = sha256_file(parent_path)
+        artifact_sha = None
+    else:
+        artifact = load_policy_artifact(args.artifact, device=args.device)
+        model, artifact_sha = artifact.model, artifact.metadata.model_sha256
+        parent_path, parent_sha = None, None
     bank_sha = hashlib.sha256(args.bank.read_bytes()).hexdigest()
     source, implementation = native_source_digest(), training_validation_digest()
     curriculum = StartCurriculum(args.bank, bank_sha)
-    config = PPOConfig(rollout_steps=args.rollout_steps, recurrent_sequence_length=args.sequence_length,
+    config = PPOConfig(**{**(payload["ppo"] if payload else {}),
+                       "rollout_steps": args.rollout_steps,
+                       "recurrent_sequence_length": args.sequence_length,
+                       "minibatch_sequences": args.minibatch_sequences}) if payload else PPOConfig(
+                       rollout_steps=args.rollout_steps, recurrent_sequence_length=args.sequence_length,
                        minibatch_sequences=args.minibatch_sequences,
                        epochs=2, gamma=1.0, gae_lambda=0.98, learning_rate=3.125e-5,
                        failure_progress_scale=0.0, reward_schema="sls-curriculum-win-v1",
@@ -64,8 +89,16 @@ def main():
     args.output.parent.mkdir(parents=True, exist_ok=True)
     checkpoint = args.output.with_suffix(".resume.pt")
     with ShardedWorkerPool(IRONCLAD_A20_ACT2, args.workers, shard_count=args.shards) as workers:
-        trainer = PPOTrainer(artifact.model, workers, config, seed=133000000, device=args.device,
+        trainer = PPOTrainer(model, workers, config, seed=133000000, device=args.device,
                              start_curriculum=curriculum, training_seed_limit=2_000_000_000_000)
+        transfer = None
+        if payload:
+            from sls.rl.act1_transfer import initialize_act1_weights
+
+            transfer = initialize_act1_weights(trainer, payload, root=root)
+        start_steps = trainer.environment_steps
+        bindings = {key: value.detach().cpu().clone() for key, value in model.state_dict().items()
+                    if key in {"category_field_scale", "reference_role_scale", "option_variant.weight"}}
         for _ in range(args.updates):
             metrics = trainer.train_update()
             if any(not math.isfinite(v) for v in metrics.values()):
@@ -86,14 +119,24 @@ def main():
             raise ValueError(f"mixed PPO exact-resume mismatch: {checks}")
         if native_source_digest() != source or training_validation_digest() != implementation:
             raise ValueError("training source changed during mixed soak")
+        changes = {key: float((model.state_dict()[key].detach().cpu() - value).norm())
+                   for key, value in bindings.items()}
+        if any(not math.isfinite(value) or value <= 0 for value in changes.values()):
+            raise ValueError("v6 binding parameters did not learn finite changes")
+        if parent_path and sha256_file(parent_path) != parent_sha:
+            raise ValueError("parent checkpoint changed during diagnostic")
         report = {"schema": "sls-mixed-curriculum-soak-v1", "passed": True,
                   "native_source_sha256": source, "training_validation_sha256": implementation,
-                  "model_sha256": artifact.metadata.model_sha256, "bank_sha256": bank_sha,
+                  "model_sha256": artifact_sha, "bank_sha256": bank_sha,
+                  "architecture": model.config.architecture, "weight_transfer": transfer,
+                  "source_checkpoint_sha256": parent_sha,
+                  "config_sha256": sha256_file(args.config) if args.config else None,
+                  "binding_parameter_change_norms": changes,
                   "device": args.device, "updates": args.updates,
                   "layout": [args.workers, args.shards], "ppo": asdict(config),
                   "cuda_peak_memory_bytes": torch.cuda.max_memory_allocated(args.device)
                   if args.device.startswith("cuda") else 0,
-                  "new_decisions": trainer.environment_steps, "curriculum": curriculum.state_dict(),
+                  "new_decisions": trainer.environment_steps - start_steps, "curriculum": curriculum.state_dict(),
                   "exact_resume_checks": checks, "policy_exported": False,
                   "limits": "Local same-runtime diagnostic; Linux server preparation remains mandatory"}
         args.output.write_text(json.dumps(report, indent=2) + "\n")

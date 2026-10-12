@@ -60,6 +60,53 @@ def revalidate_bank(path: Path) -> dict:
                              "outcome_counts_source": "ORIGINAL_GENERATION_NOT_REMEASURED"}}
 
 
+def restore_prefix_fixture(path: Path) -> tuple[dict, str]:
+    """Reconstruct the frozen bank from portable legal-prefix evidence.
+
+    Every checkpoint and the final compressed bank must retain their original
+    hashes. This is exact reconstruction, not fresh policy sampling.
+    """
+    fixture = json.loads(gzip.decompress(path.read_bytes()))
+    if (fixture.get("schema") != "sls-act2-entry-prefix-fixture-v1"
+            or fixture["bank_metadata"]["native_source_sha256"] != native_source_digest()):
+        raise ValueError("unknown or stale entry-prefix fixture")
+    entries = []
+    for row in fixture["entries"]:
+        backend = SimulatorBackend(IRONCLAD_A20_ACT2)
+        decision = backend.reset(row["seed"])
+        for candidate in row["actions"]:
+            if decision.terminal or decision.observation.run.act != 1:
+                raise ValueError("entry prefix passed its intended boundary")
+            action = next((a for a in decision.actions if a.candidate_id == candidate), None)
+            if action is None:
+                raise ValueError("entry prefix contains an illegal candidate")
+            decision = backend.step(action).decision
+        checkpoint = backend.checkpoint()
+        serialized = json.dumps(checkpoint, sort_keys=True, separators=(",", ":")).encode()
+        if (hashlib.sha256(serialized).hexdigest() != row["checkpoint_sha256"]
+                or decision.terminal or decision.observation.run.act != 2
+                or decision.observation.screen.value != "MAP"):
+            raise ValueError(f"entry reconstruction differs: seed={row['seed']}")
+        entries.append({"seed": row["seed"], "actions": row["actions"], "checkpoint": checkpoint})
+        if len(entries) % 128 == 0:
+            print(json.dumps({"entries_reconstructed": len(entries), "total": len(fixture["entries"])}), flush=True)
+    bank = {**fixture["bank_metadata"], "entries": entries}
+    if len(entries) != bank["outcomes"]["reached_entry"]:
+        raise ValueError("entry fixture count differs from original collection")
+    return bank, fixture["bank_sha256"]
+
+
+def encode_bank(bank: dict, *, original_header: bytes | None = None) -> bytes:
+    """Preserve original gzip metadata across Windows/Linux zlib headers."""
+    raw = gzip.compress(json.dumps(bank, sort_keys=True, separators=(",", ":")).encode(), mtime=0)
+    if original_header is not None:
+        if (len(original_header) != 10 or original_header[:4] != b"\x1f\x8b\x08\x00"
+                or original_header[4:8] != b"\x00" * 4):
+            raise ValueError("unsupported original bank gzip header")
+        raw = original_header + raw[10:]
+    return raw
+
+
 def build_serial(args):
     artifact = load_policy_artifact(args.artifact, device=args.device)
     model = artifact.model.eval()
@@ -199,11 +246,13 @@ def main():
     parser.add_argument("--verify-only", action="store_true")
     parser.add_argument("--replay-from", type=Path,
                         help="Write a new source-bound bank after exact replay; never edit the parent")
+    parser.add_argument("--from-prefix-fixture", type=Path,
+                        help="Reconstruct the frozen bank, requiring every original checkpoint/hash")
     parser.add_argument("--device", default="cpu")
     parser.add_argument("--batch-size", type=int, default=1)
     args = parser.parse_args()
     torch.set_num_threads(2)
-    if args.verify_only and args.replay_from:
+    if sum(bool(value) for value in (args.verify_only, args.replay_from, args.from_prefix_fixture)) > 1:
         raise ValueError("verification and new revalidation are distinct operations")
     if args.verify_only:
         raw = args.output.read_bytes()
@@ -212,12 +261,22 @@ def main():
             raise ValueError("stale entry bank")
         verify_entries(bank)
     else:
-        if (args.artifact is None and args.replay_from is None) or args.output.exists() or args.seeds <= 0 or args.batch_size <= 0:
+        if (args.artifact is None and args.replay_from is None and args.from_prefix_fixture is None) or args.output.exists() or args.seeds <= 0 or args.batch_size <= 0:
             raise ValueError("artifact, positive seed count and fresh output required")
         if not 0 <= args.seed_start < args.seed_start + args.seeds <= 2_000_000_000_000:
             raise ValueError("entry bank seeds must stay outside held-out namespaces")
-        bank = revalidate_bank(args.replay_from) if args.replay_from else build(args)
-        raw = gzip.compress(json.dumps(bank, sort_keys=True, separators=(",", ":")).encode(), mtime=0)
+        expected_sha = None
+        if args.from_prefix_fixture:
+            bank, expected_sha = restore_prefix_fixture(args.from_prefix_fixture)
+        else:
+            bank = revalidate_bank(args.replay_from) if args.replay_from else build(args)
+        header = None
+        if args.from_prefix_fixture:
+            fixture = json.loads(gzip.decompress(args.from_prefix_fixture.read_bytes()))
+            header = bytes.fromhex(fixture["bank_gzip_header_hex"])
+        raw = encode_bank(bank, original_header=header)
+        if expected_sha and hashlib.sha256(raw).hexdigest() != expected_sha:
+            raise ValueError("reconstructed bank bytes differ; refusing a replacement curriculum")
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_bytes(raw)
     print(json.dumps({"bank_sha256": hashlib.sha256(raw).hexdigest(),

@@ -240,6 +240,12 @@ def validate(path: Path, payload: dict) -> list[str]:
         if (not isinstance(spec, dict) or set(spec) != {"path", "sha256"}
                 or not isinstance(spec.get("path"), str) or not _digest(spec.get("sha256"))):
             problems.append("invalid foundation qualification evidence contract")
+    migration = payload.get("warm_start", {}).get("model_migration")
+    if migration is not None and (
+        migration != "v5-to-v6-role-bindings"
+        or payload.get("model", {}).get("architecture") != "sls-recurrent-relational-policy-v6"
+    ):
+        problems.append("unsupported model migration or incompatible target architecture")
     if "max_job_wall_seconds" in run:
         value = run["max_job_wall_seconds"]
         if type(value) not in {int, float} or not 0 < value <= 71 * 3600:

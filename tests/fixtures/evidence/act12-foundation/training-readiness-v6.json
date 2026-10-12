@@ -1,0 +1,38 @@
+{
+  "schema": "sls-v6-training-readiness-v1",
+  "passed": true,
+  "qualification_sha256": "252abc2494f44abc123de8ba9982b5715730f5a70b9381c5ead86c81cd57788a",
+  "training_validation_sha256": "245cfce26caddf961071441170ac8e2246e349c4a0b26b58ce2132483ef74c0a",
+  "native_source_sha256": "27eba74232319e8138b300f042c3373ec7cec0d030ba8d40a2689cf171f67e44",
+  "configuration_sha256": "730eeb92b8f04895df8df523c13a42594941ffd1840a8a68e3af3abe87a61dd8",
+  "parent_checkpoint_sha256": "274963f4fe32b75003c5a1b4ccd394b5185304156e6ea22a76aee2764d54f1e0",
+  "parent_file_unchanged": true,
+  "local_mixed_soak_new_decisions": 18432,
+  "local_cli_new_decisions": 1856,
+  "wall_stop_updates": 25,
+  "resume_updates": 4,
+  "target_environment_steps": 110013696,
+  "cumulative_environment_steps": 90015552,
+  "initialization_unchanged_on_resume": true,
+  "actual_checkpoint_exact_resume_preflight": "PASS",
+  "checkpoint_sha256": "55ca7a72cf96747e8e3ccc37a304c233881216b2ca6a6ad70d5dba9875ef597d",
+  "input_sha256": {
+    "local/reports/act12-foundation/v6/cli-config.toml": "94d8c9b77d9a8459b4c7ee7f121419ea0528ae9b3b95cd5a969194877429eae9",
+    "local/reports/act12-foundation/v6/cli-wall-stop.log": "bd25aa520ed9e9d13cf045f9a1a828b0a6991c9ebf7251443c80d5a366378ad5",
+    "local/reports/act12-foundation/v6/cli-resume.log": "63036a349baedfdf6e54124ec9016c8962e82ac8e01ccab5d8252fd2861703b1",
+    "local/reports/act12-foundation/v6/cli-interrupted-manifest.json": "386973e6c8b5a541302cbe87a003f04ea4a63626cef7cf0b402e4ee30b9dfff4",
+    "local/reports/act12-foundation/v6/cli-resumed-manifest.json": "de2cce88b99e8f416fbf0d94fd7df4530571135e33cf7f8fc5373d3594e3db98",
+    "local/reports/act12-foundation/v6/cli-preflight.log": "65ee90544edabbe61f4b9b9f68bf663d1b4e034c4b8837a26013de4a4ac0225e",
+    "local/reports/act12-foundation/v6/cli-worker-resume.log": "65ee90544edabbe61f4b9b9f68bf663d1b4e034c4b8837a26013de4a4ac0225e",
+    "local/reports/act12-foundation/v6/cli-checkpoint-resume.log": "44ab5d1d35a4996a95d1d5590acc7cfe4aebdcafd699fd5dbeb90b4d08effcb0",
+    "local/reports/act12-foundation/v6/mixed-soak.json": "e6a7d8b9ee0df3c5f1dbf6a7ae3987b422ceb98435dec64f5e9ef86afe5cceab",
+    "local/reports/act12-foundation/v6/entry-reconstruction.json": "3ab1d1cd04a6bd098b32defef444196bfe767d0e21b9370dafd04a17852678d1"
+  },
+  "policy_exported_or_adopted": false,
+  "server_job_submitted": false,
+  "limitations": [
+    "Windows small-layout diagnostic, not Linux/A100 formal-scale qualification",
+    "Server preparation must pass before training",
+    "No v6 efficacy claim"
+  ]
+}
