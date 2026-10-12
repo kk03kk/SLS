@@ -4,6 +4,8 @@
 
 ## 原版 Visual Inspector
 
+已修复游戏退出后入口仅打开残留 ERROR 网页、未重启游戏的问题；入口现检查实际游戏进程，安全停止断连服务并等待端口释放，处理退出时连接重置；未选模型的 SETUP 服务也可正常停止。本轮启动/Inspector 回归30项通过，实际旧服务关闭后原版重新启动，重复启动复用活动游戏。下面193步实机记录绑定此前冻结 SHA，本轮只修改启动与未连接服务的关闭路径，不改写旧实机资格记录。
+
 现有 Live Runtime 已升级为 React 实时观察器，沿用同一个原版控制器、候选评分与 GRU 记忆提交路径。支持公开地图及实际路线、当前状态、Top5/全部 logits 与策略概率/value、单步/自动/暂停/速度控制，以及游戏 ACK 确认的节点与决策历史；历史查看、刷新和重复评分不执行动作、不提交记忆。唯一控制器由进程锁保护。概率不是胜率，value 不是动作 Q 值。
 
 冻结源码的实机验收为 `local/reports/visual-inspector/live-release/result.json`：Steam 原版、production Oracle、战士 A20、seed 131100070、90M 推理权重，193 个动作全部获得 ACK，61 个地图显示节点，第一幕 Hexaghost 击败后停在 floor16 奖励边界，HP57/85。单步及暂停保留边界/评分通过，验收前后源码 SHA 一致；`journal.json` 为 RECOVERED、恢复失败为空，用户存档及原配置恢复。早期失败和源码变化的尝试原样归档到 `D:/SLS-archive/20261012-visual-inspector/`（路径/SHA 见 relocation-receipt.json），不计作最终资格。

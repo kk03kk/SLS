@@ -7,6 +7,7 @@ import json
 import os
 import subprocess
 import sys
+import time
 import urllib.error
 import urllib.request
 from pathlib import Path
@@ -25,6 +26,44 @@ from tools.configure_live_inspector import (
 from tools.run_original_canary import launcher_command
 
 
+def game_process_ids() -> list[int]:
+    query = subprocess.run(
+        ["powershell", "-NoProfile", "-Command",
+         "Get-CimInstance Win32_Process | Where-Object { $_.Name -match 'java|SlayTheSpire' -and $_.CommandLine -match 'SlayTheSpire|ModTheSpire|desktop-1.0|mts-launcher' } | Select-Object -ExpandProperty ProcessId"],
+        capture_output=True, text=True, check=True,
+        creationflags=subprocess.CREATE_NO_WINDOW,
+    )
+    return [int(line) for line in query.stdout.splitlines() if line.strip()]
+
+
+def inspector_state(url: str) -> dict | None:
+    try:
+        with urllib.request.urlopen(url + "/api/state", timeout=2) as response:
+            state = json.load(response)
+    except (urllib.error.URLError, ConnectionError, TimeoutError):
+        return None
+    if state.get("schema") != "sls-live-inspector-state-v1":
+        raise RuntimeError("port is occupied by another service")
+    return state
+
+
+def retire_disconnected_inspector(url: str) -> None:
+    """Stop a known inspector only after independently proving no game exists."""
+    if game_process_ids():
+        raise RuntimeError("game is still running; refusing to stop its controller")
+    request = urllib.request.Request(
+        url + "/api/control", data=b'{"command":"stop"}',
+        headers={"Content-Type": "application/json"}, method="POST",
+    )
+    with urllib.request.urlopen(request, timeout=2) as response:
+        response.read()
+    deadline = time.monotonic() + 10
+    while inspector_state(url) is not None:
+        if time.monotonic() >= deadline:
+            raise RuntimeError("old inspector did not close; refusing to start a second controller")
+        time.sleep(0.1)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--game-dir", type=Path, default=default_game_dir())
@@ -34,30 +73,22 @@ def main() -> int:
     if not 1 <= args.port <= 65535:
         parser.error("port must be between 1 and 65535")
     url = f"http://127.0.0.1:{args.port}"
-    try:
-        with urllib.request.urlopen(url + "/api/state", timeout=2) as response:
-            state = json.load(response)
-        if state.get("schema") != "sls-live-inspector-state-v1":
-            raise RuntimeError("port is occupied by another service")
-    except urllib.error.URLError:
-        pass
-    else:
-        open_inspector_window(url)
-        print(f"Opened existing controller: {url}")
-        return 0
     if sys.platform != "win32":
         parser.error("stock-game launcher currently supports Windows only")
+    state = inspector_state(url)
+    processes = game_process_ids()
+    if state is not None:
+        if processes:
+            open_inspector_window(url)
+            print(f"Opened existing controller: {url}")
+            return 0
+        retire_disconnected_inspector(url)
+        print("Closed disconnected inspector; relaunching the original game.")
     game = args.game_dir
     if game is None:
         parser.error("Slay the Spire not found; use --game-dir")
     # Do not start a second game/controller or rewrite config under a live game.
-    query = subprocess.run(
-        ["powershell", "-NoProfile", "-Command",
-         "Get-CimInstance Win32_Process | Where-Object { $_.Name -match 'java|SlayTheSpire' -and $_.CommandLine -match 'SlayTheSpire|ModTheSpire|desktop-1.0|mts-launcher' } | Select-Object -ExpandProperty ProcessId"],
-        capture_output=True, text=True, check=True,
-        creationflags=subprocess.CREATE_NO_WINDOW,
-    )
-    if query.stdout.strip():
+    if game_process_ids():
         raise RuntimeError("game is already running without a reachable inspector; close it and relaunch with this command")
     config = default_config_path()
     ready = inspect_live_setup(game_dir=game, config=config, model_root=ROOT / "model")

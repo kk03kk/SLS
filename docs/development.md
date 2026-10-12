@@ -67,6 +67,8 @@ python tools/check_live_setup.py
 
 ### Visual Inspector 一键使用
 
+启动命令同时检查网页服务和实际游戏进程。关闭游戏后，旧网页可能仍显示 `EOFError: CommunicationMod closed stdin`；再次运行入口会先关闭这个无游戏的旧控制器、等待端口释放，再启动原版。游戏仍运行时只打开现有页面，不终止游戏或改写配置。
+
 关闭未接入 Inspector 的游戏后，在本机 DL 环境执行：
 
 ```powershell

@@ -168,6 +168,10 @@ class InspectorLauncher:
             status = self._status
         if runtime is not None:
             return runtime.submit(payload)
+        if command == "stop" and status in {"SETUP", "SETUP_ERROR", "STOPPED"}:
+            with self._lock:
+                self._status = "STOPPED"
+            return {"accepted": True, "command": "stop"}
         if command != "start":
             raise ControlConflict("select a model and start the test first")
         if status == "LOADING":
