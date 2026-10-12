@@ -13,12 +13,14 @@ from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import Any, Callable, Iterable, Mapping
+from urllib.parse import parse_qs, urlsplit
 
 import torch
 
 from sls.contracts import Action, ActionKind, Decision, ScreenType
 from sls.runtime.artifact import POLICY_ARTIFACT_SCHEMA, PolicyArtifactMetadata
 from sls.runtime.controller import AgentRuntime, PolicyScore, boundary_id
+from sls.runtime.visual import VisualHistory
 
 
 class ControlConflict(RuntimeError):
@@ -104,11 +106,13 @@ class InspectorLauncher:
         self._lock = threading.Lock()
         self._status = "SETUP"
         self._error: str | None = None
+        preferred = next((str(model["model_id"]) for model in self._models
+                          if Path(str(model["path"])).stem == "ironclad-a20-act1-90m-endpoint"), None)
         self._selected_model_id = next((
             str(model["model_id"]) for model in self._models
             if preselected_path is not None
             and Path(str(model["path"])) == preselected_path.resolve()
-        ), str(self._models[0]["model_id"]) if self._models else None)
+        ), preferred or (str(self._models[0]["model_id"]) if self._models else None))
 
     def state(self) -> dict[str, Any]:
         with self._lock:
@@ -152,6 +156,11 @@ class InspectorLauncher:
         if runtime is not None:
             runtime.dashboard_seen()
 
+    def history(self, offset: int = 0, limit: int = 50) -> dict[str, Any]:
+        with self._lock:
+            runtime = self._runtime
+        return runtime.history(offset, limit) if runtime else {"entries": [], "total": 0}
+
     def submit(self, payload: dict[str, Any]) -> dict[str, Any]:
         command = str(payload.get("command") or "")
         with self._lock:
@@ -167,6 +176,14 @@ class InspectorLauncher:
         model = self._models_by_id.get(model_id)
         if model is None:
             raise ControlConflict("selected model is unavailable")
+        seed = None
+        if payload.get("new_run"):
+            try:
+                seed = int(str(payload["seed"]))
+            except (KeyError, TypeError, ValueError) as error:
+                raise ValueError("new run requires a signed 64-bit seed") from error
+            if not -(2**63) <= seed < 2**63:
+                raise ValueError("new run requires a signed 64-bit seed")
         with self._lock:
             if self._status == "LOADING":
                 raise ControlConflict("the selected model is already loading")
@@ -175,15 +192,16 @@ class InspectorLauncher:
             self._selected_model_id = model_id
         threading.Thread(
             target=self._launch,
-            args=(Path(str(model["path"])),),
+            args=(Path(str(model["path"])), seed),
             name="sls-inspector-loader",
             daemon=True,
         ).start()
         return {"accepted": True, "command": "start", "model_id": model_id}
 
-    def _launch(self, path: Path) -> None:
+    def _launch(self, path: Path, seed: int | None = None) -> None:
         try:
             runtime = self._runtime_factory(path)
+            runtime.start_seed = seed
             with self._lock:
                 self._runtime = runtime
                 self._status = "CONNECTING"
@@ -243,6 +261,12 @@ def _action_presentation(decision: Decision, action: Action) -> dict[str, Any]:
         execution_note = "1 个模型决策 / 2 个游戏点击：" + " → ".join(ui_steps)
     elif content:
         label = f"{action.kind.value} · {content}"
+        if action.subject_id and any(card.instance_id == action.subject_id for card in observation.hand):
+            label += f" [{action.subject_id}]"
+        if action.target_id:
+            target_name = next((enemy.monster_id for enemy in observation.enemies
+                                if enemy.instance_id == action.target_id), action.target_id)
+            label += f" → {target_name} [{action.target_id}]"
     return {
         "label": label,
         "composite": composite,
@@ -322,6 +346,37 @@ class InteractiveAgentRuntime(AgentRuntime):
         self._thread: threading.Thread | None = None
         self._dashboard_seen_at = time.monotonic()
         self._dashboard_timeout_seconds = 10.0
+        self._visual = VisualHistory()
+
+    def history(self, offset: int = 0, limit: int = 50) -> dict[str, Any]:
+        if offset < 0 or not 1 <= limit <= 100:
+            raise ValueError("invalid history page")
+        with self._condition:
+            return {"entries": deepcopy(self._visual.entries[offset:offset + limit]),
+                    "total": len(self._visual.entries)}
+
+    def _log(self, record: dict[str, object]) -> None:
+        super()._log(record)
+        with self._condition:
+            if record.get("phase") == "INTENT":
+                self._visual.begin(record, self._snapshot.get("actions", []))
+                assert self._visual.pending is not None
+                self._visual.pending["summary"] = deepcopy(self._snapshot.get("summary"))
+                self._visual.pending["context"] = deepcopy(self._visual.current)
+                self._snapshot["visual"] = {
+                    **self._snapshot.get("visual", {}),
+                    "pending_action": deepcopy(self._visual.pending),
+                }
+                self._snapshot["selected_candidate_id"] = record["candidate_id"]
+            elif record.get("phase") == "ACK":
+                adapted = getattr(self.backend, "_adapted", None)
+                decision = adapted.decision if adapted is not None else getattr(self.backend, "decision", None)
+                if decision is not None:
+                    entry = self._visual.confirm(record, self.backend, decision)
+                    if entry is not None:
+                        super()._log({"phase": "VISUAL_ACK", "artifact_id": self.artifact_id,
+                                      "session_id": self.session_id, "entry": entry,
+                                      "visual": self._visual.snapshot(decision)})
 
     @property
     def done(self) -> threading.Event:
@@ -374,6 +429,7 @@ class InteractiveAgentRuntime(AgentRuntime):
                 decision.observation.to_dict() if decision is not None else None
             ),
             "error": error,
+            "visual": self._visual.snapshot(decision),
         }
         if decision is not None and score is not None:
             ranks = {
@@ -413,6 +469,9 @@ class InteractiveAgentRuntime(AgentRuntime):
             raise ValueError("unknown control command")
         with self._condition:
             status = str(self._snapshot["status"])
+            if command == "stop" and status in {"TERMINAL", "ERROR", "STOPPED"}:
+                self._snapshot = {**self._snapshot, "status": "STOPPED", "mode": "PAUSED"}
+                return {"accepted": True, "command": command}
             if status in {"TERMINAL", "ERROR", "STOPPED"} and command != "stop":
                 raise ControlConflict(f"runtime is {status.lower()}")
             queued: dict[str, Any] = {"command": command}
@@ -453,6 +512,8 @@ class InteractiveAgentRuntime(AgentRuntime):
                         raise ControlConflict("candidate is stale or illegal")
                     queued["boundary_id"] = requested_boundary
                     queued["candidate_id"] = candidate_id
+                elif payload.get("boundary_id") is not None and payload["boundary_id"] != self._snapshot.get("boundary_id"):
+                    raise ControlConflict("decision boundary is stale")
                 self._exclusive_queued = True
             self._commands.append(queued)
             self._condition.notify_all()
@@ -561,6 +622,22 @@ class InteractiveAgentRuntime(AgentRuntime):
         mode = "paused"
         try:
             decision = self.attach()
+            if self.log_path and self.log_path.is_file():
+                for line in self.log_path.read_text(encoding="utf-8").splitlines():
+                    try:
+                        row = json.loads(line)
+                    except json.JSONDecodeError:
+                        continue
+                    if row.get("phase") == "VISUAL_ACK" and row.get("artifact_id") == self.artifact_id:
+                        entry = row["entry"]
+                        if self._visual.entries and self._visual.entries[-1]["resulting_boundary_id"] != entry["boundary_id"]:
+                            self._visual = VisualHistory()
+                        self._visual.entries.append(entry)
+                        self._visual.route = row["visual"]["route"]
+                        self._visual.nodes = row["visual"]["nodes"]
+                if self._visual.entries and self._visual.entries[-1]["resulting_boundary_id"] != boundary_id(decision):
+                    self._visual = VisualHistory()
+            self._visual.observe(self.backend, decision)
             if decision.terminal:
                 self._publish("TERMINAL", mode="PAUSED", decision=decision)
                 return
@@ -628,7 +705,21 @@ def make_handler(runtime: Any):  # type: ignore[no-untyped-def]
             self.wfile.write(body)
 
         def do_GET(self) -> None:  # noqa: N802
-            if self.path == "/":
+            parsed = urlsplit(self.path)
+            if parsed.path.startswith("/assets/") or parsed.path == "/":
+                web = Path(__file__).parent / "web" / "dist"
+                target = web / ("index.html" if parsed.path == "/" else parsed.path.lstrip("/"))
+                if target.is_file() and target.resolve().is_relative_to(web.resolve()):
+                    import mimetypes
+
+                    body = target.read_bytes()
+                    self.send_response(HTTPStatus.OK)
+                    self.send_header("Content-Type", mimetypes.guess_type(target.name)[0] or "application/octet-stream")
+                    self.send_header("Content-Length", str(len(body)))
+                    self.end_headers()
+                    self.wfile.write(body)
+                    return
+            if self.path in {"/", "/legacy"}:
                 body = INSPECTOR_HTML.encode("utf-8")
                 self.send_response(HTTPStatus.OK)
                 self.send_header("Content-Type", "text/html; charset=utf-8")
@@ -641,6 +732,14 @@ def make_handler(runtime: Any):  # type: ignore[no-untyped-def]
                 if heartbeat is not None:
                     heartbeat()
                 self._json(HTTPStatus.OK, runtime.state())
+            elif parsed.path == "/api/history":
+                try:
+                    query = parse_qs(parsed.query)
+                    result = runtime.history(int(query.get("offset", ["0"])[0]), int(query.get("limit", ["50"])[0]))
+                except ValueError as error:
+                    self._json(HTTPStatus.BAD_REQUEST, {"error": str(error)})
+                else:
+                    self._json(HTTPStatus.OK, result)
             else:
                 self._json(HTTPStatus.NOT_FOUND, {"error": "not found"})
 

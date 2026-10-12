@@ -6,6 +6,7 @@ import argparse
 import json
 import signal
 import sys
+from datetime import datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -38,6 +39,8 @@ def main() -> int:
         default=ROOT / "local" / "logs" / "live-inspector.jsonl",
     )
     parser.add_argument("--low-confidence", type=float, default=0.55)
+    parser.add_argument("--new-session-log", action="store_true",
+                        help="keep each newly launched game in a separate journal; omit when recovering an existing journal")
     parser.add_argument("--delay", type=float, default=1.0)
     parser.add_argument(
         "--card-reward-preview", type=float, default=3.0,
@@ -56,6 +59,8 @@ def main() -> int:
         help="list discovered exported policies and exit without connecting to the game",
     )
     args = parser.parse_args()
+    if args.new_session_log:
+        args.log = args.log.with_name(f"{args.log.stem}-{datetime.now().strftime('%Y%m%d-%H%M%S-%f')}.jsonl")
 
     roots = args.models_root or [ROOT / "model"]
     extras = [args.artifact] if args.artifact is not None else []

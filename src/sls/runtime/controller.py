@@ -191,6 +191,10 @@ class AgentRuntime:
     def attach(self) -> Decision:
         """Attach and restore the recurrent state at a proven boundary."""
 
+        if isinstance(self.backend, LiveGameBackend):
+            from sls.runtime.ownership import acquire_live_owner
+
+            acquire_live_owner(Path(__file__).resolve().parents[3] / "local" / "logs" / "live-controller.lock")
         metadata = self.artifact.metadata
         configure_goal = getattr(self.backend, "configure_goal", None)
         configure_environment = getattr(self.backend, "configure_environment", None)
@@ -198,6 +202,8 @@ class AgentRuntime:
             configure_environment(dict(metadata.environment_profile), metadata.goal)
         elif configure_goal is not None:
             configure_goal(metadata.goal)
+        if getattr(self, "start_seed", None) is not None:
+            self.backend.start_new_run(self.start_seed)
         decision = self.backend.attach()
         ascension = decision.observation.run.ascension
         if not metadata.ascension_min <= ascension <= metadata.ascension_max:

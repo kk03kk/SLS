@@ -20,6 +20,12 @@ SLS 的公共边界是：
 
 ## 实现分工
 
+实机 Visual Inspector 继续使用 `AgentRuntime` / `InteractiveAgentRuntime`：一个控制线程负责评分、INTENT、原版执行及 ACK；HTTP 线程只读取快照或排队控制命令。评分不提交 GRU，动作事务沿用已有确认与 journal，暂停不打断已发送动作。CLI `play_live.py` 与网页共享该执行核心；进程级 OS 文件锁防止第二个 live 控制器取得动作通道。
+
+`runtime/visual.py` 是独立的只读展示投影。地图节点和边直接取原版适配后的公开 Observation；当前位置、Seed、公开事件文字、回合等仅从原版载荷白名单读取，不能回流到策略编码。Boss 展示节点只补齐原版已公开边的目标，不生成地图。实际路线由确认状态中的位置记录，不由选择动作预测。`VISUAL_ACK` 保存完整动作评分、选择、前后公开状态和实际库存变化；历史分页与回顾不执行动作。原版中间动画不作为新的策略决策。
+
+React/TypeScript/SVG 前端与现有 loopback HTTP 服务共用一个端口，默认 `127.0.0.1:8765`，约300ms读取已确认快照；不需要第二个 Vite/FastAPI 服务。`/api/state`、`/api/history` 是读接口，`/api/control` 排队命令；单步/自动携带当前边界标识，重复或过期的边界命令被拒绝。静态产物放在 `runtime/web/dist/` 并随安装包提供；旧界面仍可从 `/legacy` 打开。
+
 | 路径 | 职责 |
 | --- | --- |
 | `src/sls/contracts/` | Observation、Action、Decision、Transition 与验证协议 |

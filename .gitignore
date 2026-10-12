@@ -41,5 +41,7 @@ htmlcov/
 .venv/
 venv/
 dist/
+!src/sls/runtime/web/dist/
+!src/sls/runtime/web/dist/**
 build/
 *.egg-info/

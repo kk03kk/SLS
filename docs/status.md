@@ -1,6 +1,16 @@
 # 当前状态
 
-更新时间：2026-10-12。首段第二幕混合课程已完成v6迁移、训练与恢复的本地验收，尚未提交服务器训练；一次提交命令在GPU节点完成正式规模准备后启动20M。
+更新时间：2026-10-12。首段第二幕混合课程已完成v6迁移、训练与恢复的本地验收；用户确认服务器20M训练已正常开始，尚无本轮训练结果。原版 Visual Inspector 已完成本地实现与实机验收。
+
+## 原版 Visual Inspector
+
+现有 Live Runtime 已升级为 React 实时观察器，沿用同一个原版控制器、候选评分与 GRU 记忆提交路径。支持公开地图及实际路线、当前状态、Top5/全部 logits 与策略概率/value、单步/自动/暂停/速度控制，以及游戏 ACK 确认的节点与决策历史；历史查看、刷新和重复评分不执行动作、不提交记忆。唯一控制器由进程锁保护。概率不是胜率，value 不是动作 Q 值。
+
+冻结源码的实机验收为 `local/reports/visual-inspector/live-release/result.json`：Steam 原版、production Oracle、战士 A20、seed 131100070、90M 推理权重，193 个动作全部获得 ACK，61 个地图显示节点，第一幕 Hexaghost 击败后停在 floor16 奖励边界，HP57/85。单步及暂停保留边界/评分通过，验收前后源码 SHA 一致；`journal.json` 为 RECOVERED、恢复失败为空，用户存档及原配置恢复。早期失败和源码变化的尝试原样归档到 `D:/SLS-archive/20261012-visual-inspector/`（路径/SHA 见 relocation-receipt.json），不计作最终资格。
+
+全量测试 1693 passed、1 个缺历史 A0 策略的既有 skip；追加边界/恢复/HTTP 回归后专项 12 passed，配置命令专项 5 passed；Ruff、内容/词表、35份配置及 TypeScript/前端构建通过。原版端到端证明限于这条第一幕轨迹，不代表所有事件/地图组合或第二幕实机均已穷尽。
+
+Windows 入口为 `python tools/launch_inspector.py`，默认选择 90M；实际启动顺序和前端重建维护在 [development.md](development.md#visual-inspector-一键使用)。当前版本在会话开始前选择模型；运行中换模型或再次开局需关闭游戏与控制器后重启，不提供回退游戏。训练、奖励、模型/父 checkpoint、native/Oracle 载荷与训练来源 SHA 未改变；服务器当前训练无需拉取本轮界面更新。
 
 ## 当前资格
 

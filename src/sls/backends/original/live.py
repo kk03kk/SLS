@@ -9,6 +9,7 @@ from sls.backends.original.adapter import adapt_original
 from sls.backends.original.environment import OriginalBackend
 from sls.backends.original.session import OriginalSession
 from sls.content.scope import UnsupportedContentPolicy
+from sls.content.seed import long_to_seed_string
 from sls.contracts import Decision
 from sls.curriculum import (
     CURRICULUM_PROFILES_BY_ID,
@@ -117,6 +118,22 @@ class LiveGameBackend(OriginalBackend):
         self._last_executed_commands = ()
         self._last_validation_evidence = {}
         return adapted.decision
+
+    def start_new_run(self, seed: int) -> None:
+        """Explicit menu-only start. Never reset or abandon an existing run."""
+        if self._curriculum_profile is None:
+            raise RuntimeError("new run requires an explicit artifact environment profile")
+        payload = self.session.payload or self.session.connect()
+        if payload.get("in_game"):
+            raise RuntimeError("return to the Original main menu before starting a new run")
+        available = {str(item).lower() for item in payload.get("available_commands") or ()}
+        if "start" not in available:
+            raise RuntimeError("Original menu does not advertise start")
+        payload = self.session.execute(
+            f"start IRONCLAD {self._curriculum_profile.ascension} {long_to_seed_string(seed)}"
+        )
+        payload = self._wait_for_run_start(payload)
+        self.session.payload = self._fold_initial_neow_dialog(payload)
 
     @staticmethod
     def _require_production_oracle(payload: dict) -> None:

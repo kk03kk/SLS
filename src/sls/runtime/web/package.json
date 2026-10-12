@@ -1,0 +1,20 @@
+{
+  "name": "sls-visual-inspector",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "tsc --noEmit && vite build"
+  },
+  "dependencies": {
+    "react": "19.1.1",
+    "react-dom": "19.1.1"
+  },
+  "devDependencies": {
+    "@types/react": "19.1.10",
+    "@types/react-dom": "19.1.9",
+    "prettier": "3.6.2",
+    "typescript": "5.8.3",
+    "vite": "6.3.5"
+  }
+}

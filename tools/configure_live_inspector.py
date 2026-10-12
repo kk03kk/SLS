@@ -128,6 +128,7 @@ def configure(
     log = ROOT / "local" / "logs" / "live-inspector.jsonl"
     command_parts = [
         _command_path(python),
+        "-X", "pycache_prefix=" + _command_path(ROOT / "local" / "build" / "python-cache"),
         _command_path(ROOT / "tools" / "play_live_inspector.py"),
     ]
     if artifact is not None:
@@ -136,6 +137,7 @@ def configure(
         "--device cpu",
         f"--log {_command_path(log)}",
         "--wait-for-neow --wait-timeout 900",
+        "--new-session-log",
         f"--port {port} --delay {delay:.1f}",
     ))
     command = " ".join(command_parts)
