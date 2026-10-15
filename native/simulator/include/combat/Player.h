@@ -130,8 +130,8 @@ namespace sts {
         template <Stance> void changeStance();
 
         void removeDebuffs();
-        void increaseMaxHp(int amount);
-        void heal(int amount);
+        void increaseMaxHp(BattleContext &bc, int amount);
+        void heal(BattleContext &bc, int amount);
         void damage(BattleContext &bc, int damage, bool selfDamage=false);
         void attacked(BattleContext &bc, int enemyIdx, int calculatedDamage);
         void loseHp(BattleContext &bc, int amount, bool selfDamage); // called by cards like offering, bloodletting

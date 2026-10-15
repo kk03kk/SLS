@@ -18,7 +18,8 @@ from sls.rl.training_contract import native_source_digest, training_validation_d
 from sls.runtime import load_policy_artifact
 
 
-def verify(artifact_path: Path | None, boundaries: int, *, checkpoint: Path | None = None) -> dict:
+def verify(artifact_path: Path | None, boundaries: int, *, checkpoint: Path | None = None,
+           seed_start: int = 132200000) -> dict:
     migration = None
     if checkpoint:
         from sls.rl.model_migration import migrate_v5_role_policy
@@ -35,7 +36,7 @@ def verify(artifact_path: Path | None, boundaries: int, *, checkpoint: Path | No
     seeds = []
     traces = hashlib.sha256()
     with torch.no_grad():
-        for seed in range(132200000, 132210000):
+        for seed in range(seed_start, seed_start + 10000):
             seeds.append(seed)
             backend = SimulatorBackend(IRONCLAD_A20_ACT2)
             decision = backend.reset(seed)
@@ -72,7 +73,7 @@ def verify(artifact_path: Path | None, boundaries: int, *, checkpoint: Path | No
                     raise ValueError("nonfinite policy output")
                 index = int(output.logits.argmax())
                 action = decision.actions[index]
-                if step % 40 == 0 or decision.observation.choice_options:
+                if counts[key] == 1 or step % 40 == 0 or decision.observation.choice_options:
                     restored = SimulatorBackend(IRONCLAD_A20_ACT2)
                     restored_decision = restored.load_checkpoint(json.loads(json.dumps(backend.checkpoint())))
                     if restored_decision != decision or restored.checkpoint() != backend.checkpoint():
@@ -104,6 +105,7 @@ def verify(artifact_path: Path | None, boundaries: int, *, checkpoint: Path | No
             if decision_count >= boundaries and restore_count >= 100:
                 break
     return {"schema": "sls-act12-foundation-boundaries-v1", "native_source_sha256": native_source_digest(),
+            "profile": asdict(IRONCLAD_A20_ACT2), "device": "cpu", "seed_start": seed_start,
             **identity, "policy_architecture": model.config.architecture, "decisions": decision_count,
             "continuous_restores": restore_count, "continuation_length": "4 actions or authoritative terminal",
             "screen_counts": dict(counts), "restore_screen_counts": dict(restore_counts),
@@ -154,6 +156,7 @@ def main() -> int:
     inputs.add_argument("--checkpoint", type=Path, help="Validate the explicitly migrated v6 parent policy")
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--boundaries", type=int, default=10000)
+    parser.add_argument("--seed-start", type=int, default=132200000)
     parser.add_argument("--scout", action="store_true")
     args = parser.parse_args()
     if args.output.exists():
@@ -175,7 +178,7 @@ def main() -> int:
     else:
         if args.boundaries < 10000:
             raise ValueError("qualification requires at least 10000 boundaries")
-        report = verify(args.artifact, args.boundaries, checkpoint=args.checkpoint)
+        report = verify(args.artifact, args.boundaries, checkpoint=args.checkpoint, seed_start=args.seed_start)
         report["controlled_multi_selection"] = verify_multi_selection()
     if training_validation_digest() != implementation:
         raise ValueError("implementation changed during validation; rerun final source")

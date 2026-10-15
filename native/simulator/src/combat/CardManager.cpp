@@ -20,7 +20,8 @@ void CardManager::init(const sts::GameContext &gc, BattleContext &bc) {
     handNormalityCount = false;
     strikeCount = 0;
 
-    fixed_list<int, Deck::MAX_SIZE> idxs(gc.deck.size());
+    if (gc.deck.size() > 32767) throw std::length_error("Master deck exceeds combat card identity range");
+    std::vector<int> idxs(gc.deck.size());
     for (int i = 0; i < idxs.size(); ++i) {
         idxs[i] = i;
     }
@@ -31,7 +32,7 @@ void CardManager::init(const sts::GameContext &gc, BattleContext &bc) {
     exhaustPile.clear();
 
     int normalCount = 0;
-    bool isInnateMemo[Deck::MAX_SIZE];
+    std::vector<bool> isInnateMemo(gc.deck.size());
 
     for (int i = 0; i < gc.deck.size(); ++i) {
         const int deckIdx = idxs[i];

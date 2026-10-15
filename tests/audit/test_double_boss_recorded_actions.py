@@ -2,7 +2,7 @@
 
 import pytest
 
-from tools.reproduce_double_boss_entry import recorded_action_bits
+from tools.reproduce_double_boss_entry import recorded_action_bits, select_scene_runs
 
 
 def test_recorded_actions_preserve_indices():
@@ -21,3 +21,19 @@ def test_recorded_actions_preserve_indices():
 def test_recorded_actions_reject_ambiguous_inputs(action):
     with pytest.raises(ValueError):
         recorded_action_bits(action)
+
+
+def test_selection_retains_order_and_original_records():
+    rows = [{'scene': {'id': name}, 'seed': seed}
+            for seed, name in enumerate(('bad-initial', 'valid', 'valid'))]
+    assert select_scene_runs(rows, None) is rows
+    selected = select_scene_runs(rows, ['valid'])
+    assert [row['seed'] for row in selected] == [1, 2]
+    assert selected[0] is rows[1]
+    assert len(rows) == 3
+
+
+@pytest.mark.parametrize('selected', [[], ['missing'], ['valid', 'valid']])
+def test_selection_rejects_unaccounted_records(selected):
+    with pytest.raises(ValueError, match='scene selection'):
+        select_scene_runs([{'scene': {'id': 'valid'}}], selected)

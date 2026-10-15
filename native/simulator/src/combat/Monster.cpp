@@ -442,12 +442,22 @@ void Monster::attackedUnblockedHelper(BattleContext &bc, int damage) { // todo, 
         bc.addToBot(Actions::MonsterRemoveCurlUp(this->idx));
         curlUpTriggered = true;
 
-    } else if (hasStatus<MS::FLIGHT>() && damage > 0) {
-        auto flight = getStatus<MS::FLIGHT>();
-        if (flight == 1) {
-            setMove(MMID::BYRD_STUNNED);
-        }
-        setStatus<MS::FLIGHT>(flight-1);
+    } else if (hasStatus<MS::FLIGHT>() && damage > 0 && damage < curHp) {
+        // FlightPower.onAttacked queues ReducePowerAction at the bottom.
+        // A Headbutt selection or other already-queued hits precede it.
+        const int ownerIdx = idx;
+        bc.addToBot({[ownerIdx](BattleContext &context) {
+            auto &owner = context.monsters.arr[ownerIdx];
+            if (owner.isDeadOrEscaped() || !owner.hasStatus<MS::FLIGHT>()) return;
+            owner.decrementStatus<MS::FLIGHT>();
+            if (!owner.hasStatus<MS::FLIGHT>()) {
+                // FlightPower.onRemove queues the GROUNDED ChangeStateAction.
+                context.addToBot({[ownerIdx](BattleContext &next) {
+                    auto &monster = next.monsters.arr[ownerIdx];
+                    if (!monster.isDeadOrEscaped()) monster.setMove(MMID::BYRD_STUNNED);
+                }});
+            }
+        }});
 
     } else if (hasStatus<MS::MALLEABLE>() || hasStatus<MS::REACTIVE>()) {
         if (hasStatus<MS::MALLEABLE>()) {

@@ -125,7 +125,7 @@ Action Actions::LoseEnergy(int amount) {
 
 Action Actions::HealPlayer(int amount) {
     return {[=] (BattleContext &bc) {
-        bc.player.heal(amount);
+        bc.player.heal(bc, amount);
     }, false};
 }
 
@@ -728,7 +728,8 @@ Action Actions::TransmutationAction(bool upgraded, int energy, bool useEnergy) {
 
 Action Actions::ViolenceAction(int count) { // todo a faster algorithm for inserting into the attack list
     return {[=] (BattleContext &bc) {
-        fixed_list<int,CardManager::MAX_GROUP_SIZE> attackIdxList;
+        std::vector<int> attackIdxList;
+        attackIdxList.reserve(bc.cards.drawPile.size());
         for (int i = 0; i < bc.cards.drawPile.size(); ++i) {
             const auto &c = bc.cards.drawPile[i];
             if (c.getType() == CardType::ATTACK) {
@@ -736,8 +737,8 @@ Action Actions::ViolenceAction(int count) { // todo a faster algorithm for inser
                 if (attackIdxList.empty()) {
                     attackIdxList.push_back(i);
                 } else {
-                    const auto randomIdx = bc.cardRandomRng.random(attackIdxList.size() - 1);
-                    attackIdxList.insert(randomIdx, i);
+                    const auto randomIdx = bc.cardRandomRng.random(static_cast<int>(attackIdxList.size()) - 1);
+                    attackIdxList.insert(attackIdxList.begin() + randomIdx, i);
                 }
             }
         }
@@ -1045,12 +1046,16 @@ Action Actions::SuicideAction(int monsterIdx, bool triggerRelics) {
         auto &m = bc.monsters.arr[monsterIdx];
         if (triggerRelics) {
             if (m.isAlive()) {
-                m.damage(bc, m.curHp);
+                // Stock SuicideAction sets currentHealth directly before
+                // die(triggerRelics). Block, Intangible and damage callbacks
+                // cannot prevent a suicide or substitute for onDeath.
+                m.curHp = 0;
+                m.die(bc);
             }
         } else {
             bc.monsters.arr[monsterIdx].suicideAction(bc);
         }
-    }};
+    }, false}; // SuicideAction has actionType DAMAGE and survives victory cleanup.
 }
 
 Action Actions::PoisonLoseHpAction() {
@@ -1226,7 +1231,7 @@ Action Actions::FeedAction(int idx, int damage, bool upgraded) {
                 && !(m.hasStatus<MS::REGROW>() && bc.monsters.monstersAlive > 0);
 
         if (effectTriggered) {
-            bc.player.increaseMaxHp(upgraded ? 4 : 3);
+            bc.player.increaseMaxHp(bc, upgraded ? 4 : 3);
         }
 
         bc.checkCombat();

@@ -86,6 +86,16 @@ class PolicyFeatures:
     action_padding: torch.Tensor
 
 
+def _gather_action_entities(
+    entities: torch.Tensor, references: torch.Tensor,
+) -> torch.Tensor:
+    """Gather references without an action-sized expansion of the input gradient."""
+
+    batch, _, width = entities.shape
+    indices = references.reshape(batch, -1).unsqueeze(-1).expand(-1, -1, width)
+    return torch.gather(entities, 1, indices).reshape(*references.shape, width)
+
+
 class Policy(nn.Module):
     def __init__(self, config: ModelConfig = ModelConfig()) -> None:
         super().__init__()
@@ -209,11 +219,7 @@ class Policy(nn.Module):
         action_values = torch.cat((action_numeric, action_numeric_present.to(action_numeric.dtype)), dim=-1)
         candidates = self.action_numeric(action_values) + self.action_type(action_types)
         safe_refs = action_references.clamp(0, max(0, entity_count - 1))
-        expanded = entity_hidden.unsqueeze(1).expand(-1, safe_refs.shape[1], -1, -1)
-        gathered = torch.gather(
-            expanded, 2,
-            safe_refs.unsqueeze(-1).expand(-1, -1, -1, self.config.embedding_dim),
-        )
+        gathered = _gather_action_entities(entity_hidden, safe_refs)
         roles = self.reference_role(torch.arange(5, device=entities.device)).view(1, 1, 5, -1)
         if self.config.architecture == "sls-recurrent-relational-policy-v6":
             gathered = gathered * (1 + self.reference_role_scale.view(1, 1, 5, -1))

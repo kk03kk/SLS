@@ -39,6 +39,7 @@ def workload_contract(config: dict) -> str:
         "model": config["model"], "ppo": config["ppo"],
         "deterministic": config["run"].get("deterministic", True),
         **({"start_curriculum": config["start_curriculum"]} if "start_curriculum" in config else {}),
+        **({"value_adaptation": config["value_adaptation"]} if "value_adaptation" in config else {}),
     })
 
 
@@ -115,7 +116,12 @@ def require_preparation(config: dict, torch_module: object) -> dict:
             raise ValueError("foundation evidence must be inside the project")
         raw = path.read_bytes()
         evidence = json.loads(raw)
-        if (hashlib.sha256(raw).hexdigest() != spec["sha256"]
+        if evidence.get("schema") == "sls-normalstart-act12-qualification-v1":
+            from sls.rl.normalstart_release import validate_qualification
+            if "start_curriculum" in config or config["run"]["profile"] != "IRONCLAD_A20_ACT2":
+                raise ValueError("normal-start qualification cannot authorize mixed or different-profile training")
+            validate_qualification(path, spec["sha256"])
+        elif (hashlib.sha256(raw).hexdigest() != spec["sha256"]
                 or evidence.get("qualification") not in {"PASS_BOUNDED_ACT12", "PASS_CONTRACT_BOUNDED_ACT12"}
                 or evidence.get("blockers")
                 or evidence.get("native_source_sha256") != native_source_digest()

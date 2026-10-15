@@ -1,0 +1,239 @@
+{
+  "schema": "sls-fullrun-scenes-v1",
+  "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "training_gate": "NOT_QUALIFIED",
+  "final_holdout_used": false,
+  "scenes": [
+    {
+      "id": "act4-heart-all-five-buffs",
+      "encounter": "THE_HEART",
+      "ascension": 20,
+      "act": 4,
+      "floor": 55,
+      "room": "BOSS",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 20000,
+        "max_hp": 20000,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R"
+        ]
+      },
+      "stock_classes": [
+        "dungeons.TheEnding",
+        "monsters.ending.CorruptHeart",
+        "actions.common.RollMoveAction",
+        "actions.GameActionManager"
+      ],
+      "stock_methods": {
+        "monsters.ending.CorruptHeart": [
+          "takeTurn",
+          "getMove"
+        ]
+      },
+      "actions": [
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "obligation": "Actual TheEnding A20 first five buff phases, attacks and status generation, full state/RNG/private move and restore; controlled high HP is not a normal run",
+      "qualification_scope": "CONTROLLED_FIRST_FIVE_HEART_BUFFS_NOT_NATURAL_FLOW",
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "seeds": [
+        131212000,
+        131212001,
+        131212002
+      ],
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheEnding": {
+          "class_sha256": "0d1b79587089b6604d6e485a13349d5e575f159eb7b70a749575933f464b512a",
+          "bytecode_sha256": "49d91abe96193ef6fd6ea8371593395c555cdc5995f61506159c35a6481ad0ed"
+        },
+        "com.megacrit.cardcrawl.monsters.ending.CorruptHeart": {
+          "class_sha256": "569fac46a969acf9de6b12839484d62eed6e65fa272dff06ea21ffbb57169e78",
+          "bytecode_sha256": "32611aae75ef4b9434405e0c0a52c91068ec399abe917eda69f127f52e6ace72"
+        },
+        "com.megacrit.cardcrawl.actions.common.RollMoveAction": {
+          "class_sha256": "9cb3a2885ff9e5b02a08d2ea1f564111f3a50fe7ca0799971e93ddcdf46c76ec",
+          "bytecode_sha256": "8a83b70058e6fe67e2a6e22ae5f61321e941419a9d24b8703e2c61e2e706b4f5"
+        },
+        "com.megacrit.cardcrawl.actions.GameActionManager": {
+          "class_sha256": "14085d57e6a79ad89b0c43c5032138118c3e988dbb3f22fca50c4c5096435e8a",
+          "bytecode_sha256": "406c85f4fe5cfb70b5d6e6e5b8440d5353c869553c941c45c1938660416512a4"
+        }
+      }
+    }
+  ]
+}

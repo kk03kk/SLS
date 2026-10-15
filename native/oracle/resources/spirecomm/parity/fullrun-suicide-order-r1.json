@@ -1,0 +1,378 @@
+{
+  "schema": "sls-fullrun-scenes-v1",
+  "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "scenes": [
+    {
+      "id": "act3-exploder-fatal-131200051",
+      "encounter": "FOUR_SHAPES",
+      "ascension": 20,
+      "act": 3,
+      "floor": 40,
+      "room": "MONSTER",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 54,
+        "max_hp": 80,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R"
+        ]
+      },
+      "stock_classes": [
+        "dungeons.TheBeyond",
+        "monsters.beyond.Repulsor",
+        "monsters.beyond.Spiker",
+        "monsters.beyond.Exploder",
+        "actions.common.SuicideAction",
+        "powers.ExplosivePower",
+        "actions.GameActionManager"
+      ],
+      "stock_methods": {
+        "dungeons.TheBeyond": [
+          "TheBeyond"
+        ],
+        "monsters.beyond.Repulsor": [
+          "getMove",
+          "takeTurn"
+        ],
+        "monsters.beyond.Spiker": [
+          "getMove",
+          "takeTurn"
+        ],
+        "monsters.beyond.Exploder": [
+          "getMove",
+          "takeTurn"
+        ],
+        "actions.common.SuicideAction": [
+          "update"
+        ],
+        "powers.ExplosivePower": [
+          "duringTurn"
+        ],
+        "actions.GameActionManager": [
+          "clearPostCombatActions"
+        ]
+      },
+      "actions": [
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "obligation": "Natural Exploder countdown reaches fatal explosion; suicide before fatal player damage; isolated initial player HP, not normal-run evidence",
+      "qualification_scope": "CONTROLLED_ACTUAL_DUNGEON_FATAL_EXPLOSION_NOT_NATURAL_FLOW",
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "seeds": [
+        131200051
+      ],
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheBeyond": {
+          "class_sha256": "e8e7819f75bc2ee347c9dbfa5316b42160c2c50ef4f3bae3b4115e2c4a9a6502",
+          "bytecode_sha256": "c2584927eb19266caf64d97926c9144a0d9a988d30b66099eb5a0e126234c35b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.Repulsor": {
+          "class_sha256": "66568e85ada476d3e98a4c703b28ed71b3cf32446d7cb4c0dffedf9a73d12690",
+          "bytecode_sha256": "57af25bc27c973390ce4cd5604d59afb6fd015842fa7adee63cc353f7ad70a3a"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.Spiker": {
+          "class_sha256": "b510e4659ede1805cc4fce7d9e85c388d4f29269622f27c6553435a936f67bd4",
+          "bytecode_sha256": "a938a70f10c11b05a29b01be4c17bef17e4eb364e3471ccf7e75bc4e17d10108"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.Exploder": {
+          "class_sha256": "49b21bce2c17b3e4803855736e74df16a951036c5c1189377b4c4232c5183008",
+          "bytecode_sha256": "9736afeae180498d3301c7ccb1beaa93a5babdaa928a7c584940ef240f764d8b"
+        },
+        "com.megacrit.cardcrawl.actions.common.SuicideAction": {
+          "class_sha256": "62aafcf6ef5d631bf01afee2b708841423d1e9448b46bc3eb81216ac37a31a42"
+        },
+        "com.megacrit.cardcrawl.powers.ExplosivePower": {
+          "class_sha256": "3679a3d535b6d04555d970219c1a753d3036fa6aa59f2a854f8463501634511e"
+        },
+        "com.megacrit.cardcrawl.actions.GameActionManager": {
+          "class_sha256": "14085d57e6a79ad89b0c43c5032138118c3e988dbb3f22fca50c4c5096435e8a"
+        }
+      }
+    },
+    {
+      "id": "act3-exploder-fatal-131200052",
+      "encounter": "FOUR_SHAPES",
+      "ascension": 20,
+      "act": 3,
+      "floor": 40,
+      "room": "MONSTER",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 50,
+        "max_hp": 80,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R"
+        ]
+      },
+      "stock_classes": [
+        "dungeons.TheBeyond",
+        "monsters.beyond.Repulsor",
+        "monsters.beyond.Spiker",
+        "monsters.beyond.Exploder",
+        "actions.common.SuicideAction",
+        "powers.ExplosivePower",
+        "actions.GameActionManager"
+      ],
+      "stock_methods": {
+        "dungeons.TheBeyond": [
+          "TheBeyond"
+        ],
+        "monsters.beyond.Repulsor": [
+          "getMove",
+          "takeTurn"
+        ],
+        "monsters.beyond.Spiker": [
+          "getMove",
+          "takeTurn"
+        ],
+        "monsters.beyond.Exploder": [
+          "getMove",
+          "takeTurn"
+        ],
+        "actions.common.SuicideAction": [
+          "update"
+        ],
+        "powers.ExplosivePower": [
+          "duringTurn"
+        ],
+        "actions.GameActionManager": [
+          "clearPostCombatActions"
+        ]
+      },
+      "actions": [
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "obligation": "Natural Exploder countdown reaches fatal explosion; suicide before fatal player damage; isolated initial player HP, not normal-run evidence",
+      "qualification_scope": "CONTROLLED_ACTUAL_DUNGEON_FATAL_EXPLOSION_NOT_NATURAL_FLOW",
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "seeds": [
+        131200052
+      ],
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheBeyond": {
+          "class_sha256": "e8e7819f75bc2ee347c9dbfa5316b42160c2c50ef4f3bae3b4115e2c4a9a6502",
+          "bytecode_sha256": "c2584927eb19266caf64d97926c9144a0d9a988d30b66099eb5a0e126234c35b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.Repulsor": {
+          "class_sha256": "66568e85ada476d3e98a4c703b28ed71b3cf32446d7cb4c0dffedf9a73d12690",
+          "bytecode_sha256": "57af25bc27c973390ce4cd5604d59afb6fd015842fa7adee63cc353f7ad70a3a"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.Spiker": {
+          "class_sha256": "b510e4659ede1805cc4fce7d9e85c388d4f29269622f27c6553435a936f67bd4",
+          "bytecode_sha256": "a938a70f10c11b05a29b01be4c17bef17e4eb364e3471ccf7e75bc4e17d10108"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.Exploder": {
+          "class_sha256": "49b21bce2c17b3e4803855736e74df16a951036c5c1189377b4c4232c5183008",
+          "bytecode_sha256": "9736afeae180498d3301c7ccb1beaa93a5babdaa928a7c584940ef240f764d8b"
+        },
+        "com.megacrit.cardcrawl.actions.common.SuicideAction": {
+          "class_sha256": "62aafcf6ef5d631bf01afee2b708841423d1e9448b46bc3eb81216ac37a31a42"
+        },
+        "com.megacrit.cardcrawl.powers.ExplosivePower": {
+          "class_sha256": "3679a3d535b6d04555d970219c1a753d3036fa6aa59f2a854f8463501634511e"
+        },
+        "com.megacrit.cardcrawl.actions.GameActionManager": {
+          "class_sha256": "14085d57e6a79ad89b0c43c5032138118c3e988dbb3f22fca50c4c5096435e8a"
+        }
+      }
+    },
+    {
+      "id": "act3-exploder-fatal-131200053",
+      "encounter": "FOUR_SHAPES",
+      "ascension": 20,
+      "act": 3,
+      "floor": 40,
+      "room": "MONSTER",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 63,
+        "max_hp": 80,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R"
+        ]
+      },
+      "stock_classes": [
+        "dungeons.TheBeyond",
+        "monsters.beyond.Repulsor",
+        "monsters.beyond.Spiker",
+        "monsters.beyond.Exploder",
+        "actions.common.SuicideAction",
+        "powers.ExplosivePower",
+        "actions.GameActionManager"
+      ],
+      "stock_methods": {
+        "dungeons.TheBeyond": [
+          "TheBeyond"
+        ],
+        "monsters.beyond.Repulsor": [
+          "getMove",
+          "takeTurn"
+        ],
+        "monsters.beyond.Spiker": [
+          "getMove",
+          "takeTurn"
+        ],
+        "monsters.beyond.Exploder": [
+          "getMove",
+          "takeTurn"
+        ],
+        "actions.common.SuicideAction": [
+          "update"
+        ],
+        "powers.ExplosivePower": [
+          "duringTurn"
+        ],
+        "actions.GameActionManager": [
+          "clearPostCombatActions"
+        ]
+      },
+      "actions": [
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "obligation": "Natural Exploder countdown reaches fatal explosion; suicide before fatal player damage; isolated initial player HP, not normal-run evidence",
+      "qualification_scope": "CONTROLLED_ACTUAL_DUNGEON_FATAL_EXPLOSION_NOT_NATURAL_FLOW",
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "seeds": [
+        131200053
+      ],
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheBeyond": {
+          "class_sha256": "e8e7819f75bc2ee347c9dbfa5316b42160c2c50ef4f3bae3b4115e2c4a9a6502",
+          "bytecode_sha256": "c2584927eb19266caf64d97926c9144a0d9a988d30b66099eb5a0e126234c35b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.Repulsor": {
+          "class_sha256": "66568e85ada476d3e98a4c703b28ed71b3cf32446d7cb4c0dffedf9a73d12690",
+          "bytecode_sha256": "57af25bc27c973390ce4cd5604d59afb6fd015842fa7adee63cc353f7ad70a3a"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.Spiker": {
+          "class_sha256": "b510e4659ede1805cc4fce7d9e85c388d4f29269622f27c6553435a936f67bd4",
+          "bytecode_sha256": "a938a70f10c11b05a29b01be4c17bef17e4eb364e3471ccf7e75bc4e17d10108"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.Exploder": {
+          "class_sha256": "49b21bce2c17b3e4803855736e74df16a951036c5c1189377b4c4232c5183008",
+          "bytecode_sha256": "9736afeae180498d3301c7ccb1beaa93a5babdaa928a7c584940ef240f764d8b"
+        },
+        "com.megacrit.cardcrawl.actions.common.SuicideAction": {
+          "class_sha256": "62aafcf6ef5d631bf01afee2b708841423d1e9448b46bc3eb81216ac37a31a42"
+        },
+        "com.megacrit.cardcrawl.powers.ExplosivePower": {
+          "class_sha256": "3679a3d535b6d04555d970219c1a753d3036fa6aa59f2a854f8463501634511e"
+        },
+        "com.megacrit.cardcrawl.actions.GameActionManager": {
+          "class_sha256": "14085d57e6a79ad89b0c43c5032138118c3e988dbb3f22fca50c4c5096435e8a"
+        }
+      }
+    }
+  ]
+}

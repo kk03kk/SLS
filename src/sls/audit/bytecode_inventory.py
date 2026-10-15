@@ -55,7 +55,7 @@ _ID_PATTERN = re.compile(
     r"flags: .*?\s+ConstantValue: String (?P<id>[^\r\n]+)",
 )
 _METHOD_PATTERN = re.compile(
-    r"^  (?:public|protected|private) .*\([^;]*\);$",
+    r"^  \S.*\([^;]*\)(?: throws [^;]+)?;$",
     re.MULTILINE,
 )
 _COMPILED_PATTERN = re.compile(r'^Compiled from "(?P<source>[^"]+)"', re.MULTILINE)
@@ -89,6 +89,36 @@ def _class_names(archive: zipfile.ZipFile, prefix: str) -> list[str]:
     )
 
 
+def branch_review_targets(text: str) -> list[dict[str, Any]]:
+    """Enumerate finite bytecode branch sites, without claiming path coverage."""
+    result = []
+    method = None
+    switch = None
+    for line in text.splitlines():
+        if _METHOD_PATTERN.fullmatch(line) or line == "  static {};":
+            method = line.strip()
+            switch = None
+        match = re.match(r"^\s+(\d+):\s+(if\w+|tableswitch|lookupswitch)\b(.*)$", line)
+        if match:
+            if method is None:
+                raise ValueError("bytecode branch lacks enclosing method")
+            offset, opcode, operand = match.groups()
+            row = {"method": method, "offset": int(offset), "opcode": opcode}
+            if opcode.startswith("if"):
+                row["edges"] = ["FALLTHROUGH", operand.strip()]
+            else:
+                row["edges"] = []
+                switch = row
+            result.append(row)
+        elif switch is not None:
+            edge = re.match(r"^\s+(default|-?\d+):\s+(-?\d+)\s*$", line)
+            if edge:
+                switch["edges"].append(f"{edge[1]}:{edge[2]}")
+            elif line.strip() == "}":
+                switch = None
+    return result
+
+
 def _disassemble(javap: Path, stock_jar: Path, class_name: str) -> dict[str, Any]:
     completed = subprocess.run(
         [
@@ -110,6 +140,7 @@ def _disassemble(javap: Path, stock_jar: Path, class_name: str) -> dict[str, Any
         "compiled_from": compiled.group("source") if compiled else None,
         "javap_sha256": _sha256(text.encode("utf-8")),
         "methods": _METHOD_PATTERN.findall(text),
+        "branch_review_targets": branch_review_targets(text),
         "javap_command": (
             f'javap -classpath "{stock_jar}" -c -p -verbose {class_name}'
         ),

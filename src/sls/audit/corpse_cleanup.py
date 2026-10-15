@@ -47,3 +47,49 @@ def classify_cultist_ritual_cleanup(stock, native):
     except (KeyError, IndexError, TypeError, ValueError):
         return None
     return 'WITNESSED_DEAD_CULTIST_RITUAL_ANIMATION_CLEANUP_NOT_EXACT_STATE_EQUALITY'
+
+
+def classify_controlled_corpse_cleanup(stock, native, raw_stock):
+    """Witnessed corpse cases only, with independent death and action proof."""
+    try:
+        original = raw_stock['_stock_direct']['monsters']
+        slots = None
+        projected = copy.deepcopy(stock)
+        if (original[0]['id'] == 'SpireShield'
+                and original[0]['dying'] is True and original[0]['current_hp'] == 0
+                and native['direct']['monsters'][0]['current_hp'] == 0
+                and stock['direct']['monsters'][0]['powers'] == [
+                    {'id': 'ARTIFACT', 'amount': 2}, {'id': 'BACK_ATTACK', 'amount': 1}]
+                and native['direct']['monsters'][0]['powers'] == [{'id': 'ARTIFACT', 'amount': 2}]):
+            projected['direct']['monsters'][0]['powers'] = [{'id': 'ARTIFACT', 'amount': 2}]
+            slots = {0}
+        elif ((len(original) == 5 and original[2]['id'] == 'Reptomancer')
+              or (len(original) == 7 and original[3]['id'] == 'Reptomancer')):
+            candidates = {0, 1, 3, 4} if len(original) == 5 else {0, 1, 2, 4, 5, 6}
+            slots = set()
+            for slot in candidates:
+                if stock['direct']['monsters'][slot]['powers'] == native['direct']['monsters'][slot]['powers']:
+                    continue
+                if (original[slot]['id'] != 'Dagger' or original[slot]['dying'] is not True
+                        or original[slot]['current_hp'] != 0
+                        or native['direct']['monsters'][slot]['current_hp'] != 0):
+                    return None
+                if (stock['direct']['monsters'][slot]['powers'] != []
+                        or native['direct']['monsters'][slot]['powers'] != [{'id': 'MINION', 'amount': 1}]):
+                    return None
+                projected['direct']['monsters'][slot]['powers'] = native['direct']['monsters'][slot]['powers']
+                slots.add(slot)
+        elif (len(original) in (3, 4) and original[-1]['id'] == 'Exploder'
+              and original[-1]['dying'] is True and original[-1]['current_hp'] == 0
+              and native['direct']['monsters'][-1]['current_hp'] == 0
+              and stock['direct']['monsters'][-1]['powers'] == [{'id': 'EXPLOSIVE', 'amount': 1}]
+              and native['direct']['monsters'][-1]['powers'] == []):
+            projected['direct']['monsters'][-1]['powers'] = []
+            slots = {len(original) - 1}
+        if slots is None or any(json.loads(a).get('target_index') in slots for a in native['actual_actions']):
+            return None
+        if projected != native:
+            return None
+        return 'WITNESSED_DEAD_POWER_ANIMATION_DIFFERENCE_NOT_EXACT_STATE_EQUALITY'
+    except (KeyError, IndexError, TypeError, ValueError):
+        return None

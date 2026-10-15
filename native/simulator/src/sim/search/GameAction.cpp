@@ -34,6 +34,10 @@ int search::GameAction::getIdx1() const {
     return static_cast<int>(bits & 0xFF);
 }
 
+int search::GameAction::getCardSelectIdx() const {
+    return static_cast<int>(bits & 0xFFFF);
+}
+
 int search::GameAction::getIdx2() const {
     return static_cast<int>((bits >> 8) & 0xFF);
 }
@@ -281,7 +285,7 @@ bool isValidPotionAction(const GameContext &gc, const search::GameAction a) {
 }
 
 bool isValidCardSelectScreenAction(const GameContext &gc, const search::GameAction a) {
-    return a.getIdx1() >= 0 && a.getIdx1() < gc.info.toSelectCards.size();
+    return a.bits < 32768U && a.getCardSelectIdx() < gc.info.toSelectCards.size();
 }
 
 bool search::GameAction::isValidAction(const sts::GameContext &gc) const {
@@ -466,7 +470,7 @@ void search::GameAction::execute(GameContext &gc) const {
             break;
 
         case ScreenState::CARD_SELECT:
-            gc.chooseSelectCardScreenOption(getIdx1());
+            gc.chooseSelectCardScreenOption(getCardSelectIdx());
             break;
 
         case ScreenState::MAP_SCREEN:
@@ -716,7 +720,7 @@ std::vector<search::GameAction> search::GameAction::getAllActionsInState(const s
         case ScreenState::CARD_SELECT: {
             actions.reserve(gc.info.toSelectCards.size());
             for (int i = 0; i < gc.info.toSelectCards.size(); ++i) {
-                actions.emplace_back(i);
+                actions.emplace_back(static_cast<std::uint32_t>(i));
             }
             break;
         }

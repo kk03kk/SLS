@@ -113,6 +113,8 @@ def checkpoint_contract(trainer: PPOTrainer) -> dict[str, Any]:
         "training_seed_limit": trainer.training_seed_limit,
         **({"start_curriculum": trainer.start_curriculum.contract}
            if trainer.start_curriculum is not None else {}),
+        **({"value_adaptation": trainer.value_adaptation_config}
+           if getattr(trainer, "value_adaptation_config", None) is not None else {}),
     }
 
 
@@ -198,6 +200,8 @@ def save_checkpoint(path: str | Path, trainer: PPOTrainer) -> Path:
             "episode_starts": trainer.episode_starts.detach().cpu(),
             "previous_action_types": trainer.previous_action_types.detach().cpu(),
             "previous_rewards": trainer.previous_rewards.detach().cpu(),
+            **({"value_adaptation": getattr(trainer, "value_adaptation_state", None)}
+               if getattr(trainer, "value_adaptation_config", None) is not None else {}),
             **({"start_curriculum": trainer.start_curriculum.state_dict()}
                if trainer.start_curriculum is not None else {}),
         },
@@ -241,6 +245,8 @@ def _load_checkpoint_exact(
     trainer.episodes = int(state["episodes"])
     trainer.environment_steps = int(state["environment_steps"])
     trainer.next_seed = int(state["next_seed"])
+    if getattr(trainer, "value_adaptation_config", None) is not None:
+        trainer.value_adaptation_state = state["value_adaptation"]
     if trainer.start_curriculum is not None:
         trainer.start_curriculum.load_state_dict(state["start_curriculum"])
     trainer.random.setstate(state["random"])

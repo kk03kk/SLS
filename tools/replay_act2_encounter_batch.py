@@ -21,6 +21,10 @@ def main() -> int:
                         help='production-public reads the exact full-run presentation; raw checkpoint snapshot remains separate')
     parser.add_argument('--continue-after-divergence', action='store_true',
                         help='diagnostic only: retain the first failure and inspect later scripted boundaries')
+    parser.add_argument('--heart-ending-resources', action='store_true',
+                        help='explicit final Heart HP/gold/deck/items/RNG/action comparison; not complete victory cleanup')
+    parser.add_argument('--encounter-ending-subset', action='store_true',
+                        help='compare selected final victory HP/monster/RNG fields; not rewards or full cleanup')
     args = parser.parse_args()
     if args.output.exists():
         raise FileExistsError("refuse to overwrite differential evidence")
@@ -56,11 +60,14 @@ def main() -> int:
         if row["actions"] != scene["actions"]:
             raise ValueError("run action script differs from immutable scene inventory")
     rows = [replay_controlled_run(row, production_projection=args.native_view == 'production-public',
-                                  continue_after_divergence=args.continue_after_divergence)
+                                  continue_after_divergence=args.continue_after_divergence,
+                                  heart_ending_resources=args.heart_ending_resources,
+                                  encounter_ending_subset=args.encounter_ending_subset)
             for row in data["runs"]]
     root = Path(__file__).resolve().parents[1]
     audit_sources = {name: hashlib.sha256((root / name).read_bytes()).hexdigest()
                      for name in ("src/sls/audit/act2_differential.py",
+                     "src/sls/audit/corpse_cleanup.py",
                      "src/sls/audit/semantic_actions.py",
                                   "tools/replay_act2_encounter_batch.py")}
     args.output.write_text(json.dumps({"schema": "sls-act2-differential-v1",

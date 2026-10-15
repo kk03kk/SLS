@@ -7,6 +7,7 @@ from pathlib import Path
 
 import pytest
 
+from sls.rl.training_contract import native_source_digest
 from tools.build_act2_entry_bank import encode_bank, restore_prefix_fixture
 
 
@@ -22,6 +23,12 @@ def test_portable_entry_prefix_checkpoint_identity(tmp_path, corrupt):
     fixture["bank_metadata"]["outcomes"]["reached_entry"] = 1
     sample = tmp_path / "sample.json.gz"
     sample.write_bytes(gzip.compress(json.dumps(fixture).encode()))
+    if fixture["bank_metadata"]["native_source_sha256"] != native_source_digest():
+        # Historical prefixes retain their original source identity. A later
+        # rule audit must reject them, not rewrite their hashes or resume gate.
+        with pytest.raises(ValueError, match="stale entry-prefix fixture"):
+            restore_prefix_fixture(sample)
+        return
     if corrupt:
         with pytest.raises(ValueError, match="reconstruction differs"):
             restore_prefix_fixture(sample)

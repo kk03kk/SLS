@@ -1418,19 +1418,20 @@ void Monster::takeTurn(BattleContext &bc) {     // todo, maybe for monsters that
         // ************ SHAPES ************
 
         case MMID::EXPLODER_EXPLODE:
-            bc.addToBot( Actions::DamagePlayer(30) );
-            bc.addToBot( Actions::SuicideAction(idx, true) );
+            // Stock takeTurn queues its roll before applyTurnPowers queues
+            // the countdown explosion. Keep this roll ahead of lethal damage.
             bc.noOpRollMove();
+            bc.addToBot( Actions::SuicideAction(idx, true) );
+            // ExplosivePower queues suicide before its THORNS damage. A fatal
+            // hit must not interrupt the owner's death and relic callbacks.
+            bc.addToBot( Actions::DamagePlayer(30) );
             break;
 
         case MMID::EXPLODER_SLAM: // 1
             attackPlayerHelper(bc, asc2 ? 11 : 9);
-            if (lastTwoMoves(MMID::EXPLODER_SLAM)) {
-                setMove(MMID::EXPLODER_EXPLODE);
-            } else {
-                setMove(MonsterMoveId::EXPLODER_SLAM);
-            }
-            bc.noOpRollMove();
+            bc.addToBot(Actions::SetMoveAndNoOpRoll(idx,
+                    lastTwoMoves(MMID::EXPLODER_SLAM)
+                    ? MMID::EXPLODER_EXPLODE : MMID::EXPLODER_SLAM));
             break;
 
         case MMID::REPULSOR_BASH: // 2
@@ -1465,8 +1466,7 @@ void Monster::takeTurn(BattleContext &bc) {     // todo, maybe for monsters that
         case MMID::THE_MAW_NOM: { // 5
             const auto t = (bc.getMonsterTurnNumber() + 1) / 2;
             attackPlayerHelper(bc, 5, t);
-            setMove(MMID::THE_MAW_DROOL);
-            bc.noOpRollMove();
+            bc.addToBot(Actions::SetMoveAndNoOpRoll(idx, MMID::THE_MAW_DROOL));
             break;
         }
 
@@ -1577,7 +1577,7 @@ void Monster::takeTurn(BattleContext &bc) {     // todo, maybe for monsters that
                     bc.player.gainGold(bc, 9);
                 }
                 if (bc.player.hasRelic<R::DARKSTONE_PERIAPT>()) {
-                    bc.player.increaseMaxHp(6);
+                    bc.player.increaseMaxHp(bc, 6);
                 }
             }
             rollMove(bc);
@@ -1616,7 +1616,7 @@ void Monster::takeTurn(BattleContext &bc) {     // todo, maybe for monsters that
                     bc.getMonsterTurnNumber() - firstAttackTurn, 6) * 5;
             const auto damage = (asc3 ? 40 : 30) + t;
             attackPlayerHelper(bc, damage); // todo this can be done immediately
-            bc.noOpRollMove();
+            bc.addToBot(Actions::NoOpRollMove());
             break;
         }
 
@@ -1663,14 +1663,13 @@ void Monster::takeTurn(BattleContext &bc) {     // todo, maybe for monsters that
         case MMID::DAGGER_STAB:
             attackPlayerHelper(bc, 9);
             bc.addToBot( Actions::MakeTempCardInDiscard(CardId::WOUND) );
-            setMove(MMID::DAGGER_EXPLODE);
-            bc.noOpRollMove();
+            bc.addToBot(Actions::SetMoveAndNoOpRoll(idx, MMID::DAGGER_EXPLODE));
             break;
 
         case MMID::DAGGER_EXPLODE:
             attackPlayerHelper(bc, 25);
             bc.addToBot( Actions::SuicideAction(idx, true) );
-            bc.noOpRollMove();
+            bc.addToBot(Actions::NoOpRollMove());
             break;
 
         case MMID::TIME_EATER_HASTE:
@@ -1819,11 +1818,10 @@ void Monster::takeTurn(BattleContext &bc) {     // todo, maybe for monsters that
                 bc.addToBot(Actions::DebuffPlayer<PS::STRENGTH>(-1));
             }
             if (lastMoveBefore(MonsterMoveId::SPIRE_SHIELD_SMASH) || lastMoveBefore(MonsterMoveId::INVALID)) {
-                setMove(MonsterMoveId::SPIRE_SHIELD_FORTIFY);
+                bc.addToBot(Actions::SetMoveAndNoOpRoll(idx, MonsterMoveId::SPIRE_SHIELD_FORTIFY));
             } else {
-                setMove(MonsterMoveId::SPIRE_SHIELD_SMASH);
+                bc.addToBot(Actions::SetMoveAndNoOpRoll(idx, MonsterMoveId::SPIRE_SHIELD_SMASH));
             }
-            bc.addToBot(Actions::NoOpRollMove());
             break;
 
 
@@ -1857,11 +1855,10 @@ void Monster::takeTurn(BattleContext &bc) {     // todo, maybe for monsters that
                 bc.addToBot( Actions::MakeTempCardInDiscard(CardId::BURN, 2) );
             }
             if (lastMoveBefore(MonsterMoveId::SPIRE_SPEAR_SKEWER)) {
-                setMove(MonsterMoveId::SPIRE_SPEAR_PIERCER);
+                bc.addToBot(Actions::SetMoveAndNoOpRoll(idx, MonsterMoveId::SPIRE_SPEAR_PIERCER));
             } else {
-                setMove(MonsterMoveId::SPIRE_SPEAR_SKEWER);
+                bc.addToBot(Actions::SetMoveAndNoOpRoll(idx, MonsterMoveId::SPIRE_SPEAR_SKEWER));
             }
-            bc.addToBot(Actions::NoOpRollMove());
             break;
 
         case MMID::SPIRE_SPEAR_PIERCER: // 2
@@ -1885,14 +1882,12 @@ void Monster::takeTurn(BattleContext &bc) {     // todo, maybe for monsters that
         case MMID::CORRUPT_HEART_BLOOD_SHOTS: // 1
             attackPlayerHelper(bc, 2, asc4 ? 15 : 12);
             if (bc.getMonsterTurnNumber() % 3 == 0) {
-                setMove(MonsterMoveId::CORRUPT_HEART_BUFF);
+                bc.addToBot(Actions::SetMoveAndNoOpRoll(idx, MonsterMoveId::CORRUPT_HEART_BUFF));
             } else {
-                setMove(MonsterMoveId::CORRUPT_HEART_ECHO);
+                bc.addToBot(Actions::SetMoveAndNoOpRoll(idx, MonsterMoveId::CORRUPT_HEART_ECHO));
             }
             // AbstractMonster queues its RollMoveAction after the attack.  If
-            // Blood Shots is lethal that queued action never runs, so consuming
-            // the AI roll inline would drift the terminal Original RNG state.
-            bc.addToBot(Actions::NoOpRollMove());
+            // Blood Shots is lethal, neither nextMove nor AI RNG advances.
             break;
 
         case MMID::CORRUPT_HEART_BUFF: { // 4
@@ -1936,14 +1931,12 @@ void Monster::takeTurn(BattleContext &bc) {     // todo, maybe for monsters that
         case MMID::CORRUPT_HEART_ECHO: // 2
             attackPlayerHelper(bc, asc4 ? 45 : 40);
             if (bc.getMonsterTurnNumber() % 3 == 0) {
-                setMove(MonsterMoveId::CORRUPT_HEART_BUFF);
+                bc.addToBot(Actions::SetMoveAndNoOpRoll(idx, MonsterMoveId::CORRUPT_HEART_BUFF));
             } else {
-                setMove(MonsterMoveId::CORRUPT_HEART_BLOOD_SHOTS);
+                bc.addToBot(Actions::SetMoveAndNoOpRoll(idx, MonsterMoveId::CORRUPT_HEART_BLOOD_SHOTS));
             }
-            // Keep the future-move RNG action behind the damage action.  The
-            // action manager stops on player death, matching Original's final
-            // Heart-loss boundary without an extra AI RNG consumption.
-            bc.addToBot(Actions::NoOpRollMove());
+            // The queued RollMoveAction includes setting the future move; it
+            // must not mutate nextMove before a lethal damage action resolves.
             break;
 
 
@@ -3579,7 +3572,8 @@ int stasisHelper(Random &rng, ForwardIt begin, ForwardIt end) {
         return rng.random(groupSize-1);
     }
 
-    fixed_list<StasisPair, CardManager::MAX_GROUP_SIZE> idxList;
+    std::vector<StasisPair> idxList;
+    idxList.reserve(end - begin);
 
     int i = 0;
     for (auto it = begin; it != end; ++it) {
@@ -3592,7 +3586,7 @@ int stasisHelper(Random &rng, ForwardIt begin, ForwardIt end) {
 
     std::stable_sort(idxList.begin(), idxList.end(), [](auto p1, auto p2) { return p1.idOrder < p2.idOrder; } );
 
-    const auto idxListSelectIdx = rng.random(idxList.size()-1);
+    const auto idxListSelectIdx = rng.random(static_cast<int>(idxList.size())-1);
     return idxList[idxListSelectIdx].groupIdx;
 }
 

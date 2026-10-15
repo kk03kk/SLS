@@ -40,6 +40,7 @@ namespace sts::search {
         [[nodiscard]] RewardsActionType getRewardsActionType() const;
 
         [[nodiscard]] int getIdx1() const; // always positive
+        [[nodiscard]] int getCardSelectIdx() const;
         [[nodiscard]] int getIdx2() const; // always positive
         [[nodiscard]] int getIdx3() const; // always positive
 

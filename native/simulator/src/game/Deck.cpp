@@ -86,8 +86,8 @@ int Deck::getCountMatching(const std::function<bool(const Card &)> &predicate, c
     return count;
 }
 
-fixed_list<int, Deck::MAX_SIZE> Deck::getIdxsMatching(const CardPredicate &p) const {
-    fixed_list<int, MAX_SIZE> list;
+std::vector<int> Deck::getIdxsMatching(const CardPredicate &p) const {
+    std::vector<int> list;
     for (int i = 0; i < cards.size(); ++i) {
         if (p(cards[i])) {
             list.push_back(i);
@@ -108,7 +108,7 @@ void Deck::upgradeStrikesAndDefends() {
 void Deck::upgradeRandomCards(Random &miscRng, int count) {
     auto list = getUpgradeableCardIdxs();
     java::Collections::shuffle(list.begin(), list.end(), java::Random(miscRng.randomLong()));
-    const int end = std::min(list.size(), count);
+    const int end = std::min(static_cast<int>(list.size()), count);
     for (int i = 0; i < end; ++i) {
         --upgradeableCount;
         cards[list[i]].upgrade();
@@ -277,7 +277,7 @@ void Deck::remove(GameContext &gc, int idx) {
     }
 
     if (!anyCardBottled()) { // if no bottled cards, can do simple remove
-        cards.remove(idx);
+        cards.erase(cards.begin() + idx);
         restoreNecronomicurseIfNeeded();
         return;
     }
@@ -305,7 +305,7 @@ void Deck::upgrade(int idx) {
     --upgradeableCount;
 }
 
-void Deck::addMatchingToSelectList(fixed_list<SelectScreenCard, Deck::MAX_SIZE> &selectList, const CardPredicate &p) const {
+void Deck::addMatchingToSelectList(std::vector<SelectScreenCard> &selectList, const CardPredicate &p) const {
     for (int i = 0; i < cards.size(); ++i) {
         if (p(cards[i])) {
             selectList.push_back({cards[i], i});
@@ -349,8 +349,8 @@ void Deck::removeAllMatching(GameContext &gc, const std::function<bool(const Car
     }
 }
 
-fixed_list<int, Deck::MAX_SIZE> Deck::getUpgradeableCardIdxs() const {
-    fixed_list<int,Deck::MAX_SIZE> ret;
+std::vector<int> Deck::getUpgradeableCardIdxs() const {
+    std::vector<int> ret;
     for (int i = 0; i < cards.size(); ++i) {
         if (cards[i].canUpgrade()) {
             ret.push_back(i);

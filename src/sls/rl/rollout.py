@@ -21,6 +21,9 @@ class RolloutBatch:
     input_memories: torch.Tensor
     previous_action_types: torch.Tensor
     previous_rewards: torch.Tensor
+    acts: torch.Tensor | None = None
+    normalized_entropies: torch.Tensor | None = None
+    termination_reasons: tuple[tuple[str | None, ...], ...] | None = None
 
     @property
     def shape(self) -> tuple[int, int]:

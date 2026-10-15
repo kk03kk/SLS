@@ -73,7 +73,7 @@ int getBestCardToPlay(const BattleContext &bc, fixed_list<int,10> handIdxs) {
     return bestHandIdx;
 }
 
-void sortCardOptions(const GameContext &gc, fixed_list<int,96> &sortedCardIdxs) {
+void sortCardOptions(const GameContext &gc, std::vector<int> &sortedCardIdxs) {
     sortedCardIdxs.clear();
     for (int i = 0; i < gc.info.toSelectCards.size(); ++i) {
         sortedCardIdxs.push_back(i);
@@ -110,7 +110,7 @@ void sortCardOptions(const GameContext &gc, fixed_list<int,96> &sortedCardIdxs) 
     }
 }
 
-//void sortCardOptions(const GameContext &gc, fixed_list<int,96> &sortedCardIdxs) {
+//void sortCardOptions(const GameContext &gc, std::vector<int> &sortedCardIdxs) {
 //    sortedCardIdxs.clear();
 //    for (int i = 0; i < gc.info.toSelectCards.size(); ++i) {
 //        sortedCardIdxs.push_back(i);
@@ -608,9 +608,9 @@ void search::SimpleAgent::stepOutOfCombat(GameContext &gc) {
         }
 
         case ScreenState::CARD_SELECT: {
-            fixed_list<int,96> sortedCardIdxs;
+            std::vector<int> sortedCardIdxs;
             sortCardOptions(gc, sortedCardIdxs);
-            takeAction(gc, sortedCardIdxs[0]);
+            takeAction(gc, GameAction(static_cast<std::uint32_t>(sortedCardIdxs[0])));
             break;
         }
 

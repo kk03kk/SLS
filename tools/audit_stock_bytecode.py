@@ -36,6 +36,8 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
+    if args.output.exists():
+        raise FileExistsError("refuse to overwrite bytecode evidence")
     inventory = build_bytecode_inventory(
         root=args.root.resolve(),
         stock_jar=args.stock_jar.resolve(),
@@ -46,10 +48,8 @@ def main() -> int:
         workers=args.workers,
     )
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(
-        json.dumps(inventory, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-    )
+    with args.output.open("x", encoding="utf-8") as stream:
+        stream.write(json.dumps(inventory, ensure_ascii=False, indent=2) + "\n")
     print(json.dumps(inventory["summary"], ensure_ascii=False, indent=2))
     return 0
 

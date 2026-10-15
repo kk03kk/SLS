@@ -65,11 +65,11 @@ def stock_runtime_inputs(before: dict, after: dict) -> dict:
     return measured
 
 
-def replay(row: dict, *, measured_runtime: bool = False) -> dict:
+def replay(row: dict, *, measured_runtime: bool = False, profile=IRONCLAD_A20_ACT2) -> dict:
     path = Path(row["stock_capture"])
     if hashlib.sha256(path.read_bytes()).hexdigest() != row["sha256"]:
         raise ValueError("stock raw system capture hash mismatch")
-    backend = SimulatorBackend(IRONCLAD_A20_ACT2)
+    backend = SimulatorBackend(profile)
     decision = backend.reset(row["seed"])
     first = None
     transitions = 0
@@ -128,7 +128,7 @@ def replay(row: dict, *, measured_runtime: bool = False) -> dict:
             raise ValueError("requested stock action was not legal and not declared unavailable")
         action = mapped_action(action, stock["observation"], decision.observation.to_dict())
         checkpoint = backend.checkpoint()
-        restored = SimulatorBackend(IRONCLAD_A20_ACT2)
+        restored = SimulatorBackend(profile)
         restored_decision = restored.load_checkpoint(json.loads(json.dumps(checkpoint)))
         if json.dumps(restored.checkpoint(), sort_keys=True) != json.dumps(checkpoint, sort_keys=True):
             first = {"boundary": index, "classification": "CHECKPOINT_RESTORATION_DIFFERENCE"}

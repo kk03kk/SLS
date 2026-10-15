@@ -215,3 +215,66 @@ def test_runtime_rebind_manifest_does_not_claim_cross_device_exactness(fake_run,
     assert record["bitwise_replay_guaranteed"] is False
     assert record["old_runtime"]["cuda_device"] == "MIG"
     assert record["differences"] == [{"path": "runtime.cuda_device"}]
+
+
+@pytest.mark.parametrize("diagnostic_failure", [False, True])
+def test_failed_update_preserves_latest_and_original_error(fake_run, monkeypatch, diagnostic_failure):
+    path, _, saved = fake_run
+    latest = path.parent / "latest.pt"
+    latest.write_bytes(b"last-healthy-checkpoint")
+    error = cli.torch.cuda.OutOfMemoryError("injected backward allocation failure")
+
+    def fail(trainer):
+        trainer.environment_steps = 1
+        trainer.last_update_context = {
+            "phase": "backward", "optimizer_steps_completed": 1,
+            "batch": {"decisions": 1024, "entities": 200, "actions": 100},
+        }
+        raise error
+
+    monkeypatch.setattr(cli.PPOTrainer, "train_update", fail)
+    if diagnostic_failure:
+        def disk_full(*args, **kwargs):
+            raise OSError("diagnostic disk full")
+        monkeypatch.setattr(cli, "_write_failure_diagnostics", disk_full)
+    with pytest.raises(cli.torch.cuda.OutOfMemoryError) as caught:
+        cli.main()
+    assert caught.value is error
+    assert not saved
+    assert latest.read_bytes() == b"last-healthy-checkpoint"
+    manifest = json.loads(path.read_text(encoding="utf-8"))
+    assert manifest["status"] == "FAILED"
+    if diagnostic_failure:
+        assert manifest["failure_diagnostics_error"] == "diagnostic disk full"
+    else:
+        receipt = manifest["failure_diagnostics"]
+        record = json.loads((path.parent / receipt["path"]).read_text(encoding="utf-8"))
+        assert record["operation"] == "ppo_update"
+        assert record["update_context"]["phase"] == "backward"
+        assert record["update_context"]["optimizer_steps_completed"] == 1
+        assert not record["in_memory_state_saved"]
+        assert record["recovery_checkpoint"]["sha256"] == cli.sha256_file(latest)
+        assert not record["recovery_checkpoint"]["restore_verified"]
+
+
+def test_failed_manifest_write_keeps_original_training_error(fake_run, monkeypatch):
+    path, _, saved = fake_run
+    error = cli.torch.OutOfMemoryError("original allocation failure")
+    write = cli._atomic_json
+
+    def fail(trainer):
+        raise error
+
+    def fail_manifest(target, value):
+        if value.get("status") == "FAILED":
+            raise OSError("manifest disk full")
+        return write(target, value)
+
+    monkeypatch.setattr(cli.PPOTrainer, "train_update", fail)
+    monkeypatch.setattr(cli, "_atomic_json", fail_manifest)
+    with pytest.raises(cli.torch.OutOfMemoryError) as caught:
+        cli.main()
+    assert caught.value is error
+    assert "Could not write FAILED manifest: manifest disk full" in error.__notes__
+    assert not saved
+    assert json.loads(path.read_text(encoding="utf-8"))["status"] == "RUNNING"

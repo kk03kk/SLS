@@ -55,6 +55,17 @@ def recorded_action_bits(action):
     return card - 1 | (target << 16)
 
 
+def select_scene_runs(runs, scenes):
+    """Select immutable records explicitly; never turn a rejected case into a pass."""
+    if scenes is None:
+        return runs
+    requested = set(scenes)
+    available = {row['scene']['id'] for row in runs}
+    if not requested or requested - available or len(requested) != len(scenes):
+        raise ValueError('unknown, empty or duplicate scene selection')
+    return [row for row in runs if row['scene']['id'] in requested]
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--capture', type=Path, required=True)
@@ -62,6 +73,7 @@ def main():
     parser.add_argument('--manifest', type=Path,
                         default=Path('native/oracle/resources/spirecomm/parity/fullrun-double-boss-entry-r1.json'))
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--scenes', nargs='+', help='explicit subset; omitted records remain unverified')
     args = parser.parse_args()
     if args.output.exists():
         raise FileExistsError('refuse to overwrite evidence')
@@ -87,7 +99,7 @@ def main():
     encounters = enum_ids(constants / 'MonsterEncounters.h', 'enum class MonsterEncounter : std::int8_t {')
     template = json.loads((root / 'tests/fixtures/regressions/act2-smoke-victory-heal-131100063.json').read_text())['before']
     runs = []
-    for row in data['runs']:
+    for row in select_scene_runs(data['runs'], args.scenes):
         scene, stock = row['scene'], row['boundaries'][0]
         resource = 'spirecomm/parity/' + args.manifest.name
         with zipfile.ZipFile(jar) as archive:
@@ -228,6 +240,7 @@ def main():
                                      for k, v in comparisons.items()},
                      'scope': 'ENUMERATED_SECOND_ENTRY_FIELDS_INITIAL_NOT_FULLY_QUALIFIED'})
     result = {'native_source_sha256': native.NATIVE_SOURCE_SHA256,
+              'selected_scenes': args.scenes,
               'capture_sha256': hashlib.sha256(args.capture.read_bytes()).hexdigest(), 'runs': runs}
     args.output.write_text(json.dumps(result, indent=2) + '\n', encoding='utf-8')
     print(json.dumps([{'seed': r['seed'], 'first_difference': r.get('first_difference'),

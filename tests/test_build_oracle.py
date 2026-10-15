@@ -11,7 +11,7 @@ from tools.verify_oracle import install, require_no_running_game
 
 def test_committed_oracle_resources_are_complete_and_unique():
     payloads = resource_payloads()
-    assert len(payloads) == 42
+    assert len(payloads) == 46
     assert json.loads(payloads['ModTheSpire.json'])['version'] == '1.3.41'
     assert len(json.loads(payloads['spirecomm/parity/fullrun-act3-basic.json'])['scenes']) == 14
     assert len(json.loads(payloads['spirecomm/parity/act2-scenes.json'])['scenes']) == 24
@@ -35,6 +35,38 @@ def test_committed_oracle_resources_are_complete_and_unique():
     assert len(blocked) == 1 and len(terminal) == 3
     assert sorted(seed for scene in blocked + terminal for seed in scene['seeds']) == list(
         range(131200168, 131200180))
+    fatal_rolls = json.loads(payloads['spirecomm/parity/fullrun-terminal-roll-r1.json'])
+    assert fatal_rolls['training_gate'] == 'NOT_QUALIFIED'
+    assert fatal_rolls['final_holdout_used'] is False
+    assert len(fatal_rolls['scenes']) == 5
+    assert sorted(seed for scene in fatal_rolls['scenes'] for seed in scene['seeds']) == list(
+        range(131210000, 131210015))
+    for scene in fatal_rolls['scenes']:
+        assert scene['actual_dungeon_required'] is True
+        assert scene['act'] == 3 and scene['ascension'] == 20
+        assert set(scene['source_evidence']) == {
+            'com.megacrit.cardcrawl.' + name for name in scene['stock_classes']
+        }
+    ending_moves = json.loads(payloads['spirecomm/parity/fullrun-ending-next-move-r1.json'])
+    assert ending_moves['training_gate'] == 'NOT_QUALIFIED'
+    assert ending_moves['final_holdout_used'] is False
+    assert len(ending_moves['scenes']) == 4
+    assert sorted(seed for scene in ending_moves['scenes'] for seed in scene['seeds']) == list(
+        range(131211000, 131211012))
+    for scene in ending_moves['scenes']:
+        assert scene['actual_dungeon_required'] is True
+        assert scene['act'] == 4 and scene['ascension'] == 20
+        assert set(scene['source_evidence']) == {
+            'com.megacrit.cardcrawl.' + name for name in scene['stock_classes']
+        }
+    late_heart = json.loads(payloads['spirecomm/parity/fullrun-heart-late-buffs-r1.json'])
+    assert late_heart['training_gate'] == 'NOT_QUALIFIED'
+    assert late_heart['final_holdout_used'] is False
+    assert len(late_heart['scenes']) == 1
+    scene = late_heart['scenes'][0]
+    assert scene['seeds'] == [131212000, 131212001, 131212002]
+    assert scene['ascension'] == 20 and scene['act'] == 4 and scene['actual_dungeon_required']
+    assert scene['actions'] == [{'kind': 'end_turn'}] * 17
 
 
 def test_jar_is_deterministic_across_member_insertion_orders(tmp_path):

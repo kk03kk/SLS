@@ -24,6 +24,8 @@ from sls.rl.training_contract import native_source_digest
 def production_combat_projection(battle: Any) -> dict[str, Any]:
     """Read production presentation while retaining the separate raw serializer."""
     payload = battle.snapshot()
+    if "combat_state" not in payload["game_state"]:
+        raise ValueError("production combat projection requires a combat boundary; use an explicit ending comparator")
     public = battle.public_combat_probe_snapshot()
     combat = payload['game_state']['combat_state']
     payload['_lossless_monsters'] = combat['monsters']
@@ -33,6 +35,53 @@ def production_combat_projection(battle: Any) -> dict[str, Any]:
                           for row in public['monsters']]
     payload['_native_comparison_view'] = 'FULL_RUN_PUBLIC_COMBAT'
     return payload
+
+
+def heart_terminal_resources(payload: Mapping[str, Any], *, stock: bool) -> dict[str, Any]:
+    """Explicit ending resources, not a combat-pile or whole-run certificate."""
+    game = payload["game_state"]
+    if (game["ascension_level"], game["act"]) != (20, 4):
+        raise ValueError("Heart ending evidence requires actual A20 Act4")
+    if stock:
+        direct = payload["_stock_direct"]
+        hp = direct["player"]["current_hp"]
+        if (direct["act"] != 4 or direct["ascension"] != 20
+                or direct["dungeon_class"] != "com.megacrit.cardcrawl.dungeons.TheEnding"
+                or direct["room_class"] != "com.megacrit.cardcrawl.rooms.MonsterRoomBoss"
+                or hp != game["current_hp"]):
+            raise ValueError("independent stock Heart ending context mismatch")
+        monsters = direct["monsters"]
+        if len(monsters) != 1 or normalize_monster_id(monsters[0]["id"]) != "CORRUPT_HEART":
+            raise ValueError("terminal Heart proof cannot use another encounter")
+        if (game["screen_type"] in {"DEATH", "GAME_OVER"} and hp == 0
+                and payload["_continuation"]["continuation_kind"] == "DEATH"):
+            outcome = "PLAYER_LOSS"
+        elif (game["screen_type"] == "COMPLETE" and game["room_phase"] == "COMPLETE"
+              and hp > 0
+              and monsters[0]["current_hp"] == 0 and monsters[0]["dying"] is True):
+            outcome = "PLAYER_VICTORY"
+        else:
+            raise ValueError("missing independent Heart terminal proof")
+        decision = adapt_original(payload).decision
+        if not decision.terminal or decision.actions:
+            raise ValueError("stock Heart terminal must have no policy actions")
+        deck = game["deck"]
+    else:
+        outcome = payload["outcome"]
+        if outcome not in {"PLAYER_LOSS", "PLAYER_VICTORY"} or payload["_legal_actions"]:
+            raise ValueError("native Heart terminal must have no policy actions")
+        deck = game["master_deck"]
+    return {
+        "outcome": outcome, "hp": game["current_hp"], "max_hp": game["max_hp"],
+        "gold": game["gold"],
+        "deck": [{"id": normalize_card_id(c["id"]), "upgrades": c["upgrades"]} for c in deck],
+        "relics": [{"id": normalize_content_id(r["id"]),
+                    "counter": normalize_relic_counter(r["counter"])} for r in game["relics"]],
+        "potions": [{"id": normalize_potion_id(p["id"]),
+                     "slot": index if normalize_potion_id(p["id"]) == "EMPTY_POTION_SLOT"
+                     else p["slot"]} for index, p in enumerate(game["potions"])],
+        "rng": payload["_rng"], "policy_actions": [],
+    }
 
 
 def pending_stock_intents(payload: Mapping[str, Any]) -> list[int]:
@@ -176,9 +225,39 @@ def comparison_projection(payload: Mapping[str, Any], *, stock: bool,
             "rng": payload["_rng"]}
 
 
+def encounter_terminal_subset(payload: Mapping[str, Any], *, stock: bool,
+                              retained: Mapping[str, Any] | None = None) -> dict[str, Any]:
+    """Explicit selected victory fields; no reward, item or corpse-cleanup claim."""
+    game = payload['game_state']
+    if stock:
+        direct = payload['_stock_direct']
+        monsters = direct['monsters']
+        if (game.get('room_phase') != 'COMPLETE' or direct['player']['current_hp'] <= 0
+                or direct['player']['current_hp'] != game['current_hp']
+                or direct['player']['max_hp'] != game['max_hp']
+                or not monsters or not all(
+                    (m['current_hp'] == 0 and m['dying'] is True) or m['escaped'] is True for m in monsters)):
+            raise ValueError('missing independent stock encounter victory proof')
+        rows = [{'id': normalize_monster_id(m['id']), 'hp': m['current_hp'], 'max_hp': m['max_hp']}
+                for m in monsters]
+    else:
+        if (payload.get('outcome') != 'PLAYER_VICTORY' or payload['_legal_actions'] or retained is None
+                or game['current_hp'] <= 0):
+            raise ValueError('native ending subset requires completed encounter and retained monsters')
+        rows = [{'id': normalize_monster_id(m['content_id']), 'hp': m['current_hp'], 'max_hp': m['max_hp']}
+                for m in retained['monsters']]
+    return {'encounter_won': True, 'hp': game['current_hp'], 'max_hp': game['max_hp'],
+            'rng': payload['_rng'], 'monsters': rows}
+
+
 def replay_controlled_run(run: Mapping[str, Any], *, production_projection: bool = False,
-                          continue_after_divergence: bool = False) -> dict[str, Any]:
+                          continue_after_divergence: bool = False,
+                          heart_ending_resources: bool = False,
+                          encounter_ending_subset: bool = False) -> dict[str, Any]:
     from sls.backends.simulator import native
+
+    if heart_ending_resources and encounter_ending_subset:
+        raise ValueError('choose exactly one explicit ending comparison scope')
 
     if native.NATIVE_SOURCE_SHA256 != native_source_digest():
         raise ValueError("stale native artifact; rebuild before differential replay")
@@ -235,6 +314,16 @@ def replay_controlled_run(run: Mapping[str, Any], *, production_projection: bool
         # lossless checkpoint API; do not change production potion semantics.
         snapshot = battle.snapshot()
         snapshot['game_state']['combat_state']['_internal']['potion_capacity'] = 2
+        if heart_ending_resources:
+            # Match independently captured initial permanent resources, not
+            # the final desired result. Controlled start may include Neow's
+            # upgrades/removals; isolated reset() alone uses a starter deck.
+            stock_initial = boundaries[0]['game_state']
+            snapshot['game_state']['gold'] = stock_initial['gold']
+            snapshot['game_state']['combat_state']['player']['_internal']['gold'] = stock_initial['gold']
+            snapshot['game_state']['master_deck'] = [
+                {'id': normalize_card_id(card['id']), 'upgrades': card['upgrades'],
+                 'misc': card.get('misc', 0)} for card in stock_initial['deck']]
         battle.load_checkpoint({'game_state': snapshot['game_state'], 'rng': snapshot['_rng']})
     results = []
     first = None
@@ -246,19 +335,40 @@ def replay_controlled_run(run: Mapping[str, Any], *, production_projection: bool
                 target = prior["game_state"]["combat_state"]["monsters"][action["target_index"]]
                 action["target_index"] = int(target["instance_id"].split(":")[1])
             battle.step(action.pop("kind"), **action)
-        current = production_combat_projection(battle) if production_projection else battle.snapshot()
-        differences = structured_differences(comparison_projection(original, stock=True),
-                                            comparison_projection(current, stock=False,
-                                                extended_direct=original['_stock_direct']['schema'] ==
-                                                'sls-stock-direct-v2'))
-        results.append({"boundary": index, "differences": differences})
+        ending = heart_ending_resources and index == len(boundaries) - 1
+        subset_ending = encounter_ending_subset and index == len(boundaries) - 1
+        if ending:
+            current = battle.snapshot()
+            differences = structured_differences(heart_terminal_resources(original, stock=True),
+                                                heart_terminal_resources(current, stock=False))
+        elif subset_ending:
+            current = battle.snapshot()
+            differences = structured_differences(
+                encounter_terminal_subset(original, stock=True),
+                encounter_terminal_subset(current, stock=False, retained=battle.public_combat_probe_snapshot()))
+        else:
+            current = production_combat_projection(battle) if production_projection else battle.snapshot()
+            stock_projection = comparison_projection(original, stock=True)
+            native_projection = comparison_projection(current, stock=False,
+                extended_direct=original['_stock_direct']['schema'] == 'sls-stock-direct-v2')
+            differences = structured_differences(stock_projection, native_projection)
+        classification = None
+        if differences and not ending and not subset_ending:
+            from sls.audit.corpse_cleanup import classify_controlled_corpse_cleanup
+            classification = classify_controlled_corpse_cleanup(stock_projection, native_projection, original)
+        results.append({"boundary": index, "differences": differences, "classification": classification})
         if differences and first is None:
-            first = {"boundary": index, "differences": differences}
+            first = {"boundary": index, "differences": differences, "classification": classification}
             if not continue_after_divergence:
                 break
     return {"encounter": run["encounter"], "seed": run["seed"],
             "scene_id": run.get("scene", {}).get("id"),
-            "status": "SEMANTIC_DIFFERENCE" if first else "HARNESS_MATCH",
+            "status": ("CLASSIFIED_CORPSE_ANIMATION_DIFFERENCE" if first and
+                all(not row['differences'] or row['classification'] for row in results)
+                else "SEMANTIC_DIFFERENCE") if first else (
+                    "CONTROLLED_PREFIX_AND_ENDING_SUBSET_MATCH" if encounter_ending_subset else "HARNESS_MATCH"),
             "first_divergence": first, "boundaries": results,
             "native_comparison_view": 'FULL_RUN_PUBLIC_COMBAT' if production_projection else 'LOSSLESS_COMBAT_SERIALIZER',
+            "terminal_comparison_scope": ("HEART_ENDING_RESOURCES_NOT_COMBAT_CLEANUP" if heart_ending_resources
+                else "SELECTED_VICTORY_FIELDS_NOT_REWARD_FLOW_OR_CLEANUP" if encounter_ending_subset else None),
             "qualification": False}

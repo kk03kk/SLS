@@ -129,7 +129,7 @@ void Player::gainGold(BattleContext &bc, int amount) {
 
     gold += amount;
     if (hasRelic<R::BLOODY_IDOL>()) {
-        heal(5);
+        heal(bc, 5);
     }
 }
 
@@ -279,12 +279,12 @@ void Player::removeDebuffs() {
     removeStatus<PS::WRAITH_FORM>();
 }
 
-void Player::increaseMaxHp(int amount) {
+void Player::increaseMaxHp(BattleContext &bc, int amount) {
     maxHp += amount;
-    heal(amount);
+    heal(bc, amount);
 }
 
-void Player::heal(int amount) {
+void Player::heal(BattleContext &bc, int amount) {
     if (hasRelic<RelicId::MARK_OF_THE_BLOOM>()) {
         return;
     }
@@ -298,7 +298,9 @@ void Player::heal(int amount) {
     curHp = std::min(static_cast<int>(maxHp), curHp + amount);
 
     if (wasBloodied && curHp > maxHp/2 && hasRelic<RelicId::RED_SKULL>()) {
-        debuff<PS::STRENGTH>(-3);
+        // RedSkull.onNotBloodied queues a BUFF-typed StrengthPower(-3).
+        // Artifact cannot prevent it; its application follows action order.
+        bc.addToTop(Actions::BuffPlayer<PS::STRENGTH>(-3));
     }
 }
 
@@ -466,7 +468,6 @@ void Player::hpWasLost(BattleContext &bc, int amount, bool selfDamage) {
 }
 
 void Player::wouldDie(BattleContext &bc) {
-    // assume fairy and lizard tail heal for greater than zero - max hp is not less than ~8
     curHp = 0;
     if  (!hasRelic<RelicId::MARK_OF_THE_BLOOM>()) {
         for (int i = 0; i < bc.potionCapacity; i++) {
@@ -476,14 +477,15 @@ void Player::wouldDie(BattleContext &bc) {
                         1,
                         static_cast<int>(static_cast<float>(maxHp) * (hasRelic<R::SACRED_BARK>() ? 0.6f : 0.3f))
                 );
-                heal(healAmount);
+                heal(bc, healAmount);
                 return;
             }
         }
 
         if (hasRelic<RelicId::LIZARD_TAIL>()) {
             setHasRelic<RelicId::LIZARD_TAIL>(false);
-            heal(maxHp/2);
+            // Stock LizardTail.onTrigger clamps its half-max-health heal to 1.
+            heal(bc, std::max(1, static_cast<int>(maxHp) / 2));
             return;
         }
     }

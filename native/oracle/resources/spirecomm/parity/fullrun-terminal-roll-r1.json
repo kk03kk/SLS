@@ -1,0 +1,510 @@
+{
+  "schema": "sls-fullrun-scenes-v1",
+  "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "training_gate": "NOT_QUALIFIED",
+  "final_holdout_used": false,
+  "scenes": [
+    {
+      "id": "act3-terminal-roll-maw",
+      "encounter": "MAW",
+      "ascension": 20,
+      "act": 3,
+      "floor": 40,
+      "room": "MONSTER",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 1,
+        "max_hp": 80,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R"
+        ]
+      },
+      "stock_classes": [
+        "dungeons.TheBeyond",
+        "monsters.beyond.Maw",
+        "actions.common.RollMoveAction",
+        "actions.GameActionManager"
+      ],
+      "stock_methods": {
+        "monsters.beyond.Maw": [
+          "takeTurn",
+          "getMove"
+        ]
+      },
+      "actions": [
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "obligation": "Actual stock terminal damage and full RNG; do not infer natural-run coverage or all terminal inventory",
+      "qualification_scope": "CONTROLLED_FATAL_ATTACK_RNG_NOT_NATURAL_FLOW",
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "seeds": [
+        131210000,
+        131210001,
+        131210002
+      ],
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheBeyond": {
+          "class_sha256": "e8e7819f75bc2ee347c9dbfa5316b42160c2c50ef4f3bae3b4115e2c4a9a6502",
+          "bytecode_sha256": "c2584927eb19266caf64d97926c9144a0d9a988d30b66099eb5a0e126234c35b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.Maw": {
+          "class_sha256": "1cfd22a9bc9e3b0cb5d6ec5795a34e7f1b761fa195a63d4fc523954556a1ff8d",
+          "bytecode_sha256": "7e04532672e91ea9602a737c0e6fc324fe046a1861c726e77a65d44355d847d5"
+        },
+        "com.megacrit.cardcrawl.actions.common.RollMoveAction": {
+          "class_sha256": "9cb3a2885ff9e5b02a08d2ea1f564111f3a50fe7ca0799971e93ddcdf46c76ec",
+          "bytecode_sha256": "8a83b70058e6fe67e2a6e22ae5f61321e941419a9d24b8703e2c61e2e706b4f5"
+        },
+        "com.megacrit.cardcrawl.actions.GameActionManager": {
+          "class_sha256": "14085d57e6a79ad89b0c43c5032138118c3e988dbb3f22fca50c4c5096435e8a",
+          "bytecode_sha256": "406c85f4fe5cfb70b5d6e6e5b8440d5353c869553c941c45c1938660416512a4"
+        }
+      }
+    },
+    {
+      "id": "act3-terminal-roll-giant-head",
+      "encounter": "GIANT_HEAD",
+      "ascension": 20,
+      "act": 3,
+      "floor": 40,
+      "room": "ELITE",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 40,
+        "max_hp": 80,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R"
+        ]
+      },
+      "stock_classes": [
+        "dungeons.TheBeyond",
+        "monsters.beyond.GiantHead",
+        "actions.common.RollMoveAction",
+        "actions.GameActionManager"
+      ],
+      "stock_methods": {
+        "monsters.beyond.GiantHead": [
+          "takeTurn",
+          "getMove"
+        ]
+      },
+      "actions": [
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        },
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "obligation": "Actual stock terminal damage and full RNG; do not infer natural-run coverage or all terminal inventory",
+      "qualification_scope": "CONTROLLED_FATAL_ATTACK_RNG_NOT_NATURAL_FLOW",
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "seeds": [
+        131210003,
+        131210004,
+        131210005
+      ],
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheBeyond": {
+          "class_sha256": "e8e7819f75bc2ee347c9dbfa5316b42160c2c50ef4f3bae3b4115e2c4a9a6502",
+          "bytecode_sha256": "c2584927eb19266caf64d97926c9144a0d9a988d30b66099eb5a0e126234c35b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.GiantHead": {
+          "class_sha256": "4a5349ca0db689cafb622753e52046f5073eb573439ec22d38fd45ccd711104e",
+          "bytecode_sha256": "ad95d4b1aa5e876dca6159bc8a23343e619b6e6154f34cfe4ecc6e243291f54c"
+        },
+        "com.megacrit.cardcrawl.actions.common.RollMoveAction": {
+          "class_sha256": "9cb3a2885ff9e5b02a08d2ea1f564111f3a50fe7ca0799971e93ddcdf46c76ec",
+          "bytecode_sha256": "8a83b70058e6fe67e2a6e22ae5f61321e941419a9d24b8703e2c61e2e706b4f5"
+        },
+        "com.megacrit.cardcrawl.actions.GameActionManager": {
+          "class_sha256": "14085d57e6a79ad89b0c43c5032138118c3e988dbb3f22fca50c4c5096435e8a",
+          "bytecode_sha256": "406c85f4fe5cfb70b5d6e6e5b8440d5353c869553c941c45c1938660416512a4"
+        }
+      }
+    },
+    {
+      "id": "act3-terminal-roll-dagger-stab",
+      "encounter": "REPTOMANCER",
+      "ascension": 20,
+      "act": 3,
+      "floor": 40,
+      "room": "ELITE",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 1,
+        "max_hp": 80,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R"
+        ]
+      },
+      "stock_classes": [
+        "dungeons.TheBeyond",
+        "monsters.beyond.Reptomancer",
+        "monsters.beyond.SnakeDagger",
+        "actions.common.RollMoveAction",
+        "actions.GameActionManager"
+      ],
+      "stock_methods": {
+        "monsters.beyond.Reptomancer": [
+          "takeTurn",
+          "getMove"
+        ],
+        "monsters.beyond.SnakeDagger": [
+          "takeTurn",
+          "getMove"
+        ]
+      },
+      "actions": [
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "obligation": "Actual stock terminal damage and full RNG; do not infer natural-run coverage or all terminal inventory",
+      "qualification_scope": "CONTROLLED_FATAL_ATTACK_RNG_NOT_NATURAL_FLOW",
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "seeds": [
+        131210006,
+        131210007,
+        131210008
+      ],
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheBeyond": {
+          "class_sha256": "e8e7819f75bc2ee347c9dbfa5316b42160c2c50ef4f3bae3b4115e2c4a9a6502",
+          "bytecode_sha256": "c2584927eb19266caf64d97926c9144a0d9a988d30b66099eb5a0e126234c35b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.Reptomancer": {
+          "class_sha256": "972f9bb9c71256597beb725fa4feaad812e1d5bfe97df0f44141f66788715d52",
+          "bytecode_sha256": "62dcacf98ca8bea17bc4d1a699fa0e8f35a15ecf2d58c70824115ddecc58ee7b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.SnakeDagger": {
+          "class_sha256": "d7a00e8ffefea878dfc2793f6fa3d2ffa51f8ba2590d56c3e29ae86cc8aee562",
+          "bytecode_sha256": "a27d09693237e1ce26c9ae1c521be3dbdb9017b842fc6efb8684316b8aeec7a2"
+        },
+        "com.megacrit.cardcrawl.actions.common.RollMoveAction": {
+          "class_sha256": "9cb3a2885ff9e5b02a08d2ea1f564111f3a50fe7ca0799971e93ddcdf46c76ec",
+          "bytecode_sha256": "8a83b70058e6fe67e2a6e22ae5f61321e941419a9d24b8703e2c61e2e706b4f5"
+        },
+        "com.megacrit.cardcrawl.actions.GameActionManager": {
+          "class_sha256": "14085d57e6a79ad89b0c43c5032138118c3e988dbb3f22fca50c4c5096435e8a",
+          "bytecode_sha256": "406c85f4fe5cfb70b5d6e6e5b8440d5353c869553c941c45c1938660416512a4"
+        }
+      }
+    },
+    {
+      "id": "act3-terminal-roll-dagger-explode",
+      "encounter": "REPTOMANCER",
+      "ascension": 20,
+      "act": 3,
+      "floor": 40,
+      "room": "ELITE",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 1,
+        "max_hp": 80,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R"
+        ],
+        "moves": {
+          "Dagger": {
+            "stock": 2,
+            "native": "DAGGER_EXPLODE",
+            "damage": 25,
+            "hits": 1
+          },
+          "DAGGER": {
+            "stock": 2,
+            "native": "DAGGER_EXPLODE",
+            "damage": 25,
+            "hits": 1
+          }
+        }
+      },
+      "stock_classes": [
+        "dungeons.TheBeyond",
+        "monsters.beyond.Reptomancer",
+        "monsters.beyond.SnakeDagger",
+        "actions.common.RollMoveAction",
+        "actions.GameActionManager"
+      ],
+      "stock_methods": {
+        "monsters.beyond.Reptomancer": [
+          "takeTurn",
+          "getMove"
+        ],
+        "monsters.beyond.SnakeDagger": [
+          "takeTurn",
+          "getMove"
+        ]
+      },
+      "actions": [
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "obligation": "Actual stock terminal damage and full RNG; do not infer natural-run coverage or all terminal inventory",
+      "qualification_scope": "CONTROLLED_FATAL_ATTACK_RNG_NOT_NATURAL_FLOW",
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "seeds": [
+        131210009,
+        131210010,
+        131210011
+      ],
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheBeyond": {
+          "class_sha256": "e8e7819f75bc2ee347c9dbfa5316b42160c2c50ef4f3bae3b4115e2c4a9a6502",
+          "bytecode_sha256": "c2584927eb19266caf64d97926c9144a0d9a988d30b66099eb5a0e126234c35b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.Reptomancer": {
+          "class_sha256": "972f9bb9c71256597beb725fa4feaad812e1d5bfe97df0f44141f66788715d52",
+          "bytecode_sha256": "62dcacf98ca8bea17bc4d1a699fa0e8f35a15ecf2d58c70824115ddecc58ee7b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.SnakeDagger": {
+          "class_sha256": "d7a00e8ffefea878dfc2793f6fa3d2ffa51f8ba2590d56c3e29ae86cc8aee562",
+          "bytecode_sha256": "a27d09693237e1ce26c9ae1c521be3dbdb9017b842fc6efb8684316b8aeec7a2"
+        },
+        "com.megacrit.cardcrawl.actions.common.RollMoveAction": {
+          "class_sha256": "9cb3a2885ff9e5b02a08d2ea1f564111f3a50fe7ca0799971e93ddcdf46c76ec",
+          "bytecode_sha256": "8a83b70058e6fe67e2a6e22ae5f61321e941419a9d24b8703e2c61e2e706b4f5"
+        },
+        "com.megacrit.cardcrawl.actions.GameActionManager": {
+          "class_sha256": "14085d57e6a79ad89b0c43c5032138118c3e988dbb3f22fca50c4c5096435e8a",
+          "bytecode_sha256": "406c85f4fe5cfb70b5d6e6e5b8440d5353c869553c941c45c1938660416512a4"
+        }
+      }
+    },
+    {
+      "id": "act3-terminal-roll-exploder-slam",
+      "encounter": "FOUR_SHAPES",
+      "ascension": 20,
+      "act": 3,
+      "floor": 40,
+      "room": "MONSTER",
+      "actual_dungeon_required": true,
+      "initial": {
+        "hp": 1,
+        "max_hp": 80,
+        "energy": 3,
+        "block": 0,
+        "hand": [
+          "Defend_R"
+        ],
+        "draw": [
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R",
+          "Defend_R"
+        ]
+      },
+      "stock_classes": [
+        "dungeons.TheBeyond",
+        "monsters.beyond.Exploder",
+        "monsters.beyond.Spiker",
+        "monsters.beyond.Repulsor",
+        "actions.common.RollMoveAction",
+        "actions.GameActionManager"
+      ],
+      "stock_methods": {
+        "monsters.beyond.Exploder": [
+          "takeTurn",
+          "getMove"
+        ],
+        "monsters.beyond.Spiker": [
+          "takeTurn",
+          "getMove"
+        ],
+        "monsters.beyond.Repulsor": [
+          "takeTurn",
+          "getMove"
+        ]
+      },
+      "actions": [
+        {
+          "kind": "end_turn"
+        }
+      ],
+      "obligation": "Actual stock terminal damage and full RNG; do not infer natural-run coverage or all terminal inventory",
+      "qualification_scope": "CONTROLLED_FATAL_ATTACK_RNG_NOT_NATURAL_FLOW",
+      "status": "READY_FOR_CONTROLLED_EXECUTION",
+      "seeds": [
+        131210012,
+        131210013,
+        131210014
+      ],
+      "source_evidence": {
+        "com.megacrit.cardcrawl.dungeons.TheBeyond": {
+          "class_sha256": "e8e7819f75bc2ee347c9dbfa5316b42160c2c50ef4f3bae3b4115e2c4a9a6502",
+          "bytecode_sha256": "c2584927eb19266caf64d97926c9144a0d9a988d30b66099eb5a0e126234c35b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.Exploder": {
+          "class_sha256": "49b21bce2c17b3e4803855736e74df16a951036c5c1189377b4c4232c5183008",
+          "bytecode_sha256": "9736afeae180498d3301c7ccb1beaa93a5babdaa928a7c584940ef240f764d8b"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.Spiker": {
+          "class_sha256": "b510e4659ede1805cc4fce7d9e85c388d4f29269622f27c6553435a936f67bd4",
+          "bytecode_sha256": "a938a70f10c11b05a29b01be4c17bef17e4eb364e3471ccf7e75bc4e17d10108"
+        },
+        "com.megacrit.cardcrawl.monsters.beyond.Repulsor": {
+          "class_sha256": "66568e85ada476d3e98a4c703b28ed71b3cf32446d7cb4c0dffedf9a73d12690",
+          "bytecode_sha256": "57af25bc27c973390ce4cd5604d59afb6fd015842fa7adee63cc353f7ad70a3a"
+        },
+        "com.megacrit.cardcrawl.actions.common.RollMoveAction": {
+          "class_sha256": "9cb3a2885ff9e5b02a08d2ea1f564111f3a50fe7ca0799971e93ddcdf46c76ec",
+          "bytecode_sha256": "8a83b70058e6fe67e2a6e22ae5f61321e941419a9d24b8703e2c61e2e706b4f5"
+        },
+        "com.megacrit.cardcrawl.actions.GameActionManager": {
+          "class_sha256": "14085d57e6a79ad89b0c43c5032138118c3e988dbb3f22fca50c4c5096435e8a",
+          "bytecode_sha256": "406c85f4fe5cfb70b5d6e6e5b8440d5353c869553c941c45c1938660416512a4"
+        }
+      }
+    }
+  ]
+}

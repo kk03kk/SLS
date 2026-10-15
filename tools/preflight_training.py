@@ -11,7 +11,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
-from dataclasses import replace
+from dataclasses import asdict, replace
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -165,6 +165,10 @@ def main() -> int:
                 training_config_digest="PREFLIGHT_MICRO_RESUME",
                 start_curriculum=from_config(payload or {}, ROOT),
             )
+            from sls.rl.value_adaptation import config_from_payload
+            adaptation = config_from_payload(payload or {})
+            trainer.value_adaptation_config = asdict(adaptation) if adaptation is not None else None
+            trainer.value_adaptation_state = None
             if args.checkpoint:
                 from sls.rl.checkpoint import load_checkpoint_runtime_rebind
                 from tools.train_full_run import _training_identity
@@ -198,6 +202,7 @@ def main() -> int:
             "simulator_only": True,
             "workload_contract": workload_contract(payload) if payload else None,
             "exact_resume": "PASS",
+            "value_adaptation_scope": "PPO_RESUME_ONLY_CALIBRATION_NOT_RUN",
             "weight_transfer": transfer,
             "source_checkpoint_sha256": (
                 hashlib.sha256(args.checkpoint.read_bytes()).hexdigest() if args.checkpoint else None

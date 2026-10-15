@@ -47,6 +47,7 @@ from sls.rl.best_checkpoint import (
     recover_best_checkpoint,
     update_best_checkpoint,
 )
+from sls.rl.checkpoint import policy_from_training_checkpoint
 from sls.rl.evaluate import EvaluationResult, evaluate
 from sls.rl.training_contract import (
     TRAINING_CHECKPOINT_SCHEMA,
@@ -76,6 +77,72 @@ def _atomic_json(path: Path, value: object) -> None:
         encoding="utf-8",
     )
     temporary.replace(path)
+
+
+def _evaluation_policy(payload: dict) -> Policy:
+    """Load an independent inference model without consuming the training RNG."""
+
+    with torch.random.fork_rng(devices=[]):
+        return policy_from_training_checkpoint(payload)
+
+
+def _cuda_memory(device: str) -> dict[str, int]:
+    if not device.startswith("cuda"):
+        return {}
+    return {
+        "allocated_bytes": torch.cuda.memory_allocated(device),
+        "reserved_bytes": torch.cuda.memory_reserved(device),
+        "peak_allocated_bytes": torch.cuda.max_memory_allocated(device),
+        "peak_reserved_bytes": torch.cuda.max_memory_reserved(device),
+    }
+
+
+def _write_failure_diagnostics(
+    output: Path, latest: Path, trainer: PPOTrainer | None,
+    *, device: str, operation: str, error: BaseException,
+) -> dict:
+    """Describe a failed attempt; never publish its partially updated state."""
+
+    record = {
+        "schema": "sls-training-failure-v1", "operation": operation,
+        "error_type": type(error).__name__, "error": str(error),
+        "failed_unix": time.time(), "device": device,
+        "update_context": getattr(trainer, "last_update_context", {}),
+        "trainer_update_counter": getattr(trainer, "update", None),
+        "collected_environment_steps": getattr(trainer, "environment_steps", None),
+        "in_memory_state_saved": False,
+        "recovery_checkpoint": None,
+    }
+    try:
+        record["cuda_memory"] = _cuda_memory(device)
+        if device.startswith("cuda"):
+            record["cuda_allocator_stats"] = dict(torch.cuda.memory_stats(device))
+    except Exception as diagnostic_error:
+        record["cuda_diagnostic_error"] = str(diagnostic_error)
+    if latest.is_file():
+        recovery = {
+            "path": str(latest.resolve()), "sha256": sha256_file(latest),
+            "bytes": latest.stat().st_size, "restore_verified": False,
+        }
+        record["recovery_checkpoint"] = recovery
+        try:
+            checkpoint = torch.load(latest, map_location="cpu", weights_only=False)
+            recovery.update({
+                "environment_steps": checkpoint.get("trainer", {}).get("environment_steps"),
+                "update": checkpoint.get("trainer", {}).get("update"),
+                "schema": checkpoint.get("schema"),
+                "native_source_sha256": checkpoint.get("contract", {}).get("native_source_sha256"),
+            })
+        except Exception as diagnostic_error:
+            recovery["inspection_error"] = str(diagnostic_error)
+    directory = output / "training-failures"
+    directory.mkdir(parents=True, exist_ok=True)
+    path = directory / f"failure-{time.time_ns()}.json"
+    _atomic_json(path, record)
+    return {
+        "path": path.relative_to(output).as_posix(), "sha256": sha256_file(path),
+        "recovery_checkpoint": record["recovery_checkpoint"],
+    }
 
 
 def _positive_int(mapping: dict[str, object], key: str) -> int:
@@ -912,7 +979,9 @@ def main() -> int:
     # RUNNING attempt's error (the archived 10M manifest had exactly this shape).
     if "error" in manifest:
         manifest.setdefault("previous_failures", []).append({
-            key: manifest.pop(key) for key in ("error", "error_type", "failed_unix") if key in manifest
+            key: manifest.pop(key) for key in (
+                "error", "error_type", "failed_unix", "failure_diagnostics", "failure_diagnostics_error",
+            ) if key in manifest
         })
     _atomic_json(manifest_path, manifest)
     if device.startswith("cuda"):
@@ -922,6 +991,7 @@ def main() -> int:
         controller.set_wall_budget(float(run["max_job_wall_seconds"]))
     controller.install()
     trainer: PPOTrainer | None = None
+    operation = "initialize"
     try:
         with ShardedWorkerPool(
             profile, workers_count, shard_count=shard_count,
@@ -938,6 +1008,12 @@ def main() -> int:
                 training_seed_limit=training_seed_limit(run),
                 start_curriculum=start_curriculum,
             )
+            from sls.rl.value_adaptation import config_from_payload
+            adaptation_config = config_from_payload(payload)
+            trainer.value_adaptation_config = (
+                asdict(adaptation_config) if adaptation_config is not None else None
+            )
+            trainer.value_adaptation_state = None
             if "warm_start" in payload and not latest.exists():
                 from sls.rl.act1_transfer import initialize_act1_weights
                 if not single_stage or run.get("continuation_from"):
@@ -1040,6 +1116,41 @@ def main() -> int:
                     ]
                     manifest.setdefault("learning_migrations", []).append(migration)
                     _atomic_json(manifest_path, manifest)
+            invocation_start_steps = trainer.environment_steps
+            if adaptation_config is not None and trainer.value_adaptation_state is None:
+                from sls.rl.value_adaptation import ValueAdapter
+                if trainer.update or trainer.optimizer.state:
+                    raise ValueError("value adaptation requires a fresh PPO optimizer")
+                if not latest.exists():
+                    save_checkpoint(latest, trainer)
+                operation = "value_adaptation"
+                adapter = ValueAdapter(trainer.model, profile, ppo, adaptation_config,
+                                       output / "value-adaptation")
+                adaptation_result = adapter.advance(stop_requested=lambda: controller.requested)
+                # The torch journal is authoritative. JSON is an operator view.
+                _atomic_json(output / "value-adaptation-result.json", {
+                    key: value for key, value in adaptation_result.items() if key != "contract"
+                })
+                if controller.requested:
+                    manifest.update(status="INTERRUPTED", active_stage=args.stage,
+                                    value_adaptation=adaptation_result["status"])
+                    _atomic_json(manifest_path, manifest)
+                    return 0
+                if adaptation_result["status"] != "ADAPTED":
+                    manifest.update(status="NO_ADAPTATION_GAIN", active_stage=None,
+                                    value_adaptation={key: value for key, value in adaptation_result.items()
+                                                      if key != "contract"},
+                                    new_decisions=adaptation_result["decisions"],
+                                    value_adaptation_decisions=adaptation_result["decisions"], ppo_decisions=0)
+                    _atomic_json(manifest_path, manifest)
+                    return 0
+                adapter.apply(trainer.model)
+                trainer.environment_steps += adaptation_result["decisions"]
+                trainer.value_adaptation_state = {
+                    key: value for key, value in adaptation_result.items() if key != "contract"
+                }
+                save_checkpoint(latest, trainer)
+                del adapter
             resume_finalization = _can_resume_finalization(
                 stage_name=args.stage,
                 environment_steps=trainer.environment_steps,
@@ -1051,7 +1162,8 @@ def main() -> int:
             run_until = target_steps
             if args.stop_after_additional_steps is not None:
                 batch_steps = workers_count * ppo.rollout_steps
-                updates = math.ceil(args.stop_after_additional_steps / batch_steps)
+                calibration_steps = trainer.environment_steps - invocation_start_steps
+                updates = math.ceil(max(0, args.stop_after_additional_steps - calibration_steps) / batch_steps)
                 run_until = min(
                     target_steps,
                     trainer.environment_steps + updates * batch_steps,
@@ -1059,7 +1171,10 @@ def main() -> int:
 
             def run_evaluation(
                 seed_values: tuple[int, ...], label: str, *, interruptible: bool,
+                evaluation_model: Policy | None = None,
             ) -> EvaluationResult:
+                nonlocal operation
+                operation = f"evaluation:{label}"
                 print(json.dumps({
                     "schema": "sls-evaluation-start-v1",
                     "label": label,
@@ -1068,7 +1183,8 @@ def main() -> int:
                     "seed_range": [seed_values[0], seed_values[-1] + 1],
                 }, sort_keys=True), flush=True)
                 return evaluate(
-                    trainer.model, profile, seed_values, device=device,
+                    trainer.model if evaluation_model is None else evaluation_model,
+                    profile, seed_values, device=device,
                     max_steps=evaluation_max_steps,
                     max_boundary_visits=ppo.max_boundary_visits,
                     failure_progress_scale=ppo.failure_progress_scale,
@@ -1159,6 +1275,7 @@ def main() -> int:
                 except InterruptedError:
                     controller.requested = True
             while trainer.environment_steps < run_until and not controller.requested:
+                operation = "ppo_update"
                 update_started = time.perf_counter()
                 metrics = trainer.train_update()
                 non_finite = {
@@ -1178,6 +1295,10 @@ def main() -> int:
                     **({"curriculum_episode_starts": trainer.start_curriculum.state_dict()}
                        if getattr(trainer, "start_curriculum", None) is not None else {}),
                 }
+                from sls.rl.value_adaptation import decision_accounting
+                record.update(decision_accounting(trainer, int(payload.get("warm_start", {}).get(
+                    "parent_environment_steps", 0))))
+                record.update({f"cuda_{key}": value for key, value in _cuda_memory(device).items()})
                 if hasattr(trainer, "last_collect_seconds"):
                     record["collect_seconds"] = trainer.last_collect_seconds
                 if hasattr(trainer, "last_collect_profile"):
@@ -1255,20 +1376,18 @@ def main() -> int:
                         ascension_min=profile.ascension, ascension_max=profile.ascension, goal=goal,
                     )
             if args.stage == "train" and completed and not controller.requested:
+                operation = "finalization"
                 save_checkpoint(output / "final.pt", trainer)
                 if run.get("development_reference_checkpoint"):
                     reference = ROOT / str(run["development_reference_checkpoint"])
                     if sha256_file(reference) != run["development_reference_sha256"]:
                         raise ValueError("frozen development reference checkpoint hash mismatch")
                     reference_payload = torch.load(reference, map_location="cpu", weights_only=False)
-                    from sls.rl.checkpoint import policy_from_training_checkpoint
-                    reference_model = policy_from_training_checkpoint(reference_payload)
-                    if reference_model.config != trainer.model.config:
-                        raise ValueError("frozen reference model configuration mismatch")
                     cross_horizon = _validate_frozen_reference_profile(reference_payload, profile, payload)
-                    trainer.model.load_state_dict(reference_model.state_dict())
+                    reference_model = _evaluation_policy(reference_payload)
                     reference_result = asdict(run_evaluation(
                         tuple(final_seeds), "frozen-reference-development", interruptible=False,
+                        evaluation_model=reference_model,
                     ))
                     _atomic_json(output / "reference-evaluation.json", {
                         "schema": "sls-frozen-reference-evaluation-v2",
@@ -1280,13 +1399,12 @@ def main() -> int:
                         "checkpoint_sha256": sha256_file(reference),
                         "checkpoint_environment_steps": reference_payload["trainer"]["environment_steps"],
                         "checkpoint_native_source_sha256": reference_payload["contract"]["native_source_sha256"],
+                        "model": reference_model.config.to_dict(),
                         "seeds": [final_seeds.start, final_seeds.stop],
                         **evaluation_identity(device=device, environment_shards=shard_count, ascension=profile.ascension),
                         "result": reference_result,
                     })
-                    endpoint_payload = torch.load(output / "final.pt", map_location="cpu", weights_only=False)
-                    trainer.model.load_state_dict(endpoint_payload["model"])
-                    del reference_model, reference_payload, endpoint_payload
+                    del reference_model, reference_payload
                 if run.get("evaluate_fixed_endpoint", False):
                     # Primary development endpoint, fixed by budget before any
                     # selection/confirmation results are observed. This leaves
@@ -1310,10 +1428,13 @@ def main() -> int:
                 selected_payload = torch.load(
                     selected, map_location="cpu", weights_only=False,
                 )
-                trainer.model.load_state_dict(selected_payload["model"])
+                selected_model = _evaluation_policy(selected_payload)
                 final_result = asdict(run_evaluation(
                     tuple(final_seeds), "final", interruptible=False,
+                    evaluation_model=selected_model,
                 ))
+                selected_model_config = selected_model.config.to_dict()
+                del selected_model
                 final_stage = dict(stage)
                 final_stage["minimum_evaluation_episodes"] = int(
                     stage.get("minimum_final_evaluation_episodes", 1)
@@ -1329,6 +1450,7 @@ def main() -> int:
                     "checkpoint": selected.name,
                     "checkpoint_sha256": sha256_file(selected),
                     "checkpoint_environment_steps": selected_payload["trainer"]["environment_steps"],
+                    "model": selected_model_config,
                     "seeds": [final_seeds.start, final_seeds.stop],
                     # A quoted win rate is only interpretable next to the
                     # simulator and inference settings that produced it; the
@@ -1382,6 +1504,9 @@ def main() -> int:
                 torch.cuda.max_memory_allocated(device) if device.startswith("cuda") else 0
             ),
         })
+        from sls.rl.value_adaptation import decision_accounting
+        manifest.update(decision_accounting(trainer, int(payload.get("warm_start", {}).get(
+            "parent_environment_steps", 0))))
         _atomic_json(manifest_path, manifest)
         if args.stage == "train" and status == "COMPLETE":
             bundle_paths = [
@@ -1400,6 +1525,10 @@ def main() -> int:
                     stage_dir / "selection" / "best_progress.pt",
                     stage_dir / f"{output.name}-{stage_name}.pt",
                 ))
+            bundle_paths.extend(sorted((output / "training-failures").glob("failure-*.json")))
+            if getattr(trainer, "value_adaptation_config", None) is not None:
+                bundle_paths.extend(sorted((output / "value-adaptation").rglob("*.pt")))
+                bundle_paths.append(output / "value-adaptation-result.json")
             _atomic_json(output / "training-bundle.json", {
                 "schema": "sls-training-bundle-v2",
                 "files": {
@@ -1418,6 +1547,13 @@ def main() -> int:
         # step FAILED even though latest.pt was saved atomically.
         return 0
     except BaseException as error:
+        try:
+            manifest["failure_diagnostics"] = _write_failure_diagnostics(
+                output, latest, trainer, device=device, operation=operation, error=error,
+            )
+        except Exception as diagnostic_error:
+            # Reporting must not hide the original training/evaluation failure.
+            manifest["failure_diagnostics_error"] = str(diagnostic_error)
         manifest.update({
             "status": "FAILED",
             "active_stage": args.stage,
@@ -1425,7 +1561,10 @@ def main() -> int:
             "error": str(error),
             "failed_unix": time.time(),
         })
-        _atomic_json(manifest_path, manifest)
+        try:
+            _atomic_json(manifest_path, manifest)
+        except Exception as manifest_error:
+            error.add_note(f"Could not write FAILED manifest: {manifest_error}")
         raise
 
 

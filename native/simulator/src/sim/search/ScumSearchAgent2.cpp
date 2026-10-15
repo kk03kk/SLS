@@ -226,7 +226,7 @@ void search::ScumSearchAgent2::stepOutOfCombatPolicy(GameContext &gc) {
 }
 
 void search::ScumSearchAgent2::cardSelectPolicy(GameContext &gc) {
-    fixed_list<std::pair<int,int>, Deck::MAX_SIZE> selectOrder;
+    std::vector<std::pair<int,int>> selectOrder;
 
     for (int i = 0; i < gc.info.toSelectCards.size(); ++i) {
         const auto &c = gc.info.toSelectCards[i].card;
@@ -263,7 +263,7 @@ void search::ScumSearchAgent2::cardSelectPolicy(GameContext &gc) {
         }
     }
     std::sort(selectOrder.begin(), selectOrder.end(), [](auto a, auto b) { return a.second < b.second; });
-    takeAction(gc, selectOrder.front().first);
+    takeAction(gc, GameAction(static_cast<std::uint32_t>(selectOrder.front().first)));
 }
 
 void search::ScumSearchAgent2::stepRewardsPolicy(GameContext &gc) {

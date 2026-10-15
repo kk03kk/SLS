@@ -1465,7 +1465,14 @@ py::dict screen_info_state(const GameContext &gc) {
             const bool restorableRewardBottle =
                 gc.info.cardSelectFromRewards &&
                 gc.info.selectScreenType == CardSelectScreenType::BOTTLE;
-            result["complete"] = restorableRewardBottle;
+            const bool restorableRestGrid = gc.curRoom == Room::REST &&
+                (gc.info.selectScreenType == CardSelectScreenType::UPGRADE ||
+                 gc.info.selectScreenType == CardSelectScreenType::REMOVE);
+            result["complete"] = restorableRewardBottle || restorableRestGrid;
+            if (restorableRestGrid) {
+                result["rest_grid_contract"] = "sls-rest-grid-map-v1";
+                result["continuation"] = "map";
+            }
             result["transform_rng"] = static_cast<int>(gc.info.transformRng);
             result["select_type"] = static_cast<int>(gc.info.selectScreenType);
             result["select_count"] = gc.info.toSelectCount;
@@ -1613,6 +1620,13 @@ void restore_screen_info(GameContext &gc, const py::dict &state) {
             gc.info.transformRng = static_cast<RngReference>(state["transform_rng"].cast<int>());
             gc.info.selectScreenType = static_cast<CardSelectScreenType>(state["select_type"].cast<int>());
             gc.info.toSelectCount = state["select_count"].cast<int>();
+            if (state.contains("rest_grid_contract") &&
+                    (state["rest_grid_contract"].cast<std::string>() != "sls-rest-grid-map-v1" ||
+                     gc.curRoom != Room::REST ||
+                     (gc.info.selectScreenType != CardSelectScreenType::UPGRADE &&
+                      gc.info.selectScreenType != CardSelectScreenType::REMOVE))) {
+                throw std::invalid_argument("Rest GRID checkpoint has incompatible continuation");
+            }
             if (gc.info.toSelectCount > 1 && py::len(state["selected"]) > 0 &&
                 (!state.contains("grid_selection_contract") ||
                  state["grid_selection_contract"].cast<std::string>() != "sls-stock-grid-toggle-v2")) {
@@ -1700,8 +1714,9 @@ py::list run_legal_actions(const GameContext &gc) {
         if (!action.isValidAction(gc)) continue;
         py::dict value;
         value["bits"] = action.bits;
-        value["idx1"] = action.getIdx1();
-        value["idx2"] = action.getIdx2();
+        const bool card_selection = gc.screenState == ScreenState::CARD_SELECT && !action.isPotionAction();
+        value["idx1"] = card_selection ? action.getCardSelectIdx() : action.getIdx1();
+        value["idx2"] = card_selection ? 0 : action.getIdx2();
         value["idx3"] = action.getIdx3();
         value["potion"] = action.isPotionAction();
         value["potion_discard"] = action.isPotionDiscard();
@@ -1902,7 +1917,7 @@ public:
         bc_->player.curHp = 40;
         bc_->player.maxHp = 80;
         const int before = bc_->player.curHp;
-        bc_->player.heal(value);
+        bc_->player.heal(*bc_, value);
         return bc_->player.curHp - before;
     }
 
@@ -2509,7 +2524,9 @@ public:
             bc_->inputState = InputState::EXECUTING_ACTIONS;
             bc_->executeActions();
             strength_on = bc_->player.getStatus<PS::STRENGTH>();
-            bc_->player.heal(21);
+            bc_->player.heal(*bc_, 21);
+            bc_->inputState = InputState::EXECUTING_ACTIONS;
+            bc_->executeActions();
         }
         if (relic == RelicId::UNCEASING_TOP) {
             set_card_piles({}, {"Defend_R"}, {}, {});
@@ -2734,9 +2751,17 @@ public:
         if (hand.size() > CardManager::MAX_HAND_SIZE) {
             throw std::invalid_argument("Opening hand exceeds native hand limit");
         }
-        if (hand.size() + draw.size() + discard.size() + exhaust.size()
-                > CardManager::MAX_GROUP_SIZE) {
+#ifdef sts_card_manager_use_fixed_list
+        if (draw.size() > CardManager::MAX_GROUP_SIZE
+                || discard.size() > CardManager::MAX_GROUP_SIZE
+                || exhaust.size() > CardManager::MAX_GROUP_SIZE) {
             throw std::invalid_argument("Combat card count exceeds native group limit");
+        }
+#endif
+        // Production piles are vectors. The 64-slot optional fixed-list build
+        // limit does not apply to them; only card-instance identity must fit.
+        if (hand.size() + draw.size() + discard.size() + exhaust.size() > 32767) {
+            throw std::invalid_argument("Combat card count exceeds native identity range");
         }
 
         bc_->cards = CardManager();
@@ -3151,6 +3176,45 @@ public:
 
         restore_relics(game);
 
+        // The isolated checkpoint publishes these permanent run resources.
+        // Reconstruct them rather than silently retaining reset()'s starter
+        // deck/gold; combat-only piles do not describe the permanent deck.
+        if (game.contains("gold")) gc_->gold = game["gold"].cast<int>();
+        if (game.contains("master_deck")) {
+            const auto deck = game["master_deck"].cast<py::list>();
+            if (deck.size() > 32767) {
+                throw std::invalid_argument("Master deck exceeds combat card identity range");
+            }
+            gc_->deck = Deck();
+            for (const auto item : deck) {
+                const auto value = item.cast<py::dict>();
+                const int upgrades = value["upgrades"].cast<int>();
+                if (upgrades < 0) {
+                    throw std::invalid_argument("Invalid master deck upgrade count");
+                }
+                Card card = parse_card(value["id"].cast<std::string>() +
+                    (upgrades > 0 ? "+" + std::to_string(upgrades) : ""));
+                card.misc = value["misc"].cast<std::int16_t>();
+                if (card.getUpgraded() != upgrades) {
+                    throw std::invalid_argument("Master deck upgrades cannot be restored exactly");
+                }
+                gc_->deck.obtainRaw(card);
+            }
+        }
+        if (game.contains("master_deck_bottle_indices")) {
+            const auto bottles = game["master_deck_bottle_indices"].cast<py::list>();
+            if (bottles.size() != gc_->deck.bottleIdxs.size()) {
+                throw std::invalid_argument("Invalid master deck bottle count");
+            }
+            for (int index = 0; index < static_cast<int>(bottles.size()); ++index) {
+                const int value = bottles[index].cast<int>();
+                if (value < -1 || value >= gc_->deck.size()) {
+                    throw std::invalid_argument("Master deck bottle index is out of range");
+                }
+                gc_->deck.bottleIdxs[index] = value;
+            }
+        }
+
         restore_player(combat["player"].cast<py::dict>());
         restore_cards(combat);
         restore_monsters(combat);
@@ -3317,6 +3381,16 @@ public:
             multi_select_indices_.clear();
         }
         bc_->outcome = terminal_loss ? Outcome::PLAYER_LOSS : Outcome::UNDECIDED;
+        if (combat_internal.contains("terminal_display_moves")) {
+            const auto moves = combat_internal["terminal_display_moves"].cast<py::list>();
+            if (!terminal_loss || moves.size() != pre_step_moves_.size()) {
+                throw std::invalid_argument("Invalid terminal combat display moves");
+            }
+            for (int index = 0; index < static_cast<int>(moves.size()); ++index) {
+                pre_step_moves_[index] = parse_move(moves[index].cast<std::string>());
+            }
+            has_pre_step_moves_ = true;
+        }
         bc_->actionQueue.clear();
         bc_->cardQueue.clear();
 
@@ -3515,6 +3589,11 @@ public:
             master_deck.append(value);
         }
         game["master_deck"] = master_deck;
+        if (gc_->deck.anyCardBottled()) {
+            py::list master_bottles;
+            for (const int index : gc_->deck.bottleIdxs) master_bottles.append(index);
+            game["master_deck_bottle_indices"] = master_bottles;
+        }
 
         const bool terminal = escaped_ || bc_->outcome != Outcome::UNDECIDED;
         const char *outcome = (escaped_ || bc_->outcome == Outcome::PLAYER_ESCAPE)
@@ -4062,6 +4141,15 @@ private:
         combat_internal["monster_skip_turn_bits"] = bc_->monsters.skipTurn.to_ulong();
         combat_internal["potion_count"] = bc_->potionCount;
         combat_internal["potion_capacity"] = bc_->potionCapacity;
+        if (bc_->outcome == Outcome::PLAYER_LOSS && has_pre_step_moves_) {
+            // Preserve the stock GAME_OVER frame's displayed intent separately
+            // from its already rolled next move, including after restoration.
+            py::list moves;
+            for (const auto move : pre_step_moves_) {
+                moves.append(monsterMoveStrings[static_cast<int>(move)]);
+            }
+            combat_internal["terminal_display_moves"] = moves;
+        }
         combat_internal["next_unique_card_id"] = bc_->cards.nextUniqueCardId;
         py::list stasis_cards;
         for (const auto &card : bc_->cards.stasisCards) {
@@ -4406,23 +4494,8 @@ public:
             gc_->relics.add({RelicId::BAG_OF_MARBLES, -1});
         }
         gc_->setupEvent();
-        // These stock event constructors instantiate their hidden combat
-        // group immediately, consuming monsterHpRng before any option is
-        // chosen. The simulator defers combat objects, so mirror the
-        // constructor-only RNG consumption at the event probe boundary.
-        if (gc_->curEvent == Event::MASKED_BANDITS) {
-            gc_->monsterHpRng.random(30, 30); // Pointy
-            gc_->monsterHpRng.random(35, 39); // Romeo
-            gc_->monsterHpRng.random(38, 42); // Bear
-        } else if (gc_->curEvent == Event::MYSTERIOUS_SPHERE) {
-            // Stock's constructor installs the fixed "2 Orb Walkers" group.
-            // Each Orb Walker constructor consumes two HP draws (the first is
-            // overwritten), and no miscRng draw occurs at this boundary.
-            gc_->monsterHpRng.random(90, 96);
-            gc_->monsterHpRng.random(90, 96);
-            gc_->monsterHpRng.random(90, 96);
-            gc_->monsterHpRng.random(90, 96);
-        }
+        // Constructor timing belongs to shared setupEvent, not probe-only
+        // random-number adjustments that normal gameplay would bypass.
         battle_.reset();
         battle_action_count_ = 0;
         action_history_.clear();

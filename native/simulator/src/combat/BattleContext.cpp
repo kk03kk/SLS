@@ -255,7 +255,7 @@ void BattleContext::initRelics(const GameContext &gc) {
                 break;
 
             case R::BLOOD_VIAL:
-                p.heal(2);
+                p.heal(*this, 2);
                 break;
 
             case R::BRONZE_SCALES:
@@ -330,7 +330,7 @@ void BattleContext::initRelics(const GameContext &gc) {
 
             case R::PANTOGRAPH:
                 if (room == Room::BOSS) {
-                    p.heal(25);
+                    p.heal(*this, 25);
                 }
                 break;
 
@@ -1996,7 +1996,7 @@ void BattleContext::onUsePowerCard() {
     // ********* Relics onUseCard *********
 
     if (p.hasRelic<R::BIRD_FACED_URN>()) {
-        p.heal(2);
+        p.heal(*this, 2);
     }
 
     if (p.hasRelic<R::INK_BOTTLE>()) {
@@ -2530,7 +2530,7 @@ void BattleContext::drinkPotion(int idx, int target) {
             break;
 
         case Potion::FRUIT_JUICE:
-            player.increaseMaxHp(hasBark ? 10 : 5);
+            player.increaseMaxHp(*this, hasBark ? 10 : 5);
             break;
 
         case Potion::GAMBLERS_BREW:

@@ -21,6 +21,7 @@ def test_complete_registry_is_conservative_and_act4_is_explicit():
     assert all(row["status"] == "UNREVIEWED" and not row["evidence"] for row in rows.values())
     assert not ledger["final_holdout_used"]
     assert not ledger["inherited_passes"]
+    assert "CONTROLLED_CLASSIFIED_DIFFERENCE" in ledger["allowed_states"]
 
 
 def test_allocation_refuses_collision_and_preserves_order():

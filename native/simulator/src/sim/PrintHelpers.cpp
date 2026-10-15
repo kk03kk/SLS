@@ -35,7 +35,9 @@ namespace sts {
     }
 
     std::ostream& operator<<(std::ostream &os, const Deck &deck) {
-        return os << "(" << deck.size() << "): " << deck.cards;
+        os << "(" << deck.size() << "): [";
+        for (const auto &card : deck.cards) os << card << ',';
+        return os << ']';
     }
 
     void printEventListState(std::ostream &os, const GameContext &gc) {

@@ -17,6 +17,7 @@ from sls.audit.corpse_cleanup import (
 from sls.backends.simulator import native
 from sls.content.normalize import normalize_card_id
 from sls.rl.training_contract import native_source_digest
+from tools.reproduce_double_boss_entry import recorded_action_bits, select_scene_runs
 
 
 def main():
@@ -24,6 +25,7 @@ def main():
     parser.add_argument('--capture', type=Path, required=True)
     parser.add_argument('--entry-report', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--scenes', nargs='+', help='same explicit subset as entry report')
     args = parser.parse_args()
     if args.output.exists():
         raise FileExistsError('refuse to overwrite evidence')
@@ -35,13 +37,17 @@ def main():
             or not stock.get('execution_complete')):
         raise ValueError('stale source or capture identity')
     results = []
-    for row, first in zip(stock['runs'], entry['runs'], strict=True):
+    if entry.get('selected_scenes') != args.scenes:
+        raise ValueError('flow and entry scene selections differ')
+    for row, first in zip(select_scene_runs(stock['runs'], args.scenes), entry['runs'], strict=True):
         if (row['seed'] != first['seed'] or row['actions'] != row['scene']['actions']
                 or any(not v['equal'] for v in first['initial_comparisons'].values())
                 or any(not v['equal'] for v in first['comparisons'].values())):
             raise ValueError('initial/entry equivalence or declared script unproved')
         run = native.LightspeedRunState()
         run.load_state(first['initial'])
+        restored = native.LightspeedRunState()
+        restored.load_state(run.snapshot())
         boundaries = []
         for index, action in enumerate(row['resolved_actions']):
             if action['kind'] == 'proceed_to_second_boss':
@@ -49,18 +55,26 @@ def main():
                 # second fight. Compare at its recorded stable entry boundary.
                 pass
             else:
-                bits = (2147483648 if action['kind'] == 'end_turn'
-                        else action['card_index'] - 1 | (action['target_index'] << 16))
-                if not any(a['bits'] == bits for a in run.legal_actions()):
+                bits = recorded_action_bits(action)
+                if (not any(a['bits'] == bits for a in run.legal_actions())
+                        or not any(a['bits'] == bits for a in restored.legal_actions())):
                     raise ValueError('same semantic action unavailable')
                 run.step(bits)
+                restored.step(bits)
             state = run.snapshot()
+            continuation_state = restored.snapshot()
+            continuation_equal = (continuation_state == state
+                                  and restored.legal_actions() == run.legal_actions())
             restored = native.LightspeedRunState()
             restored.load_state(state)
             restored_state = restored.snapshot()
             restore_equal = restored_state == state and restored.legal_actions() == run.legal_actions()
             payload = row['boundaries'][index + 1]
-            result = {'boundary': index + 1, 'native_state': state, 'restore_equal': restore_equal}
+            result = {'boundary': index + 1, 'native_state': state, 'restore_equal': restore_equal,
+                      'restored_continuation_equal': continuation_equal,
+                      'restored_continuation_action_executed': action['kind'] != 'proceed_to_second_boss'}
+            if not continuation_equal:
+                result['continuation_differences'] = structured_differences(state, continuation_state)
             if not restore_equal:
                 result['restored_state'] = restored_state
                 result['restore_differences'] = structured_differences(state, restored_state)
@@ -110,6 +124,7 @@ def main():
                         'endpoint_status': ('ENUMERATED_ENDPOINT_FIELDS_COMPARED' if final_comparisons
                                             else 'REQUIRES_STOCK_VICTORY_ROOM_ENTRY_FOR_FINAL_RNG_AND_RESOURCE_ALIGNMENT')})
     report = {'schema': 'sls-double-boss-flow-replay-v1', 'runs': results,
+              'selected_scenes': args.scenes,
               'native_source_sha256': native.NATIVE_SOURCE_SHA256,
               'capture_sha256': entry['capture_sha256'],
               'entry_report_sha256': hashlib.sha256(args.entry_report.read_bytes()).hexdigest()}

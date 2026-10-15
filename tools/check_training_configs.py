@@ -219,6 +219,11 @@ def validate(path: Path, payload: dict) -> list[str]:
         return validate_auxiliary(path, payload)
     problems: list[str] = []
     stages = payload.get("stages") or {}
+    try:
+        from sls.rl.value_adaptation import config_from_payload
+        config_from_payload(payload)
+    except (ValueError, TypeError, KeyError) as error:
+        problems.append(f"invalid value adaptation: {error}")
     if "selection_objective" in run and (
         run["selection_objective"] != "ACT2_CLEAR_COUNT" or run.get("profile") != "IRONCLAD_A20_ACT2"
         or run.get("workflow") != "single-stage" or run.get("selection_progress_guard", False)

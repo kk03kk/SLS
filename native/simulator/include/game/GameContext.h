@@ -85,7 +85,7 @@ namespace sts {
         CardSelectScreenType selectScreenType = CardSelectScreenType::INVALID;
         bool cardSelectFromRewards = false;
         int toSelectCount = 0;
-        fixed_list<SelectScreenCard, Deck::MAX_SIZE> toSelectCards;
+        std::vector<SelectScreenCard> toSelectCards;
         fixed_list<SelectScreenCard,3> haveSelectedCards;
 
         // Events

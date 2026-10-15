@@ -1,0 +1,30 @@
+"""Flight reduction waits behind Headbutt's discard selection in actual stock."""
+
+import gzip
+import json
+from pathlib import Path
+
+from sls.audit.decision_identity import mapped_action
+from sls.backends.simulator import SimulatorBackend
+from sls.contracts import Action
+from sls.curriculum import ironclad_fullrun_profile
+
+
+def test_flight_reduction_waits_for_headbutt_selection_and_restores_continuation():
+    fixture = json.loads(gzip.decompress((Path(__file__).parents[1] /
+        "fixtures/regressions/flight-headbutt-final-131213000.json.gz").read_bytes()))
+    backend = SimulatorBackend(ironclad_fullrun_profile(20, require_heart=True))
+    backend.load_checkpoint(fixture["before"])
+    decision = backend.step(Action.from_dict(fixture["action"])).decision
+    assert decision.observation.to_dict() == fixture["stock_selection"]
+    checkpoint = json.loads(json.dumps(backend.checkpoint()))
+    restored = SimulatorBackend(ironclad_fullrun_profile(20, require_heart=True))
+    restored_decision = restored.load_checkpoint(checkpoint)
+    assert restored.checkpoint() == backend.checkpoint()
+    action = mapped_action(fixture["selection_action"], fixture["stock_selection"],
+                          decision.observation.to_dict())
+    restored_action = next(a for a in restored_decision.actions if a.to_dict() == action)
+    decision = backend.step(Action.from_dict(action)).decision
+    restored.step(restored_action)
+    assert restored.checkpoint() == backend.checkpoint()
+    assert decision.observation.to_dict() == fixture["after_selection"]

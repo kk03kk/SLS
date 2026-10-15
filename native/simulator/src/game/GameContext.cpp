@@ -881,6 +881,23 @@ void GameContext::setupEvent() { // todo necronomicon event
     const bool unfavorable = ascension >= 15;
 
     switch (curEvent) {
+        case Event::MASKED_BANDITS:
+        case Event::MYSTERIOUS_SPHERE: {
+            // Stock creates these room monsters in the event constructor,
+            // before either the fight or leave/pay choice is presented.
+            // Only construction runs here: intents/pre-battle powers wait
+            // until combat. BattleContext reconstructs this same group from
+            // the floor's initial HP stream, ending at this identical state.
+            BattleContext construction;
+            construction.ascension = ascension;
+            construction.monsterHpRng = monsterHpRng;
+            construction.monsters.createMonsters(construction,
+                curEvent == Event::MASKED_BANDITS
+                    ? MonsterEncounter::MASKED_BANDITS_EVENT
+                    : MonsterEncounter::MYSTERIOUS_SPHERE_EVENT);
+            monsterHpRng = construction.monsterHpRng;
+            break;
+        }
         case Event::BIG_FISH:
             info.hpAmount0 = fractionMaxHp(1/3.0f, FLOOR);
             break;
@@ -1403,7 +1420,7 @@ bool GameContext::obtainRelic(RelicId r) {
                 break; // if we have no cards at all
             }
 
-            openCardSelectScreen(CardSelectScreenType::TRANSFORM_UPGRADE, std::min(info.toSelectCards.size(), 3), false);
+            openCardSelectScreen(CardSelectScreenType::TRANSFORM_UPGRADE, std::min(static_cast<int>(info.toSelectCards.size()), 3), false);
             opensScreen = true;
             break;
         }
@@ -1899,7 +1916,7 @@ int GameContext::getRandomPlayerPotionIdx() {
 }
 
 int GameContext::getRandomPlayerNonBasicCardIdx() {
-    fixed_list<int,Deck::MAX_SIZE> cardIdxs;
+    std::vector<int> cardIdxs;
 
     for (int i = 0; i < deck.cards.size(); ++i) {
         const auto &c = deck.cards[i];
@@ -2094,17 +2111,19 @@ void GameContext::openTreasureRoomChest() {
     }
 
     auto relic = returnRandomRelic(info.tier, false);
+    reward.addRelic(relic);
+    reward.sapphireKey = !hasKey(Key::SAPPHIRE_KEY);
     if (hasRelic(RelicId::NLOTHS_HUNGRY_FACE) && relics.getRelicValue(RelicId::NLOTHS_HUNGRY_FACE) > 0) {
         // NlothsMask.setCounter(0) immediately calls usedUp(), whose public
         // counter is -2.  Preserve that stock-visible terminal counter rather
         // than leaving the internal charge at zero.
         relics.getRelicValueRef(RelicId::NLOTHS_HUNGRY_FACE) = -2;
-    } else {
-        reward.addRelic(relic);
-    }
-
-    if (!hasKey(Key::SAPPHIRE_KEY)) {
-        reward.sapphireKey = true;
+        // Stock onChestOpenAfter removes the first relic, not necessarily
+        // the primary one. Sapphire is linked to the primary (last) relic;
+        // removing it also removes its adjacent key reward. Matryoshka's
+        // earlier bonus relic absorbs the mask without losing that link.
+        if (reward.relicCount == 1) reward.sapphireKey = false;
+        reward.removeRelicReward(0);
     }
 
     openCombatRewardScreen(reward);
@@ -3905,7 +3924,7 @@ void GameContext::chooseSelectCardScreenOption(int idx) {
     }
     bool isLastCard = info.haveSelectedCards.size() + 1 == info.toSelectCount;
     info.haveSelectedCards.push_back(info.toSelectCards[idx]);
-    if (info.toSelectCount == 1) info.toSelectCards.remove(idx);
+    if (info.toSelectCount == 1) info.toSelectCards.erase(info.toSelectCards.begin() + idx);
 
     if (!isLastCard) { // todo maybe refactor so dont remove card if last
         return;

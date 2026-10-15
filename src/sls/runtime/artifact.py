@@ -127,7 +127,9 @@ def export_policy_artifact(
     contract = payload.get("contract")
     if not isinstance(contract, Mapping):
         raise ValueError("training checkpoint has no model transfer contract")
-    model = policy_from_training_checkpoint(payload)
+    # Export constructs an inference copy; it must not advance a live trainer's RNG.
+    with torch.random.fork_rng(devices=[]):
+        model = policy_from_training_checkpoint(payload)
     return save_policy_artifact(
         model, output, ascension_min=ascension_min,
         ascension_max=ascension_max, goal=goal, provenance=contract,

@@ -1,0 +1,17 @@
+{
+  "schema": "sls-curriculum-simulator-transition-v1",
+  "status": "VERIFIED_RULE_CORRECTION",
+  "semantics_revision": "sls-act12-foundation-taskmaster-death-queue-v1",
+  "source_native_source_sha256": "1e30bb6cfa32f600cd63c59983c14ab8928fac4452c1586d630295d2c6ff9453",
+  "target_native_source_sha256": "27eba74232319e8138b300f042c3373ec7cec0d030ba8d40a2689cf171f67e44",
+  "source_profile": "IRONCLAD_A20_ACT1",
+  "target_profile": "IRONCLAD_A20_ACT2",
+  "transfer_mode": "weights-only",
+  "exact_resume_allowed": false,
+  "reason": "Initialize a new Act2 curriculum with all frozen 90M model weights; reset Adam, environments and memory under the qualified current rules.",
+  "evidence": {
+    "transition-before.json": "52feffe583741081900a43d3d3b271cd48a80fa50ed931fbbae437290db73656",
+    "transition-after.json": "998458f41095e8ab530f6956520f1f81c61f42b6e8cd4a82d8e0725448f6113f",
+    "qualification.json": "936b429e49e4d6fe53cbafccc94eeac9a87cd9871bf8072d38b9b35a12bf4f4e"
+  }
+}

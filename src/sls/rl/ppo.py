@@ -69,16 +69,19 @@ def advantage_domain_diagnostics(
     advantages: torch.Tensor,
     normalized_advantages: torch.Tensor,
     domains: torch.Tensor,
+    *, normalization: str = "domain",
 ) -> dict[str, float]:
     """Per-domain advantage statistics for the normalization actually applied.
 
-    ``normalize_advantages_by_domain`` divides each domain by its own standard
-    deviation, so ``advantage_scale_<domain>`` is exactly the relative gradient
-    reweighting applied between domains. Without these numbers the reweighting is
-    invisible in the produced metrics, even though it changes the objective.
+    ``advantage_scale_<domain>`` reports the actual inverse standard deviation:
+    one common value for global mode, or a separate value per domain otherwise.
     """
 
     metrics: dict[str, float] = {}
+    if normalization not in {"domain", "global"}:
+        raise ValueError("unsupported advantage normalization")
+    global_scale = 1.0 / (float(advantages.std(unbiased=False)) + 1e-8)
+    metrics["advantage_normalization_global"] = float(normalization == "global")
     total = advantages.numel()
     for domain, name in enumerate(DOMAIN_NAMES):
         mask = domains == domain
@@ -94,7 +97,7 @@ def advantage_domain_diagnostics(
         std = float(values.std(unbiased=False))
         metrics[f"advantage_mean_{name}"] = float(values.mean())
         metrics[f"advantage_std_{name}"] = std
-        metrics[f"advantage_scale_{name}"] = 1.0 / (std + 1e-8)
+        metrics[f"advantage_scale_{name}"] = global_scale if normalization == "global" else 1.0 / (std + 1e-8)
         metrics[f"advantage_normalized_std_{name}"] = float(
             normalized_advantages[mask].std(unbiased=False)
         )
@@ -173,8 +176,14 @@ class PPOConfig:
     max_episode_steps: int = 4_096
     max_boundary_visits: int = 4
     limit_failure_reward: float = -1.0
+    advantage_normalization: str = "domain"
+    gradient_diagnostic_interval: int = 0
 
     def __post_init__(self) -> None:
+        if self.advantage_normalization not in {"domain", "global"}:
+            raise ValueError("advantage_normalization must be domain or global")
+        if type(self.gradient_diagnostic_interval) is not int or self.gradient_diagnostic_interval < 0:
+            raise ValueError("gradient_diagnostic_interval must be a nonnegative integer")
         for field in (
             "learning_rate", "gamma", "gae_lambda", "clip_ratio",
             "value_coefficient", "entropy_coefficient", "entropy_final",
@@ -275,6 +284,8 @@ class PPOTrainer:
         self.episode_limits = [EpisodeLimitState.initial(item) for item in self.decisions]
         self.termination_counts = {reason: 0 for reason in TERMINATION_REASONS}
         self.last_collect_terminations = {reason: 0 for reason in TERMINATION_REASONS}
+        self.last_update_context: dict[str, object] = {}
+        self.last_batch_metrics: dict[str, float] = {}
 
     def _take_seeds(self, count: int) -> list[int]:
         if (
@@ -298,6 +309,7 @@ class PPOTrainer:
         memory_steps: list[torch.Tensor] = []
         previous_action_steps: list[torch.Tensor] = []
         previous_reward_steps: list[torch.Tensor] = []
+        act_steps, entropy_steps, reason_steps = [], [], []
         collect_terminations = {reason: 0 for reason in TERMINATION_REASONS}
         neow_count = 0
         neow_swap_probability = 0.0
@@ -326,6 +338,9 @@ class PPOTrainer:
                 previous_rewards=self.previous_rewards,
             )
             distribution = Categorical(logits=output.logits)
+            act_steps.append(torch.tensor([int(d.observation.run.act) for d in self.decisions]))
+            choices = (~batch.action_padding).sum(dim=1).clamp_min(2).to(output.logits.dtype)
+            entropy_steps.append((distribution.entropy() / choices.log()).detach().cpu())
             actions = distribution.sample()
             # Materialize rollout outputs before entering the serial native
             # simulator step.  Reusing actions_cpu also avoids transferring
@@ -379,6 +394,7 @@ class PPOTrainer:
             terminals = []
             next_decisions = [item.decision for item in transitions]
             reset_indices: list[int] = []
+            step_reasons = []
             for index, (current, item) in enumerate(zip(self.decisions, transitions)):
                 reason: str | None = None
                 terminal = bool(item.terminated or item.truncated)
@@ -413,12 +429,14 @@ class PPOTrainer:
                     )
                 rewards.append(reward)
                 terminals.append(terminal)
+                step_reasons.append(reason)
                 if reason is not None:
                     collect_terminations[reason] += 1
                     if self.start_curriculum is not None:
                         self.start_curriculum.note_terminal(index, reason)
                     self.termination_counts[reason] += 1
                     reset_indices.append(index)
+            reason_steps.append(tuple(step_reasons))
             reward_steps.append(torch.tensor(rewards, dtype=torch.float32))
             terminal_steps.append(torch.tensor(terminals, dtype=torch.bool))
             next_memory = output.next_memory.detach()
@@ -499,12 +517,22 @@ class PPOTrainer:
             torch.stack(memory_steps),
             torch.stack(previous_action_steps),
             torch.stack(previous_reward_steps),
+            torch.stack(act_steps),
+            torch.stack(entropy_steps),
+            tuple(reason_steps),
         )
 
     def optimize(self, rollout: RolloutBatch) -> dict[str, float]:
+        self.last_update_context = {
+            "phase": "optimize", "attempted_update": self.update + 1,
+            "environment_steps": self.environment_steps,
+            "optimizer_steps_completed": 0,
+        }
+        self.last_batch_metrics: dict[str, float] = {}
         chunks = self._sequence_chunks(rollout)
-        normalized_advantages = normalize_advantages_by_domain(
-            rollout.advantages, rollout.encoded_decisions,
+        normalized_advantages = (
+            normalize_advantages(rollout.advantages) if self.config.advantage_normalization == "global"
+            else normalize_advantages_by_domain(rollout.advantages, rollout.encoded_decisions)
         )
         metric_names = (
             "policy", "value", "entropy", "loss", "approx_kl", "gradient_norm",
@@ -518,6 +546,10 @@ class PPOTrainer:
         }
         updates = 0
         self.model.train()
+        gradient_metrics = {}
+        if self.config.gradient_diagnostic_interval and (self.update + 1) % self.config.gradient_diagnostic_interval == 0:
+            from sls.rl.learning_diagnostics import shared_gradients
+            gradient_metrics = shared_gradients(self, rollout, chunks[:1], normalized_advantages)
         entropy_progress = min(
             1.0,
             max(
@@ -532,8 +564,12 @@ class PPOTrainer:
         )
         epoch_diagnostics: dict[str, float] = {}
         for epoch in range(self.config.epochs):
+            self.last_update_context["epoch"] = epoch + 1
             self.random.shuffle(chunks)
             for start in range(0, len(chunks), self.config.minibatch_sequences):
+                self.last_update_context.update({
+                    "phase": "minibatch_forward", "minibatch": start // self.config.minibatch_sequences,
+                })
                 selected = chunks[start:start + self.config.minibatch_sequences]
                 log_probabilities, values, entropy_values = self._evaluate_sequences(
                     rollout, selected,
@@ -568,12 +604,16 @@ class PPOTrainer:
                     - entropy_coefficient * entropy
                 )
                 self.optimizer.zero_grad(set_to_none=True)
+                self.last_update_context["phase"] = "backward"
                 loss.backward()
+                self.last_update_context["phase"] = "gradient_clip"
                 gradient_norm = torch.nn.utils.clip_grad_norm_(
                     self.model.parameters(), self.config.max_gradient_norm,
                     error_if_nonfinite=True,
                 )
+                self.last_update_context["phase"] = "optimizer_step"
                 self.optimizer.step()
+                self.last_update_context["optimizer_steps_completed"] += 1
                 approximate_kl, _ = policy_distance_metrics(
                     old_log_probabilities, log_probabilities, self.config.clip_ratio,
                 )
@@ -595,6 +635,7 @@ class PPOTrainer:
             # approx_kl_epoch_2 measured different estimators and could not be
             # compared, and epoch 1 paid a second full forward pass over the
             # rollout for a diagnostic that is never used for early stopping.
+            self.last_update_context["phase"] = "policy_diagnostics"
             epoch_kl, epoch_clip_fraction, diagnostic_fraction = (
                 self._policy_diagnostics(
                     rollout,
@@ -611,6 +652,7 @@ class PPOTrainer:
         self.update += 1
         reduced = torch.stack(tuple(totals[key] for key in metric_names)).div(updates)
         result = dict(zip(metric_names, reduced.detach().cpu().tolist()))
+        result.update(gradient_metrics)
         result["epochs_completed"] = epochs_completed
         result["entropy_coefficient"] = entropy_coefficient
         result["entropy_schedule_progress"] = entropy_progress
@@ -634,7 +676,10 @@ class PPOTrainer:
         domains = decision_domains(rollout.encoded_decisions)
         result.update(advantage_domain_diagnostics(
             rollout.advantages, normalized_advantages, domains,
+            normalization=self.config.advantage_normalization,
         ))
+        from sls.rl.learning_diagnostics import act_diagnostics
+        result.update(act_diagnostics(rollout))
         tensors = [p.detach() for p in self.model.parameters()]
         tensors.extend(value for state in self.optimizer.state.values() for value in state.values()
                        if isinstance(value, torch.Tensor))
@@ -644,7 +689,8 @@ class PPOTrainer:
             not math.isfinite(value) for value in {**result, **epoch_diagnostics}.values()
         ):
             raise FloatingPointError("non-finite PPO model, Adam state or metrics")
-        return {**result, **epoch_diagnostics}
+        self.last_update_context["phase"] = "complete"
+        return {**result, **epoch_diagnostics, **self.last_batch_metrics}
 
     def _sequence_chunks(self, rollout: RolloutBatch) -> list[tuple[int, int]]:
         time_steps, environments = rollout.shape
@@ -689,13 +735,26 @@ class PPOTrainer:
         memory = rollout.input_memories[starts, environments].to(self.device)
         sequence_length = self.config.recurrent_sequence_length
         sequence_count = len(chunks)
-        encoded = (
+        encoded = tuple(
             rollout.encoded_decisions[int(time_indices[sequence, offset])][
                 int(environment_indices[sequence, offset])
             ]
             for offset in range(sequence_length)
             for sequence in range(sequence_count)
         )
+        batch_size = len(encoded)
+        entities = max(item.entity_count for item in encoded)
+        actions_count = max(item.action_count for item in encoded)
+        shape = {
+            "decisions": batch_size, "entities": entities, "actions": actions_count,
+            "sequence_length": sequence_length, "sequences": sequence_count,
+            "entity_padding_fraction": 1 - sum(item.entity_count for item in encoded) / (batch_size * entities),
+            "action_padding_fraction": 1 - sum(item.action_count for item in encoded) / (batch_size * actions_count),
+        }
+        self.last_update_context.update({"batch": shape, "sequence_chunks": chunks})
+        for name in ("decisions", "entities", "actions", "entity_padding_fraction", "action_padding_fraction"):
+            key = f"batch_max_{name}"
+            self.last_batch_metrics[key] = max(self.last_batch_metrics.get(key, 0.0), float(shape[name]))
         batch = PolicyBatch.from_encoded(encoded).to(self.device)
         features = self.model.encode_features(*batch.model_inputs())
         episode_starts = rollout.episode_starts[
@@ -789,6 +848,11 @@ class PPOTrainer:
         return diagnostics[0], diagnostics[1], count / total_count
 
     def train_update(self) -> dict[str, float]:
+        self.last_update_context = {
+            "phase": "collect", "attempted_update": self.update + 1,
+            "environment_steps_before_collect": self.environment_steps,
+            "optimizer_steps_completed": 0,
+        }
         started = time.perf_counter()
         rollout = self.collect()
         self.last_collect_seconds = time.perf_counter() - started

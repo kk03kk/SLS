@@ -1,0 +1,102 @@
+{
+  "schema": "sls-native-rule-correction-bridge-v1",
+  "before_native_source_sha256": "27eba74232319e8138b300f042c3373ec7cec0d030ba8d40a2689cf171f67e44",
+  "after_native_source_sha256": "90628cf641dbd7718f9c9041465b48ca6806e383df4f888025fafb211496d18d",
+  "changed_files": [
+    {
+      "path": "native/simulator/include/combat/Player.h",
+      "before_sha256": "558091ba65c36dd93b6ecd070ecaecf9ab2ae5afe645eab6507b4e58ce67d4f6",
+      "after_sha256": "2714af3943f8525b6e27ea2f36b2f5871862a5caa13a02903b31312ba1f1fc2d"
+    },
+    {
+      "path": "native/simulator/include/game/Deck.h",
+      "before_sha256": "4d7944bd68a9dfdac74621d42cc574b14177f806a545fcb87ce37fb824b87d1a",
+      "after_sha256": "9cc54dc8e4dcf0982ce580a908ffb788d1367103affcf2f647d8b41b6d19695b"
+    },
+    {
+      "path": "native/simulator/include/game/GameContext.h",
+      "before_sha256": "8e0b4e761b5c8d7226fc387fbe08b3c4e4a4ffe812eb35d89e06430d452867e4",
+      "after_sha256": "9ad2eb06459c170dd1eae8e363f528f12d562ccadc38c0bdaae508e011201e1c"
+    },
+    {
+      "path": "native/simulator/include/sim/search/GameAction.h",
+      "before_sha256": "8ee4c15aa3d3bafc5c43313c1b910a8af4cf23eef9fc791d8703e1b0d9110b81",
+      "after_sha256": "d6ebbf498b538f10232e9a359fd7942f9d7ec67b03d12bc863fb14478d7d18e5"
+    },
+    {
+      "path": "native/simulator/python/module.cpp",
+      "before_sha256": "b437821d6980f2a86a2ad274a4215638e6a5fb4d9fb6183ba9f43c6198dbce1d",
+      "after_sha256": "5e4abaec0079a06cf685527fafaa88000b3109bcfafee1d1ecac5465ed302cac"
+    },
+    {
+      "path": "native/simulator/src/combat/Actions.cpp",
+      "before_sha256": "00a1c6372488debeba279fc64313005f6fc9831c5be036871536d46453722193",
+      "after_sha256": "85cb94b5d66a2a60acede7207194f0c9cb15355d8049b2bd26d65c2e3e03a2a7"
+    },
+    {
+      "path": "native/simulator/src/combat/BattleContext.cpp",
+      "before_sha256": "055967d64b3364d31b17ddbd1bee9ca1dd32fb64a5f697c62dd752c0bd6a2d85",
+      "after_sha256": "d9c0f595a97cc24bb94bb33a5f06cf6c04326f60f86cdc193616c57b8c1b3ebf"
+    },
+    {
+      "path": "native/simulator/src/combat/CardManager.cpp",
+      "before_sha256": "1ef01612375cdc27f387779d4e841b7ed0e53143bf573941c9d7ca3dd7b7b386",
+      "after_sha256": "77d8890739b9094383e3d956afcad62d9e830883a81df716425eacd92cc5ad6f"
+    },
+    {
+      "path": "native/simulator/src/combat/Monster.cpp",
+      "before_sha256": "926aed9a6b60153f997d00a07a68815519a695db3dcf4ba03dd6a9304058452d",
+      "after_sha256": "941b2c95b41129d7a45568e6388c15733c60f5cee8f2649361591f5266cd727c"
+    },
+    {
+      "path": "native/simulator/src/combat/MonsterSpecific.cpp",
+      "before_sha256": "60579b875cb1a2ed1f103a67e9f9769c50e32a655c0112650adbc44847f3f72d",
+      "after_sha256": "764bbcdbbb015cb2ec15050511f595fe600ef2146292cc26984f9438c885b309"
+    },
+    {
+      "path": "native/simulator/src/combat/Player.cpp",
+      "before_sha256": "a44f0181564dce28fbfd68dfa939a0ec2be4d7f1ecbf0687d27f05e455adf378",
+      "after_sha256": "c944c65d403c6ddc3bd249370c1c229eb04b64c67ba3499471bd99edc36f1f25"
+    },
+    {
+      "path": "native/simulator/src/game/Deck.cpp",
+      "before_sha256": "c5c18dcd930b072c68a3016ec5f9f4ad4320935a720466f0f1e825c55ebf678f",
+      "after_sha256": "e9f0505d8e9f877ad4302b8cfee99387ca40962266cfbacde6b37368ef50b875"
+    },
+    {
+      "path": "native/simulator/src/game/GameContext.cpp",
+      "before_sha256": "8ffdb58f966a45167ef4e7fc0fd5ed14961fc1bb313a7d95e2512fb612cbcefb",
+      "after_sha256": "350a0502fd2639227322f9b1ce35273e9170dbb062fc1c69d6734b51a5a8eef0"
+    },
+    {
+      "path": "native/simulator/src/sim/PrintHelpers.cpp",
+      "before_sha256": "147b41c785e6ca98ee50897e3d70c541c27076a262437911c41c1bf29736091e",
+      "after_sha256": "6177d09fabeeb083ea41d895082b59af9c31459e7767b405a414c6237b03a4f2"
+    },
+    {
+      "path": "native/simulator/src/sim/search/GameAction.cpp",
+      "before_sha256": "9324c03207017864c3f3b58c0df18e2fd7a9977c5c102a22c128c565333512ba",
+      "after_sha256": "265d38292b5625fbcf1822a6170104290f4ce4409618370656893e0abde96559"
+    },
+    {
+      "path": "native/simulator/src/sim/search/ScumSearchAgent2.cpp",
+      "before_sha256": "46218dd3f9823241ef424ef83b88a0263202140c40450ce5091615b1dda40265",
+      "after_sha256": "a8e37fdc1602c9ff6aef7721d0f268bb4b6023e5158eea14f9190cbc1fb22809"
+    },
+    {
+      "path": "native/simulator/src/sim/search/SimpleAgent.cpp",
+      "before_sha256": "1e0ec90c05cf723691c7c594fd75217e84d6723a76e84cde7cbae116768f7328",
+      "after_sha256": "6ae93909056548c8a6592bd7b31702b73f3210338f6d598aa610bc4cd4c2f715"
+    }
+  ],
+  "current_rule_validation": "qualification.json",
+  "weights_only": true,
+  "exact_resume_allowed": false,
+  "review": "Replayed fixed Act1\u20132 corpus plus changed-rule regression; no old pass inherited",
+  "impacted_mechanisms": [
+    "death/revival/action order",
+    "battle/permanent deck restore and large piles",
+    "event constructor RNG timing",
+    "chest key/relic interactions"
+  ]
+}

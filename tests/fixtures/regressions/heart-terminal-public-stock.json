@@ -1,0 +1,1538 @@
+{
+  "schema": "sls-heart-terminal-public-stock-v1",
+  "scope": "Original selected ending public fields and independent terminal proof; not full combat cleanup or natural run",
+  "capture_sha256": "a54be40958e50dc1837b09c5573470c1e81abccea500030b14be1d9df3112891",
+  "scene_manifest_sha256": "1f08870e00d7e07cb023c8bd6ddc810cf986788577fc3deaec11d45cf86c1b27",
+  "stock_jar_sha256": "cfad868ac8d65a88e71a0bf096fb09f78811e553effe0787c5309a655e081673",
+  "cases": [
+    {
+      "seed": 131200126,
+      "stock_terminal": {
+        "game_state": {
+          "screen_type": "GAME_OVER",
+          "screen_state": {
+            "score": 750,
+            "victory": false
+          },
+          "seed": 131200126,
+          "deck": [
+            {
+              "exhausts": false,
+              "cost": -2,
+              "cost_for_turn": -2,
+              "bottled_lightning": false,
+              "base_cost": -2,
+              "special_data": 0,
+              "retain": false,
+              "free_to_play_once": false,
+              "bottled_tornado": false,
+              "type": "CURSE",
+              "ethereal": true,
+              "uuid": "bb942ec6-cd96-4ff7-a9ef-6128573fabc9",
+              "upgrades": 0,
+              "base_damage": -1,
+              "has_target": false,
+              "is_playable": false,
+              "self_retain": false,
+              "name": "\u8fdb\u9636\u4e4b\u707e",
+              "bottled_flame": false,
+              "id": "AscendersBane",
+              "rarity": "SPECIAL"
+            },
+            {
+              "exhausts": false,
+              "cost": 1,
+              "cost_for_turn": 1,
+              "bottled_lightning": false,
+              "base_cost": 1,
+              "special_data": 0,
+              "retain": false,
+              "free_to_play_once": false,
+              "bottled_tornado": false,
+              "type": "ATTACK",
+              "ethereal": false,
+              "uuid": "0f1561ca-1f28-47ed-afab-e4bae73361ef",
+              "upgrades": 1,
+              "base_damage": 9,
+              "has_target": true,
+              "is_playable": false,
+              "self_retain": false,
+              "name": "\u6253\u51fb+",
+              "bottled_flame": false,
+              "id": "Strike_R",
+              "rarity": "BASIC"
+            },
+            {
+              "exhausts": false,
+              "cost": 1,
+              "cost_for_turn": 1,
+              "bottled_lightning": false,
+              "base_cost": 1,
+              "special_data": 0,
+              "retain": false,
+              "free_to_play_once": false,
+              "bottled_tornado": false,
+              "type": "ATTACK",
+              "ethereal": false,
+              "uuid": "ed29ec2e-45d6-4c8e-9716-5efad53fff74",
+              "upgrades": 0,
+              "base_damage": 6,
+              "has_target": true,
+              "is_playable": false,
+              "self_retain": false,
+              "name": "\u6253\u51fb",
+              "bottled_flame": false,
+              "id": "Strike_R",
+              "rarity": "BASIC"
+            },
+            {
+              "exhausts": false,
+              "cost": 1,
+              "cost_for_turn": 1,
+              "bottled_lightning": false,
+              "base_cost": 1,
+              "special_data": 0,
+              "retain": false,
+              "free_to_play_once": false,
+              "bottled_tornado": false,
+              "type": "ATTACK",
+              "ethereal": false,
+              "uuid": "a9d28c54-59f7-438c-8643-66d7997bb500",
+              "upgrades": 0,
+              "base_damage": 6,
+              "has_target": true,
+              "is_playable": false,
+              "self_retain": false,
+              "name": "\u6253\u51fb",
+              "bottled_flame": false,
+              "id": "Strike_R",
+              "rarity": "BASIC"
+            },
+            {
+              "exhausts": false,
+              "cost": 1,
+              "cost_for_turn": 1,
+              "bottled_lightning": false,
+              "base_cost": 1,
+              "special_data": 0,
+              "retain": false,
+              "free_to_play_once": false,
+              "bottled_tornado": false,
+              "type": "ATTACK",
+              "ethereal": false,
+              "uuid": "7fc6fa3e-f914-47c6-84f0-fc0e93ccd405",
+              "upgrades": 0,
+              "base_damage": 6,
+              "has_target": true,
+              "is_playable": false,
+              "self_retain": false,
+              "name": "\u6253\u51fb",
+              "bottled_flame": false,
+              "id": "Strike_R",
+              "rarity": "BASIC"
+            },
+            {
+              "exhausts": false,
+              "cost": 1,
+              "cost_for_turn": 1,
+              "bottled_lightning": false,
+              "base_cost": 1,
+              "special_data": 0,
+              "retain": false,
+              "free_to_play_once": false,
+              "bottled_tornado": false,
+              "type": "ATTACK",
+              "ethereal": false,
+              "uuid": "1b37a397-b814-4c9c-9caa-cbef2f98f5f4",
+              "upgrades": 0,
+              "base_damage": 6,
+              "has_target": true,
+              "is_playable": false,
+              "self_retain": false,
+              "name": "\u6253\u51fb",
+              "bottled_flame": false,
+              "id": "Strike_R",
+              "rarity": "BASIC"
+            },
+            {
+              "exhausts": false,
+              "cost": 1,
+              "cost_for_turn": 1,
+              "bottled_lightning": false,
+              "base_cost": 1,
+              "special_data": 0,
+              "retain": false,
+              "free_to_play_once": false,
+              "bottled_tornado": false,
+              "type": "SKILL",
+              "ethereal": false,
+              "uuid": "003a4eba-e747-4e5f-a00e-9e8c4fa219f6",
+              "upgrades": 0,
+              "base_damage": -1,
+              "has_target": false,
+              "is_playable": false,
+              "self_retain": false,
+              "name": "\u9632\u5fa1",
+              "bottled_flame": false,
+              "id": "Defend_R",
+              "rarity": "BASIC"
+            },
+            {
+              "exhausts": false,
+              "cost": 1,
+              "cost_for_turn": 1,
+              "bottled_lightning": false,
+              "base_cost": 1,
+              "special_data": 0,
+              "retain": false,
+              "free_to_play_once": false,
+              "bottled_tornado": false,
+              "type": "SKILL",
+              "ethereal": false,
+              "uuid": "4c8c4943-69cb-40aa-9153-686ca7809085",
+              "upgrades": 0,
+              "base_damage": -1,
+              "has_target": false,
+              "is_playable": false,
+              "self_retain": false,
+              "name": "\u9632\u5fa1",
+              "bottled_flame": false,
+              "id": "Defend_R",
+              "rarity": "BASIC"
+            },
+            {
+              "exhausts": false,
+              "cost": 1,
+              "cost_for_turn": 1,
+              "bottled_lightning": false,
+              "base_cost": 1,
+              "special_data": 0,
+              "retain": false,
+              "free_to_play_once": false,
+              "bottled_tornado": false,
+              "type": "SKILL",
+              "ethereal": false,
+              "uuid": "e552594e-189f-4b51-b099-5389dbc7b30e",
+              "upgrades": 0,
+              "base_damage": -1,
+              "has_target": false,
+              "is_playable": false,
+              "self_retain": false,
+              "name": "\u9632\u5fa1",
+              "bottled_flame": false,
+              "id": "Defend_R",
+              "rarity": "BASIC"
+            },
+            {
+              "exhausts": false,
+              "cost": 1,
+              "cost_for_turn": 1,
+              "bottled_lightning": false,
+              "base_cost": 1,
+              "special_data": 0,
+              "retain": false,
+              "free_to_play_once": false,
+              "bottled_tornado": false,
+              "type": "SKILL",
+              "ethereal": false,
+              "uuid": "f843be82-3295-47e0-a5fc-52dcdc4a1820",
+              "upgrades": 0,
+              "base_damage": -1,
+              "has_target": false,
+              "is_playable": false,
+              "self_retain": false,
+              "name": "\u9632\u5fa1",
+              "bottled_flame": false,
+              "id": "Defend_R",
+              "rarity": "BASIC"
+            },
+            {
+              "exhausts": false,
+              "cost": 2,
+              "cost_for_turn": 2,
+              "bottled_lightning": false,
+              "base_cost": 2,
+              "special_data": 0,
+              "retain": false,
+              "free_to_play_once": false,
+              "bottled_tornado": false,
+              "type": "ATTACK",
+              "ethereal": false,
+              "uuid": "4c95fe0f-41d3-412e-9f31-b24fcefb646b",
+              "upgrades": 0,
+              "base_damage": 8,
+              "has_target": true,
+              "is_playable": false,
+              "self_retain": false,
+              "name": "\u75db\u51fb",
+              "bottled_flame": false,
+              "id": "Bash",
+              "rarity": "BASIC"
+            }
+          ],
+          "relics": [
+            {
+              "name": "\u71c3\u70e7\u4e4b\u8840",
+              "id": "Burning Blood",
+              "counter": -1
+            }
+          ],
+          "max_hp": 80,
+          "act_boss": "The Heart",
+          "gold": 99,
+          "action_phase": "EXECUTING_ACTIONS",
+          "act": 4,
+          "screen_name": "DEATH",
+          "room_phase": "COMBAT",
+          "is_screen_up": true,
+          "potions": [
+            {
+              "requires_target": false,
+              "can_use": false,
+              "can_discard": false,
+              "name": "\u836f\u6c34\u680f",
+              "id": "Potion Slot"
+            },
+            {
+              "requires_target": false,
+              "can_use": false,
+              "can_discard": false,
+              "name": "\u836f\u6c34\u680f",
+              "id": "Potion Slot"
+            }
+          ],
+          "current_hp": 0,
+          "floor": 55,
+          "ascension_level": 20,
+          "class": "IRONCLAD",
+          "current_action": "DamageAction",
+          "room_type": "MonsterRoomBoss"
+        },
+        "available_commands": [
+          "proceed",
+          "key",
+          "click",
+          "wait",
+          "state",
+          "reset_run",
+          "parity_event",
+          "parity_distribution",
+          "parity_relic_spawn",
+          "parity_relic_unequip",
+          "parity_relic_counter",
+          "parity_relic_reward",
+          "parity_relic_heal",
+          "parity_relic_neutral",
+          "parity_relic_victory",
+          "parity_relic_campfire",
+          "parity_relic_resource",
+          "parity_relic_card_use",
+          "parity_relic_obtain_card",
+          "parity_relic_hp_loss",
+          "parity_relic_victory_resource",
+          "parity_relic_damage",
+          "parity_relic_shuffle",
+          "parity_relic_special_resource",
+          "parity_relic_turn_state",
+          "parity_relic_end_turn",
+          "parity_relic_trigger",
+          "parity_relic_world",
+          "parity_relic_equip",
+          "parity_relic"
+        ],
+        "_stock_direct": {
+          "schema": "sls-stock-direct-v2",
+          "ascension": 20,
+          "act": 4,
+          "dungeon_id": "TheEnding",
+          "dungeon_class": "com.megacrit.cardcrawl.dungeons.TheEnding",
+          "room_class": "com.megacrit.cardcrawl.rooms.MonsterRoomBoss",
+          "scene_class": "com.megacrit.cardcrawl.scenes.TheEndingScene",
+          "floor": 55,
+          "turn": 1,
+          "phase": "EXECUTING_ACTIONS",
+          "player": {
+            "current_hp": 0,
+            "max_hp": 80,
+            "block": 0,
+            "powers": []
+          },
+          "energy": 3,
+          "hand": [],
+          "draw_pile": [
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            }
+          ],
+          "discard_pile": [
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            }
+          ],
+          "exhaust_pile": [],
+          "relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            }
+          ],
+          "potions": [
+            {
+              "id": "Potion Slot",
+              "slot": -1,
+              "requires_target": false
+            },
+            {
+              "id": "Potion Slot",
+              "slot": -1,
+              "requires_target": false
+            }
+          ],
+          "monsters": [
+            {
+              "current_hp": 0,
+              "max_hp": 800,
+              "block": 0,
+              "powers": [
+                {
+                  "id": "BeatOfDeath",
+                  "amount": 2
+                },
+                {
+                  "id": "Invincible",
+                  "amount": 194
+                }
+              ],
+              "id": "CorruptHeart",
+              "next_move": 3,
+              "dying": true,
+              "escaped": false
+            }
+          ]
+        },
+        "_continuation": {
+          "room_class": "com.megacrit.cardcrawl.rooms.MonsterRoomBoss",
+          "screen": "DEATH",
+          "action_phase": "EXECUTING_ACTIONS",
+          "combat_turn": 1,
+          "card_selection_count": 0,
+          "post_combat": false,
+          "loading_post_combat": false,
+          "ui_boundary_folded": false,
+          "continuation_kind": "DEATH",
+          "action_queue_types": [],
+          "card_queue_types": [],
+          "active_card_souls": [
+            {
+              "card_uuid": "8b755cbf-ae57-499f-9e74-c1c280046efd",
+              "card_id": "Anger",
+              "destination": "DISCARD_PILE",
+              "cost_for_turn": 0,
+              "done": false
+            }
+          ],
+          "bottled_cards": []
+        },
+        "_rng": {
+          "ai": {
+            "counter": 2,
+            "seed0": 1935747343163172021,
+            "seed1": 4753767087397893262
+          },
+          "card_random": {
+            "counter": 0,
+            "seed0": 3580787935237911720,
+            "seed1": 17920732519136343096
+          },
+          "card": {
+            "counter": 0,
+            "seed0": 18054164860469766260,
+            "seed1": 3234030697654974996
+          },
+          "event": {
+            "counter": 0,
+            "seed0": 18054164860469766260,
+            "seed1": 3234030697654974996
+          },
+          "math_util": {
+            "counter": 0,
+            "seed0": 3996375531018264647,
+            "seed1": 14827519667814477633
+          },
+          "merchant": {
+            "counter": 0,
+            "seed0": 18054164860469766260,
+            "seed1": 3234030697654974996
+          },
+          "misc": {
+            "counter": 2,
+            "seed0": 12265773034524826219,
+            "seed1": 4695765288766342079
+          },
+          "monster_hp": {
+            "counter": 2,
+            "seed0": 1935747343163172021,
+            "seed1": 4753767087397893262
+          },
+          "monster": {
+            "counter": 36,
+            "seed0": 587536136777230373,
+            "seed1": 17437350056255465896
+          },
+          "neow": {
+            "counter": 5,
+            "seed0": 281051866372925814,
+            "seed1": 6453739803100432082
+          },
+          "potion": {
+            "counter": 0,
+            "seed0": 18054164860469766260,
+            "seed1": 3234030697654974996
+          },
+          "relic": {
+            "counter": 5,
+            "seed0": 281051866372925814,
+            "seed1": 6453739803100432082
+          },
+          "shuffle": {
+            "counter": 0,
+            "seed0": 3580787935237911720,
+            "seed1": 17920732519136343096
+          },
+          "treasure": {
+            "counter": 0,
+            "seed0": 18054164860469766260,
+            "seed1": 3234030697654974996
+          }
+        }
+      }
+    },
+    {
+      "seed": 131200129,
+      "stock_terminal": {
+        "game_state": {
+          "screen_type": "COMPLETE",
+          "screen_state": {},
+          "seed": 131200129,
+          "deck": [
+            {
+              "exhausts": false,
+              "cost": -2,
+              "cost_for_turn": -2,
+              "bottled_lightning": false,
+              "base_cost": -2,
+              "special_data": 0,
+              "retain": false,
+              "free_to_play_once": false,
+              "bottled_tornado": false,
+              "type": "CURSE",
+              "ethereal": true,
+              "uuid": "cb45e66e-97f1-43e4-adde-bff9b694e5bf",
+              "upgrades": 0,
+              "base_damage": -1,
+              "has_target": false,
+              "is_playable": false,
+              "self_retain": false,
+              "name": "\u8fdb\u9636\u4e4b\u707e",
+              "bottled_flame": false,
+              "id": "AscendersBane",
+              "rarity": "SPECIAL"
+            },
+            {
+              "exhausts": false,
+              "cost": 1,
+              "cost_for_turn": 1,
+              "bottled_lightning": false,
+              "base_cost": 1,
+              "special_data": 0,
+              "retain": false,
+              "free_to_play_once": false,
+              "bottled_tornado": false,
+              "type": "ATTACK",
+              "ethereal": false,
+              "uuid": "ae618a51-338d-400c-b62e-d5b5b8618546",
+              "upgrades": 0,
+              "base_damage": 6,
+              "has_target": true,
+              "is_playable": false,
+              "self_retain": false,
+              "name": "\u6253\u51fb",
+              "bottled_flame": false,
+              "id": "Strike_R",
+              "rarity": "BASIC"
+            },
+            {
+              "exhausts": false,
+              "cost": 1,
+              "cost_for_turn": 1,
+              "bottled_lightning": false,
+              "base_cost": 1,
+              "special_data": 0,
+              "retain": false,
+              "free_to_play_once": false,
+              "bottled_tornado": false,
+              "type": "ATTACK",
+              "ethereal": false,
+              "uuid": "9aa07b0a-88da-46ee-acf1-8202ce911b0b",
+              "upgrades": 0,
+              "base_damage": 6,
+              "has_target": true,
+              "is_playable": false,
+              "self_retain": false,
+              "name": "\u6253\u51fb",
+              "bottled_flame": false,
+              "id": "Strike_R",
+              "rarity": "BASIC"
+            },
+            {
+              "exhausts": false,
+              "cost": 1,
+              "cost_for_turn": 1,
+              "bottled_lightning": false,
+              "base_cost": 1,
+              "special_data": 0,
+              "retain": false,
+              "free_to_play_once": false,
+              "bottled_tornado": false,
+              "type": "ATTACK",
+              "ethereal": false,
+              "uuid": "d8919113-0354-476c-841d-10b2a14291f6",
+              "upgrades": 0,
+              "base_damage": 6,
+              "has_target": true,
+              "is_playable": false,
+              "self_retain": false,
+              "name": "\u6253\u51fb",
+              "bottled_flame": false,
+              "id": "Strike_R",
+              "rarity": "BASIC"
+            },
+            {
+              "exhausts": false,
+              "cost": 1,
+              "cost_for_turn": 1,
+              "bottled_lightning": false,
+              "base_cost": 1,
+              "special_data": 0,
+              "retain": false,
+              "free_to_play_once": false,
+              "bottled_tornado": false,
+              "type": "ATTACK",
+              "ethereal": false,
+              "uuid": "12cdc09d-5a0b-45fb-87a2-5b8f3c9c6ab5",
+              "upgrades": 0,
+              "base_damage": 6,
+              "has_target": true,
+              "is_playable": false,
+              "self_retain": false,
+              "name": "\u6253\u51fb",
+              "bottled_flame": false,
+              "id": "Strike_R",
+              "rarity": "BASIC"
+            },
+            {
+              "exhausts": false,
+              "cost": 1,
+              "cost_for_turn": 1,
+              "bottled_lightning": false,
+              "base_cost": 1,
+              "special_data": 0,
+              "retain": false,
+              "free_to_play_once": false,
+              "bottled_tornado": false,
+              "type": "SKILL",
+              "ethereal": false,
+              "uuid": "56769fab-b252-4906-8c34-95b38ff535a4",
+              "upgrades": 0,
+              "base_damage": -1,
+              "has_target": false,
+              "is_playable": false,
+              "self_retain": false,
+              "name": "\u9632\u5fa1",
+              "bottled_flame": false,
+              "id": "Defend_R",
+              "rarity": "BASIC"
+            },
+            {
+              "exhausts": false,
+              "cost": 1,
+              "cost_for_turn": 1,
+              "bottled_lightning": false,
+              "base_cost": 1,
+              "special_data": 0,
+              "retain": false,
+              "free_to_play_once": false,
+              "bottled_tornado": false,
+              "type": "SKILL",
+              "ethereal": false,
+              "uuid": "f3cc91a7-29e2-4b1f-891d-e6062c577a1b",
+              "upgrades": 0,
+              "base_damage": -1,
+              "has_target": false,
+              "is_playable": false,
+              "self_retain": false,
+              "name": "\u9632\u5fa1",
+              "bottled_flame": false,
+              "id": "Defend_R",
+              "rarity": "BASIC"
+            },
+            {
+              "exhausts": false,
+              "cost": 1,
+              "cost_for_turn": 1,
+              "bottled_lightning": false,
+              "base_cost": 1,
+              "special_data": 0,
+              "retain": false,
+              "free_to_play_once": false,
+              "bottled_tornado": false,
+              "type": "SKILL",
+              "ethereal": false,
+              "uuid": "85756d2d-68a5-41d0-97dc-e311647fb1c5",
+              "upgrades": 0,
+              "base_damage": -1,
+              "has_target": false,
+              "is_playable": false,
+              "self_retain": false,
+              "name": "\u9632\u5fa1",
+              "bottled_flame": false,
+              "id": "Defend_R",
+              "rarity": "BASIC"
+            },
+            {
+              "exhausts": false,
+              "cost": 1,
+              "cost_for_turn": 1,
+              "bottled_lightning": false,
+              "base_cost": 1,
+              "special_data": 0,
+              "retain": false,
+              "free_to_play_once": false,
+              "bottled_tornado": false,
+              "type": "SKILL",
+              "ethereal": false,
+              "uuid": "1b2c7a98-d9ae-4ee9-9da5-1adf8ce67a60",
+              "upgrades": 0,
+              "base_damage": -1,
+              "has_target": false,
+              "is_playable": false,
+              "self_retain": false,
+              "name": "\u9632\u5fa1",
+              "bottled_flame": false,
+              "id": "Defend_R",
+              "rarity": "BASIC"
+            },
+            {
+              "exhausts": false,
+              "cost": 2,
+              "cost_for_turn": 2,
+              "bottled_lightning": false,
+              "base_cost": 2,
+              "special_data": 0,
+              "retain": false,
+              "free_to_play_once": false,
+              "bottled_tornado": false,
+              "type": "ATTACK",
+              "ethereal": false,
+              "uuid": "3fc75200-e4ac-45a5-9ed1-9ee6343112e0",
+              "upgrades": 0,
+              "base_damage": 8,
+              "has_target": true,
+              "is_playable": false,
+              "self_retain": false,
+              "name": "\u75db\u51fb",
+              "bottled_flame": false,
+              "id": "Bash",
+              "rarity": "BASIC"
+            },
+            {
+              "exhausts": false,
+              "cost": 1,
+              "cost_for_turn": 1,
+              "bottled_lightning": false,
+              "base_cost": 1,
+              "special_data": 0,
+              "retain": false,
+              "free_to_play_once": false,
+              "bottled_tornado": false,
+              "type": "ATTACK",
+              "ethereal": false,
+              "uuid": "d547f69e-9a1e-46c8-9f4d-862309b29df6",
+              "upgrades": 0,
+              "base_damage": 12,
+              "has_target": true,
+              "is_playable": false,
+              "self_retain": false,
+              "name": "\u72c2\u91ce\u6253\u51fb",
+              "bottled_flame": false,
+              "id": "Wild Strike",
+              "rarity": "COMMON"
+            }
+          ],
+          "relics": [
+            {
+              "name": "\u71c3\u70e7\u4e4b\u8840",
+              "id": "Burning Blood",
+              "counter": -1
+            }
+          ],
+          "max_hp": 80,
+          "act_boss": "The Heart",
+          "gold": 99,
+          "action_phase": "WAITING_ON_USER",
+          "act": 4,
+          "screen_name": "NONE",
+          "room_phase": "COMPLETE",
+          "is_screen_up": false,
+          "potions": [
+            {
+              "requires_target": false,
+              "can_use": false,
+              "can_discard": false,
+              "name": "\u836f\u6c34\u680f",
+              "id": "Potion Slot"
+            },
+            {
+              "requires_target": false,
+              "can_use": false,
+              "can_discard": false,
+              "name": "\u836f\u6c34\u680f",
+              "id": "Potion Slot"
+            }
+          ],
+          "current_hp": 7,
+          "floor": 55,
+          "ascension_level": 20,
+          "class": "IRONCLAD",
+          "room_type": "MonsterRoomBoss"
+        },
+        "available_commands": [
+          "proceed",
+          "key",
+          "click",
+          "wait",
+          "state",
+          "reset_run",
+          "parity_event",
+          "parity_distribution",
+          "parity_relic_spawn",
+          "parity_relic_unequip",
+          "parity_relic_counter",
+          "parity_relic_reward",
+          "parity_relic_heal",
+          "parity_relic_neutral",
+          "parity_relic_victory",
+          "parity_relic_campfire",
+          "parity_relic_resource",
+          "parity_relic_card_use",
+          "parity_relic_obtain_card",
+          "parity_relic_hp_loss",
+          "parity_relic_victory_resource",
+          "parity_relic_damage",
+          "parity_relic_shuffle",
+          "parity_relic_special_resource",
+          "parity_relic_turn_state",
+          "parity_relic_end_turn",
+          "parity_relic_trigger",
+          "parity_relic_world",
+          "parity_relic_equip",
+          "parity_relic"
+        ],
+        "_stock_direct": {
+          "schema": "sls-stock-direct-v2",
+          "ascension": 20,
+          "act": 4,
+          "dungeon_id": "TheEnding",
+          "dungeon_class": "com.megacrit.cardcrawl.dungeons.TheEnding",
+          "room_class": "com.megacrit.cardcrawl.rooms.MonsterRoomBoss",
+          "scene_class": "com.megacrit.cardcrawl.scenes.TheEndingScene",
+          "floor": 55,
+          "turn": 1,
+          "phase": "WAITING_ON_USER",
+          "player": {
+            "current_hp": 7,
+            "max_hp": 80,
+            "block": 0,
+            "powers": []
+          },
+          "energy": 3,
+          "hand": [
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            }
+          ],
+          "draw_pile": [
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            },
+            {
+              "id": "Anger",
+              "base_cost": 0,
+              "cost": 0,
+              "upgrades": 0,
+              "free_to_play_once": false,
+              "retain": false,
+              "self_retain": false
+            }
+          ],
+          "discard_pile": [],
+          "exhaust_pile": [],
+          "relics": [
+            {
+              "id": "Burning Blood",
+              "counter": -1
+            }
+          ],
+          "potions": [
+            {
+              "id": "Potion Slot",
+              "slot": -1,
+              "requires_target": false
+            },
+            {
+              "id": "Potion Slot",
+              "slot": -1,
+              "requires_target": false
+            }
+          ],
+          "monsters": [
+            {
+              "current_hp": 0,
+              "max_hp": 800,
+              "block": 0,
+              "powers": [],
+              "id": "CorruptHeart",
+              "next_move": 3,
+              "dying": true,
+              "escaped": false
+            }
+          ]
+        },
+        "_continuation": {
+          "room_class": "com.megacrit.cardcrawl.rooms.MonsterRoomBoss",
+          "screen": "NONE",
+          "action_phase": "WAITING_ON_USER",
+          "combat_turn": 1,
+          "card_selection_count": 0,
+          "post_combat": true,
+          "loading_post_combat": false,
+          "ui_boundary_folded": false,
+          "continuation_kind": "NONE",
+          "action_queue_types": [],
+          "card_queue_types": [],
+          "active_card_souls": [],
+          "bottled_cards": []
+        },
+        "_rng": {
+          "ai": {
+            "counter": 2,
+            "seed0": 13689541467908680242,
+            "seed1": 7433990269315098305
+          },
+          "card_random": {
+            "counter": 0,
+            "seed0": 15080168126211991613,
+            "seed1": 17087409532799617202
+          },
+          "card": {
+            "counter": 0,
+            "seed0": 1115045217608905006,
+            "seed1": 7656127316411809106
+          },
+          "event": {
+            "counter": 0,
+            "seed0": 1115045217608905006,
+            "seed1": 7656127316411809106
+          },
+          "math_util": {
+            "counter": 0,
+            "seed0": 11963826633138208376,
+            "seed1": 12549744599231544654
+          },
+          "merchant": {
+            "counter": 0,
+            "seed0": 1115045217608905006,
+            "seed1": 7656127316411809106
+          },
+          "misc": {
+            "counter": 1,
+            "seed0": 14342971274482157816,
+            "seed1": 15914101806087885011
+          },
+          "monster_hp": {
+            "counter": 2,
+            "seed0": 13689541467908680242,
+            "seed1": 7433990269315098305
+          },
+          "monster": {
+            "counter": 42,
+            "seed0": 617831521229485348,
+            "seed1": 7653845892822978392
+          },
+          "neow": {
+            "counter": 6,
+            "seed0": 5526069436756734564,
+            "seed1": 8757669586192735917
+          },
+          "potion": {
+            "counter": 0,
+            "seed0": 1115045217608905006,
+            "seed1": 7656127316411809106
+          },
+          "relic": {
+            "counter": 5,
+            "seed0": 300699259643382046,
+            "seed1": 5526069436756734564
+          },
+          "shuffle": {
+            "counter": 0,
+            "seed0": 15080168126211991613,
+            "seed1": 17087409532799617202
+          },
+          "treasure": {
+            "counter": 0,
+            "seed0": 1115045217608905006,
+            "seed1": 7656127316411809106
+          }
+        }
+      }
+    }
+  ]
+}

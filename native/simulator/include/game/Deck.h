@@ -6,6 +6,7 @@
 #define STS_LIGHTSPEED_DECK_H
 
 #include <functional>
+#include <vector>
 
 #include "data_structure/fixed_list.h"
 #include "constants/CharacterClasses.h"
@@ -23,9 +24,9 @@ namespace sts {
     typedef std::function<bool(const Card &)> CardPredicate;
 
     struct Deck {
-        static constexpr int MAX_SIZE = 96;
+        // Permanent cards and selection candidates follow stock growable CardGroup storage.
 
-        fixed_list<Card,MAX_SIZE> cards;
+        std::vector<Card> cards;
 
         std::array<int,4> cardTypeCounts {0,0,0,0};
         std::array<int,3> bottleIdxs {-1,-1,-1};
@@ -43,7 +44,7 @@ namespace sts {
         [[nodiscard]] int getUpgradeableCount() const;
         [[nodiscard]] int getTransformableCount(int limit=-1, bool includeBottled=false) const;
         [[nodiscard]] int getCountMatching(const CardPredicate &predicate, int limit=-1) const;
-        [[nodiscard]] fixed_list<int, MAX_SIZE> getIdxsMatching(const CardPredicate &p) const;
+        [[nodiscard]] std::vector<int> getIdxsMatching(const CardPredicate &p) const;
 
         [[nodiscard]] bool hasCardForWingStatue() const;
 
@@ -57,14 +58,14 @@ namespace sts {
         void remove(GameContext &gc, int idx);
         void removeSelected(GameContext &gc, const fixed_list<SelectScreenCard, 3> &selectList);
         void upgrade(int idx);
-        void addMatchingToSelectList(fixed_list<SelectScreenCard, MAX_SIZE> &selectList, const CardPredicate &p) const;
+        void addMatchingToSelectList(std::vector<SelectScreenCard> &selectList, const CardPredicate &p) const;
 
         void bottleCard(int idx, CardType bottleType);
         void removeBottle(CardType bottleType);
 
         void removeAllMatching(GameContext &gc, const CardPredicate &p);
 
-        [[nodiscard]] fixed_list<int, MAX_SIZE> getUpgradeableCardIdxs() const;
+        [[nodiscard]] std::vector<int> getUpgradeableCardIdxs() const;
     };
 
 }
