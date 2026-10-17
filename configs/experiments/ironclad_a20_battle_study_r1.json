@@ -1,0 +1,39 @@
+{
+  "schema": "sls-battle-learnability-experiment-v1",
+  "config": "configs/train/ironclad_a20_battle_study_r1.toml",
+  "purpose": "Discriminate tactical learnability from long-horizon sparse-target failure; not a claim of full-Act2 improvement",
+  "task": "Third distinct combat floor in Act2 from natural Neow prefix; multiple event fights on one floor count as one floor; no resources altered",
+  "parent_sha256": "274963f4fe32b75003c5a1b4ccd394b5185304156e6ea22a76aee2764d54f1e0",
+  "initialization": "Explicit V5-to-V6 weights; actor and GRU preserved; final value linear zero; new Adam",
+  "source_selection": "One predeclared third-combat root per origin; stop before any target action; record all nonarrivals",
+  "data_quotas": {"fit": 64, "development": 64, "confirmation": 384},
+  "source_reservations": {
+    "fit": [1600001000000, 1600001004096],
+    "development": [8000103000000, 8000103004096],
+    "confirmation": [8000104000000, 8000104004096]
+  },
+  "training_seed": 1600002000000,
+  "interaction_budget": 500000,
+  "rounding": "Ceil to complete 256-step x 16-worker rollout: 503808",
+  "prefix_inference_budget": 8000000,
+  "reward": "Current battle win +1, death/player escape/protection failure -1, intermediate 0; gamma 1; no production reward edit; escape remains legal and is separately reported",
+  "optimization": "Existing A PPO parameters; full network; domain normalization; no hyperparameter search",
+  "primary": "Fixed-budget endpoint greedy win rate versus frozen parent; same source roots and initial RNG; own current-weight history per policy",
+  "selection": "Development only every 32 updates; never replace endpoint with a peak",
+  "criterion": {"minimum_observed_gain": 0.10, "paired_bootstrap_ci95_lower_gt": 0,
+                "two_sided_exact_mcnemar_p_lt": 0.05, "bootstrap_repetitions": 20000,
+                "bootstrap_seed": 734017},
+  "power_alternative": {"true_gain": 0.15, "discordance_sensitivity": [0.2, 0.5, 0.8],
+                        "warning": "Not designed to reliably certify a true effect exactly on the 10pp observed threshold"},
+  "secondary": ["Stochastic outcomes", "Remaining HP and potions", "Per-enemy results", "Value versus complete battle returns and fit-mean constant", "KL/clip/entropy/gradient and actual prefix cost"],
+  "baseline_guard": "If fresh development parent greedy rate is outside 20%-80%, block formal training without selecting individual roots",
+  "stop": ["Illegal action or restore divergence", "History or source mismatch", "Nonfinite data/weights/optimizer", "Budget exhausted", "Signal or wall budget: save completed update and stop"],
+  "failure_decisions": {
+    "fit_only_gain": "Generalization not established: expand fresh fit origins/representation diagnosis before more full-Act2 budget",
+    "no_fit_gain": "Check logprob reproduction, KL/clip, exact short returns and action representation before choosing algorithm alternative",
+    "confirmation_pass": "No automatic promotion; independently replicate with a fresh confirmation bank, then evaluate full Act2 suffix resource costs",
+    "confirmation_fail": "Close this trial; no automatic extension or checkpoint reselection"
+  },
+  "server_gate": "One allocation: real-parent formal-shape GPU smoke and exact-action safe replay must pass before long training",
+  "long_term": "Natural-start A20 Ironclad joint Act1+Act2 success; count all failures/protection events; 70%-80% is an unproven research aspiration"
+}

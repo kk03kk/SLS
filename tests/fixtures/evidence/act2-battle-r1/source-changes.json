@@ -1,0 +1,37 @@
+{
+  "schema": "sls-native-rule-correction-bridge-v1",
+  "before_native_source_sha256": "90628cf641dbd7718f9c9041465b48ca6806e383df4f888025fafb211496d18d",
+  "after_native_source_sha256": "40b4beed53d98cb45fa609898f74e50c70c8d1bbbf1b22b03388946a9a24d2a1",
+  "changed_files": [
+    {
+      "path": "native/simulator/include/combat/CardSelectInfo.h",
+      "before_sha256": "aa4abe22d193caa5cf68b401e0b8b51aca0a4492f55fea5ceba92a6855334934",
+      "after_sha256": "48031fb0a9d4ed2840556e806ae5f54f617dc6ccc213292ce39c333442a74c83"
+    },
+    {
+      "path": "native/simulator/python/module.cpp",
+      "before_sha256": "5e4abaec0079a06cf685527fafaa88000b3109bcfafee1d1ecac5465ed302cac",
+      "after_sha256": "bfe2b56010fa82e77bff5813997559f00598fc4ace70f1e2f02fb98b0ae346d9"
+    },
+    {
+      "path": "src/sls/backends/simulator/environment.py",
+      "before_sha256": "a22f42f72141906b7718b24f9c3de6108562bc60242c304474c60afd5a0d5423",
+      "after_sha256": "23a3209d16907a00ce9055bda588110f5ca36193e1f7aeaf9e98a7f1e0296c59"
+    },
+    {
+      "path": "src/sls/content/selection.py",
+      "before_sha256": null,
+      "after_sha256": "c802c6c47350213588424b704a4f3307f6f091151e3b341f9ca5f115a545d90e"
+    }
+  ],
+  "current_rule_validation": "qualification.json",
+  "weights_only": true,
+  "exact_resume_allowed": false,
+  "review": "Replayed fixed Act1\u20132 corpus plus changed-rule regression; no old pass inherited",
+  "impacted_mechanisms": [
+    "nested reward/selection callbacks",
+    "private sparse monster array extent",
+    "complete dormant selector memory",
+    "public required selection quantity (same tensor layout)"
+  ]
+}

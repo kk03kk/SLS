@@ -1,0 +1,9 @@
+{
+  "schema": "sls-legal-prefix-regression-v1",
+  "origin": "C calibration failure, normal run; no resource injection",
+  "original_export_sha256": "3f4234dc1c57a7d5a8cefce228c3cdcec85acdf97876f3f9b1e2aecbe45ea0d5",
+  "seed": 260000014,
+  "math_seed": 259102117,
+  "ascension": 20,
+  "actions": [1, 6, 4, 1, 2, 2147483648, 4, 3, 2, 2147483648, 65539, 65539, 2147483648, 65538, 65536, 256, 402653184, 134217728, 805306368, 5, 0, 536870914]
+}

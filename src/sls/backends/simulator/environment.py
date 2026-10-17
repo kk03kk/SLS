@@ -1080,6 +1080,12 @@ def _screen_entities(raw: Mapping[str, Any]) -> dict[str, tuple[Any, ...]]:
             result["choice"] = (PublicEntity(
                 "shop-remove", "SHOP", (("price", int(shop["remove_cost"])),),
             ),)
+    if screen is ScreenType.CARD_REWARD and 'select_count' in public_screen:
+        from sls.content.selection import selection_requirement
+        result['choice'] += (selection_requirement(int(public_screen['select_count'])),)
+    elif screen is ScreenType.COMBAT and 'pick_count' in public_combat.get('choice', {}):
+        from sls.content.selection import selection_requirement
+        result['choice'] += (selection_requirement(int(public_combat['choice']['pick_count'])),)
     return result
 
 

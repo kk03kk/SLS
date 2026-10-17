@@ -17,14 +17,31 @@ def seed_intervals(value):
     seed. This may refuse a usable allocation, but cannot silently reuse it.
     """
     if isinstance(value, dict):
+        closed_probe = value.get('schema') in {
+            'sls-frozen-parent-cpu-probe-v1',
+            'sls-frozen-parent-complete-return-probe-v1',
+        }
         for key, child in value.items():
             if "seed" in key.lower():
                 if type(child) is int and (key == "seed" or key.endswith("_seed")):
+                    if (closed_probe and key == 'next_seed' and type(value.get('seed_start')) is int
+                            and child > value['seed_start']):
+                        continue  # exclusive progress endpoint, not a sampled seed
                     yield child, child + 1
                 elif type(child) is int and key.endswith("seed_start"):
                     prefix = key.removesuffix("seed_start")
                     counts = [value.get(prefix + suffix) for suffix in ("seed_count", "episodes", "seeds")]
-                    count = next((n for n in counts if type(n) is int and n > 0), 1_000_000)
+                    count = next((n for n in counts if type(n) is int and n > 0), None)
+                    # This completed probe records the exclusive next unused
+                    # seed. A resumable run's progress is not a reservation. A
+                    # declared reservation still takes priority over progress;
+                    # without either, retain the conservative million fallback.
+                    if count is None and closed_probe and key == 'seed_start':
+                        following = value.get('next_seed')
+                        if type(following) is int and following > child:
+                            count = following - child
+                    if count is None:
+                        count = 1_000_000
                     yield child, child + count
                 elif isinstance(child, list) and all(type(n) is int for n in child):
                     if len(child) == 2 and ("range" in key or "reserved" in key or "seeds" in key):

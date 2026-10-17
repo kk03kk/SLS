@@ -287,6 +287,10 @@ class PPOTrainer:
         self.last_update_context: dict[str, object] = {}
         self.last_batch_metrics: dict[str, float] = {}
 
+    def _interaction_contexts(self, indices, decisions):
+        provider = getattr(self.start_curriculum, 'interaction_contexts', None)
+        return provider(self.model, self.workers, indices, decisions) if provider else None
+
     def _take_seeds(self, count: int) -> list[int]:
         if (
             self.training_seed_limit is not None
@@ -324,6 +328,12 @@ class PPOTrainer:
             "finalize": 0.0,
         }
         self.model.eval()
+        contexts = self._interaction_contexts(range(self.workers.size), self.decisions)
+        if contexts is not None:
+            self.memory = torch.cat([c.memory for c in contexts]).to(self.device)
+            self.episode_starts = torch.tensor([c.episode_start for c in contexts],device=self.device)
+            self.previous_action_types = torch.tensor([c.previous_action for c in contexts],device=self.device)
+            self.previous_rewards = torch.tensor([c.previous_reward for c in contexts],device=self.device)
         for _ in range(self.config.rollout_steps):
             phase_started = time.perf_counter()
             encoded = tuple(encode_decision(value) for value in self.decisions)
@@ -384,6 +394,9 @@ class PPOTrainer:
             profile["policy"] += time.perf_counter() - phase_started
             phase_started = time.perf_counter()
             transitions = self.workers.step(candidate_ids)
+            observer = getattr(self.start_curriculum, 'observe_transitions', None)
+            if observer:
+                transitions = observer(self.decisions, candidate_ids, transitions)
             profile["worker_step"] += time.perf_counter() - phase_started
             phase_started = time.perf_counter()
             encoded_steps.append(encoded)
@@ -467,6 +480,13 @@ class PPOTrainer:
                 next_previous_actions[index] = 0
                 next_previous_rewards[index] = 0.0
                 self.episodes += 1
+            contexts = self._interaction_contexts(reset_indices, reset_decisions) if reset_indices else None
+            if contexts is not None:
+                for index, context in zip(reset_indices,contexts,strict=True):
+                    next_memory[index] = context.memory[0].to(self.device)
+                    next_episode_starts[index] = context.episode_start
+                    next_previous_actions[index] = context.previous_action
+                    next_previous_rewards[index] = context.previous_reward
             self.decisions = next_decisions
             self.memory = next_memory
             self.episode_starts = next_episode_starts
@@ -520,6 +540,7 @@ class PPOTrainer:
             torch.stack(act_steps),
             torch.stack(entropy_steps),
             tuple(reason_steps),
+            torch.stack(terminal_steps),
         )
 
     def optimize(self, rollout: RolloutBatch) -> dict[str, float]:
@@ -773,6 +794,14 @@ class PPOTrainer:
         values: list[torch.Tensor] = []
         entropies: list[torch.Tensor] = []
         for offset in range(sequence_length):
+            if offset and rollout.terminals is not None:
+                # A research task can restart from a nonzero public-history
+                # prefill. Reproduce that exogenous episode boundary rather
+                # than carry the preceding battle's GRU through the sequence.
+                previous_times = time_indices[:, offset] - 1
+                restarted = rollout.terminals[previous_times, environments].to(self.device)
+                recorded = rollout.input_memories[time_indices[:, offset], environments].to(self.device)
+                memory = torch.where(restarted[:, None], recorded, memory)
             selected = slice(offset * sequence_count, (offset + 1) * sequence_count)
             step_features = PolicyFeatures(
                 features.screen_types[selected],

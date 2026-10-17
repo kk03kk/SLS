@@ -304,6 +304,8 @@ def _combat_choice_source(game: Mapping[str, Any], combat: Mapping[str, Any]) ->
 
 def _selected_cards(game: Mapping[str, Any], state: Mapping[str, Any],
                     choices: tuple[PublicEntity, ...]) -> tuple[PublicEntity, ...]:
+    # Context quantities are not selectable card options and carry no origin.
+    choices=tuple(c for c in choices if c.instance_id!='selection-requirement')
     screen = str(game.get("screen_type") or "").upper()
     if screen not in {"HAND_SELECT", "GRID"}:
         return ()
@@ -957,6 +959,17 @@ def _screen_entities(
             result["choice"] = (PublicEntity(
                 "shop-remove", "SHOP", (("price", _integer(state["purge_cost"])),),
             ),)
+    quantity = (state.get('max_cards', state.get('num_cards')) if raw_screen == 'HAND_SELECT'
+                else state.get('num_cards') if raw_screen == 'GRID' else None)
+    if quantity is not None:
+        from sls.content.selection import selection_requirement
+        count = int(quantity)
+        if combat:
+            count = min(count, len(result['choice']))
+        result['choice'] += (selection_requirement(count),)
+    elif combat and result['choice']:
+        from sls.content.selection import selection_requirement
+        result['choice'] += (selection_requirement(1),)
     return result
 
 

@@ -1,0 +1,416 @@
+{
+  "schema": "sls-normalstart-act12-qualification-v1",
+  "qualification": "PASS_CONTRACT_BOUNDED_ACT12",
+  "profile": "IRONCLAD_A20_ACT2",
+  "ascension": 20,
+  "start_distribution": "NATURAL_RUN_START",
+  "native_source_sha256": "40b4beed53d98cb45fa609898f74e50c70c8d1bbbf1b22b03388946a9a24d2a1",
+  "native_artifact": {
+    "path": "D:\\SLS\\local\\build\\native\\cpython-312\\_lightspeed.cp312-win_amd64.pyd",
+    "sha256": "26b6c3d77b454140de8d339198b962a273cec240848228b7cf640aa3c959c35e",
+    "source_sha256": "40b4beed53d98cb45fa609898f74e50c70c8d1bbbf1b22b03388946a9a24d2a1",
+    "git_commit": "c37fa6f43303738c1bb03c79123a95a9eb56a56d"
+  },
+  "gate_source_sha256": "c1f6cdb6cc5b18176d5e93e531470b713a15fc01a6f05557c89ab6a4c10663a8",
+  "scope": "EXISTING_72_ACT12_MECHANISM_FLOW_OBLIGATIONS_AND_8_STOCK_CANARIES",
+  "scope_is_exhaustive": false,
+  "full_803_scope_qualification": false,
+  "discovery_environment_contract": "DISCOVERY_FIXED_RETRIEVAL_UPDATES_14_V1",
+  "facts": {
+    "controlled_obligations": 63,
+    "system_obligations": 9,
+    "system_unconditional_matches": 3,
+    "natural_canaries": 8,
+    "natural_unconditional_matches": 6,
+    "contract_explanations": [
+      {
+        "seed": 131100063,
+        "role": "system",
+        "unconditional_match": false,
+        "full_clock_conditioned_replay": true
+      },
+      {
+        "seed": 131100064,
+        "role": "system",
+        "unconditional_match": false,
+        "full_clock_conditioned_replay": true
+      },
+      {
+        "seed": 131100066,
+        "role": "system",
+        "unconditional_match": false,
+        "full_clock_conditioned_replay": true
+      },
+      {
+        "seed": 131100067,
+        "role": "system",
+        "unconditional_match": false,
+        "full_clock_conditioned_replay": true
+      },
+      {
+        "seed": 131100068,
+        "role": "system",
+        "unconditional_match": false,
+        "full_clock_conditioned_replay": true
+      },
+      {
+        "seed": 131100069,
+        "role": "system",
+        "unconditional_match": false,
+        "full_clock_conditioned_replay": true
+      },
+      {
+        "seed": 8000011000000,
+        "role": "natural",
+        "unconditional_match": false,
+        "full_clock_conditioned_replay": true
+      },
+      {
+        "seed": 8000011000005,
+        "role": "natural",
+        "unconditional_match": false,
+        "full_clock_conditioned_replay": true
+      }
+    ],
+    "superseded_prefix_retained": {
+      "seed": 131100063,
+      "status": "SEMANTIC_DIFFERENCE",
+      "counted_as_pass": false
+    },
+    "system_restore_actions": 2277,
+    "supplementary_elite_trajectories": 3
+  },
+  "boundary_summary": {
+    "decisions": 10192,
+    "continuous_restores": 502,
+    "screen_counts": {
+      "ACT1:NEOW": 41,
+      "ACT1:MAP": 626,
+      "ACT1:COMBAT": 5254,
+      "ACT1:COMBAT_REWARD": 1216,
+      "ACT1:EVENT": 95,
+      "ACT1:CARD_REWARD": 102,
+      "ACT1:SHOP": 140,
+      "ACT1:TREASURE": 46,
+      "ACT1:REST": 109,
+      "ACT1:BOSS_REWARD": 33,
+      "ACT2:MAP": 207,
+      "ACT2:COMBAT": 1867,
+      "ACT2:COMBAT_REWARD": 315,
+      "ACT2:SHOP": 54,
+      "ACT2:EVENT": 45,
+      "ACT2:REST": 23,
+      "ACT2:TREASURE": 14,
+      "CYCLE_LIMIT": 4,
+      "ACT1:COMBAT:MULTI_SELECTION": 2,
+      "ACT2:CARD_REWARD": 3
+    },
+    "restore_screen_counts": {
+      "ACT1:NEOW": 41,
+      "ACT1:COMBAT_REWARD": 30,
+      "ACT1:EVENT": 5,
+      "ACT1:MAP": 14,
+      "ACT1:COMBAT": 162,
+      "ACT1:SHOP": 55,
+      "ACT1:TREASURE": 1,
+      "ACT1:REST": 4,
+      "ACT1:CARD_REWARD": 60,
+      "ACT1:BOSS_REWARD": 2,
+      "ACT2:COMBAT": 85,
+      "ACT2:COMBAT_REWARD": 11,
+      "ACT2:SHOP": 19,
+      "ACT2:EVENT": 2,
+      "ACT2:TREASURE": 1,
+      "ACT2:MAP": 5,
+      "ACT2:REST": 1,
+      "ACT2:CARD_REWARD": 3,
+      "ACT1:COMBAT:MULTI_SELECTION": 1
+    }
+  },
+  "canary_roles": [
+    {
+      "seed": 8000011000000,
+      "role": "ACT2_ORDINARY_FAILURE",
+      "trajectory_sha256": "05e5db665b2f2a3f9c17d60b37b66550d91e9433dadb30d54df3e1d4771362ce",
+      "role_witnessed": true
+    },
+    {
+      "seed": 8000011000001,
+      "role": "ACT2_ELITE_ENTRY",
+      "trajectory_sha256": "28be62dd025b592e57623a97996abf10fd3d7f3391b42fb2534677c78a4d489d",
+      "role_witnessed": true
+    },
+    {
+      "seed": 8000011000002,
+      "role": "ACT2_ELITE_ENTRY",
+      "trajectory_sha256": "600f7d9214c476b2bbb4115eabcd48bb3e9f17614e3dd8d3aa4b626fca55bfe6",
+      "role_witnessed": true
+    },
+    {
+      "seed": 8000011000004,
+      "role": "ACT2_ORDINARY_FAILURE",
+      "trajectory_sha256": "d3a7e0f323b76314b438a7af9218e3915cb063806085eaf6e062554cff9d7b83",
+      "role_witnessed": true
+    },
+    {
+      "seed": 8000011000005,
+      "role": "ACT2_BOSS_ENTRY:CHAMP",
+      "trajectory_sha256": "5850196983876ee170b2b1d0a594c7d6429a91c6a0c5b5fde899bb5ad9ab3c15",
+      "role_witnessed": true
+    },
+    {
+      "seed": 8000011000006,
+      "role": "ACT2_ORDINARY_FAILURE",
+      "trajectory_sha256": "be054a3fad9032fe1564ff675b6db4f51bfaa89f0d034d15c8ca5bf66c950195",
+      "role_witnessed": true
+    },
+    {
+      "seed": 8000011000009,
+      "role": "ACT2_BOSS_ENTRY:AUTOMATON",
+      "trajectory_sha256": "e8bc40e949eb571d50f73151f5514048d9055ffe29462798c0b5240cfd836756",
+      "role_witnessed": true
+    },
+    {
+      "seed": 8000011000069,
+      "role": "ACT2_BOSS_ENTRY:COLLECTOR",
+      "trajectory_sha256": "23b08ff37c5b402d7eb1a661da0db71388ed8f8e8ede717b2d54728f03c815d7",
+      "role_witnessed": true
+    }
+  ],
+  "impact_regression_cases": 70,
+  "recoveries": [
+    {
+      "capture": {
+        "path": "D:\\SLS\\local\\reports\\act12-foundation\\controlled-stock.json",
+        "sha256": "e5757685a155303e01654b1a336fc4d4598a3231490b99b3de0a377d71bafc89"
+      },
+      "launch": {
+        "path": "D:\\SLS\\local\\reports\\act12-foundation\\controlled-stock.launch.json",
+        "sha256": "5c651c63957fa57810ed49a2173410ec1e91b9fb01ae1e781be22b4bc8a22a4f"
+      },
+      "journal": {
+        "path": "D:\\SLS\\local\\runs\\oracle-qualification\\runtime-backups\\20261011T154722.730948Z\\journal.json",
+        "sha256": "085ed7c54dccecac3b0dc1f6a8024f67f5407646dc5ad145522c4e84f388ffb0"
+      },
+      "status": "RECOVERED",
+      "backup_bytes_verified": true,
+      "oracle_sha256": "844e3509773dd71809cfc6020191f33872ae8f06fc1518832adbfa35495b8e76"
+    },
+    {
+      "capture": {
+        "path": "D:\\SLS\\local\\reports\\act12-foundation\\systems-0.json",
+        "sha256": "cb363aed563ff43ba8e537a2544505b2dfcb79612a1a7f6e0a4f2fbb119b1115"
+      },
+      "launch": {
+        "path": "D:\\SLS\\local\\reports\\act12-foundation\\systems-0.launch.json",
+        "sha256": "974486c780df85a357581cf22a21dd1681f798ecf1cecaed1812fddfc2111b73"
+      },
+      "journal": {
+        "path": "D:\\SLS\\local\\runs\\oracle-qualification\\runtime-backups\\20261011T161224.200566Z\\journal.json",
+        "sha256": "219b760966a8824555e46f245188276d6c440ed5e690c0f3cb21682e679f173c"
+      },
+      "status": "RECOVERED",
+      "backup_bytes_verified": true,
+      "oracle_sha256": "844e3509773dd71809cfc6020191f33872ae8f06fc1518832adbfa35495b8e76"
+    },
+    {
+      "capture": {
+        "path": "D:\\SLS\\local\\reports\\act12-foundation\\systems-1.json",
+        "sha256": "ebafba6b68c345720a9eaaabc89ea406e00aa27b0723e72ea69cbd1c4ba32a84"
+      },
+      "launch": {
+        "path": "D:\\SLS\\local\\reports\\act12-foundation\\systems-1.launch.json",
+        "sha256": "fbc2c0bac7cc3a298ecdb9f18e7aa8e0bd2f911408f3bd6bbcc5690e6bb388a9"
+      },
+      "journal": {
+        "path": "D:\\SLS\\local\\runs\\oracle-qualification\\runtime-backups\\20261011T162454.978924Z\\journal.json",
+        "sha256": "6ba43a87756144f0609a234b9904f4c157e65842961dcd12a5d3839e5fc74785"
+      },
+      "status": "RECOVERED",
+      "backup_bytes_verified": true,
+      "oracle_sha256": "844e3509773dd71809cfc6020191f33872ae8f06fc1518832adbfa35495b8e76"
+    },
+    {
+      "capture": {
+        "path": "D:\\SLS\\local\\reports\\act12-foundation\\systems-2.json",
+        "sha256": "ac9d3582256f8ccace08c02a7e0ead5f521d98c19fe4d6aa979a40d8c9d81938"
+      },
+      "launch": {
+        "path": "D:\\SLS\\local\\reports\\act12-foundation\\systems-2.launch.json",
+        "sha256": "a191b5499971f9cff7fce59c0b9e0e58066d2f4ff2308c6400a73e20b8de3443"
+      },
+      "journal": {
+        "path": "D:\\SLS\\local\\runs\\oracle-qualification\\runtime-backups\\20261011T164253.498063Z\\journal.json",
+        "sha256": "c26d7d2cb8286325117e41e168cbfd6f4ca0d334b67a33dd7e38aeb28eb1922c"
+      },
+      "status": "RECOVERED",
+      "backup_bytes_verified": true,
+      "oracle_sha256": "844e3509773dd71809cfc6020191f33872ae8f06fc1518832adbfa35495b8e76"
+    },
+    {
+      "capture": {
+        "path": "D:\\SLS\\local\\reports\\act12-foundation\\systems-policy-131100063.json",
+        "sha256": "40bc61bc39a665b372ed071ef29f994f1ca3a43962029631beeb6b6c3a6b8262"
+      },
+      "launch": {
+        "path": "D:\\SLS\\local\\reports\\act12-foundation\\systems-policy-131100063.launch.json",
+        "sha256": "9ecb89a62ba6525cf47581619338293f10c13189bce6a9b3c969ac4673e6f712"
+      },
+      "journal": {
+        "path": "D:\\SLS\\local\\runs\\oracle-qualification\\runtime-backups\\20261011T172101.743032Z\\journal.json",
+        "sha256": "53cb490b9fa01ea6229fbe0a072e0c735c0324e794c5ee193a9efafaaba10a16"
+      },
+      "status": "RECOVERED",
+      "backup_bytes_verified": true,
+      "oracle_sha256": "844e3509773dd71809cfc6020191f33872ae8f06fc1518832adbfa35495b8e76"
+    },
+    {
+      "capture": {
+        "path": "D:\\SLS\\local\\reports\\act12-foundation\\gremlin-leader-stock-retry.json",
+        "sha256": "61605746a190df715e94d6c77a7ecdf038ac563b7cdcf56b757d5d5f540b351f"
+      },
+      "launch": {
+        "path": "D:\\SLS\\local\\reports\\act12-foundation\\gremlin-leader-stock-retry.launch.json",
+        "sha256": "2cde5b198065308b264f4afcdc4ace2ca279599dfe26ebd25dcfb5b329424d72"
+      },
+      "journal": {
+        "path": "D:\\SLS\\local\\runs\\oracle-qualification\\runtime-backups\\20261011T171944.076722Z\\journal.json",
+        "sha256": "10782c5ca9d145aaaa82cca5dc446a83fb5bda3b2703ef1c34ca398ebd7d85e3"
+      },
+      "status": "RECOVERED",
+      "backup_bytes_verified": true,
+      "oracle_sha256": "844e3509773dd71809cfc6020191f33872ae8f06fc1518832adbfa35495b8e76"
+    },
+    {
+      "batch": {
+        "path": "D:\\SLS\\local\\reports\\act12-foundation\\natural-0.json",
+        "sha256": "a9ab82069559232f0010aa81aad614156608ab70f05d33bfacebcd6ab625819f"
+      },
+      "launch": {
+        "path": "D:\\SLS\\local\\reports\\act12-foundation\\natural-0.launch.json",
+        "sha256": "e64a49a2061b394437581da866012bb7bfef2fb59bd7e0ff582753fca3e81a9b"
+      },
+      "journal": {
+        "path": "D:\\SLS\\local\\runs\\oracle-qualification\\runtime-backups\\20261011T172757.082201Z\\journal.json",
+        "sha256": "5b6c9be06bae5ca49a60a92a92da90c6293abbc7c7dbf368b3f865b7ee250dbf"
+      },
+      "oracle_sha256": "844e3509773dd71809cfc6020191f33872ae8f06fc1518832adbfa35495b8e76",
+      "trajectories": [
+        {
+          "path": "D:\\SLS\\local\\reports\\act12-foundation\\natural-0-8000011000000.jsonl",
+          "sha256": "05e5db665b2f2a3f9c17d60b37b66550d91e9433dadb30d54df3e1d4771362ce",
+          "seed": 8000011000000,
+          "boundaries": 187,
+          "reached_act": 2
+        },
+        {
+          "path": "D:\\SLS\\local\\reports\\act12-foundation\\natural-0-8000011000001.jsonl",
+          "sha256": "28be62dd025b592e57623a97996abf10fd3d7f3391b42fb2534677c78a4d489d",
+          "seed": 8000011000001,
+          "boundaries": 200,
+          "reached_act": 2
+        },
+        {
+          "path": "D:\\SLS\\local\\reports\\act12-foundation\\natural-0-8000011000002.jsonl",
+          "sha256": "600f7d9214c476b2bbb4115eabcd48bb3e9f17614e3dd8d3aa4b626fca55bfe6",
+          "seed": 8000011000002,
+          "boundaries": 450,
+          "reached_act": 2
+        },
+        {
+          "path": "D:\\SLS\\local\\reports\\act12-foundation\\natural-0-8000011000004.jsonl",
+          "sha256": "d3a7e0f323b76314b438a7af9218e3915cb063806085eaf6e062554cff9d7b83",
+          "seed": 8000011000004,
+          "boundaries": 216,
+          "reached_act": 2
+        }
+      ],
+      "use": "HISTORICAL_STOCK_REACHABILITY_ONLY_CURRENT_NATIVE_REPLAY_REQUIRED",
+      "status": "RECOVERED",
+      "backup_bytes_verified": true
+    },
+    {
+      "batch": {
+        "path": "D:\\SLS\\local\\reports\\act12-foundation\\natural-1-retry.json",
+        "sha256": "f8cdbd0849842c5556bbd47fe829f6b07a6a93f05ba26cb81772fdcf8f118451"
+      },
+      "launch": {
+        "path": "D:\\SLS\\local\\reports\\act12-foundation\\natural-1-retry.launch.json",
+        "sha256": "c0f615f888353785ee258aa141cf3a75bc968687712fe450920dfb029194de55"
+      },
+      "journal": {
+        "path": "D:\\SLS\\local\\runs\\oracle-qualification\\runtime-backups\\20261011T181202.663222Z\\journal.json",
+        "sha256": "f52be4a7ee825cfe6c48dc757e597e0ce1b49cbb871b09928062258b56ec098b"
+      },
+      "oracle_sha256": "844e3509773dd71809cfc6020191f33872ae8f06fc1518832adbfa35495b8e76",
+      "trajectories": [
+        {
+          "path": "D:\\SLS\\local\\reports\\act12-foundation\\natural-1-retry-8000011000005.jsonl",
+          "sha256": "5850196983876ee170b2b1d0a594c7d6429a91c6a0c5b5fde899bb5ad9ab3c15",
+          "seed": 8000011000005,
+          "boundaries": 380,
+          "reached_act": 2
+        },
+        {
+          "path": "D:\\SLS\\local\\reports\\act12-foundation\\natural-1-retry-8000011000006.jsonl",
+          "sha256": "be054a3fad9032fe1564ff675b6db4f51bfaa89f0d034d15c8ca5bf66c950195",
+          "seed": 8000011000006,
+          "boundaries": 244,
+          "reached_act": 2
+        },
+        {
+          "path": "D:\\SLS\\local\\reports\\act12-foundation\\natural-1-retry-8000011000009.jsonl",
+          "sha256": "e8bc40e949eb571d50f73151f5514048d9055ffe29462798c0b5240cfd836756",
+          "seed": 8000011000009,
+          "boundaries": 334,
+          "reached_act": 2
+        },
+        {
+          "path": "D:\\SLS\\local\\reports\\act12-foundation\\natural-1-retry-8000011000069.jsonl",
+          "sha256": "23b08ff37c5b402d7eb1a661da0db71388ed8f8e8ede717b2d54728f03c815d7",
+          "seed": 8000011000069,
+          "boundaries": 349,
+          "reached_act": 2
+        }
+      ],
+      "use": "HISTORICAL_STOCK_REACHABILITY_ONLY_CURRENT_NATIVE_REPLAY_REQUIRED",
+      "status": "RECOVERED",
+      "backup_bytes_verified": true
+    }
+  ],
+  "input_sha256": {
+    "D:\\SLS\\local\\reports\\act2-study-r1\\source-qualification-r5\\replay\\summary.json": "3ace3b224bdcd9505aa22364cba56cf833aabaad2d84e485f82ea38053400939",
+    "D:\\SLS\\local\\build\\oracle\\Act12Foundation.build.json": "f6cbab9873e2d2d1ec91a3d754db7c078367f312ed48b48e3251d246ad731924",
+    "D:\\SLS\\local\\reports\\act12-foundation\\selection-final.json": "ddfa068c44027d14570f8040355b8201f1ad5430266e76f4d2891a0889d8c0d7",
+    "D:\\SLS\\local\\reports\\act12-foundation\\gremlin-leader-stock-retry.json": "61605746a190df715e94d6c77a7ecdf038ac563b7cdcf56b757d5d5f540b351f",
+    "D:\\SLS\\local\\reports\\act2-study-r1\\source-qualification-r5\\gremlin-current.json": "dc706153c82322e5b831544687d75bb9a63fd85bd94ab4a3c98004a5d842d17c",
+    "D:\\SLS\\local\\reports\\act2-study-r1\\source-qualification-r5\\boundaries.json": "c481f88757c9d2f7c6c0263c5438347eb93fb663c21725b6e3174f4807fcbc24",
+    "D:\\SLS\\local\\reports\\act2-study-r1\\source-qualification-r5\\development-seeds.json": "8504d9677272af16c5f6c0c5f2632fa4b9d09997acd1d678b6e2ac443f290de0",
+    "D:\\SLS\\local\\reports\\act2-study-r1\\source-qualification-r5\\replay\\natural-8000011000000-raw.json": "350391e7edab53a83aab7645e9e6c96b5fd2cede3497bedbd260e2db1bc159ad",
+    "D:\\SLS\\local\\reports\\act2-study-r1\\source-qualification-r5\\replay\\natural-8000011000001-raw.json": "bbd105b625132463f6f825670b3776d38c798b7c1e0131cbec328bd5e9195358",
+    "D:\\SLS\\local\\reports\\act2-study-r1\\source-qualification-r5\\replay\\natural-8000011000002-raw.json": "89324d84e84ada30138ec58dbba2cf088e28fbc82ac19a304970e24aad7d064a",
+    "D:\\SLS\\local\\reports\\act2-study-r1\\source-qualification-r5\\replay\\natural-8000011000004-raw.json": "4f723c8ecef06e75f04d3083b0601dc65b2691d33d8569e8770189dcc66de40a",
+    "D:\\SLS\\local\\reports\\act2-study-r1\\source-qualification-r5\\replay\\natural-8000011000005-raw.json": "60f40c90521cb2edad1a26c9fdc4bf36ef9e93d067fce6094875e25eb62e0207",
+    "D:\\SLS\\local\\reports\\act2-study-r1\\source-qualification-r5\\replay\\natural-8000011000006-raw.json": "0635772306f240ecc8c0fbce8e11e588ab2de06d38d3ab342f9bc1b38afe2aed",
+    "D:\\SLS\\local\\reports\\act2-study-r1\\source-qualification-r5\\replay\\natural-8000011000009-raw.json": "61a78574746f4d6a7d75579985028a09de20cde1dbe04bd05bc70dbccd4a3978",
+    "D:\\SLS\\local\\reports\\act2-study-r1\\source-qualification-r5\\replay\\natural-8000011000069-raw.json": "300afa34e7914696abd089da5ce45b4180f4116761ee1e879fa8c44939d64a36",
+    "D:\\SLS\\local\\reports\\act2-study-r1\\source-qualification-r5\\replay\\natural-8000011000000-conditional.json": "4687d52a10cf33ca1f0c64b113d358469ac9effc03530451aaa5a09b6a060279",
+    "D:\\SLS\\local\\reports\\act2-study-r1\\source-qualification-r5\\replay\\natural-8000011000005-conditional.json": "459a97a4bd55e81e942eca3a8b8ab039ec8a637464d7abd8af826e8966ae8d9a",
+    "D:\\SLS\\local\\reports\\act2-study-r1\\source-qualification-r5\\replay\\controlled.json": "17f096e02ea089513c3bc9546181d4f2a2dfc54ca1402a552b586315d1d2c08a",
+    "D:\\SLS\\local\\reports\\act2-study-r1\\source-qualification-r5\\replay\\systems-0-raw.json": "18fdeab3e3abb819ed19c2dc484a1dc6d989b32c7b2d1e77043696bb8cf23203",
+    "D:\\SLS\\local\\reports\\act2-study-r1\\source-qualification-r5\\replay\\systems-1-raw.json": "30a0df8f7eaab605f8be39f5ef65d6b0f8ba13940947521676bb19c7e3a47e1b",
+    "D:\\SLS\\local\\reports\\act2-study-r1\\source-qualification-r5\\replay\\systems-2-raw.json": "603fe540ca0027d2708771bc2b11d76ba62839aa94c74ac834f890ee39d43ea4",
+    "D:\\SLS\\local\\reports\\act2-study-r1\\source-qualification-r5\\replay\\systems-0-conditional.json": "66e924b29b5f9c11ec1565fe3a39040f522ce6c94492f353f441c8e3949f711b",
+    "D:\\SLS\\local\\reports\\act2-study-r1\\source-qualification-r5\\replay\\systems-1-conditional.json": "06d50d6be8454b110b61bec6fe18029d4769a9569899951fb79a3e733b097401",
+    "D:\\SLS\\local\\reports\\act2-study-r1\\source-qualification-r5\\replay\\systems-2-conditional.json": "a2cfff0fe4a5b85922dbbb9c92efb14125f43690f1de7cf2cd9a3ffaf074c67f",
+    "D:\\SLS\\local\\reports\\act2-study-r1\\source-qualification-r5\\replay\\replacement-131100063-raw.json": "e8b578501e70283c08320e82905e986add550ee3c978efb523e64f3313b60666",
+    "D:\\SLS\\local\\reports\\act2-study-r1\\source-qualification-r5\\replay\\replacement-131100063-conditional.json": "bed6ff25dcf5a9d8338edaf7aa9cda149e3ca93d9bf568608d4084d0be92b780",
+    "D:\\SLS\\local\\reports\\act2-study-r1\\source-qualification-r5\\impact-tests.xml": "91f09ff59f3c75ef453c96a182cd8539c42f7c264bb5a1df1a780e74e68de179"
+  },
+  "blockers": [],
+  "limits": [
+    "Finite supported Act1\u20132 contract; not full-content, Heart or exhaustive RNG proof",
+    "Raw unconditional differences retained; independent clock conditions remain conditional",
+    "No PPO, GPU memory, training-efficacy or server qualification inferred"
+  ]
+}

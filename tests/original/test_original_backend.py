@@ -573,8 +573,9 @@ def test_hand_select_uses_stable_hand_choice_indices() -> None:
     decision = adapt_original(payload).decision
     assert decision.observation.screen is ScreenType.COMBAT
     assert [item.instance_id for item in decision.observation.choice_options] == [
-        "CHOICE:0", "CHOICE:1",
+        "CHOICE:0", "CHOICE:1", "selection-requirement",
     ]
+    assert dict(decision.observation.choice_options[-1].properties)=={'amount':1}
     assert [item.subject_id for item in decision.actions] == ["CHOICE:0", "CHOICE:1"]
     adapted = adapt_original(payload)
     assert adapted.commands[decision.actions[0].candidate_id] == ("choose 0",)
@@ -691,8 +692,9 @@ def test_combat_card_choice_reads_screen_state_cards() -> None:
         ActionKind.SELECT_CARD, ActionKind.SELECT_CARD, ActionKind.SELECT_CARD,
     ]
     assert [item.content_id for item in decision.observation.choice_options] == [
-        "PANACHE", "MAYHEM", "THINKING_AHEAD",
+        "PANACHE", "MAYHEM", "THINKING_AHEAD", "OPTION",
     ]
+    assert dict(decision.observation.choice_options[-1].properties)=={'amount':1}
 
 
 def test_discovery_timing_is_validation_only_action_evidence() -> None:

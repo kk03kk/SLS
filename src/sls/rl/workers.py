@@ -307,6 +307,8 @@ def _vector_worker(
                 connection.send([
                     execute(index, "checkpoint", None) for index in range(size)
                 ])
+            elif command == "checkpoint_one":
+                connection.send(execute(int(payload), "checkpoint", None))
             elif command == "load":
                 connection.send([
                     execute(index, "load", state)
@@ -433,6 +435,12 @@ class WorkerPool:
         for connection in self._connections:
             connection.send(("checkpoint", None))
         return self._collect(indices)
+
+    def checkpoint_one(self, index: int) -> Mapping[str, Any]:
+        if not 0 <= index < self.size:
+            raise IndexError(index)
+        self._connections[index].send(("checkpoint", None))
+        return self._collect((index,))[0]
 
     def load_checkpoints(self, states: Sequence[Mapping[str, Any]]) -> list[Decision]:
         if len(states) != self.size:
@@ -570,6 +578,11 @@ class VectorWorkerPool:
     def checkpoints(self) -> list[Mapping[str, Any]]:
         return [self._execute(index, "checkpoint", None) for index in range(self.size)]
 
+    def checkpoint_one(self, index: int) -> Mapping[str, Any]:
+        if not 0 <= index < self.size:
+            raise IndexError(index)
+        return self._execute(index, "checkpoint", None)
+
     def load_checkpoints(self, states: Sequence[Mapping[str, Any]]) -> list[Decision]:
         if len(states) != self.size:
             raise ValueError("checkpoint count does not match environment count")
@@ -706,6 +719,11 @@ class ShardedWorkerPool:
 
     def checkpoints(self) -> list[Mapping[str, Any]]:
         return self._all("checkpoint")
+
+    def checkpoint_one(self, index: int) -> Mapping[str, Any]:
+        shard, local = self._locate(index)
+        self._connections[shard].send(("checkpoint_one", local))
+        return self._receive(shard)
 
     def load_checkpoints(self, states: Sequence[Mapping[str, Any]]) -> list[Decision]:
         if len(states) != self.size:

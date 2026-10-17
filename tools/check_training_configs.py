@@ -129,6 +129,22 @@ def validate_json(path: Path, payload: object) -> list[str]:
         if not historical and training_implementation_digest() != payload["target_training_implementation_sha256"]:
             problems.append("bound implementation changed")
         return problems
+    if schema=='sls-battle-learnability-experiment-v1':
+        from tools.run_battle_study import load_config
+        try:
+            study=load_config(ROOT/payload['config'])
+            if (payload['interaction_budget']!=study['target_decisions']
+                    or payload['training_seed']!=study['training_seed']
+                    or payload['prefix_inference_budget']!=study['prefix_decision_cap']
+                    or payload['data_quotas']!={'fit':64,'development':64,'confirmation':384}
+                    or payload['criterion']['minimum_observed_gain']!=.10):
+                problems.append('battle preregistration and executable contract disagree')
+            intervals=list(payload['source_reservations'].values())
+            if any(a>=b for a,b in intervals) or any(a<d and c<b for i,(a,b) in enumerate(intervals) for c,d in intervals[i+1:]):
+                problems.append('battle source reservations overlap or are empty')
+        except (KeyError,ValueError,TypeError) as error:
+            problems.append(f'invalid battle preregistration: {error}')
+        return problems
     budget = schema in {"sls-win-70m-budget-experiment-v1", "sls-win-90m-budget-experiment-v1"}
     if not budget and schema != "sls-act12-pilot-recipe-v1":
         return [f"unsupported experiment schema: {schema!r}"]
@@ -213,6 +229,14 @@ def validate_auxiliary(path: Path, payload: dict) -> list[str]:
 
 
 def validate(path: Path, payload: dict) -> list[str]:
+    if payload.get('task')=='NATURAL_THIRD_ACT2_BATTLE':
+        from tools.run_battle_study import load_config, ppo_config
+        try:
+            study=load_config(path)
+            ppo_config(study)
+            return []
+        except (ValueError,KeyError,TypeError) as error:
+            return [f'invalid battle study contract: {error}']
     run = payload.get("run") or {}
     if not run and "ppo" not in payload:
         # Not a training run configuration.

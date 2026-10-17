@@ -35,6 +35,7 @@ def verify(artifact_path: Path | None, boundaries: int, *, checkpoint: Path | No
     decision_count = restore_count = 0
     seeds = []
     traces = hashlib.sha256()
+    witnesses = {}
     with torch.no_grad():
         for seed in range(seed_start, seed_start + 10000):
             seeds.append(seed)
@@ -47,6 +48,7 @@ def verify(artifact_path: Path | None, boundaries: int, *, checkpoint: Path | No
             # Multiple simultaneous restorations exercise subsequent actions,
             # including leaving the selection boundary, rather than one step.
             branches: list[tuple[SimulatorBackend, int, str]] = []
+            pending_witnesses = {}
             for step in range(4096):
                 if decision.terminal:
                     break
@@ -60,6 +62,10 @@ def verify(artifact_path: Path | None, boundaries: int, *, checkpoint: Path | No
                 if backend.checkpoint().get("_policy_multi_selection") is not None:
                     key += ":MULTI_SELECTION"
                 counts[key] += 1
+                if key not in witnesses and key not in pending_witnesses:
+                    pending_witnesses[key] = {
+                        'seed':seed,'step':step,'decision':decision,
+                        'checkpoint':json.loads(json.dumps(backend.checkpoint())), 'steps':[]}
                 ids = [a.candidate_id for a in decision.actions]
                 if len(ids) != len(set(ids)) or set(ids) != set(backend._candidate_bits):
                     raise ValueError("candidate IDs incomplete or ambiguous")
@@ -73,13 +79,23 @@ def verify(artifact_path: Path | None, boundaries: int, *, checkpoint: Path | No
                     raise ValueError("nonfinite policy output")
                 index = int(output.logits.argmax())
                 action = decision.actions[index]
-                if counts[key] == 1 or step % 40 == 0 or decision.observation.choice_options:
+                if not branches and (counts[key] == 1 or step % 40 == 0 or decision.observation.choice_options):
                     restored = SimulatorBackend(IRONCLAD_A20_ACT2)
                     restored_decision = restored.load_checkpoint(json.loads(json.dumps(backend.checkpoint())))
                     if restored_decision != decision or restored.checkpoint() != backend.checkpoint():
                         raise ValueError("checkpoint roundtrip changed decision/state")
                     branches.append((restored, 0, key))
                 transition = backend.step(action)
+                if pending_witnesses:
+                    expected_state = json.loads(json.dumps(backend.checkpoint()))
+                    finished = []
+                    for witness_key, witness in pending_witnesses.items():
+                        witness['steps'].append((action,transition,expected_state))
+                        if len(witness['steps']) >= 4 or transition.terminated:
+                            witnesses[witness_key] = witness
+                            finished.append(witness_key)
+                    for witness_key in finished:
+                        del pending_witnesses[witness_key]
                 ongoing = []
                 for restored, length, start_key in branches:
                     branch = restored.step(action)
@@ -104,12 +120,43 @@ def verify(artifact_path: Path | None, boundaries: int, *, checkpoint: Path | No
                               "continuous_restores": restore_count}), flush=True)
             if decision_count >= boundaries and restore_count >= 100:
                 break
+    # With only two live instances, a rare screen can occur while the existing
+    # four-action branch is busy. Replay its separately captured continuous
+    # witness afterwards; do not waive the screen or count an unfinished branch.
+    branches.clear()
+    ongoing.clear()
+    backend = restored = None
+    deferred = []
+    for key in counts:
+        if not key.startswith('ACT') or restore_counts[key]:
+            continue
+        witness = witnesses.get(key)
+        if witness is None:
+            raise ValueError(f'no complete continuous witness for {key}')
+        restored = SimulatorBackend(IRONCLAD_A20_ACT2)
+        if restored.load_checkpoint(witness['checkpoint']) != witness['decision']:
+            raise ValueError('deferred restore changed initial decision')
+        if json.loads(json.dumps(restored.checkpoint())) != witness['checkpoint']:
+            raise ValueError('deferred restore changed hidden initial state')
+        hashes = []
+        for action, expected_transition, expected_state in witness['steps']:
+            if (restored.step(action) != expected_transition
+                    or json.loads(json.dumps(restored.checkpoint())) != expected_state):
+                raise ValueError('deferred continuous restoration diverged')
+            hashes.append(hashlib.sha256(json.dumps(expected_state,sort_keys=True).encode()).hexdigest())
+        restore_count += 1
+        restore_counts[key] += 1
+        deferred.append({'screen':key,'source_seed':witness['seed'],'source_step':witness['step'],
+            'continuous_actions':len(witness['steps']), 'hidden_state_sha256':hashes,
+            'actions':[a.to_dict() for a,_,_ in witness['steps']]})
+        restored = None
     return {"schema": "sls-act12-foundation-boundaries-v1", "native_source_sha256": native_source_digest(),
             "profile": asdict(IRONCLAD_A20_ACT2), "device": "cpu", "seed_start": seed_start,
             **identity, "policy_architecture": model.config.architecture, "decisions": decision_count,
             "continuous_restores": restore_count, "continuation_length": "4 actions or authoritative terminal",
             "screen_counts": dict(counts), "restore_screen_counts": dict(restore_counts),
             "seeds": seeds, "action_trace_sha256": traces.hexdigest(),
+            "deferred_restore_witnesses": deferred,
             "scope": "legal deterministic policy trajectories; not exhaustive candidate or stock parity proof",
             "training_updates": 0}
 

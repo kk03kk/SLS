@@ -53,6 +53,19 @@ def test_sharded_reset_many_preserves_requested_index_and_seed_order() -> None:
     assert checkpoints[3]["run_state"]["seed"] == 103
 
 
+@pytest.mark.parametrize("pool_type", [WorkerPool, VectorWorkerPool, ShardedWorkerPool])
+def test_checkpoint_one_matches_full_snapshot_without_mutation(pool_type) -> None:
+    with pool_type(IRONCLAD_A0_ACT1, 2) as pool:
+        pool.reset((14, 15))
+        expected = pool.checkpoints()
+        assert pool.checkpoint_one(1) == expected[1]
+        assert pool.checkpoint_one(0) == expected[0]
+        for invalid in (-1, 2):
+            with pytest.raises((IndexError, ValueError)):
+                pool.checkpoint_one(invalid)
+        assert pool.checkpoints() == expected
+
+
 class _DiagnosticBackend:
     _candidate_bits = {'{"kind":"PROCEED"}': 17}
 

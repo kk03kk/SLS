@@ -1,5 +1,6 @@
 """Flight reduction waits behind Headbutt's discard selection in actual stock."""
 
+import copy
 import gzip
 import json
 from pathlib import Path
@@ -16,7 +17,11 @@ def test_flight_reduction_waits_for_headbutt_selection_and_restores_continuation
     backend = SimulatorBackend(ironclad_fullrun_profile(20, require_heart=True))
     backend.load_checkpoint(fixture["before"])
     decision = backend.step(Action.from_dict(fixture["action"])).decision
-    assert decision.observation.to_dict() == fixture["stock_selection"]
+    expected=copy.deepcopy(fixture['stock_selection'])
+    # Stock Headbutt selects one discarded card; retain every old public field.
+    expected['choice_options'].append({'instance_id':'selection-requirement',
+        'content_id':'OPTION','owner_id':None,'properties':{'amount':1}})
+    assert decision.observation.to_dict() == expected
     checkpoint = json.loads(json.dumps(backend.checkpoint()))
     restored = SimulatorBackend(ironclad_fullrun_profile(20, require_heart=True))
     restored_decision = restored.load_checkpoint(checkpoint)

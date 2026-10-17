@@ -95,7 +95,9 @@ def policy_from_training_checkpoint(
 
 
 def checkpoint_contract(trainer: PPOTrainer) -> dict[str, Any]:
+    from sls.content.selection import PROJECTION_REVISION
     return {
+        "public_projection_revision": PROJECTION_REVISION,
         "model": trainer.model.config.to_dict(),
         "ppo": trainer.config.to_dict(),
         "profile": trainer.workers.profile,

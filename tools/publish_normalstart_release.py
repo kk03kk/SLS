@@ -38,23 +38,30 @@ def git_native_files():
     return digest.hexdigest(), files
 
 
-def publish(qualification: Path):
+def publish(qualification: Path, *, previous_release="tests/fixtures/evidence/act12-foundation"):
     report = validate_qualification(qualification, sha256_file(qualification))
     for path, digest in report["input_sha256"].items():
         if sha256_file(Path(path)) != digest:
             raise ValueError("local raw qualification evidence changed")
-    old = ROOT / "tests/fixtures/evidence/act12-foundation"
+    old = ROOT / previous_release
     previous = json.loads((old / "qualification.json").read_text(encoding="utf-8"))
     legacy = json.loads((old / "simulator-transition.json").read_text(encoding="utf-8"))
     before, files = git_native_files()
     if before != previous["native_source_sha256"] or before != legacy["target_native_source_sha256"]:
         raise ValueError("Git baseline is not the independently qualified previous rule source")
     changes = []
-    for name, data in files.items():
-        after = (ROOT / name).read_bytes().replace(b"\r\n", b"\n")
+    current_names=set()
+    for relative in NATIVE_SOURCE_PATHS:
+        target=ROOT/relative
+        candidates=[target] if target.is_file() else target.rglob('*')
+        current_names.update(p.relative_to(ROOT).as_posix() for p in candidates if p.is_file()
+            and '__pycache__' not in p.parts and p.suffix not in {'.pyc','.pyo'})
+    for name in sorted(set(files)|current_names):
+        data=files.get(name)
+        after = (ROOT / name).read_bytes().replace(b"\r\n", b"\n") if name in current_names else None
         if data != after:
-            changes.append({"path": name, "before_sha256": hashlib.sha256(data).hexdigest(),
-                            "after_sha256": hashlib.sha256(after).hexdigest()})
+            changes.append({"path": name, "before_sha256": hashlib.sha256(data).hexdigest() if data is not None else None,
+                            "after_sha256": hashlib.sha256(after).hexdigest() if after is not None else None})
     directory = ROOT / RELEASE
     if directory.exists():
         raise FileExistsError("immutable normal-start release already exists")
@@ -68,8 +75,9 @@ def publish(qualification: Path):
         "after_native_source_sha256": native_source_digest(), "changed_files": changes,
         "current_rule_validation": "qualification.json", "weights_only": True, "exact_resume_allowed": False,
         "review": "Replayed fixed Act1–2 corpus plus changed-rule regression; no old pass inherited",
-        "impacted_mechanisms": ["death/revival/action order", "battle/permanent deck restore and large piles",
-                                "event constructor RNG timing", "chest key/relic interactions"]}, indent=2) + "\n", encoding="utf-8")
+        "impacted_mechanisms": ["nested reward/selection callbacks", "private sparse monster array extent",
+                                "complete dormant selector memory",
+                                "public required selection quantity (same tensor layout)"]}, indent=2) + "\n", encoding="utf-8")
     proof_names = ("qualification.json", "legacy-transition.json", "previous-qualification.json", "source-changes.json")
     transition = {"schema": "sls-curriculum-simulator-transition-v1", "status": "VERIFIED_RULE_CORRECTION",
         "semantics_revision": "sls-normalstart-act12-current-rule-corrections-v1",
@@ -85,8 +93,9 @@ def publish(qualification: Path):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--qualification", type=Path, required=True)
+    parser.add_argument("--previous-release", default="tests/fixtures/evidence/act12-foundation")
     args = parser.parse_args()
-    print(json.dumps(publish(args.qualification)))
+    print(json.dumps(publish(args.qualification,previous_release=args.previous_release)))
 
 
 if __name__ == "__main__":

@@ -1,0 +1,19 @@
+{
+  "schema": "sls-curriculum-simulator-transition-v1",
+  "status": "VERIFIED_RULE_CORRECTION",
+  "semantics_revision": "sls-normalstart-act12-current-rule-corrections-v1",
+  "source_native_source_sha256": "1e30bb6cfa32f600cd63c59983c14ab8928fac4452c1586d630295d2c6ff9453",
+  "target_native_source_sha256": "40b4beed53d98cb45fa609898f74e50c70c8d1bbbf1b22b03388946a9a24d2a1",
+  "source_profile": "IRONCLAD_A20_ACT1",
+  "target_profile": "IRONCLAD_A20_ACT2",
+  "transfer_mode": "weights-only",
+  "exact_resume_allowed": false,
+  "evidence": {
+    "qualification.json": "bd5dddf83096d6f24a49602d7ae8fbdfd30383a5ebc0f4e11904c0eb6d98e040",
+    "legacy-transition.json": "bee27cca47015bd268a398003edce9cf0ca3d7ed3811615a58a5319ba9a375bc",
+    "previous-qualification.json": "d09c73f202867958aa0598bfe0097875d3660a08d4df6220ceecc9953ed98688",
+    "source-changes.json": "78833c8c0152cf957f1fc954f53bd2eead15517009de38fef3fef1b55a327ca2"
+  },
+  "scope": "EXISTING_72_ACT12_MECHANISM_FLOW_OBLIGATIONS_AND_8_STOCK_CANARIES",
+  "scope_is_exhaustive": false
+}

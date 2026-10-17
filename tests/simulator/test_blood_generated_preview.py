@@ -17,4 +17,7 @@ def test_generated_blood_preview_replays_stock_prior_damage_count():
     expected = [dict(c) for c in fixture['expected_choices']]
     for row in expected:
         row.pop('instance_id')
+    # Discovery is a public single-card choice. The immutable old card rows
+    # remain unchanged; current projection adds only this explicit context.
+    expected.append({'content_id':'OPTION','owner_id':None,'properties':{'amount':1}})
     assert actual == expected

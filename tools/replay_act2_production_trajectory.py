@@ -10,6 +10,7 @@ from pathlib import Path
 from sls.audit.act2_differential import pending_stock_intents
 from sls.audit.card_parity import structured_differences
 from sls.audit.decision_identity import canonical_projection, mapped_action
+from sls.audit.public_projection_migration import stock_observation
 from sls.audit.trajectory_reader import read_trajectory
 from sls.backends.original import ORIGINAL_EXECUTION_CONTRACT
 from sls.backends.simulator import SimulatorBackend, native
@@ -41,7 +42,13 @@ def replay(path: Path, *, clock_witnesses: list[dict] | None = None) -> dict:
     clocks = list(clock_witnesses or ())
     last_info = None
     terminal_reason_verified = False
+    projection_migrations=[]
     for index, original in enumerate(boundaries):
+        observation,migration=stock_observation(original['observation'],original['candidate_actions'],
+                                              original['terminal'],original['diagnostic_state'])
+        original={**original,'observation':observation}
+        if migration:
+            projection_migrations.append({'boundary':index,**migration})
         ProductionBackend.require_isolation(original['diagnostic_state'])
         if pending_stock_intents(original['diagnostic_state']):
             first = {'boundary': index, 'classification': 'UNSTABLE_STOCK_BOUNDARY',
@@ -95,6 +102,7 @@ def replay(path: Path, *, clock_witnesses: list[dict] | None = None) -> dict:
                        else "SEMANTIC_DIFFERENCE") if first else "TRAJECTORY_MATCH",
             "rng_comparison": "NOT_EXPOSED_IN_PRODUCTION",
             "purpose": "FLOW_DIAGNOSTIC_NOT_WIN_RATE_ESTIMATE"}
+    result['public_projection_migrations']=projection_migrations
     if clock_witnesses is not None:
         result['schema'] = 'sls-act2-clock-conditioned-replay-v1'
         result['clock_inputs'] = clock_inputs

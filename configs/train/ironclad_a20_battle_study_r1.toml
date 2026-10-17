@@ -1,0 +1,18 @@
+task = "NATURAL_THIRD_ACT2_BATTLE"
+bank = "local/reports/act2-study-r1/bank-r4"
+parent = "local/runs/ironclad-a20-act1-win-90m-continuation/final.pt"
+migrated_parent = "local/runs/ironclad-a20-battle-r1-parent/v6-weights.pt"
+base_config = "configs/train/ironclad_a20_act12_normalstart_a_r1.toml"
+target_decisions = 500000
+prefix_decision_cap = 8000000
+training_seed = 1600002000000
+workers = 16
+shards = 8
+evaluation_batch = 16
+development_interval_updates = 32
+max_wall_seconds = 39600
+
+# Fixed final comparison: 384 independent origins, paired greedy outcomes.
+# Designed for a large +15pp alternative; >=10pp observed + positive paired
+# 95% interval + exact McNemar p<.05 is the learnability gate.
+# No promotion to full-Act2 training is automatic.

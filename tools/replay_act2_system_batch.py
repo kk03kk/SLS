@@ -10,6 +10,7 @@ from pathlib import Path
 from sls.audit.act2_differential import direct_projection, pending_stock_intents
 from sls.audit.card_parity import structured_differences
 from sls.audit.decision_identity import canonical_projection, mapped_action
+from sls.audit.public_projection_migration import stock_observation
 from sls.backends.original import ORIGINAL_EXECUTION_CONTRACT
 from sls.backends.simulator import SimulatorBackend, native
 from sls.curriculum import IRONCLAD_A20_ACT2
@@ -95,7 +96,12 @@ def replay(row: dict, *, measured_runtime: bool = False, profile=IRONCLAD_A20_AC
         actor_terminal = stock_terminal_outcome(records[-1]['stock_raw'])
     native_terminal_info = {}
     timing_conditions = []
+    projection_migrations=[]
     for index, stock in enumerate(records):
+        observation,migration=stock_observation(stock['observation'],stock['actions'],stock['terminal'],stock['stock_raw'])
+        stock={**stock,'observation':observation}
+        if migration:
+            projection_migrations.append({'boundary':index,**migration})
         if pending_stock_intents(stock['stock_raw']):
             first = {'boundary': index, 'classification': 'UNSTABLE_STOCK_BOUNDARY',
                      'pending_monster_slots': pending_stock_intents(stock['stock_raw'])}
@@ -161,6 +167,7 @@ def replay(row: dict, *, measured_runtime: bool = False, profile=IRONCLAD_A20_AC
         else:
             terminal_reason_verified = True
     return {"seed": row["seed"], "first_divergence": first, "boundaries_checked": index + 1,
+            "public_projection_migrations":projection_migrations,
             "act2_boundaries": transitions, "reward_boundaries": reward_boundaries,
             "checkpoint_replays": restore_checks, "stock_action_unavailable": row["script_action_unavailable"],
             "terminal_reason_verified": terminal_reason_verified,

@@ -62,7 +62,7 @@ namespace sts {
     };
 
     struct CardSelectInfo {
-        std::array<CardId, 3> cards;
+        std::array<CardId, 3> cards {CardId::INVALID, CardId::INVALID, CardId::INVALID};
         bool canPickZero = false;
         bool canPickAnyNumber = false;
         int pickCount = 0;
@@ -71,7 +71,7 @@ namespace sts {
         bool discoveryRerollOnRetrieve = false;
         int discoveryRetrievalUpdates = 14;
 
-        CardSelectTask cardSelectTask;
+        CardSelectTask cardSelectTask = CardSelectTask::INVALID;
 
         std::array<CardId, 3>& discovery_Cards() { return cards; }
         int& discovery_CopyCount() { return data0; }

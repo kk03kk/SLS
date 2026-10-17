@@ -1,6 +1,83 @@
 # 开发与运行
 
-## 正常开局两幕实验的本地准备
+## 第二幕战斗研究的服务器交接
+
+本次入口是`tools.prepare_battle_study`，以status.md和机器readiness.json为准。下方A/B/C与pilot是历史流程，不能用于本次续训。`READY_FOR_SERVER_SMOKE`表示本地证据齐备，服务器CUDA和学习效果仍为NOT_RUN。
+
+本轮最终CPU凭证目录为`local/reports/act2-study-r1/validation-r6`。复核用`python -m tools.prepare_battle_study --check-ready --output local/reports/act2-study-r1/validation-r6`；重新完整验证须选择全新输出目录，不能覆盖旧失败或通过证据。提交已验证源码后，用`python -m tools.battle_server pack --validation local/reports/act2-study-r1/validation-r6 --output local/archives/act2-battle-r1.tar.gz`打包。包内数据用SHA核验，源码只通过Git同步。
+
+代码推送完成后，人类在Windows上传并登录：
+
+```powershell
+Set-Location D:\SLS
+powershell -ExecutionPolicy Bypass -File tools/deploy_battle_study.ps1
+ssh -J hengzhi@sjump.comp.nus.edu.sg hengzhi@xlogin.comp.nus.edu.sg
+```
+
+NUS登录后执行（登录节点不import torch）：
+
+```bash
+cd /home/h/hengzhi/SLS
+squeue -u hengzhi
+# 确认没有仍依赖这个checkout的运行作业后，再更新源码；不自动取消其它作业。
+git pull --ff-only origin main
+git rev-parse HEAD
+PY=/home/h/hengzhi/venvs/sls/bin/python
+export PYTHONPATH="$PWD/src"
+export PYTHONPYCACHEPREFIX="$PWD/local/build/python-cache"
+$PY -m tools.battle_server install --bundle "$HOME/act2-battle-r1.tar.gz"
+$PY -m tools.battle_server inspect
+```
+
+核对代码与数据哈希、Python3.12、torch/numpy/pytest安装元数据、磁盘、实际partition/GRES、账号和QOS。NUS的a100-40可能是物理40GB或80GB卡的40GB MIG，不能根据历史节点名猜显存；实际以分配内nvidia-smi和正式形状测量为准。[NUS说明](https://www.comp.nus.edu.sg/~cs3210/student-guide/soc-gpus/)、[Slurm GRES](https://slurm.schedmd.com/gres.html)。登录节点曾无法映射libtorch_cuda，因此install/inspect/submit/status/export只使用标准库，所有PyTorch工作在分配内。
+
+仅当inspect实际显示gpu分区提供a100-40且账号权限有效，执行以下命令；否则把两个参数替换为实际资源名称，不改批量或学习配方：
+
+```bash
+$PY -m tools.battle_server submit --partition gpu --gpu-type a100-40 --dry-run
+$PY -m tools.battle_server submit --partition gpu --gpu-type a100-40
+squeue -u hengzhi
+$PY -m tools.battle_server status
+```
+
+默认单卡、16CPU、64GB主存、12小时、account allusers、qos normal；可按权限显式传--account/--qos。一次排队内依次执行包核验、Linux构建、恢复回归、原父正式形状CUDA Smoke、耗时/显存/恢复门和固定预算训练。Smoke失败或保守预计超11小时即停止，不自动减批量、延预算或进入长训练。冻结父评估在同一个作业内完成。
+
+查看日志、请求安全停止、同合同续跑及导出（JOBID替换为实际值）：
+
+```bash
+tail -n 50 local/runs/slurm-logs/battle-JOBID.out
+tail -n 50 local/runs/slurm-logs/battle-JOBID.err
+cat local/runs/ironclad-a20-battle-r1-smoke-JOBID/result.json
+scancel --signal=TERM --batch JOBID
+# 完整更新边界写安全latest和STOPPED；不要kill -9。
+# 原代码/包/合同、相同run路径再次submit，先重验Smoke再从安全latest继续。
+$PY -m tools.battle_server submit --partition gpu --gpu-type a100-40
+$PY -m tools.battle_server export --output "$HOME/act2-battle-results.tar.gz"
+```
+
+安全停止只给batch主进程发信号，不能用--full同时杀掉环境子进程，依据[Slurm scancel](https://slurm.schedmd.com/scancel.html)。Windows下载：`scp -J hengzhi@sjump.comp.nus.edu.sg hengzhi@xlogin.comp.nus.edu.sg:~/act2-battle-results.tar.gz local/archives/`。结果包只有JSON/metrics，不覆盖checkpoint。确认集只比较固定预算终点，解封后恢复只允许同一endpoint SHA；COMPLETE还需看comparison.pass_learnability，STOPPED/FAILED不算完成。请回传inspect、JOBID、Smoke与comparison；本地准备不能证明CUDA或学习收益。
+
+默认研究run为`local/runs/ironclad-a20-battle-r1`。导出入口只收该run内的JSON/JSONL；相邻Smoke目录与Slurm原日志仍留在服务器，失败时先按上述命令查看和回传，不能把空结果包解释为通过。首次Smoke未完成时没有result.json，应查看battle-JOBID.err。
+
+## 第二幕恢复与短战斗CPU诊断
+
+最新结论与来源以status.md首节为准。Orrery通用恢复修复后旧normalstart release应拒绝新来源，不可通过重写旧凭证或checkpoint规避。下方A/B/C交接命令属于历史流程，当前不用于重启服务器。
+
+在下节相同DL会话及CPU环境变量下执行（输出目录/文件必须全新，不能覆盖证据）：
+
+```powershell
+python -m pytest -q tests/simulator/test_nested_callback_restore.py tests/audit/test_short_battle_history.py tests/audit/test_short_battle_corpus.py tests/audit/test_repeated_boundary_diagnosis.py
+python -m tools.prepare_act2_short_battles --output local/reports/act2-short-foundation/new-pilot --sources 32 --max-decisions 16384
+python -m tools.verify_act2_short_battles --corpus local/reports/act2-short-foundation/new-pilot --output local/reports/act2-short-foundation/new-verification.json
+python -m tools.analyze_act2_short_foundation --corpus local/reports/act2-short-foundation/new-pilot --output local/reports/act2-short-foundation/new-analysis.json
+python -m tools.probe_short_battle_random --corpus local/reports/act2-short-foundation/new-pilot --output local/reports/act2-short-foundation/new-random-control.json
+```
+
+采集器固定来源角色、扫描配置种子范围、校验父SHA、隐藏CUDA并限制2线程。默认source_plan是同一个pilot种子计划；换输出重跑只算复现，不能增加独立样本数。扩展正式数据之前必须实现新来源登记、单一第三战根且到达后即停的采集模式；现工具收前3战并继续原episode以校准完整回报，不能充当封存最终确认采集器。载入检查SHA、来源、重复项、按run隔离、种子命名空间、baseline完整性和确认污染；不能仅凭文件哈希认定来源未在全历史中用过。已有corpus-r1及smoke来源重叠，禁止合计规模。
+
+离线原版重放命令见下方A20节，新来源结果在`local/reports/act2-short-foundation/act12-replay/`；不启动原版、不改备份或journal。当前全量CPU只有旧来源资格拒绝1项失败，其余1898通过；新增最终18项聚焦验证单独登记，禁止报全量全绿。所有诊断保留原始失败输出，修订结果使用v2/v3新文件，不覆盖旧测量。
+
+## 历史正常开局 A/B/C 准备（非本次入口）
 
 使用DL环境，在当前PowerShell会话隐藏CUDA并限制CPU并行：
 
@@ -64,7 +141,7 @@ conda activate DL
 ```powershell
 $env:CUDA_VISIBLE_DEVICES = '-1'
 $env:SLS_TEST_CUDA = '0'
-python tools/build_native.py --jobs 4
+python tools/build_native.py --jobs 2
 python -m pytest -q
 python -m ruff check .
 python tools/generate_policy_vocabulary.py --check
@@ -148,6 +225,22 @@ NUS 操作由人类执行。先同步代码，再按当前已核验实验提供�
 原版规则或观测改动必须说明前后行为、回归证据与模型兼容性。训练方案至少登记配置、源码、父 checkpoint SHA、种子区间、runtime、worker 布局、预算、选模规则与独立终评。
 
 ### NUS 服务器已知环境与只读研究
+
+外部访问统一通过跳板机。2026-10-17用户确认的登录入口为 `hengzhi@xlogin.comp.nus.edu.sg`，跳板机为 `hengzhi@sjump.comp.nus.edu.sg`。后续提供SSH、SCP命令时必须包含 `-J`；登录后提示符出现的 `xlogin1`、`xlogin2` 是实际登录节点，不应据此替换用户已确认的外部入口或省略跳板机。
+
+在本地PowerShell登录：
+
+```powershell
+ssh -J hengzhi@sjump.comp.nus.edu.sg hengzhi@xlogin.comp.nus.edu.sg
+```
+
+在本地PowerShell下载服务器文件（此例保存到桌面；按实际文件替换远端路径和本地文件名）：
+
+```powershell
+scp -J hengzhi@sjump.comp.nus.edu.sg hengzhi@xlogin.comp.nus.edu.sg:/home/h/hengzhi/SLS/local/reports/normalstart-c-failure.json "$env:USERPROFILE\Desktop\normalstart-c-failure.json"
+```
+
+上传使用同一跳板机，将SCP源和目标改为本地文件及 `hengzhi@xlogin.comp.nus.edu.sg:/home/h/hengzhi/SLS/<目标路径>`。连接和文件传输由人类执行；不要在命令或文档中保存密码。
 
 2026-10-12依据用户提供的提交和调度输出：使用SoC集群登录节点 `xlogin1.comp.nus.edu.sg`，账户 `hengzhi`，项目路径 `/home/h/hengzhi/SLS`，Python入口 `/home/h/hengzhi/venvs/sls/bin/python`；Slurm账户 `allusers`、QoS `normal`。历史提交作业号为934705，用户随后确认训练正常开始；这不代表已经取得当前运行状态或实际分配节点。
 

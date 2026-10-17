@@ -139,6 +139,7 @@ def training_validation_digest(*, root: Path = ROOT) -> str:
         "src/sls/runtime/__init__.py", "src/sls/runtime/artifact.py",
         "tools/train_full_run.py", "tools/evaluate_checkpoint.py",
         "tools/prepare_model_warm_start.py",
+        "src/sls/audit/short_battle.py", "tools/run_battle_study.py", "tools/battle_server.py",
     ), root=root)
 
 

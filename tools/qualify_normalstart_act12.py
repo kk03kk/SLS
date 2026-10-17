@@ -26,6 +26,8 @@ GATE_SOURCES = ("src/sls/audit/act12_qualification.py", "src/sls/audit/validatio
                 "tools/check_act2_production_coverage.py", "tools/verify_act12_foundation.py",
                 "tools/replay_act2_encounter_batch.py", "tools/replay_act2_system_batch.py",
                 "tools/replay_act2_production_trajectory.py", "tools/replay_act2_clock_conditioned_trajectory.py")
+GATE_SOURCES += ('src/sls/audit/public_projection_migration.py','src/sls/backends/original/adapter.py')
+GATE_SOURCES += ('tools/revalidate_act12_simulator.py',)
 
 
 def gate_digest():
@@ -64,7 +66,8 @@ def qualify(root: Path, foundation: Path):
     before = gate_digest()
     replay = root / "replay"
     summary = read(replay / "summary.json")
-    if summary["native_source_sha256"] != source or any(row["exit_code"] for row in summary["reports"]):
+    if (summary["native_source_sha256"] != source or summary.get('comparator_source_sha256')!=before
+            or any(row["exit_code"] for row in summary["reports"])):
         raise ValueError("missing or stale current-source replay")
     for report in summary["reports"]:
         entry = report["evidence"]
@@ -127,7 +130,10 @@ def qualify(root: Path, foundation: Path):
         raise ValueError("rule-impact regression missing, failed or skipped")
     expected = {"test_chest_key_interactions", "test_dynamic_permanent_deck", "test_revival_boundaries",
                 "test_event_constructor_timing", "test_battle_master_deck_restore", "test_large_combat_piles",
-                "test_exploder_fatal_stock", "test_suicide_order", "test_flight_headbutt_order"}
+                "test_exploder_fatal_stock", "test_suicide_order", "test_flight_headbutt_order",
+                "test_nested_callback_restore", "test_sparse_monster_extent_restore",
+                "test_dormant_selector_restore", "test_selection_quantity",
+                "test_public_projection_migration"}
     seen = {case.attrib.get("classname", "").split(".")[-1] for case in cases}
     if not expected <= seen:
         raise ValueError("required changed-rule mechanism regression not executed")

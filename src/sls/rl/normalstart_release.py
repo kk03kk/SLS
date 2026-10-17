@@ -6,7 +6,7 @@ from pathlib import Path
 
 from sls.rl.training_contract import native_source_digest, sha256_file
 
-RELEASE = "tests/fixtures/evidence/act12-normalstart"
+RELEASE = "tests/fixtures/evidence/act2-battle-r1"
 
 
 def validate_qualification(path: Path, expected_sha: str):

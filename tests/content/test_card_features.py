@@ -80,7 +80,7 @@ def test_action_referenced_card_keeps_visible_mutable_state(screen):
     public_combat = {}
     if screen == "HAND_SELECT":
         public_combat = {"choice": {"task": "DUAL_WIELD", "source": "HAND",
-                                     "options": [raw_card]}}
+                                     "options": [raw_card], "pick_count": 1}}
         group, screen_state = "choice", 9
     elif screen == "GRID":
         public_screen = {"card_options": [raw_card]}
@@ -104,6 +104,15 @@ def test_action_referenced_card_keeps_visible_mutable_state(screen):
     assert props["base_cost"] == 1 and props["current_cost"] == 0
     assert props["upgrades"] == 1
     assert props["free_to_play_once"] is True and props["retain"] is True
+
+
+def test_hand_select_quantity_uses_public_max_cards_and_caps_to_available_hand():
+    game={'screen_type':'HAND_SELECT'}
+    combat={'hand':[card(),card(),card()]}
+    for maximum,expected in ((2,2),(99,3)):
+        result=original_screen_entities({},game,combat,{'max_cards':maximum},ScreenType.COMBAT)
+        assert result['choice'][-1].instance_id=='selection-requirement'
+        assert dict(result['choice'][-1].properties)=={'amount':expected}
 
 
 @pytest.mark.parametrize("source,expected", [

@@ -15,6 +15,7 @@ from sls.rl.training_contract import native_source_digest
 
 
 def main() -> int:
+    from tools.qualify_normalstart_act12 import gate_digest
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--foundation", type=Path, required=True)
     parser.add_argument("--oracle-build", type=Path, required=True)
@@ -23,6 +24,7 @@ def main() -> int:
     output = args.output_directory
     output.mkdir(parents=True, exist_ok=False)
     source = native_source_digest()
+    comparator=gate_digest()
     build = json.loads(args.oracle_build.read_text(encoding="utf-8"))
     foundation = args.foundation
     env = {**os.environ, "CUDA_VISIBLE_DEVICES": "-1", "SLS_TEST_CUDA": "0"}
@@ -75,8 +77,11 @@ def main() -> int:
                     trajectory["path"], "--oracle-build", args.oracle_build)
     if native_source_digest() != source:
         raise ValueError("native source changed during replay")
+    if gate_digest()!=comparator:
+        raise ValueError('comparison implementation changed during replay')
     summary = {"schema": "sls-act12-simulator-revalidation-v1", "profile": "IRONCLAD_A20_ACT2",
                "native_source_sha256": source, "device": "cpu", "training_started": False,
+               "comparator_source_sha256":comparator,
                "qualification": "NOT_QUALIFIED", "scope": "EXISTING_CORPUS_REPLAY_ONLY",
                "discovery_contract": "FIXED_14_RAW_DIFFERENCES_RETAINED_CONDITIONAL_SEPARATE",
                "oracle_build": file_identity(args.oracle_build), "natural_receipts": receipts,

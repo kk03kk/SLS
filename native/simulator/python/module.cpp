@@ -573,6 +573,22 @@ py::dict public_combat_choice_state(const BattleContext &bc) {
             break;
     }
     result["options"] = options;
+    // Fixed one-card selectors do not all use the engine's pickCount member.
+    // Publish the effective public UI quantity, not a stale private value.
+    int public_count = 1;
+    switch (task) {
+        case CardSelectTask::EXHAUST_MANY:
+        case CardSelectTask::GAMBLE:
+        case CardSelectTask::RETAIN_CARDS:
+        case CardSelectTask::LIQUID_MEMORIES_POTION:
+        case CardSelectTask::FORETHOUGHT:
+        case CardSelectTask::SEEK:
+        case CardSelectTask::MEDITATE:
+            public_count = bc.cardSelectInfo.pickCount;
+            break;
+        default: break;
+    }
+    result["pick_count"] = std::min(std::max(public_count, 0), static_cast<int>(options.size()));
     py::list controls;
     if (task == CardSelectTask::CODEX) {
         py::dict skip;
@@ -1392,6 +1408,17 @@ Shop restore_shop(const py::dict &state) {
     return result;
 }
 
+bool run_callback_requires_replay(const GameContext &gc) {
+    // std::function closures are not recoverable from the current room alone.
+    // Rewards opened by shops/events/rest sites can return into another screen
+    // or perform deferred effects. A reward-origin grid adds another callback
+    // layer even when the outer reward has an otherwise registered return.
+    // Reconstruct these closures from legal history instead of guessing "map".
+    return (gc.screenState == ScreenState::REWARDS &&
+            (gc.curRoom == Room::SHOP || gc.curRoom == Room::EVENT || gc.curRoom == Room::REST)) ||
+           (gc.screenState == ScreenState::CARD_SELECT && gc.info.cardSelectFromRewards);
+}
+
 py::dict screen_info_state(const GameContext &gc) {
     py::dict result;
     result["screen_state"] = static_cast<int>(gc.screenState);
@@ -1519,6 +1546,7 @@ py::dict screen_info_state(const GameContext &gc) {
             result["encounter"] = static_cast<int>(gc.info.encounter);
             break;
     }
+    if (run_callback_requires_replay(gc)) result["complete"] = false;
     return result;
 }
 
@@ -3338,11 +3366,13 @@ public:
             ? InputState::CARD_SELECT
             : input_state == "INTERNAL" ? InputState::EXECUTING_ACTIONS
             : InputState::PLAYER_NORMAL;
-        if (bc_->inputState == InputState::CARD_SELECT) {
-            if (!combat_internal.contains("choice")) {
+        if (bc_->inputState == InputState::CARD_SELECT || combat_internal.contains("selector_memory")) {
+            if (!combat_internal.contains("choice") && !combat_internal.contains("selector_memory")) {
                 throw std::invalid_argument("CARD_SELECT checkpoint is missing choice state");
             }
-            const auto choice = combat_internal["choice"].cast<py::dict>();
+            const auto choice = combat_internal.contains("selector_memory")
+                ? combat_internal["selector_memory"].cast<py::dict>()
+                : combat_internal["choice"].cast<py::dict>();
             bc_->cardSelectInfo.cardSelectTask =
                 static_cast<CardSelectTask>(choice["task"].cast<int>());
             bc_->cardSelectInfo.canPickZero = choice["can_pick_zero"].cast<bool>();
@@ -3955,6 +3985,19 @@ private:
             if (monster.curHp > 0 && !monster.halfDead && !monster.isEscapingB)
                 ++bc_->monsters.monstersAlive;
         }
+        // Public monster rows omit INVALID summon slots. Their array extent
+        // still controls turn iteration and must not be inferred from rows.
+        if (combat.contains("_internal")) {
+            const auto internal = combat["_internal"].cast<py::dict>();
+            if (internal.contains("monster_count")) {
+                const int count = internal["monster_count"].cast<int>();
+                if (count < bc_->monsters.monsterCount ||
+                        count > static_cast<int>(bc_->monsters.arr.size())) {
+                    throw std::invalid_argument("Invalid private monster array extent");
+                }
+                bc_->monsters.monsterCount = count;
+            }
+        }
     }
 
     void require_reset() const {
@@ -4131,6 +4174,7 @@ private:
         }
         combat["monsters"] = monsters;
         py::dict combat_internal;
+        combat_internal["monster_count"] = bc_->monsters.monsterCount;
         combat_internal["monster_turn_idx"] = bc_->monsterTurnIdx;
         combat_internal["turn_has_ended"] = bc_->turnHasEnded;
         combat_internal["skip_monster_turn"] = bc_->skipMonsterTurn;
@@ -4224,6 +4268,27 @@ private:
                     bc_->reusedSummonGhostSlots[index]));
             }
             combat_internal["reused_summon_ghosts"] = ghosts;
+        }
+        {
+            // A later selector can read fields left by an earlier selector.
+            // Preserve the complete dormant structure at every stable boundary.
+            py::dict memory;
+            memory["task"] = static_cast<int>(bc_->cardSelectInfo.cardSelectTask);
+            memory["can_pick_zero"] = bc_->cardSelectInfo.canPickZero;
+            memory["can_pick_any_number"] = bc_->cardSelectInfo.canPickAnyNumber;
+            memory["pick_count"] = bc_->cardSelectInfo.pickCount;
+            memory["data0"] = bc_->cardSelectInfo.data0;
+            memory["discovery_card_type"] = static_cast<int>(bc_->cardSelectInfo.discoveryCardType);
+            memory["discovery_reroll_on_retrieve"] = bc_->cardSelectInfo.discoveryRerollOnRetrieve;
+            memory["discovery_retrieval_updates"] = bc_->cardSelectInfo.discoveryRetrievalUpdates;
+            py::list cards;
+            for (const auto card : bc_->cardSelectInfo.cards) cards.append(static_cast<int>(card));
+            memory["cards"] = cards;
+            memory["selected_bits"] = multi_select_bits_;
+            py::list selected;
+            for (const auto index : multi_select_indices_) selected.append(index);
+            memory["selected_indices"] = selected;
+            combat_internal["selector_memory"] = memory;
         }
         if (bc_->inputState == InputState::CARD_SELECT) {
             py::dict choice_internal;
@@ -4611,8 +4676,8 @@ public:
         // deliberately not serialized.  Exact FullRun checkpoints therefore
         // reconstruct such boundaries from the seed and canonical action
         // history, just as event combats already do for event continuations.
-        result["replay_required"] = battle_ &&
-            (gc_->curRoom == Room::EVENT || battle_->inputState == InputState::CARD_SELECT);
+        result["replay_required"] = run_callback_requires_replay(*gc_) || (battle_ &&
+            (gc_->curRoom == Room::EVENT || battle_->inputState == InputState::CARD_SELECT));
         if (has_terminal_display_moves_) {
             py::list moves;
             for (const auto move : terminal_display_moves_) {
@@ -4657,7 +4722,7 @@ public:
         return result;
     }
 
-    void load_state(const py::dict &state) {
+    void load_state(const py::dict &state, bool reconstruct_legacy = false) {
         const auto run = state["run_state"].cast<py::dict>();
         const auto event_context = run.contains("event_start_context")
             ? run["event_start_context"].cast<py::dict>() : py::dict();
@@ -4706,6 +4771,8 @@ public:
         const auto screen = state.contains("screen_info")
             ? state["screen_info"].cast<py::dict>() : py::dict();
         bool legacyUnsettledVictory = false;
+        bool legacyMonsterExtent = false;
+        bool legacySelectorMemory = false;
         if (state.contains("combat_checkpoint") && !screen.empty() &&
                 screen.contains("complete") && screen["complete"].cast<bool>() &&
                 screen["screen_state"].cast<int>() ==
@@ -4717,6 +4784,13 @@ public:
                     legacyGame.contains("outcome") &&
                     legacyGame["outcome"].cast<std::string>() == "PLAYER_VICTORY" &&
                     !legacyGame.contains("combat_state");
+                if (legacyGame.contains("combat_state")) {
+                    const auto combat = legacyGame["combat_state"].cast<py::dict>();
+                    legacyMonsterExtent = !combat.contains("_internal") ||
+                        !combat["_internal"].cast<py::dict>().contains("monster_count");
+                    legacySelectorMemory = !combat.contains("_internal") ||
+                        !combat["_internal"].cast<py::dict>().contains("selector_memory");
+                }
             }
         }
         const bool registeredLegacyEvent =
@@ -4727,7 +4801,18 @@ public:
              progress["current_event"].cast<int>() == static_cast<int>(Event::THE_CLERIC) ||
              progress["current_event"].cast<int>() == static_cast<int>(Event::BIG_FISH) ||
              progress["current_event"].cast<int>() == static_cast<int>(Event::UPGRADE_SHRINE));
-        if (legacyUnsettledVictory || (state.contains("screen_info") &&
+        // Older checkpoints incorrectly labelled these callbacks complete.
+        // Apply the safety policy from structural fields, not the old label.
+        const auto requestedRoom = progress.contains("current_room")
+            ? static_cast<Room>(progress["current_room"].cast<int>()) : Room::INVALID;
+        const auto requestedScreen = screen.contains("screen_state")
+            ? static_cast<ScreenState>(screen["screen_state"].cast<int>()) : ScreenState::INVALID;
+        const bool legacyNestedCallback =
+            (requestedScreen == ScreenState::REWARDS &&
+             (requestedRoom == Room::SHOP || requestedRoom == Room::EVENT || requestedRoom == Room::REST)) ||
+            (requestedScreen == ScreenState::CARD_SELECT && screen.contains("from_rewards") &&
+             screen["from_rewards"].cast<bool>());
+        if (legacyUnsettledVictory || (reconstruct_legacy && (legacyMonsterExtent || legacySelectorMemory)) || legacyNestedCallback || (state.contains("screen_info") &&
                 !screen["complete"].cast<bool>() && !registeredLegacyEvent) ||
                 replay_required) {
             if (!state.contains("replay_actions")) {
@@ -4789,6 +4874,40 @@ public:
             // canonical candidates at the restored boundary.
             normalized_replayed.attr("pop")("legal_actions", py::none());
             normalized_requested.attr("pop")("legal_actions", py::none());
+            if (legacySelectorMemory) {
+                auto actual = normalized_replayed.cast<py::dict>();
+                actual["combat_checkpoint"].cast<py::dict>()["game_state"].cast<py::dict>()[
+                    "combat_state"].cast<py::dict>()["_internal"].cast<py::dict>().attr("pop")(
+                        "selector_memory", py::none());
+            }
+            if (state.contains("public_combat")) {
+                const auto old_public = state["public_combat"].cast<py::dict>();
+                if (old_public.contains("choice") &&
+                        !old_public["choice"].cast<py::dict>().contains("pick_count")) {
+                    auto actual = normalized_replayed.cast<py::dict>();
+                    actual["public_combat"].cast<py::dict>()["choice"].cast<py::dict>().attr("pop")(
+                        "pick_count", py::none());
+                }
+            }
+            if (legacyMonsterExtent) {
+                // The old format did not claim a private extent. Reconstruct
+                // it from legal history; compare every field it did record.
+                auto actual = normalized_replayed.cast<py::dict>();
+                actual["combat_checkpoint"].cast<py::dict>()["game_state"].cast<py::dict>()[
+                    "combat_state"].cast<py::dict>()["_internal"].cast<py::dict>().attr("pop")(
+                        "monster_count");
+            }
+            if (legacyNestedCallback) {
+                // Only restoration-strategy metadata changed. All resources,
+                // RNG, hidden state, selections and action history still match.
+                auto requested = normalized_requested.cast<py::dict>();
+                auto actual = normalized_replayed.cast<py::dict>();
+                requested["replay_required"] = actual["replay_required"];
+                requested["screen_info"].cast<py::dict>()["complete"] =
+                    actual["screen_info"].cast<py::dict>()["complete"];
+                requested["progress_state"].cast<py::dict>()["screen_continuation_serialized"] =
+                    actual["progress_state"].cast<py::dict>()["screen_continuation_serialized"];
+            }
             if (run["floor"].cast<int>() > 0) {
                 // Neow's RNG is permanently dormant after leaving floor zero.
                 // Historical checkpoints predate one corrected constructor
@@ -6667,7 +6786,8 @@ PYBIND11_MODULE(_lightspeed, module) {
              py::arg("note_card") = "IRON_WAVE", py::arg("portal_eligible") = true,
              py::arg("ascension") = 0, py::arg("empty_deck") = false)
         .def("snapshot", &LightspeedRunState::snapshot)
-        .def("load_state", &LightspeedRunState::load_state, py::arg("state"))
+        .def("load_state", &LightspeedRunState::load_state, py::arg("state"),
+             py::arg("reconstruct_legacy") = false)
         .def("legal_actions", &LightspeedRunState::legal_actions)
         .def("_set_skip_battles_for_testing",
              &LightspeedRunState::set_skip_battles_for_testing,
